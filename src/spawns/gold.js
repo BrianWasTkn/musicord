@@ -1,26 +1,25 @@
-module.exports = {
-	// Odds
-	chances: 25,
-	rateLimit: 5,
+exports.config = {
+	odds: 25,
+	cooldown: 5,
 	enabled: true,
-	type: 'once',
-	// Collector
-	time: 7500,
-	maxEntries: 1,
-	// Rewards
+	timeout: 5000,
+	entries: 1,
 	rewards: {
-		min: 100000, 
-		max: 250000
-	},
-	// Visuals
+		min: 1000000,
+		max: 1500000
+	} 
+}
+
+exports.visuals = {
 	emoji: '<:memerGold:753138901169995797>',
-	eventType: 'GODLY',
+	type: 'SUPER	',
 	title: 'Gold Doubloon',
 	description: 'wow a very rare event themks',
 	strings: [
 		'gold', 'dis serber op', 'gg', 'what\'s the prize?',
 		'how much tho', 'you got to be kidding me', 
 		'peter piper picked a pack of pickle peper',
+		'a pack of pickle peper peter piper picked',
 		'spill the beans of the jelly beans'
 	]
 }

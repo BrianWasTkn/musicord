@@ -10,9 +10,9 @@ const {
 	config 
 } = require('../config.js');
 
-const Player = require('./Player.js');
 const ClientUtil = require('./Util.js');
-const LavaManager = require('./Manager.js');
+const Manager = require('./Manager.js');
+const Spawner = require('./Spawner.js');
 
 
 module.exports = class LavaClient extends AkairoClient {
@@ -22,10 +22,6 @@ module.exports = class LavaClient extends AkairoClient {
     }, {
       disableMentions: 'everyone'
     });
-
-    this.player = new Player(this);
-
-    this.util = new ClientUtil(this);
 
     this.listenerHandler = new ListenerHandler(this, {
       directory: join(__dirname, '..', 'emitters')
@@ -40,14 +36,15 @@ module.exports = class LavaClient extends AkairoClient {
     	allowMention: true
     });
 
-    this.lavaManager = new LavaManager(this);
+    this.util = new ClientUtil(this);
+
+    this.lavaManager = new Manager(this);
 
     this.config = config;
   }
 
   loadEmitters() {
   	this.listenerHandler.setEmitters({
-  		distube: this.player, 
   		process: process
   	});
   }

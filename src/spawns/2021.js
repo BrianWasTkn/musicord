@@ -1,22 +1,20 @@
-module.exports = {
-	// Odds
-	chances: 40,
-	rateLimit: 15,
+exports.config = {
+	odds: 40,
+	cooldown: 15,
 	enabled: true,
-	type: 'multiple',
-	// Collector
-	time: 10000,
-	maxEntries: 5,
-	// Rewards
+	timeout: 10000,
+	entries: 5,
 	rewards: {
 		min: 210000,
 		max: 210000
-	},
-	// Visuals
+	} 
+}
+
+exports.visuals = {
 	emoji: '<:memerGold:753138901169995797>',
-	eventType: 'COMMON',
-	title: '2021 When',
-	description: 'End 2020 now',
+	type: 'COMMON',
+	title: 'It\'s 2021',
+	description: 'Happy New Years!',
 	strings: [
 		'bye 2020, hi 2021', 'heist when',
 		'back to square twenty one', 'lol imagine still using skype in 2021', 

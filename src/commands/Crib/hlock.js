@@ -8,7 +8,7 @@ const roles = guild => ([
 
 module.exports = class Crib extends Command {
 	constructor() {
-		super('heist-lock', {
+		super('hl', {
 			aliases: ['hlock', 'hl'],
 			category: 'Crib',
 			channel: 'guild',

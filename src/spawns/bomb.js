@@ -1,20 +1,18 @@
-module.exports = {
-	// Odds
-	chances: 10,
-	rateLimit: 5,
+exports.config = {
+	odds: 10,
+	cooldown: 5,
 	enabled: true,
-	type: 'once',
-	// Collector
-	time: 10000,
-	maxEntries: 3,
-	// Rewards
+	timeout: 10000,
+	entries: 3,
 	rewards: {
-		min: 100000, 
+		min: 100000,
 		max: 500000
-	},
-	// Visuals
+	} 
+}
+
+exports.visuals = {
 	emoji: '<:memerGold:753138901169995797>',
-	eventType: 'SUPER',
+	type: 'SUPER',
 	title: 'Get Coinified',
 	description: 'Do you want coins?',
 	strings: [

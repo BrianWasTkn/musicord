@@ -18,7 +18,7 @@ module.exports = class Crib extends Command {
 			args: [
 				{ id: 'amount', type: 'number' },
 				{ id: 'lock', type: 'boolean',
-					default: false }
+					default: true }
 			]
 		});
 	}
@@ -30,6 +30,7 @@ module.exports = class Crib extends Command {
 	}
 
 	async exec(message, args) {
+		await message.delete().catch(() => {});
 		const { channel, guild } = message;
 		const { amount, lock } = args;
 		if (!amount) return message.reply('You need an amount.');
@@ -47,7 +48,7 @@ module.exports = class Crib extends Command {
 		await channel.send(`Type \`${string}\` to have a chance on splitting up \`${Number(amount).toLocaleString()}\` coins!`);
 		const entries = new Collection();
 		const collector = await channel.createMessageCollector(
-			m => (m.content.toLowerCase() === string.toLowerCase()) && !entries.has(m.author.id), {
+			m => (m.content.toUpperCase() === string) && !entries.has(m.author.id), {
 				max: Infinity, time: 60000
 		});
 
@@ -69,9 +70,8 @@ module.exports = class Crib extends Command {
 				});
 
 				const coins = Math.floor(Number(amount) / success.length);
-				success = success.length ? success.map(s => s.author.toString()).join('\n') : 'Everyone died LOL';
-				const order = success.sort(() => Math.random() - 0.5).join(', ');
-				await collector.channel.send(`Good job everybody, we got \`${coins.toLocaleString()}\` coins each!\n\n${success}`);
+				const order = success.length ? success.map(s => s.author.toString()).sort(() => Math.random() - 0.5).join(', ') : 'Everyone died LOL';
+				await collector.channel.send(`Good job everybody, we got \`${coins.toLocaleString()}\` coins each!\n\n${order}`);
 		});
 	}
 }

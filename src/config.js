@@ -7,6 +7,7 @@ exports.config = {
 	// Spawner
 	spawn: {
 		rateLimit: 15,
+		blChannels: [],
 		categories: [
 		'691595121866571776', 
 		'724618509958774886'

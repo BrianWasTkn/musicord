@@ -1,26 +1,23 @@
-module.exports = {
-	// Odds
-	chances: 10,
-	rateLimit: 5,
+exports.config = {
+	odds: 10,
+	cooldown: 5,
 	enabled: true,
-	type: 'once',
-	// Collector
-	time: 30000,
-	maxEntries: 1,
-	// Rewards
+	timeout: 30000,
+	entries: 1,
 	rewards: {
-		min: 50000, 
+		min: 50000,
 		max: 100000
-	},
-	// Visuals
+	} 
+}
+
+exports.visuals = {
 	emoji: '<:memerGold:753138901169995797>',
-	eventType: 'SUPER',
-	title: 'Merry Cribmas',
-	description: 'It\'s a special day for Memers Crib!\nThese are the iconic phrases for the year.',
+	type: 'SUPER',
+	title: 'Memers Crib',
+	description: 'It\'s been always a special day for Memers Crib!\nThese are the iconic phrases for the server.',
 	strings: [
-		'cribmas', 'ato', 'amonic', 'nice spam', 'brain',
+		'ato', 'amonic', 'nice spam', 'brain',
 		'damn son', 'ashol', 'atomic bomb', 'tanjunrine',
-		'Lee oh.', 'finding dory', 'baddie claus', 'trending',
-		'e', 'da wrod', 'babies are cute'
+		'Lee oh.', 'finding dory', 'e'
 	]
 }

@@ -28,9 +28,7 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "discord-akairo": "^8.1.0",
-    "discord-music-player": "^5.0.6",
     "discord.js": "^12.5.1",
-    "distube": "^2.8.8",
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
     "lyrics-finder": "^21.4.0",

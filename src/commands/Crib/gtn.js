@@ -9,11 +9,11 @@ module.exports = class Crib extends Command {
 			cooldown: 60000,
 			rateLimit: 1,
 			args: [
-				{ id: 'amount', type: 'number' },
 				{ id: 'min', type: 'number', default: 1 },
 				{ id: 'max', type: 'number', default: 100 },
+				{ id: 'guess', type: 'number' },
+				{ id: 'prize', type: 'string' },
 				{ id: 'lock', type: 'boolean', default: true },
-				{ id: 'prize', type: 'string', default: '100K Coins' }
 			]
 		});
 	}
@@ -65,10 +65,7 @@ module.exports = class Crib extends Command {
 	}
 
 	async startCollecting(gChannel, amount, random, lock) {
-		const entries = new (require('discord.js')).Collection();
-		const collector = await gChannel.createMessageCollector(message => {
-			return Number(message.content);
-		}, {
+		const collector = await gChannel.createMessageCollector(null, {
 			max: Infinity, time: 60000
 		});
 
