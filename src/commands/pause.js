@@ -1,5 +1,5 @@
 import Command from '../classes/Command.js'
-import { log } from '../../utils/logger.js'
+import { log } from '../utils/logger.js'
 
 export default new Command({
 	name: 'pause',

@@ -34,6 +34,7 @@ export const log = (type, content, error = null) => {
 			`[${chalk.whiteBright(timestamp)}]:`, 
 			`${chalk.redBright('Error')}`,
 			`${chalk.whiteBright('=>')} ${chalk.redBright(content)}`);
+			console.log(chalk.whiteBright(error))
 			break;
 		case 'eventError':
 			console.log(
@@ -59,19 +60,4 @@ export const log = (type, content, error = null) => {
 			`${chalk.whiteBright('Console ')}`,
 			`${chalk.whiteBright('=>')} ${chalk.greenBright(content)}`)
 	}
-}
-
-export const logInit = (tag, message) => {
-	const timestamp = moment().format("YYYY-MM-DD HH:mm:ss")
-	console.log(chalk.magentaBright(`[${timestamp}]:`), chalk.hex('#57d6ff')(`[${tag}]`), chalk.greenBright('[X]'), chalk.blueBright(`${message}`))
-}
-
-export const logError = (tag, message, error, stack = false) => {
-	const timestamp = moment().format("YYYY-MM-DD HH:mm:ss")
-	console.log(chalk.magentaBright(`[${timestamp}]:`), chalk.hex('#57d6ff')(`[${tag}]`), chalk.redBright('[X]'), chalk.blueBright(message))
-	console.log(chalk.whiteBright(stack ? error : error.stack))
-}
-
-export const logCommandError = (command, message, error) => {
-	console.log()
 }

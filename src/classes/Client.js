@@ -32,7 +32,7 @@ export default class Musicord extends Client {
 				this._registerCommands();
 				log('main', 'Commands Loaded')
 			} catch(error) {
-				log('error', 'Cannot register commands', error)
+				log('error', 'Cannot register commands', error.stack)
 			}
 		} catch(error) {
 			log('error', 'Cannot load bot listeners', error)
