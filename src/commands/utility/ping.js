@@ -8,5 +8,9 @@ export default new Command({
 	usage: 'command'
 }, async message => {
 	const shard = message.guild.shard;
-	return simpleEmbed(message, `Your guild on Shard ${shard.id} has a ${shard.ping}ms latency.`);
+	return simpleEmbed({
+		title: 'Pingy Ping Pong',
+		color: 'BLUE',
+		text: `Your guild on **Shard ${shard.id}** has a delay of \`${shard.ping}ms\`.`
+	});
 })

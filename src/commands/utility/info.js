@@ -12,7 +12,9 @@ export default new Command({
 	usage: 'command'
 }, async (bot, message) => {
 	try {
+		/** Fetch <Client> application from OAuth2 */
 		const application = await bot.fetchApplication();
+		/** Return Message */
 		return dynamicEmbed({
 			title: `${application.name} - ${application.id}`,
 			color: 'BLUE',
@@ -24,7 +26,7 @@ export default new Command({
 			}
 		});
 	} catch(error) {
-		log('commandError', 'info@bot.fetchApplication', error);
-		return errorEmbed(message, error);
+		log('commandError', 'info@main_command', error);
+		return errorEmbed({ title: 'info@main_command', error: error });
 	}
 })

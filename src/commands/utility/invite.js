@@ -1,6 +1,10 @@
 import Command from '../../classes/Command/Utility.js'
 import { log } from '../../utils/logger.js'
-import { simpleEmbed, dynamicEmbed } from '../../utils/embed.js'
+import { 
+	simpleEmbed, 
+	dynamicEmbed, 
+	errorEmbed 
+} from '../../utils/embed.js'
 
 export default new Command({
 	name: 'avatar',
@@ -9,6 +13,7 @@ export default new Command({
 	usage: 'command'
 }, async (bot, message, args) => {
 	try {
+		/** Generate Invite */
 		const invite = await bot.generateInvite({
 			permissions: [
 				'SEND_MESSAGES', 'READ_MESSAGES', 
@@ -17,6 +22,7 @@ export default new Command({
 			]
 		});
 
+		/** Then return message */
 		return dynamicEmbed({
 			title: 'Add me to your server',
 			color: 'BLUE',
@@ -32,6 +38,7 @@ export default new Command({
 			}
 		})
 	} catch(error) {
-		log('error', 'invite@generateInvite', error);
+		log('error', 'invite@main_command', error);
+		return errorEmbed({ title: 'info@main_command', error: error });
 	}
 })
