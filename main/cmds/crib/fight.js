@@ -39,10 +39,10 @@ module.exports = new Command({
 	/* Turn() */
 	const performTurn = async (attacker, opponent, retry) => {
 		/* ask whoever's turn */
-		msg.channel.send(`<@${turn.user.id}>, **\`fight\`**, **\`defend\`**, or **\`end\`**?`);
+		msg.channel.send(`<@${turn.user.id}>, **\`slap\`**, **\`protecc\`**, or **\`end\`**?`);
 		
 		/* await msg */
-		let filter = m => (m.member.user.id === turn.user.id) && (['fight', 'defend', 'end'].some(f => m.content.toLowerCase() === f));
+		let filter = m => (m.member.user.id === turn.user.id) && (['slap', 'protecc', 'end'].some(f => m.content.toLowerCase() === f));
 		let m = await msg.channel.awaitMessages(filter, {
 			max: 1,
 			time: 3e4
@@ -55,21 +55,20 @@ module.exports = new Command({
 		}
 		/* discord.message */
 		m = m.first();
-
-		if (m.content.toLowerCase() === 'fight') {
+		if (m.content.toLowerCase() === 'slap') {
 			/* Damages */
 			let bigPunch = Math.random() >= 0.7;
-			let damage = randomNum(7, bigPunch ? 40 : 25);
+			let damage = randomNum(7, bigPunch ? 60 : 25);
 			/* Maths */
 			opponent.hp -= (damage - opponent.armor) < 0 ? 5 : damage - opponent.armor;
 			/* Crits */
 			attacker.crits = bigPunch ? attacker.crits++ : attacker.crits;
 			/* Return */
 			return damage;
-		} else if (m.content.toLowerCase() === 'defend') {
+		} else if (m.content.toLowerCase() === 'protecc') {
 			/* Crits */
 			let crit = Math.random() >= 0.7;
-			let defense = randomNum(7, crit ? 40 : 25);
+			let defense = randomNum(7, crit ? 60 : 25);
 			/* Maths */
 			if (attacker.armor < 100) {
 				/* Set */
@@ -116,7 +115,7 @@ module.exports = new Command({
 			const winner = loser === turn ? oppturn : turn;
 			loser.hp = 0;
 			/* Message */
-			return await msg.channel.send(`**${winner.user.username}** literally ate **${loser.user.username}** alive, winning with **${winner.hp < 1 ? 0 : winner.hp}HP** left!`)
+			return await msg.channel.send(`**${winner.user.username}** literally ate **${loser.user.username}** alive, winning with **${winner.crits}** crits and **${winner.hp < 1 ? 0 : winner.hp}HP** left!`)
 		}
 	}
 
