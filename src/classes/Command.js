@@ -1,14 +1,10 @@
 import Discord from 'discord.js'
-import config from '../config.js'
-
-import { parseTime } from '../utils/text.js'
-import { log } from '../utils/logger.js'
 
 /**
  * Creates a command class
  */
 
-class Command {
+export default class Command {
 	constructor(client, options) {
 
 		/**
@@ -41,12 +37,12 @@ class Command {
 		 */
 		if ('usage' in options) {
 			if (options.usage === 'command') {
-				this.usage = [`${client.prefix[0]}${options.name}`].join(' ');
+				this.usage = [`${client.prefix}${options.name}`].join(' ');
 			} else {
-				this.usage = [`${client.prefix[0]}${options.name}`, options.usage].join(' ');
+				this.usage = [`${client.prefix}${options.name}`, options.usage].join(' ');
 			}
 		} else {
-			this.usage = [`${client.prefix[0]}${options.name}`].join(' ');
+			this.usage = [`${client.prefix}${options.name}`].join(' ');
 		}
 
 		/**
@@ -63,27 +59,20 @@ class Command {
 	}
 
 	/** Shortcut for logging */
-	log(tag, error) {
-		return log('command', tag, error);
+	log(Class, tag, error) {
+		return this.client.utils.log(Class, 'command', tag, error);
 	}
 
 	/** Creates an Embed */
-	createEmbed({ 
-		author = {}, footer = {}, fields = {},
+	createEmbed({
+		author = {}, fields = {}, footer = {},
 		title = null, icon = null, text = null,
 		color = 'RANDOM'
 	} = {}) {
-		return {
-			embed: {
-				author: { name: author.text, iconURL: author.icon },
-				title: title,
-				thumbnail: icon,
-				color: color,
-				description: text,
-				fields: Object.entries(fields).map(f => ({ name: f[0], value: f[1].content, inline: f[1].inline || false })),
-				footer: { text: footer.text, iconURL: footer.icon }
-			}
-		}
+		return this.client.utils.dynamicEmbed({
+			author, fields, footer,
+			title, text, icon, color
+		});
 	}
 
 	handleCooldown({ Bot, command, msg }) {
@@ -103,7 +92,7 @@ class Command {
 			// On cooldown
 			if (now < expiration) {
 				let timeLeft = (expiration - now) / 1000;
-				timeLeft = timeLeft > 60 ? parseTime(timeLeft) : `${timeLeft.toFixed(1)} seconds`;
+				timeLeft = timeLeft > 60 ? this.client.utils.parseTime(timeLeft) : `${timeLeft.toFixed(1)} seconds`;
 				// Return a message
 				return this.createEmbed({
 					title: 'Cooldown, Slow down.',
@@ -138,5 +127,3 @@ class Command {
 		}
 	}
 }
-
-export default Command;

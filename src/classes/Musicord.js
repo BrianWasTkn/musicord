@@ -35,11 +35,8 @@ export default class Musicord extends Client {
 					});
 				} else {
 					const playerListener = readdirSync(join(__dirname, '..', 'emitters', e));
-					playerListener.forEach(async l => {
-						l = l.split('.')[0];
-						this.player.on(l, (...args) => {
-							new (require(join(__dirname, '..', 'emitters', e, l)).default)(this);
-						});
+					playerListener.forEach(l => {
+						new (require(join(__dirname, '..', 'emitters', e, l)).default)(this);
 					});
 				}
 			});

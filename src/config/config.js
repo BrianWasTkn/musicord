@@ -1,19 +1,11 @@
 export default {
-	/** Bot Owners */
 	developers: ['605419747361947649'],
-	
-	/** Discord Token */
-	token: process.env.DISCORD_TOKEN || 'Njg2OTY5MDIwMzg1MzI5MTgy.Xme7wQ.8NNvk2zlQ6I08eQcqDNRD7OxlZs', // Ensures the login of our bot
-	
-	/** Bot Prefixes */
-	prefix: ['crib ', 'musicord '],
-	
-	/** Discord.Client options */
-	clientOpts: {
+	token: 'Njg2OTY5MDIwMzg1MzI5MTgy.Xme7wQ.8NNvk2zlQ6I08eQcqDNRD7OxlZs',
+	prefix: 'm!',
+	clientOptions: {
+		shardCount: 5
 	},
-
-	/** DisTube#options */
-	playerOpts: {
+	playerOptions: {
 		searchSongs: true,
 		leaveOnFinish: true,
 		customFilters: {

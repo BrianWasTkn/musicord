@@ -1,9 +1,8 @@
 import Util from './Util.js'
 
-class Manager {
+export default class Manager {
 	constructor(client) {
 		this.client = client;
-		this.utils = new Util(client);
 	}
 
 	/** Logger Shortcut */

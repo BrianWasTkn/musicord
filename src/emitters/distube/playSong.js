@@ -3,11 +3,17 @@ import Listener from '../../classes/Listener.js'
 export default class PlaySong extends Listener {
 	constructor(client) {
 		super(client);
+		/* Emit */
+		client.on('addSong', async (message, queue, song) => await this.run({
+			Bot: message.client,
+			msg: message,
+			queue, song
+		}));
 	}
 
-	async run(message, queue, song) {
+	async run({ Bot, msg, queue, song }) {
 		try {
-			await message.channel.send(super.createEmbed({
+			await msg.channel.send(super.createEmbed({
 				title: 'Now Playing',
 				color: 'BLUE',
 				text: `Now Playing [**__${song.name}__**](${song.url}) on the queue.`,
@@ -17,8 +23,8 @@ export default class PlaySong extends Listener {
 					'# of Plays': { content: song.views.toLocaleString(), 			inline: true }
 				},
 				footer: {
-					text: `Thanks for using ${this.client.user.username}!`,
-					icon: this.client.user.avatarURL()
+					text: `Thanks for using ${Bot.user.username}!`,
+					icon: Bot.user.avatarURL()
 				}
 			}));
 		} catch(error) {
