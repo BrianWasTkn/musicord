@@ -1,5 +1,9 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
+import { 
+	simpleEmbed, 
+	generateError 
+} from '../utils/embed.js'
 
 export default new Command({
 	name: 'search',
@@ -37,7 +41,7 @@ export default new Command({
 		} catch(error) {
 			/** Log Error */
 			log('commandError', 'search@results_message', error)
-			return error;
+			return generateError(message, error);
 		}
 
 		/** Await Message */
@@ -73,8 +77,8 @@ export default new Command({
 			}
 		} catch(error) {
 			/** Log Error */
-			log('commandError', 'search@parse_choice', error)
-			return error;
+			log('commandError', 'search@parse_choice', error.stack);
+			return generateError(message, error);
 		}
 
 		/** Play */
@@ -86,16 +90,16 @@ export default new Command({
 			} catch(error) {
 				/** Log Error */
 				log('commandError', 'search@delete_results_embed', error)
-				return error;
+				return generateError(message, error);
 			}
 		} catch(error) {
 			/** Log Error */
 			log('commandError', 'search@play_song', error)
-			return error;
+			return generateError(message, error);
 		}
 	} catch(error) {
 		/** Log Error */
 		log('commandError', 'search@search_tracks', error)
-		return error;
+		return generateError(message, error);
 	}
 })

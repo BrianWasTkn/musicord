@@ -1,5 +1,9 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
+import { 
+	simpleEmbed, 
+	generateError 
+} from '../utils/embed.js'
 
 export default new Command({
 	name: 'queue',
@@ -9,25 +13,19 @@ export default new Command({
 }, async (bot, message, args) => {
 
 	/** Check Playing State */
-	const isPlaying = bot.player.isPlaying(message);
-	if (!isPlaying) {
-		return 'There\'s nothing playing in the queue.'
+	const queue = bot.player.getQueue(message);
+	if (!queue) {
+		return simpleEmbed(message, 'There\'s nothing playing in the queue.');
 	}
 
 	/** Check if args contains a flag to clear the queue */
 	if (args.join(' ').includes('--clear')) {
 		await bot.player.stop(message)
-		return 'The queue has been cleared.'
-	}
-
-	/** Fetch Server Queue */
-	const queue = bot.player.getQueue(message);
-	if (!queue) {
-		return 'There\'s nothing playing in the queue.'
+		return simpleEmbed(message, 'The player has been stopped and the queue has been cleared.');
 	}
 
 	/** Map Songs */
-	const songs = queue ? queue.songs.map((song, index) => `**${index === 0 ? ':musical_note:' : `#${index+1}:`}** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\` `) : false;
+	const songs = queue ? queue.songs.map((song, index) => `**${index === 0 ? ':musical_note:' : `#${index + 1}:`}** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\` `) : false;
 	
 	/** Send Queue */
 	try {
@@ -46,9 +44,11 @@ export default new Command({
 		/** Message Reactions */
 		try {
 			/** Emojis -> queueMessage */
-			const emojis = ['⏮️', '⏭️', '⏸️', '⏹️', '🔁', '🔀'];
-			for (const emoji of emojis) {
-				await msg.react(emoji)
+			const emojis = ['⏮️', '⏭️', '⏸️', '⏹️', '🔁', '🔀', ':x:'];
+			for await (const emoji of emojis) {
+				setTimeout(() => {
+					msg.react(emoji);
+				}, 1000)
 			}
 
 			/** Collector */
@@ -58,14 +58,17 @@ export default new Command({
 			/** Controls */
 			collector.on('collect', async (reaction, user) => {
 				switch(reaction.emoji.name) {
+
 					// Previous
 					case emojis[0]:
 						await message.channel.send('Coming Soon:tm:');
 						break;
+
 					// Next/Skip
 					case emojis[1]:
 						try { 
-							await reaction.users.remove(user)
+							await reaction.users.remove(user);
+							await collector.resetTimer();
 							try {
 								await bot.player.skip(message);
 							} catch(error) {
@@ -75,10 +78,12 @@ export default new Command({
 							log('commandError', 'queue@collector -> switch -> removeReaction', error)
 						}
 						break;
+
 					// Pause
 					case emojis[2]:
 						try { 
-							await reaction.users.remove(user)
+							await reaction.users.remove(user);
+							await collector.resetTimer();
 							try {
 								await bot.player.pause(message);
 							} catch(error) {
@@ -88,10 +93,12 @@ export default new Command({
 							log('commandError', 'queue@collector -> switch -> removeReaction', error)
 						}
 						break;
+
 					// Stop
 					case emojis[3]:
 						try { 
-							await reaction.users.remove(user)
+							await reaction.users.remove(user);
+							await collector.resetTimer();
 							try {
 								await bot.player.stop(message);
 								collector.stop();
@@ -102,14 +109,17 @@ export default new Command({
 							log('commandError', 'queue@collector -> switch -> removeReaction', error)
 						}
 						break;
+
 					// repeat
 					case emojis[4]:
 						message.channel.send('repeat');
 						break;
+
 					// shuffle
 					case emojis[5]:
 						try { 
-							await reaction.users.remove(user)
+							await reaction.users.remove(user);
+							await collector.resetTimer();
 							try {
 								await bot.player.shuffle(message);
 							} catch(error) {
@@ -119,6 +129,19 @@ export default new Command({
 							log('commandError', 'queue@collector -> switch -> removeReaction', error)
 						};
 						break;
+
+					// cancel
+					case emojis[6]:
+					try {
+						await reaction.users.removeAll();
+						try {
+							collector.stop();
+						} catch(error) {
+							log('commandError', 'queue@collector -> switch -> collector.stop', error);	
+						}
+					} catch(error) {
+						log('commandError', 'queue@collector -> switch -> removeReactions', error);
+					}
 				}
 			})
 
@@ -128,11 +151,11 @@ export default new Command({
 				await msg.reactions.removeAll()
 			})
 		} catch (error) {
-			log('commandError', 'queue', error)
-			return error;
+			log('commandError', 'queue@create_collector', error.stack);
+			return generateError(message, error);
 		}
 	} catch(error) {
-		log('commandError', 'queue', error)
-		return error;
+		log('commandError', 'queue@send_queue_msg', error.stack);
+		return generateError(message, error);
 	}
 })

@@ -1,5 +1,9 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
+import { 
+	simpleEmbed, 
+	generateError 
+} from '../utils/embed.js'
 
 export default new Command({
 	name: 'shuffle',
@@ -9,9 +13,9 @@ export default new Command({
 }, async (bot, message) => {
 	
 	/** Check Playing State */
-	const isPlaying = bot.player.isPlaying(message);
-	if (!isPlaying) {
-		return 'There\'s nothing playing in the queue.'
+	const queue = bot.player.getQueue(message);
+	if (!queue) {
+		return simpleEmbed(message, 'There\'s nothing playing in the queue.');
 	}
 
 	/** Do the thing */
@@ -25,6 +29,6 @@ export default new Command({
 		}
 	} catch(error) {
 		log('commandError', 'shuffle', error)
-		return error;
+		return generateError(message, error);
 	}
 })

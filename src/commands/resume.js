@@ -1,5 +1,9 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
+import { 
+	simpleEmbed, 
+	generateError 
+} from '../utils/embed.js'
 
 export default new Command({
 	name: 'resume',
@@ -14,7 +18,7 @@ export default new Command({
 		return 'The player is not paused.'
 	}
 
-	/** Else, play */
+	/** Else, resume */
 	try {
 		await bot.player.resume(message);
 		await message.channel.send({ 
@@ -25,7 +29,7 @@ export default new Command({
 			}
 		})
 	} catch(error) {
-		log('commandError', 'resume', error)
-		return error;
+		log('commandError', 'resume', error.stack);
+		return generateError(message, error);
 	}
 })

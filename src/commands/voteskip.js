@@ -1,5 +1,9 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
+import { 
+	simpleEmbed, 
+	generateError 
+} from '../utils/embed.js'
 
 export default new Command({
 	name: 'voteskip',
@@ -7,17 +11,21 @@ export default new Command({
 	description: 'Vote skip the current song playing in the queue.',
 	usage: 'command'
 }, async (bot, message, args) => {
-	const isPlaying = bot.player.isPlaying(message);
-	if (!isPlaying) return 'There\'s nothing playing in the queue.';
+	
+	/** Check Playing State */
+	const queue = bot.player.getQueue(message);
+	if (!queue) {
+		return simpleEmbed(message, 'There\'s nothing playing in the queue.');
+	}
 
 	const channel = message.member.voice.channel,
 	size = channel.members.size;
 	if (size <= 3) {
-		return 'You cannot voteskip as only 3 people are in the voice channel.';
+		return `You cannot voteskip as only ${size} people are in the voice channel.`;
 	}
 
 	try {
-		const filter = m => m.content === '!voteskip';
+		const filter = m => m.content === '!voteskip',
 		c = await message.channel.createMessageCollector(filter, {
 			max: size,
 			time: 60000,
@@ -36,6 +44,6 @@ export default new Command({
 		})
 	} catch(error) {
 		log('error', 'voteskip@collector', error.stack);
-		return error;
+		return generateError(message, error);
 	}
 })

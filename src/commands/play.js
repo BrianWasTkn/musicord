@@ -1,5 +1,9 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
+import { 
+	simpleEmbed, 
+	generateError 
+} from '../utils/embed.js'
 
 export default new Command({
 	name: 'play',
@@ -8,9 +12,9 @@ export default new Command({
 	usage: '<...query | playlistURL | videoURL>'
 }, async (bot, message, args) => {
 
-	/** Missing Args (Bug?) */
+	/** Missing Args */
 	if (args.length < 1) {
-		return 'you need something to play.'
+		return simpleEmbed(message, 'You need something to play.');
 	}
 
 	/** Play */
@@ -20,18 +24,18 @@ export default new Command({
 
 		if (args.length > (sIndex + 1)) {
 			/** Play Skip */
-			args.splice(sIndex, 2); // removes the flag from the args array
+			args.splice(sIndex, 2);
 			await bot.player.playSkip(message, args.join(' '));
 		} else if (args.length > rIndex) {
 			/** Add related song */
-			args.splice(rIndex, 2); // removes the flag from the args array
+			args.splice(rIndex, 2);
 			await bot.player.addRelatedVideo(message);
 		} else {
 			/** Play Song */
 			await bot.player.play(message, args.join(' ')) ;
 		}
 	} catch(error) {
-		log('commandError', 'play', error)
-		return error;
+		log('commandError', 'play@play', error.stack);
+		return generateError(message, error);
 	}
 })

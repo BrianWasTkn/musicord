@@ -1,5 +1,9 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
+import { 
+	simpleEmbed, 
+	generateError 
+} from '../utils/embed.js'
 
 export default new Command({
 	name: 'pause',
@@ -9,29 +13,30 @@ export default new Command({
 }, async (bot, message, args) => {
 
 	/** Check Playing State */
-	const isPlaying = bot.player.isPlaying(message);
-	if (!isPlaying) {
-		return 'There\'s nothing playing in the queue.'
+	const queue = bot.player.getQueue(message);
+	if (!queue) {
+		return simpleEmbed(message, 'There\'s nothing playing in the queue.');
 	}
 
 	/** Check if paused */
 	const paused = bot.player.isPaused(message);
 	if (paused) {
-		return 'The player is already paused.'
+		return simpleEmbed(message, 'The player is already paused.');
 	}
 
 	/** Else, pause */
 	try {
-		await bot.player.pause(message);
-		await message.channel.send({ 
-			embed: {
-				title: 'Player Paused',
-				color: 'BLUE',
-				description: `User **${message.author.tag}** has paused the queue.`
-			}
-		})
+		const queue = await bot.player.pause(message);
+		return {
+			author: {
+				name: 'Player Paused',
+				iconURL: bot.user.avatarURL
+			},
+			color: 'BLUE',
+			description: `${message.author.tag} successfully paused the queue.`
+		}
 	} catch(error) {
-		log('commandError', 'pause', error)
-		return error;
+		log('commandError', 'pause@pause', error.stack);
+		return generateError(message, error);
 	}
 })

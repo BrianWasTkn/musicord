@@ -15,9 +15,9 @@ export default new Command({
 }, async (bot, message, args) => {
 	
 	/** Check Playing State */
-	const isPlaying = bot.player.isPlaying(message);
-	if (!isPlaying) {
-		return 'There\'s nothing playing in the queue.'
+	const queue = bot.player.getQueue(message);
+	if (!queue) {
+		return simpleEmbed(message, 'There\'s nothing playing in the queue.');
 	}
 
 	try {
