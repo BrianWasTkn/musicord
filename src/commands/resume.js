@@ -5,9 +5,7 @@ export default new Command({
 	name: 'resume',
 	aliases: ['unfreeze'],
 	description: 'resume playing the current queue',
-	usage: 'command',
-	cooldown: 3e3,
-	music: true
+	usage: 'command'
 }, async (bot, message, args) => {
 
 	/** Check if paused */

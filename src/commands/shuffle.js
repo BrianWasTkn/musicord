@@ -5,9 +5,7 @@ export default new Command({
 	name: 'shuffle',
 	aliases: ['randomize'],
 	description: 'shuffle the current queue',
-	usage: 'command',
-	cooldown: 3e3,
-	music: true
+	usage: 'command'
 }, async (bot, message) => {
 	
 	/** Check Playing State */

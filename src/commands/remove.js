@@ -5,9 +5,7 @@ export default new Command({
 	name: 'remove',
 	aliases: ['rid'],
 	description: 'remove a song from a queue.',
-	usage: '<index: Number>',
-	cooldown: 3e3,
-	music: true
+	usage: '<index>'
 }, async (bot, message, args) => {
 
 	/** Check Playing State */

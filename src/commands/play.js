@@ -5,9 +5,7 @@ export default new Command({
 	name: 'play',
 	aliases: ['p'],
 	description: 'play a song from soundcloud, youtube or from spotify and other sources.',
-	usage: '<...query: any | playlistURL: any | videoURL: any>',
-	cooldown: 5e3,
-	music: true
+	usage: '<...query | playlistURL | videoURL>'
 }, async (bot, message, args) => {
 
 	/** Missing Args (Bug?) */

@@ -5,8 +5,7 @@ export default new Command({
 	name: 'join',
 	aliases: ['bound'],
 	description: 'join your voice channel.',
-	usage: 'command',
-	cooldown: 3e3
+	usage: 'command'
 }, async (bot, message) => {
 	
 	const { channel } = message.member.voice;

@@ -6,9 +6,8 @@ export default new Command({
 	name: 'lyrics',
 	aliases: ['l'],
 	description: 'view the lyrics of the current track.',
-	usage: '[...songName: String]',
-	cooldown: 5e3,
-	music: true
+	usage: '[...songName]',
+	cooldown: 5e3
 }, async (bot, message, args) => {
 	
 	/** Check Playing State */
@@ -22,7 +21,7 @@ export default new Command({
 		const queue = bot.player.getQueue(message);
 		/** Request Lyrics */
 		try {
-			let lyrics = await findLyrics("", queue.songs[0].name);
+			let lyrics = await findLyrics("", args.join(''), queue.songs[0].name);
 			if (!lyrics) lyrics = 'No lyrics found.'
 			if (lyrics.split('').length > 1000) {
 				lyrics = `${lyrics.substr(0, 1000)}...`

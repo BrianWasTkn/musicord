@@ -5,9 +5,7 @@ export default new Command({
 	name: 'pause',
 	aliases: ['freeze'],
 	description: 'pause the current playing track',
-	usage: 'command',
-	cooldown: 3e3,
-	music: true
+	usage: 'command'
 }, async (bot, message, args) => {
 
 	/** Check Playing State */

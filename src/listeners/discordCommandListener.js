@@ -21,7 +21,7 @@ export async function run(bot) {
 				}
 			}
 		}).on('messageEdit', async (oldMessage, newMessage) => {
-			// TODO: able to run commands when edit a message.
+			// TODO: able to run commands when editing a message.
 		})
 		log('main', 'Command Listener')
 	} catch(error) {

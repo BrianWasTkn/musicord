@@ -20,7 +20,7 @@ export default class extends Command {
 		 * Command Cooldown
 		 * @type {Number}
 		 */
-		this.cooldown = 3000;
+		this.cooldown = options.cooldown || 3000;
 
 		/**
 		 * Command Visiblity

@@ -24,12 +24,42 @@ export default class Musicord extends Client {
 		 * @type {Object}
 		 */
 		this.config = config;
+
+		/**
+		 * Musicord Utils
+		 * @type {Utilities}
+		 */
 		this.utils = new Utilities();
+
+		/**
+		 * Our main man
+		 * @type {DisTube}
+		 */
 		this.player = new DisTube(this, playerOpts);
 		this.test = new Player(this);
+
+		/**
+		 * Commands
+		 * @type {Collection}
+		 */
 		this.commands = new Collection();
+
+		/**
+		 * Aliases
+		 * @type {Collection}
+		 */
 		this.aliases = new Collection();
+
+		/**
+		 * Cooldowns
+		 * @type {Collection}
+		 */
 		this.cooldowns = new Collection();
+
+		/**
+		 * Start listening for events, import commands.
+		 * @type {Promise<void>}
+		 */
 		this._loadAll();
 	}
 

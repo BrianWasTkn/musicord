@@ -5,9 +5,7 @@ export default new Command({
 	name: 'skip',
 	aliases: ['playnext', 's'],
 	description: 'skip the current track',
-	usage: 'command',
-	cooldown: 3e3,
-	music: true
+	usage: 'command'
 }, async (bot, message) => {
 	
 	/** Check Playing State */

@@ -5,9 +5,8 @@ export default new Command({
 	name: 'search',
 	aliases: ['find'],
 	description: 'search a track',
-	usage: '<track: any>',
-	cooldown: 1e4,
-	music: true
+	usage: '<track>',
+	cooldown: 10000
 }, async (bot, message, args) => {
 
 	/** Args */

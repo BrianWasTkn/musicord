@@ -5,9 +5,7 @@ export default new Command({
 	name: 'loop',
 	aliases: ['repeat'],
 	description: 'loop either the current track or the whole queue.',
-	usage: '<queue: String | song: String | off: String>',
-	cooldown: 3e3,
-	music: true
+	usage: '<queue | song | off>'
 }, async (bot, message, [method]) => {
 	
 	/** Check Playing State */
@@ -18,12 +16,14 @@ export default new Command({
 
 	/** Methods */
 	method = method.toLowerCase();
-	const mode = method ? method === 'queue' ? 2 : 1 : 0;
+	if (['queue'].includes(method)) mode = 2;
+	else if (['song', 'track'].includes(method)) mode = 1;
+	else mode = 0;
 
 	/** Do the thing */
 	try {
 		const queue = await bot.player.setRepeatMode(message, mode);
-		return queue.repeatMode ? queue.repeatMode == 2 ? 'Now looping the **__whole queue__**' : 'Now looping the **__current track__**' : 'Loop is now **__off__**'
+		return queue.repeatMode ? queue.repeatMode == 2 ? 'Now looping the **__whole queue__**' : 'Now repeating the **__current track__**' : 'Loop is now **__off__**'
 	} catch(error) {
 		log('commandError', 'loop', error)
 		return error;

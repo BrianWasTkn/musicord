@@ -5,9 +5,7 @@ export default new Command({
 	name: 'queue',
 	aliases: ['q'],
 	description: 'sends a list of songs on the queue of your server.',
-	usage: '[--clear: String]',
-	cooldown: 3e3,
-	music: true
+	usage: '[--clear]'
 }, async (bot, message, args) => {
 
 	/** Check Playing State */

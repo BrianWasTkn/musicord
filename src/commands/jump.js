@@ -5,9 +5,7 @@ export default new Command({
 	name: 'jump',
 	aliases: ['skipto'],
 	description: 'skip to a specified index in the queue.',
-	usage: '<index: Number>',
-	cooldown: 3e3,
-	music: true
+	usage: '<index>'
 }, async (bot, message, [method]) => {
 	
 	/** Check Playing State */

@@ -5,9 +5,7 @@ export default new Command({
 	name: 'stop',
 	aliases: ['shutup'],
 	description: 'stop the queue',
-	usage: 'command',
-	cooldown: 3e3,
-	music: true
+	usage: 'command'
 }, async (bot, message) => {
 	
 	/** Check Playing State */

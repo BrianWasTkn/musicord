@@ -6,9 +6,8 @@ export default new Command({
 	name: 'seek',
 	aliases: ['goto'],
 	description: 'seek to a specified time of the track',
-	usage: '<hh:mm:ss: any | seconds: Number>',
-	cooldown: 3e3,
-	music: true
+	usage: '<hh:mm:ss | seconds>',
+	cooldown: 5e3
 }, async (bot, message, args) => {
 	
 	/** Check Playing State */
