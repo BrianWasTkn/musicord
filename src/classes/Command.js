@@ -70,35 +70,25 @@ export default class Command {
 	async execute(bot, command, message, args) {
 		/** Process Cooldown */
 		const cooldown = this._processCooldown(message, command);
-		if (cooldown) {
-			return message.channel.send(cooldown);
-		}
-
+		if (cooldown) return message.channel.send(cooldown);
 		/** Check Permissions */
 		const permission = this._checkPermissions(bot, command, message);
-		if (permission) {
-			return message.channel.send({ embed: permission });
-		}
-
+		if (permission) return message.channel.send({ embed: permission });
 		/** Process VoiceState */
 		const state = this._checkVoiceState(message, command);
-		if (state) {
-			return message.channel.send({ embed: state })
-		}
+		if (state) return message.channel.send({ embed: state });
 
 		/** Else, Run it */
 		const returned = await this.run(bot, message, args); // Promise
-		if (!returned) {
-			return;
-		}
+		if (!returned) return;
 		if (returned instanceof Object) {
-			const embedObj = Object.assign({ color: 'RANDOM'}, returned)
-			return message.channel.send({ embed: embedObj })
+			const embedObj = Object.assign({ color: 'RANDOM'}, returned);
+			return message.channel.send({ embed: embedObj });
 		}
 		if (Array.isArray(returned)) {
-			return message.channel.send(returned[Math.floor(Math.random() * returned.length)])
+			return message.channel.send(returned[Math.floor(Math.random() * returned.length)]);
 		}
-		return message.channel.send(returned)
+		return message.channel.send(returned);
 	}
 
 	_checkPermissions(bot, command, message) {
