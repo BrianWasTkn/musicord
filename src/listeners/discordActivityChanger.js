@@ -1,4 +1,4 @@
-import { logError, logInit } from '../utils/logger.js'
+import { log, logError, logInit } from '../utils/logger.js'
 
 export async function run(bot) {
 	try {
@@ -37,7 +37,7 @@ export async function run(bot) {
 				}
 			}, 1000 * 60) // 1 Minute (1000ms * 60secs)
 		})
-		logInit('Musicord', 'Activity Changer Loaded')
+		log('main', 'Activity Changer')
 	} catch(error) {
 		logError('Listener', 'Unable to initiate the activity changer', error)
 	}

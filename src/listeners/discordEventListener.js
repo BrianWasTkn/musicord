@@ -1,4 +1,4 @@
-import { logInit, logError } from '../utils/logger.js'
+import { log, logInit, logError } from '../utils/logger.js'
 
 export async function run(bot) {
 	try {
@@ -8,7 +8,7 @@ export async function run(bot) {
 		.on('error', (error) => logError('Discord', 'An error emitted by Discord', error))
 		.on('rateLimit', (rateLimit) => logError('Discord', 'Rate Limit warning', rateLimit))
 
-		logInit('Musicord', 'Discord Event listeners loaded')
+		log('main', 'Discord Event Emitter')
 	} catch(error) {
 		logError('Listener', 'Unable to initiate discord event listeners', error)
 	}

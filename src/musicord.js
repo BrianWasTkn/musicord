@@ -1,30 +1,30 @@
 import config from './config.js'
 import Musicord from './classes/Client.js'
 
-import { logInit, logError } from './utils/logger.js'
+import { log, logInit, logError } from './utils/logger.js'
 
 const run = async () => {
 	try {
 		/** Process Error: unhandledRejection */
 		process.on('unhandledRejection', error => {
-			logError('Process', 'unhandledRejection', error.stack)
+			log('node', 'unhandledRejection', error.stack)
 		})
 		/** Process Error: uncaughtException */
 		process.on('uncaughtException', error => {
-			logError('Process', 'uncaughtException', error.stack)
+			log('node', 'uncaughtException', error.stack)
 		})
 	} catch(error) {
-		logError('Error', 'process error handler', error)
+		log('error', 'Cannot instantiate process error listeners.', error)
 		process.exit(1)
 	}
 
 	try {
 		if (config.token) {
-			logInit('Musicord', 'Launching Musicord...')
+			log('main', 'Launching Musicord...')
 			await musicord()
 		}
 	} catch(error) {
-		logError('Error', 'Invalid or Unknown Token', error)
+		log('error', 'Cannot load the musicord() function.', error)
 		process.exit(1)
 	}
 }
@@ -34,10 +34,10 @@ const musicord = async () => {
 
 	/** Login our bot */
 	try {
-		logInit('Musicord', 'Waiting for login...')
+		log('main', 'Logging In...')
 		await bot.login(config.token);
 	} catch(error) {
-		logError('Error', 'Unable to login', error)
+		log('error', 'Unable to login.', error)
 		process.exit(1)
 	}
 
@@ -46,7 +46,6 @@ const musicord = async () => {
 /** Run the whole bot */
 try {
 	run()
-	logInit('Musicord', 'Bot initialized')
 } catch(error) {
-	logError('Error', 'Bot failed to run', error)
+	log('error', 'Unable to run the main process.', error)
 }

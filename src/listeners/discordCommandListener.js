@@ -1,4 +1,4 @@
-import { logError, logInit } from '../utils/logger.js'
+import { log, logError, logInit } from '../utils/logger.js'
 
 export async function run(bot) {
 	try {
@@ -21,7 +21,7 @@ export async function run(bot) {
 				}
 			}
 		})
-		logInit('Musicord', 'Command Listener Loaded')
+		log('main', 'Command Listener')
 	} catch(error) {
 		logError('Listener', 'Unable to process the command listener', error)
 	}
