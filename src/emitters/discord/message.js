@@ -1,4 +1,4 @@
-import Listener from '../classes/Listener.js'
+import Listener from '../../classes/Listener.js'
 
 export default class Message extends Listener {
 	constructor(client) {
@@ -15,12 +15,12 @@ export default class Message extends Listener {
 				
 				/** Commands/Args */
 				const [cmd, ...args] = msg.content.slice(prefix.length).trim().split(/ +/g);
-				const command = this.client.commands.get(cmd.toLowerCase()) || this.client.aliases.get(cmd.toLowerCase());
+				const command = this.client.commands.get(cmd) || this.client.aliases.get(cmd);
 				if (!command) return;
 
 				/** Permissions and Cooldown */
 				for (const check of [command.handleCooldown, command.checkPermissions]) {
-					return msg.channel.send(check({ Bot: this.client, msg, args}));
+					return msg.channel.send(check({ Bot: this.client, msg, args }));
 				}
 
 				/** Run */

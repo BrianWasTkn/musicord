@@ -1,6 +1,6 @@
 import { log } from '../utils/logger.js'
 
-export default class Listener {
+class Listener {
 	constructor(client) {
 		this.client = client;
 	}
@@ -29,3 +29,5 @@ export default class Listener {
 		}
 	}
 }
+
+export default Listener;

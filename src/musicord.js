@@ -1,5 +1,5 @@
 import { log } from './utils/logger.js'
-import Musicord from './Client.js'
+import Musicord from './classes/Client.js'
 import config from './config.js'
 
 const login = async () => {

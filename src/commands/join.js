@@ -1,59 +1,70 @@
-import Command from '../classes/Command/Music.js'
-import { log } from '../utils/logger.js'
-import { 
-	simpleEmbed, 
-	errorEmbed 
-} from '../utils/embed.js'
+import Command from '../classes/Command.js'
 
-export default new Command({
-	name: 'join',
-	aliases: ['bound'],
-	description: 'join your voice channel.',
-	usage: 'command'
-}, async message => {	
-	try {
-		const { channel } = message.member.voice;
-		/** <VoiceChannel> is joinable */
+export default class Join extends Command {
+	constructor(client) {
+		super(client, {
+			name: 'join',
+			aliases: ['bound'],
+			description: 'Musicord will join your voice channel.',
+			usage: 'command',
+			cooldown: 5000
+		});
+
+		/**
+		 * Command Category 
+		 * @type {String}
+		 */
+		this.category = 'Music';
+
+		/**
+		 * Custom Checking
+		 * * `dj` - dj role
+		 * * `voice` - if member in voice channel
+		 * * `queue` - if queue is present
+		 * * `paused` - if player paused
+		 * * `stopped` - if player stopped
+		 * @type {String[]}
+		 */
+		this.checks = [];
+	}
+
+	async execute({ msg }) {
+
+		/** Voice Channel */
+		const channel = msg.member.voice.channel;
+
+		/** Joinable */
 		if (!channel.joinable) {
-			return simpleEmbed({
-				title: 'Cannot Join',
+			return msg.channel.send(super.createEmbed({
+				title: 'Missing Permissions',
 				color: 'RED',
-				text: 'Make sure I have permissions to join your voice channel.'
-			});
+				text: 'Make sure I have permissions to `CONNECT` in your voice channel.'
+			}));
 		}
-		/** <VoiceChannel> is speakable */
-		if (!channel.speakable) {
-			return simpleEmbed({
-				title: 'Cannot Speak',
-				color: 'RED',
-				text: 'Ensure I have permissions to `SPEAK` in your voice channel to play music.'
-			});
-		}
-		/** <Client> is already in */
-		if (channel.members.has(message.client.user.id)) {
-			return simpleEmbed({
-				title: 'Already In',
-				color: 'RED',
-				text: `I'm already in voice channel **${channel.name}**!`
-			});
-		}
-		/** <VoiceChannel> is full */
+
+		/** Full */
 		if (channel.full) {
-			return simpleEmbed({
+			return msg.channel.send(super.createEmbed({
 				title: 'Channel Full',
 				color: 'RED',
-				text: 'The voie channel is already full, cannot join.'
-			});
+				text: 'Your voice channel is already full so I\'m unable to join.'
+			}));
 		}
-		/** Join if any of the checks above returned false */
-		const voice = await channel.join();
-		return simpleEmbed({
-			title: 'Channel Joined',
-			color: 'GREEN',
-			text: `Bound to **${channel.name}**, now ready.`
-		})
-	} catch(error) {
-		log('error', 'join@main_command', error);
-		return errorEmbed({ title: 'join@main_command', error: error });
+
+		/** Do the thing */
+		try {
+			const voice = await channel.join();
+			try {
+				await msg.channel.send(super.createEmbed({
+					title: 'Channel Joined',
+					color: 'RED',
+					text: `Successfully join **${voice.channel.name}**.`
+				}));
+			} catch(error) {
+				super.log('join@msg', error);
+			}
+		} catch(error) {
+			super.log('join', error);
+		}
 	}
-})
+}

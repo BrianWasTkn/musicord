@@ -3,14 +3,15 @@ import { join } from 'path'
 import { readdirSync } from 'fs'
 import chalk from 'chalk'
 
+import { log } from '../utils/logger.js'
 import DisTube from './Player.js'
 import config from '../config.js'
-import package from '../../package.json'
+import packageFile from '../../package.json'
 
 class Musicord extends Client {
 	constructor(discordOpts, playerOpts) {
 		super(discordOpts);
-		this.package = package;
+		this.package = packageFile;
 		this.config = config;
 		this.player = new DisTube(this, playerOpts);
 		this.commands = new Collection();
@@ -43,7 +44,7 @@ class Musicord extends Client {
 		const discord = readdirSync(join(__dirname, '..', 'emitters', 'discord'));
 		discord.forEach(async e => {
 			const event = new (require(`../emitters/discord/${e}`).default)(this);
-			this.on(e.split('.')[0], (...args) => {
+			this.on(e.split('.')[0], async (...args) => {
 				await event.run(...args);
 			});
 		});
@@ -52,7 +53,7 @@ class Musicord extends Client {
 		const player = readdirSync(join(__dirname, '..', 'emitters', 'distube'));
 		player.forEach(async e => {
 			const event = new (require(`../emitters/distube/${e}`).default)(this);
-			this.player.on(e.split('.')[0], (...args) => {
+			this.player.on(e.split('.')[0], async (...args) => {
 				await event.run(...args);
 			});
 		});
@@ -60,7 +61,7 @@ class Musicord extends Client {
 
 	/** Register Commands */
 	registerCommands() {
-		readdirSync(join(__dirname, '..', 'commands'));
+		readdirSync(join(__dirname, '..', 'commands'))
 		.forEach(item => {
 			if (item.endsWith('.js')) {
 				const command = new (require(join(__dirname, '..', 'commands', item)).default)(this);

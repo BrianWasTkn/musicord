@@ -1,66 +1,43 @@
-import Command from '../classes/Command/Music.js'
-import { log } from '../utils/logger.js'
-import { 
-	simpleEmbed,
-	dynamicEmbed, 
-	errorEmbed 
-} from '../utils/embed.js'
+import Command from '../classes/Command.js'
 
-export default new Command({
-	name: 'pause',
-	aliases: ['freeze'],
-	description: 'pause the current playing track',
-	usage: 'command'
-}, async (bot, message, args) => {
+export default class Pause extends Command {
+	constructor(client) {
+		super(client, {
+			name: 'pause',
+			aliases: ['freeze'],
+			description: 'Temporarily stops the queue unless you resume it.',
+			usage: 'command',
+			cooldown: 5000
+		});
 
-	/** Check Playing State */
-	try {
-		const queue = bot.player.getQueue(message);
-		if (!queue) {
-			return simpleEmbed({
-				title: 'Player Empty',
-				color: 'RED',
-				text: 'There\'s nothing playing in the queue.'
-			})
-		}
-		
-		/** Check if Paused */
-		try {
-			const paused = bot.player.isPaused(message);
-			if (paused) {
-				return simpleEmbed({
-					title: 'Already Paused',
-					color: 'RED',
-					text: 'The player is already paused.'
-				})
-			}
-		} catch(error) {
-			log('error', 'voteskip@checkPaused', error.stack);
-			return errorEmbed({ title: 'voteskip@checkPaused', error: error });
-		}
+		/**
+		 * Command Category 
+		 * @type {String}
+		 */
+		this.category = 'Music';
 
-		/** Else, pause */
-		try {
-			const queue = await bot.player.pause(message);
-			return dynamicEmbed({
-				title: 'Player Paused',
-				color: 'BLUE',
-				text: 'The player is now paused.',
-				fields: {
-					'Action by': { content: message.author.tag }
-				},
-				footer: {
-					text: `Thanks for using ${bot.user.username}!`,
-					icon: bot.user.avatarURL()
-				}
-			})
-		} catch(error) {
-			log('commandError', 'pause@main_command', error.stack);
-			return errorEmbed({ title: 'pause@main_command', error: error });
-		}
-	} catch(error) {
-		log('error', 'pause@checkQueue', error.stack);
-		return errorEmbed({ title: 'pause@checkQueue', error: error });
+		/**
+		 * Custom Checking
+		 * * `dj` - dj role
+		 * * `voice` - if member in voice channel
+		 * * `queue` - if queue is present
+		 * * `paused` - if player paused
+		 * * `stopped` - if player stopped
+		 * @type {String[]}
+		 */
+		this.checks = ['voice', 'queue', 'paused'];
 	}
 
-})
+	async execute({ Bot, msg }) {
+		try {
+			const queue = await Bot.player.pause(msg);
+			await msg.channel.send(super.createEmbed({
+				title: 'Player Paused',
+				color: 'GREEN',
+				text: 'Successfully paused playing the songs.'
+			}));
+		} catch(error) {
+			super.log('pause', error);
+		}
+	}
+}

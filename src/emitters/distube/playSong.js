@@ -1,4 +1,4 @@
-import Listener from '../classes/Listener.js'
+import Listener from '../../classes/Listener.js'
 
 export default class PlaySong extends Listener {
 	constructor(client) {

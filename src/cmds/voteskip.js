@@ -1,124 +1,136 @@
-import Command from '../classes/Command.js'
+import Command from '../classes/Command/Music.js'
 import { Collection } from 'discord.js'
 import { log } from '../utils/logger.js'
+import { 
+	simpleEmbed,
+	dynamicEmbed,
+	errorEmbed 
+} from '../utils/embed.js'
 
-class VoteSkip extends Command {
-	constructor(client) {
-		super(client, {
-			name: 'voteskip',
-			aliases: ['vs'],
-			description: 'Musicord will start awaiting for messages in this channel when this command is called.',
-			usage: 'command',
-			cooldown: 5000
-		});
-
-		/**
-		 * Command Category 
-		 * @type {String}
-		 */
-		this.category = 'Music';
-
-		/**
-		 * Custom Checking
-		 * * `dj` - dj role
-		 * * `queue` - the server queue
-		 * * `paused` - if player paused
-		 * * `stopped` - if player stopped
-		 * @type {String[]}
-		 */
-		this.checks = ['queue'];
-	}
-
-	async execute({ Bot, msg, args }) {
+export default new Command({
+	name: 'voteskip',
+	aliases: ['vote-skip'],
+	description: 'Vote skip the current song playing in the queue.',
+	usage: 'command'
+}, async (bot, message, args) => {
+	
+	/** Check Playing State */
+	try {
+		const queue = bot.player.getQueue(message);
+		if (!queue) {
+			return simpleEmbed({
+				title: 'Player Empty',
+				color: 'RED',
+				text: 'There\'s nothing playing in the queue.'
+			})
+		}
+		
 		/** Voice Channel */
-		const channel = msg.member.voice.channel;
-		/** Member Count in channel is <= 3 */
-		if (channel.members.size <= 3) {
+		const channel = message.member.voice.channel;
+		if (channel.members.size < 3) {
 			try {
-				await Bot.player.skip(msg);
+				await bot.player.skip(message);
+				return;
 			} catch(error) {
-				super.log('voteskip@skip' , error);
+				log('error', 'voteskip@skip_on_size_is_less_3', error);
+				return errorEmbed({ title: 'voteskip@skip_on_size_is_less_3', error: error });
 			}
 		}
 
-		/** Start Collecting */
 		try {
+			// Start Collecting
 			const voters = new Collection();
-			const filter = m => m.content === '!voteskip' || m.content === '!revoke';
-			const collector = await msg.channel.createMessageCollector(filter, {
-				time: 30000,
+			const filter = m => ['!voteskip', '!revoke'].some(cmd => cmd === m.content.toLowerCase());
+			const collector = await message.channel.createMessageCollector(filter, {
+				max: size,
+				time: 60000,
 				errors: ['time']
-			});
+			})
 
-			/** Add the author to the collection */
-			try {
-				voters.set(msg.author.id);
-			} catch(error) {
-				super.log('voteskip@set_vote', error)
-			}
+			/** Collector */
+			collector.on('collect', async msg => {
+				try {
 
-			/** Collector Events */
-			collector
-				.on('collect', async m => {
-					try {
-						// Already voted
-						if (voters.has(m.author.id)) {
-							await msg.reply('You already voted to skip!')
-						} else {
-							// Add to Collection
-							voters.set(m.author.id, 'voted');
-							// Then send message
-							try {
-								await msg.channel.send(super.createEmbed({
-									title: 'Vote',
-									color: 'GREEN',
-									text: `**${m.author.tag}** voted to skip.`,
-									footer: {
-										text: `Thanks for using ${this.bot.user.username}!`;
-										icon: this.bot.user.avatarURL();
-									}
-								}));
-							} catch(error) {
-								super.log('voteskip@collector.onCollect', error);
-							}
-						}
-					} catch(error) {
-						super.log('voteskip@collector.onCollect', error);
-					}
-				})
-				.on('end', async c => {
-					try {
-						// Msg of results
-						if (c.size >= Math.floor(channel.members.size / 2)) {
-							await msg.channel.send(super.createEmbed({
-								title: 'Results',
-								color: 'GREEN',
-								text: `Skipping the track as **more than** half voted to skip.`
-								fields: {
-									'Votes': { content: `${c.size}/${channel.members.size}` }
+					// Voteskip
+					if (msg.content === '!voteskip') {
+						if (!voters.has(msg.author.id)) {
+							const user = voters.set(msg.author.id, 'voted');
+							await msg.channel.send(dynamicEmbed({
+								title: 'Vote Skipped',
+								color: 'BLUE',
+								text: `**${msg.author.tag}** vote skipped.`,
+								footer: {
+									text: 'Type "!voteskip" to vote for skipping | "!revoke" to revoke your vote.',
+									icon: msg.author.avatarURL()
 								}
 							}));
-							try {
-								await Bot.player.skip(message);
-							} catch(error) {
-								super.log('voteskip@collector.onCollect', error);
-							}
 						} else {
-							await msg.channel.send(super.createEmbed({
-								title: 'Results',
-								color: 'RED',
-								text: `Voteskipping ended, not skipping as **less than** half voted to skip.`
-								fields: {
-									'Votes': { content: `${c.size}/${channel.members.size}` }
+							await msg.reply('You already voteskipped.');
+						}
+					} 
+
+					// Revoke
+					if (msg.content === '!revoke') {
+						if (!voters.has(msg.author.id)) {
+							await msg.reply('You can\'t revoke as you haven\'t voteskipped yet.')
+						} else {
+							const user = await voters.delete(msg.author.id);
+							await msg.channel.send(dynamicEmbed({
+								name: 'Vote Revoked',
+								color: 'INDIGO',
+								text: `**${msg.author.tag}** revoked skipping.`,
+								footer: {
+									text: 'Type "!voteskip" to vote for skipping | "!revoke" to revoke your vote.',
+									icon: msg.author.avatarURL()
 								}
 							}));
 						}
-					} catch(error) {
-						super.log('voteskip@collector.onCollect', error);
 					}
-				})
+				} catch(error) {
+					log('commandError', 'voteskip@collector.sendMessage', error);
+					return error;
+				}
+			}).on('end', async voted => {
+				if (collected.size > Math.round(channel.members.size / 2)) {
+					try {
+						await message.channel.send(dynamicEmbed({
+							title: 'Skipping',
+							color: 'GREEN',
+							text: 'Skipping the song as half of the total amount of members in the voice channel vote skipped.',
+							fields: {
+								'Channel': {	content: channel.name, inline: true },
+								'Voted': { 		content: `${voted.size.toLocaleString()}/${channel.members.size}`, inline: true },
+								'Members': {  content: channel.members.size, inline: true }
+							}
+						}));
+						try {
+							await bot.player.skip();
+						} catch(error) {
+							log('commandError', 'voteskip@collected.on(end).skip', error);
+						}
+					} catch(error) {
+						log('commandError', 'voteskip@collected.on(end).sendMessage', error);
+					}
+				} else {
+					await message.channel.send(dynamicEmbed({
+						title: 'Not Skipping',
+						color: 'RED',
+						text: 'Vote skippers lost, less than half of the total amount of members in the voice channel vote skipped.',
+						fields: {
+							'Channel': {  content: channel.name, inline: true },
+							'Voted': {		content: `${voted.size.toLocaleString()}/${channel.members.size}`, inline: true },
+							'Members': {	content: channel.members.size, inline: true }
+						}
+					}))
+				}
+			})
 		} catch(error) {
-			super.log('voteskip@collector', error);
+			log('error', 'voteskip@collector', error.stack);
+			return errorEmbed({ title: 'voteskip@collector', error: error });
 		}
+	} catch(error) {
+		log('error', 'voteskip@checkQueue', error.stack);
+		return errorEmbed({ title: 'voteskip@checkQueue', error: error });
 	}
-}
+
+})

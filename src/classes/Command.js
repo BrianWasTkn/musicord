@@ -3,11 +3,6 @@ import config from '../config.js'
 
 import { parseTime } from '../utils/text.js'
 import { log } from '../utils/logger.js'
-import { 
-	simpleEmbed,
-	dynamicEmbed,
-	errorEmbed 
-} from '../utils/embed.js'
 
 /**
  * Creates a command class
@@ -45,9 +40,13 @@ class Command {
 		 * @type {String}
 		 */
 		if ('usage' in options) {
-			this.usage = [this.bot.prefix, options.name, options.usage].join(' ');
+			if (options.usage === 'command') {
+				this.usage = [`${client.prefix[0]}${options.name}`].join(' ');
+			} else {
+				this.usage = [`${client.prefix[0]}${options.name}`, options.usage].join(' ');
+			}
 		} else {
-			this.usage = [this.bot.prefix, options.name].join(' ');
+			this.usage = [`${client.prefix[0]}${options.name}`].join(' ');
 		}
 
 		/**
@@ -139,3 +138,5 @@ class Command {
 		}
 	}
 }
+
+export default Command;
