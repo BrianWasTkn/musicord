@@ -1,4 +1,4 @@
-import { logError } from '../../utils/logger.js'
+import { log } from '../../utils/logger.js'
 import Command from '../../classes/Command.js'
 
 export default new Command({
@@ -13,7 +13,7 @@ export default new Command({
 		const queue = await message.client.player.setFilter(message, 'nightcore')
 		return queue;
 	} catch(error) {
-		logError('Filters', 'nightcore', error)
+		log('commandError', 'nightcore', error)
 		return error;
 	}
 })

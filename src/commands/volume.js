@@ -27,6 +27,7 @@ export default new Command({
 		const queue = await bot.player.setVolume(message, percent)
 		return `Successfully set the volume to **${queue.volume}%**`
 	} catch(error) {
-		logError('Command', 'Unable to set volume of the queue', error)
+		log('commandError', 'volume', error)
+		return error;
 	}
 })

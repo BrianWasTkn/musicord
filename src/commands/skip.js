@@ -1,5 +1,5 @@
 import Command from '../classes/Command.js'
-import { logError } from '../utils/logger.js'
+import { log } from '../utils/logger.js'
 
 export default new Command({
 	name: 'skip',
@@ -20,6 +20,7 @@ export default new Command({
 	try {
 		await bot.player.skip(message)
 	} catch(error) {
-		logError('Command', 'Unable to skip the current track', error)
+		log('commandError', 'skip', error)
+		return error;
 	}
 })

@@ -1,5 +1,5 @@
 import Command from '../classes/Command.js'
-import { logError } from '../utils/logger.js'
+import { log } from '../utils/logger.js'
 
 export default new Command({
 	name: 'queue',
@@ -71,10 +71,10 @@ export default new Command({
 							try {
 								await bot.player.skip(message);
 							} catch(error) {
-								logError('Command', 'cannot skip', error) 
+								log('commandError', 'queue@collector -> switch -> skip', error) 
 							}
 						} catch (error) { 
-							logError('Command', 'cannot remove reaction', error) 
+							log('commandError', 'queue@collector -> switch -> removeReaction', error)
 						}
 						break;
 					// Pause
@@ -84,10 +84,10 @@ export default new Command({
 							try {
 								await bot.player.pause(message);
 							} catch(error) {
-								logError('Command', 'cannot pause', error) 
+								log('commandError', 'queue@collector -> switch -> pause', error) 
 							}
 						} catch (error) { 
-							logError('Command', 'cannot remove reaction', error) 
+							log('commandError', 'queue@collector -> switch -> removeReaction', error)
 						}
 						break;
 					// Stop
@@ -97,10 +97,10 @@ export default new Command({
 							try {
 								await bot.player.stop(message);
 							} catch(error) {
-								logError('Command', 'cannot stop', error) 
+								log('commandError', 'queue@collector -> switch -> stop', error) 
 							}
 						} catch (error) { 
-							logError('Command', 'cannot remove reaction', error) 
+							log('commandError', 'queue@collector -> switch -> removeReaction', error)
 						}
 						break;
 					// repeat
@@ -114,10 +114,10 @@ export default new Command({
 							try {
 								await bot.player.shuffle(message);
 							} catch(error) {
-								logError('Command', 'cannot shuffle', error) 
+								log('commandError', 'queue@collector -> switch -> shuffle', error) 
 							}
 						} catch (error) { 
-							logError('Command', 'cannot remove reaction', error) 
+							log('commandError', 'queue@collector -> switch -> removeReaction', error)
 						};
 						break;
 				}
@@ -129,9 +129,11 @@ export default new Command({
 				await msg.reactions.removeAll()
 			})
 		} catch (error) {
-			logError('Command', 'queue', error)
+			log('commandError', 'queue', error)
+			return error;
 		}
 	} catch(error) {
-		logError('Command', 'queue', error)
+		log('commandError', 'queue', error)
+		return error;
 	}
 })

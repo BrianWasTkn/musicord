@@ -1,5 +1,5 @@
 import Command from '../classes/Command.js'
-import { logError } from '../utils/logger.js'
+import { log } from '../utils/logger.js'
 import { fromMs, toMs } from 'hh-mm-ss' 
 
 export default new Command({
@@ -34,6 +34,7 @@ export default new Command({
 		await bot.player.seek(message, parse * 1000)
 		return `Seeked track at **${fromMs(parse)}**`
 	} catch(error) {
-		logError('Command', 'Unable to seek to the track', 'error')
+		log('commandError', 'seek', error)
+		return error;
 	}
 })

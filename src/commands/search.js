@@ -1,5 +1,5 @@
 import Command from '../classes/Command.js'
-import { logError } from '../utils/logger.js'
+import { log } from '../utils/logger.js'
 
 export default new Command({
 	name: 'search',
@@ -40,7 +40,8 @@ export default new Command({
 			})
 		} catch(error) {
 			/** Log Error */
-			logError('Command', 'Cannot send search results message', error)
+			log('commandError', 'search@results_message', error)
+			return error;
 		}
 
 		/** Await Message */
@@ -53,7 +54,7 @@ export default new Command({
 		} catch(error) {
 			/** Log Error */
 			if (!choice) {
-				logError('Command', 'An error in messageCollector', error)
+				log('commandError', 'search@messageCollector', error)
 				return 'Next time if you\'re just gonna let me waste my time don\'t use this command again okay?'
 			}
 		}
@@ -68,8 +69,8 @@ export default new Command({
 	    };
 		} catch(error) {
 			/** Log Error */
-			logError('Command', 'Parsing error', error)
-			return error
+			log('commandError', 'search@parse_choice', error)
+			return error;
 		}
 
 		/** Play */
@@ -80,14 +81,17 @@ export default new Command({
 				await msg.delete({ reason: `Search results by ${message.author.tag}`})
 			} catch(error) {
 				/** Log Error */
-				logError('Command', 'Cannot delete search embed', error)
+				log('commandError', 'search@delete_results_embed', error)
+				return error;
 			}
 		} catch(error) {
 			/** Log Error */
-			logError('Command', 'Cannot play searched song', error)
+			log('commandError', 'search@play_song', error)
+			return error;
 		}
 	} catch(error) {
 		/** Log Error */
-		logError('Command', 'Unable to search tracks', error)
+		log('commandError', 'search@search_tracks', error)
+		return error;
 	}
 })

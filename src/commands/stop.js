@@ -1,5 +1,5 @@
 import Command from '../classes/Command.js'
-import { logError } from '../utils/logger.js'
+import { log } from '../utils/logger.js'
 
 export default new Command({
 	name: 'stop',
@@ -20,6 +20,7 @@ export default new Command({
 	try {
 		await bot.player.stop(message)
 	} catch(error) {
-		logError('Command', 'Unable to stop the queue', error)
+		log('commandError', 'stop', error)
+		return error;
 	}
 })

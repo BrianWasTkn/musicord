@@ -1,5 +1,5 @@
 import Command from '../classes/Command.js'
-import { logError } from '../utils/logger.js'
+import { log } from '../../utils/logger.js'
 import findLyrics from 'lyrics-finder'
 
 export default new Command({
@@ -32,10 +32,12 @@ export default new Command({
 				description: lyrics
 			}
 		} catch(error) {
-			logError('Command', 'Unable to request lyrics', error.stack)
+			log('commandError', 'lyrics@findLyrics', error.stack)
+			return error;
 		}
 	} catch(error) {
-		logError('Command', 'Unable to get queue', error.stack)
+		log('commandError', 'lyrics@getQueue', error.stack)
+		return error;
 	}
 
 })

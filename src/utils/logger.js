@@ -20,19 +20,37 @@ export const log = (type, content, error = null) => {
 		case 'command':
 			console.log(
 			`[${chalk.whiteBright(timestamp)}]:`, 
-			`${chalk.magentaBright('Commands')}`,
+			`${chalk.magentaBright('Command')}`,
 			`${chalk.whiteBright('=>')} ${chalk.greenBright(content)}`);
 			break;
 		case 'event':
 			console.log(
 			`[${chalk.whiteBright(timestamp)}]:`, 
-			`${chalk.blueBright('Emitters')}`,
+			`${chalk.blueBright('Emitter')}`,
 			`${chalk.whiteBright('=>')} ${chalk.greenBright(content)}`);
 			break;
 		case 'error':
 			console.log(
 			`[${chalk.whiteBright(timestamp)}]:`, 
-			`${chalk.redBright('Error   ')}`,
+			`${chalk.redBright('Error')}`,
+			`${chalk.whiteBright('=>')} ${chalk.redBright(content)}`);
+			break;
+		case 'eventError':
+			console.log(
+			`[${chalk.whiteBright(timestamp)}]:`, 
+			`${chalk.redBright('Event Error')}`,
+			`${chalk.whiteBright('=>')} ${chalk.redBright(content)}`);
+			break;
+		case 'commandError':
+			console.log(
+			`[${chalk.whiteBright(timestamp)}]:`, 
+			`${chalk.redBright('Command Error')}`,
+			`${chalk.whiteBright('=>')} ${chalk.redBright(content)}`);
+			break;
+		case 'listenerError':
+			console.log(
+			`[${chalk.whiteBright(timestamp)}]:`, 
+			`${chalk.redBright('Listener Error')}`,
 			`${chalk.whiteBright('=>')} ${chalk.redBright(content)}`);
 			break;
 		default: 

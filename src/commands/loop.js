@@ -1,5 +1,5 @@
 import Command from '../classes/Command.js'
-import { logError } from '../utils/logger.js'
+import { log } from '../../utils/logger.js'
 
 export default new Command({
 	name: 'loop',
@@ -25,6 +25,7 @@ export default new Command({
 		const queue = await bot.player.setRepeatMode(message, mode);
 		return queue.repeatMode ? queue.repeatMode == 2 ? 'Now looping the **__whole queue__**' : 'Now looping the **__current track__**' : 'Loop is now **__off__**'
 	} catch(error) {
-		logError('Command', 'Unable to loop the current track', error)
+		log('commandError', 'loop', error)
+		return error;
 	}
 })
