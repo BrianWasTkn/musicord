@@ -1,25 +1,25 @@
 const log = (_) => console.log(_);
 const { EventEmitter } = require('events');
 
+/**
 class Lame extends EventEmitter {
 	constructor(s) {
 		super();
-		this.s = s;
-		this.addListener('eventHere', n => console.log(n))
+		this.addListener('eventHere', f => this.constructor.nani(f));
 	}
 
-	nani(idk) {
-		this.emit('eventHere', idk);
+	nani(f) {
+		return console.log(f);
 	}
 }
 
-const test = new Lame();
+const test = new Lame('e');
 (async () => {
-	test.nani('idk lol');
-	test.on('eventHere', string => {
-		console.log(Lame);
+	test.on('eventHere', f => {
+		return f;
 	});
 })();
+*/
 
 /**
 const fields = {

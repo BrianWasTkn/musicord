@@ -9,7 +9,7 @@ import {
 
 export default new Command({
 	name: 'voteskip',
-	aliases: ['vs'],
+	aliases: ['vote-skip'],
 	description: 'Vote skip the current song playing in the queue.',
 	usage: 'command'
 }, async (bot, message, args) => {
@@ -20,6 +20,7 @@ export default new Command({
 		return simpleEmbed(message, 'There\'s nothing playing in the queue.');
 	}
 
+	/** Voice Channel */
 	const channel = message.member.voice.channel;
 	if (channel.members.size < 3) {
 		try {
@@ -31,6 +32,7 @@ export default new Command({
 	}
 
 	try {
+		// Start Collecting
 		const voters = new Collection();
 		const filter = m => ['!voteskip', '!revoke'].some(cmd => cmd === m.content.toLowerCase());
 		const collector = await message.channel.createMessageCollector(filter, {
@@ -39,7 +41,7 @@ export default new Command({
 			errors: ['time']
 		})
 
-		/** Collect */
+		/** Collector */
 		collector.on('collect', async msg => {
 			try {
 

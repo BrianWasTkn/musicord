@@ -9,13 +9,13 @@ import config from '../config.js'
 
 /** Simple Embed */
 export const simpleEmbed = (message, content) => {
-	return {
-		color: blue,
+	return dynamicEmbed({
+		color: 'BLUE',
 		author: {
-			name: slice(content, 256),
-			iconURL: message.client.user.avatarURL()
+			text: slice(content, 256),
+			icon: message.client.user.avatarURL()
 		}
-	}
+	});
 }
 
 /** Dynamic Embed */

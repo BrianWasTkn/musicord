@@ -1,7 +1,8 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import { 
-	simpleEmbed, 
+	simpleEmbed,
+	dynamicEmbed, 
 	errorEmbed 
 } from '../utils/embed.js'
 
@@ -27,14 +28,18 @@ export default new Command({
 	/** Else, pause */
 	try {
 		const queue = await bot.player.pause(message);
-		return {
-			author: {
-				name: 'Player Paused',
-				iconURL: bot.user.avatarURL
-			},
+		return dynamicEmbed({
+			title: 'Player Paused',
 			color: 'BLUE',
-			description: `${message.author.tag} successfully paused the queue.`
-		}
+			info: 'The player is now paused.',
+			fields: {
+				'Action by': { content: message.author.tag }
+			},
+			footer: {
+				text: `Thanks for using ${bot.user.username}!`,
+				icon: bot.user.avatarURL()
+			}
+		})
 	} catch(error) {
 		log('commandError', 'pause@pause', error.stack);
 		return errorEmbed(message, error);

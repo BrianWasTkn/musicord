@@ -1,7 +1,8 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import { 
-	simpleEmbed, 
+	simpleEmbed,
+	dynamicEmbed, 
 	errorEmbed 
 } from '../utils/embed.js'
 
@@ -33,11 +34,18 @@ export default new Command({
 		const song = queue.songs[index - 1];
 		await bot.player.remove(message, index - 1);
 		// return an embed
-		return {
+		return dynamicEmbed({
 			title: 'Track Removed',
 			color: 'BLUE',
-			description: `User **${message.author.tag}** removed **${song.name}** from the queue.`
-		}
+			info: `Track at **index ${index}** has been removed from the queue.`,
+			fields: {
+				'Action by': { content: message.author.tag }
+			},
+			footer: {
+				text: `Thanks for using ${bot.user.username}!`,
+				icon: bot.user.avatarURL()
+			}
+		});
 	} catch(error) {
 		log('commandError', 'remove@remove_track', error.stack);
 		return errorEmbed(message, error);

@@ -29,12 +29,11 @@ export default class Music extends Command {
 		 * @type {Boolean}
 		 */
 		this.private = false;
-
 	}
 
 	async execute(bot, command, message, args) {
 		try {
-			for (const check of [this._processVoice, this._checkClientPermissions]) {
+			for (const check of [super._checkPermissions, this._processVoice, this._checkClientPermissions]) {
 				const embed = check(message);
 				if (embed) return message.channel.send(embed);
 			}
@@ -55,7 +54,7 @@ export default class Music extends Command {
 				color: 'RED',
 				author: {
 					text: 'You need to join a voice channel first before using music commands.',
-					icon: message.client.user.iconURL()
+					icon: message.client.user.avatarURL()
 				}
 			})
 		}

@@ -1,7 +1,8 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import { 
-	simpleEmbed, 
+	simpleEmbed,
+	dynamicEmbed,
 	errorEmbed 
 } from '../utils/embed.js'
 

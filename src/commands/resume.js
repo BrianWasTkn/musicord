@@ -1,7 +1,8 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import { 
-	simpleEmbed, 
+	simpleEmbed,
+	dynamicEmbed,
 	errorEmbed 
 } from '../utils/embed.js'
 
@@ -15,19 +16,24 @@ export default new Command({
 	/** Check if paused */
 	const paused = bot.player.isPaused(message);
 	if (!paused) {
-		return 'The player is not paused.'
+		return simpleEmbed(message, 'The player is not paused.');
 	}
 
 	/** Else, resume */
 	try {
 		await bot.player.resume(message);
-		await message.channel.send({ 
-			embed: {
-				title: 'Player Resumed',
-				color: 'BLUE',
-				description: `User **${message.author.tag}** has resumed the queue.`
+		return dynamicEmbed({
+			title: 'Player Resumed',
+			color: 'BLUE',
+			info: 'The player has resumed playing tracks.',
+			fields: {
+				'Action by': { content: message.author.tag }
+			},
+			footer: {
+				text: `Thanks for using ${bot.user.username}!`,
+				icon: bot.user.avatarURL()
 			}
-		})
+		});
 	} catch(error) {
 		log('commandError', 'resume', error.stack);
 		return errorEmbed(message, error);

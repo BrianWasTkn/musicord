@@ -1,8 +1,8 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
-import { blue } from '../utils/colors.js'
 import { 
-	simpleEmbed, 
+	simpleEmbed,
+	dynamicEmbed, 
 	errorEmbed 
 } from '../utils/embed.js'
 
@@ -21,22 +21,23 @@ export default new Command({
 
 	try {
 		const song = queue.songs[0];
-		return {
-			author: {
-				name: bot.user.username,
-				iconURL: bot.user.avatarURL()
+		return dynamicEmbed({
+			title: 'Currently Playing',
+			color: 'BLUE',
+			info: `Currently playing [**__${song.name}__**](${song.url}) in the queue.`,
+			fields: {
+				'Link': { 		content: `[${song.id}](${song.url})`, 		inline: true },
+				'Duration': { content: `\`${song.formattedDuration}\``, inline: true },
+				'Added by': { content: song.user.mention,								inline: true },
+				'Views': {		content: song.views.toLocaleString(),			inline: true },
+				'Likes': {		content: song.likes.toLocaleString(),			inline: true },
+				'Dislikes': {	content: song.dislikes.toLocaleString(),	inline: true }
 			},
-			color: blue,
-			title: song.name,
-			fields: [
-				{ name: 'Link', value: `[Click Here](${song.url})`, inline: true },
-				{ name: 'Duration', value: `\`${song.formattedDuration}\``, inline: true },
-				{ name: 'Added by', value: song.user.mention, inline: true },
-				{ name: 'Views', value: song.views.toLocaleString(), inline: true },
-				{ name: 'Likes', value: song.likes.toLocaleString(), inline: true },
-				{ name: 'Dislikes', value: song.dislikes.toLocaleString(), inline: true }
-			]
-		}
+			footer: {
+				text: `Thanks for using ${bot.user.username}!`,
+				icon: bot.user.avatarURL()
+			}
+		});
 	} catch(error) {
 		log('commandError', 'nowplaying@getQueue', error.stack);
 		return errorEmbed(message, error);

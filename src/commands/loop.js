@@ -1,7 +1,8 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import { 
-	simpleEmbed, 
+	simpleEmbed,
+	dynamicEmbed, 
 	errorEmbed 
 } from '../utils/embed.js'
 
@@ -33,12 +34,16 @@ export default new Command({
 		}
 		
 		// then set
+		const repeatMode = queue => queue.repeatMode ? queue.repeatMode == 2 ? 'Queue': 'Track' : 'None';
 		const queue = await bot.player.setRepeatMode(message, mode);
-		return simpleEmbed(message, queue.repeatMode 
-			? queue.repeatMode == 2 
-				? 'Now looping the queue.'
-				: 'Now looping the current track.'
-			: 'Loop is now off.')
+		return dynamicEmbed({
+			title: 'Player Loop',
+			color: 'BLUE',
+			description: `Now looping **${repeatMode(queue)}** for the player.`,
+			fields: {
+				'Action by': { content: message.author.tag }
+			}
+		})
 	} catch(error) {
 		log('commandError', 'loop@loop', error)
 		return errorEmbed(message, error);

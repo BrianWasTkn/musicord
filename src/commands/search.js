@@ -1,7 +1,8 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import { 
-	simpleEmbed, 
+	simpleEmbed,
+	dynamicEmbed 
 	errorEmbed 
 } from '../utils/embed.js'
 
@@ -22,22 +23,23 @@ export default new Command({
 	let results, found, msg, choice, index;
 	try {
 		/** Search Results */
-		results = await bot.player.search(args.join(' '))
-		found = results.slice(0, 10).map((song, index) => `**#${index + 1}:** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\``)
+		results = await bot.player.search(args.join(' '));
+		found = results.slice(0, 10).map((song, index) => `**#${index + 1}:** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\``);
 		
 		/** Send Message */
 		try {
-			msg = await message.channel.send({
-				embed: {
-					title: `Found ${found.length} tracks`,
-					color: 'BLUE',
-					description: found.join('\n'),
-					fields: [
-						{ name: 'Instructions', value: 'Type the **number** of your choice.\nYou can cancel by typing out `cancel` right now.' }
-					],
-					footer: { text: 'You have 30 seconds to proceed otherwise your search is cancelled.' }
+			msg = await message.channel.send(dynamicEmbed({
+				title: 'Search Results',
+				color: 'BLUE',
+				info: found.join('\n'),
+				fields: {
+					'Instructions': { content: 'Type the **# number** of your choice. You only have **30 seconds** or your search will be cancelled.' }
+				},
+				footer: {
+					text: `Thanks for using ${bot.user.username}!`,
+					icon: bot.user.avatarURL()
 				}
-			})
+			}));
 		} catch(error) {
 			/** Log Error */
 			log('commandError', 'search@results_message', error)
@@ -62,16 +64,19 @@ export default new Command({
 		/** Parsing Index */
 		try {
 			// Parse Index Number
-			index = parseInt(choice.first().content, 10);
+			index = choice.first().content;
 			// Quick check if it's a number
 			switch(index) {
+				case index.toLowerCase() === 'cancel':
+					await cancel();
+					break;
 				case isNaN(index):
 					throw new Error(`Cannot parse ${index} as number.`)
 					break;
-				case index > results.length:
+				case parseInt(index, 10) > results.length:
 					throw new Error(`Your choice shouldn't be greater than ${found.length}.`)
 					break;
-				case index < 1:
+				case parseInt(index, 10) < 1:
 					throw new Error(`Are you really dumb? Imagine answering negative numbers.`)
 					break;
 			}
@@ -81,9 +86,20 @@ export default new Command({
 			return errorEmbed(message, error);
 		}
 
+		/** Cancel */
+		const cancel = async () => {
+			try {
+				await bot.player.emit('searchCancel');
+			} catch(error) {
+				/** Log Error */
+				log('commandError', 'search@emit_searchCancel', error.stack);
+				return errorEmbed(message, error);
+			}
+		}
+
 		/** Play */
 		try {
-			await bot.player.play(message, results[index - 1].url)
+			await bot.player.play(message, results[parseInt(index, 10) - 1].url)
 			try {
 				/** Delete Search Result Message */
 				await msg.delete({ reason: `Search results by ${message.author.tag}`})

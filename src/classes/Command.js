@@ -2,6 +2,7 @@ import discord from 'discord.js'
 import config from '../config.js'
 
 import { dynamicEmbed as embedify } from '../utils/embed.js'
+import { parseTime } from '../utils/text.js'
 
 /**
  * Creates a command class
@@ -78,14 +79,14 @@ class Command {
 			const expiration = timestamps.get(message.author.id) + cooldown;
 			if (now < expiration) {
 				let timeLeft = (expiration - now) / 1000;
-				timeLeft = timeLeft > 60 ? message.client.utils.parseTime(timeLeft) : `${timeLeft.toFixed(1)} seconds`;
+				timeLeft = timeLeft > 60 ? parseTime(timeLeft) : `${timeLeft.toFixed(1)} seconds`;
 				return embedify({
 					title: 'Cooldown, Slow down.',
 					color: 'BLUE',
 					info: `You\'re currently on cooldown for command \`${command.name}\`. Wait **${timeLeft}** and try running the command again.`,
 					footer: {
 						text: `Thanks for using ${message.client.user.username}!`,
-						avatar: message.client.user.avatarURL()
+						icon: message.client.user.avatarURL()
 					}
 				})
 			} 
@@ -114,11 +115,12 @@ class Command {
 				color: 'RANDOM',
 				footer: {
 					text: `Thanks for using ${bot.user.username}!`,
-					avatar: bot.user.avatarURL()
+					icon: bot.user.avatarURL()
 				}
 			}, returned));
 			return message.channel.send(embed);
 		} else {
+			// A string
 			return message.channel.send(returned);
 		}
 	}
@@ -135,7 +137,7 @@ class Command {
 				},
 				footer: {
 					text: `Thanks for using ${message.client.user.username}!`,
-					avatar: message.client.user.avatarURL()
+					icon: message.client.user.avatarURL()
 				}
 			})
 		}

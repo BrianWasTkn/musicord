@@ -4,9 +4,14 @@ import { log } from '../../utils/logger.js'
 export default new Command({
 	name: 'reload',
 	aliases: ['r'],
-	description: 'unloads and load the command from cache.',
+	description: 'Reload, Load or unload commands or all of it.',
 	usage: '<cmdName>'
-}, async (bot, [opt]) => {
+}, async (bot, [opt, ...reason]) => {
+
+	
+	if (!opt) {
+		return 
+	}
 
 	if (!opt) return 'You need a `cmd`';
 	const command = bot.commands.get(opt) || bot.aliases.get(opt);

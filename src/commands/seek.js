@@ -2,7 +2,7 @@ import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import { formatToSecond, formatDuration } from '../utils/duration.js'
 import { 
-	simpleEmbed, 
+	simpleEmbed,
 	errorEmbed 
 } from '../utils/embed.js'
 
