@@ -11,8 +11,7 @@ export default class Spawn extends AkairoModule implements Akairo.Spawn {
 	public constructor(
 		public config: Akairo.SpawnConfig,
 		public spawn: Akairo.SpawnVisual,
-		cooldown: Akairo.SpawnConfig["cooldown"]
-	) {
+		cooldown: Akairo.SpawnConfig["cooldown"]) {
 		super(spawn.title, { category: 'spawner' });
 
 		this.spawn = spawn;

@@ -11,11 +11,13 @@ import moment from 'moment'
 
 class Util extends ClientUtil implements Akairo.Util {
 	public heists: Collection<GuildChannel["id"], Role>;
+	public events: Collection<string, string>;
 	public Colors: Lava.Colors;
 	public constructor(public client: Akairo.Client) {
 		super(client);
 
 		this.heists = new Collection();
+		this.events = new Collection();
 	}
 
 	/**

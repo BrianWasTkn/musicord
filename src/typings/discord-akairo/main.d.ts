@@ -67,6 +67,7 @@ declare namespace Akairo {
     class Util extends ClientUtil {
         public constructor(client: Client);
         public heists: Collection<GuildChannel["id"], Role>;
+        public events: Collection<string, string>;
         public paginateArray(array: any[], size: number): Array<any[]>;
         public randomInArray(array: any[]): any;
         public randomNumber(min: number, max: number): number;
