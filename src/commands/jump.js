@@ -1,5 +1,6 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
+import { simpleEmbed, generateError } from '../utils/embed.js'
 
 export default new Command({
 	name: 'jump',
