@@ -7,10 +7,13 @@ export default class Invite extends Command {
 			name: 'invite',
 			aliases: ['addbot'],
 			description: 'Generates an invite link of this bot for your server.',
-			usage: '[<Guild>.id]',
+			usage: '[server_id]',
 			cooldown: 3000
 		}, {
-			category: 'Utility'
+			category: 'Utility',
+			user_permissions: [],
+			client_permissions: ['EMBED_LINKS'],
+			args_required: false
 		});
 	}
 
@@ -33,7 +36,7 @@ export default class Invite extends Command {
 			});
 			try {
 				await msg.channel.send(super.createEmbed({
-					title: 'AddMe in your server',
+					title: 'Add me in your server',
 					color: 'GREEN',
 					text: `Click this [link]${invite} to add me in your server.`
 				}));

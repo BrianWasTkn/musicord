@@ -17,14 +17,10 @@ export default {
 		guild: Bot.guilds.cache.get('691416705917779999'),
 		/* {Invite} The permanent invite link */
 		invite: reason => this.default.support(Bot).guild.channels.first().createInvite({
-			maxAge: 0,
-			maxUses: 100,
-			reason
+			reason, maxAge: 0, maxUses: 1,
 		}),
 		/* {GuildChannel} The error channel */
 		errorChannel: Bot.channels.cache.get(),
-		/* {GuildChannel} The voters channel */
-		votersChannel: Bot.channels.cache.get(),
 		/* {GuildChannel} The feature-requests channel */
 		requestChannel: Bot.channels.cache.get()
 	})

@@ -10,6 +10,19 @@ export const intro = Bot => {
 	].join(' ');
 }
 
+export const Embeds = Bot => ({
+	voice_channel: Bot.utils.createEmbed({
+		title: 'Voice Channel',
+		color: 'RED',
+		text: 'You need to join a voice channel first!'
+	}),
+	player_empty: Bot.utils.createEmbed({
+		title: 'Player Empty',
+		color: 'RED',
+		text: 'There\'s nothing playing in the queue.'
+	})
+})
+
 export const Colors = {
 	RED: 0xE74C3C, 
 	ORANGE: 0xF39C12,

@@ -1,4 +1,4 @@
-import Command from '../classes/Command.js'
+import Command from '../../classes/Command'
 
 export default class Play extends Command {
 	constructor(client) {
@@ -6,9 +6,8 @@ export default class Play extends Command {
 			name: 'play',
 			aliases: ['youtube'],
 			description: 'Searches a track from supported sources and plays the first result.',
-			usage: '<search query | source URL>',
-			cooldown: 5000,
-			rate_limit: 1
+			usage: '<query|URL>',
+			cooldown: 5000
 		}, {
 			category: 'Music',
 			user_permissions: ['CONNECT'],
@@ -18,33 +17,16 @@ export default class Play extends Command {
 		});
 	}
 
-	_args({ args, msg }) {
-		try {
-			return msg.channel.send(super.createEmbed({
-				title: 'Missing Args',
-				color: 'RED',
-				text: 'You need something to play!'
-			}));
-		} catch(error) {
-			super.log('play@_args_msg', error);
-		}
+	_argsMessage({ msg, args }) {
+		return super.createEmbed({
+			title: 'Missing Args',
+			color: 'RED',
+			text: 'You need something to play!'
+		});
 	}
 
 	async execute({ Bot, msg, args }) {
-		/** Missing Args */
-		if (args.length < 1) {
-			try {
-				return msg.channel.send(super.createEmbed({
-					title: 'Missing Args',
-					color: 'GREEN',
-					text: 'You need a search query or a valid URL.'
-				}));
-			} catch(error) {
-				super.log('play@msg', error);
-			}
-		}
-
-		/* Join */
+				/* Join */
 		const { channel } = msg.member.voice;
 		/* Check if not in channel */
 		if (!channel) {

@@ -1,4 +1,4 @@
-import Command from '../classes/Command.js'
+import Command from '../../classes/Command'
 
 export default class Volume extends Command {
 	constructor(client) {
@@ -10,8 +10,19 @@ export default class Volume extends Command {
 			cooldown: 5000
 		}, {
 			category: 'Music',
-			checks: ['voice', 'queue']
+			user_permissions: [],
+			client_permissions: ['EMBED_LINKS'],
+			music_checks: ['voice', 'queue'],
+			args_required: true
 		});
+	}
+
+	_argsMessage({ msg, args }) {
+		return super.createEmbed({
+			title: 'Volume Rate',
+			color: 'RED',
+			text: 'You need a volume rate.'
+		})
 	}
 
 	async execute({ Bot, msg, args }) {

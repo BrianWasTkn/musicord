@@ -1,4 +1,4 @@
-import Command from '../classes/Command.js'
+import Command from '../../classes/Command'
 
 /**
  * Creates a Skip command class
@@ -14,7 +14,10 @@ export default class Skip extends Command {
 			cooldown: 5000
 		}, {
 			category: 'Music',
-			checks: ['voice', 'queue'],
+			user_permissions: [],
+			client_permissions: [],
+			music_checks: ['voice', 'queue'],
+			args_required: false
 		});
 	}
 

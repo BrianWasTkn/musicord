@@ -1,8 +1,8 @@
 import Discord from 'discord.js'
 
 /**
- * Creates a listener class
-* @class Listener @exports Listener
+ * Creates a Listener class
+ * @class Listener @exports Listener
  */
 export default class Listener {
 	constructor(client) {

@@ -1,29 +1,32 @@
-import Discord from "discord.js";
+import Discord from 'discord.js'
 
 /**
- * Represents a MusicordManager class
+ * Creates a Manager class
+ * @class Listener @exports Listener
  */
 export default class Manager {
 	constructor(client) {
 		/**
-		 * A Musicord client
+		 * A Musicord Client
 		 * @type {Discord.Client}
 		 */
 		this.client = client;
 	}
 
 	/**
-	 * Shortcut for logging
-	 * @param {String} msg the tag for the manager
-	 * @param {Error} error a discord.js/javascript error
+	 * Creates a simple logger to call for this class
+	 * @param {String} msg the tag of the listener
+	 * @param {Error} error the error to log
+	 * @returns {void}
 	 */
 	log(msg, error) {
 		return this.client.utils.log('Manager', 'error', msg, error);
 	}
 
 	/**
-	 * Creates an alternative embed from the native one.
-	 * @param {Object} Options Embed parameters
+	 * Creates an "alias" for a normal discord embed
+	 * @param {Object} Options an alternative Discord.MessageEmbed object
+	 * @returns {Discord.MessageEmbed} a discord embed object
 	 */
 	createEmbed({
 		author = {}, fields = {}, footer = {},

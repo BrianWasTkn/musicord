@@ -10,6 +10,10 @@ export default class Fight extends Command {
 			cooldown: 5000
 		}, {
 			category: 'Crib',
+			user_permissions: [],
+			client_permissions: [],
+			music_checks: [],
+			args_required: true,
 			exclusive: ['691416705917779999']
 		});
 	}
@@ -108,10 +112,10 @@ export default class Fight extends Command {
 				return await play();
 			}
 			/* Message */
-			await msg.channel.send(`
-				**${turn.username}** landed a hit on **${oppturn.username}** dealing **\`${damage}\`HP**!
-				**${oppturn.username}** is left with **\`${oppturn.hp}\`** health left.
-			`);
+			await msg.channel.send([
+				`**${turn.username}** landed a hit on **${oppturn.username}** dealing **\`${damage}\`HP**!`,
+				`**${oppturn.username}** is left with **\`${oppturn.hp}\`** health left.`
+			].join('\n'));
 			/* Play or End? */
 			if (turn.hp > 0 && oppturn.hp > 0) {
 				oppturn = [turn, turn = oppturn][0];

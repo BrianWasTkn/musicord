@@ -9,7 +9,11 @@ export default class Phone extends Command {
 			usage: 'command',
 			cooldown: 5000
 		}, {
-			category: 'Crib'
+			category: 'Crib',
+			user_permissions: [],
+			client_permissions: [],
+			music_checks: [],
+			args_required: false,
 			exclusive: ['691416705917779999']
 		});
 	}

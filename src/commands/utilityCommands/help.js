@@ -6,10 +6,13 @@ export default class Help extends Command {
 			name: 'help',
 			aliases: ['cmd', 'command'],
 			description: 'Fetch some info about a command or category',
-			usage: '[command | category]',
+			usage: '[command]',
 			cooldown: 3000
 		}, {
-			category: 'Utility'
+			category: 'Utility',
+			user_permissions: [],
+			client_permissions: ['EMBED_LINKS'],
+			args_required: false
 		});
 	}
 
@@ -110,7 +113,7 @@ export default class Help extends Command {
 
 		/* Command Search */
 		if (command) {
-			/* Dev Command */
+			/* Dev */
 			if (command.category === 'Developer') {
 				if (Bot.developers.includes(msg.author.id)) {
 					try {
@@ -121,7 +124,9 @@ export default class Help extends Command {
 				} else {
 					return;
 				}
-			} else {
+			} 
+			/* Normie */
+			else {
 				try {
 					return msg.channel.send(this.formatCommand({ Bot, command }));
 				} catch(error) {
@@ -131,7 +136,7 @@ export default class Help extends Command {
 		}
 		/* Category */
 		else if (category) {
-			/* Dev Category */
+			/* Dev */
 			if (category === 'developer') {
 				if (!Bot.developers.includes(msg.author.id)) {
 					return;
@@ -153,7 +158,7 @@ export default class Help extends Command {
 			}
 		}
 		/* CommandNotFound - totally not a georgenotfound reference */
-		else if (!category && !command) {
+		else if (!query && (!category && !command)) {
 			try {
 				return msg.channel.send(`No command/category found for "${query}"`)
 			} catch(error) {
@@ -169,7 +174,9 @@ export default class Help extends Command {
 				} catch(error) {
 					super.log('help@msg', error);
 				}
-			} else {
+			} 
+			/* Normie */
+			else {
 				try {
 					return msg.channel.send(this.formatDevHelp({ Bot, alignment }));
 				} catch(error) {

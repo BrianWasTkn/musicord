@@ -10,136 +10,124 @@ export default class CommandManager extends Manager {
 		}));
 	}
 
-	processCommandChecks(Bot, msg, command) {
-		/* Types of checks */
-		const checks = ['queue', 'dj', 'voice'];
-
-		/* Voice */
-		if (command.checks.includes(checks[2])) {
-			// VC Of author
-			const { channel } = msg.member.voice;
-			// Check
-			if (!channel) {
-				// Return
-				return super.createEmbed({
-					title: 'Voice Channel',
-					color: 'RED',
-					text: `You need to join a voice channel first before using the \`${command.name}\` command.`,
-					footer: {
-						text: `Thanks for using ${Bot.user.username}!`,
-						icon: Bot.user.avatarURL()
-					}
-				})
-			} else {
-				// Connection
-				const connection = this.client.voice.connections.get(msg.guild.id);
-				// Check
-				if (connection.id !== channel.id) {
-					// Return
-					return super.createEmbed({
-						title: 'Channel Difference',
-						color: 'RED',
-						text: 'You\'re in a different channel than I am. Please ensure I\'m in the same channel as yours, and try again.'
-					});
-				}
-			}
-		}
-
-		/* DJ */
-		if (command.checks.includes(checks[1])) {
-			// Role
-			const role = msg.member._roles.find(r => r.name === 'DJ');
-			// Check
-			if (!role) {
-				// Return
-				return super.createEmbed({
-					title: 'Limited Usage',
-					color: 'RED',
-					text: `You need to have the **${role.name}** role before using this command.`,
-					footer: {
-						text: `Thanks for using ${Bot.user.username}!`,
-						icon: Bot.user.avatarURL()
-					}
-				});
-			}
-		}
-
-		/* Queue */
-		if (command.checks.includes(checks[0])) {
-			// Fetch
-			const queue = Bot.distube.getQueue(msg);
-			// Check
-			if (!queue) {
-				// Return
-				return super.createEmbed({
-					title: 'Player Empty',
-					color: 'RED',
-					text: 'There\'s nothing playing in the queue right now.',
-					footer: {
-						text: `Thanks for using ${Bot.user.username}!`,
-						icon: Bot.user.avatarURL()
-					}
-				});
-			}
-		}
-	}
-
-	codeBlock(str, syntax) {
-		str = require('util').inspect(str, { depth: 1 });
-		return `\`\`\`${syntax}\n${str}\n\`\`\``;
-	}
-
 	async handle({ Bot, msg }) {
-		const {
-			author, channel, guild, member
-		} = msg;
+		const { author, channel, guild, member } = msg;
 
-		// msg.content-based checks
-		if (
-			author.bot || !msg.content.startsWith(Bot.prefix)
-			|| Bot.blacklists.includes(author.id)
-		) return;
+		/* Author is bot || content doesnt start with prefix */
+		if (author.bot || !msg.content.startsWith(Bot.prefix)) return;
+		/* Blacklisted user */
+		if (Bot.blacklists.includes(author.id)) return;
+		/* Command and Args */
 		let [cmd, ...args] = msg.content.slice(Bot.prefix.length).trim().split(/ +/g);
 		const command = Bot.commands.get(cmd) || Bot.aliases.get(cmd);
 
 
-		// Developer command
+		/* Dev command */
 		if (Bot.developers.includes(author.id)) {
 			try {
 				return await command.execute({ Bot, msg, args });
 			} catch(error) {
-				await msg.channel.send(`**Error:** ${error.message}`);
 				super.log('CommandManager@exec_dev_command', error);
+				await channel.send({
+					content: `Error\n${error.message}`,
+					code: 'js'
+				});
 			}
 		}
 
-		// Normie command
+		/* Non-dev command, None dm-channel */
 		if (channel.type !== 'dm') {
-			// dev cmd
+			/* A dev-cmd */
 			if (command.category === 'Developer' || command.ownerOnly) {
-				return msg.channel.send('how dis command work?');
+				return channel.send('how dis command work?');
 			};
 
-			// check cooldown and perms
-			for (let check of [command.handleCooldown, command.checkPermissions]) {
-				let embed = await check({ Bot, command, msg });
-				if (embed) {
-					return await msg.channel.send(embed);
+			/* Cooldown */
+			const cooldown = command.handleCooldown;
+			const perms = command.checkPermissions;
+			if (cooldown) {
+				return msg.reply(`Command \`${command.name}\` on cooldown for you, wait **${cooldown}** and try again.`);
+			}
+
+			/* Permissions */
+			if (perms) {
+				const { type, permissions } = perms;
+				if (type === 'user') {
+					return channel.send([
+						'**Missing Permissions**',
+						'Looks like you don\'t have permissions to run this command, shame.',
+						'Please ensure you have the following permissions:',
+						`\`${permissions.join('`, `')}\``
+					].join('\n'));
+				} else if (type === 'client') {
+					return channel.send([
+						'**Missing Permissions**',
+						'I don\'t have enough permissions to run this command for you.',
+						'Make sure I have each of the following permissions:',
+						`\`${permissions.join('`, `')}\``
+					].join('\n'))
 				}
 			}
 
-			// command checks
-			for (const check of ['voice', 'queue', 'dj']) {
-				const embed = this.processCommandChecks(Bot, msg, command);
-				return msg.channel.send(embed);
+			/* Command Checks */
+			if (command.checks.includes('voice')) {
+				/* Voice Channel */
+				const { channel } = msg.member.voice,
+					connection = Bot.voice.connections.get(guild.id);
+				if (!channel) {
+					return channel.send('You need to join a voice channel first.');
+				} else if (connection.id !== channel.id) {
+					return channel.send('Please stay in one channel only.')
+				}
+			} else if (command.checks.includes('queue')) {
+				/* Queue */
+				const queue = Bot.distube.getQueue(msg);
+				if (!queue) {
+					return channel.send('There\'s nothing playing in the queue.');
+				}
+			} else if (command.checks.includes('dj')) {
+				/* DJ Role */
+				const role = guild.roles.cache.find(r => r.name === 'DJ');
+				if (!member._roles.has(role)) {
+					return channel.send('You have limited permissions to use this command.\nYou need to have the "DJ" role in order to use this.')
+				}
 			}
 
-			// execute
+			/* Args */
+			if (args.length < 1 && command.argsRequired) {
+				/* Check if command has expectedArguments */
+				/* And if args.length is less than the length of command.usage split by space */
+				if (command.expectedArgs && (args.length < command.usage.split(' ').length)) {
+					/* Check if command has custom args message */
+					const embed = command._argsMessage({ msg, args });
+					/* Return message */
+					if (embed) {
+						return channel.send(embed);
+					} else {
+						return channel.send([
+							'**Missing Arguments**',
+							'You have missing arguments!\n',
+							`**Usage:** \`${Bot.prefix}${command.usage}\``
+						].join('\n'))
+					}
+				}
+			}
+
+			/* Exclusives */
+			if (!command.exclusive.includes(guild.id)) {
+				return msg.channel.send([
+					'**Command Exclusive**',
+					'This command is only exclusive for the following server(s):\n',
+					`**${command.exclusive.map(g => Bot.guilds.cache.get(g)).map(g => g.name).join('**, **')}**`
+				]);
+			}
+
+			/* Run */
 			try {
 				await command.execute({ Bot, msg, args });
 			} catch(error) {
 				super.log('CommandManager@exec_command', error);
-				await msg.channel.send(super.createEmbed({
+				await Bot.config.support(Bot).errorChannel.send(super.createEmbed({
 					title: 'Command Error',
 					color: 'RED',
 					text: this.codeBlock(error.message, error);
@@ -158,113 +146,6 @@ export default class CommandManager extends Manager {
 						}
 					}
 				}));
-			}
-		}
-
-
-
-
-		/* Ignore Bots and Messages not starting with prefix */
-		if (msg.author.bot || !msg.content.startsWith(Bot.prefix)) return;
-
-		/* Args/Command */
-		let [cmd, ...args] = msg.content.slice(Bot.prefix.length).trim().split(/ +/g);
-		const command = Bot.commands.get(cmd) || Bot.alaises.get(cmd);
-		if (!command) return;
-
-		if (Bot.developers.includes()) {}
-
-		/* Dev Command: execute any (any channel, any permissions) */
-		if (Bot.developers.includes(msg.author.id)) {
-			try {
-				/* Run */
-				await command.execute({ Bot, msg, args });
-			} catch(error) {
-				/* Error */
-				await msg.channel.send(error.message);
-				super.log('Message@execute', error);
-			}
-		} else {
-			/* Every non-dm channel */
-			if (msg.channel.type !== 'dm') {
-				/* Non-dev command */
-				if (command.category === 'Developer') {
-					return;
-				}
-
-				/* Cooldown/Perms */
-				for (let check of [command.handleCooldown, command.checkPermissions]) {
-					check = await check({ Bot: Bot, msg, args });
-					if (check) {
-						return msg.channel.send(check);
-					}
-				}
-
-				// Server Queue
-				if (command.checks.includes('queue')) {
-					try {
-						const queue = Bot.distube.getQueue(msg);
-						if (!queue) {
-							return msg.channel.send(super.createEmbed({
-								title: 'Player Empty',
-								color: 'RED',
-								text: 'There\'s nothing in the queue, playing or queued right now.',
-							}));
-						}
-					} catch(error) {
-						super.log('Message@fetch_queue', error);
-					}
-				} 
-
-				// Voice Channel
-				if (command.checks.includes('voice')) {
-					try {
-						const channel = msg.member.voice.channel;
-						/* !<VoiceChannel> */
-						if (!channel) {
-							return msg.channel.send(super.createEmbed({
-								title: 'Voice Channel',
-								color: 'RED',
-								text: 'You need to join a voice channel first before using this command!'
-							}));
-						} else {
-							/* <Client> connection on <Guild> */
-							const connection = Bot.voice.connections.get(msg.guild.id);
-							if (connection.id !== channel.id) {
-								return msg.channel.send(super.createEmbed({
-									title: 'Different Channel',
-									color: 'RED',
-									text: 'You\'re in a different voice channel than me.'
-								}));
-							}
-						}
-					} catch(error) {
-						super.log('Message@fetch_author_voice', error);
-					}
-				} 
-
-				// DJ Role
-				if (command.checks.includes('dj')) {
-					try {
-						const role = msg.member._roles.find(r => r.name === 'DJ');
-						if (!role) {
-							return msg.channel.send(super.createEmbed({
-								title: 'Limited Usage',
-								color: 'RED',
-								text: `You need to have the **${role.name}** role to use this command.`
-							}));
-						}
-					} catch(error) {
-						super.log('Message@fetch_dj_role_in_member', error);
-					}
-				}
-
-				/* Run */
-				try { 
-					await command.execute({ Bot, msg, args }); 
-				} catch(error) { 
-					super.log('Message@exec_cmd', error);
-				}
 			}
 		}
 	}

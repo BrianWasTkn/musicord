@@ -6,10 +6,13 @@ export default class Avatar extends Command {
 			name: 'avatar',
 			aliases: ['profile'],
 			description: 'View yours or someone else\'s user avatar.',
-			usage: '[<GuildMember>]',
+			usage: '[<@someone>]',
 			cooldown: 3000
 		}, {
-			category: 'Utility'
+			category: 'Utility',
+			user_permissions: [],
+			client_permissions: ['EMBED_LINKS'],
+			args_required: false
 		});
 	}
 

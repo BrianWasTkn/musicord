@@ -1,2 +1,2 @@
-const esm = require('esm')(module);
-module.exports = esm('./musicord.js');
+require = require('esm')(module);
+module.exports = require('./musicord.js');

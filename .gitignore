@@ -1,14 +1,5 @@
-# module dirs
+# Modules
 node_modules
+
+# Process
 .env
-
-# extras
-*.ts
-
-# sublime text
-*.sublime-*
-
-# repl
-BooNum
-moment
-old

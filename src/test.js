@@ -1,4 +1,23 @@
+/**
+class Something {
+	constructor(obj) {
+		this.f = Math.random();
+		(this.run.bind(Object.assign(this, obj)))();
+	}
 
+	run() {
+		return console.log(this.toString());
+	}
+
+	toString() {
+		return `[${typeof this}]`
+	}
+}
+
+const e = new Something({ e: Math.E });
+*/
+
+/**
 const promise = () => {
 	return new Promise((res, rej) => {
 		let r = Math.random();
@@ -18,6 +37,7 @@ const promise = () => {
 		console.error('ERROR', error)
 	}
 })();
+*/
 
 
 /**

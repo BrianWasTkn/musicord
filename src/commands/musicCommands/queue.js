@@ -1,4 +1,4 @@
-import Command from '../classes/Command.js'
+import Command from '../../classes/Command'
 
 export default class Queue extends Command {
 	constructor(client) {
@@ -10,7 +10,10 @@ export default class Queue extends Command {
 			cooldown: 5000
 		}, {
 			category: 'Music',
-			checks: ['voice', 'queue']
+			user_permissions: [],
+			client_permissions: ['EMBED_LINKS'],
+			music_checks: ['voice', 'queue'],
+			args_required: false
 		});
 	}
 

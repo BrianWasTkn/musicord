@@ -1,4 +1,4 @@
-import Command from '../classes/Command.js'
+import Command from '../../classes/Command'
 
 /**
  * Representing a Leave Command
@@ -14,7 +14,10 @@ export default class Leave extends Command {
 			cooldown: 5000
 		}, {
 			category: 'Music',
-			checks: []
+			user_permissions: [],
+			client_permissions: ['EMBED_LINKS'],
+			music_checks: [],
+			args_required: false
 		});
 	}
 

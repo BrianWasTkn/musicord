@@ -9,7 +9,10 @@ export default class Ping extends Command {
 			usage: 'command',
 			cooldown: 3000
 		}, {
-			category: 'Utility'
+			category: 'Utility',
+			user_permissions: [],
+			client_permissions: ['EMBED_LINKS'],
+			args_required: false
 		});
 	}
 

@@ -14,10 +14,14 @@ export default class BassBoost extends Command {
 			name: 'bassboost',
 			aliases: ['toggle-bassboost'],
 			description: 'Enables the bassboost effect for your server player.',
-			usage: '<low | mid | high>',
+			usage: '<on|off>',
 			cooldown: 10000
 		}, {
-			category: 'Effects'
+			category: 'Filter',
+			user_permissions: [],
+			client_permissions: ['EMBED_LINKS'],
+			music_checks: ['voice', 'queue'],
+			args_required: true
 		});
 	}
 
@@ -29,22 +33,7 @@ export default class BassBoost extends Command {
 	 */
 	async execute({ Bot, msg, args }) {
 		try {
-			/** Levels */
-			let [level] = args, apply;
-			switch (level) {
-				case 'low':
-					apply = 'bassboost@low';
-					break;
-				case 'mediocre':
-					apply = 'bassboost@mid';
-					break
-				case 'high':
-					apply = 'bassboost@high';
-					break;
-				default:
-					apply = 'bassboost@mid';
-					break;
-			}
+			// TODO: repair this
 			/** Set */
 			let filter = Bot.distube.setFilter(msg, apply);
 			filter = filter.split('@');

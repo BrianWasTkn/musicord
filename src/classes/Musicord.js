@@ -54,12 +54,6 @@ export default class Musicord extends Client {
 		this.constants = require('./Constants.js');
 
 		/**
-		 * User Blaclists
-		 * @type {Snowflake[]}
-		 */
-		this.blacklists = this.config.blacklists;
-
-		/**
 		 * Musicord Utilities
 		 * @type {Object}
 		 */
@@ -88,13 +82,7 @@ export default class Musicord extends Client {
 		 * @type {Collection<string, Collection<Snowflake, Number>}
 		 */
 		this.cooldowns = new Collection();
-
-		
 		this.loadAll();
-	}
-
-	get blacklists() {
-		return this.config.blacklists(this).map(bl => bl.id);
 	}
 
 	get prefix() {
@@ -112,6 +100,7 @@ export default class Musicord extends Client {
 		this.hydrateListeners();
 		this.importCommands();
 		this.handleManagers();
+		this.loadExtras();
 	}
 
 	/**
@@ -188,6 +177,28 @@ export default class Musicord extends Client {
 			this.utils.log('Musicord', 'main', 'Loaded: Managers');
 		} catch(error) {
 			this.utils.log('Musicord', 'error', 'Error: ManagersLoader', error);
+		}
+	}
+
+	loadExtras() {
+		/* Process Listeners */
+		process.on('unhandledRejection', error => {
+			this.utils.log('Musicord', 'process', 'Unhandled Rejection', error.stack);
+		}).on('uncaughtException', error => {
+			this.utils.log('Musicord', 'process', 'Uncaught Exception', error.stack);
+			process.exit(1);
+		});
+
+		/* Prototypes */
+		Math.prototype.random = function(min, max) {
+			return Number(min) && Number(max)
+			? Math.random() * (max - min + 1) + min
+			: Math.random();
+		};
+
+		/* Client Functions */
+		this.createMessage = (channelID, ...message) => {
+			await this.channels.cache.get(channelID).send(...message);
 		}
 	}
 }

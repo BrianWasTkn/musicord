@@ -1,4 +1,4 @@
-import Command from '../classes/Command.js'
+import Command from '../../classes/Command'
 
 /**
  * Represents a Join Command
@@ -14,7 +14,10 @@ export default class Join extends Command {
 			cooldown: 5000
 		}, {
 			category: 'Music',
-			checks: []
+			user_permissions: ['CONNECT'],
+			client_permissions: ['CONNECT', 'EMBED_LINKS'],
+			music_checks: [],
+			args_required: false
 		});
 	}
 
