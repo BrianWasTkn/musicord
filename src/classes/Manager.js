@@ -1,5 +1,3 @@
-import Util from './Util.js'
-
 export default class Manager {
 	constructor(client) {
 		this.client = client;
