@@ -14,6 +14,9 @@ export const blue = 0x3498DB
 export const grey = 0x34495E
 export const purple = 0x9932CC
 
-
 export const indigo = Colors.BLUE
 export const blurple = Colors.BLURPLE
+export const greyple = Colors.GREYPLE
+export const pink = Colors.LUMINOUS_VIVID_PINK
+export const gold = Colors.GOLD
+export const aqua = Colors.AQUA

@@ -10,10 +10,10 @@ export const log = (type, content, error = null) => {
 	const timestamp = moment().format("YYYY-MM-DD HH:mm:ss");
 	const stamp = (tag, msg, error = false) => {
 		console.log(
-		`[${chalk.whiteBright(timestamp)}]:`,
-		chalk.hex('#57d6ff')(tag),
-		chalk.whiteBright('=>'),
-		error ? chalk.redBright(msg) : chalk.greenBright(msg)
+		`[${chalk.whiteBright(timestamp)}]:`,									// timestamp
+		chalk.hex('#57d6ff')(tag),														// tag
+		chalk.whiteBright('=>'),															// arrow
+		error ? chalk.redBright(msg) : chalk.greenBright(msg)	// message
 		)
 	}
 
@@ -23,6 +23,9 @@ export const log = (type, content, error = null) => {
 			break;
 		case 'main':
 			stamp('Launcher', content);
+			break;
+		case 'track':
+			stamp('Tracker ', content);
 			break;
 		case 'command':
 			stamp('Command ', content);

@@ -1,7 +1,7 @@
 import discord from 'discord.js'
 import config from '../config.js'
 
-export default class Command {
+class Command {
 	constructor(options, func) {
 		/**
 		 * Command Function
@@ -163,3 +163,5 @@ export default class Command {
 		}
 	}
 }
+
+export default Command;

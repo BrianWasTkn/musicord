@@ -1,4 +1,4 @@
-export default class Utilities {
+class Utilities {
 	/** Text Sanitizer */
 	sanitize(string) {
 		if (string instanceof String) {
@@ -62,3 +62,5 @@ export default class Utilities {
     return parsed.filter(g => !g.startsWith('0')).join(', ');
   }
 }
+
+export default Utilities;

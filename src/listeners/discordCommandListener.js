@@ -14,15 +14,17 @@ export async function run(bot) {
 				const [cmd, ...args] = message.content.slice(prefix.length).trim().split(/ +/g);
 				const command = bot.commands.get(cmd.toLowerCase()) || bot.aliases.get(cmd.toLowerCase());
 				if (!command) return;
+				if (command.private && !bot.developers.includes(message.author.id)) return;
 				try {
 					await command.execute(bot, command, message, args);
 				} catch(error) {
 					log('listenerError', 'commandListener@error', error)
 				}
 			}
-		}).on('messageEdit', async (oldMessage, newMessage) => {
+		}).on('messageUpdate', async (oldMessage, newMessage) => {
 			// TODO: able to run commands when editing a message.
 		})
+
 		log('main', 'Command Listener')
 	} catch(error) {
 		log('listenerError', 'commandListener', error)

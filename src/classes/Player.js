@@ -1,6 +1,6 @@
 import distube from 'distube'
 
-export default class Player extends distube {
+class Player extends distube {
 	constructor(client, options) {
 		super(client, options);
 	}
@@ -50,3 +50,5 @@ export default class Player extends distube {
 		})
 	}
 }
+
+export default Player
