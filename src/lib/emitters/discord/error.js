@@ -1,4 +1,4 @@
-import Listener from '../../classes/Listener.js'
+import Listener from '../../structures/Listener'
 
 export default class Error extends Listener {
 	constructor(client) {

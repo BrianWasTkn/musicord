@@ -1,4 +1,4 @@
-import Manager from '../classes/Manager.js'
+import Manager from '../structures/Manager.js'
 
 export default class LotteryManager extends Manager {
 	constructor(client) {
@@ -26,12 +26,12 @@ export default class LotteryManager extends Manager {
 				return;
 			} else {
 				clearInterval(check);
-				await repeat();
+				repeat();
 			};
 		}, 1000);
 
 		/* Interval to Roll */
-		const repeat = async () => {
+		const repeat = () => {
 			setInterval(async () => {
 				if (active) {
 					await roll();

@@ -1,4 +1,4 @@
-import Manager from '../classes/Manager.js'
+import Manager from '../structures/Manager.js'
 const { Constants: Events } = require('discord.js');
 
 export default class PresenceManager extends Manager {

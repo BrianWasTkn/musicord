@@ -23,6 +23,5 @@ export default {
 		errorChannel: Bot.channels.cache.get(),
 		/* {GuildChannel} The feature-requests channel */
 		requestChannel: Bot.channels.cache.get()
-	})
-
+	}),
 }

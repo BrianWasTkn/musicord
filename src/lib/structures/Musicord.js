@@ -2,7 +2,7 @@ import { Client, Collection, ClientPresence } from 'discord.js'
 import { readdirSync } from 'fs'
 import { join } from 'path'
 
-import DisTube from './DisTube.js'
+import DisTube from './DisTube'
 
 /**
  * Represents a Musicord client extending Client
@@ -33,7 +33,7 @@ export default class Musicord extends Client {
 		 * Bot Package
 		 * @type {Object}
 		 */
-		this.package = require('../../package.json');
+		this.package = require('../../../package.json');
 
 		/**
 		 * DisTube Player
@@ -45,7 +45,7 @@ export default class Musicord extends Client {
 		 * The main config
 		 * @type {Object}
 		 */
-		this.config = require('../config/default.js').default;
+		this.config = require('../../config/default.js').default;
 
 		/**
 		 * Constants
@@ -95,6 +95,7 @@ export default class Musicord extends Client {
 
 	/**
 	 * Loads all functions
+	 * @returns {void}
 	 */
 	loadAll() {
 		this.utils.log('Musicord', 'main', 'Launching Bot...');
@@ -110,42 +111,39 @@ export default class Musicord extends Client {
 	 */
 	hydrateListeners() {
 		try {
-			/* Check every inch of emitters */
+			let loaded = [];
 			const emitters = readdirSync(join(__dirname, '..', 'emitters'));
 			emitters.forEach(e => {
-				const emitter = readdirSync(join(__dirname, '..', 'emitters', e));
-				emitter.forEach(l => {
-					new (require(join(__dirname, '..', 'emitters', e, l)).default)(this);
+				const dir = readdirSync(join(__dirname, '..', 'emitters', e));
+				dir.forEach(l => {
+					const listener = new (require(join(__dirname, '..', 'emitters', e, l)).default)(this);
+					loaded.push(listener);
 				});
 			});
 
-			/* Log it */
-			this.utils.log('Musicord', 'main', 'Loaded: Listeners');
+			this.utils.log('Musicord', 'main', `${loaded.length} Listeners loaded`);
 		} catch(error) {
 			this.utils.log('Musicord', 'error', 'Error: HydrateListeners', error);
 		}
 	}
 
 	/**
-	 * Imports and registers commands and it's aliases in Musicord.commands collection
+	 * Loads all available commands under the 'commands' folder
 	 * @returns {void}
 	 */
 	importCommands() {
 		try {
-			const commands = readdirSync(join(__dirname, '..', 'commands'));
+			const commands = readdirSync(join(__dirname, '..', '..', 'commands'));
 			commands.forEach(i => {
-				/* Subdir */
-				const sub = readdirSync(join(__dirname, '..', 'commands', i));
+				const sub = readdirSync(join(__dirname, '..', '..', 'commands', i));
 				sub.forEach(cmd => {
-					/* Import */
-					const command = new (require(join(__dirname, '..', 'commands', i, cmd)).default)(this);
-					/* Set in Collection */
+					const command = new (require(join(__dirname, '..', '..', 'commands', i, cmd)).default)(this);
 					this.commands.set(command.name, command);
 					command.aliases.forEach(a => this.aliases.set(a, command));
 				});
 			});
 
-			/* Log it */
+			console.log(this.commands.array()[0]);
 			this.utils.log('Musicord', 'main', `${this.commands.size} Commands Loaded`);
 		} catch(error) {
 			this.utils.log('Musicord', 'error', 'Error: ImportCommands', error);
@@ -165,8 +163,7 @@ export default class Musicord extends Client {
 				this.managers.set(m, manager);
 			});
 
-			/* Log it */
-			this.utils.log('Musicord', 'main', 'Loaded: Managers');
+			this.utils.log('Musicord', 'main', `${this.managers.size} Managers loaded`);
 		} catch(error) {
 			this.utils.log('Musicord', 'error', 'Error: ManagersLoader', error);
 		}

@@ -1,4 +1,4 @@
-import Listener from '../../classes/Listener'
+import Listener from '../../structures/Listener'
 
 export default class GuildCreate extends Listener {
 	constructor(client) {

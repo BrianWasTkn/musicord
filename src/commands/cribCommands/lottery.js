@@ -1,4 +1,4 @@
-import Command from '../../classes/Command'
+import Command from '../../lib/structures/Command'
 
 // TODO: picked winner, react: ['thumbsup', 'reroll emoji'] to the embed
 // to verify it has been paid or reroll if inactive.

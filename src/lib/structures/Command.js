@@ -22,15 +22,15 @@ export default class Command {
 		/* {String} Command Category */
 		this.category = propsExt.category;
 		/* {PermissionString[]} Required Permissions to run */
-		this.permissions = ['SEND_MESSAGES'].concat(propsExt.user_permissions || []);
+		this.userPerm = ['SEND_MESSAGES'].concat(propsExt.user_permissions || []);
 		/* {PermissionString[]} Required Client permissions to run */
-		this.clientPermissions = ['SEND_MESSAGES'].concat(propsExt.client_permissions || []);
+		this.botPerm = ['SEND_MESSAGES'].concat(propsExt.client_permissions || []);
 		/* {String[]} `dj`, `voice`, or `queue` */
 		this.checks = propsExt.music_checks || [];
 		/* {Boolean} Args Required */
-		this.argsRequired = propsExt.args_required;
+		this.reqArgs = propsExt.args_required;
 		/* {String} Expected arguments */
-		this.expectedArgs = props.usage === 'command' ? null : props.usage;
+		this.expArgs = props.usage === 'command' ? null : props.usage;
 
 		/* {Boolean} Owner-Only */
 		this.ownerOnly = propsExt.owner_only || false;
@@ -112,12 +112,12 @@ export default class Command {
 	 * @returns {Discord.MessageEmbed|null} An embed, if any
 	 */
 	checkPermissions({ Bot, command, msg }) {
-		const { permissions, client_permissions } = command;
+		const { userPerm, botPerm } = command;
 		/* User Permissions */
-		if (!msg.member.permissions.has(permissions)) {
-			return { type: 'user', permissions };
-		} else if (!msg.guild.me.permissions.has(client_permissions)) {
-			return { type: 'client', permissions };
+		if (!msg.member.permissions.has(userPerm)) {
+			return { type: 'user', userPerm };
+		} else if (!msg.guild.me.permissions.has(botPerm)) {
+			return { type: 'client', botPerm };
 		} else {
 			return false;
 		}

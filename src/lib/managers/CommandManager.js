@@ -1,4 +1,4 @@
-import Manager from '../classes/Manager.js'
+import Manager from '../structures/Manager.js'
 
 export default class CommandManager extends Manager {
 	constructor(client) {
@@ -16,7 +16,9 @@ export default class CommandManager extends Manager {
 		/* Author is bot || content doesnt start with prefix */
 		if (author.bot || !msg.content.startsWith(Bot.prefix)) return;
 		/* Blacklisted user */
-		if (Bot.blacklists.includes(author.id)) return;
+		if (Bot.blacklists.includes(author.id)) {
+			await channel.send('You are blacklisted from this bot.');
+		}
 		/* Command and Args */
 		let [cmd, ...args] = msg.content.slice(Bot.prefix.length).trim().split(/ +/g);
 		const command = Bot.commands.get(cmd) || Bot.aliases.get(cmd);
@@ -28,8 +30,7 @@ export default class CommandManager extends Manager {
 				return await command.execute({ Bot, msg, args });
 			} catch(error) {
 				super.log('CommandManager@exec_dev_command', error);
-				await channel.send({
-					content: `Error\n${error.message}`,
+				await channel.send(`Error\n${error.message}`, {
 					code: 'js'
 				});
 			}
@@ -44,26 +45,26 @@ export default class CommandManager extends Manager {
 
 			/* Cooldown */
 			const cooldown = command.handleCooldown;
-			const perms = command.checkPermissions;
 			if (cooldown) {
 				return msg.reply(`Command \`${command.name}\` on cooldown for you, wait **${cooldown}** and try again.`);
 			}
 
 			/* Permissions */
+			const perms = command.checkPermissions;
 			if (perms) {
 				const { type, permissions } = perms;
 				if (type === 'user') {
 					return channel.send([
 						'**Missing Permissions**',
 						'Looks like you don\'t have permissions to run this command, shame.',
-						'Please ensure you have the following permissions:',
+						'Please ensure you have the following permissions:\n',
 						`\`${permissions.join('`, `')}\``
 					].join('\n'));
 				} else if (type === 'client') {
 					return channel.send([
 						'**Missing Permissions**',
 						'I don\'t have enough permissions to run this command for you.',
-						'Make sure I have each of the following permissions:',
+						'Make sure I have each of the following permissions:\n',
 						`\`${permissions.join('`, `')}\``
 					].join('\n'))
 				}
@@ -88,7 +89,7 @@ export default class CommandManager extends Manager {
 			} else if (command.checks.includes('dj')) {
 				/* DJ Role */
 				const role = guild.roles.cache.find(r => r.name === 'DJ');
-				if (!member._roles.has(role)) {
+				if (!member._roles.has(role.id)) {
 					return channel.send('You have limited permissions to use this command.\nYou need to have the "DJ" role in order to use this.')
 				}
 			}
@@ -97,7 +98,7 @@ export default class CommandManager extends Manager {
 			if (args.length < 1 && command.argsRequired) {
 				/* Check if command has expectedArguments */
 				/* And if args.length is less than the length of command.usage split by space */
-				if (command.expectedArgs && (args.length < command.usage.split(' ').length)) {
+				if (command.expArgs && (args.length < command.usage.split(' ').length)) {
 					/* Check if command has custom args message */
 					const embed = command._argsMessage({ msg, args });
 					/* Return message */

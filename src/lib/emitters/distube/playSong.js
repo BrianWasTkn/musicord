@@ -1,6 +1,6 @@
-import Listener from '../../classes/Listener.js'
+import Listener from '../../structures/Listener'
 
-export default class AddSong extends Listener {
+export default class PlaySong extends Listener {
 	constructor(client) {
 		super(client);
 		/* Emit */
@@ -15,9 +15,9 @@ export default class AddSong extends Listener {
 		try {
 			/* Message */
 			const m = await msg.channel.send(super.createEmbed({
-				title: 'Added to Queue',
-				color: 'GREEN',
-				text: `Added [**__${song.name}__**](${song.url}) to the queue.`,
+				title: 'Now Playing',
+				color: 'BLUE',
+				text: `Now Playing [**__${song.name}__**](${song.url})...`,
 				fields: {
 					'Duration': {
 						content: `\`${song.formattedDuration}\``,
@@ -37,11 +37,11 @@ export default class AddSong extends Listener {
 					icon: Bot.user.avatarURL()
 				}
 			}));
-			
+
 			/* Player Controls */
 			await this.client.utils.handleControls({ song, msg, embed: m });
 		} catch(error) {
-			super.log('AddSong@sendMessage', error);
+			super.log('PlaySong@sendMessage', error);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-import Command from '../../classes/Command'
+import Command from '../../lib/structures/Command'
 
 /**
  * Representing a Leave Command

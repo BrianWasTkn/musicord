@@ -1,4 +1,4 @@
-import Listener from '../../classes/Listener.js'
+import Listener from '../../structures/Listener'
 
 export default class Ready extends Listener {
 	constructor(client) {
@@ -9,7 +9,6 @@ export default class Ready extends Listener {
 	}
 
 	async handle() {
-		/** Log */
 		try {
 			this.utils.log(
 				'Listener',

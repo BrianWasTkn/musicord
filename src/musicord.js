@@ -1,4 +1,4 @@
-import Musicord from './classes/Musicord.js'
+import Musicord from './lib/structures/Musicord.js'
 import config from './config/default.js'
 import chalk from 'chalk'
 import moment from 'moment'

@@ -1,4 +1,4 @@
-import Command from '../../classes/Command.js'
+import Command from '../../lib/structures/Command'
 
 export default class Avatar extends Command {
 	constructor(client) {
