@@ -5,9 +5,9 @@ export default class Manager {
 		this.client = client;
 	}
 
-	/** Logger Shortcut */
-	log(Class, tag, error) {
-		return log(Class, 'manager', tag, error);
+	/** Shortcut for logging */
+	log(Class, msg, error) {
+		return this.client.utils.log('Manager', 'error', msg, error);
 	}
 
 	/** Creates an Embed */

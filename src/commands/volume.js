@@ -36,19 +36,27 @@ export default class Volume extends Command {
 		if (!isNaN(rate)) {
 			/* More than 100 */
 			if (rate > 100) {
-				return msg.channel.send(super.createEmbed({
-					title: 'Too Loud',
-					color: 'RED',
-					text: 'You cannot set the volume higher than **100%** to avoid earrapes.'
-				}));
+				try {
+					return msg.channel.send(super.createEmbed({
+						title: 'Too Loud',
+						color: 'RED',
+						text: 'You cannot set the volume higher than **100%** to avoid earrapes.'
+					}));
+				} catch(error) {
+					super.log('volume@msg', error);
+				}
 			} 
 			/* Less than 1 */
 			else if (rate < 1) {
-				return msg.channel.send(super.createEmbed({
-					title: 'Too Low',
-					color: 'RED',
-					text: 'You cannot set the volume lower than a percent.'
-				}))
+				try {
+					return msg.channel.send(super.createEmbed({
+						title: 'Too Low',
+						color: 'RED',
+						text: 'You cannot set the volume lower than a percent.'
+					}));
+				} catch(error) {
+					super.log('volume@msg', error);
+				}
 			}
 			/* Else, do it */
 			else {
@@ -56,9 +64,17 @@ export default class Volume extends Command {
 					/* Queue */
 					const queue = await Bot.player.setVolume(msg, parseInt(rate, 10));
 					try {
-
+						await msg.channel.send(super.createEmbed({
+							title: 'Volume Changed',
+							color: 'GREEN',
+							title: `Successfully changed the volume to **${queue.volume}%**`,
+							footer: {
+								text: `Thanks for using ${Bot.user.username}!`,
+								icon: Bot.user.avatarURL()
+							}
+						}));
 					} catch(error) {
-						
+						super.log('volume@msg', error);
 					}
 				} catch(error) {
 					super.log('volume', error);

@@ -7,28 +7,28 @@ export default class PresenceManager extends Manager {
 		super(client);
 		
 		/* Events */
-		this.client.on(Events.READY, this.handle({ Bot: this.client }));
+		this.client.on(Events.READY, this.handle);
 	}
 
-	async handle({ Bot }) {
+	async handle() {
 		try {
 			/* Log */
 			try {
-				this.log(`${Bot.user.username} is now ready to play some beats!`);
+				this.log(`${this.client.user.username} is now ready to play some beats!`);
 			} catch(error) {
-				super.log('PresenceManager', error);
+				super.log('PresenceManager@log', error);
 			}
 
 			/* Activity */
 			try {
-				await Bot.user.setPresence({
+				await this.client.user.setPresence({
 					activities: {
 						type: 'LISTENING',
-						name: `${Bot.prefix}help`
+						name: `${this.client.prefix}help`
 					}
 				});
 			} catch(error) {
-				super.log('PresenceManager', error);
+				super.log('PresenceManager@presence', error);
 			}
 		} catch(error) {
 			super.log('PresenceManager', error);

@@ -4,8 +4,8 @@ export default class Listener {
 	}
 
 	/** Shortcut for logging */
-	log(Class, tag, error) {
-		return this.client.utils.log(Class, 'listener', tag, error);
+	log(Class, msg, error) {
+		return this.client.utils.log('Listener', 'error', msg, error);
 	}
 
 	/** Creates an Embed */

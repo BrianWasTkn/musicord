@@ -25,30 +25,39 @@ export default class Play extends Command {
 		 * * `stopped` - if player stopped
 		 * @type {String[]}
 		 */
-		this.checks = ['voice', 'queue', 'paused'];
+		this.checks = ['voice', 'queue'];
 	}
 
 	async execute({ Bot, msg, args }) {
 		/** Missing Args */
 		if (args.length < 1) {
-			return msg.channel.send(super.createEmbed({
-				title: 'Missing Args',
-				color: 'GREEN',
-				text: 'You need a search query or a valid URL.'
-			}));
+			try {
+				return msg.channel.send(super.createEmbed({
+					title: 'Missing Args',
+					color: 'GREEN',
+					text: 'You need a search query or a valid URL.'
+				}));
+			} catch(error) {
+				super.log('play@msg', error);
+			}
 		}
 
 		/** Else, Do it */
 		try {
+			/* Play */
 			await Bot.player.play(msg);
-			/* Message */
-			await msg.channel.send(super.createEmbed({
-				title: 'Player Paused',
-				color: 'GREEN',
-				text: 'Successfully paused playing the songs.'
-			}));
+			try {
+				/* Message */
+				await msg.channel.send(super.createEmbed({
+					title: 'Player Paused',
+					color: 'GREEN',
+					text: 'Successfully paused playing the songs.'
+				}));
+			} catch(error) {
+				super.log('play@msg', error);
+			}
 		} catch(error) {
-			super.log('pause', error);
+			super.log('play', error);
 		}
 	}
 }

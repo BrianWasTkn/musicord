@@ -32,21 +32,25 @@ export default class Queue extends Command {
 		try {
 			/* Queue with Mapped Songs */
 			const songs = await Bot.player.mapQueue(msg, true);
-			/* Message */
-			await msg.channel.send(super.createEmbed({
-				title: 'Server Queue',
-				color: 'BLUE',
-				fields: {
-					'Now Playing': { content: songs[0] },
-					'Queue Songs': { content: songs[1] ? songs.slice(1).join('\n') : 'No more songs in queue.' }
-				},
-				footer: {
-					text: `Thanks for using ${Bot.user.username}!`,
-					icon: Bot.user.avatarURL()
-				}
-			}));
+			try {
+				/* Message */
+				await msg.channel.send(super.createEmbed({
+					title: 'Server Queue',
+					color: 'BLUE',
+					fields: {
+						'Now Playing': { content: songs[0] },
+						'Queue Songs': { content: songs[1] ? songs.slice(1).join('\n') : 'No more songs in queue.' }
+					},
+					footer: {
+						text: `Thanks for using ${Bot.user.username}!`,
+						icon: Bot.user.avatarURL()
+					}
+				}));
+			} catch(error) {
+				super.log('queue@msg', error);
+			}
 		} catch(error) {
-			super.log('pause', error);
+			super.log('queue', error);
 		}
 	}
 }

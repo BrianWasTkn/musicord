@@ -32,12 +32,16 @@ export default class Pause extends Command {
 		try {
 			/* Pause */
 			const queue = await Bot.player.pause(msg);
-			/* Message */
-			await msg.channel.send(super.createEmbed({
-				title: 'Player Paused',
-				color: 'GREEN',
-				text: 'Successfully paused playing the songs.'
-			}));
+			try {
+				/* Message */
+				await msg.channel.send(super.createEmbed({
+					title: 'Player Paused',
+					color: 'GREEN',
+					text: 'Successfully paused playing the songs.'
+				}));
+			} catch(error) {
+				super.log('pause@msg', error);
+			}
 		} catch(error) {
 			super.log('pause', error);
 		}

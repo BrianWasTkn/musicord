@@ -32,16 +32,20 @@ export default class Stop extends Command {
 		try {
 			/* Stop */
 			const queue = await Bot.player.stop(msg);
-			/* Return a message */
-			await msg.channel.send(super.createEmbed({
-				title: 'Player Stopped',
-				color: 'GREEN',
-				text: 'The player has been stopped and the queue has been cleared.',
-				footer: {
-					text: `Thanks for using ${Bot.user.username}!`,
-					icon: Bot.user.avatarURL()
-				}
-			}))
+			try {
+				/* Return a message */
+				await msg.channel.send(super.createEmbed({
+					title: 'Player Stopped',
+					color: 'GREEN',
+					text: 'The player has been stopped and the queue has been cleared.',
+					footer: {
+						text: `Thanks for using ${Bot.user.username}!`,
+						icon: Bot.user.avatarURL()
+					}
+				}));
+			} catch(error) {
+				super.log('stop@msg', error);
+			}
 		} catch(error) {
 			super.log('stop', error);
 		}

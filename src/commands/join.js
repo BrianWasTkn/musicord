@@ -35,20 +35,28 @@ export default class Join extends Command {
 
 		/** Joinable */
 		if (!channel.joinable) {
-			return msg.channel.send(super.createEmbed({
-				title: 'Missing Permissions',
-				color: 'RED',
-				text: 'Make sure I have permissions to `CONNECT` in your voice channel.'
-			}));
+			try {
+				return msg.channel.send(super.createEmbed({
+					title: 'Missing Permissions',
+					color: 'RED',
+					text: 'Make sure I have permissions to `CONNECT` in your voice channel.'
+				}));
+			} catch(error) {
+				super.log('join@msg', error);
+			}
 		}
 
 		/** Full */
 		if (channel.full) {
-			return msg.channel.send(super.createEmbed({
-				title: 'Channel Full',
-				color: 'RED',
-				text: 'Your voice channel is already full so I\'m unable to join.'
-			}));
+			try {
+				return msg.channel.send(super.createEmbed({
+					title: 'Channel Full',
+					color: 'RED',
+					text: 'Your voice channel is already full so I\'m unable to join.'
+				}));
+			} catch(error) {
+				super.log('join@msg', error);
+			}
 		}
 
 		/** Do the thing */

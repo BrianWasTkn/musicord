@@ -59,8 +59,8 @@ export default class Command {
 	}
 
 	/** Shortcut for logging */
-	log(Class, tag, error) {
-		return this.client.utils.log(Class, 'command', tag, error);
+	log(Class, msg, error) {
+		return this.client.utils.log('Command', 'error', msg, error);
 	}
 
 	/** Creates an Embed */

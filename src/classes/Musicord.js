@@ -2,11 +2,14 @@ import { Client, Collection } from 'discord.js'
 import { readdirSync } from 'fs'
 import { join } from 'path'
 
+import DisTube from './DisTube.js'
+
 export default class Musicord extends Client {
-	constructor(client, player) {
-		this.player = new Player(this, player);
+	constructor(clientOptions, playerOptions) {
+		super(clientOptions)
+		this.player = new DisTube(this, playerOptions);
 		this.config = require('../config/config.js').default;
-		this.utils = new (require('./Util.js'))(this);
+		this.utils = new (require('./Util.js').default)(this);
 		this.managers = new Collection();
 		this.commands = new Collection();
 		this.aliases = new Collection();
@@ -42,9 +45,9 @@ export default class Musicord extends Client {
 			});
 
 			/* Log it */
-			this.utils.log('Musicord', 'console', 'hydrateListeners');
+			this.utils.log('Musicord', 'main', 'Loaded: Listeners');
 		} catch(error) {
-			this.utils.log('Musicord', 'error', 'hydrateListeners', error);
+			this.utils.log('Musicord', 'error', 'Error: HydrateListeners', error);
 		}
 	}
 
@@ -70,9 +73,10 @@ export default class Musicord extends Client {
 				}
 			});
 
-			this.utils.log('Musicord', 'console', 'importCommands');
+			/* Log it */
+			this.utils.log('Musicord', 'main', 'Loaded: Commands');
 		} catch(error) {
-			this.utils.log('Musicord', 'error', 'importCommands', error);
+			this.utils.log('Musicord', 'error', 'Error: ImportCommands', error);
 		}
 	}
 
@@ -85,9 +89,10 @@ export default class Musicord extends Client {
 				this.managers.set(m, manager);
 			});
 
-			this.utils.log('Musicord', 'console', 'handleManagers');
+			/* Log it */
+			this.utils.log('Musicord', 'main', 'Loaded: Managers');
 		} catch(error) {
-			this.utils.log('Musicord', 'error', 'handleManagers', error);
+			this.utils.log('Musicord', 'error', 'Error: ManagersLoader', error);
 		}
 	}
 }

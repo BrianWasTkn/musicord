@@ -1,6 +1,5 @@
 import Command from '../classes/Command.js'
 import { Collection } from 'discord.js'
-import { log } from '../utils/logger.js'
 
 export default class VoteSkip extends Command {
 	constructor(client) {
@@ -39,7 +38,7 @@ export default class VoteSkip extends Command {
 			try {
 				await Bot.player.skip(msg);
 			} catch(error) {
-				super.log('voteskip@skip' , error);
+				super.log('voteskip@skip', error);
 			}
 		}
 
@@ -124,7 +123,7 @@ export default class VoteSkip extends Command {
 					}
 				})
 		} catch(error) {
-			super.log('voteskip@collector', error);
+			super.log('voteskip', error);
 		}
 	}
 }

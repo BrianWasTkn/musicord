@@ -22,37 +22,30 @@ export default class Util {
 	 * @param {Boolean|String|Object} error the error, if any
 	 * @returns {void}
 	*/
-	log({ Class, type, tag, info = false }) {
+	log(Class, type, msg, info = false) {
 		/* The base function */
-		const log = (Class, tag, info = false) => {
+		const log = (Class, msg, info = false) => {
 			return console.log(
 				chalk.whiteBright(`[${moment().format('HH:mm:ss')}]`),
-				Class, tag, chalk.whiteBright('=>'), info || null
+				Class, chalk.whiteBright('=>'), msg, info || ''
 			);
 		}
 
 		/* The types of logging */
 		switch(type) {
-			case 'warn':
-			return log(chalk.yellowBright(Class), chalk.whiteBright(tag));
-			break;
+			// Red(Class) => Yellow(msg)
 			case 'error':
-			return log(chalk.redBright(Class), chalk.yellowBright(tag), info);
+			return log(chalk.redBright(Class), chalk.yellowBright(msg), info);
 			break;
+
+			// Blue(Class) => Cyan(msg)
 			case 'process':
-			return log(chalk.blueBright(Class), chalk.cyanBright(tag), info);
+			return log(chalk.blueBright(Class), chalk.cyanBright(msg), info);
 			break;
-			case 'console':
-			return log(chalk.hex('#57d6ff')(Class), chalk.greenBright(tag));
-			break;
-			case 'discord':
-			return log(chalk.hex('#7289DA')(Class), chalk.hex('#7289DA')(tag), info);
-			break;
-			case 'manager':
-			return log(chalk.magentaBright(Class), chalk.greenBright(tag));
-			break;
-			case 'command':
-			return log(chalk.cyanBright(Class), chalk.greenBright(tag));
+
+			// Hex(Class) => Green(msg)
+			case 'main':
+			return log(chalk.hex('#57d6ff')(Class), chalk.greenBright(msg));
 			break;
 		}
 	}
