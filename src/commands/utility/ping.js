@@ -1,17 +1,12 @@
 import Command from '../../classes/Command/Utility.js'
+import { simpleEmbed } from '../../utils/embed.js'
 
 export default new Command({
 	name: 'ping',
 	aliases: ['pong'],
 	description: 'check your shard\'s current latency',
 	usage: 'command'
-}, async (bot, message, args) => {
-	return {
-		title: message.guild.name,
-		color: 'BLUE',
-		fields: [
-			{ name: 'Shard ID', value: message.guild.shard.id },
-			{ name: 'Latency', value: `\`${message.guild.shard.ping}ms\`` }
-		]
-	}
+}, async message => {
+	const shard = message.guild.shard;
+	return simpleEmbed(message, `Your guild on Shard ${shard.id} has a ${shard.ping}ms latency.`);
 })

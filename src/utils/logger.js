@@ -7,7 +7,7 @@ import chalk from 'chalk'
 import moment from 'moment'
 
 export const log = (type, content, error = null) => {
-	const timestamp = moment().format("YYYY-MM-DD HH:mm:ss");
+	const timestamp = moment().format("HH:mm:ss");
 	const stamp = (tag, msg, error = false) => {
 		console.log(
 		`[${chalk.whiteBright(timestamp)}]:`,									// timestamp
@@ -19,17 +19,14 @@ export const log = (type, content, error = null) => {
 
 	switch(type) {
 		case 'node':
-			stamp('Process ', content);
+			stamp('  Node  ', content);
 			console.log(error);
 			break;
 		case 'main':
 			stamp('Launcher', content);
 			break;
-		case 'track':
-			stamp('Tracker ', content);
-			break;
 		case 'command':
-			stamp('Command ', content);
+			stamp('Commands', content);
 			break;
 		case 'discord':
 			stamp('Discord ', content);
@@ -38,23 +35,23 @@ export const log = (type, content, error = null) => {
 			stamp('Emitter ', content);
 			break;
 		case 'error':
-			stamp('Error   ', content, true);
+			stamp('Error         ', content, true);
 			console.log(error)
 			break;
 		case 'eventError':
-			stamp('EVTError', content, true);
+			stamp('Error@Event   ', content, true);
 			console.log(error)
 			break;
 		case 'commandError':
-			stamp('CMDError', content, true);
+			stamp('Error@Command ', content, true);
 			console.log(error)
 			break;
 		case 'listenerError':
-			stamp('LNRError', content, true);
+			stamp('Error@Listener', content, true);
 			console.log(error)
 			break;
 		default: 
-			stamp('Console ', content);
+			stamp(' Logger ', content);
 			break;
 	}
 }

@@ -11,17 +11,23 @@ export async function run(bot) {
 				}
 				if (!prefix) return;
 
-				const [cmd, ...args] = message.content.slice(prefix.length).trim().split(/ +/g);
-				const command = bot.commands.get(cmd.toLowerCase()) || bot.aliases.get(cmd.toLowerCase());
-				if (!command) return;
 				try {
-					await command.execute(bot, command, message, args);
+					const [cmd, ...args] = message.content.slice(prefix.length).trim().split(/ +/g);
+					const command = bot.commands.get(cmd.toLowerCase()) || bot.aliases.get(cmd.toLowerCase());
+					if (!command) return;
+					else try { 
+						await command.execute(bot.command, message, args); 
+					} catch(error) { 
+						log('listenerError', 'commandListener@exec_command', error)
+					}
 				} catch(error) {
-					log('listenerError', 'commandListener@error', error)
+					log('listenerError', 'commandListener@fetch_command', error);
 				}
 			}
 		}).on('messageUpdate', async (oldMessage, newMessage) => {
 			// TODO: able to run commands when editing a message.
+			const message = newMessage, _ = oldMessage;
+			
 		})
 
 		log('main', 'Command Listener')

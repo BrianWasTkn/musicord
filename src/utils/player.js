@@ -1,3 +1,8 @@
+/**
+ * BrianWasTkn 2020
+ * Functions to easily call to reduce typings in commands.
+*/
+
 import { log } from './logger.js'
 
 const addReactions = (msg, emojis) => {
@@ -20,7 +25,8 @@ export const startReactionCollector = async (message, embed, time) => {
 		try {
 			await addReactions(emojis)
 		} catch(error) {
-			log('error', 'playerReactionCollector@startReactionCollector')
+			log('error', 'playerReactionCollector@startReactionCollector');
+			return;
 		}
 
 		try {
@@ -42,14 +48,6 @@ export const startReactionCollector = async (message, embed, time) => {
 					// Next Song
 					case emojis[1]:
 						await message.client.player.skip(message)
-						await message.channel.send({
-							embed: {
-								title: 'Track Skipped',
-								color: 'BLUE',
-								description: `Track successfully skipped by **${message.author.tag}**.\n${queue.songs[0] ? 'Proceeding to play the next track in the queue.' : 'The player has been stopped as no more songs are left to play.'}`,
-								footer: { text: 'Run "crib play" or "crib search" to either play or search for a track.' }
-							}
-						})
 						break;
 
 					// Pause
@@ -59,7 +57,7 @@ export const startReactionCollector = async (message, embed, time) => {
 							embed: {
 								title: 'Track Paused',
 								color: 'BLUE',
-								description: `Track successfully paused by **${message.author.tag}**.`,
+								description: `Successfully paused the queue by **${message.author.tag}**.`,
 								footer: { text: 'Run "crib play" or "crib search" to either play or search for a track.' }
 							}
 						})

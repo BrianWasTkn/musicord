@@ -3,7 +3,7 @@ import { log } from '../utils/logger.js'
 import { blue } from '../utils/colors.js'
 import { 
 	simpleEmbed, 
-	generateError 
+	generateErrorEmbed 
 } from '../utils/embed.js'
 
 export default new Command({
@@ -39,6 +39,6 @@ export default new Command({
 		}
 	} catch(error) {
 		log('commandError', 'nowplaying@getQueue', error.stack);
-		return generateError(message, error);
+		return generateErrorEmbed(message, error);
 	}
 })

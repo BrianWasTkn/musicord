@@ -2,7 +2,7 @@ import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import { 
 	simpleEmbed, 
-	generateError 
+	generateErrorEmbed 
 } from '../utils/embed.js'
 
 export default new Command({
@@ -41,7 +41,7 @@ export default new Command({
 		} catch(error) {
 			/** Log Error */
 			log('commandError', 'search@results_message', error)
-			return generateError(message, error);
+			return generateErrorEmbed(message, error);
 		}
 
 		/** Await Message */
@@ -78,7 +78,7 @@ export default new Command({
 		} catch(error) {
 			/** Log Error */
 			log('commandError', 'search@parse_choice', error.stack);
-			return generateError(message, error);
+			return generateErrorEmbed(message, error);
 		}
 
 		/** Play */
@@ -90,16 +90,16 @@ export default new Command({
 			} catch(error) {
 				/** Log Error */
 				log('commandError', 'search@delete_results_embed', error)
-				return generateError(message, error);
+				return generateErrorEmbed(message, error);
 			}
 		} catch(error) {
 			/** Log Error */
 			log('commandError', 'search@play_song', error)
-			return generateError(message, error);
+			return generateErrorEmbed(message, error);
 		}
 	} catch(error) {
 		/** Log Error */
 		log('commandError', 'search@search_tracks', error)
-		return generateError(message, error);
+		return generateErrorEmbed(message, error);
 	}
 })

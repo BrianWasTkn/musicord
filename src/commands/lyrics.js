@@ -3,7 +3,7 @@ import { log } from '../utils/logger.js'
 import findLyrics from 'lyrics-finder'
 import { 
 	simpleEmbed, 
-	generateError 
+	generateErrorEmbed 
 } from '../utils/embed.js'
 
 export default new Command({
@@ -43,11 +43,11 @@ export default new Command({
 			return embed;
 		} catch(error) {
 			log('commandError', 'lyrics@findLyrics', error.stack);
-			return generateError(message, error);
+			return generateErrorEmbed(message, error);
 		}
 	} catch(error) {
 		log('commandError', 'lyrics@getQueue', error.stack);
-		return generateError(message, error);
+		return generateErrorEmbed(message, error);
 	}
 
 })

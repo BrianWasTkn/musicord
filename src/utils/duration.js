@@ -1,3 +1,8 @@
+/**
+ * BrianWasTkn / DisTube 2020
+ * A function that converts time to formatted durations
+*/
+
 import moment from 'moment';
 
 /** if either: h, m, or s is less than 10 */

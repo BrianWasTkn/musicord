@@ -2,7 +2,7 @@ import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import { 
 	simpleEmbed, 
-	generateError 
+	generateErrorEmbed 
 } from '../utils/embed.js'
 
 export default new Command({
@@ -152,10 +152,10 @@ export default new Command({
 			})
 		} catch (error) {
 			log('commandError', 'queue@create_collector', error.stack);
-			return generateError(message, error);
+			return generateErrorEmbed(message, error);
 		}
 	} catch(error) {
 		log('commandError', 'queue@send_queue_msg', error.stack);
-		return generateError(message, error);
+		return generateErrorEmbed(message, error);
 	}
 })

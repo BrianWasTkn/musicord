@@ -3,7 +3,7 @@ import { log } from '../utils/logger.js'
 import { formatToSecond, formatDuration } from '../utils/duration.js'
 import { 
 	simpleEmbed, 
-	generateError 
+	generateErrorEmbed 
 } from '../utils/embed.js'
 
 export default new Command({
@@ -34,6 +34,6 @@ export default new Command({
 		return simpleEmbed(message, `Seeked track at ${formatDuration(parsed)}.`)
 	} catch(error) {
 		log('commandError', 'seek', error)
-		return generateError(message, error);
+		return generateErrorEmbed(message, error);
 	}
 })

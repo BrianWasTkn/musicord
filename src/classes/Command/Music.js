@@ -49,8 +49,12 @@ export default class Music extends Command {
 		const voice = this._processVoice(message);
 		if (voice) return voice;
 		const { channel } = message.member.voice,
-		myPermissions = channel.permissionsFor(message.client.user),
-		if (!myPermissions.has('CONNECT')) return simpleEmbed(message, `Make sure I have permissions to ${Permissions.CONNECT}`);
-		if (!myPermissions.has('SPEAK')) return simpleEmbed(message, `Please ensure I have the permissions to ${Permissions.SPEAK}`);
+		myPermissions = channel.permissionsFor(message.client.user);
+		if (!myPermissions.has('CONNECT')) {
+			return simpleEmbed(message, `Make sure I have permissions to ${Permissions.CONNECT}`);
+		}
+		if (!myPermissions.has('SPEAK')) {
+			return simpleEmbed(message, `Please ensure I have the permissions to ${Permissions.SPEAK}`);
+		}
 	}
 }

@@ -1,22 +1,31 @@
 import { log } from '../utils/logger.js'
+import { generatePlayerEmbed as embedify } from '../utils/embed.js'
 
 export async function run(bot) {
 	try {
+		/** Functions / Strings */
+		const url = (string, url) => `[${string}](${url})`;
+		const codeBlock = (string, syntax) => `\`\`\`${syntax}\n${string}\n\`\`\``;
+		const code = string => `\`${string}\``;
+
 		/** Distube#Events */
 		bot.player.on('playSong', async (message, queue, song) => {
-			await message.channel.send({
-				embed: {
+			await message.channel.send(
+				embedify({
 					title: 'Now Playing',
 					color: 'BLUE',
-					description: `Now playing [**__${song.name}__**](${song.url}) on the queue.`,
-					fields: [
-						{ name: 'Duration', value: `\`${song.formattedDuration}\``, inline: true },
-						{ name: 'Requested by', value: song.user.tag, inline: true },
-						{ name: 'Views', value: song.views.toLocaleString(), inline: true }
-					],
-					footer: { text: `Run "crib search" or "crib play" to search or play a track.` }
-				}
-			})
+					info: `Now Playing ${url(`**__${song.name}__**`, song.url)} on the queue.`,
+					fields: {
+						'Duration': { content: code(song.formattedDuration) , inline: true },
+						'Requested by': { content: song.user.tag, inline: true },
+						'Views': { content: song.views.toLocaleString(), inline: true }
+					},
+					footer: {
+						text: `Thanks for using ${bot.user.username}!`,
+						icon: bot.user.avatarURL()
+					}
+				})
+			)
 		}).on('addSong', async (message, queue, song) => {
 			await message.channel.send({
 				embed: {

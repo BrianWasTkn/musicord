@@ -1,6 +1,10 @@
 import discord from 'discord.js'
 import config from '../config.js'
 
+/**
+ * Creates a command class
+ * @private
+ */
 class Command {
 	constructor(options, func) {
 		/**

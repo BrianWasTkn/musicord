@@ -2,7 +2,7 @@ import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import { 
 	simpleEmbed, 
-	generateError 
+	generateErrorEmbed 
 } from '../utils/embed.js'
 
 export default new Command({
@@ -25,7 +25,6 @@ export default new Command({
 
 	// queue limits
 	const index = parseInt(args[0], 10);
-	const queue = bot.player.getQueue(message);
 	if (index > queue.songs.length) {
 		return simpleEmbed(message, 'Your specified index is greater than the length of songs in queue.');
 	} else if (index < 1) {
@@ -37,6 +36,6 @@ export default new Command({
 		await bot.player.jump(message, index - 1);
 	} catch(error) {
 		log('commandError', 'loop', error)
-		return generateError(message, error);
+		return generateErrorEmbed(message, error);
 	}
 })

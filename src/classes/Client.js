@@ -12,7 +12,7 @@ import Utilities from './Utilities.js'
 import config from '../config.js'
 import botPackage from '../../package.json'
 
-class Musicord extends Client {
+export const Musicord = class Musicord extends Client {
 	constructor(discordOpts, playerOpts) {
 		super(discordOpts);
 
@@ -70,15 +70,17 @@ class Musicord extends Client {
 	_loadAll() {
 		try {
 			this._loadListeners(this);
-			log('main', 'Listeners Loaded')
+			log('main', 'Listeners Loaded');
 			try {
 				this._registerCommands();
-				log('main', 'Commands Loaded')
+				log('main', 'Commands Loaded');
 			} catch(error) {
-				log('error', 'Cannot register commands', error.stack)
+				log('error', 'Cannot register commands', error.stack);
+				process.exit(1);
 			}
 		} catch(error) {
-			log('error', 'Cannot load bot listeners', error)
+			log('error', 'Cannot load bot listeners', error.stack);
+			process.exit(1);
 		}
 	}
 
@@ -122,8 +124,8 @@ class Musicord extends Client {
 
 		// clear the collection
 		try { this.commands.clear(); try { this.aliases.clear(); } 
-		catch { throw new Error('Cannot clear aliases') } } 
-		catch { return new Error('Cannot clear commands') }
+		catch { throw new Error('Cannot clear aliases'); } } 
+		catch { return new Error('Cannot clear commands'); }
 
 		// push commands -> items[]
 		files.forEach(f => {
@@ -190,5 +192,3 @@ class Musicord extends Client {
 		return this.config.developers;
 	}
 }
-
-export default Musicord;

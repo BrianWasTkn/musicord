@@ -2,7 +2,7 @@ import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import { 
 	simpleEmbed, 
-	generateError 
+	generateErrorEmbed 
 } from '../utils/embed.js'
 
 export default new Command({
@@ -44,6 +44,6 @@ export default new Command({
 		})
 	} catch(error) {
 		log('error', 'voteskip@collector', error.stack);
-		return generateError(message, error);
+		return generateErrorEmbed(message, error);
 	}
 })

@@ -35,12 +35,9 @@ export default class Owner extends Command {
 	}
 
 	async execute(bot, message, command, args) {
-		if (
-			command.category === 'Owner' && 
-			!bot.developers.includes(message.author.id)
-		) return;
+		if (!bot.developers.includes(message.author.id)) return;
 		const r = await this.run(bot, message, args);
 		if (!r) return;
-		return message.channel.send(r instanceof Object ? { embed: r } : r);
+		else return message.channel.send(r instanceof Object ? { embed: r } : r);
 	}
 }
