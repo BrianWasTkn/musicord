@@ -8,8 +8,9 @@ export const log = (type, content, error = null) => {
 		case 'node':
 			console.log(
 			`[${chalk.whiteBright(timestamp)}]:`, 
-			`[${chalk.green('Process')}]`,
+			`${chalk.yellowBright('Process')}`,
 			`${chalk.whiteBright('=>')} ${chalk.greenBright(content)}`);
+			console.log(chalk.whiteBright(error))
 			break;
 		case 'main':
 			console.log(
@@ -41,18 +42,21 @@ export const log = (type, content, error = null) => {
 			`[${chalk.whiteBright(timestamp)}]:`, 
 			`${chalk.redBright('Event Error')}`,
 			`${chalk.whiteBright('=>')} ${chalk.redBright(content)}`);
+			console.log(chalk.whiteBright(error))
 			break;
 		case 'commandError':
 			console.log(
 			`[${chalk.whiteBright(timestamp)}]:`, 
 			`${chalk.redBright('Command Error')}`,
 			`${chalk.whiteBright('=>')} ${chalk.redBright(content)}`);
+			console.log(chalk.whiteBright(error))
 			break;
 		case 'listenerError':
 			console.log(
 			`[${chalk.whiteBright(timestamp)}]:`, 
 			`${chalk.redBright('Listener Error')}`,
 			`${chalk.whiteBright('=>')} ${chalk.redBright(content)}`);
+			console.log(chalk.whiteBright(error))
 			break;
 		default: 
 			console.log(

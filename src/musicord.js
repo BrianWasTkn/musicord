@@ -1,7 +1,7 @@
 import config from './config.js'
 import Musicord from './classes/Client.js'
 
-import { log, logInit, logError } from './utils/logger.js'
+import { log } from './utils/logger.js'
 
 const run = async () => {
 	try {
