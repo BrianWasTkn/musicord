@@ -18,7 +18,7 @@ export default new Command({
 		// if evaled is an asynchronous function or not
 		let before = Date.now()
 		let evaled = await eval(asynchronous ? `(async()=>{${code}})()` : code);
-		evalTime = Date.now() - before
+		evalTime = Date.now() - before;
 		type = typeof evaled;
 
 		// non-string eval

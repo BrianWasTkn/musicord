@@ -10,6 +10,7 @@ export default new Command({
 
 	if (!opt) return 'You need a `cmd`';
 	const command = bot.commands.get(opt) || bot.aliases.get(opt);
+	if (!command) return 'nani no command found, sadness.'
 	if (command) {
 		try {
 			await bot.unloadCommand(command.name);
