@@ -1,3 +1,8 @@
+/**
+ * BrianWasTkn 2020
+ * A module for fancy logging
+*/
+
 import chalk from 'chalk'
 import moment from 'moment'
 

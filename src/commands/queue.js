@@ -96,6 +96,7 @@ export default new Command({
 							await reaction.users.remove(user)
 							try {
 								await bot.player.stop(message);
+								collector.stop();
 							} catch(error) {
 								log('commandError', 'queue@collector -> switch -> stop', error) 
 							}
