@@ -13,115 +13,97 @@ export async function run(bot) {
 		// all events
 		bot.player
 		.on('playSong', async (message, queue, song) => {
-			message.channel.send({
+			await message.channel.send({
 				embed: {
-					author: {
-						name: 'Now Playing',
-						iconURL: message.guild.iconURL()
-					},
+					title: 'Now Playing',
 					color: 'BLUE',
+					description: `Now playing [**__${song.name}__**](${song.url}) on the queue.`
 					fields: [
-						{ name: 'Song', value: `[__${song.name}__](${song.url})` },
-						{ name: 'Duration', value: `\`${song.formattedDuration}\`` },
+						{ name: 'Duration', value: `\`${song.formattedDuration}\``, inline: true },
+						{ name: 'Requested by', value: song.user.tag, inline: true },
+						{ name: 'Views', value: song.views.toLocaleString(), inline: true }
 					],
-					footer: {
-						text: `Requested by ${song.user.tag}`,
-						iconURL: song.user.avatarURL()
-					}
+					footer: { text: `Run "crib search" or "crib play" to search or play a track.` }
 				}
 			})
 		})
 		.on('addSong', async (message, queue, song) => {
-			message.channel.send({
+			await message.channel.send({
 				embed: {
-					author: {
-						name: 'Added to Queue',
-						iconURL: message.guild.iconURL()
-					},
+					title: 'Added to Queue',
 					color: 'BLUE',
+					description: `Added [**__${song.name}__**](${song.url}) to the queue.`
 					fields: [
-						{ name: 'Song', value: `[__${song.name}__](${song.url})` },
-						{ name: 'Duration', value: `\`${song.formattedDuration}\`` },
+						{ name: 'Duration', value: `\`${song.formattedDuration}\``, inline: true },
+						{ name: 'Added by', value: song.user.tag, inline: true },
+						{ name: 'Views', value: song.views.toLocaleString(), inline: true }
 					],
-					footer: {
-						text: `Added by ${song.user.tag}`,
-						iconURL: song.user.avatarURL()
-					}
+					footer: { text: `Run "crib search" or "crib play" to search or play more tracks.` }
 				}
 			})
 		})
 		.on('noRelated', async message => {
-			message.channel.send({
+			await message.channel.send({
 				embed: {
-					author: {
-						name: 'Nothing Found',
-						iconURL: message.guild.iconURL()
-					},
-					color: 'RED',
-					description: '**No related song has been found.**'
+					title: 'Nothing Found',
+					color: 'BLUE',
+					description: 'No track(s) were found related to the previous track.\nYou can run `crib search` or `crib play` to search or play a track.'
+					footer: { text: `Thanks for using ${message.client.user.username}!` }
 				}
 			})
 		})
 		.on('finish', async message => {
-			message.channel.send({
+			await message.channel.send({
 				embed: {
-					author: {
-						name: 'Finished Playing',
-						iconURL: message.guild.iconURL()
-					},
+					title: 'Queue Finished',
 					color: 'BLUE',
-					description: 'The queue had finished playing all the songs in the queue.'
+					description: 'The queue has finished playing all queued songs.\nYou can run `crib search` or `crib play` to search or play a track.'
+					footer: { text: `Thanks for using ${message.client.user.username}!` }
 				}
 			})
 		})
 		.on('empty', async message => {
-			message.channel.send({
+			await message.channel.send({
 				embed: {
-					author: {
-						name: 'Channel Empty',
-						iconURL: message.guild.iconURL()
-					},
-					color: 'RED',
-					description: 'Voice channel is now **empty**.\nLeft the channel after 60 seconds...'
+					title: 'Channel Empty',
+					color: 'BLUE',
+					description: 'Voice channel was empty after **60 seconds** from being empty.\nSuccessfully left the voice channel.',
+					footer: { text: `Thanks for using ${message.client.user.username}!` }
 				}
 			})
 		})
 		.on('addList', async (message, queue, playlist) => {
-			message.channel.send({
+			await message.channel.send({
 				embed: {
-					author: {
-						name: `${playlist.songs.length} songs added`,
-						iconURL: message.guild.iconURL()
-					},
+					title: 'Added to Queue,
 					color: 'BLUE',
-					description: `Playlist **${playlist.name}** added to the queue.`
+					description: `Added [**__${playlist.name}__**](${playlist.url}) with **${playlist.songs.length}** into the queue.`
+					fields: [
+						{ name: 'Duration', value: `\`${playlist.formattedDuration}\``, inline: true },
+						{ name: 'Added by', value: playlist.user.tag, inline: true }
+					],
+					footer: { text: `Run "crib search" or "crib play" to search or play more tracks.` }
 				}
 			})
 		})
 		.on('searchResult', async (message, result) => {
 			result = result.slice(0, 10).map((song, index) => `**#${index + 1}:** [${song.name}](${song.url}) - \`${song.formattedDuration}\``) // Slice the results from 15 => 10
-			message.channel.send({
+			await message.channel.send({
 				embed: {
-					author: {
-						name: 'Search Results',
-						iconURL: message.guild.iconURL()
-					},
 					title: `Found ${result.length} tracks`,
 					color: 'BLUE',
 					description: result.join('\n'),
 					fields: [
-						{ name: 'Instructions', value: 'Type the **number** of your choice.\nYou can cancel by typing out `cancel` right now.\nYou have **30 seconds** to proceed otherwise your search is cancelled.' }
+						{ name: 'Instructions', value: 'Type the **number** of your choice.\nYou can cancel by typing out `cancel` right now.' }
 					]
+					footer: { text: 'You have 30 seconds to proceed otherwise your search is cancelled.' }
 				}
 			})
 		})
-		.on('searchCancel', async (message) => {
-			message.channel.send({
+		.on('searchCancel', async message => {
+			await message.channel.send({
 				embed: {
-					author: {
-						name: 'Search Cancelled',
-						iconURL: message.guild.iconURL()
-					},
+					title: 'Seach Cancelled',
 					color: 'BLUE',
 					description: 'You cancelled the search!'
 				}
@@ -130,12 +112,9 @@ export async function run(bot) {
 		.on('error', async (message, err) => {
 			message.channel.send({
 				embed: {
-					author: {
-						name: 'Player Error',
-						iconURL: message.guild.iconURL()
-					},
+					title: 'Player Error',
 					color: 'RED',
-					description: err
+					description: message.client.utils.codeBlock(err, 'js')
 				}
 			})
 		})
