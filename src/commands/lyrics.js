@@ -29,6 +29,7 @@ export default new Command({
 			/** Message */
 			return {
 				title: `Lyrics for **${queue.songs[0].name}**`,
+				color: 'BLUE',
 				description: lyrics
 			}
 		} catch(error) {

@@ -3,14 +3,14 @@ import { log } from '../utils/logger.js'
 export async function run(bot) {
 	try {
 
-		// queue status
+		/** Simple queue function that returns the current queue value */
 		const status = queue => ({
 			looped: queue.repeatMode ? queue.repeatMode === 2 ? 'queue' : 'track' : 'off',
 			volume: queue.volume,
 			autoPlay: queue.autoPlay ? 'on' : 'off'
 		})
 
-		// all events
+		/** Distube#Events */
 		bot.player
 		.on('playSong', async (message, queue, song) => {
 			await message.channel.send({
@@ -37,6 +37,25 @@ export async function run(bot) {
 						{ name: 'Duration', value: `\`${song.formattedDuration}\``, inline: true },
 						{ name: 'Added by', value: song.user.tag, inline: true },
 						{ name: 'Views', value: song.views.toLocaleString(), inline: true }
+					],
+					footer: { text: `Run "crib search" or "crib play" to search or play more tracks.` }
+				}
+			})
+		})
+		.on('initQueue', async queue => {
+			queue.volume = 100;
+			await queue.initMessage.channel.send({
+				embed: {
+					title: 'Queue Options',
+					color: 'BLUE',
+					description: 'The following options are applied by default whenever this server opens a new queue.',
+					fields: [
+						{ name: 'Volume', value: queue.volume, inline: true },
+						{ name: 'Loop', value: queue.repeatMode ? queue.repeatMode === 2 ? 'Queue' : 'Track' : off, inline: true },
+						{ name: 'Autoplay', value: queue.autoplay, inline: true },
+						{ name: 'Paused', value: queue.pause, inline: true },
+						{ name: 'Last Skipped', value: queue.skipped, inline: true },
+						{ name: 'Stopped', value: queue.stopped, inline: true }
 					],
 					footer: { text: `Run "crib search" or "crib play" to search or play more tracks.` }
 				}
@@ -105,7 +124,8 @@ export async function run(bot) {
 				embed: {
 					title: 'Seach Cancelled',
 					color: 'BLUE',
-					description: 'You cancelled the search!'
+					description: 'You cancelled the search!',
+					footer: { text: `Run "crib search" or "crib play" to search or play more tracks.` }
 				}
 			})
 		})
@@ -114,7 +134,8 @@ export async function run(bot) {
 				embed: {
 					title: 'Player Error',
 					color: 'RED',
-					description: message.client.utils.codeBlock(err, 'js')
+					description: message.client.utils.codeBlock(err, 'js'),
+					footer: { text: `Run "crib search" or "crib play" to search or play more tracks.` }
 				}
 			})
 		})

@@ -24,8 +24,12 @@ export default new Command({
 
 	/** Else, pause */
 	try {
-		await bot.player.pause(message);
-		return 'The player has been paused.'
+		const queue = await bot.player.pause(message);
+		return {
+			title: 'Player Paused',
+			color: 'BLUE',
+			description: `User **${message.author.tag}** has paused the queue.`
+		}
 	} catch(error) {
 		log('commandError', 'pause', error)
 		return error;
