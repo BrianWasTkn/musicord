@@ -24,6 +24,12 @@ export const log = (type, content, error = null) => {
 			`${chalk.magentaBright('Command')}`,
 			`${chalk.whiteBright('=>')} ${chalk.greenBright(content)}`);
 			break;
+		case 'discord':
+			console.log(
+			`[${chalk.whiteBright(timestamp)}]:`, 
+			`${chalk.hex('#7289DA')('Discord')}`,
+			`${chalk.whiteBright('=>')} ${chalk.hex('#7289DA')(content)}`);
+			break;
 		case 'event':
 			console.log(
 			`[${chalk.whiteBright(timestamp)}]:`, 
