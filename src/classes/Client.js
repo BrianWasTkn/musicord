@@ -93,7 +93,6 @@ class Musicord extends Client {
 			// Item is a javascipt file
 			if (item.endsWith('.js')) {
 				const command = require(join(__dirname, '..', 'commands', item)).default;
-				console.log(command)
 				this.commands.set(command.name, command)
 				if (command.aliases) command.aliases.forEach(alias => this.aliases.set(alias, command))
 			}
@@ -102,7 +101,6 @@ class Musicord extends Client {
 				readdirSync(join(__dirname, '..', 'commands', item))
 				.forEach(cmd => {
 					const command = require(join(__dirname, '..', 'commands', item, cmd)).default;
-					console.log(command)
 					this.commands.set(command.name, command)
 					if (command.aliases) command.aliases.forEach(alias => this.aliases.set(alias, command))
 				})
