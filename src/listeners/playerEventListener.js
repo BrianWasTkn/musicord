@@ -61,6 +61,34 @@ export async function run(bot) {
 					icon: bot.user.avatarURL()
 				}
 			}));
+		}).on('searchResult', async (message, result) => {
+			result = result.slice(0, 10).map((song, index) => `**#${index + 1}:** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\``) // Slice the results from 15 => 10
+			await message.channel.send(embedify({
+				title: 'Search Results',
+				color: 'BLUE',
+				info: result.join('\n'),
+				fields: {
+					'Instructions': { content: 'Type the **number** of your choice to start playing that track.\nYou can type **cancel** if you wanna cancel your search.' }
+				},
+				footer: {
+					text: `Thanks for using ${bot.user.username}!`,
+					icon: bot.user.avatarURL()
+				}
+			}));
+		}).on('searchCancel', async message => {
+			await message.channel.send(embedify({
+				title: 'Search Cancelled',
+				color: 'RED',
+				info: 'You\'ve either done the following so your search has been cancelled:',
+				fields: {
+					'Idle': { content: 'You have not been answering me for **30 seconds** so your search has been timed-out.' },
+					'NaN': {  content: 'Or **Not a Number**, you might\'ve mistyped something instead of the index number of the track.' }
+				},
+				footer: {
+					text: `Thanks for using ${bot.user.username}!`,
+					icon: bot.user.avatarURL()
+				}
+			}));
 		}).on('initQueue', async queue => {
 			await queue.initMessage.channel.send(embedify({
 				title: 'Queue Settings',
@@ -106,34 +134,6 @@ export async function run(bot) {
 				info: 'The voice channel is now empty.',
 				footer: {
 					text: `Thanks for using ${bot.user.username}!`
-				}
-			}));
-		}).on('searchResult', async (message, result) => {
-			result = result.slice(0, 10).map((song, index) => `**#${index + 1}:** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\``) // Slice the results from 15 => 10
-			await message.channel.send(embedify({
-				title: 'Search Results',
-				color: 'BLUE',
-				info: result.join('\n'),
-				fields: {
-					'Instructions': { content: 'Type the **number** of your choice to start playing that track.\nYou can type **cancel** if you wanna cancel your search.' }
-				},
-				footer: {
-					text: `Thanks for using ${bot.user.username}!`,
-					icon: bot.user.avatarURL()
-				}
-			}));
-		}).on('searchCancel', async message => {
-			await message.channel.send(embedify({
-				title: 'Search Cancelled',
-				color: 'RED',
-				info: 'You\'ve either done the following so your search has been cancelled:',
-				fields: {
-					'Idle': { content: 'You have not been answering me for **30 seconds** so your search has been timed-out.' },
-					'NaN': {  content: 'Or **Not a Number**, you might\'ve mistyped something instead of the index number of the track.' }
-				},
-				footer: {
-					text: `Thanks for using ${bot.user.username}!`,
-					icon: bot.user.avatarURL()
 				}
 			}));
 		}).on('error', async (message, err) => {

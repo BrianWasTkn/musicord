@@ -4,6 +4,15 @@
 */
 
 import { log } from './logger.js'
+import { dynamicEmbed } from './embed.js'
+
+const repeatMode = queue => {
+	return queue.repeatMode 
+	? queue.repeatMode === 2 
+		? 0 
+		: 2 
+	: 1;
+}
 
 const addReactions = (msg, emojis) => {
 	try {
@@ -18,6 +27,7 @@ const addReactions = (msg, emojis) => {
 	}
 }
 
+/** Reaction Collector */
 export const startReactionCollector = async (message, embed, time) => {
 	try {
 		/** Reactions */
@@ -37,75 +47,134 @@ export const startReactionCollector = async (message, embed, time) => {
 			})
 
 			collector.on('stop', async (reaction, user) => {
-				embed.reactions.removeAll()
+				embed.reactions.removeAll();
 			}).on('collect', async (reaction, user) => {
 				switch(reaction.emoji.name) {
 					// Previous Song
 					case emojis[0]:
+					try {
 						await message.channel.send('Coming Soon:tm:')
-						break;
+					} catch(error) {
+						log('error', 'playerReactionCollector@send_message', error);
+					}
+					break;
 
 					// Next Song
 					case emojis[1]:
-						await message.client.player.skip(message)
-						break;
+					try {
+						await message.client.player.skip(message);
+					} catch(error) {
+						log('error', 'playerReactionCollector@skip', error);
+					}
+					break;
 
 					// Pause
 					case emojis[2]: 
-						await message.client.player.pause(message)
-						await message.channel.send({
-							embed: {
+					try {
+						await message.client.player.pause(message);
+						try {
+							await message.channel.send(dynamicEmbed({
 								title: 'Track Paused',
 								color: 'BLUE',
-								description: `Successfully paused the queue by **${message.author.tag}**.`,
-								footer: { text: 'Run "crib play" or "crib search" to either play or search for a track.' }
-							}
-						})
-						break;
+								fields: {
+									'Action Taken': { content: 'pause', inline: true },
+									'Requested by': { content: user.tag, inline: true }
+								},
+								footer: {
+									text: `Thanks for using ${message.client.user.username}!`,
+									icon: message.client.user.avatarURL()
+								}
+							}));
+						} catch(error) {
+							log('error', 'playerReactionCollector@send_message', error);
+						}
+					} catch(error) {
+						log('error', 'playerReactionCollector@pause', error);
+					}
+					break;
 
 					// Stop
 					case emojis[3]:
-						await message.client.player.stop(message);;
-						await message.channel.send({
-							embed: {
+					try {
+						await message.client.player.stop(message);
+						try {
+							await message.channel.send(dynamicEmbed({
 								title: 'Player Stopped',
 								color: 'BLUE',
-								description: `The player has been stopped by **${message.author.tag}**.`,
-								footer: { text: 'Run "crib play" or "crib search" to either play or search for a track.' }
-							}
-						});
-						break;
+								fields: {
+									'Action Taken': { content: 'stop', inline: true },
+									'Requested by': { content: user.tag, inline: true }
+								},
+								footer: {
+									text: `Thanks for using ${message.client.user.username}!`,
+									icon: message.client.user.avatarURL()
+								}
+							}));
+						} catch(error) {
+							log('error', 'playerReactionCollector@send_stop_message', error);
+						}
+					} catch(error) {
+						log('error', 'playerReactionCollector@stop', error);
+					}
+					break;
 
 					// Loop
 					case emojis[4]:
+					try {
 						const queue = message.client.player.getQueue(message);
-						const mode = queue.repeatMode ? queue.repeatMode === 0 ? 1 : 2 : 0;
-						await message.client.player.setRepeatMode(message, mode)
-						await message.channel.send(`🔁 ${queue.repeatMode ? queue.repeatMode === 2 ? 'Now looping **__queue__**' : 'Now looping **__track__**' : 'Loop is now **__off__**'}`)
-						break;
+						await message.client.player.setRepeatMode(message, repeatMode(queue));
+						try {
+							await message.channel.send(dynamicEmbed({
+								title: 'Repeat Mode',
+								color: 'BLUE',
+								info: queue.repeatMode ? queue.repeatMode === 2 ? 'Now looping the **__queue__**' : 'Now looping the **__song__**' : 'Loop is now **__off__**'
+							}))
+						} catch(error) {
+							log('error', 'playerReactionCollector@send_message', error);
+						}
+					} catch(error) {
+						log('error', 'playerReactionCollector@getQueue', error);
+					}
+					break;
 
 					// Shuffle
 					case emojis[5]:
-						await message.client.player.shuffle(message);
-						await message.channel.send({
-							embed: {
+					try {
+						const queue = message.client.player.shuffle(message);
+						try {
+							await message.channel.send(dynamicEmbed({
 								title: 'Queue Shuffled',
 								color: 'BLUE',
-								description: `The player queue has been shuffled by **${message.author.tag}**.`,
-								footer: { text: 'Run "crib play" or "crib search" to either play or search for a track.' }
-							}
-						});
-						break;
+								fields: {
+									'Action Taken': { content: 'shuffle', inline: true },
+									'Requested by': { content: user.tag, inline: true }
+								},
+								footer: {
+									text: `Thanks for using ${message.client.user.username}!`,
+									icon: message.client.user.avatarURL()
+								}
+							}));
+						} catch(error) {
+							log('error', 'playerReactionCollector@send_message', error);
+						}
+					} catch(error) {
+						log('error', 'playerReactionCollector@shuffle', error);
+					}
+					break;
 
 					// stop collector
 					case emojis[6]:
-						try {
-							embed.reactions.removeAll();
-							collector.stop();
-						} catch(error) {
-							log('error', 'playerReactionCollector@remove_emotes', error)
+					try {
+						await collector.stop();
+						try { 
+							await embed.reactions.removeAll(); 
+						} catch { 
+							log('error', 'playerReactionCollector@remove_reactions', error) 
 						}
-						break;
+					} catch(error) {
+						log('error', 'playerReactionCollector@stop_collector', error)
+					}
+					break;
 				}
 			})
 		} catch(error) {
