@@ -1,6 +1,4 @@
 import Command from '../classes/Command.js'
-import { Collection } from 'discord.js'
-import { log } from '../utils/logger.js'
 
 class Join extends Command {
 	constructor(client) {

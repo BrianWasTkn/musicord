@@ -1,72 +1,31 @@
-// Node packages
 import { Client, Collection } from 'discord.js'
 import { join } from 'path'
 import { readdirSync } from 'fs'
 import chalk from 'chalk'
 
-// Local modules
-import { log } from '../utils/logger.js'
 import DisTube from './Player.js'
 import config from '../config.js'
-import botPackage from '../../package.json'
-
-// Extended Structures
-import './Message.js'
+import package from '../../package.json'
 
 class Musicord extends Client {
 	constructor(discordOpts, playerOpts) {
 		super(discordOpts);
-
-		/**
-		 * package.json
-		 * @type {Object}
-		 */
-		this.package = botPackage;
-
-		/**
-		 * config.js
-		 * @type {Object}
-		 */
+		this.package = package;
 		this.config = config;
-
-		/**
-		 * Our main man
-		 * @type {DisTube}
-		 */
 		this.player = new DisTube(this, playerOpts);
-
-		/**
-		 * Commands
-		 * @type {Collection}
-		 */
 		this.commands = new Collection();
-
-		/**
-		 * Aliases
-		 * @type {Collection}
-		 */
 		this.aliases = new Collection();
-
-		/**
-		 * Cooldowns
-		 * @type {Collection}
-		 */
 		this.cooldowns = new Collection();
-
-		/**
-		 * Start listening for events, import commands.
-		 * @type {Promise<void>}
-		 */
-		this._loadAll();
+		this.loadAll();
 	}
 
 	/** Load Everythin' */
-	_loadAll() {
+	loadAll() {
 		try {
-			this._loadListeners(this);
+			this.loadListeners(this);
 			log('main', 'Listeners Loaded');
 			try {
-				this._registerCommands();
+				this.registerCommands();
 				log('main', 'Commands Loaded');
 			} catch(error) {
 				log('error', 'Cannot register commands', error.stack);
@@ -79,39 +38,46 @@ class Musicord extends Client {
 	}
 
 	/** Listeners */
-	_loadListeners(bot) {
-		readdirSync(join(__dirname, '..', 'listeners'))
-		.forEach(async l => {
-			new (require(join(__dirname, '..', 'listeners', l)).default)(this);
-		})
+	loadListeners(bot) {
+		/** Discord Listeners */
+		const discord = readdirSync(join(__dirname, '..', 'emitters', 'discord'));
+		discord.forEach(async e => {
+			const event = new (require(`../emitters/discord/${e}`).default)(this);
+			this.on(e.split('.')[0], (...args) => {
+				await event.run(...args);
+			});
+		});
+
+		/** Player Listeners */
+		const player = readdirSync(join(__dirname, '..', 'emitters', 'distube'));
+		player.forEach(async e => {
+			const event = new (require(`../emitters/distube/${e}`).default)(this);
+			this.player.on(e.split('.')[0], (...args) => {
+				await event.run(...args);
+			});
+		});
 	}
 
 	/** Register Commands */
-	_registerCommands() {
-		readdirSync(join(__dirname, '..', 'commands'))
+	registerCommands() {
+		readdirSync(join(__dirname, '..', 'commands'));
 		.forEach(item => {
-			// Item is a javascipt file
 			if (item.endsWith('.js')) {
 				const command = new (require(join(__dirname, '..', 'commands', item)).default)(this);
 				this.commands.set(command.name, command)
 				if (command.aliases) command.aliases.forEach(alias => this.aliases.set(alias, command))
-			}
-			// item belongs to a category
-			if (!item.endsWith('.js')) {
+			} else {
 				readdirSync(join(__dirname, '..', 'commands', item))
 				.forEach(cmd => {
 					const command = new (require(join(__dirname, '..', 'commands', item, cmd)).default)(this);
 					this.commands.set(command.name, command)
 					if (command.aliases) command.aliases.forEach(alias => this.aliases.set(alias, command))
-				})
+				});
 			}
-		})
+		});
 	}
 
-	/** 
-	 * Reload Commands
-	 * @returns {Object} object of aliases and commands
-	 */
+	/** Functions */
 	async reloadCommands() {
 		const files = readdirSync(join(__dirname, '..', 'commands'));
 
@@ -142,11 +108,6 @@ class Musicord extends Client {
 		return { commands: this.commands, aliases: this.aliases };
 	}
 
-	/** 
-	 * Load Command
-	 * @param {String} cmd - the cmd query to load
-	 * @returns {Command} the command object
-	 */
 	async loadCommand(cmd) {
 		const array = [];
 		// check if {cmd} is already in {this.commands|this.aliases}
@@ -155,8 +116,8 @@ class Musicord extends Client {
 		// find in files and push -> array[]
 		readdirSync(join(__dirname, '..', 'commands'))
 		.forEach(item => {
-			if (item.endsWith('.js')) array.push(require(join(__dirname, '..', 'commands')).default);
-			else readdirSync(join(__dirname, '..', 'commands', item)).forEach(c => array.push(require(join(__dirname, '..', 'commands', item, c)).default))
+			if (item.endsWith('.js')) array.push(new (require(join(__dirname, '..', 'commands')).default)(this));
+			else readdirSync(join(__dirname, '..', 'commands', item)).forEach(c => array.push(new (require(join(__dirname, '..', 'commands', item, c)).default)(this)))
 		});
 		// then find {cmd} in array[]
 		const command = array.find(c => c.name === cmd);
@@ -164,11 +125,6 @@ class Musicord extends Client {
 		return command;
 	}
 
-	/** 
-	 * Unload Command
-	 * @param {String} cmd - the cmd query to load
-	 * @returns {Boolean} wip
-	 */
 	async unloadCommand(cmd) {
 		const command = this.commands.get(cmd) || this.aliases.get(cmd);
 		if (!command) return new Error('UnknownCommand');
