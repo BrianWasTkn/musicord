@@ -11,4 +11,4 @@ Listeners are events emitted by Discord and DisTube. These events have their own
 `ready`, `warn`, `error`, `rateLimit`
 
 * **playerEventListener** - **<Client>.<DisTube>.on**
-`playSong`, `addSong`, `initQueue`, `noRelated`, `finish`, `empty`, `addList`, `searchResult`, `searchCancel`, `error`
+`playSong`, `addSong`, `addList`, `initQueue`, `noRelated`, `finish`, `empty`, `searchResult`, `searchCancel`, `error`

@@ -2,7 +2,7 @@ import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import { 
 	simpleEmbed, 
-	generateErrorEmbed 
+	errorEmbed 
 } from '../utils/embed.js'
 
 export default new Command({
@@ -34,6 +34,6 @@ export default new Command({
 		return simpleEmbed(message, `Successfully joined channel ${channel.name}!`);
 	} catch(error) {
 		log('error', 'join@join_channel', error);
-		return generateErrorEmbed(message, error);
+		return errorEmbed(message, error);
 	}
 })

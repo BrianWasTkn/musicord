@@ -1,5 +1,6 @@
-import { inspect } from 'util';
-import Command from '../../classes/Command/Owner.js';
+import { inspect } from 'util'
+import { sanitize, codeBlock } from '../../utils/text.js'
+import Command from '../../classes/Command/Owner.js'
 
 export default new Command({
 	name: 'eval',
@@ -27,7 +28,7 @@ export default new Command({
 		}
 
 		// clean our output + hide our token
-		result = bot.utils.sanitize(evaled);
+		result = sanitize(evaled);
 		const token = new RegExp(bot.config.token, 'gi');
     result = result.replace(token, 'e');
 	} catch (e) {
@@ -36,9 +37,9 @@ export default new Command({
 
 	return {
 		color: 'BLUE',
-		description: bot.utils.codeBlock(result, 'js'),
+		description: codeBlock(result, 'js'),
 		fields: [
-			{ name: 'Type', value: bot.utils.codeBlock(type, 'js') }
+			{ name: 'Type', value: codeBlock(type, 'js') }
 		],
 		footer: {
 			text: evalTime === 0 ? "Evaluation is fast" : `Eval Time: ${evalTime}ms`

@@ -1,6 +1,7 @@
 /**
  * BrianWasTkn / DisTube 2020
  * A function that converts time to formatted durations
+ * and vice versa.
 */
 
 import moment from 'moment';
@@ -15,12 +16,16 @@ const format = i => {
 export const formatDuration = ms => {
   if (!ms || !parseInt(ms)) return '00:00';
   const seconds = moment.duration(ms).seconds(),
-  minutes = moment.duration(ms).minutes(),
-  hours = moment.duration(ms).hours();
+        minutes = moment.duration(ms).minutes(),
+        hours = moment.duration(ms).hours();
 
-  if (hours > 0) return `${format(hours)}:${format(minutes)}:${format(seconds)}`;
-  if (minutes > 0) return `${format(minutes)}:${format(seconds)}`;
-  return `00:${format(seconds)}`;
+  if (hours > 0) {
+    return [format(hours), format(minutes), format(seconds)].join(':');
+  } else if (minutes > 0) {
+    return [format(minutes), format(seconds)].join(':');
+  } else {
+    return ['00', format(seconds)].map(e => format(e)).join(':');
+  }
 }
 
 /** Converts hh:mm:ss to seconds */

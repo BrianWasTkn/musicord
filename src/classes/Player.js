@@ -11,11 +11,9 @@ class Player extends distube {
 	 * @param {Object} message Discord.Message
 	 */
 	nowPlaying(message) {
-		return new Promise(async(resolve, reject) => {
-			const queue = this.guildQueues.get(message.guild.id);
-			if (!queue) reject('Not Playing');
-			resolve(queue.songs[0])
-		})
+		const queue = this.guildQueues.get(message.guild.id);
+		if (!queue) return new Error('Not Playing');
+		return queue.songs[0];
 	}
 
 	/**
@@ -51,4 +49,4 @@ class Player extends distube {
 	}
 }
 
-export default Player
+export default Player;

@@ -5,14 +5,22 @@
  * wouldn't dig down to every class/command/listeners.
 */
 
-import { red, blue, green } from './colors.js'
+import { 
+	red, 
+	orange,
+	yellow,
+	green,
+	blue,
+	indigo,
+	purple,
+	blurple,
+	greyple,
+	pink,
+	gold,
+	aqua
+} from './colors.js'
 
-import discord from 'discord.js'
-
-/**
- * Permission Strings
- * @returns {String|Array<String>}
-*/
+/** Permission Strings */
 export const Permissions = {
 	_text: [this.EMBED_LINKS, this.READ_MESSAGES, this.SEND_MESSAGES],
 	_voice: [this.CONNECT, this.SPEAK],
@@ -24,22 +32,33 @@ export const Permissions = {
 	SEND_MESSAGES: 'send messages'
 }
 
-/**
- * Requirement Strings
- * @returns {String}
-*/
+/** Requirement Strings */
 export const Require = {
-	joinVoice: 'Please join a voice channel first!',
-	djRole: 'You need to have the {dj} role!',
-	missingPerms: 'Make sure you have permissions to {perm} and try again.',
-	somethingToPlay: 'Please enter a valid music source link, a search query or a direct stream URL.',
-	numberPlease: 'Unable to parse {num} as a valid number.'
+	JOIN_VOICE: 'Please join a voice channel first!',
+	ROLE_DJ: 'You need to have the {dj} role!',
+	PERMISSIONS: 'Make sure you have permissions to {perm} and try again.',
+	PLAY_SOMETHING: 'Please enter a valid music source link, a search query or a direct stream URL.',
+	NUMBER_ONLY: 'Unable to parse {num} as a valid number.'
 }
 
-/**
- * Player Limits
-*/
+/** Player Limits */
 export const Limits = {
 	search: { min: 1, max: 10},
 	volume: { min: 0, max: 100 }
+}
+
+/** Colors */
+export const Colors = {
+	red, 
+	orange,
+	yellow,
+	green,
+	blue,
+	indigo,
+	purple,
+	blurple,
+	greyple,
+	pink,
+	gold,
+	aqua
 }

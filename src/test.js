@@ -1,5 +1,27 @@
 const log = (_) => console.log(_);
+const { EventEmitter } = require('events');
 
+class Lame extends EventEmitter {
+	constructor(s) {
+		super();
+		this.s = s;
+		this.addListener('eventHere', n => console.log(n))
+	}
+
+	nani(idk) {
+		this.emit('eventHere', idk);
+	}
+}
+
+const test = new Lame();
+(async () => {
+	test.nani('idk lol');
+	test.on('eventHere', string => {
+		console.log(Lame);
+	});
+})();
+
+/**
 const fields = {
 	'Duration': { value: 555, inline: true },
 	'Name': { value: 'London Bridge', inline: true }
@@ -17,3 +39,4 @@ console.log(lol(5));
 function lol({ number, squared = number }) {
 	return squared;
 }
+*/

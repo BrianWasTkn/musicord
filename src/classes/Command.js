@@ -1,6 +1,8 @@
 import discord from 'discord.js'
 import config from '../config.js'
 
+import { dynamicEmbed as embedify } from '../utils/embed.js'
+
 /**
  * Creates a command class
  * @private
@@ -64,14 +66,30 @@ class Command {
 	 * @param {Object} [command] the command object
 	 */
 	_processCooldown(message, command) {
+		// Check if <Member>.author.id is already in the cooldown collection
 		if (!message.client.cooldowns.has(command.name)) 
 			message.client.cooldowns.set(command.name, new discord.Collection());
-		// variables
+		// The date now, timestamps, and the command cooldown
 		const now = Date.now(),
 		timestamps = message.client.cooldowns.get(command.name),
-		cooldown = command.cooldown || command.defaultCooldown,
-		check = this._checkCooldown(command, message, now, timestamps, cooldown);
-		if (check) return check;
+		cooldown = command.cooldown;
+		// Check cooldown
+		if (timestamps.has(message.author.id)) {
+			const expiration = timestamps.get(message.author.id) + cooldown;
+			if (now < expiration) {
+				let timeLeft = (expiration - now) / 1000;
+				timeLeft = timeLeft > 60 ? message.client.utils.parseTime(timeLeft) : `${timeLeft.toFixed(1)} seconds`;
+				return embedify({
+					title: 'Cooldown, Slow down.',
+					color: 'BLUE',
+					info: `You\'re currently on cooldown for command \`${command.name}\`. Wait **${timeLeft}** and try running the command again.`,
+					footer: {
+						text: `Thanks for using ${message.client.user.username}!`,
+						avatar: message.client.user.avatarURL()
+					}
+				})
+			} 
+		} 
 		// timeout to delete cooldown
 		timestamps.set(message.author.id, now)
 		setTimeout(() => {
@@ -79,59 +97,47 @@ class Command {
 		}, command.cooldown);
 	}
 
-	/**
-	 * Check Cooldowns
-	 * @param {Object} [command] the message object
-	 * @param {Object} [message] the command object
-	 * @param {Number} [now] the date now
-	 * @param {discord.Collection} [timestamps] the collection of timestamps
-	 * @param {Number} [cooldown] the cooldown of the command
-	 * @returns {Object} [embed.Object] the embed object
-	 */
-	_checkCooldown(command, message, now, timestamps, cooldown) {
-		if (timestamps.has(message.author.id)) {
-			const expiration = timestamps.get(message.author.id) + cooldown;
-			if (now < expiration) {
-				const timeLeft = (expiration - now) / 1000;
-				return {
-					title: 'Cooldown',
-					color: 'BLUE',
-					description: `Command \`${command.name}\` on cooldown.\nWait **${timeLeft > 60 ? message.client.utils.parseTime(timeLeft) : `${timeLeft.toFixed(1)} seconds`}** and try again.`,
-					footer: { text: 'Thanks for support!' } 
-				}
-			} 
-		} 
-	}
-
 	async execute(bot, command, message, args) {
-		// Process Cooldown 
-		const cooldown = this._processCooldown(message, command);
-		if (cooldown) return message.channel.send({ embed: cooldown});
-		// Check Permissions
-		const permission = this._checkPermissions(message, command);
-		if (permission) return message.channel.send({ embed: permission });
+		// Check cooldown and command permissions.
+		const checks = [this._processCooldown, this._checkPermissions];
+		for (const check of checks) {
+			const ret = check(message, command);
+			if (ret) return message.channel.send(ret);
+		}
 
-		// Run
+		// Run the command
 		const returned = await this.run(bot, message, args); // Promise
 		if (!returned) return;
+		// An embed Object
 		if (returned instanceof Object) {
-			const embedObj = Object.assign({ color: 'RANDOM', footer: { text: `Thanks for using ${bot.user.tag}!` } }, returned);
-			return message.channel.send({ embed: embedObj });
+			const embed = Object.assign(embedify({
+				color: 'RANDOM',
+				footer: {
+					text: `Thanks for using ${bot.user.username}!`,
+					avatar: bot.user.avatarURL()
+				}
+			}, returned));
+			return message.channel.send(embed);
+		} else {
+			return message.channel.send(returned);
 		}
-		return message.channel.send(returned);
 	}
 
 	_checkPermissions(message, command) {
 		// User Permissions
 		if (!message.member.permissions.has(command.permissions)) {
-			return {
+			return embedify({
 				title: 'Missing Permissions',
 				color: 'RED',
-				description: 'You don\'t have enough permissions to run this command!',
-				fields: [
-					{ name: `\`${command.permissions.length}\` missing ${command.permissions.length > 1 ? 'permissions' : 'permission'}`, value: `\`${command.permissions.join('`, `')}\`` }
-				]
-			}
+				info: 'You do not have enough permissions to run this command!',
+				fields: {
+					'Permissions': `**${command.permissions.length}** - \`${command.permissions.join('`, `')}\``
+				},
+				footer: {
+					text: `Thanks for using ${message.client.user.username}!`,
+					avatar: message.client.user.avatarURL()
+				}
+			})
 		}
 	}
 }

@@ -2,7 +2,7 @@ import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import { 
 	simpleEmbed, 
-	generateErrorEmbed 
+	errorEmbed 
 } from '../utils/embed.js'
 
 export default new Command({
@@ -36,6 +36,6 @@ export default new Command({
 		await bot.player.jump(message, index - 1);
 	} catch(error) {
 		log('commandError', 'loop', error)
-		return generateErrorEmbed(message, error);
+		return errorEmbed(message, error);
 	}
 })

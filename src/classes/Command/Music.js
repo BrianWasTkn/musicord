@@ -1,5 +1,5 @@
 import Command from '../Command.js'
-import { simpleEmbed } from '../../utils/embed.js'
+import { dynamicEmbed } from '../../utils/embed.js'
 import { Permissions } from '../../utils/constants.js'
 
 export default class Music extends Command {
@@ -32,29 +32,55 @@ export default class Music extends Command {
 
 	}
 
+	async execute(bot, command, message, args) {
+		try {
+			for (const check of [this._processVoice, this._checkClientPermissions]) {
+				const embed = check(message);
+				if (embed) return message.channel.send(embed);
+			}
+			try {
+				return super.execute(bot, command, message, args);
+			} catch(error) {
+				log('commandError', 'command@super_execute', error);
+			}
+		} catch(error) {
+			log('commandError', 'command@check', error);
+		}
+	}
+
 	_processVoice(message) {
 		const { channel } = message.member.voice;
-		if (!channel) return simpleEmbed(message, 'You need to join a voice channel first in order to use music commands.');
-	}
-
-	async execute(bot, command, message, args) {
-		for (const check of [this._processVoice, this._checkPermissions]) {
-			const msg = check(message);
-			if (msg) return message.channel.send({ embed: msg });
+		if (!channel) {
+			return dynamicEmbed({
+				color: 'RED',
+				author: {
+					text: 'You need to join a voice channel first before using music commands.',
+					icon: message.client.user.iconURL()
+				}
+			})
 		}
-		return super.execute(bot, command, message, args);
 	}
 
-	_checkPermissions(message) {
-		const voice = this._processVoice(message);
-		if (voice) return voice;
-		const { channel } = message.member.voice,
-		myPermissions = channel.permissionsFor(message.client.user);
+	_checkClientPermissions(message) {
+		// Check if on Voice first
+		if (this._processVoice(message)) {
+			const voice = this._processVoice(message);
+			return voice;
+		}
+		// Bot Permissions in voice.channel
+		const channel = message.member.voice.channel;
+		const myPermissions = channel.permissionsFor(message.client.user);
+		const embedify = (msg) => dynamicEmbed({
+			author: {
+				text: msg,
+				icon: message.client.user.avatarURL()
+			}
+		}) 
 		if (!myPermissions.has('CONNECT')) {
-			return simpleEmbed(message, `Make sure I have permissions to ${Permissions.CONNECT}`);
+			return embedify(`Make sure I have permissions to ${Permissions.CONNECT} in your voice channel.`);
 		}
 		if (!myPermissions.has('SPEAK')) {
-			return simpleEmbed(message, `Please ensure I have the permissions to ${Permissions.SPEAK}`);
+			return embedify(`Please ensure I can ${Permissions.SPEAK} in your voice channel to play music.`);
 		}
 	}
 }

@@ -1,16 +1,13 @@
 import { log } from '../utils/logger.js'
-import { generatePlayerEmbed as embedify } from '../utils/embed.js'
+import { codeBlock } from '../utils/text.js'
+import { dynamicEmbed as embedify } from '../utils/embed.js'
 
 export async function run(bot) {
 	try {
-		/** Functions / Strings */
-		const codeBlock = (string, syntax) => {
-			return '\`\`\`' + syntax + '\n' + string + '\n' + '\`\`\`';
-		}
+		/** Functions */
 		const code = string => {
 			return '\`' + string + '\`';
 		}
-
 		const repeatMode = queue => {
 			return queue.repeatMode 
 			? queue.repeatMode === 2 
@@ -143,7 +140,7 @@ export async function run(bot) {
 			await message.channel.send(embedify({
 				title: 'Player Error',
 				color: 'RED',
-				info: bot.utils.codeBlock(err, 'js'),
+				info: codeBlock(err, 'js'),
 				footer: {
 					text: `Thanks for using ${bot.user.username}!`,
 					icon: bot.user.avatarURL()

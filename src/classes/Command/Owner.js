@@ -1,4 +1,5 @@
 import Command from '../Command.js'
+import { log } from '../../utils/logger.js'
 
 export default class Owner extends Command {
 	constructor(options, fn) {
@@ -36,8 +37,16 @@ export default class Owner extends Command {
 
 	async execute(bot, message, command, args) {
 		if (!bot.developers.includes(message.author.id)) return;
-		const r = await this.run(bot, message, args);
-		if (!r) return;
-		else return message.channel.send(r instanceof Object ? { embed: r } : r);
+		try {
+			const r = await this.run(bot, message, args);
+			if (!r) return;
+			else try {
+				await message.channel.send(r);
+			} catch(error) {
+				log('commandError', 'command@send_message', error);
+			}
+		} catch(error) {
+			log('commandError', 'command@execute', error);
+		}
 	}
 }

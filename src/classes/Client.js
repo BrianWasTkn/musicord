@@ -1,6 +1,5 @@
 // Node
 import { Client, Collection } from 'discord.js'
-import { Player } from 'discord-music-player' // debugging discord-music-player
 import { join } from 'path'
 import { readdirSync } from 'fs'
 import chalk from 'chalk'
@@ -8,11 +7,10 @@ import chalk from 'chalk'
 // Local
 import { log } from '../utils/logger.js'
 import DisTube from './Player.js'
-import Utilities from './Utilities.js'
 import config from '../config.js'
 import botPackage from '../../package.json'
 
-export const Musicord = class Musicord extends Client {
+class Musicord extends Client {
 	constructor(discordOpts, playerOpts) {
 		super(discordOpts);
 
@@ -29,17 +27,10 @@ export const Musicord = class Musicord extends Client {
 		this.config = config;
 
 		/**
-		 * Musicord Utils
-		 * @type {Utilities}
-		 */
-		this.utils = new Utilities();
-
-		/**
 		 * Our main man
 		 * @type {DisTube}
 		 */
 		this.player = new DisTube(this, playerOpts);
-		this.test = new Player(this);
 
 		/**
 		 * Commands
@@ -192,3 +183,5 @@ export const Musicord = class Musicord extends Client {
 		return this.config.developers;
 	}
 }
+
+export default Musicord;

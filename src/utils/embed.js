@@ -4,6 +4,7 @@
 */
 
 import { blue, red } from './colors.js'
+import { Colors } from './constants.js'
 import config from '../config.js'
 
 /** Simple Embed */
@@ -11,16 +12,17 @@ export const simpleEmbed = (message, content) => {
 	return {
 		color: blue,
 		author: {
-			name: slice(content, 200),
+			name: slice(content, 256),
 			iconURL: message.client.user.avatarURL()
 		}
 	}
 }
 
-/** Player Embed */
-export const generatePlayerEmbed = ({ 
+/** Dynamic Embed */
+export const dynamicEmbed = ({ 
 	author = {}, 
-	title = null, 
+	title = null,
+	icon = null,
 	color = 'RANDOM', 
 	info = null, 
 	fields = [], 
@@ -29,27 +31,28 @@ export const generatePlayerEmbed = ({
 	return {
 		embed: {
 			author: {
-				name: author.text,
+				name: slice(author.text, 256),
 				iconURL: author.icon
 			},
-			title: title,
-			color: color,
-			description: info,
+			title: slice(title, 256),
+			thumbnail: icon,
+			color: Colors[color.toLowerCase()],
+			description: slice(info, 2000),
 			fields: Object.entries(fields).map(f => ({
-				name: f[0],
-				value: f[1].content,
+				name: slice(f[0], 256),
+				value: slice(f[1].content, 1000),
 				inline: f[1].inline || false
 			})),
 			footer: {
-				text: footer.text,
+				text: slice(footer.text, 256),
 				iconURL: footer.icon
 			}
 		}
 	}
 }
 
-/** Simple but, Error embed */
-export const generateErrorEmbed = (message, error) => {
+/** Error Embed */
+export const errorEmbed = (message, error) => {
 	return {
 		color: red,
 		author: {
