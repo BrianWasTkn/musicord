@@ -1,4 +1,4 @@
-import { blue } from './colors.js'
+import { blue, red } from './colors.js'
 
 export const simpleEmbed = (message, content) => {
 	return {
@@ -7,6 +7,17 @@ export const simpleEmbed = (message, content) => {
 			name: content > 200 ? `${content.substr(0, 200)}...` : content,
 			iconURL: message.client.user.avatarURL()
 		}
+	}
+}
+
+export const generateError = (message, error) => {
+	return {
+		color: red,
+		author: {
+			name: error.message,
+			iconURL: message.client.user.avatarURL()
+		},
+		description: message.client.utils.codeBlock(error.stack, 'js');
 	}
 }
 

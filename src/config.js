@@ -3,7 +3,7 @@ export default {
 	developers: ['605419747361947649'],
 	
 	/** Discord Token */
-	token: 'Njg2OTY5MDIwMzg1MzI5MTgy.Xme7wQ.8NNvk2zlQ6I08eQcqDNRD7OxlZs', // Ensures the login of our bot
+	token: process.env.DISCORD_TOKEN, // Ensures the login of our bot
 	
 	/** Bot Prefixes */
 	prefix: ['crib ', 'musicord '],

@@ -1,5 +1,6 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
+import { simpleEmbed, generateError } from '../utils/embed.js'
 
 export default new Command({
 	name: 'join',
@@ -9,12 +10,14 @@ export default new Command({
 }, async (bot, message) => {
 	
 	const { channel } = message.member.voice;
-	if (!channel) return 'you need to join a voice channel first!';
+	if (!channel) 
+		return simpleEmbed(message, 'You need to join a Voice Channel first.');
+	
 	try {
 		const c = await channel.join();
-		return `successfully joined channel **${channel.name}**`;
+		return simpleEmbed(message, `successfully joined channel **${channel.name}**`);
 	} catch(error) {
 		log('error', 'join@join_channel', error);
-		return error.message;
+		return generateError(message, error);
 	}
 })

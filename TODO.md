@@ -7,8 +7,8 @@
 [] be creative, add collectors or stuff like games or idk on each individual player listener
 
 # Source Code 
-[] add more listeners
-[] add custom filters
+[x] add more listeners
+[x] add custom filters
 [] add database: redis or mongoose
 [] sharding support 
 
