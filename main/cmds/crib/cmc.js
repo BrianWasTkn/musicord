@@ -6,7 +6,7 @@ let staff = [
 	{ userID: '450199947577393162', role: '747520033554694154' }
 ]
 
-const array = [
+const allowed = [
 	{ userID: '509207806742626314', role: '786873354308681739' },
 	{ userID: '316407287545856000', role: '744648152656904383' },
 	{ userID: '497601345566801921', role: '739093126622347295' },
@@ -33,7 +33,7 @@ module.exports = new Command(
 			return channel.send(`You need to be a **${missing.name}** first before using this command.`);
 		}
 
-		const profile = array.find(i => i.userID === member.user.id);
+		const profile = allowed.find(i => i.userID === member.user.id);
 		if (!profile) {
 			return await channel.send(`You don\'t have a custom role yet.\nRun \`${ctx.prefix[0]}`)
 		}
@@ -44,9 +44,9 @@ module.exports = new Command(
 		await channel.send({ embed: {
 			title: 'Color Changed',
 			color: role.color,
-			thumbnail: `https://dummyimage.com/1920x1280/${role.color.toString(16)}/010101&text=+`,
+			thumbnail: `https://dummyimage.com/512x512/${role.color.toString(16)}/010101&text=+`,
 			description: `
-Here you go, **${member.user.tag}**. Such fancy color we got there for your **${roleToBeChanged.name}** role! The hex is \`#${role.color.toString(16)}\` by the way.`,
+Here you go, **${member.user.tag}**. Such fancy color we got there for your **${roleToBeChanged.name}** role! The hex is \`#${role.color.toString(16)}\` btw, thank you for supporting **${guild.name}**!`,
 			author: {
 				name: guild.name,
 				iconURL: guild.iconURL()

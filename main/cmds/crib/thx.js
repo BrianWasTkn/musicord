@@ -12,14 +12,9 @@ module.exports = new Command(
 		|| guild.members.cache.find(m => m.user.tag.toLowerCase() === target.toLowerCase())
 		|| msg.mentions.members.first() || false;
 
-		if (!member) {
-			return msg.reply('Unknown User');
-		}
-
+		if (!member) return msg.reply('you have to mention a valid user, bruh.');
 		let amount = Number(coins) || parseInt(coins, 10);
-		if (!amount) {
-			return msg.reply('Invalid or no amount.');
-		}
+		if (!amount) return msg.reply('pls enter a valid numbar tenchu');
 
 		let emoji = guild.emojis.cache.get('717347901587587153');
 		await channel.send({ embed: {
