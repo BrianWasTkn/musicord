@@ -70,7 +70,11 @@ export default class Musicord extends Client {
 	}
 
 	/** Functions */
-	/** Reload a Command */
+	/** 
+	 * Load Command
+	 * @param {String} cmd - the cmd query to load
+	 * @returns {Promise<Object>} the command object
+	 */
 	async reloadCommand(cmd) {
 		return new Promise((res, rej) => {
 			const command = this.commands.get(cmd) || this.aliases.get(cmd);
@@ -85,18 +89,25 @@ export default class Musicord extends Client {
 		})
 	}
 
-	/** Reload All Commands */
+	/** 
+	 * Load Command
+	 * @returns {Promise<void>} null
+	 */
 	async reloadCommands() {
 		return new Promise((res, rej) => {
 			try {
 				// clear all commands
 				this.commands.clear();
 				try { 
-					// clear all alises
+					// clear all aliases
 					this.aliases.clear();
 					try {
 						// then load all
-						try { this._registerCommands() } catch(e) { rej(e) }
+						try { 
+							this._registerCommands() 
+						} catch(e) { 
+							rej(e) 
+						}
 					} catch(e) {
 						rej(e);
 					}
@@ -106,6 +117,56 @@ export default class Musicord extends Client {
 			} catch(e) {
 				rej(e);
 			}
+		})
+	}
+
+	/** 
+	 * Load Command
+	 * @param {String} cmd - the cmd query to load
+	 * @returns {Promise<String>} wip
+	 */
+	async unloadCommand(cmd) {
+		return new Promise((res, rej) => {
+			const command = this.commands.get(cmd) || this.aliases.get(cmd);
+			if (!command) reject('UnknownCommand');
+			// delete from collection
+			this.commands.delete(command.name);
+			command.aliases.forEach(a => this.aliases.delete(a, command));
+			res('Done');
+		})
+	}
+
+	/** 
+	 * Load Command
+	 * @param {String} cmd - the cmd query to load
+	 * @returns {Promise<Object>} the command object
+	 */
+	async loadCommand(cmd) {
+		return new Promise((res, rej) => {
+			// array to push all items
+			const array = [];
+			// loop through ./src/commands
+			readdirSync(join(__dirname, '..', 'commands'))
+			.forEach(item => {
+				// ./src/commands/*.js files
+				if (item.endsWith('.js')) {
+					// push
+					array.push(require(join(__dirname, '..', 'commands')).default);
+				} 
+				// ./src/commands/*/*.js files
+				if (!item.endsWith('.js')) {
+					// folder
+					readdirSync(join(__dirname, '..', 'commands', item))
+					.forEach(c => {
+						// push
+						array.push(require(join(__dirname, '..', 'commands', item, c)).default)
+					})
+				}
+			})
+			// find the 'cmd' {String}
+			const command = array.find(c => c.name === cmd);
+			if (!command) res(command);
+			else rej(command);
 		})
 	}
 

@@ -17,7 +17,7 @@ export async function run(bot) {
 				embed: {
 					title: 'Now Playing',
 					color: 'BLUE',
-					description: `Now playing [**__${song.name}__**](${song.url}) on the queue.`
+					description: `Now playing [**__${song.name}__**](${song.url}) on the queue.`,
 					fields: [
 						{ name: 'Duration', value: `\`${song.formattedDuration}\``, inline: true },
 						{ name: 'Requested by', value: song.user.tag, inline: true },
@@ -32,7 +32,7 @@ export async function run(bot) {
 				embed: {
 					title: 'Added to Queue',
 					color: 'BLUE',
-					description: `Added [**__${song.name}__**](${song.url}) to the queue.`
+					description: `Added [**__${song.name}__**](${song.url}) to the queue.`,
 					fields: [
 						{ name: 'Duration', value: `\`${song.formattedDuration}\``, inline: true },
 						{ name: 'Added by', value: song.user.tag, inline: true },
@@ -47,7 +47,7 @@ export async function run(bot) {
 				embed: {
 					title: 'Nothing Found',
 					color: 'BLUE',
-					description: 'No track(s) were found related to the previous track.\nYou can run `crib search` or `crib play` to search or play a track.'
+					description: 'No track(s) were found related to the previous track.\nYou can run `crib search` or `crib play` to search or play a track.',
 					footer: { text: `Thanks for using ${message.client.user.username}!` }
 				}
 			})
@@ -57,7 +57,7 @@ export async function run(bot) {
 				embed: {
 					title: 'Queue Finished',
 					color: 'BLUE',
-					description: 'The queue has finished playing all queued songs.\nYou can run `crib search` or `crib play` to search or play a track.'
+					description: 'The queue has finished playing all queued songs.\nYou can run `crib search` or `crib play` to search or play a track.',
 					footer: { text: `Thanks for using ${message.client.user.username}!` }
 				}
 			})
@@ -77,7 +77,7 @@ export async function run(bot) {
 				embed: {
 					title: 'Added to Queue,
 					color: 'BLUE',
-					description: `Added [**__${playlist.name}__**](${playlist.url}) with **${playlist.songs.length}** into the queue.`
+					description: `Added [**__${playlist.name}__**](${playlist.url}) with **${playlist.songs.length}** into the queue.`,
 					fields: [
 						{ name: 'Duration', value: `\`${playlist.formattedDuration}\``, inline: true },
 						{ name: 'Added by', value: playlist.user.tag, inline: true }
