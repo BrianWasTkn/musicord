@@ -20,7 +20,7 @@ const run = async () => {
 			process.exit(1);
 		});
 	} catch(error) {
-		Bot.utils.log('Musicord', 'error', 'Process Listener', error);
+		Bot.utils.log('Musicord', 'error', 'MAIN@process_listeners', error);
 		process.exit(1);
 	}
 
@@ -31,7 +31,7 @@ const run = async () => {
 			await Bot.login(config.token);
 		}
 	} catch(error) {
-		Bot.utils.log('Musicord', 'error', 'login', error);
+		Bot.utils.log('Musicord', 'error', 'MAIN@login', error);
 		process.exit(1);
 	}
 }

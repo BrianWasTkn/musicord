@@ -37,11 +37,6 @@ export default class AddList extends Listener {
 					icon: Bot.user.avatarURL()
 				}
 			}));
-
-			/* Player Controls */
-			await this.client.utils.handleControls({
-				msg, song: playlist.songs[0], msg, embed: m 
-			});
 		} catch(error) {
 			super.log('AddList@sendMessage', error);
 		}

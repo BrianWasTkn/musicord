@@ -3,6 +3,10 @@ export default {
 	prefix: 'm!',
 	/* Developer Mode */
 	dev: false,
+	/* Blacklists */
+	blacklists: Bot => ([
+		Bot.users.cache.get()
+	]),
 	/* {Array<User>} Array of Bot devs */
 	developers: Bot => ([
 		Bot.users.cache.get('605419747361947649')
@@ -11,6 +15,12 @@ export default {
 	support: Bot => ({
 		/* {Guild} The server */
 		guild: Bot.guilds.cache.get('691416705917779999'),
+		/* {Invite} The permanent invite link */
+		invite: reason => this.default.support(Bot).guild.channels.first().createInvite({
+			maxAge: 0,
+			maxUses: 100,
+			reason
+		}),
 		/* {GuildChannel} The error channel */
 		errorChannel: Bot.channels.cache.get(),
 		/* {GuildChannel} The voters channel */

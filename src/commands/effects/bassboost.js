@@ -46,12 +46,13 @@ export default class BassBoost extends Command {
 					break;
 			}
 			/** Set */
-			const filter = Bot.distube.setFilter(msg, apply);
+			let filter = Bot.distube.setFilter(msg, apply);
+			filter = filter.split('@');
 			try {
 				return await msg.channel.send(super.createEmbed({
 					title: 'Bassboost',
 					color: 'GREEN',
-					text: `The **${filter}** filter has been applied`
+					text: `The **${filter[0]}** filter with a level of **${filter[1]}** has been applied.`
 				}));
 			} catch(error) {
 				super.log('bassboost@msg', error);

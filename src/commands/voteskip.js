@@ -18,7 +18,7 @@ export default class VoteSkip extends Command {
 		/** Voice Channel */
 		const channel = msg.member.voice.channel;
 		/** Filter Bots */
-		channel.members === channel.members.filter(member => member.id !== Bot.user.id);
+		const members = channel.members.filter(m => !m.bot);
 		/** Member Count in channel is <= 3 */
 		if (channel.members.size <= 3) {
 			try {

@@ -5,15 +5,19 @@ export default class Warn extends Listener {
 		super(client);
 		/* Handle */
 		const { Constants: Events } = require('discord.js');
-		client.on(Events.WARN, this.handle);
+		client.on(Events.WARN, this.handle.bind(client));
 	}
 
 	async handle(info) {
 		/** Log */
 		try {
-			this.log('Discord Warning', info);
+			this.utils.log(
+				'Listener',
+				'main',
+				`[WARN => ${info}]`
+			);
 		} catch(error) {
-			super.log('Warn@log');
+			super.log('Warn@log', error);
 		}
 	}
 }

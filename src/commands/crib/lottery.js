@@ -34,19 +34,35 @@ export default class Lottery extends Command {
 				}));
 			}
 
+			if (!Lotto.lastRoll) {
+				Lotto.lastRoll = Date.now();
+				await interval();
+				await msg.channel.send('The lottery has been opened for the first time.');
+			} else {
+				/* Check if: (now - lastRoll) > interval */
+				if ((Date.now() - Lotto.lastRoll) > (1000 * 60 * 60 * Lotto.interval)) {
+					Lotto.lastRoll = Date.now();
+					await interval();
+					await msg.channel.send('Successfully re-opened the lottery.');
+				} else {
+					await msg.channel.send(`Please take note that the lottery has **${Date.now() - Lotto.lastRoll}** hours left before another roll.`);
+				}
+			}
+
 			/* Interval */
-			const interval = () => {
+			const interval = async () => {
 				setInterval(async () => {
 					if (Lotto.active) {
-						await roll();
+						if ((Date.now() - Lotto.lastRoll) < (1000 * 60 * 60 * Lotto.interval)) {
+							return;
+						} else {
+							await roll();
+						}
 					} else {
 						return;
 					}
-				}, Lotto.interval);
+				}, Lotto.interval * 1000 * 60 * 60);
 			}
-
-			/* Trigger */
-			interval();
 
 			/* Roll */
 			const roll = async () => {
@@ -56,7 +72,7 @@ export default class Lottery extends Command {
 				.members.random();
 
 				/* if Bot */
-				if (random.bot) return roll();
+				if (random.bot) return await roll();
 					
 				/* Amount */
 				const amount = this.randomNumber(Lotto.prize.min, Lotto.prize.max);
@@ -88,11 +104,16 @@ export default class Lottery extends Command {
 			if (!Lotto.active) {
 				return msg.channel.send(super.createEmbed({
 					title: 'Already Inactive',
-					icon: 
-				}))
+					color: 'RED',
+					text: `Autolottery is already inactive, ${Math.random() > 0.5 ? 'step' : ''}bro.`,
+					footer: {
+						text: '<- Lol look at this face',
+						icon: msg.author.avatarURL()
+					}
+				}));
 			}
 			/* Set */
-			Lotto.active = !Lotto.active;
+			Lotto.active = false;
 			/* Message */
 			await msg.channel.send(super.createEmbed({
 				title: 'Lottery Deactivated',
@@ -102,17 +123,21 @@ export default class Lottery extends Command {
 			}));
 		} else if (mode === 'winners') {
 			/* Map */
-			const fields = {};
-			const map = Lotto.winners.keyArray().forEach(w => {
-				obj[w] = Lotto.winners.get(w);
+			let fields = {};
+			let map = Lotto.winners.keyArray().forEach(w => {
+				let val = Lotto.winners.get(w);
+				fields[w] = {
+					content: `**Coins won:** ${val.coins.toLocaleString}\n**On:** ${val.timestamp}`,
+					inline: true
+				};
 			});
 			/* Message */
 			await msg.channel.send(super.createEmbed({
 				title: `${Lotto.winners} total winners (${Object.entries(fields).length}) shown`,
 				color: 'GREEN',
-				text: 'Please take note that these are the latest winners.',
+				text: `These are the **${Object.entries(fields).length}** latest winners.`,
 				fields: fields
-			}));``
+			}));
 		}
 	}
 }

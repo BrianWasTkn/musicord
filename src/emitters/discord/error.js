@@ -11,9 +11,9 @@ export default class Error extends Listener {
 	async handle(error) {
 		/** Log */
 		try {
-			this.log('Discord Error', error);
+			super.log('Discord Error', error);
 		} catch(error) {
-			super.log('Error@log');
+			super.log('Error@log', error);
 		}
 	}
-}error.js
+}

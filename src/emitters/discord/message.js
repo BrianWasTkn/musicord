@@ -58,7 +58,7 @@ export default class Message extends Listener {
 						text: `Thanks for using ${Bot.user.username}!`,
 						icon: Bot.user.avatarURL()
 					}
-				})
+				});
 			}
 		}
 

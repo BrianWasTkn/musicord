@@ -5,18 +5,19 @@ export default class Ready extends Listener {
 		super(client);
 		/* Handle */
 		const { Constants: Events } = require('discord.js');
-		client.on(Events.CLIENT_READY, this.handle);
+		client.on(Events.CLIENT_READY, this.handle.bind(client));
 	}
 
 	async handle() {
 		/** Log */
 		try {
-			this.log(
-				'main', 
-				`${this.client.user.username} is now ready to play some beats!`
+			this.utils.log(
+				'Listener',
+				'main',
+				`[READY => ${this.user.username} is now ready to play some beats!]`
 			);
 		} catch(error) {
-			super.log('Ready@log_ready_msg');
+			super.log('Ready@log_ready_msg', error);
 		}
 	}
 }

@@ -1,3 +1,26 @@
+
+const promise = () => {
+	return new Promise((res, rej) => {
+		let r = Math.random();
+		if (r > Math.random()) {
+			res(r);
+		} else {
+			rej(r);
+		}
+	});
+}
+
+(async () => {
+	try {
+		const r = promise();
+		console.log(r);
+	} catch(error) {
+		console.error('ERROR', error)
+	}
+})();
+
+
+/**
 const { Collection } = require('discord.js');
 
 const e = new Collection();
@@ -22,3 +45,4 @@ const l = () => {
 	return l();
 }
 console.log(l());
+*/

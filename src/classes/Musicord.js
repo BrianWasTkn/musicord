@@ -27,7 +27,7 @@ export default class Musicord extends Client {
 				mobile: 'online',
 				desktop: 'offline'
 			}
-		})
+		});
 
 		/**
 		 * Bot Package
@@ -46,6 +46,18 @@ export default class Musicord extends Client {
 		 * @type {Object}
 		 */
 		this.config = require('../config/default.js').default;
+
+		/**
+		 * Constants
+		 * @type {Object}
+		 */
+		this.constants = require('./Constants.js');
+
+		/**
+		 * User Blaclists
+		 * @type {Snowflake[]}
+		 */
+		this.blacklists = this.config.blacklists;
 
 		/**
 		 * Musicord Utilities
@@ -81,7 +93,10 @@ export default class Musicord extends Client {
 		this.loadAll();
 	}
 
-	
+	get blacklists() {
+		return this.config.blacklists(this).map(bl => bl.id);
+	}
+
 	get prefix() {
 		return this.config.prefix;
 	}

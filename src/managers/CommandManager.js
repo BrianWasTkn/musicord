@@ -1,16 +1,169 @@
 import Manager from '../classes/Manager.js'
-const { Constants: Events } = require('discord.js');
 
 export default class CommandManager extends Manager {
 	constructor(client) {
 		super(client);
 		/* Handle */
+		const { Constants: Events } = require('discord.js');
 		client.on(Events.MESSAGE_CREATE, async message => await this.handle({ 
 			Bot: client, msg: message 
 		}));
 	}
 
+	processCommandChecks(Bot, msg, command) {
+		/* Types of checks */
+		const checks = ['queue', 'dj', 'voice'];
+
+		/* Voice */
+		if (command.checks.includes(checks[2])) {
+			// VC Of author
+			const { channel } = msg.member.voice;
+			// Check
+			if (!channel) {
+				// Return
+				return super.createEmbed({
+					title: 'Voice Channel',
+					color: 'RED',
+					text: `You need to join a voice channel first before using the \`${command.name}\` command.`,
+					footer: {
+						text: `Thanks for using ${Bot.user.username}!`,
+						icon: Bot.user.avatarURL()
+					}
+				})
+			} else {
+				// Connection
+				const connection = this.client.voice.connections.get(msg.guild.id);
+				// Check
+				if (connection.id !== channel.id) {
+					// Return
+					return super.createEmbed({
+						title: 'Channel Difference',
+						color: 'RED',
+						text: 'You\'re in a different channel than I am. Please ensure I\'m in the same channel as yours, and try again.'
+					});
+				}
+			}
+		}
+
+		/* DJ */
+		if (command.checks.includes(checks[1])) {
+			// Role
+			const role = msg.member._roles.find(r => r.name === 'DJ');
+			// Check
+			if (!role) {
+				// Return
+				return super.createEmbed({
+					title: 'Limited Usage',
+					color: 'RED',
+					text: `You need to have the **${role.name}** role before using this command.`,
+					footer: {
+						text: `Thanks for using ${Bot.user.username}!`,
+						icon: Bot.user.avatarURL()
+					}
+				});
+			}
+		}
+
+		/* Queue */
+		if (command.checks.includes(checks[0])) {
+			// Fetch
+			const queue = Bot.distube.getQueue(msg);
+			// Check
+			if (!queue) {
+				// Return
+				return super.createEmbed({
+					title: 'Player Empty',
+					color: 'RED',
+					text: 'There\'s nothing playing in the queue right now.',
+					footer: {
+						text: `Thanks for using ${Bot.user.username}!`,
+						icon: Bot.user.avatarURL()
+					}
+				});
+			}
+		}
+	}
+
+	codeBlock(str, syntax) {
+		str = require('util').inspect(str, { depth: 1 });
+		return `\`\`\`${syntax}\n${str}\n\`\`\``;
+	}
+
 	async handle({ Bot, msg }) {
+		const {
+			author, channel, guild, member
+		} = msg;
+
+		// msg.content-based checks
+		if (
+			author.bot || !msg.content.startsWith(Bot.prefix)
+			|| Bot.blacklists.includes(author.id)
+		) return;
+		let [cmd, ...args] = msg.content.slice(Bot.prefix.length).trim().split(/ +/g);
+		const command = Bot.commands.get(cmd) || Bot.aliases.get(cmd);
+
+
+		// Developer command
+		if (Bot.developers.includes(author.id)) {
+			try {
+				return await command.execute({ Bot, msg, args });
+			} catch(error) {
+				await msg.channel.send(`**Error:** ${error.message}`);
+				super.log('CommandManager@exec_dev_command', error);
+			}
+		}
+
+		// Normie command
+		if (channel.type !== 'dm') {
+			// dev cmd
+			if (command.category === 'Developer' || command.ownerOnly) {
+				return msg.channel.send('how dis command work?');
+			};
+
+			// check cooldown and perms
+			for (let check of [command.handleCooldown, command.checkPermissions]) {
+				let embed = await check({ Bot, command, msg });
+				if (embed) {
+					return await msg.channel.send(embed);
+				}
+			}
+
+			// command checks
+			for (const check of ['voice', 'queue', 'dj']) {
+				const embed = this.processCommandChecks(Bot, msg, command);
+				return msg.channel.send(embed);
+			}
+
+			// execute
+			try {
+				await command.execute({ Bot, msg, args });
+			} catch(error) {
+				super.log('CommandManager@exec_command', error);
+				await msg.channel.send(super.createEmbed({
+					title: 'Command Error',
+					color: 'RED',
+					text: this.codeBlock(error.message, error);
+					fields: {
+						'Command': {
+							content: command.name,
+							inline: true
+						},
+						'Guild': {
+							content: guild ? guild.name : 'Unknown',
+							inline: true,
+						},
+						'Channel': {
+							content: channel.name,
+							inline: true
+						}
+					}
+				}));
+			}
+		}
+
+
+
+
 		/* Ignore Bots and Messages not starting with prefix */
 		if (msg.author.bot || !msg.content.startsWith(Bot.prefix)) return;
 
@@ -18,6 +171,8 @@ export default class CommandManager extends Manager {
 		let [cmd, ...args] = msg.content.slice(Bot.prefix.length).trim().split(/ +/g);
 		const command = Bot.commands.get(cmd) || Bot.alaises.get(cmd);
 		if (!command) return;
+
+		if (Bot.developers.includes()) {}
 
 		/* Dev Command: execute any (any channel, any permissions) */
 		if (Bot.developers.includes(msg.author.id)) {

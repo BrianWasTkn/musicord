@@ -1,5 +1,15 @@
 import { Constants } from 'discord.js'
 
+export const intro = Bot => {
+	return [
+	`${Bot.user.username} - Providing you the best music experience in your Discord server.`,
+	'From **music effects**, a **clean interface** and a wide-range support of up to **700+** sources!',
+	'Nothing can stop you for playing with whatever you want.\n\n',
+	`You can run \`${Bot.prefix}help\` to view information about my commands or`,
+	`\`${Bot.prefix}about\` to see much info about me.`
+	].join(' ');
+}
+
 export const Colors = {
 	RED: 0xE74C3C, 
 	ORANGE: 0xF39C12,

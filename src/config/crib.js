@@ -7,8 +7,10 @@ export default {
 		active: false,
 		/** {Collection} Lotto Winners */
 		winners: new Collection(),
-		/** {number} Number */
-		interval: 1000 * 60 * 60 * 12,
+		/** {number} Number in hours */
+		interval: 12,
+		/** {Date} The last rolled timestamp */
+		lastRoll: null,
 		/** {Object} Prize Caps */
 		prize: {
 			/* Minimum */

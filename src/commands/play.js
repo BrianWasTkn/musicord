@@ -4,14 +4,30 @@ export default class Play extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'play',
-			aliases: ['play'],
-			description: 'Searches a track from supported sources and plays it.',
-			usage: '<query | URL>',
-			cooldown: 5000
+			aliases: ['youtube'],
+			description: 'Searches a track from supported sources and plays the first result.',
+			usage: '<search query | source URL>',
+			cooldown: 5000,
+			rate_limit: 1
 		}, {
 			category: 'Music',
-			checks: ['voice', 'queue'],
+			user_permissions: ['CONNECT'],
+			client_permissions: ['CONNECT', 'SPEAK'],
+			music_checks: ['voice', 'queue'],
+			args_required: true
 		});
+	}
+
+	_args({ args, msg }) {
+		try {
+			return msg.channel.send(super.createEmbed({
+				title: 'Missing Args',
+				color: 'RED',
+				text: 'You need something to play!'
+			}));
+		} catch(error) {
+			super.log('play@_args_msg', error);
+		}
 	}
 
 	async execute({ Bot, msg, args }) {
@@ -28,19 +44,24 @@ export default class Play extends Command {
 			}
 		}
 
-		/** Else, Do it */
-		try {
+		/* Join */
+		const { channel } = msg.member.voice;
+		/* Check if not in channel */
+		if (!channel) {
 			/* Join */
-			const { channel } = msg.member.voice;
-			/* Check if not in channel */
-			if (!channel) {
-				try { await channel.join(); } 
-				catch(error) { super.log('play@join', error); }
+			const { voice } = await channel.join().catch(error => {
+				super.log('play@join', error)
+			});
+			/* Self-deafen */
+			await voice.setSelfDeaf(true).catch(error => {
+				super.log('play@self_deaf', error);
+			});
+			try {
+				/* Play */
+				await Bot.distube.play(msg);
+			} catch(error) {
+				super.log('play@play', error);
 			}
-			/* Play */
-			await Bot.distube.play(msg);
-		} catch(error) {
-			super.log('play', error);
 		}
 	}
 }
