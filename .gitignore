@@ -1,2 +1,3 @@
 # js modules
 node_modules
+.env
