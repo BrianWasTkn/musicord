@@ -37,7 +37,7 @@ export async function run(bot) {
 				embed: {
 					title: 'Queue Options',
 					color: 'BLUE',
-					description: 'The following options are applied by default whenever this server opens a new queue.',
+					description: 'The following options are applied by default whenever this server starts queuing songs.',
 					fields: [
 						{ name: 'Volume', value: queue.volume, inline: true },
 						{ name: 'Loop', value: queue.repeatMode ? queue.repeatMode === 2 ? 'Queue' : 'Track' : off, inline: true },

@@ -87,32 +87,29 @@ class Musicord extends Client {
 		readdirSync(join(__dirname, '..', 'listeners'))
 		.forEach(async l => {
 			await require(join(__dirname, '..', 'listeners', l)).run(bot);
-			log('track', chalk.whiteBright(`Loaded ${l}`))
 		})
 	}
 
 	/** Register Commands */
 	async _registerCommands() {
-	readdirSync(join(__dirname, '..', 'commands'))
-	.forEach(item => {
-		// Item is a javascipt file
-		if (item.endsWith('.js')) {
-			const command = require(join(__dirname, '..', 'commands', item)).default;
-			this.commands.set(command.name, command)
-			if (command.aliases) command.aliases.forEach(alias => this.aliases.set(alias, command))
-			log('track', chalk.whiteBright(`Loaded ${item}`))
-		}
-		// item belongs to a category
-		if (!item.endsWith('.js')) {
-			readdirSync(join(__dirname, '..', 'commands', item))
-			.forEach(cmd => {
-				const command = require(join(__dirname, '..', 'commands', item, cmd)).default
+		readdirSync(join(__dirname, '..', 'commands'))
+		.forEach(item => {
+			// Item is a javascipt file
+			if (item.endsWith('.js')) {
+				const command = require(join(__dirname, '..', 'commands', item)).default;
 				this.commands.set(command.name, command)
 				if (command.aliases) command.aliases.forEach(alias => this.aliases.set(alias, command))
-				log('track', chalk.whiteBright(`Loaded ${cmd}`))
-			})
-		}
-	})
+			}
+			// item belongs to a category
+			if (!item.endsWith('.js')) {
+				readdirSync(join(__dirname, '..', 'commands', item))
+				.forEach(cmd => {
+					const command = require(join(__dirname, '..', 'commands', item, cmd)).default
+					this.commands.set(command.name, command)
+					if (command.aliases) command.aliases.forEach(alias => this.aliases.set(alias, command))
+				})
+			}
+		})
 	}
 
 	/** 
