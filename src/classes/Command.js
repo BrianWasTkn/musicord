@@ -1,147 +1,141 @@
-import discord from 'discord.js'
+import Discord from 'discord.js'
 import config from '../config.js'
 
-import { dynamicEmbed as embedify } from '../utils/embed.js'
 import { parseTime } from '../utils/text.js'
+import { log } from '../utils/logger.js'
+import { 
+	simpleEmbed,
+	dynamicEmbed,
+	errorEmbed 
+} from '../utils/embed.js'
 
 /**
  * Creates a command class
- * @private
  */
+
 class Command {
-	constructor(options, func) {
+	constructor(client, options) {
+
 		/**
-		 * Command Function
-		 * @type {Promise<any>}
+		 * Discord Client
+		 * @type {Discord.Client}
 		 */
-		this.run = func;
+		this.client = client;
 
 		/**
 		 * Command Name
-		 * @type {String}
+		 * @type {String|RegExP}
 		 */
 		this.name = options.name;
 
+		/** 
+		 * Command Description
+		 * @type {String}
+		 */
+		this.description = options.description;
+
 		/**
 		 * Command Aliases
-		 * @type {Array<String>}
+		 * @type {String[]}
 		 */
-		this.aliases = Array.isArray(options.aliases) ? options.aliases : [options.name];
+		this.aliases = options.aliases || [label];
 
 		/**
 		 * Command Usage
 		 * @type {String}
 		 */
-		this.usage = options.usage === 'command' ? `${config.prefix[0]}${options.name}` : `${config.prefix[0]}${options.name} ${options.usage}`;
-
-		/**
-		 * Command Permissions
-		 * @type {Array<PermissionResolveable>}
-		 */
-		this.permissions = ['SEND_MESSAGES'].concat(options.permissions || []);
-
-		/**
-		 * Command Description
-		 * @type {String}
-		 */
-		this.description = options.description || 'No description provided.';
+		if ('usage' in options) {
+			this.usage = [this.bot.prefix, options.name, options.usage].join(' ');
+		} else {
+			this.usage = [this.bot.prefix, options.name].join(' ');
+		}
 
 		/**
 		 * Command Cooldown
-		 * @type {Boolean}
+		 * @type {Number}
 		 */
 		this.cooldown = options.cooldown || 3000;
 
 		/**
-		 * Command Visibility
-		 * @type {Boolean}
+		 * Command Required Permissions
+		 * @type {String[]}
 		 */
-		this.private = options.private || false;
+		this.permissions = ['SEND_MESSAGES'].concat(options.permissions || []);
 	}
 
-	/**
-	 * Process Cooldowns
-	 * @param {Object} [message] the message object
-	 * @param {Object} [command] the command object
-	 */
-	_processCooldown(message, command) {
-		// Check if <Member>.author.id is already in the cooldown collection
-		if (!message.client.cooldowns.has(command.name)) 
-			message.client.cooldowns.set(command.name, new discord.Collection());
-		// The date now, timestamps, and the command cooldown
-		const now = Date.now(),
-		timestamps = message.client.cooldowns.get(command.name),
-		cooldown = command.cooldown;
-		// Check cooldown
-		if (timestamps.has(message.author.id)) {
-			const expiration = timestamps.get(message.author.id) + cooldown;
+	/** Shortcut for logging */
+	log(tag, error) {
+		return log('command', tag, error);
+	}
+
+	/** Creates an Embed */
+	createEmbed({ 
+		author = {}, footer = {}, fields = {},
+		title = null, icon = null, text = null,
+		color = 'RANDOM'
+	} = {}) {
+		return {
+			embed: {
+				author: { name: author.text, iconURL: author.icon },
+				title: title,
+				thumbnail: icon,
+				color: color,
+				description: text,
+				fields: Object.entries(fields).map(f => ({ name: f[0], value: f[1].content, inline: f[1].inline || false })),
+				footer: { text: footer.text, iconURL: footer.icon }
+			}
+		}
+	}
+
+	handleCooldown({ Bot, command, msg }) {
+		/** Check if on cooldown collection */
+		if (!Bot.cooldowns.has(command.name)) {
+			Bot.cooldowns.set(command.name, new Discord.Collection());
+		}
+
+		/** Variables */
+		const now = Date.now();
+		const timestamps = Bot.cooldowns.get(command.name);
+		const cooldown = command.cooldown;
+
+		/** Check */
+		if (timestamps.has(msg.author.id)) {
+			const expiration = timestamps.get(msg.author.id) + cooldown;
 			// On cooldown
 			if (now < expiration) {
 				let timeLeft = (expiration - now) / 1000;
 				timeLeft = timeLeft > 60 ? parseTime(timeLeft) : `${timeLeft.toFixed(1)} seconds`;
 				// Return a message
-				return embedify({
+				return this.createEmbed({
 					title: 'Cooldown, Slow down.',
 					color: 'BLUE',
 					text: `You\'re currently on cooldown for command \`${command.name}\`. Wait **${timeLeft}** and try running the command again.`,
 					footer: {
-						text: `Thanks for using ${message.client.user.username}!`,
-						icon: message.client.user.avatarURL()
+						text: `Thanks for using ${Bot.user.username}!`,
+						icon: Bot.user.avatarURL()
 					}
 				})
 			} 
 		} 
 		// timeout to delete cooldown
-		timestamps.set(message.author.id, now)
+		timestamps.set(msg.author.id, now)
 		setTimeout(() => {
-			message.client.cooldowns.delete(message.author.id)
+			Bot.cooldowns.delete(msg.author.id)
 		}, command.cooldown);
 	}
 
-	async execute(bot, command, message, args ) {
-		// Check cooldown and command permissions.
-		const checks = [this._processCooldown, this._checkPermissions];
-		for (const check of checks) {
-			const ret = check(message, command);
-			if (ret) return message.channel.send(ret);
-		}
-
-		// Run the command
-		const returned = await this.run(bot, message, args); // Promise
-		if (!returned) return;
-		// An embed Object
-		if (returned instanceof Object) {
-			const embed = Object.assign(embedify({
-				color: 'RANDOM',
-				footer: {
-					text: `Thanks for using ${bot.user.username}!`,
-					icon: bot.user.avatarURL()
-				}
-			}, returned));
-			return message.channel.send(embed);
-		} else {
-			// A string
-			return message.channel.send(returned);
-		}
-	}
-
-	_checkPermissions(message, command) {
-		// User Permissions
-		if (!message.member.permissions.has(command.permissions)) {
-			return embedify({
+	checkPermissions({ command, msg }) {
+		if (!msg.member.permissions.has(command.permissions)) {
+			return this.createEmbed({
 				title: 'Missing Permissions',
 				color: 'RED',
-				text: 'You do not have enough permissions to run this command!',
+				text: 'You don\'t have enough permissions to run this command.',
 				fields: {
-					'Permissions': `**${command.permissions.length}** - \`${command.permissions.join('`, `')}\``
-				},
-				footer: {
-					text: `Thanks for using ${message.client.user.username}!`,
-					icon: message.client.user.avatarURL()
+					[`${command.permissions.length} missing permissions`]: {
+						content: `\`${command.permissions.join('`, `')}\``
+					}
 				}
-			})
+			});
 		}
 	}
 }
-
-export default Command;
