@@ -23,28 +23,29 @@ export default new Command({
 				text: 'There\'s nothing playing in the queue.'
 			})
 		}
+
+		/** Do the thing */
+		try {
+			await bot.player.stop(message);
+			return dynamicEmbed({
+				title: 'Player Stopped',
+				color: 'GREEN',
+				text: `The player has been stopped and the queue has been cleared.`,
+				fields: {
+					'Action By': { content: message.author.tag }
+				},
+				footer: {
+					text: `Thanks for using ${bot.user.username}!`,
+					icon: bot.user.avatarURL()
+				}
+			});
+		} catch(error) {
+			log('commandError', 'stop@main_command', error)
+			return errorEmbed({ title: 'stop@main_command', error: error });
+		}
 	} catch(error) {
-		log('error', 'voteskip@checkQueue', error.stack);
-		return errorEmbed({ title: 'voteskip@checkQueue', error: error });
+		log('error', 'stop@checkQueue', error.stack);
+		return errorEmbed({ title: 'stop@checkQueue', error: error });
 	}
 
-	/** Do the thing */
-	try {
-		await bot.player.stop(message);
-		return dynamicEmbed({
-			title: 'Player Stopped',
-			color: 'RED',
-			text: `The player has been stopped and the queue has been cleared.`,
-			fields: {
-				'Action By': { content: message.author.tag }
-			},
-			footer: {
-				text: `Thanks for using ${bot.user.username}!`,
-				icon: bot.user.avatarURL()
-			}
-		});
-	} catch(error) {
-		log('commandError', 'stop', error)
-		return errorEmbed(message, error);
-	}
 })

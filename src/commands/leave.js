@@ -12,20 +12,30 @@ export default new Command({
 	usage: 'command'
 }, async (bot, message) => {
 	try {
-		// vc of member
+		/** Voice Channel of <GuildMember> */
 		const { channel } = message.member.voice;
-		// connection of Discord.Musicord
+		/** Voice Connection of <Client> */
 		const connection = bot.voice.connections.get(message.guild.id);
-		// bot connection = member connection
+		/** Checks if <GuildMember>.voice.connection === <Client>.voice.connection */
 		if (connection && connection.channel.id === channel.id) {
-			// then leave
+			/** Leave */
 			const voice = await channel.leave();
-			return simpleEmbed(message, `Successfully left channel ${voice.channel.name}.`);
+			/** Return Message */
+			return simpleEmbed({
+				title: 'Channel Left',
+				color: 'GREEN',
+				text: `Successfully left voice channel **${voice.channel.name}**.`
+			});
 		} else {
-			return simpleEmbed(message, 'You\'re in a different voice channel.')
+			/** Stay and Return Message */
+			return simpleEmbed({
+				title: 'Channel Difference',
+				color: 'RED',
+				text: 'You\'re in a different voice channel than me.'
+			});
 		}
 	} catch(error) {
-		log('error', 'leave@leave_channel', error);
+		log('error', 'leave@main_command', error);
 		return errorEmbed(message, error);
 	}
 })

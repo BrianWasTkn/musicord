@@ -2,7 +2,8 @@ import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import findLyrics from 'lyrics-finder'
 import { 
-	simpleEmbed, 
+	simpleEmbed,
+	dynamicEmbed, 
 	errorEmbed 
 } from '../utils/embed.js'
 
@@ -24,39 +25,35 @@ export default new Command({
 				text: 'There\'s nothing playing in the queue.'
 			})
 		}
+		
+		/** Do the Thing */
+		try {
+			const lyrics = await findLyrics(' ', queue.songs[0].name);
+			if (!lyrics) {
+				return simpleEmbed({
+					title: 'Nothing Found',
+					color: 'RED',
+					text: `No lyrics found for **${queue.songs[0].name}**.`
+				});
+			} else {
+				return dynamicEmbed({
+					title: `${queue.songs[0].name} — Lyrics`,
+					color: 'BLUE',
+					text: lyrics,
+					footer: {
+						text: `Thanks for using ${bot.user.username}!`,
+						icon: bot.user.avatarURL()
+					}
+				});
+			}
+		} catch(error) {
+			log('commandError', 'lyrics@main_command', error.stack);
+			return errorEmbed({ title: 'lyrics@main_command', error: error });
+		}
 	} catch(error) {
 		log('error', 'lyrics@checkQueue', error.stack);
 		return errorEmbed({ title: 'lyrics@checkQueue', error: error });
 	}
 
-	try {
-		const queue = bot.player.getQueue(message);
-		try {
-			// fetch
-			let lyrics = await findLyrics(' ', queue.songs[0].name);
-
-			// nothin' found
-			if (!lyrics) {
-				return simpleEmbed(message, 'No lyrics found for the song.');
-			}
-
-			// lyrics length
-			if (lyrics.length > 2000) {
-				lyrics = lyrics.substr(0, 2000);
-			}
-
-			// embed
-			const embed = simpleEmbed(message, `Lyrics for: ${queue.songs[0].name}`);
-			embed.color = 'BLUE';
-			embed.description = lyrics;
-			return embed;
-		} catch(error) {
-			log('commandError', 'lyrics@findLyrics', error.stack);
-			return errorEmbed(message, error);
-		}
-	} catch(error) {
-		log('commandError', 'lyrics@getQueue', error.stack);
-		return errorEmbed(message, error);
-	}
 
 })

@@ -519,6 +519,15 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "src/commands/shuffle.js",
+			"settings":
+			{
+				"buffer_size": 1781,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -587,87 +596,88 @@
 		"/C/Users/Discord/Desktop/js/musicord",
 		"/C/Users/Discord/Desktop/js/musicord/src",
 		"/C/Users/Discord/Desktop/js/musicord/src/classes",
+		"/C/Users/Discord/Desktop/js/musicord/src/classes/Command",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/filters",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/owner",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/utility",
-		"/C/Users/Discord/Desktop/js/musicord/src/listeners"
+		"/C/Users/Discord/Desktop/js/musicord/src/listeners",
+		"/C/Users/Discord/Desktop/js/musicord/src/utils"
 	],
 	"file_history":
 	[
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/stop.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/skip.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/voteskip.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/volume.js",
+		"/C/Users/Discord/Desktop/js/musicord/node_modules/distube/src/DisTube.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/utility/invite.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/utility/info.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/utility/avatar.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/shuffle.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/seek.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/search.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/resume.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/remove.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/queue.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/pause.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/nowplaying.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/lyrics.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/loop.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/jump.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/classes/Command.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/listeners/playerEventListener.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/utils/embed.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/utils/player.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/classes/Client.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/classes/Command/Sound.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/soundboard/honk.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/client/Client.js",
 		"/C/Users/Discord/Desktop/js/musicord/package.json",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/owner/shard.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/distube/src/Playlist.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/owner/eval.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/classes/ArgParser.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/utility/avatar.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/utility/invite.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/owner/repl.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/join.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/client/voice/VoiceConnection.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/nowplaying.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/filters/8D.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/listeners/discordCommandListener.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/classes/Message.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/classes/Client.js",
 		"/C/Users/Discord/Desktop/js/musicord/e",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/@discordjs/collection/dist/index.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/rest/RESTManager.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/util/Util.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/utility/help.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/owner/kill.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/voteskip.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/classes/Player.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/jump.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/leave.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/classes/Command.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/interfaces/Application.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/queue.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/distube/src/Song.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/distube/src/DisTube.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/shuffle.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/utils/duration.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/utils/embed.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/User.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/interfaces/TextBasedChannel.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/classes/Command/Music.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/search.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/utils/text.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/musicord.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/loop.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/Message.js",
 		"/C/Users/Discord/Downloads/devmod.db",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/volume.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/Webhook.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/test.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/interfaces/Collector.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/listeners/playerEventListener.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/GuildChannel.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/MessageCollector.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/TextChannel.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/managers/ReactionManager.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/config.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/classes/Utilities.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/utility/info.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/util/Collection.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/utils/constants.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/utils/colors.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/ClientApplication.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/classes/Command/Owner.js",
 		"/C/Users/Discord/Desktop/js/musicord/docs/LISTENERS.md",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/stop.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/skip.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/seek.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/resume.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/remove.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/play.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/pause.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/lyrics.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/MessageEmbed.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/@distube/youtube-dl/README.md",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/lodash/rest.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/utils/player.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/utils/logger.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/Presence.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/moment/moment.js",
@@ -720,19 +730,18 @@
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/__main__.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/classes/Player.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/commands/seek.js",
-		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/commands/remove.js",
-		"/C/Users/Discord/Desktop/discord.js/music-DisTube/node_modules/discord-music-player/src/Player.js",
-		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/commands/play.js"
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/commands/remove.js"
 	],
 	"find":
 	{
-		"height": 54.0
+		"height": 29.0
 	},
 	"find_in_files":
 	{
 		"height": 134.0,
 		"where_history":
 		[
+			"C:\\Users\\Discord\\Desktop\\js\\musicord\\src"
 		]
 	},
 	"find_state":
@@ -740,6 +749,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"info:",
+			",\\ninfo:",
+			"errorEmbed({",
 			"this.api",
 			"nick"
 		],
@@ -749,6 +761,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"text:"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -759,14 +772,44 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "src/commands/shuffle.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1781,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								593,
+								593
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 31.0
+		"height": 29.0
 	},
 	"input":
 	{
@@ -807,7 +850,7 @@
 	"project": "musicord-main.sublime-project",
 	"replace":
 	{
-		"height": 58.0
+		"height": 54.0
 	},
 	"save_all_on_build": true,
 	"select_file":

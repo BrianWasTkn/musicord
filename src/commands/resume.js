@@ -13,38 +13,54 @@ export default new Command({
 	usage: 'command'
 }, async (bot, message, args) => {
 
-	/** Check if Paused */
+	/** Check Playing State */
 	try {
-		const paused = bot.player.isPaused(message);
-		if (!paused) {
+		const queue = bot.player.getQueue(message);
+		if (!queue) {
 			return simpleEmbed({
-				title: 'Not Paused',
+				title: 'Player Empty',
 				color: 'RED',
-				text: 'The player is not paused.'
+				text: 'There\'s nothing playing in the queue.'
 			})
 		}
+
+		/** Check if Paused */
+		try {
+			const paused = bot.player.isPaused(message);
+			if (!paused) {
+				return simpleEmbed({
+					title: 'Not Paused',
+					color: 'RED',
+					text: 'The player is not paused.'
+				})
+			}
+		} catch(error) {
+			log('error', 'resume@checkPaused', error.stack);
+			return errorEmbed({ title: 'resume@checkPaused', error: error });
+		}
+
+		/** Else, resume */
+		try {
+			await bot.player.resume(message);
+			return dynamicEmbed({
+				title: 'Player Resumed',
+				color: 'BLUE',
+				text: 'The player has resumed playing the tracks.',
+				fields: {
+					'Action by': { content: message.author.tag }
+				},
+				footer: {
+					text: `Thanks for using ${bot.user.username}!`,
+					icon: bot.user.avatarURL()
+				}
+			});
+		} catch(error) {
+			log('commandError', 'resume@main_command', error)
+			return errorEmbed({ title: 'resume@main_command', error: error });
+		}
 	} catch(error) {
-		log('error', 'resume@checkPaused', error.stack);
-		return errorEmbed({ title: 'resume@checkPaused', error: error });
+		log('error', 'resume@checkQueue', error.stack);
+		return errorEmbed({ title: 'resume@checkQueue', error: error });
 	}
 
-	/** Else, resume */
-	try {
-		await bot.player.resume(message);
-		return dynamicEmbed({
-			title: 'Player Resumed',
-			color: 'BLUE',
-			text: 'The player has resumed playing tracks.',
-			fields: {
-				'Action by': { content: message.author.tag }
-			},
-			footer: {
-				text: `Thanks for using ${bot.user.username}!`,
-				icon: bot.user.avatarURL()
-			}
-		});
-	} catch(error) {
-		log('commandError', 'resume', error.stack);
-		return errorEmbed(message, error);
-	}
 })

@@ -23,42 +23,45 @@ export default new Command({
 				text: 'There\'s nothing playing in the queue.'
 			})
 		}
+
+		/** Do the thing */
+		try {
+			const queue = await bot.player.shuffle(message),
+			songs = queue.songs.map((song, index) => `**#${index + 1}**: [__${song.name}__](${song.url}) - \`${song.formattedDuration}\``);
+			const msgs = [dynamicEmbed({
+				title: 'Queue Shuffled',
+				color: 'BLUE',
+				text: 'The songs are now shuffled on the queue.',
+				footer: {
+					text: `Thanks for using ${bot.user.username}!`,
+					icon: bot.user.avatarURL()
+				}
+			}), dynamicEmbed({
+				title: 'Server Queue',
+				color: 'BLUE',
+				text: songs.join('\n'),
+				footer: {
+					text: `Thanks for using ${bot.user.username}!`,
+					icon: bot.user.avatarURL()
+				}
+			})];
+			
+			/** Send the Messages */
+			try {
+				for await (const msg of msgs) {
+					message.channel.send(msg);
+				}
+			} catch(error) {
+				log('commandError', 'shuffle@send_messages', error)
+				return errorEmbed({ title: 'shuffle@send_messages', error: error });
+			}
+		} catch(error) {
+			log('commandError', 'shuffle@main_command', error)
+			return errorEmbed({ title: 'shuffle@main_command', error: error });
+		}
 	} catch(error) {
 		log('error', 'shuffle@checkQueue', error.stack);
 		return errorEmbed({ title: 'shuffle@checkQueue', error: error });
 	}
 
-	/** Do the thing */
-	try {
-		const queue = await bot.player.shuffle(message),
-		songs = queue.songs.map((song, index) => `**#${index + 1}**: [${song.name}](${song.url}) - \`${song.formattedDuration}\``);
-		const msgs = [dynamicEmbed({
-			title: 'Queue Shuffled',
-			color: 'BLUE',
-			text: 'The songs are now shuffled on the queue.',
-			footer: {
-				text: `Thanks for using ${bot.user.username}!`,
-				icon: bot.user.avatarURL()
-			}
-		}), dynamicEmbed({
-			title: 'Server Queue',
-			color: 'BLUE',
-			text: songs.join('\n'),
-			footer: {
-				text: `Thanks for using ${bot.user.username}!`,
-				icon: bot.user.avatarURL()
-			}
-		})];
-		try {
-			for await (const msg of msgs) {
-				message.channel.send(msg);
-			}
-		} catch(error) {
-			log('commandError', 'shuffle@send_messages', error)
-			return errorEmbed(message, error);
-		}
-	} catch(error) {
-		log('commandError', 'shuffle', error)
-		return errorEmbed(message, error);
-	}
 })

@@ -1,7 +1,7 @@
 import Command from '../Command.js'
 
 export class Soundboard extends Command {
-	constructor(options, item, fn) {
+	constructor(options, endpoint, fn) {
 		super(options, fn);
 	} 
 }

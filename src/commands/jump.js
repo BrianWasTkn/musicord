@@ -22,29 +22,38 @@ export default new Command({
 				text: 'There\'s nothing playing in the queue.'
 			})
 		}
+		
+		/** isNaN */
+		if (isNaN(args[0]) || !args[0]) {
+			return simpleEmbed(message, `Cannot parse your specified index number as number.`);
+		}
+
+		/** Queue Limits */
+		const index = parseInt(args[0], 10);
+		if (index > queue.songs.length) {
+			return simpleEmbed({
+				title: 'Too High',
+				color: 'RED',
+				text: 'Your specified index number is higher than the length of songs in queue.'
+			});
+		} else if (index < 1) {
+			return simpleEmbed({
+				title: 'Too Low',
+				color: 'RED',
+				text: 'Cannot jump to songs that doesn\'t exist.'
+			});
+		}
+
+		/** Do the thing */
+		try {
+			await bot.player.jump(message, index - 1);
+		} catch(error) {
+			log('commandError', 'loop@main_command', error)
+			return errorEmbed({ title: 'loop@main_command', error: error });
+		}
 	} catch(error) {
 		log('error', 'jump@checkQueue', error.stack);
 		return errorEmbed({ title: 'jump@checkQueue', error: error });
 	}
 
-	// not a number
-	if (isNaN(args[0]) || !args[0]) {
-		return simpleEmbed(message, `Cannot parse your specified index number as number.`);
-	}
-
-	// queue limits
-	const index = parseInt(args[0], 10);
-	if (index > queue.songs.length) {
-		return simpleEmbed(message, 'Your specified index is greater than the length of songs in queue.');
-	} else if (index < 1) {
-		return simpleEmbed(message, 'Cannot jump to songs that already been finished.');
-	}
-
-	/** Do the thing */
-	try {
-		await bot.player.jump(message, index - 1);
-	} catch(error) {
-		log('commandError', 'loop', error)
-		return errorEmbed(message, error);
-	}
 })

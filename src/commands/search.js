@@ -43,7 +43,7 @@ export default new Command({
 		} catch(error) {
 			/** Log Error */
 			log('commandError', 'search@results_message', error)
-			return errorEmbed(message, error);
+			return errorEmbed({ title: 'search@results_message', error: error });
 		}
 
 		/** Await Message */
@@ -57,7 +57,7 @@ export default new Command({
 			/** Log Error */
 			if (!choice) {
 				log('commandError', 'search@messageCollector', error)
-				return 'Next time if you\'re just gonna let me waste my time don\'t use this command again okay?'
+				return errorEmbed({ title: 'search@messageCollector', error: error });
 			}
 		}
 
@@ -71,19 +71,19 @@ export default new Command({
 					await cancel();
 					break;
 				case isNaN(index):
-					throw new Error(`Cannot parse ${index} as number.`)
+					throw new Error(`Cannot parse ${index}.`)
 					break;
 				case parseInt(index, 10) > results.length:
-					throw new Error(`Your choice shouldn't be greater than ${found.length}.`)
+					throw new Error(`Higher than ${found.length}.`)
 					break;
 				case parseInt(index, 10) < 1:
-					throw new Error(`Are you really dumb? Imagine answering negative numbers.`)
+					throw new Error(`Lower than 1.`)
 					break;
 			}
 		} catch(error) {
 			/** Log Error */
-			log('commandError', 'search@parse_choice', error.stack);
-			return errorEmbed(message, error);
+			log('commandError', 'search@parse_choice', error)
+			return errorEmbed({ title: 'search@parse_choice', error: error });
 		}
 
 		/** Cancel */
@@ -92,8 +92,8 @@ export default new Command({
 				await bot.player.emit('searchCancel');
 			} catch(error) {
 				/** Log Error */
-				log('commandError', 'search@emit_searchCancel', error.stack);
-				return errorEmbed(message, error);
+				log('commandError', 'search@emit_searchCancel', error)
+				return errorEmbed({ title: 'search@emit_searchCancel', error: error });
 			}
 		}
 
@@ -106,16 +106,16 @@ export default new Command({
 			} catch(error) {
 				/** Log Error */
 				log('commandError', 'search@delete_results_embed', error)
-				return errorEmbed(message, error);
+				return errorEmbed({ title: 'search@delete_results_embed', error: error });
 			}
 		} catch(error) {
 			/** Log Error */
 			log('commandError', 'search@play_song', error)
-			return errorEmbed(message, error);
+			return errorEmbed({ title: 'search@play_song', error: error });
 		}
 	} catch(error) {
 		/** Log Error */
 		log('commandError', 'search@search_tracks', error)
-		return errorEmbed(message, error);
+		return errorEmbed({ title: 'search@search_tracks', error: error });
 	}
 })

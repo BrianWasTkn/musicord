@@ -14,7 +14,11 @@ export default new Command({
 
 	/** Missing Args */
 	if (args.length < 1) {
-		return simpleEmbed(message, 'You need something to play.');
+		return simpleEmbed({
+			title: 'Missing Args',
+			color: 'RED',
+			text: 'You need something to play.'
+		});
 	}
 
 	/** Play */
@@ -25,17 +29,32 @@ export default new Command({
 		if (args.length > (sIndex + 1)) {
 			/** Play Skip */
 			args.splice(sIndex, 2);
-			await bot.player.playSkip(message, args.join(' '));
+			try {
+				await bot.player.playSkip(message, args.join(' '));
+			} catch(error) {
+				log('commandError', 'play@playSkip', error.stack);
+				return errorEmbed({ title: 'play@playSkip', error: error });
+			}
 		} else if (args.length > rIndex) {
 			/** Add related song */
+			try {
+				await bot.player.addRelatedVideo(message);
+			} catch(error) {
+				log('commandError', 'play@addRelatedVideo', error.stack);
+				return errorEmbed({ title: 'play@addRelatedVideo', error: error });
+			}
 			args.splice(rIndex, 2);
-			await bot.player.addRelatedVideo(message);
 		} else {
 			/** Play Song */
-			await bot.player.play(message, args.join(' ')) ;
+			try {
+				await bot.player.play(message, args.join(' ')) ;
+			} catch(error) {
+				log('commandError', 'play@play', error.stack);
+				return errorEmbed({ title: 'play@play', error: error });
+			}
 		}
 	} catch(error) {
-		log('commandError', 'play@play', error.stack);
-		return errorEmbed(message, error);
+		log('commandError', 'play@main_command', error.stack);
+		return errorEmbed({ title: 'play@main_command', error: error });
 	}
 })
