@@ -32,7 +32,7 @@ export default class extends Command {
 		 * Command Aliases
 		 * @type {Array<String>}
 		 */
-		this.aliases = [...[options.aliases || []], `toggle-${options.name}`];
+		this.aliases = [`toggle-${options.name}`];
 
 		/**
 		 * Command Description

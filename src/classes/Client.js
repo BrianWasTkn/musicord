@@ -118,7 +118,7 @@ export default class Musicord extends Client {
 		files = readdirSync(join(__dirname, '..', 'commands'));
 
 		// clear the collection
-		try { this.commands.clear() try { this.aliases.clear() } 
+		try { this.commands.clear(); try { this.aliases.clear(); } 
 		catch { throw new Error('Cannot clear aliases') } } 
 		catch { return new Error('Cannot clear commands') }
 
