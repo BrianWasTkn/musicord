@@ -53,9 +53,7 @@ export default class Utilities {
       { name: 'second', count: 1 }
     ];
 
-    const parsed = [ 
-    	`${Math.floor(time / methods[0].count).toString()} ${methods[0].name}` 
-    ];
+    const parsed = [ `${Math.floor(time / methods[0].count).toString()} ${methods[0].name}` ];
     for (let i = 0; i < 3; i++) {
     	const formula = Math.floor(time % methods[i].count / methods[i + 1].count);
       parsed.push(`${formula.toString()} ${formula > 1 ? `${methods[i + 1].name}s` : methods[i + 1].name}`);
