@@ -5,7 +5,7 @@ export default class Join extends Command {
 		super(client, {
 			name: 'join',
 			aliases: ['bound'],
-			description: 'Musicord will join your voice channel.',
+			description: 'Joins your current voice channel.',
 			usage: 'command',
 			cooldown: 5000
 		});

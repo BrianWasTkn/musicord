@@ -1,35 +1,49 @@
 import Manager from '../classes/Manager.js'
-
 const { Constants: Events } = require('discord.js');
 
 export default class PresenceManager extends Manager {
 	constructor(client) {
 		super(client);
-		
-		/* Events */
-		this.client.on(Events.READY, this.handle);
+		/* Handle */
+		client.on(Events.READY, () => this.handle({
+			Bot: this.client
+		}));
 	}
 
-	async handle() {
+	async handle({ Bot }) {
 		try {
-			/* Log */
+			/** Set first Presence */
 			try {
-				this.log(`${this.client.user.username} is now ready to play some beats!`);
+				await Bot.user.setPresence({
+					activity: {
+						name: `${Bot.prefix}help`,
+						type: 'STREAMING',
+						url: 'https://twitch.tv/onlyhitus'
+					}
+				})
 			} catch(error) {
-				super.log('PresenceManager@log', error);
+				super.log('Ready@set_first_presence', error);
 			}
 
-			/* Activity */
-			try {
-				await this.client.user.setPresence({
-					activities: {
-						type: 'LISTENING',
-						name: `${this.client.prefix}help`
-					}
-				});
-			} catch(error) {
-				super.log('PresenceManager@presence', error);
-			}
+			/** Interval */
+			setInterval(async () => {
+				const activities = [
+					`Music in ${Bot.guilds.cache.size.toLocaleString()} servers`,
+					`${Bot.config.prefix}help`,
+					`Music for ${Bot.users.cache.size.toLocaleString()} users`
+				];
+				try {
+					await Bot.user.setPresence({
+						activity: {
+							name: activities[Math.floor(Math.random() * activities.length)],
+							type: 'STREAMING',
+							url: 'https://twitch.tv/onlyhitus'
+						}
+					})
+				} catch(error) {
+					super.log('Ready@set_presence_interval', error)
+				}
+			}, 1000 * 60) // 1 Minute (1000ms * 60secs)
 		} catch(error) {
 			super.log('PresenceManager', error);
 		}

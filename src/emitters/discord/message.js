@@ -3,9 +3,11 @@ import Listener from '../../classes/Listener.js'
 export default class Message extends Listener {
 	constructor(client) {
 		super(client);
+		/* Handle */
+		client.on('message', this.handle);
 	}
 
-	async run(msg) {
+	async handle(msg) {
 		if (msg.channel.type !== 'dm' && !msg.author.bot) {
 			try {
 				/** Bot Prefix */
