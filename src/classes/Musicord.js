@@ -6,8 +6,9 @@ import DisTube from './DisTube.js'
 
 export default class Musicord extends Client {
 	constructor(clientOptions, playerOptions) {
-		super(clientOptions)
-		this.player = new DisTube(this, playerOptions);
+		super(clientOptions);
+		this.package = require('../../package.json');
+		this.distube = new DisTube(this, playerOptions);
 		this.config = require('../config/config.js').default;
 		this.utils = new (require('./Util.js').default)(this);
 		this.managers = new Collection();
@@ -15,6 +16,14 @@ export default class Musicord extends Client {
 		this.aliases = new Collection();
 		this.cooldowns = new Collection();
 		this.loadAll();
+	}
+
+	get prefix() {
+		return this.config.prefix;
+	}
+
+	get developers() {
+		return this.config.developers;
 	}
 
 	loadAll() {

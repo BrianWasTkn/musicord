@@ -4,34 +4,20 @@ export default class Queue extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'queue',
-			aliases: ['q'],
+			aliases: ['tracks'],
 			description: 'Sends an embed containing the current songs in the queue.',
 			usage: 'command',
 			cooldown: 5000
+		}, {
+			category: 'Music',
+			checks: ['voice', 'queue']
 		});
-
-		/**
-		 * Command Category 
-		 * @type {String}
-		 */
-		this.category = 'Music';
-
-		/**
-		 * Custom Checking
-		 * * `dj` - dj role
-		 * * `voice` - if member in voice channel
-		 * * `queue` - if queue is present
-		 * * `paused` - if player paused
-		 * * `stopped` - if player stopped
-		 * @type {String[]}
-		 */
-		this.checks = ['voice', 'queue'];
 	}
 
 	async execute({ Bot, msg }) {
 		try {
 			/* Queue with Mapped Songs */
-			const songs = await Bot.player.mapQueue(msg, true);
+			const songs = await Bot.distube.mapQueue(msg, true);
 			try {
 				/* Message */
 				await msg.channel.send(super.createEmbed({

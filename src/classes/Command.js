@@ -5,7 +5,7 @@ import Discord from 'discord.js'
  */
 
 export default class Command {
-	constructor(client, options) {
+	constructor(client, options, extension) {
 
 		/**
 		 * Discord Client
@@ -55,7 +55,26 @@ export default class Command {
 		 * Command Required Permissions
 		 * @type {String[]}
 		 */
-		this.permissions = ['SEND_MESSAGES'].concat(options.permissions || []);
+		if ('permissions' in options && options.permissions.length > 1) {
+			this.permissions = ['SEND_MESSAGES'].concat(options.permissions);
+		} else {
+			this.permissions = ['SEND_MESSAGES'];
+		}
+
+		/**
+		 * Command Category 
+		 * @type {String}
+		 */
+		this.category = extension.category;
+
+		/**
+		 * Custom Checking
+		 * * `dj` - dj role
+		 * * `voice` - if member in voice channel
+		 * * `queue` - if queue is present
+		 * @type {String[]}
+		 */
+		this.checks = extension.checks || [];
 	}
 
 	/** Shortcut for logging */
@@ -92,7 +111,9 @@ export default class Command {
 			// On cooldown
 			if (now < expiration) {
 				let timeLeft = (expiration - now) / 1000;
-				timeLeft = timeLeft > 60 ? this.client.utils.parseTime(timeLeft) : `${timeLeft.toFixed(1)} seconds`;
+				timeLeft = timeLeft > 60 
+				? this.client.utils.formatCooldown(timeLeft * 1000) 
+					: `${timeLeft.toFixed(1)} seconds`;
 				// Return a message
 				return this.createEmbed({
 					title: 'Cooldown, Slow down.',
@@ -112,7 +133,7 @@ export default class Command {
 		}, command.cooldown);
 	}
 
-	checkPermissions({ command, msg }) {
+	checkPermissions({ Bot, command, msg }) {
 		if (!msg.member.permissions.has(command.permissions)) {
 			return this.createEmbed({
 				title: 'Missing Permissions',
@@ -122,6 +143,10 @@ export default class Command {
 					[`${command.permissions.length} missing permissions`]: {
 						content: `\`${command.permissions.join('`, `')}\``
 					}
+				},
+				footer: {
+					text: `Thanks for using ${Bot.user.username}!`,
+					icon: Bot.user.avatarURL()
 				}
 			});
 		}

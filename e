@@ -5,7 +5,8 @@ const bob = () => ({
 	jpg: 'this is a jpg' ,
 	links: () => {
 		return ['png', 'webp', 'jpg']
-		.map((f, i) => `[${f}](${Object.entries(bob()).map(e => e[1])[i]})`)
+		.map((f, i) => `[${f}](${Object.entries(bob())
+			.map(e => e[1])[i]})`)
 		.join(' | ')
 	}
 });

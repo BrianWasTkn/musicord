@@ -56,27 +56,25 @@ export default class Util {
 		title = null, icon = null, text = null,
 		color = 'RANDOM',
 	} = {}) {
-		return {
-			embed: {
-				author: { 
-					name: author.text, 
-					iconURL: author.icon 
-				},
-				title: title,
-				thumbnail: icon,
-				color: Colors[color] || Discord.Constants.Colors[color],
-				description: text,
-				fields: Object.entries(fields).map(f => ({ 
-					name: f[0], 
-					value: f[1].content, 
-					inline: f[1].inline || false 
-				})),
-				footer: { 
-					text: footer.text, 
-					iconURL: footer.icon 
-				}
+		/* Assign default values */
+		const embed = {
+			author: { name: null, iconURL: null }, fields: [], 
+			thumbnail: null, title: null, description: null, color: 'BLUE', 
+			footer: { 
+				text: `Thanks for using ${this.client.user.username}!`,
+				iconURL: this.client.user.avatarURL()
 			}
-		}
+		};
+
+		/* Return */
+		return Object.assign(embed, {
+			author: { name: author.text, iconURL: author.icon },
+			footer: { text: footer.text, iconURL: footer.icon },
+			title, description: text, thumbnail: icon, color,
+			fields: Object.entries(fields).map(f => ({
+				name: f[0], value: f[1].content, inline: f[1].inline || false
+			}))
+		});
 	}
 
 	/**
@@ -175,6 +173,169 @@ export default class Util {
 
 		/* Return */
 		return results.filter(r => !r.startsWith('0')).join(', ');
+	}
+
+	/**
+	 * Player Controls
+	 * @param {Song} song a distube song
+	 * @param {MessageEmbed} embed a discord embed
+	 * @param {Message} msg a discord message
+	 * @returns <void>
+	 */
+	async handleControls({ song, embed, msg }) {
+		/* Emojis */
+		try {
+			// Order: [skip, pause, mute, volDown, volUp, loop, stop]
+			const emojis = ['⏭', '⏯', '🔇', '🔉', '🔊', '🔁', '⏹'];
+			for await (const emoji of emojis) {
+				setTimeout(() => {
+					msg.react(emoji);
+				}, 1000); // a second timeout to avoid rateLimits.
+			}
+		} catch(error) {
+			super.log('play@handleControls_reactions', error);
+		}
+
+		/* Prepare Collector */
+		try {
+			const filter = m => m.author.id === msg.author.id && this.client.user.id !== msg.author.id;
+			const collector = await embed.createReactionCollector(filter, {
+				time: song.duration > 0 ? song.duration * 1000 : 600000,
+				errors: ['time']
+			});
+
+			collector
+				.on('collect', async (reaction, user) => {
+					/* Reactions */
+					switch(reaction.emoji.name) {
+						/* Skip */
+						case emojis[0]:
+						await this.client.distube.skip(msg);
+						break;
+
+						/* Pause */
+						case emojis[1]:
+						await this.client.distube.pause(msg);
+						await msg.channel.send(this.createEmbed({
+							title: 'Player Paused',
+							color: 'GREEN',
+							text: `${user.tag} has paused the queue.`,
+						}));
+						break;
+
+						/* Mute */
+						case emojis[2]:
+						let queue = this.client.distube.getQueue(msg);
+						if (queue.volume <= 0) {
+							queue = await this.client.distube.setVolume(msg, 100);
+							await msg.channel.send(this.createEmbed({
+								title: 'Player Unmuted',
+								color: 'GREEN',
+								text: `${user.tag} unmuted the player.\nThe volume is now **${queue.volume}%**`
+							}));
+						} else {
+							queue = await this.client.distube.setVolume(msg, 0);
+							await msg.channel.send(this.createEmbed({
+								title: 'Player Muted',
+								color: 'GREEN',
+								text: `The player has been muted by ${user.tag}.`
+							}));
+						}
+						break;
+
+						/* Volume down */
+						case emojis[3]:
+						if (queue.volume - 10 <= 0) {
+							queue = await this.client.distube.setVolume(msg, 0);
+							await msg.channel.send(this.createEmbed({
+								title: 'Volume Changed',
+								color: 'GREEN',
+								text: `${user.tag} changed the volume to **${queue.volume}%**.`
+							}));
+						} else {
+							queue = await this.client.distube.setVolume(msg, queue.volume - 10);
+							await msg.channel.send(this.createEmbed({
+								title: 'Volume Changed',
+								color: 'GREEN',
+								text: `${user.tag} decreased the volume by **10%**.`
+							}));
+						}
+						break;
+
+						/* Volume up */
+						case emojis[4]:
+						if (queue.volume + 10 >= 100) {
+							queue = await this.client.distube.setVolume(msg, 100);
+							await msg.channel.send(this.createEmbed({
+								title: 'Volume Changed',
+								color: 'GREEN',
+								text: `${user.tag} changed the volume to default (${queue.volume}%).`
+							}));
+						} else {
+							queue = await this.client.distube.setVolume(msg, queue.volume + 10);
+							await msg.channel.send(this.createEmbed({
+								title: 'Volume Changed',
+								color: 'GREEN',
+								text: `${user.tag} increased the volume by **10%**.`
+							}));
+						}
+						break;
+
+						/* Loop */
+						case emojis[5]:
+						let mode = queue.setRepeatMode ? queue.setRepeatMode === 2 ? 0 : 2 : 1;
+						queue = await this.client.distube.setRepeatMode(msg, mode);
+						await msg.channel.send(this.createEmbed({
+							title: 'Loop Mode',
+							color: 'GREEN',
+							text: `${this.client.user.username} will now loop \`${queue.repeatMode ? queue.repeatMode === 2 ? 'the queue' : 'the current track' : 'none'}\``
+						}));
+						break;
+						
+						/* Stop */
+						case emojis[6]:
+						await this.client.distube.stop(msg);
+						await msg.channel.send(this.createEmbed({
+							title: 'Player Stopped',
+							color: 'RED',
+							text: `The player has been stopped by ${user.tag}.`
+						}));
+						break;
+					}
+				})
+				.on('end', async () => {
+					/* Remove Reactions */
+					await embed.reactions.removeAll();
+				});
+		} catch(error) {
+			super.log('play@collector', error);
+		}
+	}
+
+	/**
+	 * Repeat Mode
+	 * @param {Message} msg a discord message
+	 * @param {Queue} queue a distube queue
+	 * @param {String} q something to return if mode is queue
+	 * @param {String} t something to return if mode is track
+	 * @param {String} o something to return if mode is off
+	 * @returns {String} the mode
+	 */
+	repeatMode(msg, queue, q = 'Queue', t = 'Track', o = 'Off') {
+		return queue.repeatMode
+		? queue.repeatMode === 2
+			? q
+			: t
+		: o;
+	}
+
+	/**
+	 * Sleep
+	 * @param {number} ms time in milliseconds
+	 * @returns {Promise<void>}
+	 */
+	sleep(ms) {
+		return Discord.Util.delayFor(ms);
 	}
 
 }

@@ -8,30 +8,16 @@ export default class Pause extends Command {
 			description: 'Temporarily stops the queue unless you resume it.',
 			usage: 'command',
 			cooldown: 5000
+		}, {
+			category: 'Music',
+			checks: ['voice', 'queue']
 		});
-
-		/**
-		 * Command Category 
-		 * @type {String}
-		 */
-		this.category = 'Music';
-
-		/**
-		 * Custom Checking
-		 * * `dj` - dj role
-		 * * `voice` - if member in voice channel
-		 * * `queue` - if queue is present
-		 * * `paused` - if player paused
-		 * * `stopped` - if player stopped
-		 * @type {String[]}
-		 */
-		this.checks = ['voice', 'queue', 'paused'];
 	}
 
 	async execute({ Bot, msg }) {
 		try {
 			/* Pause */
-			const queue = await Bot.player.pause(msg);
+			const queue = await Bot.distube.pause(msg);
 			try {
 				/* Message */
 				await msg.channel.send(super.createEmbed({

@@ -4,28 +4,14 @@ export default class Play extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'play',
-			aliases: ['p'],
+			aliases: ['play'],
 			description: 'Searches a track from supported sources and plays it.',
 			usage: '<query | URL>',
 			cooldown: 5000
+		}, {
+			category: 'Music',
+			checks: ['voice', 'queue'],
 		});
-
-		/**
-		 * Command Category 
-		 * @type {String}
-		 */
-		this.category = 'Music';
-
-		/**
-		 * Custom Checking
-		 * * `dj` - dj role
-		 * * `voice` - if member in voice channel
-		 * * `queue` - if queue is present
-		 * * `paused` - if player paused
-		 * * `stopped` - if player stopped
-		 * @type {String[]}
-		 */
-		this.checks = ['voice', 'queue'];
 	}
 
 	async execute({ Bot, msg, args }) {
@@ -45,17 +31,7 @@ export default class Play extends Command {
 		/** Else, Do it */
 		try {
 			/* Play */
-			await Bot.player.play(msg);
-			try {
-				/* Message */
-				await msg.channel.send(super.createEmbed({
-					title: 'Player Paused',
-					color: 'GREEN',
-					text: 'Successfully paused playing the songs.'
-				}));
-			} catch(error) {
-				super.log('play@msg', error);
-			}
+			await Bot.distube.play(msg);
 		} catch(error) {
 			super.log('play', error);
 		}

@@ -5,7 +5,7 @@ export default class CommandManager extends Manager {
 	constructor(client) {
 		super(client);
 		/* Handle */
-		client.on(Events.MESSAGE_CREATE, message => this.handle({ 
+		client.on(Events.MESSAGE_CREATE, async message => await this.handle({ 
 			Bot: this.client, msg: message 
 		}));
 	}

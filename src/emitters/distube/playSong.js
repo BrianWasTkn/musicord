@@ -4,7 +4,7 @@ export default class PlaySong extends Listener {
 	constructor(client) {
 		super(client);
 		/* Emit */
-		client.on('addSong', async (message, queue, song) => await this.run({
+		client.distube.on('addSong', async (message, queue, song) => await this.run({
 			Bot: message.client,
 			msg: message,
 			queue, song
@@ -13,7 +13,8 @@ export default class PlaySong extends Listener {
 
 	async run({ Bot, msg, queue, song }) {
 		try {
-			await msg.channel.send(super.createEmbed({
+			/* Message */
+			const m = await msg.channel.send(super.createEmbed({
 				title: 'Now Playing',
 				color: 'BLUE',
 				text: `Now Playing [**__${song.name}__**](${song.url}) on the queue.`,
@@ -27,6 +28,9 @@ export default class PlaySong extends Listener {
 					icon: Bot.user.avatarURL()
 				}
 			}));
+
+			/* Player Controls */
+			await this.client.utils.handleControls({ song, msg, embed: m });
 		} catch(error) {
 			super.log('PlaySong@sendMessage', error);
 		}

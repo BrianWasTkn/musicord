@@ -4,34 +4,20 @@ export default class Stop extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'stop',
-			aliases: ['fuckoff'],
+			aliases: ['shut'],
 			description: 'Stops playing the song and clears the queue.',
 			usage: 'command',
 			cooldown: 5000
+		}, {
+			category: 'Music',
+			checks: ['voice', 'queue']
 		});
-
-		/**
-		 * Command Category 
-		 * @type {String}
-		 */
-		this.category = 'Music';
-
-		/**
-		 * Custom Checking
-		 * * `dj` - dj role
-		 * * `voice` - if member in voice channel
-		 * * `queue` - if queue is present
-		 * * `paused` - if player paused
-		 * * `stopped` - if player stopped
-		 * @type {String[]}
-		 */
-		this.checks = ['voice', 'queue', 'paused'];
 	}
 
 	async execute({ Bot, msg }) {
 		try {
 			/* Stop */
-			const queue = await Bot.player.stop(msg);
+			const queue = await Bot.distube.stop(msg);
 			try {
 				/* Return a message */
 				await msg.channel.send(super.createEmbed({

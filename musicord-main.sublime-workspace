@@ -4,6 +4,62 @@
 		"selected_items":
 		[
 			[
+				"sani",
+				"sanitize"
+			],
+			[
+				"icon",
+				"iconURL"
+			],
+			[
+				"cat",
+				"category"
+			],
+			[
+				"leave",
+				"leaveguild"
+			],
+			[
+				"s",
+				"sy\tsynchronized"
+			],
+			[
+				"par",
+				"parseInt"
+			],
+			[
+				"HANDL",
+				"handleMessage"
+			],
+			[
+				"handle",
+				"handleMessage"
+			],
+			[
+				"Pl",
+				"PlayerOptions"
+			],
+			[
+				"re",
+				"readdirSync"
+			],
+			[
+				"imp",
+				"importCommands"
+			],
+			[
+				"disc",
+				"discordListener"
+			],
+			[
+				"EVENT",
+				"event"
+			],
+			[
+				"Pre",
+				"PresenceManager"
+			],
+			[
 				"voteskip",
 				"voteskip"
 			],
@@ -112,10 +168,6 @@
 				"command"
 			],
 			[
-				"par",
-				"parseTime"
-			],
-			[
 				"use",
 				"user"
 			],
@@ -146,10 +198,6 @@
 			[
 				"set",
 				"setRepeatMode"
-			],
-			[
-				"s",
-				"simpleEmbed"
 			],
 			[
 				"blue",
@@ -186,10 +234,6 @@
 			[
 				"i",
 				"if\tif"
-			],
-			[
-				"re",
-				"resumed"
 			],
 			[
 				"remov",
@@ -368,10 +412,6 @@
 				"mentionMatched"
 			],
 			[
-				"disc",
-				"discriminator"
-			],
-			[
 				"resolve",
 				"resolveUser"
 			],
@@ -474,83 +514,16 @@
 			[
 				"mes",
 				"messageCreate"
-			],
-			[
-				"code",
-				"codeBlock"
-			],
-			[
-				"cat",
-				"catch"
-			],
-			[
-				"des",
-				"description"
-			],
-			[
-				"categor",
-				"categoryDir"
-			],
-			[
-				"catego",
-				"categoryDir"
-			],
-			[
-				"catr",
-				"categoryDir"
-			],
-			[
-				"tr",
-				"Try"
-			],
-			[
-				"me",
-				"messageCreate"
-			],
-			[
-				"_load",
-				"_loadCommands"
-			],
-			[
-				"parse",
-				"parseInt\t( s: string, radix: int ): int Global"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "src/classes/Command.js",
+			"file": "old/listeners/playerEventListener.js",
 			"settings":
 			{
-				"buffer_size": 3392,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/commands/pause.js",
-			"settings":
-			{
-				"buffer_size": 978,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/commands/queue.js",
-			"settings":
-			{
-				"buffer_size": 1212,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/classes/Player.js",
-			"settings":
-			{
-				"buffer_size": 1646,
+				"buffer_size": 5398,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -626,31 +599,68 @@
 	[
 		"/C/Users/Discord/Desktop/js/musicord",
 		"/C/Users/Discord/Desktop/js/musicord/src",
-		"/C/Users/Discord/Desktop/js/musicord/src/cmds",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands"
+		"/C/Users/Discord/Desktop/js/musicord/src/emitters",
+		"/C/Users/Discord/Desktop/js/musicord/src/emitters/distube"
 	],
 	"file_history":
 	[
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/distube/src/DisTube.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/join.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/classes/Musicord.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/dev/eval.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/classes/Command.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/effects/bassboost.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/voteskip.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/stop.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/dev/leaveguild.js",
+		"/C/Users/Discord/Desktop/js/musicord/old/commands/owner/eval.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/leave.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/utility/help.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/classes/Util.js",
+		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/util/Util.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/emitters/distube/playSong.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/emitters/distube/addSong.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/emitters/distube/searchResult.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/emitters/distube/addList.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/test.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/queue.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/play.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/emitters/discord/message.js",
+		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/managers/GuildMemberRoleManager.js",
+		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/managers/GuildEmojiRoleManager.js",
+		"/C/Users/Discord/Desktop/js/musicord/node_modules/distube/src/DisTube.js",
+		"/C/Users/Discord/Desktop/js/musicord/old/utils/player.js",
+		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/Message.js",
+		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord-music-player/src/Song.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/dev/leave.js",
+		"/C/Users/Discord/Desktop/js/musicord/README.md",
+		"/C/Users/Discord/Desktop/js/musicord/src/managers/CommandManager.js",
+		"/C/Users/Discord/Desktop/js/musicord/e",
+		"/C/Users/Discord/Desktop/js/musicord/src/managers/PresenceManager.js",
+		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/interfaces/TextBasedChannel.js",
+		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/MessageCollector.js",
+		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/interfaces/Collector.js",
+		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/client/BaseClient.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/pause.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/stop.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/commands/volume.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/classes/Manager.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/classes/Listener.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/test.java",
+		"/C/Users/Discord/Desktop/js/musicord/old/utils/text.js",
+		"/C/Users/Discord/Desktop/js/musicord/old/utils/duration.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/managers/CollectorManager.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/emitters/discord/ready.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/musicord.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/classes/DisTube.js",
+		"/C/Users/Discord/Desktop/js/musicord/old/listeners/playerEventListener.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/classes/Player.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/config.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/managers/PlayerManager.js",
+		"/C/Users/Discord/Desktop/js/musicord/src/classes/Client.js",
+		"/C/Users/Discord/AppData/Roaming/Sublime Text 3/Packages/User/hello-world.py",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/managers/UserManager.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/VoiceChannel.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/interfaces/TextBasedChannel.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/DMChannel.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/classes/Client.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/pause.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/__launch__.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/musicord.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/classes/Command.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/emitters/discord/message.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/emitters/discord/ready.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/emitters/distube/addSong.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/emitters/distube/playSong.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/leave.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/classes/Listener.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/listeners/playerEventListener.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/cmds/leave.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/cmds/join.js",
@@ -661,13 +671,11 @@
 		"/C/Users/Discord/Desktop/js/musicord/src/utils/constants.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/utils/duration.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/utils/player.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/test.js",
 		"/C/Users/Discord/Desktop/js/musicord/docs/LISTENERS.md",
 		"/C/Users/Discord/Desktop/js/musicord/docs/CONTRIBUTING.md",
 		"/C/Users/Discord/Desktop/js/musicord/docs/COMMANDS.md",
 		"/C/Users/Discord/Desktop/js/musicord/src/utils/text.js",
 		"/C/Users/Discord/Desktop/js/musicord/package.json",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/volume.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/soundboard/honk.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/listeners/discordCommandListener.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/classes/Command/Filter.js",
@@ -681,7 +689,6 @@
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/utility/avatar.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/owner/repl.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/Guild.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/client/BaseClient.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/ClientUser.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/classes/ArgParser.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/nowplaying.js",
@@ -689,7 +696,6 @@
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/loop.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/jump.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/utility/info.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/queue.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/remove.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/resume.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/seek.js",
@@ -702,24 +708,16 @@
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/client/voice/VoiceConnection.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/commands/filters/8D.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/classes/Message.js",
-		"/C/Users/Discord/Desktop/js/musicord/e",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/rest/RESTManager.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/util/Util.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/utility/help.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/classes/Player.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/interfaces/Application.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/distube/src/Song.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/User.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/classes/Command/Music.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/Message.js",
 		"/C/Users/Discord/Downloads/devmod.db",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/Webhook.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/interfaces/Collector.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/GuildChannel.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/MessageCollector.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/TextChannel.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/managers/ReactionManager.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/config.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/classes/Utilities.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/util/Collection.js",
 		"/C/Users/Discord/Desktop/js/musicord/src/utils/colors.js",
@@ -733,42 +731,18 @@
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/moment/moment.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/util/Structures.js",
 		"/C/Users/Discord/Desktop/js/musicord/node_modules/distube/src/Queue.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/lodash/lodash.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/client/websocket/WebSocketShard.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/owner/reload.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord-music-player/src/Queue.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/ReactionCollector.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/MessageReaction.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/managers/ReactionUserManager.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/client/voice/player/AudioPlayer.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/structures/GuildMember.js",
-		"/C/Users/Discord/Desktop/js/musicord/TODO.md",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/client/voice/ClientVoiceManager.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/client/voice/player/BasePlayer.js",
-		"/C/Users/Discord/Desktop/js/musicord/e.java",
-		"/C/Users/Discord/Desktop/js/musicord/src/utils/message.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/classes/Command/Utility.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/listeners/discordWebsocketListener.js",
-		"/C/Users/Discord/Desktop/js/musicord/node_modules/discord.js/src/sharding/ShardClientUtil.js",
-		"/C/Users/Discord/Desktop/js/musicord/docs/PACKAGES.md",
-		"/C/Users/Discord/Desktop/js/musicord/README.md",
-		"/C/Users/Discord/Desktop/js/musicord/.gitignore",
-		"/C/Users/Discord/Desktop/js/musicord/.env",
-		"/C/Users/Discord/Desktop/js/musicord/src/__main__.js",
-		"/C/Users/Discord/Desktop/js/musicord/src/commands/filters/bassboost.js",
-		"/C/Users/Discord/Desktop/discord.js/music-DisTube/node_modules/moment/src/lib/units/hour.js",
-		"/C/Users/Discord/Desktop/discord.js/music-DisTube/node_modules/discord.js/src/structures/User.js",
-		"/C/Users/Discord/Desktop/discord.js/music-DisTube/node_modules/discord.js/src/structures/interfaces/TextBasedChannel.js"
+		"/C/Users/Discord/Desktop/js/musicord/node_modules/lodash/lodash.js"
 	],
 	"find":
 	{
-		"height": 54.0
+		"height": 31.0
 	},
 	"find_in_files":
 	{
 		"height": 134.0,
 		"where_history":
 		[
+			"C:\\Users\\Discord\\Desktop\\js\\musicord\\src\\commands",
 			"C:\\Users\\Discord\\Desktop\\js\\musicord\\src"
 		]
 	},
@@ -777,6 +751,18 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"this.client",
+			"super.createEmbed",
+			"this.createEmbed",
+			"this.client",
+			"Events.",
+			"'console'",
+			"tag",
+			"../config/config.js",
+			"../../config.js",
+			"../config.js",
+			"prefix[",
+			"config",
 			"this.bot",
 			"message",
 			"msg.client",
@@ -795,6 +781,10 @@
 		"regex": false,
 		"replace_history":
 		[
+			"this.createEmbed",
+			"Bot",
+			"'main'",
+			"msg",
 			"this.client",
 			"client",
 			"msg",
@@ -812,24 +802,24 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/classes/Command.js",
+					"file": "old/listeners/playerEventListener.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3392,
+						"buffer_size": 5398,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								442,
-								442
+								2874,
+								2874
 							]
 						],
 						"settings":
@@ -838,97 +828,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 840.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/commands/pause.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 978,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								978
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 540.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/commands/queue.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1212,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								787,
-								787
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 600.0,
+						"translation.y": 1510.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/classes/Player.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1646,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								940,
-								940
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 242.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
 					"type": "text"
 				}
 			]

@@ -8,27 +8,13 @@ export default class Leave extends Command {
 			description: 'Musicord leaves your voice channel.',
 			usage: '[timeout]',
 			cooldown: 5000
+		}, {
+			category: 'Music',
+			checks: []
 		});
-
-		/**
-		 * Command Category 
-		 * @type {String}
-		 */
-		this.category = 'Music';
-
-		/**
-		 * Custom Checking
-		 * * `dj` - dj role
-		 * * `voice` - if member in voice channel
-		 * * `queue` - if queue is present
-		 * * `paused` - if player paused
-		 * * `stopped` - if player stopped
-		 * @type {String[]}
-		 */
-		this.checks = [];
 	}
 
-	async execute({ msg }) {
+	async execute({ Bot, msg }) {
 		try {
 			/** Voice Channel of <GuildMember> */
 			const { channel } = msg.member.voice;

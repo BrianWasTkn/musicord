@@ -4,10 +4,13 @@ export default class Volume extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'volume',
-			aliases: ['v'],
+			aliases: ['set-volume'],
 			description: 'Adjust the volume of the player in this guild.',
 			usage: '<1-100>',
 			cooldown: 5000
+		}, {
+			category: 'Music',
+			checks: ['voice', 'queue']
 		});
 
 		/**
@@ -62,7 +65,7 @@ export default class Volume extends Command {
 			else {
 				try {
 					/* Queue */
-					const queue = await Bot.player.setVolume(msg, parseInt(rate, 10));
+					const queue = await Bot.distube.setVolume(msg, parseInt(rate, 10));
 					try {
 						await msg.channel.send(super.createEmbed({
 							title: 'Volume Changed',

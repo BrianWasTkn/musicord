@@ -5,27 +5,14 @@ export default class VoteSkip extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'voteskip',
-			aliases: ['vs'],
+			aliases: ['vote-skip'],
 			description: 'Musicord will start awaiting for messages in this channel when this command is called.',
 			usage: 'command',
 			cooldown: 5000
+		}, {
+			category: 'Music',
+			checks: ['voice', 'queue']
 		});
-
-		/**
-		 * Command Category 
-		 * @type {String}
-		 */
-		this.category = 'Music';
-
-		/**
-		 * Custom Checking
-		 * * `dj` - dj role
-		 * * `queue` - the server queue
-		 * * `paused` - if player paused
-		 * * `stopped` - if player stopped
-		 * @type {String[]}
-		 */
-		this.checks = ['queue'];
 	}
 
 	async execute({ Bot, msg, args }) {
@@ -36,7 +23,7 @@ export default class VoteSkip extends Command {
 		/** Member Count in channel is <= 3 */
 		if (channel.members.size <= 3) {
 			try {
-				await Bot.player.skip(msg);
+				await Bot.distube.skip(msg);
 			} catch(error) {
 				super.log('voteskip@skip', error);
 			}
@@ -79,8 +66,8 @@ export default class VoteSkip extends Command {
 										'Members in VC': { content: channel.members.size, inline: true }
 									},
 									footer: {
-										text: `Thanks for using ${this.client.user.username}!`,
-										icon: this.client.user.avatarURL()
+										text: `Thanks for using ${Bot.user.username}!`,
+										icon: Bot.user.avatarURL()
 									}
 								}));
 							} catch(error) {
@@ -104,7 +91,7 @@ export default class VoteSkip extends Command {
 								}
 							}));
 							try {
-								await Bot.player.skip(msg);
+								await Bot.distube.skip(msg);
 							} catch(error) {
 								super.log('voteskip@collector.onCollect', error);
 							}
