@@ -75,7 +75,7 @@ export async function run(bot) {
 		.on('addList', async (message, queue, playlist) => {
 			await message.channel.send({
 				embed: {
-					title: 'Added to Queue,
+					title: 'Added to Queue',
 					color: 'BLUE',
 					description: `Added [**__${playlist.name}__**](${playlist.url}) with **${playlist.songs.length}** into the queue.`,
 					fields: [
@@ -95,7 +95,7 @@ export async function run(bot) {
 					description: result.join('\n'),
 					fields: [
 						{ name: 'Instructions', value: 'Type the **number** of your choice.\nYou can cancel by typing out `cancel` right now.' }
-					]
+					],
 					footer: { text: 'You have 30 seconds to proceed otherwise your search is cancelled.' }
 				}
 			})
