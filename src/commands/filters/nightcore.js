@@ -5,7 +5,7 @@ export default new Command({
 	name: 'nightcore',
 	aliases: ['toggle-nightcore'],
 	description: 'nightcore filter',
-	usage: '<on | off>: String',
+	usage: 'command',
 	cooldown: 1000,
 	music: true
 }, async message => {

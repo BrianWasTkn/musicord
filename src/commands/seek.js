@@ -28,7 +28,7 @@ export default new Command({
 	/** Do the thing */
 	try {
 		await bot.player.seek(message, parsed * 1000);
-		return `Seeked track at **${formatDuration(parsed)}**`
+		return `Seeked track at **\`${formatDuration(parsed)}\`**`
 	} catch(error) {
 		log('commandError', 'seek', error)
 		return error;

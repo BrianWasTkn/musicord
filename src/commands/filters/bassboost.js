@@ -5,7 +5,7 @@ export default new Command({
 	name: 'bassboost',
 	aliases: ['toggle-bassboost'],
 	description: 'bassboost filter',
-	usage: '<db | -30 to 20>: Number',
+	usage: '<-30 to 20>: Number',
 	cooldown: 1000,
 	music: true
 }, async message => {
