@@ -11,8 +11,8 @@ export default class PlayerManager extends Manager {
 	async run(client) {
 		const emitters = readdirSync(join(__dirname, '..', 'emitters', 'distube'));
 		for (const file of emitters) {
-			const event = new (require(`../emitters/distube/${file}`))(client);
-			this.distube.on(file.split('.')[0], async (...args) => {
+			const event = new (require(`../emitters/distube/${file}`).default)(client);
+			client.distube.on(file.split('.')[0], async (...args) => {
 				try {
 					await event.run({
 						Bot: client,

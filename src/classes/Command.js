@@ -20,22 +20,22 @@ export default class Command {
 		this.cooldown = props.cooldown || 5000;
 
 		/* {String} Command Category */
-		this.category = extension.category;
+		this.category = propsExt.category;
 		/* {PermissionString[]} Required Permissions to run */
-		this.permissions = ['SEND_MESSAGES'].concat(extension.user_permissions || []);
+		this.permissions = ['SEND_MESSAGES'].concat(propsExt.user_permissions || []);
 		/* {PermissionString[]} Required Client permissions to run */
-		this.clientPermissions = ['SEND_MESSAGES'].concat(extension.client_permissions || []);
+		this.clientPermissions = ['SEND_MESSAGES'].concat(propsExt.client_permissions || []);
 		/* {String[]} `dj`, `voice`, or `queue` */
-		this.checks = extension.music_checks || [];
+		this.checks = propsExt.music_checks || [];
 		/* {Boolean} Args Required */
-		this.argsRequired = extension.args_required;
+		this.argsRequired = propsExt.args_required;
 		/* {String} Expected arguments */
 		this.expectedArgs = props.usage === 'command' ? null : props.usage;
 
 		/* {Boolean} Owner-Only */
-		this.ownerOnly = extension.owner_only || false;
+		this.ownerOnly = propsExt.owner_only || false;
 		/* {Snowflake[]} Exclusive only for these/this guild(s) */
-		this.exclusive = extension.exclusive || [];
+		this.exclusive = propsExt.exclusive || [];
 	}
 
 	/**

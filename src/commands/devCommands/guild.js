@@ -13,11 +13,15 @@ export default class LeaveGuild extends Command {
 		super(client, {
 			name: 'guild',
 			aliases: ['lg'],
-			description: 'Display some info about a guild, or do something to them.',
-			usage: '<<Guild>.id> <leave | info | ping>',
+			description: 'Display some info about a guild, or do something about them.',
+			usage: '[id] <info|ping|leave>',
 			cooldown: 0
 		}, {
-			category: 'Developer'
+			category: 'Developer',
+			user_permissions: [],
+			client_permissions: ['EMBED_LINKS'],
+			music_checks: [],
+			args_required: false
 		});
 	}
 
@@ -30,7 +34,9 @@ export default class LeaveGuild extends Command {
 	 */
 	async execute({ Bot, msg, args }) {
 		/* Args */
-		const [id, action] = args;
+		let [id, action] = args;
+		id = msg.channel.type !== 'dm' ? (msg.guild.id || id) : null;
+
 		if (!id) {
 			try {
 				return msg.channel.send(super.createEmbed({
@@ -57,7 +63,6 @@ export default class LeaveGuild extends Command {
 			}
 		}
 
-		/* Actions */
 		/* Leave */
 		if (action === 'leave') {
 			try {

@@ -1,8 +1,11 @@
+import support from './support'
+const { prefix } = support;
+
 export default {
 	/* Token */
 	token: 'Njg2OTY5MDIwMzg1MzI5MTgy.Xme7wQ.8NNvk2zlQ6I08eQcqDNRD7OxlZs',
 	/* Client Options */
-	client_options: Bot => ({
+	client_options: {
 		/* {String} Calculated Shards */
 		shards: 'auto',
 		/* {String} Disabled Mentions */
@@ -19,10 +22,10 @@ export default {
 			/* {Object} Activity */
 			activity: {
 				/* {String} */
-				name: `${Bot.prefix}help`,
+				name: `${prefix}help`,
 				/* {String} */
 				type: 'LISTENING'
 			}
 		}
-	})
+	}
 }

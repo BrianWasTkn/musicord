@@ -26,18 +26,18 @@ export default class LotteryManager extends Manager {
 				return;
 			} else {
 				clearInterval(check);
-				await interval();
+				await repeat();
 			};
 		}, 1000);
 
 		/* Interval to Roll */
-		const interval = async () => {
+		const repeat = async () => {
 			setInterval(async () => {
 				if (active) {
 					await roll();
 				}
 			}, interval * 60 * 60 * 1000);
-		}
+		};
 
 		/* Roll */
 		const roll = async () => {
@@ -84,10 +84,12 @@ export default class LotteryManager extends Manager {
 						}
 					},
 					footer: {
-						text: `Next winner in: ${interval} hours.`
+						text: `Next winner in: ${interval} hours.`,
 						icon: winner.avatarURL()
 					}
 				}));
+			} catch(error) {
+				super.log('LotteryManager@msg', error);
 			}
 		}
 

@@ -130,7 +130,7 @@ export default class CommandManager extends Manager {
 				await Bot.config.support(Bot).errorChannel.send(super.createEmbed({
 					title: 'Command Error',
 					color: 'RED',
-					text: this.codeBlock(error.message, error);
+					text: this.codeBlock(error.message, error),
 					fields: {
 						'Command': {
 							content: command.name,

@@ -26,7 +26,7 @@ export default class AddSong extends Listener {
 					'# of Plays': { 
 						content: song.views.toLocaleString(),
 						inline: true
-					}
+					},
 					'Requested by': {
 						content: song.user.tag,
 						inline: true 

@@ -25,7 +25,7 @@ export default class Error extends Listener {
 			await msg.channel.send(super.createEmbed({
 				title: 'Player Error',
 				color: 'RED',
-				text: `\`\`\`js\n${error}\n\`\`\``
+				text: `\`\`\`js\n${error}\n\`\`\``,
 				fields: {
 					'Support Server': {
 						content: `[Click/Tap this](${invite}) to join`

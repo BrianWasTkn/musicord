@@ -51,7 +51,7 @@ export default class Fight extends Command {
 		}
 
 		/* Turn() */
-		const performTurn = (attacker, opponent, retry) => {
+		const performTurn = async (attacker, opponent, retry) => {
 			/* ask whoever's turn */
 			msg.channel.send(`${turn.mention}, **\`fight\`**, **\`defend\`**, or **\`end\`**?`);
 			

@@ -11,7 +11,11 @@ export default class Eval extends Command {
 			usage: '<...code>',
 			cooldown: 0
 		}, {
-			category: 'Developer'
+			category: 'Developer',
+			user_permissions: [],
+			client_permissions: ['EMBED_LINKS'],
+			music_checks: [],
+			args_required: true
 		});
 	}
 
@@ -51,10 +55,13 @@ export default class Eval extends Command {
 
 			/** The Thing */
 			try {
-				/** Hide token */
+				/* Clean */
 				result = this.sanitize(evaled);
-				token = new RegExp(Bot.config.token, 'gi');
-				result = result.replace(token, 'N0.T0K4N.4Y0U');
+				/** Hide token from public */
+				if (msg.channel.type !== 'dm') {
+					token = new RegExp(Bot.config.token, 'gi');
+					result = result.replace(token, 'N0.T0K4N.4Y0U');
+				}
 				/** return Message */
 				await msg.channel.send(super.createEmbed({
 					color: 'BLUE',

@@ -15,7 +15,7 @@ export default class Musicord extends Client {
 	 * @param {DisTubeOptions} playerOptions DisTube options
 	 */
 	constructor(clientOptions, playerOptions) {
-		super(clientOptions(this));
+		super(clientOptions);
 
 		/**
 		 * Bot Presence
@@ -97,6 +97,7 @@ export default class Musicord extends Client {
 	 * Loads all functions
 	 */
 	loadAll() {
+		this.utils.log('Musicord', 'main', 'Launching Bot...');
 		this.hydrateListeners();
 		this.importCommands();
 		this.handleManagers();
@@ -190,14 +191,14 @@ export default class Musicord extends Client {
 		});
 
 		/* Prototypes */
-		Math.prototype.random = function(min, max) {
-			return Number(min) && Number(max)
-			? Math.random() * (max - min + 1) + min
-			: Math.random();
-		};
+		Object.defineProperty(Math, 'random', {
+			value: (min, max) => {
+				return min && max ? (Math.random() * (max - min + 1) + min) : Math.random();
+			}
+		});
 
 		/* Client Functions */
-		this.createMessage = (channelID, ...message) => {
+		this.createMessage = async (channelID, ...message) => {
 			await this.channels.cache.get(channelID).send(...message);
 		}
 	}
