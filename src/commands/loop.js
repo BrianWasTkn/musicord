@@ -1,5 +1,9 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
+import { 
+	simpleEmbed, 
+	generateError 
+} from '../utils/embed.js'
 
 export default new Command({
 	name: 'loop',
@@ -11,21 +15,32 @@ export default new Command({
 	/** Check Playing State */
 	const isPlaying = bot.player.isPlaying(message);
 	if (!isPlaying) {
-		return 'There\'s nothing playing in the queue.'
+		return simpleEmbed(message, 'There\'s nothing playing in the queue.');
 	}
 
-	/** Methods */
-	method = method.toLowerCase();
-	if (['queue'].includes(method)) mode = 2;
-	else if (['song', 'track'].includes(method)) mode = 1;
-	else mode = 0;
-
-	/** Do the thing */
 	try {
+		// modes
+		method = method.toLowerCase();
+		let mode;
+		if (['queue', 'playlist'].includes(method)) {
+			mode = 2;
+		} else if (['song', 'track', 'true'].includes(method)) {
+			mode = 1;
+		} else if (['off', 'false'].includes(method)) {
+			mode = 0;
+		} else {
+			return simpleEmbed(message, 'Your options are: "queue", "track" or "off" only.');
+		}
+		
+		// then set
 		const queue = await bot.player.setRepeatMode(message, mode);
-		return queue.repeatMode ? queue.repeatMode == 2 ? 'Now looping the **__whole queue__**' : 'Now repeating the **__current track__**' : 'Loop is now **__off__**'
+		return simpleEmbed(message, queue.repeatMode 
+			? queue.repeatMode == 2 
+				? 'Now looping the queue.'
+				: 'Now looping the current track.'
+			: 'Loop is now off.')
 	} catch(error) {
-		log('commandError', 'loop', error)
-		return error;
+		log('commandError', 'loop@loop', error)
+		return generateError(message, error);
 	}
 })
