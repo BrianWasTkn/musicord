@@ -69,6 +69,46 @@ export default class Musicord extends Client {
 		})
 	}
 
+	/** Functions */
+	/** Reload a Command */
+	async reloadCommand(cmd) {
+		return new Promise((res, rej) => {
+			const command = this.commands.get(cmd) || this.aliases.get(cmd);
+			if (!command) rej('UnknownCommand');
+			// remove from both 'command' and 'aliases' collection
+			this.commands.delete(command.name);
+			command.aliases.forEach(a => this.aliases.delete(a));
+			// and re-import it
+			this.commands.set(command.name, command);
+			command.aliases.forEach(a => this.aliases.set(a, command));
+			res(command);
+		})
+	}
+
+	/** Reload All Commands */
+	async reloadCommands() {
+		return new Promise((res, rej) => {
+			try {
+				// clear all commands
+				this.commands.clear();
+				try { 
+					// clear all alises
+					this.aliases.clear();
+					try {
+						// then load all
+						try { this._registerCommands() } catch(e) { rej(e) }
+					} catch(e) {
+						rej(e);
+					}
+				} catch(e) {
+					rej(e);
+				}
+			} catch(e) {
+				rej(e);
+			}
+		})
+	}
+
 	/** Getters */
 	get version() {
 		return this.package.version;
