@@ -19,11 +19,12 @@ module.exports = class Lava extends Listener {
 
 	async exec(message) {
 		const spawns = readdirSync(join(process.cwd(), 'src', 'spawns'));
-		const spawn = require(join(process.cwd(), 'src', 'spawns', this.client.util.random('arr', spawns)));
+		const { config, visuals } = require(join(process.cwd(), 'src', 'spawns', this.client.util.random('arr', spawns)));
 		
-		new Spawner(
-			this.client, join(process.cwd(), 'src', 'spawns'), 
-			spawn.config, spawn.visuals
+		const spawn = new Spawner(
+			this.client, join(process.cwd(), 'src', 'spawns'), config, visuals
 		);
+
+		await spawn.exec(message);
 	}
 }

@@ -23,16 +23,6 @@ class Spawner extends AkairoHandler {
 		 * @type {Object}
 		*/
 		this.config = config;
-
-		this.client.incrementMaxListeners();
-		this.client.on(Events.MESSAGE_CREATE, this.spawn);
-		this.client.on(Events.GUILD_MEMBER_REMOVE, this.handleLeave);
-
-		this.once('end', () => {
-			this.client.removeListener(Events.MESSAGE_CREATE);
-			this.client.removeListener(Events.GUILD_MEMBER_REMOVE);
-			this.decrementMaxListeners();
-		});
 	}
 
 	checkSpawn(channel) {
@@ -106,7 +96,7 @@ class Spawner extends AkairoHandler {
 			const verbs = ['obtained', 'grabbed', 'magiked', 'won', 'procured'];
 			const verb = this.client.util.random('arr', verbs);
 			const promises = [], results = [];
-			
+
 			collector.array().forEach(m => {
 				results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
 				promises.push(m.author.send([
