@@ -21,10 +21,12 @@ class Player extends distube {
 	 * Resolves: An array of decorated song items.
 	 * @param {Object} message Discord.Message
 	 */
-	mapQueue(message) {
+	mapQueue(message, filterFirst = false) {
 		const queue = super.getQueue(message);
 		if (!queue) return new Error('NotPlaying');
-		const mapped = queue.songs.map((song, index) => `**#${index + 1}:** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\``);
+		const mapped = queue.songs.map((song, index) => {
+			return `**${filterFirst ? index === 0 ? ':musical_note:' : `#${index + 1}` : `#${index + 1}`}:** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\``
+		});
 		return mapped;
 	}
 

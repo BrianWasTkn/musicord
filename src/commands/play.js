@@ -1,12 +1,12 @@
 import Command from '../classes/Command.js'
 
-export default class Pause extends Command {
+export default class Play extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'pause',
-			aliases: ['freeze'],
-			description: 'Temporarily stops the queue unless you resume it.',
-			usage: 'command',
+			name: 'play',
+			aliases: ['p'],
+			description: 'Searches a track from supported sources and plays it.',
+			usage: '<query | URL>',
 			cooldown: 5000
 		});
 
@@ -28,10 +28,19 @@ export default class Pause extends Command {
 		this.checks = ['voice', 'queue', 'paused'];
 	}
 
-	async execute({ Bot, msg }) {
+	async execute({ Bot, msg, args }) {
+		/** Missing Args */
+		if (args.length < 1) {
+			return msg.channel.send(super.createEmbed({
+				title: 'Missing Args',
+				color: 'GREEN',
+				text: 'You need a search query or a valid URL.'
+			}));
+		}
+
+		/** Else, Do it */
 		try {
-			/* Pause */
-			const queue = await Bot.player.pause(msg);
+			await Bot.player.play(msg);
 			/* Message */
 			await msg.channel.send(super.createEmbed({
 				title: 'Player Paused',

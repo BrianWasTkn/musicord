@@ -3,10 +3,10 @@ import Command from '../classes/Command.js'
 export default class Join extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'join',
-			aliases: ['bound'],
+			name: 'volume',
+			aliases: ['v'],
 			description: 'Musicord will join your voice channel.',
-			usage: 'command',
+			usage: '<rate>',
 			cooldown: 5000
 		});
 

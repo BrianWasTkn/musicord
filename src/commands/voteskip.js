@@ -32,6 +32,8 @@ export default class VoteSkip extends Command {
 	async execute({ Bot, msg, args }) {
 		/** Voice Channel */
 		const channel = msg.member.voice.channel;
+		/** Filter Bots */
+		channel.members === channel.members.filter(member => member.id !== Bot.user.id);
 		/** Member Count in channel is <= 3 */
 		if (channel.members.size <= 3) {
 			try {
@@ -52,7 +54,7 @@ export default class VoteSkip extends Command {
 
 			/** Add the author to the collection */
 			try {
-				voters.set(msg.author.id);
+				voters.set(msg.author.id, 'voted');
 			} catch(error) {
 				super.log('voteskip@set_vote', error)
 			}
@@ -73,6 +75,10 @@ export default class VoteSkip extends Command {
 									title: 'Vote',
 									color: 'GREEN',
 									text: `**${m.author.tag}** voted to skip.`,
+									fields: {
+										'Remaining': { content: `${channel.members.size - voters.size} users`, inline: true },
+										'Members in VC': { content: channel.members.size, inline: true }
+									},
 									footer: {
 										text: `Thanks for using ${this.client.user.username}!`,
 										icon: this.client.user.avatarURL()

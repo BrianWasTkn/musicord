@@ -1,11 +1,11 @@
 import Command from '../classes/Command.js'
 
-export default class Stop extends Command {
+export default class Pause extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'stop',
-			aliases: ['fuckoff'],
-			description: 'Stops playing the song and clears the queue.',
+			name: 'queue',
+			aliases: ['q'],
+			description: 'Sends an embed containing the current songs in the queue.',
 			usage: 'command',
 			cooldown: 5000
 		});
@@ -25,25 +25,28 @@ export default class Stop extends Command {
 		 * * `stopped` - if player stopped
 		 * @type {String[]}
 		 */
-		this.checks = ['voice', 'queue', 'paused'];
+		this.checks = ['voice', 'queue'];
 	}
 
 	async execute({ Bot, msg }) {
 		try {
-			/* Stop */
-			const queue = await Bot.player.stop(msg);
-			/* Return a message */
+			/* Queue with Mapped Songs */
+			const songs = await Bot.player.mapQueue(msg, true);
+			/* Message */
 			await msg.channel.send(super.createEmbed({
-				title: 'Player Stopped',
-				color: 'GREEN',
-				text: 'The player has been stopped and the queue has been cleared.',
+				title: 'Server Queue',
+				color: 'BLUE',
+				fields: {
+					'Now Playing': { content: songs[0] },
+					'Queue Songs': { content: songs[1] ? songs.slice(1).join('\n') : 'No more songs in queue.' }
+				},
 				footer: {
 					text: `Thanks for using ${Bot.user.username}!`,
 					icon: Bot.user.avatarURL()
 				}
-			}))
+			}));
 		} catch(error) {
-			super.log('stop', error);
+			super.log('pause', error);
 		}
 	}
 }
