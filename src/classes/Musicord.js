@@ -134,28 +134,19 @@ export default class Musicord extends Client {
 		try {
 			const commands = readdirSync(join(__dirname, '..', 'commands'));
 			commands.forEach(i => {
-				/* Function */
-				const load = command => {
+				/* Subdir */
+				const sub = readdirSync(join(__dirname, '..', 'commands', i));
+				sub.forEach(cmd => {
+					/* Import */
+					const command = new (require(join(__dirname, '..', 'commands', i, cmd)).default)(this);
+					/* Set in Collection */
 					this.commands.set(command.name, command);
 					command.aliases.forEach(a => this.aliases.set(a, command));
-				}
-				/* Import File */
-				if (i.endsWith('.js')) {
-					const command = new (require(join(__dirname, '..', 'commands', i)).default)(this);
-					load(command);
-				} 
-				/* Import File in Folder */
-				else {
-					const dir = readdirSync(join(__dirname, '..', 'commands', i));
-					dir.forEach(c => {
-						const command = new (require(join(__dirname, '..', 'commands', i, c)).default)(this);
-						load(command);
-					});
-				}
+				});
 			});
 
 			/* Log it */
-			this.utils.log('Musicord', 'main', 'Loaded: Commands');
+			this.utils.log('Musicord', 'main', `${this.commands.size} Commands Loaded`);
 		} catch(error) {
 			this.utils.log('Musicord', 'error', 'Error: ImportCommands', error);
 		}
