@@ -61,7 +61,7 @@ export const dynamicEmbed = ({
 
 /** Error Embed */
 export const errorEmbed = ({ 
-	title = null
+	title = null,
 	error = null,
 	footer = {}
 } = {}) => {
@@ -72,7 +72,7 @@ export const errorEmbed = ({
 		fields: {
 			'Error Message': { 	content: error.message },
 			'Support': {		content: 'Join our [discord server](https://discord.gg/memer) for support', inline: true }
-		}
+		},
 		footer: {
 			text: footer.text,
 			icon: footer.icon

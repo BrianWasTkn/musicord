@@ -11,6 +11,6 @@ export default new Command({
 	return simpleEmbed({
 		title: 'Pingy Ping Pong',
 		color: 'BLUE',
-		text: `Your guild on **Shard ${shard.id}** has a delay of \`${shard.ping}ms\`.`
+		text: `${bot.username} on **Shard ${shard.id}** has a delay of \`${shard.ping}ms\`.`
 	});
 })

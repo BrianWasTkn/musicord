@@ -38,10 +38,10 @@ export default new Command({
 		try {
 			const percent = !isNaN(args[0]) ? parseInt(args[0]) : 100;
 			const queue = await bot.player.setVolume(message, percent);
-			return return dynamicEmbed({
+			return dynamicEmbed({
 				title: 'Volume Changed',
 				color: 'GREEN',
-				text: `Successfully set the queue volume to **${queue.volume}%**.`
+				text: `Successfully set the queue volume to **${queue.volume}%**.`,
 				fields: {
 					'Action By': { content: message.author.tag }
 				},

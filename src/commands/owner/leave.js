@@ -1,5 +1,9 @@
 import Command from '../../classes/Command/Owner.js'
 import { log } from '../../utils/logger.js'
+import { 
+	dynamicEmbed, 
+	errorEmbed 
+} from '../../utils/embed.js'
 
 export default new Command({
 	name: 'leaveguild',
@@ -8,14 +12,42 @@ export default new Command({
 	usage: '<Guild>.id'
 }, async (bot, [id]) => {
 
-	if (!id) return 'You need a guild id';
-	const g = bot.guilds.cache.get(id);
-	if (!g) return 'Invalid guild id';
 	try {
-		const guild = await g.leave();
-		return `Successfully left **${guild.name}**`
+		/** Empty arg */
+		if (!id) {
+			return simpleEmbed({
+				title: 'Missing Guild',
+				color: 'RED',
+				text: 'You need a valid and non-empty guild id.'
+			});
+		}
+
+		/** Fetch Guild */
+		const g = bot.guilds.cache.get(id);
+		if (g) {
+			/** Leave */
+			try {
+				const guild = await g.leave();
+				return simpleEmbed({
+					title: 'Left Guild',
+					color: 'GREEN',
+					text: `Successfully left guild **${guild.name}**.`
+				});
+			} catch(error) {
+				log('commandError', 'leave@leave', error);
+				return errorEmbed({ title: 'leave@leave', error: error });
+			}
+		} else {
+			/** Unknown Guild */
+			return simpleEmbed({
+				title: 'Unknown Guild',
+				color: 'RED',
+				text: 'Unknown discord guild.'
+			});
+		}
 	} catch(error) {
-		return error.message;
+		log('commandError', 'leave@main_command', error);
+		return errorEmbed({ title: 'leave@main_command', error: error });
 	}
 
 })

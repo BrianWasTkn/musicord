@@ -3,10 +3,9 @@ import { sanitize, codeBlock } from '../../utils/text.js'
 import { log } from '../../utils/logger.js'
 import Command from '../../classes/Command/Owner.js'
 import { 
-	simpleEmbed,
 	dynamicEmbed, 
 	errorEmbed 
-} from '../utils/embed.js'
+} from '../../utils/embed.js'
 
 export default new Command({
 	name: 'eval',

@@ -1,7 +1,6 @@
 import Command from '../../classes/Command/Utility.js'
 import { log } from '../../utils/logger.js'
 import { 
-	simpleEmbed, 
 	dynamicEmbed, 
 	errorEmbed 
 } from '../../utils/embed.js'

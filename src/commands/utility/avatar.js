@@ -1,6 +1,9 @@
 import Command from '../../classes/Command/Utility.js'
 import { log } from '../../utils/logger.js'
-import { simpleEmbed, dynamicEmbed } from '../../utils/embed.js'
+import { 
+	simpleEmbed, 
+	dynamicEmbed 
+} from '../../utils/embed.js'
 
 export default new Command({
 	name: 'avatar',

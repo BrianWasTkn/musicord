@@ -1,11 +1,6 @@
 import Command from '../../classes/Command/Owner.js'
 import { log } from '../../utils/logger.js'
 import { Util } from 'discord.js'
-import { 
-	simpleEmbed,
-	dynamicEmbed, 
-	errorEmbed 
-} from '../utils/embed.js'
 
 export default new Command({
 	name: 'kill',
@@ -15,7 +10,7 @@ export default new Command({
 }, async (bot, args) => {
 
 	try {
-		if (args[0]) await Util.delayFor(args[0]);
+		if (args[0]) await Util.delayFor(parseInt(args[0], 10));
 		await bot.destroy();
 	} catch(error) {
 		log('commandError', 'kill@main_command', error);

@@ -20,7 +20,7 @@ class ArgParser {
 	}
 
 	get stringLength() {
-		return this.args.join().length;
+		return this.gather().length;
 	}
 
 	random() {
@@ -28,11 +28,7 @@ class ArgParser {
 	}
 
 	gather() {
-		return this.args.join();
-	}
-
-	get(index) {
-		return this.args[index];
+		return this.args.join(' ');
 	}
 
 	resolveUser(rest = false) {
@@ -104,16 +100,16 @@ class ArgParser {
 		// depending to whatever the resolve type is.
 		const resolve = (type) => {
 			if (type === 'user') {
-				return this.resolveUser();
+				return this.resolveUser;
 			} else if (type === 'role') {
-				return this.resolveRole();
+				return this.resolveRole;
 			} else if (type === 'channel') {
-				return this.resolveChannel();
+				return this.resolveChannel;
 			}
 		};
 
 		let res;
-		while((res === resolve(type)) !== null) {
+		while((res === resolve(type)()) !== null) {
 			// Push
 			resolved.push(user);
 		}
