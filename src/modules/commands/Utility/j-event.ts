@@ -16,7 +16,7 @@ export default class Utility extends Command {
         super('jEvent', {
             aliases: ['event', 'je'],
             channel: 'guild',
-            description: 'Start a race event.',
+            description: 'Start an join event like \'le old days.',
             category: 'Utility',
             userPermissions: ['MANAGE_MESSAGES'],
             args: [{
@@ -92,7 +92,7 @@ export default class Utility extends Command {
         }
 
         await channel.send(`**\`${collected.length}\` are teaming up to split __${amount.toLocaleString()}__ coins...**`);
-        collected.sort(() => Math.random() - 0.5).forEach(c => Math.random() > 0.65 ? success.push(c) : {});
+        collected.sort(() => Math.random() - 0.5).forEach(c => Math.random() > 0.1 ? success.push(c) : {});
         const coins = Math.round(amount / success.length);
         const order = success.length ? success.map(s => s.author.toString()).join(', ') : '**Everybody died LOL**';
         return channel.send(`**Good job everybody, we split up \`${coins.toLocaleString()}\` coins each!\n\n${order}`);
