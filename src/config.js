@@ -21,7 +21,7 @@ export default {
 			"8D": "apulsator=hz=0.08",
 			clear: "dynaudnorm=f=200",
 			flanger: "flanger",
-			surrounding: "surround",
+			surround: "surround",
 			normalizer: "dynaudnorm=f=200",
 			vaporwave: "aresample=48000,asetrate=48000*0.8",
 			phaser: "aphaser=in_gain=0.4",

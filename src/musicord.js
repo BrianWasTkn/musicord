@@ -3,33 +3,7 @@ import Musicord from './classes/Client.js'
 
 import { log } from './utils/logger.js'
 
-const run = async () => {
-	try {
-		/** Process Error: unhandledRejection */
-		process.on('unhandledRejection', error => {
-			log('node', 'unhandledRejection', error.stack)
-		})
-		/** Process Error: uncaughtException */
-		process.on('uncaughtException', error => {
-			log('node', 'uncaughtException', error.stack)
-		})
-	} catch(error) {
-		log('error', 'Cannot instantiate process error listeners.', error)
-		process.exit(1)
-	}
-
-	try {
-		if (config.token) {
-			log('main', 'Launching Musicord...')
-			await musicord()
-		}
-	} catch(error) {
-		log('error', 'Cannot load the musicord() function.', error)
-		process.exit(1)
-	}
-}
-
-const musicord = async () => {
+export const musicord = async () => {
 	const bot = new Musicord(config.clientOpts, config.playerOpts);
 
 	/** Login our bot */
@@ -41,11 +15,4 @@ const musicord = async () => {
 		process.exit(1)
 	}
 
-}
-
-/** Run the whole bot */
-try {
-	run()
-} catch(error) {
-	log('error', 'Unable to run the main process.', error)
 }

@@ -1,11 +1,36 @@
-/**
- * BrianWasTaken 2020
- *
- * Our starting point to run our bot
- * with ES6 compatability engine (import..., export...)
-*/
+import { log } from './utils/logger.js'
+import { musicord } from './musicord.js'
+import config from './config.js'
 
-require = require('esm')(module);
-module.exports = require('./musicord.js');
+const run = async () => {
+	try {
+		/** Process Error: unhandledRejection */
+		process.on('unhandledRejection', error => {
+			log('node', 'unhandledRejection', error.stack);
+		})
+		/** Process Error: uncaughtException */
+		process.on('uncaughtException', error => {
+			log('node', 'uncaughtException', error.stack);
+		})
+	} catch(error) {
+		log('error', 'Cannot instantiate process error listeners.', error);
+		process.exit(1)
+	}
 
-// https://flaviocopes.com/how-to-enable-es-modules-nodejs/
+	try {
+		if (config.token) {
+			log('main', 'Launching Musicord...');
+			await musicord();
+		}
+	} catch(error) {
+		log('error', 'Cannot load the musicord() function.', error);
+		process.exit(1);
+	}
+}
+
+/** Run the whole bot */
+try {
+	run()
+} catch(error) {
+	log('error', 'Unable to launch musicord.', error)
+}

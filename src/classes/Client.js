@@ -69,73 +69,68 @@ export default class Musicord extends Client {
 		})
 	}
 
-	/** Functions */
 	/** 
-	 * Load Command
-	 * @param {String} cmd - the cmd query to load
-	 * @returns {Promise<Object>} the command object
-	 */
-	async reloadCommand(cmd) {
-		return new Promise((res, rej) => {
-			const command = this.commands.get(cmd) || this.aliases.get(cmd);
-			if (!command) rej('UnknownCommand');
-			// remove from both 'command' and 'aliases' collection
-			this.commands.delete(command.name);
-			command.aliases.forEach(a => this.aliases.delete(a));
-			// and re-import it
-			this.commands.set(command.name, command);
-			command.aliases.forEach(a => this.aliases.set(a, command));
-			res(command);
-		})
-	}
-
-	/** 
-	 * Load Command
+	 * Reload Commands
 	 * @returns {Promise<void>} null
 	 */
 	async reloadCommands() {
-		return new Promise((res, rej) => {
-			this.commands.clear();
-			this.aliases.clear();
-			if (this.commands || this.aliases) rej('Error');
-			try { this._registerCommands() } catch { rej('ResgistrationError') }
-			res();
+		const items = [],
+		files = readdirSync(join(__dirname, '..', 'commands'));
+
+		// clear the collection
+		try { this.commands.clear() try { this.aliases.clear() } 
+		catch { throw new Error('Cannot clear aliases') } } 
+		catch { return new Error('Cannot clear commands') }
+
+		// push commands -> items[]
+		files.forEach(f => {
+			if (!f.endsWith('.js')) readdirSync(join(__dirname, '..', 'commands', f)).forEach(i => {
+				items.push(require(join(__dirname, '..', 'commands', f, i)).default);
+			}) else {
+				items.push(require(join(__dirname, '..', 'commands', f)).default);
+			}
 		})
+
+		// then load commands and aliases
+		items.map(c => c.name)
+		.forEach(c => { try { this.loadCommand(c); } catch {} });
+		return this.commands;
 	}
 
 	/** 
 	 * Load Command
 	 * @param {String} cmd - the cmd query to load
-	 * @returns {Promise<String>} wip
-	 */
-	async unloadCommand(cmd) {
-		return new Promise((res, rej) => {
-			const command = this.commands.get(cmd) || this.aliases.get(cmd);
-			if (!command) rej('UnknownCommand');
-			// delete from collection
-			this.commands.delete(command.name);
-			command.aliases.forEach(a => this.aliases.delete(a, command));
-			res('Done');
-		})
-	}
-
-	/** 
-	 * Load Command
-	 * @param {String} cmd - the cmd query to load
-	 * @returns {Promise<Object>} the command object
+	 * @returns {Command} the command object
 	 */
 	async loadCommand(cmd) {
-		return new Promise((res, rej) => {
-			const array = [];
-			readdirSync(join(__dirname, '..', 'commands'))
-			.forEach(item => {
-				if (item.endsWith('.js')) array.push(require(join(__dirname, '..', 'commands')).default);
-				else readdirSync(join(__dirname, '..', 'commands', item)).forEach(c => array.push(require(join(__dirname, '..', 'commands', item, c)).default))
-			})
-			const command = array.find(c => c.name === cmd);
-			if (command) res(command);
-			else rej('unknownCommand');
-		})
+		const array = [];
+		// check if {cmd} is already in {this.commands|this.aliases}
+		if (this.commands.has(cmd) || this.aliases.has(cmd))
+			return new Error('AlreadyLoaded');
+		// find in files and push -> array[]
+		readdirSync(join(__dirname, '..', 'commands'))
+		.forEach(item => {
+			if (item.endsWith('.js')) array.push(require(join(__dirname, '..', 'commands')).default);
+			else readdirSync(join(__dirname, '..', 'commands', item)).forEach(c => array.push(require(join(__dirname, '..', 'commands', item, c)).default))
+		});
+		// then find {cmd} in array[]
+		const command = array.find(c => c.name === cmd);
+		if (!command) return new Error('NothingFound');
+		return command;
+	}
+
+	/** 
+	 * Unload Command
+	 * @param {String} cmd - the cmd query to load
+	 * @returns {Boolean} wip
+	 */
+	async unloadCommand(cmd) {
+		const command = this.commands.get(cmd) || this.aliases.get(cmd);
+		if (!command) return new Error('UnknownCommand');
+		// remove from collection
+		this.commands.delete(command.name);
+		command.aliases.forEach(a => this.aliases.delete(a));
+		return true;
 	}
 
 	/** Getters */

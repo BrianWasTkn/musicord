@@ -1,1 +1,1 @@
-worker: node src/__main__.js
+worker: node src/__launch__.js
