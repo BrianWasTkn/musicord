@@ -81,8 +81,7 @@ export const startReactionCollector = async (message, embed, time) => {
 					// Loop
 					case emojis[4]:
 						const queue = message.client.player.getQueue(message);
-						const mode = queue.repeatMode === 2 ? 0 : queue.repeatMode === 1 ? 2 : 0;
-						// const mode = queue.repeatMode ? queue.repeatMode === 0 ? 1 : 2 : 0;
+						const mode = queue.repeatMode ? queue.repeatMode === 0 ? 1 : 2 : 0;
 						await message.client.player.setRepeatMode(message, mode)
 						await message.channel.send(`🔁 ${queue.repeatMode ? queue.repeatMode === 2 ? 'Now looping **__queue__**' : 'Now looping **__track__**' : 'Loop is now **__off__**'}`)
 						break;

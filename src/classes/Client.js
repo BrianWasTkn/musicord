@@ -67,12 +67,12 @@ class Musicord extends Client {
 	}
 
 	/** Load Everythin' */
-	async _loadAll() {
+	_loadAll() {
 		try {
-			await this._loadListeners(this);
+			this._loadListeners(this);
 			log('main', 'Listeners Loaded')
 			try {
-				await this._registerCommands();
+				this._registerCommands();
 				log('main', 'Commands Loaded')
 			} catch(error) {
 				log('error', 'Cannot register commands', error.stack)
@@ -83,7 +83,7 @@ class Musicord extends Client {
 	}
 
 	/** Listeners */
-	async _loadListeners(bot) {
+	_loadListeners(bot) {
 		readdirSync(join(__dirname, '..', 'listeners'))
 		.forEach(async l => {
 			await require(join(__dirname, '..', 'listeners', l)).run(bot);
@@ -91,7 +91,7 @@ class Musicord extends Client {
 	}
 
 	/** Register Commands */
-	async _registerCommands() {
+	_registerCommands() {
 		readdirSync(join(__dirname, '..', 'commands'))
 		.forEach(item => {
 			// Item is a javascipt file

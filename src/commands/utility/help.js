@@ -1,12 +1,11 @@
-import Command from '../../classes/Command.js'
+import Command from '../../classes/Command/Utility.js'
 import { log } from '../../utils/logger.js'
 
 export default new Command({
 	name: 'help',
 	aliases: ['command-info', 'cmd'],
 	description: 'skip the current track',
-	usage: '[command: String]',
-	cooldown: 5000
+	usage: '[command]'
 }, async (bot, message, [query]) => {
 	const command = query ? bot.commands.get(query.toLowerCase()) || bot.aliases.get(query.toLowerCase()) : false;
 	const category = !command && ['Music', 'Filter', 'Utility', 'Owner'].map(cat => cat.toLowerCase()).includes(query.toLowerCase()) 
