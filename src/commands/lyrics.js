@@ -1,11 +1,15 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import findLyrics from 'lyrics-finder'
+import { 
+	simpleEmbed, 
+	generateError 
+} from '../utils/embed.js'
 
 export default new Command({
 	name: 'lyrics',
-	aliases: ['l'],
-	description: 'view the lyrics of the current track.',
+	aliases: ['ly'],
+	description: 'View the lyrics of the current track.',
 	usage: '[...songName]',
 	cooldown: 5e3
 }, async (bot, message, args) => {
@@ -16,29 +20,34 @@ export default new Command({
 		return 'There\'s nothing playing in the queue.'
 	}
 
-	/** First Phase */
 	try {
 		const queue = bot.player.getQueue(message);
-		/** Request Lyrics */
 		try {
-			let lyrics = await findLyrics("", args.join(''), queue.songs[0].name);
-			if (!lyrics) lyrics = 'No lyrics found.'
-			if (lyrics.split('').length > 1000) {
-				lyrics = `${lyrics.substr(0, 1000)}...`
+			// fetch
+			let lyrics = await findLyrics(' ', queue.songs[0].name);
+
+			// nothin' found
+			if (!lyrics) {
+				return simpleEmbed(message, 'No lyrics found for the song.');
 			}
-			/** Message */
-			return {
-				title: `Lyrics for **${queue.songs[0].name}**`,
-				color: 'BLUE',
-				description: lyrics
+
+			// lyrics length
+			if (lyrics.length > 2000) {
+				lyrics = lyrics.substr(0, 2000);
 			}
+
+			// embed
+			const embed = simpleEmbed(message, `Lyrics for: ${queue.songs[0].name}`);
+			embed.color = 'BLUE';
+			embed.description = lyrics;
+			return embed;
 		} catch(error) {
-			log('commandError', 'lyrics@findLyrics', error.stack)
-			return error;
+			log('commandError', 'lyrics@findLyrics', error.stack);
+			return generateError(message, error);
 		}
 	} catch(error) {
-		log('commandError', 'lyrics@getQueue', error.stack)
-		return error;
+		log('commandError', 'lyrics@getQueue', error.stack);
+		return generateError(message, error);
 	}
 
 })
