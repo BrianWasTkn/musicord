@@ -7,36 +7,56 @@ export default new Command({
 	description: 'skip the current track',
 	usage: '[command: String]',
 	cooldown: 5000
-}, async (bot, message, [cmd]) => {
+}, async (bot, message, [query]) => {
+	const command = query ? bot.commands.get(query.toLowerCase()) || bot.aliases.get(query.toLowerCase()) : false;
+	const category = !command && ['Music', 'Filter', 'Utility', 'Owner'].map(cat => cat.toLowerCase()).includes(query.toLowerCase()) 
+	? query : false;
 	
-	/** Import Commands */
-	const command = cmd ? bot.commands.get(cmd.toLowerCase()) || bot.aliases.get(cmd.toLowerCase()) : false;
-	
-	/** Command Info */
+	const formatCommand = (command) => ({
+		title: `${bot.config.prefix[0]}${command.name}`,
+		color: 'BLUE',
+		fields: [
+			{ name: 'Description', value: command.description },
+			{ name: 'Aliases', value: `\`${command.aliases.join('`, `')}\``},
+			{ name: 'Permissions', value: `\`${command.permissions.join('`, `')}\`` },
+			{ name: 'Usage', value: `\`${command.usage}\`` },
+			{ name: 'Cooldown', value: command.cooldown },
+			{ name: 'Category', value: command.category },
+			{ name: 'Premium', value: 'false' }
+		],
+		footer: { text: `Thanks for using ${bot.user.username}! ♥` }
+	});
+
+	const formatCategory = (category, commands) => ({
+		title: category.charAt(0).toUpperCase() + category.split('').slice(1).join(),
+		value: `\`${commands.join('`, `')}\``,
+		footer: { text: commands.array().length === 1 ? 'command' : 'commands' }
+	})
+
+	/** command */
 	if (command) {
-		return {
-			title: `${bot.config.prefix[0]}${command.name}`,
-			color: 'BLUE',
-			fields: [
-				{ name: 'Description', value: command.description },
-				{ name: 'Triggers', value: `\`${command.aliases.join('`, `')}\``, inline: true },
-				{ name: 'Permissions', value: `\`${command.permissions.join('`, `')}\``, inline: true },
-				{ name: 'Usage', value: `\`${command.usage}\``, inline: true }
-			],
-			footer: { text: `To view all commands, run ${bot.config.prefix[0]}help | To view per-command info, run ${bot.config.prefix[0]}help <command>` }
+		/** command PRIVATE */
+		if (command.private && bot.developers.includes(message.author.id)) {
+			return formatCommand(command);
+		} else if (!command.private) {
+			return formatCommand(command);
 		}
-	} else {
+	} 
+	/** category */
+	else if (category) {
+		const commands = bot.commands.filter(c => c.category.toLowerCase() === query.toLowerCase());
+		return formatCategory(category, commands);
+	}
+	/** all */
+	else {
 		return {
-			title: bot.package.name,
+			title: bot.user.username,
 			description: bot.package.description,
 			color: 'BLUE',
-			fields: [
-				{ name: 'Music Commands', value: `\`${bot.commands.filter(c => c.music).map(c => c.name).join('`, `')}\`` },
-				{ name: 'General Commands', value: `\`${bot.commands.filter(c => !c.music).map(c => c.name).join('`, `')}\`` }
-			],
-			footer: {
-				text: `To view all commands, run ${bot.config.prefix[0]}help | To view per-command info, run ${bot.config.prefix[0]}help <command>`
-			}
+			fields: ['Music', 'Filter', 'Utility', 'Owner'].map(cat => ({
+				name: `${cat} Commands`,
+				value: bot.commands.filter(cmd => cmd.category === cat)
+			}))
 		}
 	}
 })

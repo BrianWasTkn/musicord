@@ -12,7 +12,17 @@ import botPackage from '../../package.json'
 export default class Musicord extends Client {
 	constructor(discordOpts, playerOpts) {
 		super(discordOpts);
+
+		/**
+		 * package.json
+		 * @type {Object}
+		 */
 		this.package = botPackage;
+
+		/**
+		 * config.js
+		 * @type {Object}
+		 */
 		this.config = config;
 		this.utils = new Utilities();
 		this.player = new DisTube(this, playerOpts);

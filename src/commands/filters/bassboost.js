@@ -1,13 +1,9 @@
 import { log } from '../../utils/logger.js'
-import Command from '../../classes/Command.js'
+import Command from '../../classes/Command/Filter.js'
 
 export default new Command({
 	name: 'bassboost',
-	aliases: ['toggle-bassboost'],
-	description: 'bassboost filter',
-	usage: '<-30 to 20>: Number',
-	cooldown: 1000,
-	music: true
+	usage: '<-30 to 20>: Number'
 }, async message => {
 	try {
 		const queue = await message.client.player.setFilter(message, 'bassboost')

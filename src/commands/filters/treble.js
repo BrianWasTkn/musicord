@@ -1,13 +1,9 @@
 import { log } from '../../utils/logger.js'
-import Command from '../../classes/Command.js'
+import Command from '../../classes/Command/Filter.js'
 
 export default new Command({
 	name: 'treble',
-	aliases: ['toggle-treble'],
-	description: 'treble filter',
-	usage: 'command',
-	cooldown: 1000,
-	music: true
+	usage: 'command'
 }, async message => {
 	try {
 		const queue = await message.client.player.setFilter(message, 'treble')

@@ -3,16 +3,60 @@ import config from '../config.js'
 
 export default class Command {
 	constructor(options, func) {
-		/** The command function */
+		/**
+		 * Command Function
+		 * @type {Promise<void>}
+		 */
 		this.run = func;
 
-		/** Basic Info */
-		this.usage = options.usage === 'command' ? `${config.prefix[0]}${options.name}` : `${config.prefix[0]}${options.name} ${options.usage}`;
-		this.permissions = ["SEND_MESSAGES"].concat(options.permissions || []);
+		/**
+		 * Command Usage
+		 * @type {String}
+		 */
+		this.usage = options.usage === 'command' 
+		? `${config.prefix[0]}${options.name}` 
+		: `${config.prefix[0]}${options.name} ${options.usage}`;
+
+		/**
+		 * Command Permissions
+		 * @type {Array<PermissionResolveable>}
+		 */
+		this.permissions = ['SEND_MESSAGES', ...[options.permissions || []]];
+
+		/**
+		 * Command Description
+		 * @type {String}
+		 */
 		this.description = options.description || 'No description provided.';
+
+		/**
+		 * Command Cooldown
+		 * @type {Boolean}
+		 */
 		this.cooldown = options.cooldown || 3000;
+
+		/**
+		 * Command Visibility
+		 * @type {Boolean}
+		 */
+		this.private = options.private || false;
+
+		/**
+		 * Command Aliases
+		 * @type {Array<String>}
+		 */
 		this.aliases = options.aliases || [options.name];
+
+		/**
+		 * Music Mode
+		 * @type {Boolean}
+		 */
 		this.music = options.music || false;
+
+		/**
+		 * Command Cooldown
+		 * @type {String}
+		 */
 		this.name = options.name;
 	}
 
@@ -22,21 +66,15 @@ export default class Command {
 	 * @param {Object} [command] the command object
 	 */
 	_processCooldown(message, command) {
-		/** Check in the collection */
-		if (!message.client.cooldowns.has(command.name)) {
+		if (!message.client.cooldowns.has(command.name)) 
 			message.client.cooldowns.set(command.name, new discord.Collection());
-		}
-
-		/** Pre-Variables */
-		const now = Date.now();
-		const timestamps = message.client.cooldowns.get(command.name);
-		const cooldown = command.cooldown || command.defaultCooldown;
-
-		/** Check if on cooldown */
-		const check = this._checkCooldown(command, message, now, timestamps, cooldown);
+		// variables
+		const now = Date.now(),
+		timestamps = message.client.cooldowns.get(command.name),
+		cooldown = command.cooldown || command.defaultCooldown,
+		check = this._checkCooldown(command, message, now, timestamps, cooldown);
 		if (check) return check;
-
-		/** Process Cooldown */
+		// timeout to delete cooldown
 		timestamps.set(message.author.id, now)
 		setTimeout(() => {
 			message.client.cooldowns.delete(message.author.id)
@@ -55,7 +93,6 @@ export default class Command {
 	_checkCooldown(command, message, now, timestamps, cooldown) {
 		if (timestamps.has(message.author.id)) {
 			const expiration = timestamps.get(message.author.id) + cooldown;
-
 			if (now < expiration) {
 				const timeLeft = (expiration - now) / 1000;
 				return {
@@ -69,17 +106,17 @@ export default class Command {
 	}
 
 	async execute(bot, command, message, args) {
-		/** Process Cooldown */
+		// Process Cooldown 
 		const cooldown = this._processCooldown(message, command);
 		if (cooldown) return message.channel.send({ embed: cooldown});
-		/** Check Permissions */
+		// Check Permissions
 		const permission = this._checkPermissions(command, message);
 		if (permission) return message.channel.send({ embed: permission });
-		/** Process VoiceState */
+		// Process VoiceState
 		const state = this._checkVoiceState(message, command);
 		if (state) return message.channel.send({ embed: state });
 
-		/** Else, Run it */
+		// Run
 		const returned = await this.run(bot, message, args); // Promise
 		if (!returned) return;
 		if (returned instanceof Object) {
@@ -93,7 +130,7 @@ export default class Command {
 	}
 
 	_checkPermissions(command, message) {
-		/** User Permissions */
+		// User Permissions
 		if (!message.member.permissions.has(command.permissions)) {
 			return {
 				title: 'Missing Permissions',
