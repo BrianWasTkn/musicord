@@ -8,6 +8,7 @@ export async function run(bot) {
 		const code = string => {
 			return '\`' + string + '\`';
 		}
+		
 		const repeatMode = queue => {
 			return queue.repeatMode 
 			? queue.repeatMode === 2 

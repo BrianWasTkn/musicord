@@ -1,6 +1,6 @@
 {
   "name": "musicord",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "A discord music bot, made with Discord.JS V12 that can play any song from 700+ sources!",
   "main": "src/__launch__.js",
   "scripts": {

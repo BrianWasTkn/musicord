@@ -16,7 +16,7 @@ export const codeBlock = (string, syntax) => {
 }
 
 /** Cooldown Readable */
-export const parseTime = second => {
+export const parseTime = time => {
 	const methods = [
 		{ name: 'day', count: 60 * 60 * 24 },
 		{ name: 'hour', count: 60 * 60 },
