@@ -21,6 +21,8 @@ export default new Command({
 			// then leave
 			const voice = await channel.leave();
 			return simpleEmbed(message, `Successfully left channel ${voice.channel.name}.`);
+		} else {
+			return simpleEmbed(message, 'You\'re in a different voice channel.')
 		}
 	} catch(error) {
 		log('error', 'leave@leave_channel', error);

@@ -14,9 +14,18 @@ export default new Command({
 }, async (bot, message) => {
 	
 	/** Check Playing State */
-	const queue = bot.player.getQueue(message);
-	if (!queue) {
-		return simpleEmbed(message, 'There\'s nothing playing in the queue.');
+	try {
+		const queue = bot.player.getQueue(message);
+		if (!queue) {
+			return simpleEmbed({
+				title: 'Player Empty',
+				color: 'RED',
+				text: 'There\'s nothing playing in the queue.'
+			})
+		}
+	} catch(error) {
+		log('error', 'shuffle@checkQueue', error.stack);
+		return errorEmbed({ title: 'shuffle@checkQueue', error: error });
 	}
 
 	/** Do the thing */
@@ -26,7 +35,7 @@ export default new Command({
 		const msgs = [dynamicEmbed({
 			title: 'Queue Shuffled',
 			color: 'BLUE',
-			info: 'The songs are now shuffled on the queue.',
+			text: 'The songs are now shuffled on the queue.',
 			footer: {
 				text: `Thanks for using ${bot.user.username}!`,
 				icon: bot.user.avatarURL()
@@ -34,7 +43,7 @@ export default new Command({
 		}), dynamicEmbed({
 			title: 'Server Queue',
 			color: 'BLUE',
-			info: songs.join('\n'),
+			text: songs.join('\n'),
 			footer: {
 				text: `Thanks for using ${bot.user.username}!`,
 				icon: bot.user.avatarURL()

@@ -16,7 +16,7 @@ export default new Command({
 		return dynamicEmbed({
 			title: `${application.name} - ${application.id}`,
 			color: 'BLUE',
-			info: application.description,
+			text: application.description,
 			icon: application.iconURL(),
 			fields: {
 				'Text': { content: bot.channels.size.toLocaleString(), 	inline: true },

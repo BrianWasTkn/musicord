@@ -13,10 +13,19 @@ export default new Command({
 	usage: 'command'
 }, async (bot, message, args) => {
 
-	/** Check if paused */
-	const paused = bot.player.isPaused(message);
-	if (!paused) {
-		return simpleEmbed(message, 'The player is not paused.');
+	/** Check if Paused */
+	try {
+		const paused = bot.player.isPaused(message);
+		if (!paused) {
+			return simpleEmbed({
+				title: 'Not Paused',
+				color: 'RED',
+				text: 'The player is not paused.'
+			})
+		}
+	} catch(error) {
+		log('error', 'resume@checkPaused', error.stack);
+		return errorEmbed({ title: 'resume@checkPaused', error: error });
 	}
 
 	/** Else, resume */
@@ -25,7 +34,7 @@ export default new Command({
 		return dynamicEmbed({
 			title: 'Player Resumed',
 			color: 'BLUE',
-			info: 'The player has resumed playing tracks.',
+			text: 'The player has resumed playing tracks.',
 			fields: {
 				'Action by': { content: message.author.tag }
 			},

@@ -21,7 +21,7 @@ export async function run(bot) {
 			await message.channel.send(embedify({
 				title: 'Now Playing',
 				color: 'BLUE',
-				info: `Now Playing [**__${song.name}__**](${song.url}) on the queue.`,
+				text: `Now Playing [**__${song.name}__**](${song.url}) on the queue.`,
 				fields: {
 					'Duration': { 		content: code(song.formattedDuration),	inline: true },
 					'Requested by': { content: song.user.tag, 								inline: true },
@@ -36,7 +36,7 @@ export async function run(bot) {
 			await message.channel.send(embedify({
 				title: 'Added to Queue',
 				color: 'BLUE',
-				info: `Added [**__${song.name}__**](${song.url}) to the queue.`,
+				text: `Added [**__${song.name}__**](${song.url}) to the queue.`,
 				fields: {
 					'Duration': { 	content: code(song.formattedDuration), 	inline: true },
 					'Added by': { 	content: song.user.tag, 								inline: true },
@@ -51,7 +51,7 @@ export async function run(bot) {
 			await message.channel.send(embedify({
 				title: 'Added to Queue',
 				color: 'BLUE',
-				info: `Added [**__${playlist.name}__**](${playlist.url}) with **${playlist.songs.length}** items to the queue.`,
+				text: `Added [**__${playlist.name}__**](${playlist.url}) with **${playlist.songs.length}** items to the queue.`,
 				fields: {
 					'Duration': { content: code(playlist.formattedDuration),	inline: true },
 					'Added by': { content: playlist.user.tag,									inline: true }
@@ -66,7 +66,7 @@ export async function run(bot) {
 			await message.channel.send(embedify({
 				title: 'Search Results',
 				color: 'BLUE',
-				info: result.join('\n'),
+				text: result.join('\n'),
 				fields: {
 					'Instructions': { content: 'Type the **number** of your choice to start playing that track.\nYou can type **cancel** if you wanna cancel your search.' }
 				},
@@ -79,7 +79,7 @@ export async function run(bot) {
 			await message.channel.send(embedify({
 				title: 'Search Cancelled',
 				color: 'RED',
-				info: 'You\'ve either done the following so your search has been cancelled:',
+				text: 'You\'ve either done the following so your search has been cancelled:',
 				fields: {
 					'Idle': { content: 'You have not been answering me for **30 seconds** so your search has been timed-out.' },
 					'NaN': {  content: 'Or **Not a Number**, you might\'ve mistyped something instead of the index number of the track.' }
@@ -93,7 +93,7 @@ export async function run(bot) {
 			await queue.initMessage.channel.send(embedify({
 				title: 'Queue Settings',
 				color: 'BLUE',
-				info: 'The following configurations are automatically applied by **default** whenever the server starts queuing songs.',
+				text: 'The following configurations are automatically applied by **default** whenever the server starts queuing songs.',
 				fields: {
 					'Volume': { 	content: queue.volume, 			inline: true },
 					'Loop': { 		content: repeatMode(queue), inline: true },
@@ -111,7 +111,7 @@ export async function run(bot) {
 			await message.channel.send(embedify({
 				title: 'Nothing Found',
 				color: 'RED',
-				info: 'No tracks were found related to the previous track that was played in the queue.',
+				text: 'No tracks were found related to the previous track that was played in the queue.',
 				footer: { 
 					text: `Thanks for using ${bot.user.username}!`,
 					icon: bot.user.avatarURL() 
@@ -121,7 +121,7 @@ export async function run(bot) {
 			await message.channel.send(embedify({
 				title: 'Player Finished',
 				color: 'BLUE',
-				info: 'The queue has finished playing all the songs in the queue.',
+				text: 'The queue has finished playing all the songs in the queue.',
 				footer: {
 					text: `Thanks for using ${bot.user.username}!`,
 					icon: bot.user.avatarURL()
@@ -131,7 +131,7 @@ export async function run(bot) {
 			await message.channel.send(embedify({
 				title: 'Channel Empty',
 				color: 'RED',
-				info: 'The voice channel is now empty.',
+				text: 'The voice channel is now empty.',
 				footer: {
 					text: `Thanks for using ${bot.user.username}!`
 				}
@@ -140,7 +140,7 @@ export async function run(bot) {
 			await message.channel.send(embedify({
 				title: 'Player Error',
 				color: 'RED',
-				info: codeBlock(err, 'js'),
+				text: codeBlock(err, 'js'),
 				footer: {
 					text: `Thanks for using ${bot.user.username}!`,
 					icon: bot.user.avatarURL()

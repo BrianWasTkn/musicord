@@ -10,7 +10,7 @@ export default new Command({
 	aliases: ['bound'],
 	description: 'join your voice channel.',
 	usage: 'command'
-}, async ({ message }) => {	
+}, async message => {	
 	try {
 		const { channel } = message.member.voice;
 		// is Joinable

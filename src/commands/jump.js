@@ -13,13 +13,22 @@ export default new Command({
 }, async (bot, message, args) => {
 	
 	/** Check Playing State */
-	const queue = bot.player.getQueue(message);
-	if (!queue) {
-		return simpleEmbed(message, 'There\'s nothing playing in the queue.');
+	try {
+		const queue = bot.player.getQueue(message);
+		if (!queue) {
+			return simpleEmbed({
+				title: 'Player Empty',
+				color: 'RED',
+				text: 'There\'s nothing playing in the queue.'
+			})
+		}
+	} catch(error) {
+		log('error', 'jump@checkQueue', error.stack);
+		return errorEmbed({ title: 'jump@checkQueue', error: error });
 	}
 
 	// not a number
-	if (isNaN(args[0]) || args[0]) {
+	if (isNaN(args[0]) || !args[0]) {
 		return simpleEmbed(message, `Cannot parse your specified index number as number.`);
 	}
 

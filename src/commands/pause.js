@@ -14,15 +14,33 @@ export default new Command({
 }, async (bot, message, args) => {
 
 	/** Check Playing State */
-	const queue = bot.player.getQueue(message);
-	if (!queue) {
-		return simpleEmbed(message, 'There\'s nothing playing in the queue.');
+	try {
+		const queue = bot.player.getQueue(message);
+		if (!queue) {
+			return simpleEmbed({
+				title: 'Player Empty',
+				color: 'RED',
+				text: 'There\'s nothing playing in the queue.'
+			})
+		}
+	} catch(error) {
+		log('error', 'pause@checkQueue', error.stack);
+		return errorEmbed({ title: 'pause@checkQueue', error: error });
 	}
 
-	/** Check if paused */
-	const paused = bot.player.isPaused(message);
-	if (paused) {
-		return simpleEmbed(message, 'The player is already paused.');
+	/** Check if Paused */
+	try {
+		const paused = bot.player.isPaused(message);
+		if (paused) {
+			return simpleEmbed({
+				title: 'Already Paused',
+				color: 'RED',
+				text: 'The player is already paused.'
+			})
+		}
+	} catch(error) {
+		log('error', 'voteskip@checkPaused', error.stack);
+		return errorEmbed({ title: 'voteskip@checkPaused', error: error });
 	}
 
 	/** Else, pause */
@@ -31,7 +49,7 @@ export default new Command({
 		return dynamicEmbed({
 			title: 'Player Paused',
 			color: 'BLUE',
-			info: 'The player is now paused.',
+			text: 'The player is now paused.',
 			fields: {
 				'Action by': { content: message.author.tag }
 			},

@@ -14,9 +14,18 @@ export default new Command({
 }, async (bot, message) => {
 	
 	/** Check Playing State */
-	const queue = bot.player.getQueue(message);
-	if (!queue) {
-		return simpleEmbed(message, 'There\'s nothing playing in the queue.');
+	try {
+		const queue = bot.player.getQueue(message);
+		if (!queue) {
+			return simpleEmbed({
+				title: 'Player Empty',
+				color: 'RED',
+				text: 'There\'s nothing playing in the queue.'
+			})
+		}
+	} catch(error) {
+		log('error', 'skip@checkQueue', error.stack);
+		return errorEmbed({ title: 'skip@checkQueue', error: error });
 	}
 
 	/** Do the thing */
@@ -25,7 +34,7 @@ export default new Command({
 		return dynamicEmbed({
 			title: 'Track Skipped',
 			color: 'RED',
-			info: `The previous track has been successfully skipped.`,
+			text: `The previous track has been successfully skipped.`,
 			fields: {
 				'Action By': { content: message.author.tag }
 			},

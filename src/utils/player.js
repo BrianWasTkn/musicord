@@ -127,7 +127,7 @@ export const startReactionCollector = async (message, embed, time) => {
 							await message.channel.send(dynamicEmbed({
 								title: 'Repeat Mode',
 								color: 'BLUE',
-								info: queue.repeatMode ? queue.repeatMode === 2 ? 'Now looping the **__queue__**' : 'Now looping the **__song__**' : 'Loop is now **__off__**'
+								text: queue.repeatMode ? queue.repeatMode === 2 ? 'Now looping the **__queue__**' : 'Now looping the **__song__**' : 'Loop is now **__off__**'
 							}))
 						} catch(error) {
 							log('error', 'playerReactionCollector@send_message', error);

@@ -7,16 +7,25 @@ import {
 } from '../utils/embed.js'
 
 export default new Command({
-	name: 'nowplaiyng',
+	name: 'nowplaying',
 	aliases: ['np'],
 	description: 'View the current track playing in the queue.',
 	usage: 'command'
 }, async (bot, message) => {
 	
 	/** Check Playing State */
-	const queue = bot.player.getQueue(message);
-	if (!queue) {
-		return simpleEmbed(message, 'There\'s nothing playing in the queue.');
+	try {
+		const queue = bot.player.getQueue(message);
+		if (!queue) {
+			return simpleEmbed({
+				title: 'Player Empty',
+				color: 'RED',
+				text: 'There\'s nothing playing in the queue.'
+			})
+		}
+	} catch(error) {
+		log('error', 'nowplaying@checkQueue', error.stack);
+		return errorEmbed({ title: 'nowplaying@checkQueue', error: error });
 	}
 
 	try {
@@ -24,7 +33,7 @@ export default new Command({
 		return dynamicEmbed({
 			title: 'Currently Playing',
 			color: 'BLUE',
-			info: `Currently playing [**__${song.name}__**](${song.url}) in the queue.`,
+			text: `Currently playing [**__${song.name}__**](${song.url}) in the queue.`,
 			fields: {
 				'Link': { 		content: `[${song.id}](${song.url})`, 		inline: true },
 				'Duration': { content: `\`${song.formattedDuration}\``, inline: true },

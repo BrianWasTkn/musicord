@@ -5,15 +5,23 @@
 
 import { blue, red } from './colors.js'
 import { Colors } from './constants.js'
+import { codeBlock } from './text.js'
 import config from '../config.js'
 
 /** Simple Embed */
-export const simpleEmbed = (message, content) => {
+export const simpleEmbed = ({ 
+	title = null,
+	color = 'RANDOM',
+	info = null,
+	footer = {}
+} = {}) => {
 	return dynamicEmbed({
-		color: 'BLUE',
-		author: {
-			text: slice(content, 256),
-			icon: message.client.user.avatarURL()
+		title: title,
+		color: color,
+		text: info,
+		footer: {
+			text: footer.text,
+			icon: footer.icon
 		}
 	});
 }
@@ -52,18 +60,24 @@ export const dynamicEmbed = ({
 }
 
 /** Error Embed */
-export const errorEmbed = (message, error) => {
-	return {
-		color: red,
-		author: {
-			name: slice(error.message, 200),
-			iconURL: message.client.user.avatarURL()
-		},
-		fields: [
-			{ name: 'Error', value: message.client.utils.codeBlock(slice(error.stack.toString(), 1000), 'js') },
-			{ name: 'Support', value: `If this error still occurs multiple times, please join our [discord server](https://discord.gg/memer) for help and support.` }
-		]
-	}
+export const errorEmbed = ({ 
+	title = null
+	error = null,
+	footer = {}
+} = {}) => {
+	return dynamicEmbed({
+		title: title,
+		color: color,
+		text: codeBlock(slice(error.stack, 2000), 'js'),
+		fields: {
+			'Error Message': { 	content: error.message },
+			'Support': {		content: 'Join our [discord server](https://discord.gg/memer) for support', inline: true }
+		}
+		footer: {
+			text: footer.text,
+			icon: footer.icon
+		}
+	});
 }
 
 const slice = (string, length) => {

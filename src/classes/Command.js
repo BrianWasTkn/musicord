@@ -83,7 +83,7 @@ class Command {
 				return embedify({
 					title: 'Cooldown, Slow down.',
 					color: 'BLUE',
-					info: `You\'re currently on cooldown for command \`${command.name}\`. Wait **${timeLeft}** and try running the command again.`,
+					text: `You\'re currently on cooldown for command \`${command.name}\`. Wait **${timeLeft}** and try running the command again.`,
 					footer: {
 						text: `Thanks for using ${message.client.user.username}!`,
 						icon: message.client.user.avatarURL()
@@ -131,7 +131,7 @@ class Command {
 			return embedify({
 				title: 'Missing Permissions',
 				color: 'RED',
-				info: 'You do not have enough permissions to run this command!',
+				text: 'You do not have enough permissions to run this command!',
 				fields: {
 					'Permissions': `**${command.permissions.length}** - \`${command.permissions.join('`, `')}\``
 				},

@@ -14,9 +14,18 @@ export default new Command({
 }, async (bot, message, args) => {
 
 	/** Check Playing State */
-	const queue = bot.player.getQueue(message);
-	if (!queue) {
-		return simpleEmbed(message, 'There\'s nothing playing in the queue.');
+	try {
+		const queue = bot.player.getQueue(message);
+		if (!queue) {
+			return simpleEmbed({
+				title: 'Player Empty',
+				color: 'RED',
+				text: 'There\'s nothing playing in the queue.'
+			})
+		}
+	} catch(error) {
+		log('error', 'remove@checkQueue', error.stack);
+		return errorEmbed({ title: 'remove@checkQueue', error: error });
 	}
 
 	/** Else, remove */
@@ -37,7 +46,7 @@ export default new Command({
 		return dynamicEmbed({
 			title: 'Track Removed',
 			color: 'BLUE',
-			info: `Track at **index ${index}** has been removed from the queue.`,
+			text: `Track at **index ${index}** has been removed from the queue.`,
 			fields: {
 				'Action by': { content: message.author.tag }
 			},

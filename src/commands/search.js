@@ -31,7 +31,7 @@ export default new Command({
 			msg = await message.channel.send(dynamicEmbed({
 				title: 'Search Results',
 				color: 'BLUE',
-				info: found.join('\n'),
+				text: found.join('\n'),
 				fields: {
 					'Instructions': { content: 'Type the **# number** of your choice. You only have **30 seconds** or your search will be cancelled.' }
 				},

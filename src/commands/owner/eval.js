@@ -1,6 +1,11 @@
 import { inspect } from 'util'
 import { sanitize, codeBlock } from '../../utils/text.js'
 import Command from '../../classes/Command/Owner.js'
+import { 
+	simpleEmbed,
+	dynamicEmbed, 
+	errorEmbed 
+} from '../utils/embed.js'
 
 export default new Command({
 	name: 'eval',
@@ -9,41 +14,54 @@ export default new Command({
 	usage: '<...code>'
 }, async (bot, message, args) => {
 
-	// pre-eval
-	const code = args.join(" ");
-	if (!code) return;
-	const asynchronous = code.includes('return') || code.includes('await');
-	let result, evalTime, type;
+	// Pre-evaluation
+	const code = args.join(' ');
+	const asynchronous = ['return', 'await'].includes(code);
+	let before, evaled, evalTime, type, token, result;
 
 	try {
-		// if evaled is an asynchronous function or not
-		let before = Date.now()
-		let evaled = await eval(asynchronous ? `(async()=>{${code}})()` : code);
+		// Time and Eval
+		before = Date.now();
+		try {
+			evaled = await eval(asynchronous ? `(async()=>{${code}})()` : code);
+		} catch(error) {
+			evaled = error;
+		}
 		evalTime = Date.now() - before;
 		type = typeof evaled;
 
-		// non-string eval
-		if (typeof evaled !== "string") {
-			evaled = inspect(evaled, { depth: 0 });
+		// inspect
+		if (type !== 'string') {
+			try {
+				evaled = inspect(evaled, { depth: 0 });
+			} catch(error) {
+				return error;
+			}
 		}
 
-		// clean our output + hide our token
-		result = sanitize(evaled);
-		const token = new RegExp(bot.config.token, 'gi');
-    result = result.replace(token, 'e');
-	} catch (e) {
-		result = e.message
-	}
-
-	return {
-		color: 'BLUE',
-		description: codeBlock(result, 'js'),
-		fields: [
-			{ name: 'Type', value: codeBlock(type, 'js') }
-		],
-		footer: {
-			text: evalTime === 0 ? "Evaluation is fast" : `Eval Time: ${evalTime}ms`
+		// Clean the eval
+		try {
+			result = sanitize(evaled);
+			token = new RegExp(bot.config.token, 'gi');
+			result = result.replace(token, 'N0.T0K4N.4Y0U');
+			// Return a message
+			return dynamicEmbed({
+				color: 'BLUE',
+				description: codeBlock(result, 'js'),
+				fields: {
+					'Type': { content: codeBlock(type, 'js') }
+				},
+				footer: {
+					text: `Evaluation took ${evalTime}ms`,
+					icon: message.author.avatarURL()
+				}
+			})
+		} catch(error) {
+			return error;
 		}
+
+	} catch(error) {
+		return error;
 	}
 
 })

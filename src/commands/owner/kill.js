@@ -1,5 +1,6 @@
 import Command from '../../classes/Command/Owner.js'
 import { log } from '../../utils/logger.js'
+import { Util } from 'discord.js'
 
 export default new Command({
 	name: 'kill',
@@ -9,10 +10,10 @@ export default new Command({
 }, async (bot, args) => {
 
 	try {
-		if (args[0]) setTimeout(() => {}, Number(args[0]));
+		if (args[0]) await Util.delayFor(args[0]);
 		await bot.destroy();
 	} catch(error) {
-		log('commandError', 'kill', error)
+		log('commandError', 'kill', error);
 	}
 
 })

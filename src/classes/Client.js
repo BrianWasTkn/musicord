@@ -1,14 +1,17 @@
-// Node
+// Node packages
 import { Client, Collection } from 'discord.js'
 import { join } from 'path'
 import { readdirSync } from 'fs'
 import chalk from 'chalk'
 
-// Local
+// Local modules
 import { log } from '../utils/logger.js'
 import DisTube from './Player.js'
 import config from '../config.js'
 import botPackage from '../../package.json'
+
+// Extended Structures
+import './Message.js'
 
 class Musicord extends Client {
 	constructor(discordOpts, playerOpts) {
@@ -123,7 +126,8 @@ class Musicord extends Client {
 
 		// push commands into items[]
 		files.forEach(f => {
-			if (!f.endsWith('.js')) { readdirSync(join(__dirname, '..', 'commands', f)).forEach(i => {
+			if (!f.endsWith('.js')) { 
+				readdirSync(join(__dirname, '..', 'commands', f)).forEach(i => {
 				items.push(require(join(__dirname, '..', 'commands', f, i)).default);
 			})} else {
 				items.push(require(join(__dirname, '..', 'commands', f)).default);

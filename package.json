@@ -36,6 +36,7 @@
     "lyrics-finder": "^21.4.0",
     "ms": "^2.1.2",
     "opusscript": "0.0.7",
+    "programmatic-repl": "file:../../../downloads/_discord/_bots/dank-memer-master/node_modules/programmatic-repl",
     "string-progressbar": "^1.0.1"
   }
 }

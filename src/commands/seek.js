@@ -3,6 +3,7 @@ import { log } from '../utils/logger.js'
 import { formatToSecond, formatDuration } from '../utils/duration.js'
 import { 
 	simpleEmbed,
+	dynamicEmbed, 
 	errorEmbed 
 } from '../utils/embed.js'
 
@@ -15,9 +16,18 @@ export default new Command({
 }, async (bot, message, args) => {
 	
 	/** Check Playing State */
-	const queue = bot.player.getQueue(message);
-	if (!queue) {
-		return simpleEmbed(message, 'There\'s nothing playing in the queue.');
+	try {
+		const queue = bot.player.getQueue(message);
+		if (!queue) {
+			return simpleEmbed({
+				title: 'Player Empty',
+				color: 'RED',
+				text: 'There\'s nothing playing in the queue.'
+			})
+		}
+	} catch(error) {
+		log('error', 'seek@checkQueue', error.stack);
+		return errorEmbed({ title: 'seek@checkQueue', error: error });
 	}
 
 	/** Parsing Time */
