@@ -1,6 +1,6 @@
 import Command from '../classes/Command.js'
 
-export default class Pause extends Command {
+export default class Queue extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'queue',

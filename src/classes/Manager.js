@@ -1,13 +1,14 @@
-import { log } from '../utils/logger.js'
+import Util from './Util.js'
 
-class Listener {
+class Manager {
 	constructor(client) {
 		this.client = client;
+		this.utils = new Util(client);
 	}
 
 	/** Logger Shortcut */
 	log(Class, tag, error) {
-		return log(Class, 'listener', tag, error);
+		return log(Class, 'manager', tag, error);
 	}
 
 	/** Creates an Embed */
@@ -22,5 +23,3 @@ class Listener {
 		});
 	}
 }
-
-export default Listener;

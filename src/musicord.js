@@ -1,16 +1,18 @@
 import { log } from './utils/logger.js'
-import Musicord from './classes/Client.js'
-import config from './config.js'
+import Musicord from './classes/Musicord.js'
+import config from './config/config.js'
 
 const login = async () => {
-	const bot = new Musicord(config.clientOpts, config.playerOpts);
+	const bot = new Musicord(
+		config.clientOptions, config.playerOptions
+);
 
 	/** Login our bot */
 	try {
-		log('main', 'Logging In...')
+		log('main', 'Logging In...');
 		await bot.login(config.token);
 	} catch(error) {
-		log('error', 'Unable to login.', error)
+		log('error', 'Unable to login.', error);
 		process.exit(1);
 	}
 }
@@ -18,14 +20,13 @@ const login = async () => {
 const run = async () => {
 	try {
 		/** Process Error: unhandledRejection */
+		/** Process Error: uncaughtException */
 		process.on('unhandledRejection', error => {
 			log('node', 'unhandledRejection', error.stack);
-		})
-		/** Process Error: uncaughtException */
-		process.on('uncaughtException', error => {
+		}).on('uncaughtException', error => {
 			log('node', 'uncaughtException', error.stack);
 			process.exit(1);
-		})
+		});
 	} catch(error) {
 		log('error', 'Cannot instantiate process error listeners.', error);
 		process.exit(1);

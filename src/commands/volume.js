@@ -1,12 +1,12 @@
 import Command from '../classes/Command.js'
 
-export default class Join extends Command {
+export default class Volume extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'volume',
 			aliases: ['v'],
-			description: 'Musicord will join your voice channel.',
-			usage: '<rate>',
+			description: 'Adjust the volume of the player in this guild.',
+			usage: '<1-100>',
 			cooldown: 5000
 		});
 
@@ -25,48 +25,46 @@ export default class Join extends Command {
 		 * * `stopped` - if player stopped
 		 * @type {String[]}
 		 */
-		this.checks = [];
+		this.checks = ['voice', 'queue'];
 	}
 
-	async execute({ msg }) {
+	async execute({ Bot, msg, args }) {
 
-		/** Voice Channel */
-		const channel = msg.member.voice.channel;
-
-		/** Joinable */
-		if (!channel.joinable) {
-			return msg.channel.send(super.createEmbed({
-				title: 'Missing Permissions',
-				color: 'RED',
-				text: 'Make sure I have permissions to `CONNECT` in your voice channel.'
-			}));
-		}
-
-		/** Full */
-		if (channel.full) {
-			return msg.channel.send(super.createEmbed({
-				title: 'Channel Full',
-				color: 'RED',
-				text: 'Your voice channel is already full so I\'m unable to join.'
-			}));
-		}
-
-		/** Do the thing */
-		try {
-			/* Leave */
-			const voice = await channel.join();
-			try {
-				/* Message */
-				await msg.channel.send(super.createEmbed({
-					title: 'Channel Joined',
+		/* Args */
+		let [rate] = args;
+		rate = parseInt(rate)
+		if (!isNaN(rate)) {
+			/* More than 100 */
+			if (rate > 100) {
+				return msg.channel.send(super.createEmbed({
+					title: 'Too Loud',
 					color: 'RED',
-					text: `Successfully join **${voice.channel.name}**.`
+					text: 'You cannot set the volume higher than **100%** to avoid earrapes.'
 				}));
-			} catch(error) {
-				super.log('join@msg', error);
+			} 
+			/* Less than 1 */
+			else if (rate < 1) {
+				return msg.channel.send(super.createEmbed({
+					title: 'Too Low',
+					color: 'RED',
+					text: 'You cannot set the volume lower than a percent.'
+				}))
 			}
-		} catch(error) {
-			super.log('join', error);
+			/* Else, do it */
+			else {
+				try {
+					/* Queue */
+					const queue = await Bot.player.setVolume(msg, parseInt(rate, 10));
+					try {
+
+					} catch(error) {
+						
+					}
+				} catch(error) {
+					super.log('volume', error);
+				}
+			}
 		}
+
 	}
 }

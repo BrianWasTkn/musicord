@@ -11,8 +11,8 @@ class Player extends distube {
 	 * @param {Object} message Discord.Message
 	 */
 	nowPlaying(message) {
-		const queue = this.guildQueues.get(message.guild.id);
-		if (!queue) return new Error('Not Playing');
+		const queue = super.getQueue(message);
+		if (!queue) return new Error('NotPlaying');
 		return queue.songs[0];
 	}
 
@@ -38,14 +38,22 @@ class Player extends distube {
 	 */
 	remove(message, index) {
 		return new Promise((resolve, reject) => {
+			/* Fetch */
 			let queue = super.getQueue(message);
-			if (!queue) reject('NoQueue');
+			if (!queue) reject('NotPlaying');
+			/* Invalid Num or Empty */
+			index = parseInt(index, 10);
 			if (isNaN(index) || !index) reject('Invalid/Empty_Number');
-			else if (index > queue.songs.length) reject('TooHigh');
-			else if (index < 1) reject('TooLow');
+			/* Song Length */
+			if (index > queue.songs.length) reject('TooHigh');
+			if (index < 1) reject('TooLow');
+			/* Index */
+			if (!queue.songs[index]) reject('Unknown Song');
+			/* Song */
 			let song = queue.songs[index];
 			if (!song) reject('NoSongIndex');
-			queue = queue.songs.filter(s => s !== song);
+			queue.songs = queue.songs.filter(song => song !== queue.songs[index]);
+			/* Resolve */
 			resolve(queue);
 		})
 	}

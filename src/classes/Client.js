@@ -23,7 +23,7 @@ class Musicord extends Client {
 	/** Load Everythin' */
 	loadAll() {
 		try {
-			this.loadListeners(this);
+			this.hydrateListeners(this);
 			log('main', 'Listeners Loaded');
 			try {
 				this.registerCommands();
@@ -39,7 +39,7 @@ class Musicord extends Client {
 	}
 
 	/** Listeners */
-	loadListeners(bot) {
+	hydrateListeners(bot) {
 		/** Discord Listeners */
 		const discord = readdirSync(join(__dirname, '..', 'emitters', 'discord'));
 		discord.forEach(async e => {
