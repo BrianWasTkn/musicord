@@ -1,5 +1,5 @@
 import { Client, Collection } from 'discord.js'
-import { Player } from 'discord-music-player' // test
+import { Player } from 'discord-music-player' // debugging discord-music-player
 import DisTube from './Player.js'
 import Utilities from './Utilities.js'
 
@@ -39,6 +39,14 @@ export default class Musicord extends Client {
 		}
 	}
 
+	/** Listeners */
+	_loadListeners(bot) {
+		readdirSync(join(__dirname, '..', 'listeners'))
+		.forEach(async l => {
+			await require(join(__dirname, '..', 'listeners', l)).run(bot);
+		})
+	}
+
 	/** Register Commands */
 	_registerCommands() {
 	readdirSync(join(__dirname, '..', 'commands'))
@@ -61,17 +69,9 @@ export default class Musicord extends Client {
 	})
 	}
 
-	/** Listeners */
-	_loadListeners(bot) {
-		readdirSync(join(__dirname, '..', 'listeners'))
-		.forEach(async l => {
-			await require(join(__dirname, '..', 'listeners', l)).run(bot);
-		})
-	}
-
 	/** 
 	 * Reload Commands
-	 * @returns {Promise<void>} null
+	 * @returns {Object} object of aliases and commands
 	 */
 	async reloadCommands() {
 		const items = [],
@@ -84,9 +84,9 @@ export default class Musicord extends Client {
 
 		// push commands -> items[]
 		files.forEach(f => {
-			if (!f.endsWith('.js')) readdirSync(join(__dirname, '..', 'commands', f)).forEach(i => {
+			if (!f.endsWith('.js')) { readdirSync(join(__dirname, '..', 'commands', f)).forEach(i => {
 				items.push(require(join(__dirname, '..', 'commands', f, i)).default);
-			}) else {
+			})} else {
 				items.push(require(join(__dirname, '..', 'commands', f)).default);
 			}
 		})
@@ -94,7 +94,7 @@ export default class Musicord extends Client {
 		// then load commands and aliases
 		items.map(c => c.name)
 		.forEach(c => { try { this.loadCommand(c); } catch {} });
-		return this.commands;
+		return { commands: this.commands, aliases: this.aliases };
 	}
 
 	/** 
