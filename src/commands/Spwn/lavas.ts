@@ -26,7 +26,6 @@ export default class Spawn extends Command implements LavaCommand {
       color: 'RANDOM',
       description: [
         `**Unpaid Coins:** ${unpaid.toLocaleString()}`,
-        `**Paid Coins:** ${paid.toLocaleString()}`,
         `**Events Joined:** ${eventsJoined.toLocaleString()}`
       ].join('\n'),
       footer: {

@@ -37,18 +37,16 @@ export default class Spawn extends Command implements LavaCommand {
 
 		// Fetch
 		let data = await this.client.db.spawns.fetch({ userID: user.user.id });
-		data = await this.client.db.spawns.add({ userID: user.user.id, amount, type: 'paid' });
-		data = await this.client.db.spawns.remove({ userID: user.user.id, amount, type: 'unpaid' });
-		data = await this.client.db.spawns.fetch({ userID: user.user.id });
+		data.unpaid -= amount;
+		await data.save();
 
 		// Message
 		const embed = new MessageEmbed({
 			title: 'Updated',
 			color: 'ORANGE',
-			description: `Paid and unpaid coins for **${user.user.tag}** has been updated.`,
+			description: `Paid status for **${user.user.tag}** has been updated.`,
 			fields: [
-				{ inline: true, name: 'Total Paid', value: data.paid.toLocaleString() },
-				{ inline: true, name: 'Total Unpaid', value: data.unpaid.toLocaleString() }
+				{ name: 'Total Unpaid Left', value: data.unpaid.toLocaleString() }
 			],
 			footer: {
 				text: this.client.user.username,

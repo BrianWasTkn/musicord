@@ -1,7 +1,7 @@
 import { SpawnConfig, SpawnVisuals } from 'discord-akairo'
 
 export const config: SpawnConfig = {
-	odds: 10,
+	odds: 5,
 	cooldown: (member) => {
 		// "Crib Booster" role
 		if (member.roles.cache.has('693324853440282654')) return 7;
@@ -18,7 +18,7 @@ export const config: SpawnConfig = {
 	timeout: 10000,
 	entries: Infinity,
 	rewards: {
-		min: 25000,
+		min: 2500,
 		max: 25000
 	} 
 }
