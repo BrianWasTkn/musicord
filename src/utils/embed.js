@@ -29,7 +29,7 @@ export const generatePlayerEmbed = ({
 	return {
 		embed: {
 			author: {
-				name: author.text
+				name: author.text,
 				iconURL: author.icon
 			},
 			title: title,
