@@ -20,6 +20,7 @@ export const log = (type, content, error = null) => {
 	switch(type) {
 		case 'node':
 			stamp('Process ', content);
+			console.log(error);
 			break;
 		case 'main':
 			stamp('Launcher', content);

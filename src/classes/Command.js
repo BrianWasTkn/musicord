@@ -104,11 +104,8 @@ class Command {
 		const cooldown = this._processCooldown(message, command);
 		if (cooldown) return message.channel.send({ embed: cooldown});
 		// Check Permissions
-		const permission = this._checkPermissions(command, message);
+		const permission = this._checkPermissions(message, command);
 		if (permission) return message.channel.send({ embed: permission });
-		// Process VoiceState
-		const state = this._checkVoiceState(message, command);
-		if (state) return message.channel.send({ embed: state });
 
 		// Run
 		const returned = await this.run(bot, message, args); // Promise
@@ -120,7 +117,7 @@ class Command {
 		return message.channel.send(returned);
 	}
 
-	_checkPermissions(command, message) {
+	_checkPermissions(message, command) {
 		// User Permissions
 		if (!message.member.permissions.has(command.permissions)) {
 			return {
@@ -130,35 +127,6 @@ class Command {
 				fields: [
 					{ name: `\`${command.permissions.length}\` missing ${command.permissions.length > 1 ? 'permissions' : 'permission'}`, value: `\`${command.permissions.join('`, `')}\`` }
 				]
-			}
-		}
-	}
-
-	_checkVoiceState(message, command) {
-		if (command.music) {
-			const channel = message.member.voice.channel;
-			if (!channel) {
-				return {
-					title: 'Voice Channel',
-					color: 'RED',
-					description: 'Please join a **voice channel** first to use this command.\nThanks for using Musicord!'
-				}
-			} else {
-				const myPermissions = channel.permissionsFor(message.client.user);
-				if (!myPermissions.has('CONNECT')) {
-					return {
-						title: 'Missing Permissions',
-						color: 'RED',
-						description: 'I don\'t have permissions to `CONNECT` in your voice channel.\nPlease check the voice channel permissions and try again.'
-					}
-				}
-				if (!myPermissions.has('SPEAK')) {
-					return {
-						title: 'Missing Permissions',
-						color: 'RED',
-						description: 'I don\'t have permissions to `SPEAK` in your voice channel.\nPlease check the voice channel permissions so I can play the track.'
-					}
-				}
 			}
 		}
 	}

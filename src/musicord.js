@@ -12,7 +12,7 @@ export const musicord = async () => {
 		await bot.login(config.token);
 	} catch(error) {
 		log('error', 'Unable to login.', error)
-		process.exit(1)
+		process.exit(1);
 	}
 
 }

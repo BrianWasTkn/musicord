@@ -14,7 +14,6 @@ export async function run(bot) {
 				const [cmd, ...args] = message.content.slice(prefix.length).trim().split(/ +/g);
 				const command = bot.commands.get(cmd.toLowerCase()) || bot.aliases.get(cmd.toLowerCase());
 				if (!command) return;
-				if (command.private && !bot.developers.includes(message.author.id)) return;
 				try {
 					await command.execute(bot, command, message, args);
 				} catch(error) {

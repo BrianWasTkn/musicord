@@ -11,10 +11,11 @@ const run = async () => {
 		/** Process Error: uncaughtException */
 		process.on('uncaughtException', error => {
 			log('node', 'uncaughtException', error.stack);
+			process.exit(1);
 		})
 	} catch(error) {
 		log('error', 'Cannot instantiate process error listeners.', error);
-		process.exit(1)
+		process.exit(1);
 	}
 
 	try {
@@ -30,7 +31,7 @@ const run = async () => {
 
 /** Run the whole bot */
 try {
-	run()
+	run();
 } catch(error) {
-	log('error', 'Unable to launch musicord.', error)
+	log('error', 'Unable to launch musicord.', error);
 }
