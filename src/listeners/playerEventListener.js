@@ -1,4 +1,4 @@
-import { log, logInit, logError } from '../utils/logger.js'
+import { log } from '../utils/logger.js'
 
 export async function run(bot) {
 	try {
@@ -142,6 +142,6 @@ export async function run(bot) {
 		
 		log('main', 'DisTube Event Emitter')
 	} catch(error) {
-		logError('Listener', 'playerEventListener', error)
+		log('listenerError', 'disTubeEventEmitter', error)
 	}
 }

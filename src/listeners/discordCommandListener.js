@@ -1,4 +1,4 @@
-import { log, logError, logInit } from '../utils/logger.js'
+import { log } from '../utils/logger.js'
 
 export async function run(bot) {
 	try {
@@ -17,12 +17,12 @@ export async function run(bot) {
 				try {
 					await command.execute(bot, command, message, args);
 				} catch(error) {
-					logError('Listener', `unable to execute "${command.name}"`, error)
+					log('listenerError', 'commandListener@error', error)
 				}
 			}
 		})
 		log('main', 'Command Listener')
 	} catch(error) {
-		logError('Listener', 'Unable to process the command listener', error)
+		log('listenerError', 'commandListener', error)
 	}
 }

@@ -10,6 +10,6 @@ export async function run(bot) {
 
 		log('main', 'Discord Event Emitter')
 	} catch(error) {
-		logError('Listener', 'Unable to initiate discord event listeners', error)
+		log('listenerError', 'discordEventEmitter', error)
 	}
 }

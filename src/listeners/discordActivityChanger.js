@@ -1,4 +1,4 @@
-import { log, logError, logInit } from '../utils/logger.js'
+import { log } from '../utils/logger.js'
 
 export async function run(bot) {
 	try {
@@ -14,7 +14,7 @@ export async function run(bot) {
 					}
 				})
 			} catch(error) {
-				logError('Listener', 'Unable to set first client presence', error)
+				log('listenerError', 'activityChanger@set_first_presence', error)
 			}
 
 			/** Interval */
@@ -33,12 +33,12 @@ export async function run(bot) {
 						}
 					})
 				} catch(error) {
-					logError('Listener', 'Unable to set client presence at interval', error)
+					log('listenerError', 'activityChanger@set_presence_interval', error)
 				}
 			}, 1000 * 60) // 1 Minute (1000ms * 60secs)
 		})
 		log('main', 'Activity Changer')
 	} catch(error) {
-		logError('Listener', 'Unable to initiate the activity changer', error)
+		log('listenerError', 'activityChanger', error)
 	}
 }
