@@ -27,6 +27,16 @@ export default class Utility extends Command {
         });
     }
 
+    private get strings(): (((m?: Message) => string) | string)[] {
+        return [
+            (m: Message) => m.guild.name,
+            (m: Message) => m.client.user.username,
+            'JOIN EVENT', 'REEEEEEEEE', 'WIN WIN WIN',
+            'HHHHHHHHHH', 'BRIANWASTAKEN', 'LEE OH.',
+            'LE AMONIC MAKUR', 'EXEMPLARY', 'LAMO'
+        ]
+    }
+
     private collect(
         msg: Message, 
         filter: CollectorFilter, 
@@ -65,7 +75,9 @@ export default class Utility extends Command {
         else events.set(guild.id, channel.id);
         if (lock) await lockChan(true);
 
-        await channel.send(`**Type \`JOIN EVENT\` to split __${amount.toLocaleString()}__ coins!**`);
+        let string = this.client.util.randomInArray(this.strings);
+        string = typeof string === 'function' ? string(_) : string;
+        await channel.send(`**Type \`${string.toUpperCase()}\` to split __${amount.toLocaleString()}__ coins!**`);
         const entries: Collection<string, boolean> = new Collection();
         const filter: CollectorFilter = (m: Message) => !entries.has(m.author.id);
         const options: MessageCollectorOptions = { max: Infinity, time: 3e4 };
