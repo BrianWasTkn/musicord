@@ -27,21 +27,11 @@ export default class Musicord extends Client {
 		try {
 			/* Check every inch of emitters */
 			const emitters = readdirSync(join(__dirname, '..', 'emitters'));
-			emitters.forEach(async e => {
-				if (e === 'discord') {
-					const discordListener = readdirSync(join(__dirname, '..', 'emitters', e));
-					discordListener.forEach(async l => {
-						l = l.split('.')[0];
-						this.on(l, (...args) => {
-							new (require(join(__dirname, '..', 'emitters', e, l)).default)(this);
-						});
-					});
-				} else {
-					const playerListener = readdirSync(join(__dirname, '..', 'emitters', e));
-					playerListener.forEach(l => {
-						new (require(join(__dirname, '..', 'emitters', e, l)).default)(this);
-					});
-				}
+			emitters.forEach(e => {
+				const emitter = readdirSync(join(__dirname, '..', 'emitters', e));
+				emitter.forEach(l => {
+					new (require(join(__dirname, '..', 'emitters', e, l)).default)(this);
+				});
 			});
 
 			/* Log it */
@@ -60,11 +50,13 @@ export default class Musicord extends Client {
 					this.commands.set(command.name, command);
 					command.aliases.forEach(a => this.aliases.set(a, command));
 				}
-				/* Import */
+				/* Import File */
 				if (i.endsWith('.js')) {
 					const command = new (require(join(__dirname, '..', 'commands', i)).default)(this);
 					load(command);
-				} else {
+				} 
+				/* Import File in Folder */
+				else {
 					const dir = readdirSync(join(__dirname, '..', 'commands', i));
 					dir.forEach(c => {
 						const command = new (require(join(__dirname, '..', 'commands', i, c)).default)(this);

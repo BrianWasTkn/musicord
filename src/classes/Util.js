@@ -11,13 +11,9 @@ export default class Util {
 	 * Logger
 	 * @param {Object} Class the class logged
 	 * @param {String} type the type of log
-	 * * `warn` - a warning
 	 * * `error` - an error
 	 * * `process` - the node process
-	 * * `console` - a normal log
-	 * * `discord` - from discord
-	 * * `manager` - a musicord manager
-	 * * `command` - from a command
+	 * * `main` - a general log
 	 * @param {String} msg the message
 	 * @param {Boolean|String|Object} error the error, if any
 	 * @returns {void}
@@ -28,7 +24,7 @@ export default class Util {
 			return console.log(
 				chalk.whiteBright(`[${moment().format('HH:mm:ss')}]`),
 				Class, chalk.whiteBright('=>'), msg, info || ''
-			);
+			); // [00:00:00] Class => Some Message
 		}
 
 		/* The types of logging */
@@ -68,7 +64,7 @@ export default class Util {
 				},
 				title: title,
 				thumbnail: icon,
-				color: Colors[color],
+				color: Colors[color] || Discord.Constants.Colors[color],
 				description: text,
 				fields: Object.entries(fields).map(f => ({ 
 					name: f[0], 
@@ -82,6 +78,105 @@ export default class Util {
 			}
 		}
 	}
+
+	/**
+	 * Duration Formatter
+	 * @param {number} ms the ms to format
+	 * @returns {String} in 'hh:mm:ss' format
+	 */
+	formatDuration(ms) {
+		/* Invalid or Empty */
+		if (!ms || !parseInt(ms)) {
+			return '00:00';
+		}
+		/* A func to convert "0:1" to "0:01" */
+		const format = int => {
+			if (int < 10) {
+				return `0${int}`;
+			} else {
+				return int;
+			}
+		}
+		/* Pre-vars */
+		const hours = moment.duration(ms).hours();
+		const minut = moment.duration(ms).minutes();
+		const secon = moment.duration(ms).seconds();
+		/* Check */
+		if (hours > 0) {
+			return [hours, minut, secon].map(i => format(i)).join(':');
+		} else if (minut > 0) {
+			return [minut, secon].map(i => format(i)).join(':');
+		} else if (secon > 0) {
+			return ['00', secon].map(i => format(i)).join(':');
+		} else {
+			return '00:00';
+		}
+	}
+
+	/**
+	 * Duration Formatter
+	 * @param {String} stamp in 'hh:mm:ss' format
+	 * @returns {number} in (ms / 1000)
+	 */
+	formatToSecond(stamp) {
+		/* Check */
+		if (!stamp) return;
+		/* Pre-vars */
+		let h = 0, m = 0, s = 0;
+		if (stamp.match(':')) {
+			let times = stamp.split(':');
+			/* Minutes */
+			if (times.length === 2) {
+				m = parseInt(times[0], 10);
+				s = parseInt(times[1], 10);
+			}
+			/* Hours */
+			if (times.length === 3) {
+				h = parseInt(times[0], 10);
+				m = parseInt(times[1], 10);
+				s = parseInt(times[2], 10);
+			}
+		} else {
+			/* Seconds */
+			s = parseInt(stamp, 10);
+		}
+		/* Return parsed seconds */
+		return h * 60 * 60 + m * 60 + s;
+	}
+
+	/**
+	 * Cooldown Formatter
+	 * @param {number} ms the amount of time in seconds
+	 * @returns {String} parsed cooldown string
+	 */
+	formatCooldown(s) {
+		/* String and Time amount to use */
+		const times = [
+			{ name: 'day', value: 60 * 60 * 24 },
+			{ name: 'hour', value: 60 * 60 },
+			{ name: 'minute', value: 60 },
+			{ name: 'second', value: 1 }
+		]
+
+		/* Maths */
+		const calc = (s, index, modulus = true) => {
+			return modulus 
+			? Math.floor(s % times[index].value) 
+				: Math.floor(s / times[index].value);
+		}
+
+		/* Formatting Time */
+		const results = [ `${calc(s, 0, false).toString()} ${times[0].name}` ];
+		for (let i = 0 ; i < 3 ; i++) {
+			const formula = Math.floor(s % times[i].value / times[i + 1].value);
+			const label = formula > 1 ? `${times[i + 1].name}s` : times[i + 1].name;
+			results.push(`${formula.toString()} ${label}`)
+		}
+
+		/* Return */
+		return results.filter(r => !r.startsWith('0')).join(', ');
+	}
+
 }
 
 /* Colors */

@@ -4,7 +4,7 @@ export default class Listener {
 	}
 
 	/** Shortcut for logging */
-	log(Class, msg, error) {
+	log(msg, error) {
 		return this.client.utils.log('Listener', 'error', msg, error);
 	}
 

@@ -6,7 +6,7 @@ export default class Manager {
 	}
 
 	/** Shortcut for logging */
-	log(Class, msg, error) {
+	log(msg, error) {
 		return this.client.utils.log('Manager', 'error', msg, error);
 	}
 

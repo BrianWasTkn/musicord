@@ -59,7 +59,7 @@ export default class Command {
 	}
 
 	/** Shortcut for logging */
-	log(Class, msg, error) {
+	log(msg, error) {
 		return this.client.utils.log('Command', 'error', msg, error);
 	}
 
