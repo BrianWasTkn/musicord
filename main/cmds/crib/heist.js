@@ -1,5 +1,6 @@
 const Command = require('../../lib/command/Command.js');
 const { Collection } = require('discord.js');
+
 module.exports = new Command(
 async ({ msg }) => {
 	const { channel, guild } = msg;
@@ -15,9 +16,9 @@ async ({ msg }) => {
 	collector.on('collect', async m => {
 		if (entries.has(m.author.id)) {
 			return m.reply('you already joined.');
-			collector.collected.delete(m.id);
+			collector.collected.delete(entries.get(m.author.id));
 		} else {
-			entries.set(m.author.id, true);
+			entries.set(m.author.id, m.id);
 			await m.react('💰');
 		}
 	}).on('end', async col => {
