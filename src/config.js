@@ -1,4 +1,7 @@
 export default {
+	/** Bot Owners */
+	developers: ['605419747361947649'],
+	
 	/** Discord Token */
 	token: 'Njg2OTY5MDIwMzg1MzI5MTgy.Xme7wQ.8NNvk2zlQ6I08eQcqDNRD7OxlZs', // Ensures the login of our bot
 	

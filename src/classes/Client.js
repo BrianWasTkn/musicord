@@ -153,4 +153,7 @@ export default class Musicord extends Client {
 	get prefix () {
 		return this.config.prefix;
 	}
+	get developers() {
+		return this.config.developers;
+	}
 }

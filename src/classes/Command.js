@@ -10,6 +10,18 @@ export default class Command {
 		this.run = func;
 
 		/**
+		 * Command Name
+		 * @type {String}
+		 */
+		this.name = options.name;
+
+		/**
+		 * Command Aliases
+		 * @type {Array<String>}
+		 */
+		this.aliases = Array.isArray(options.aliases) ? options.aliases : [options.name];
+
+		/**
 		 * Command Usage
 		 * @type {String}
 		 */
@@ -21,7 +33,7 @@ export default class Command {
 		 * Command Permissions
 		 * @type {Array<PermissionResolveable>}
 		 */
-		this.permissions = ['SEND_MESSAGES', ...[options.permissions || []]];
+		this.permissions = ['SEND_MESSAGES'].concat(options.permissions || []);
 
 		/**
 		 * Command Description
@@ -40,24 +52,6 @@ export default class Command {
 		 * @type {Boolean}
 		 */
 		this.private = options.private || false;
-
-		/**
-		 * Command Aliases
-		 * @type {Array<String>}
-		 */
-		this.aliases = options.aliases || [options.name];
-
-		/**
-		 * Music Mode
-		 * @type {Boolean}
-		 */
-		this.music = options.music || false;
-
-		/**
-		 * Command Cooldown
-		 * @type {String}
-		 */
-		this.name = options.name;
 	}
 
 	/**
@@ -122,9 +116,6 @@ export default class Command {
 		if (returned instanceof Object) {
 			const embedObj = Object.assign({ color: 'RANDOM', footer: { text: `Thanks for using ${bot.user.tag}!` } }, returned);
 			return message.channel.send({ embed: embedObj });
-		}
-		if (Array.isArray(returned)) {
-			return message.channel.send(returned[Math.floor(Math.random() * returned.length)]);
 		}
 		return message.channel.send(returned);
 	}

@@ -1,6 +1,6 @@
 import Command from '../Command.js'
 
-export default class OwnerCommand extends Command {
+export default class extends Command {
 	constructor(options, fn) {
 		super(options, fn);
 

@@ -1,13 +1,11 @@
 import { inspect } from 'util';
-import Command from '../../classes/Command.js';
+import Command from '../../classes/Command/Owner.js';
 
 export default new Command({
 	name: 'eval',
 	aliases: ['e'],
 	description: 'Evaluate arbitrary javascript code.',
-	permissions: ['ADMINISTRATOR'],
-	usage: '<...code: any>',
-	cooldown: 3e3
+	usage: '<...code>'
 }, async (bot, message, args) => {
 
 	// pre-eval
