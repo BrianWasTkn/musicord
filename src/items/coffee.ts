@@ -9,7 +9,7 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: true,
       emoji: ':hot_face:',
-      info: "Gives 1-50% multiplier for 5 minutes.",
+      info: "Gives 5-50% multiplier for 5 minutes.",
       name: "Badddie's Coffee",
       cost: 35000000,
     });
@@ -19,7 +19,7 @@ export default class PowerUp extends Item {
     const { db, util } = this.client;
     const data = await db.currency.fetch(msg.author.id);
     const cof = data.items.find(i => i.id === this.id);
-    const multi = util.randomNumber(1, 50);
+    const multi = util.randomNumber(5, 50);
 
     cof.amount -= 1;
     cof.active = true;

@@ -53,17 +53,17 @@ export const utils: CurrencyUtil = {
 
       if (includes('taken')) {
         let m = 10;
-        total += 5;
+        total += m;
         unlocked.push(`Taken Cult — \`${m}%\``)
       }
-      if (includes('probber')) {
+      else if (includes('probber')) {
         let m = 3.5;
-        total += 5;
+        total += m;
         unlocked.push(`Probber Cult — \`${m}%\``)
       }
-      if (includes('chips')) {
+      else if (includes('chips')) {
         let m = 3.5;
-        total += 5;
+        total += m;
         unlocked.push(`Chips Cult — \`${m}%\``)
       }
     }
@@ -72,8 +72,6 @@ export const utils: CurrencyUtil = {
       total += 2.5;
     }
     if (msg.guild.emojis.cache.size >= 100) {
-      total += 1;
-      unlocked.push(`100 Server Emojis — \`1%\``);
       if (msg.guild.emojis.cache.size >= 250) {
         total += 2.5;
         unlocked.push(`250 Server Emojis — \`2.5%\``);
@@ -103,8 +101,6 @@ export const utils: CurrencyUtil = {
       total += coffee.multi;
       unlocked.push(`${coffeeItem.name} — \`${coffee.multi}%\``);
     } else {
-      coffee.multi = 0;
-      coffee.expire = 0;
       coffee.active = false;
       await db.save()
     }

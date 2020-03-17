@@ -124,20 +124,20 @@ export class CommandHandler<
     const { util } = this.client;
 
     if (this.commandTyping || command.typing) {
-      await message.channel.startTyping();
+      message.channel.startTyping();
     }
 
     try {
       this.emit(Events.COMMAND_STARTED, message, command, args);
       try {
-        const returned = command.exec(message, args); // expect all commands to return strings or embed objects
+        const returned = await command.exec(message, args); // expect all commands to return strings or embed objects
         this.emit(Events.COMMAND_FINISHED, message, command, args, returned);
       } catch (error) {
         this.emit('commandError', message, command, args, error);
       }
     } finally {
       if (this.commandTyping || command.typing) {
-        await message.channel.stopTyping();
+        message.channel.stopTyping();
       }
     }
   }

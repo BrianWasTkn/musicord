@@ -1,10 +1,13 @@
-import { Message, MessageOptions } from 'discord.js';
-import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { Message, MessageOptions, Collection } from 'discord.js';
 import { Document } from 'mongoose';
 import { Argument } from 'discord-akairo';
+
+import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { InventorySlot } from '@lib/interface/handlers/item';
 import { Command } from '@lib/handlers/command';
 import { Effects } from '@lib/utility/effects';
 import { Embed } from '@lib/utility/embed';
+import { Item } from '@lib/handlers/item';
 
 export default class Currency extends Command {
   constructor() {
@@ -23,29 +26,31 @@ export default class Currency extends Command {
     });
   }
 
-  private async getEffects(_: Message) {
-    const { fetch, updateItems } = this.client.db.currency;
-    const data = await fetch(_.author.id);
-    const effects = new Effects();
+  async before(msg: Message) {
+    const { updateItems, fetch } = this.client.db.currency;
+    const { effects } = this.client.util;
+    const data = await fetch(msg.author.id);
+    const eff = new Effects();
 
-    // ItemEffects
-    const thicc = data.items.find((i) => i.id === 'thicc');
-    const crazy = data.items.find((i) => i.id === 'crazy')
-    if (!thicc || !crazy) {
-      await updateItems(_.author.id);
-      return await this.getEffects(_);
+    // Item Effects
+    const find = (itm: string) => (i: InventorySlot) => i.id === itm;
+    const thicc = data.items.find(find('thicc'));
+    if (!thicc) {
+      await updateItems(msg.author.id);
+      return await this.before(msg);
     }
 
     // Thicco
     if (thicc.expire > Date.now() && thicc.active) {
-      effects.setWinnings(0.5);
+      const t = new Collection<string, Effects>();
+      eff.setWinnings(0.5);
+      t.set(thicc.id, eff);
+      effects.set(msg.author.id, t);
     } else {
+      effects.get(msg.author.id).delete(thicc.id);
       thicc.active = false;
-      thicc.expire = 0;
       await data.save();
-    }
-
-    return effects;
+    }    
   }
 
   public async exec(
@@ -56,8 +61,9 @@ export default class Currency extends Command {
   ): Promise<string | MessageOptions> {
     const {
       util,
-      db: { currency: DB },
+      util: { effects },
       config: { currency },
+      db: { currency: DB },
     } = this.client;
 
     // Core
@@ -68,11 +74,17 @@ export default class Currency extends Command {
     if (!bet) return;
 
     // Item Effects
-    const { winnings: extraWngs } = await this.getEffects(_);
+    let extraWngs: number;
+    const userEf = effects.get(_.author.id);
+    if (!userEf.get('thicco'))
+      extraWngs = 0;
+    else
+      extraWngs = userEf.get('thicco').winnings;
 
+    // Dice
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);
-    if (Math.random() > 0.69) {
+    if (Math.random() > 0.6) {
       userD = (botD > userD ? [botD, (botD = userD)] : [userD])[0];
     } else {
       botD = (userD > botD ? [userD, (userD = botD)] : [botD])[0];
@@ -108,7 +120,7 @@ export default class Currency extends Command {
       db = await DB.add(_.author.id, 'pocket', w);
 
       identifier = Boolean(extraWngs) ? 'thicc' : 'winning';
-      color = Boolean(extraWngs) ? 'GOLD' : 'GREEN';
+      color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
       description = [
         `You won **${w.toLocaleString()}**\n`,
         `**New Pocket:** ${db.pocket.toLocaleString()}`,

@@ -27,8 +27,8 @@ export default class Currency extends Command {
     }
 
     let gimme: number | Item;
-    if (odds >= 0.85) {
-      const item = items.random();
+    if (odds >= 0.9) {
+      const item = items.filter(i => i.cost < 30e6).random();
       const amount = util.randomNumber(1, 5);
       let itinv = data.items.find(i => i.id === item.id);
       if (!itinv) {
@@ -39,12 +39,12 @@ export default class Currency extends Command {
       itinv.amount += amount;
       await data.save();
       return `WTF you got **${amount} ${item.emoji} ${item.name}**${amount > 1 ? 's' : ''} that was lucky asf`
-    } else if (odds >= 0.25) {
+    } else if (odds >= 0.6) {
       const won = util.randomNumber(100, 500) * 1e3;
       await add(author.id, 'pocket', won);
       return `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`
     }
 
-    return 'Nah i\'d rather give this to the poor.'
+    return 'Nah, won\'t give anything to \'ya.'
   }
 }

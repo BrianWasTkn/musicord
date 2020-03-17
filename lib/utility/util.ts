@@ -9,6 +9,7 @@ import {
   Role,
 } from 'discord.js';
 import { AkairoHandler, ClientUtil } from 'discord-akairo';
+import { Effects } from './effects';
 import { COLORS } from '../utility/constants';
 import { Lava } from '../Lava';
 
@@ -16,8 +17,9 @@ import chalk from 'chalk';
 import moment from 'moment';
 
 export class Util extends ClientUtil {
-  heists: Collection<string, Role>;
+  effects: Collection<string, Collection<string, Effects>>;
   events: Collection<string, string>;
+  heists: Collection<string, Role>;
   client: Lava;
 
   constructor(client: Lava) {
@@ -25,6 +27,7 @@ export class Util extends ClientUtil {
 
     this.heists = new Collection();
     this.events = new Collection();
+    this.effects = new Collection();
 
     for (const color of Object.keys(COLORS)) {
       require('discord.js').Constants.Colors[color.toUpperCase()] = COLORS[color];

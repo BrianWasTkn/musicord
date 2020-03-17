@@ -1,10 +1,13 @@
-import { ColorResolvable, Message, MessageOptions } from 'discord.js';
-import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { ColorResolvable, Message, MessageOptions, Collection } from 'discord.js';
 import { Argument } from 'discord-akairo';
 import { Document } from 'mongoose';
+
+import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { InventorySlot } from '@lib/interface/handlers/item';
 import { Command } from '@lib/handlers/command';
 import { Effects } from '@lib/utility/effects';
 import { Embed } from '@lib/utility/embed';
+import { Item } from '@lib/handlers/item';
 
 export default class Currency extends Command {
   constructor() {
@@ -37,26 +40,31 @@ export default class Currency extends Command {
     };
   }
 
-  private async getEffects(_: Message): Promise<Effects> {
+  async before(msg: Message) {
     const { fetch, updateItems } = this.client.db.currency;
-    const data = await fetch(_.author.id);
-    const effects = new Effects();
+    const { effects } = this.client.util;
+    const data = await fetch(msg.author.id);
+    const eff = new Effects();
 
-    const crazy = data.items.find((i) => i.id === 'crazy');
+    // Item Effects
+    const find = (itm: string) => (i: InventorySlot) => i.id === itm;
+    const crazy = data.items.find(find('crazy'));
     if (!crazy) {
-      await updateItems(_.author.id);
-      return await this.getEffects(_);
+      await updateItems(msg.author.id);
+      return await this.before(msg);
     }
 
+    // Thicco
     if (crazy.expire > Date.now() && crazy.active) {
-      effects.setSlotOdds(0.05);
+      const t = new Collection<string, Effects>();
+      eff.setSlotOdds(0.05);
+      t.set(crazy.id, eff);
+      effects.set(msg.author.id, t);
     } else {
+      effects.get(msg.author.id).delete(crazy.id);
       crazy.active = false;
-      crazy.expire = 0;
       await data.save();
     }
-
-    return effects;
   }
 
   /**
@@ -72,31 +80,31 @@ export default class Currency extends Command {
   ): Promise<string | MessageOptions> {
     const {
       util,
-      db: { currency: DB },
+      util: { effects },
       config: { currency },
+      db: { currency: DB },
     } = this.client;
 
     // Check Args
     const { amount: bet } = args;
     if (!bet) return;
 
+    // Item Effects
+    let slots: number;
+    const userEf = effects.get(_.author.id);
+    if (!userEf.get('crazy'))
+      slots = 0;
+    else
+      slots = userEf.get('crazy').slots;
+
     // Slot Emojis
-    const { slots = 0 } = await this.getEffects(_);
     const emojis = Object.keys(this.slotMachine);
     const jOdds = Math.random() > (0.98 - slots);
     const jEmoji = util.randomInArray(emojis);
-    const [a, b, c] = Array(3)
-      .fill(null)
-      .map(() => (jOdds ? jEmoji : util.randomInArray(emojis)));
-
-    const outcome = `**>** :${[a, b, c].join(':    :')}: **<**`;
-    // Calc amount
-    const { maxMulti } = currency;
-    let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, [
-      a,
-      b,
-      c,
-    ]);
+    const [a, b, c] = Array(3).fill(null).map(() => (jOdds ? jEmoji : util.randomInArray(emojis)));
+    const order = [a, b, c];
+    const outcome = `**>** :${[...order].join(':    :')}: **<**`;
+    let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, order);
 
     // Visuals
     let color: ColorResolvable = 'RED';

@@ -14,9 +14,9 @@ export default class Dev extends Command {
   }
 
   private async _collect(_: Message): Promise<Message> {
+    const options: AwaitMessagesOptions = { max: 1, time: 600000 };
     const filter: CollectorFilter = ({ author }: Message) =>
       author.id === _.author.id;
-    const options: AwaitMessagesOptions = { max: 1, time: 600000 };
 
     const collected = await _.channel.awaitMessages(filter, options);
     return [...collected.values()][0];

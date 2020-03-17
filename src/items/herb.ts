@@ -14,6 +14,4 @@ export default class PowerUp extends Item {
       cost: 420420420,
     });
   }
-
-  use(msg: Message): void {}
 }
