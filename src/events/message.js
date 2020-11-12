@@ -1,3 +1,5 @@
+import { logError } from '../utils/logger.js'
+
 export async function run(bot, message) {
 	if (message.channel.type !== 'dm' && !message.author.bot) {
 		const [cmd, ...args] = message.content.slice(bot.config.prefix.length).trim().split(' ');
