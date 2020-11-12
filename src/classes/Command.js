@@ -81,6 +81,9 @@ export default class Command {
 		/** Music Permissions */
 		if (this.music) {
 			const channel = message.member.voice.channel;
+			if (!channel) {
+				return false;
+			}
 			const myPermissions = channel.permissionsFor(bot.user);
 			if (!myPermissions.has('CONNECT')) {
 				return '**oops!** looks like i don\'t have permissions to connect in your channel...'
