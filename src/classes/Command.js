@@ -3,7 +3,7 @@ import discord from 'discord.js'
 export default class Command {
 	constructor(options, func) {
 		/** The command function */
-		this.run = this.func;
+		this.run = func;
 
 		/** Basic Info */
 		this.usage				= options.usage === 'command' ? this.name : options.usage;
@@ -55,7 +55,6 @@ export default class Command {
 	}
 
 	async execute(bot, command, message, args) {
-		console.log(command)
 		/** Process Cooldown */
 		const cooldown = this._processCooldown(message, command);
 		if (cooldown) {

@@ -11,5 +11,6 @@ export default new Command({
 		const error = bot.utils.fancyText(bot.emotes.error, 'Missing Args', 'You need something to play.')
 		return error
 	}
-	return `**Shard ${message.guild.shard.id}:** \`${message.guild.shard.ping}\``
+	
+	await bot.player.play(message, args.join(' '))
 })
