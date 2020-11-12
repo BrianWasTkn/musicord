@@ -55,7 +55,7 @@ const musicord = async () => {
 
 	/** Login our bot */
 	try {
-		await bot.login(token);
+		await bot.login(config.token);
 	} catch(error) {
 		await logError('Main', 'unable to login', error)
 		process.exit(1)
