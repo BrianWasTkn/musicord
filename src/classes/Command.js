@@ -74,7 +74,10 @@ export default class Command {
 		}
 
 		/** Else, Run it */
-		return this.run(bot, message, args);
+		const returned = this.run(bot, message, args);
+		if (returned) {
+			return message.channel.send(returned)
+		}
 	}
 
 	_checkPermissions(bot, message) {
