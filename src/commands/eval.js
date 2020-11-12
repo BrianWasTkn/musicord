@@ -7,8 +7,7 @@ export default new Command({
 	description: 'Evaluate arbitrary javascript code.',
 	permissions: ['ADMINISTRATOR'],
 	usage: '<...code>',
-	cooldown: 3e3,
-	music: false
+	cooldown: 3e3
 }, async (bot, message, args) => {
 
 	// pre-eval

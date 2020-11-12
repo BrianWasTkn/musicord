@@ -5,7 +5,8 @@ export default new Command({
 	aliases: ['pong'],
 	description: 'check your shard\'s current latency',
 	usage: '<...query | playlistURL | videoURL>',
-	cooldown: 3e3
+	cooldown: 3e3,
+	music: true
 }, async (bot, message, args) => {
 	if (!args) {
 		const error = bot.utils.fancyText(bot.emotes.error, 'Missing Args', 'You need something to play.')

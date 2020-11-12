@@ -11,7 +11,7 @@ export default class Command {
 		this.aliases 			= [options.name].concat(options.aliases || []);
 		this.description	= options.description || 'No description provided.';
 		this.cooldown			= options.cooldown || this.defaultCooldown;
-		this.music				= options.music || true;
+		this.music				= options.music || false;
 		this.name 				= options.name;
 
 		/** Cooldowns */
@@ -64,13 +64,13 @@ export default class Command {
 		/** Process Permissions */
 		const permission = this._checkPermissions(bot, command, message);
 		if (permission) {
-			return message.channel.send(permission);
+			return message.reply(permission);
 		}
 
 		/** Process VoiceState */
 		const state = this._checkVoiceState(message, command);
 		if (state) {
-			return message.channel.send(state)
+			return message.reply(state)
 		}
 
 		/** Else, Run it */
@@ -109,6 +109,8 @@ export default class Command {
 			const channel = message.member.voice.channel;
 			if (!channel) {
 				return '**voice channel!** you\'re not in a voice channel, please join in one.'
+			} else {
+				return false;
 			}
 		} else {
 			return false;
