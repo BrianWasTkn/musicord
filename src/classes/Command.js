@@ -1,14 +1,14 @@
-import discord from 'discord'
+import discord from 'discord.js'
 
-export class Command {
+export default class Command {
 	constructor(options, func) {
 		/** The command function */
 		this.run = this.func;
 
 		/** Basic Info */
 		this.usage				= options.usage === 'command' ? this.name : options.usage;
-		this.aliases 			= [label].concat(options.aliases || []);
 		this.permissions 	= ["SEND_MESSAGES"].concat(options.permissions || []);
+		this.aliases 			= [options.name].concat(options.aliases || []);
 		this.description	= options.description || 'No description provided.';
 		this.cooldown			= options.cooldown || this.defaultCooldown;
 		this.music				= options.music || true;

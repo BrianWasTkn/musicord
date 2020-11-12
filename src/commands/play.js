@@ -1,6 +1,6 @@
 import Command from '../classes/Command.js'
 
-export new Command({
+export default new Command({
 	name: 'ping',
 	aliases: ['pong'],
 	description: 'check your shard\'s current latency',

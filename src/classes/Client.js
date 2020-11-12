@@ -22,18 +22,18 @@ export default class Musicord extends Client {
 		this._loadAll();
 	}
 
-	async _loadAll() {
+	_loadAll() {
 		try {
-			await this._loadEvents(this);
-			await logInit('Init', 'Events Loaded');
+			this._loadEvents(this);
+			logInit('Init', 'Events Loaded');
 			try {
-				await this._registerCommands();
-				await logInit('Init', 'Commands Registered')
+				this._registerCommands();
+				logInit('Init', 'Commands Registered')
 			} catch(error) {
-				await logError('Main', 'cannot register commands', error)
+				logError('Main', 'cannot register commands', error)
 			}
 		} catch(error) {
-			await logError('Main', 'cannot load events', error)
+			logError('Main', 'cannot load events', error)
 		}
 	}
 
