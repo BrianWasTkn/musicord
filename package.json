@@ -1,0 +1,37 @@
+{
+  "name": "musicord",
+  "version": "0.1.0",
+  "description": "A discord music bot, made with Discord.JS V12 that can play any song from 700+ sources!",
+  "main": "src/launch.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrianWasTkn/Musicord-DisTube.git"
+  },
+  "keywords": [
+    "distube",
+    "music",
+    "discord-music",
+    "soundcloud",
+    "youtube",
+    "spotify",
+    "discord.js"
+  ],
+  "author": "BrianWasTaken",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BrianWasTkn/Musicord-DisTube/issues"
+  },
+  "homepage": "https://github.com/BrianWasTkn/Musicord-DisTube#readme",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "discord.js": "^12.4.1",
+    "distube": "^2.7.0",
+    "esm": "^3.2.25",
+    "ffmpeg-static": "^4.2.7",
+    "ms": "^2.1.2",
+    "opusscript": "0.0.7"
+  }
+}
