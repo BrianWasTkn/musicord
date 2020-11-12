@@ -1,4 +1,4 @@
-export async function run(message) {
+export async function run(bot, message) {
 	if (message.channel.type !== 'dm' && !message.author.bot) {
 		const [cmd, ...args] = message.content.slice(bot.prefix.length).trim().split(' ');
 		const command = bot.commands.get(cmd.toLowerCase()) || bot.aliases.get(cmd.toLowerCase());

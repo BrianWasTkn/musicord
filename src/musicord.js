@@ -1,7 +1,7 @@
-import { logInit, logError } from './utils/logger.js'
+import config from './config.js'
 import Musicord from './classes/Client.js'
 
-const config = require('./config.js').default;
+import { logInit, logError } from './utils/logger.js'
 
 export const run = async() => {
 	try {

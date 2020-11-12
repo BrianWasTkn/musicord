@@ -4,8 +4,8 @@ import { readdirSync } from 'fs'
 import distube from 'distube'
 
 import { logInit, logError } from '../utils/logger.js'
-import * as utils from '../utils/utilities.js'
-import * as emotes from '../utils/emotes.js'
+import utils from '../utils/utilities.js'
+import emotes from '../utils/emotes.js'
 import config from '../config.js'
 import botPackage from '../../package.json'
 
@@ -19,37 +19,35 @@ export default class Musicord extends Client {
 		this.player = new distube(this, playerOpts);
 		this.commands = new Collection();
 		this.aliases = new Collection();
-		this.loadAll();
+		this._loadAll();
 	}
 
-	async loadAll() {
+	async _loadAll() {
 		try {
-			await this.loadEvents(this);
-			await logInit('Init', 'Events Loaded')
+			await this._loadEvents(this);
+			await logInit('Init', 'Events Loaded');
+			try {
+				await this._registerCommands();
+				await logInit('Init', 'Commands Registered')
+			} catch(error) {
+				await logError('Main', 'cannot register commands', error)
+			}
 		} catch(error) {
 			await logError('Main', 'cannot load events', error)
 		}
-
-		try {
-			await this.registerCommands();
-			await logInit('Init', 'Commands Registered')
-		} catch(error) {
-			await logError('Main', 'cannot register commands', error)
-		}
 	}
 
-	async loadEvents(bot) {
+	_loadEvents(bot) {
 	readdirSync(join(__dirname, '..', 'events'))
 		.map(evt => evt.split('.')[0])
 		.forEach(evt => {
-			const event = require(join(__dirname, '..', 'events', evt))
-			bot.on(event, (...args) => {
-				require(join(__dirname, '..', 'events', event)).run(bot, ...args);
+			bot.on(evt, (...args) => {
+				require(join(__dirname, '..', 'events', evt)).run(bot, ...args);
 			})
 		})
 	}
 
-	async registerCommands() {
+	_registerCommands() {
 	readdirSync(join(__dirname, '..', 'commands'))
 		.forEach(cmd => {
 			const command = require(join(__dirname, '..', 'commands', cmd)).default

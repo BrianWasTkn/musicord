@@ -1,3 +1,5 @@
-export const error = ':x:'
-export const success = ':white_check_mark:'
-export const ping = ':ping_pong:'
+export default {
+	error: ':x:',
+	success: ':white_check_mark:',
+	ping: ':ping_pong:'
+}
