@@ -41,10 +41,11 @@ export default class Musicord extends Client {
 	async loadEvents(bot) {
 	readdirSync(join(__dirname, '..', 'events'))
 		.filter(evt => evt.endsWith('js'))
+		.map(evt => evt.split('.')[0])
 		.forEach(evt => {
-			evt = require(join(__dirname, '..', 'events', evt))
-			bot.on(evt, (...args) => {
-				require(join(__dirname, '..', 'events', evt)).run(bot, ...args);
+			const event = require(join(__dirname, '..', 'events', evt))
+			bot.on(event, (...args) => {
+				require(join(__dirname, '..', 'events', event)).run(bot, ...args);
 			})
 		})
 	}
@@ -53,11 +54,11 @@ export default class Musicord extends Client {
 	readdirSync(join(__dirname, '..', 'commands'))
 		.filter(cmd => cmd.endsWith('js'))
 		.forEach(cmd => {
-			cmd = require(join(__dirname, '..', 'commands', cmd)).default
-			this.commands.set(cmd.name, cmd);
-			if (cmd.aliases) {
-				cmd.aliases.forEach(alias => {
-					this.aliases.set(alias, cmd)
+			const command = require(join(__dirname, '..', 'commands', cmd)).default
+			this.commands.set(command.name, command);
+			if (command.aliases) {
+				command.aliases.forEach(alias => {
+					this.aliases.set(alias, command)
 				})
 			}
 		})
