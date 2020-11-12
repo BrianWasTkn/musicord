@@ -21,14 +21,14 @@ export default class Command {
 
 	_processCooldown(message) {
 		/** Check in the collection */
-		if (!this.cooldowns.has(this.name)) {
-			this.cooldowns.set(this.name, new discord.Collection());
+		if (!this.cooldowns.has(command.name)) {
+			this.cooldowns.set(command.name, new discord.Collection());
 		}
 
 		/** Pre-Variables */
 		const now = Date.now();
-		const timestamps = this.cooldowns.get(this.name);
-		const cooldown = this.cooldown || this.defaultCooldown;
+		const timestamps = this.cooldowns.get(command.name);
+		const cooldown = command.cooldown || command.defaultCooldown;
 
 		/** Check if on cooldown */
 		const check = this._checkCooldown(message, now, timestamps, cooldown);
@@ -40,7 +40,7 @@ export default class Command {
 		timestamps.set(message.author.id, now)
 		setTimeout(() => {
 			this.cooldowns.delete(message.author.id)
-		}, this.cooldown);
+		}, command.cooldown);
 	}
 
 	_checkCooldown(message, now, timestamps, cooldown) {
@@ -54,21 +54,22 @@ export default class Command {
 		}
 	}
 
-	async execute(bot, message, args) {
+	async execute(bot, command, message, args) {
+		console.log(command)
 		/** Process Cooldown */
-		const cooldown = this._processCooldown(message);
+		const cooldown = this._processCooldown(message, command);
 		if (cooldown) {
 			return message.reply(cooldown);
 		}
 
 		/** Process Permissions */
-		const permission = this._checkPermissions(bot, message);
+		const permission = this._checkPermissions(bot, command, message);
 		if (permission) {
 			return message.channel.send(permission);
 		}
 
 		/** Process VoiceState */
-		const state = this._checkVoiceState(message);
+		const state = this._checkVoiceState(message, command);
 		if (state) {
 			return message.channel.send(state)
 		}
@@ -80,9 +81,9 @@ export default class Command {
 		}
 	}
 
-	_checkPermissions(bot, message) {
+	_checkPermissions(bot, command, message) {
 		/** Music Permissions */
-		if (this.music) {
+		if (command.music) {
 			const channel = message.member.voice.channel;
 			if (!channel) {
 				return false;
@@ -97,15 +98,15 @@ export default class Command {
 		}
 
 		/** User Permissions */
-		if (!message.member.permissions.has(this.permissions)) {
-			return `**Missing Permissions**\nMake sure you have the following permissions:\n\n\`${this.permissions.join('`, `')}\``
+		if (!message.member.permissions.has(command.permissions)) {
+			return `**Missing Permissions**\nMake sure you have the following permissions:\n\n\`${command.permissions.join('`, `')}\``
 		}
 
 		return false;
 	}
 
-	_checkVoiceState(message) {
-		if (this.music) {
+	_checkVoiceState(message, command) {
+		if (command.music) {
 			const channel = message.member.voice.channel;
 			if (!channel) {
 				return '**voice channel!** you\'re not in a voice channel, please join in one.'

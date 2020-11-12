@@ -9,7 +9,7 @@ export async function run(bot, message) {
 			return;
 		} else {
 			try {
-				await command.execute(bot, message, args);
+				await command.execute(bot, command, message, args);
 			} catch(error) {
 				await logError('Listener', `unable to execute "${command.name}"`, error)
 			}
