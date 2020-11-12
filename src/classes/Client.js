@@ -24,14 +24,14 @@ export default class Musicord extends Client {
 
 	async loadAll() {
 		try {
-			this.loadEvents(this);
+			await this.loadEvents(this);
 			await logInit('Init', 'Events Loaded')
 		} catch(error) {
 			await logError('Main', 'cannot load events', error)
 		}
 
 		try {
-			this.registerCommands();
+			await this.registerCommands();
 			await logInit('Init', 'Commands Registered')
 		} catch(error) {
 			await logError('Main', 'cannot register commands', error)
@@ -40,7 +40,6 @@ export default class Musicord extends Client {
 
 	async loadEvents(bot) {
 	readdirSync(join(__dirname, '..', 'events'))
-		.filter(evt => evt.endsWith('js'))
 		.map(evt => evt.split('.')[0])
 		.forEach(evt => {
 			const event = require(join(__dirname, '..', 'events', evt))
@@ -52,7 +51,6 @@ export default class Musicord extends Client {
 
 	async registerCommands() {
 	readdirSync(join(__dirname, '..', 'commands'))
-		.filter(cmd => cmd.endsWith('js'))
 		.forEach(cmd => {
 			const command = require(join(__dirname, '..', 'commands', cmd)).default
 			this.commands.set(command.name, command);

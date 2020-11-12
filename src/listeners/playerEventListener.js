@@ -1,18 +1,18 @@
 export const playerEventListener = async function run(bot) {
+	try {
+			const emotes = {
+			success: ':white_check_mark:',
+			error: ':x:',
+			queue: ':ping_pong:'
+		}
 
-	const emotes = {
-		success: ':white_check_mark:',
-		error: ':x:',
-		queue: ':ping_pong:'
-	}
+		const status = (queue) => ({
+			looped: queue.repeatMode ? queue.repeatMode === 2 ? 'Server Queue' : 'Current Track' : 'Off',
+			volume: `${queue.volume}%`,
+			autoPlay: queue.autoPlay ? 'on' : "off"
+		})
 
-	const status = (queue) => ({
-		looped: queue.repeatMode ? queue.repeatMode === 2 ? 'Server Queue' : 'Current Track' : 'Off',
-		volume: `${queue.volume}%`,
-		autoPlay: queue.autoPlay ? 'on' : "off"
-	})
-
-	bot.player
+		bot.player
 		.on('playSong', async (message, queue, song) => {
 			message.channel.send(`
 **__${emotes.success} | Now Playing__**
@@ -86,4 +86,7 @@ You cancelled searching for a song.
 ${err}
 				`)
 		})
+	} catch(error) {
+		console.error(error)
+	}
 }

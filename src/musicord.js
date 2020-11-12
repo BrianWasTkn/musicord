@@ -1,11 +1,7 @@
-import config from './config.js'
+import { logInit, logError } from './utils/logger.js'
 import Musicord from './classes/Client.js'
 
-import { commandListener } from './listeners/commandListener.js'
-import { playerEventListener } from './listeners/playerEventListener.js'
-import { discordEventListener } from './listeners/discordEventListener.js'
-
-import { logInit, logError } from './utils/logger.js'
+const config = require('./config.js').default;
 
 export const run = async() => {
 	try {
@@ -36,30 +32,15 @@ export const run = async() => {
 const musicord = async () => {
 	const bot = new Musicord(config.clientOpts, config.playerOpts);
 
-	/** Listeners */
-	const listeners = [
-		commandListener,
-		playerEventListener,
-		discordEventListener
-	]
-
-	for (const listener of listeners) {
-		try {
-			listener.run(bot)
-			await logInit('Main', 'Process Loaded')
-		} catch(error) {
-			await logError('Main', 'cannot process listeners', error)
-			process.exit(1)
-		}
-	}
-
 	/** Login our bot */
 	try {
+		await logInit('Main', 'Waiting for login...')
 		await bot.login(config.token);
 	} catch(error) {
 		await logError('Main', 'unable to login', error)
 		process.exit(1)
 	}
+
 }
 
 /** Run the whole bot */
