@@ -6,5 +6,19 @@ export default new Command({
 	description: 'check your shard\'s current latency',
 	usage: 'command'
 }, async (bot, message, args) => {
-	return `**Shard ${message.guild.shard.id}:** \`${message.guild.shard.ping}ms\``
+	return {
+		author: {
+			name: message.guild.name,
+			icon_url: message.guild.iconURL()
+		},
+		color: 'BLUE',
+		fields: [
+			{ name: 'Shard ID', value: message.guild.shard.id },
+			{ name: 'Latency', value: `\`${message.guild.shard.ping}ms\`` }
+		],
+		footer: {
+			text: message.author.tag,
+			icon_url: message.author.avatarURL()
+		}
+	}
 })
