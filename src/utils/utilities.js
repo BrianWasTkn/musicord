@@ -20,5 +20,13 @@ export default {
 
 	fancyText: (emoji, title, message) => {
 		return `**__${emoji} | ${title}__**\n${message}`
+	},
+
+	fancyEmbed: (title, color, description) => {
+		return {
+			title,
+			color,
+			description
+		}
 	}
 }

@@ -9,16 +9,23 @@ export default new Command({
 	music: true
 }, async (bot, message, args) => {
 
-	const playing = bot.player.isPlaying(message),
-	paused = bot.player.isPaused(message);
+	/** Check Playing State */
+	const isPlaying = bot.player.isPlaying(message);
+	if (!isPlaying) {
+		return 'There\'s nothing playing in the queue.'
+	}
 
-	if (playing) {
-		if (paused) {
-			return bot.utils.fancyText(bot.emotes.error, 'Paused', 'The player is already paused');
-		}
-		const queue = await bot.player.pause(message);
-		return bot.utils.fancyText(bot.emotes.success, 'Player Paused', 'The player has been successfully paused.')
-	} else {
-		return 'Nothing is playing lol.'
+	/** Check if paused */
+	const paused = bot.player.isPaused(message);
+	if (paused) {
+		return 'The player is not paused.'
+	}
+
+	/** Else, pause */
+	try {
+		await bot.player.pause(message);
+		return 'The player has been paused.'
+	} catch(error) {
+		console.error(error)
 	}
 })

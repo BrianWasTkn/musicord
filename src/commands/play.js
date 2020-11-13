@@ -8,10 +8,23 @@ export default new Command({
 	cooldown: 3e3,
 	music: true
 }, async (bot, message, args) => {
+
+	/** Check Playing State */
+	const isPlaying = bot.player.isPlaying(message);
+	if (!isPlaying) {
+		return 'There\'s nothing playing in the queue.'
+	}
+
+	/** Missing Args (Bug?) */
 	if (!args) {
 		const error = bot.utils.fancyText(bot.emotes.error, 'Missing Args', 'You need something to play.')
 		return error
 	}
-	
-	await bot.player.play(message, args.join(' '))
+
+	/** Play */
+	try {
+		await bot.player.play(message, args.join(' '))
+	} catch(error) {
+		console.error(error)
+	}
 })
