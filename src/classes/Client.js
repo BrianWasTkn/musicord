@@ -19,6 +19,7 @@ export default class Musicord extends Client {
 		this.player = new distube(this, playerOpts);
 		this.commands = new Collection();
 		this.aliases = new Collection();
+		this.cooldowns = new Collection();
 		this._loadAll();
 	}
 

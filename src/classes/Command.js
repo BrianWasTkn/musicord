@@ -19,39 +19,47 @@ export default class Command {
 		this.cooldowns = new discord.Collection();
 	}
 
+	/**
+	 * Process Cooldowns
+	 * @param {Object} [message] the message object
+	 * @param {Object} [command] the command object
+	 */
 	_processCooldown(message, command) {
 		/** Check in the collection */
-		if (!this.cooldowns.has(command.name)) {
-			this.cooldowns.set(command.name, new discord.Collection());
+		if (!command.cooldowns.has(command.name)) {
+			message.client.cooldowns.set(command.name, new discord.Collection());
 		}
 
 		/** Pre-Variables */
 		const now = Date.now();
-		const timestamps = this.cooldowns.get(command.name);
+		const timestamps = message.client.cooldowns.get(command.name);
 		const cooldown = command.cooldown || command.defaultCooldown;
 
 		/** Check if on cooldown */
-		const check = this._checkCooldown(message, now, timestamps, cooldown);
+		const check = this._checkCooldown(command, message, now, timestamps, cooldown);
 		if (check) {
-			return check
+			/** Return Cooldown Message */
+			return check;
 		}
 
 		/** Process Cooldown */
 		timestamps.set(message.author.id, now)
 		setTimeout(() => {
-			this.cooldowns.delete(message.author.id)
+			message.client.cooldowns.delete(message.author.id)
 		}, command.cooldown);
 	}
 
-	_checkCooldown(message, now, timestamps, cooldown) {
+	_checkCooldown(command, message, now, timestamps, cooldown) {
 		if (timestamps.has(message.author.id)) {
 			const expiration = timestamps.get(message.author.id) + cooldown;
 
 			if (now < expiration) {
 				const timeLeft = (expiration - now) / 1000;
-				return `please wait **${timeLeft.toFixed(1)}** seconds before re-using the \`${this.name}\` command.`
-			}
-		}
+				return `please wait **${timeLeft.toFixed(1)}** seconds before re-using the \`${comamnd.name}\` command.`
+			} 
+			return false;
+		} 
+		return false;
 	}
 
 	async execute(bot, command, message, args) {
@@ -61,7 +69,7 @@ export default class Command {
 			return message.reply(cooldown);
 		}
 
-		/** Process Permissions */
+		/** Check Permissions */
 		const permission = this._checkPermissions(bot, command, message);
 		if (permission) {
 			return message.reply(permission);
@@ -81,21 +89,6 @@ export default class Command {
 	}
 
 	_checkPermissions(bot, command, message) {
-		/** Music Permissions */
-		if (command.music) {
-			const channel = message.member.voice.channel;
-			if (!channel) {
-				return false;
-			}
-			const myPermissions = channel.permissionsFor(bot.user);
-			if (!myPermissions.has('CONNECT')) {
-				return '**oops!** looks like i don\'t have permissions to connect in your channel...'
-			}
-			if (!myPermissions.has('SPEAK')) {
-				return '**oh no!** I cannot `SPEAK` in your channel, make sure I have permissions to talk in your channel so I can play the track.'
-			}
-		}
-
 		/** User Permissions */
 		if (!message.member.permissions.has(command.permissions)) {
 			return `**Missing Permissions**\nMake sure you have the following permissions:\n\n\`${command.permissions.join('`, `')}\``
@@ -110,12 +103,16 @@ export default class Command {
 			if (!channel) {
 				return '**voice channel!** you\'re not in a voice channel, please join in one.'
 			} else {
-				return false;
+				const myPermissions = channel.permissionsFor(bot.user);
+				if (!myPermissions.has('CONNECT')) {
+					return '**oops!** looks like i don\'t have permissions to connect in your channel...'
+				}
+				if (!myPermissions.has('SPEAK')) {
+					return '**oh no!** I cannot `SPEAK` in your channel, make sure I have permissions to talk in your channel so I can play the track.'
+				}
 			}
 		} else {
 			return false;
 		}
-
-		return false;
 	}
 }

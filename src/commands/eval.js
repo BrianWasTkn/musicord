@@ -37,7 +37,7 @@ export default new Command({
 	}
 
 	return {
-		hexColor: 'RANDOM',
+		color: 'BLUE',
 		description: bot.utils.codeBlock(result, 'js'),
 		fields: [
 			{ name: 'Type', value: bot.utils.codeBlock(type, 'js') }
