@@ -1,9 +1,9 @@
 import Command from '../classes/Command.js'
 
 export default new Command({
-	name: 'ping',
-	aliases: ['pong'],
-	description: 'check your shard\'s current latency',
+	name: 'play',
+	aliases: ['p'],
+	description: 'play a song from soundcloud, youtube or from spotify and other sources.',
 	usage: '<...query | playlistURL | videoURL>',
 	cooldown: 3e3,
 	music: true
