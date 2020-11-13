@@ -18,7 +18,12 @@ export default new Command({
 	/** Do the thing */
 	const queue = await bot.player.skip(message);
 	return {
-		title: `**__${bot.emotes.success} Track Skipped__**`,
-		color: 'GREEN'
+		author: {
+			name: 'Track Skipped',
+			iconURL: queue.songs[0].user.avatarURL()
+		},
+		fields: [
+			{ name: 'Now Playing', value: `\`${queue.songs[0]}\`` }
+		]
 	}
 })

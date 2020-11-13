@@ -9,12 +9,6 @@ export default new Command({
 	music: true
 }, async (bot, message, args) => {
 
-	/** Check Playing State */
-	const isPlaying = bot.player.isPlaying(message);
-	if (!isPlaying) {
-		return 'There\'s nothing playing in the queue.'
-	}
-
 	/** Check if paused */
 	const paused = bot.player.isPaused(message);
 	if (!paused) {

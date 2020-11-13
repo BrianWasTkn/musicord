@@ -3,6 +3,7 @@ export default {
 	prefix: ['m!', '>', '?'],
 	clientOpts: {},
 	playerOpts: {
+		searchSongs: true,
 		leaveOnFinish: true
 	}
 }

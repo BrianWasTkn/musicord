@@ -25,16 +25,16 @@ export async function run(bot) {
 				embed: {
 					author: {
 						name: 'Now Playing',
-						iconURL: bot.user.avatarURL()
+						iconURL: message.guild.iconURL()
 					},
 					color: 'BLUE',
 					fields: [
-						{ name: 'Song', value: `[${song.name}](${song.url})`, inline: true },
-						{ name: 'Duration', value: `\`${song.formattedDuration}\``, inline: true },
+						{ name: 'Song', value: `[${song.name}](${song.url})` },
+						{ name: 'Duration', value: `\`${song.formattedDuration}\`` },
 					],
 					footer: {
 						text: `Requested by ${song.user.tag}`,
-						iconURL: message.author.avatarURL()
+						iconURL: song.user.avatarURL()
 					}
 				}
 			})
@@ -44,7 +44,7 @@ export async function run(bot) {
 				embed: {
 					author: {
 						name: 'Added to Queue',
-						iconURL: bot.user.avatarURL()
+						iconURL: message.guild.iconURL()
 					},
 					color: 'BLUE',
 					fields: [
@@ -53,7 +53,7 @@ export async function run(bot) {
 					],
 					footer: {
 						text: `Requested by ${song.user.tag}`,
-						iconURL: message.author.avatarURL()
+						iconURL: song.user.avatarURL()
 					}
 				}
 			})
@@ -63,7 +63,7 @@ export async function run(bot) {
 				embed: {
 					author: {
 						name: 'Nothing Found',
-						iconURL: bot.user.avatarURL()
+						iconURL: message.guild.iconURL()
 					},
 					color: 'RED',
 					description: '**No related song has been found.**'
@@ -75,7 +75,7 @@ export async function run(bot) {
 				embed: {
 					author: {
 						name: 'Finished Playing',
-						iconURL: bot.user.avatarURL()
+						iconURL: message.guild.iconURL()
 					},
 					color: 'BLUE',
 					description: 'The queue had finished playing all the songs in the queue.'
@@ -87,7 +87,7 @@ export async function run(bot) {
 				embed: {
 					author: {
 						name: 'Channel Empty',
-						iconURL: bot.user.avatarURL()
+						iconURL: message.guild.iconURL()
 					},
 					color: 'RED',
 					description: 'Voice channel is now **empty**.\nLeaving channel in **60** seconds...'
@@ -99,7 +99,7 @@ export async function run(bot) {
 				embed: {
 					author: {
 						name: `${playlist.songs.length} songs added`,
-						iconURL: bot.user.avatarURL()
+						iconURL: message.guild.iconURL()
 					},
 					color: 'BLUE',
 					description: `Playlist **${playlist.name}** added to the queue.`
@@ -111,7 +111,7 @@ export async function run(bot) {
 				embed: {
 					author: {
 						name: 'Search Results',
-						iconURL: bot.user.avatarURL()
+						iconURL: message.guild.iconURL()
 					},
 					color: 'BLUE',
 					fields: [
@@ -126,7 +126,7 @@ export async function run(bot) {
 				embed: {
 					author: {
 						name: 'Search Cancelled',
-						iconURL: bot.user.avatarURL()
+						iconURL: message.guild.iconURL()
 					},
 					color: 'BLUE',
 					description: 'You cancelled the search!'
@@ -138,7 +138,7 @@ export async function run(bot) {
 				embed: {
 					author: {
 						name: 'Player Error',
-						iconURL: bot.user.avatarURL()
+						iconURL: message.guild.iconURL()
 					},
 					color: 'RED',
 					description: err

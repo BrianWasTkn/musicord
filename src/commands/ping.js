@@ -9,16 +9,12 @@ export default new Command({
 	return {
 		author: {
 			name: message.guild.name,
-			icon_url: message.guild.iconURL()
+			iconURl: message.guild.iconURL()
 		},
 		color: 'BLUE',
 		fields: [
 			{ name: 'Shard ID', value: message.guild.shard.id },
 			{ name: 'Latency', value: `\`${message.guild.shard.ping}ms\`` }
-		],
-		footer: {
-			text: message.author.tag,
-			icon_url: message.author.avatarURL()
-		}
+		]
 	}
 })
