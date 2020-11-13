@@ -6,4 +6,4 @@
 */
 
 require = require('esm')(module);
-module.exports = require('./Musicord.js');
+module.exports = require('./musicord.js');
