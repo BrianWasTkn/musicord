@@ -5,5 +5,5 @@ export const logInit = (tag, message) => {
 }
 
 export const logError = (tag, message, error) => {
-	console.log(chalk.yellowBright(`[${tag}]`), chalk.redBright(message), chalk.white(error.message), chalk.white(error.stack))
+	console.log(chalk.yellowBright(`[${tag}]`), chalk.redBright(message), chalk.white(error.stack))
 }
