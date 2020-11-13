@@ -3,7 +3,7 @@ import Musicord from './classes/Client.js'
 
 import { logInit, logError } from './utils/logger.js'
 
-export const run = async() => {
+const run = async () => {
 	try {
 		/** Process Error: unhandledRejection */
 		process.on('unhandledRejection', async (error) => {

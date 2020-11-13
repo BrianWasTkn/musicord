@@ -114,6 +114,7 @@ export async function run(bot) {
 				}
 			})
 		})
+		logInit('Musicord', 'DisTube Event Emitter Loaded')
 	} catch(error) {
 		console.error(error)
 	}

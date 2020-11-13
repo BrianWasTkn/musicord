@@ -4,8 +4,8 @@
   "description": "A discord music bot, made with Discord.JS V12 that can play any song from 700+ sources!",
   "main": "src/launch.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/launch.js"
+    "start": "node src/main.js",
+    "dev": "nodemon src/main.js"
   },
   "repository": {
     "type": "git",
