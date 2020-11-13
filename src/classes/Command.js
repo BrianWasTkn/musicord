@@ -109,7 +109,7 @@ export default class Command {
 			if (!channel) {
 				return '**voice channel!** you\'re not in a voice channel, please join in one.'
 			} else {
-				const myPermissions = channel.permissionsFor(bot.user);
+				const myPermissions = channel.permissionsFor(message.client.user);
 				if (!myPermissions.has('CONNECT')) {
 					return '**oops!** looks like i don\'t have permissions to connect in your channel...'
 				}
@@ -117,8 +117,8 @@ export default class Command {
 					return '**oh no!** I cannot `SPEAK` in your channel, make sure I have permissions to talk in your channel so I can play the track.'
 				}
 			}
-		} else {
-			return false;
 		}
+		
+		return false;
 	}
 }
