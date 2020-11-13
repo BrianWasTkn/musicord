@@ -82,8 +82,7 @@ export default class Command {
 		}
 
 		/** Else, Run it */
-		const returned = await this.run(bot, message, args);
-		console.log(returned);
+		const returned = await this.run(bot, message, args); // Promise
 		if (!returned) {
 			return;
 		}
