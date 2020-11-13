@@ -7,11 +7,11 @@ export const run = async() => {
 	try {
 		/** Process Error: unhandledRejection */
 		process.on('unhandledRejection', async (error) => {
-			await logError('Main', 'unhandledRejection', error)
+			await logError('Process', 'unhandledRejection', error)
 		})
 		/** Process Error: uncaughtException */
 		process.on('uncaughtException', async (error) => {
-			await logError('Main', 'uncaughtException', error)
+			await logError('Process', 'uncaughtException', error)
 		})
 	} catch(error) {
 		await logError('Main', 'process error handler', error)

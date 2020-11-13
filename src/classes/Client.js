@@ -31,10 +31,10 @@ export default class Musicord extends Client {
 				this._registerCommands();
 				logInit('Init', 'Commands Registered')
 			} catch(error) {
-				logError('Main', 'cannot register commands', error)
+				logError('Init', 'cannot register commands', error)
 			}
 		} catch(error) {
-			logError('Main', 'cannot load events', error)
+			logError('Init', 'cannot load events', error)
 		}
 	}
 
