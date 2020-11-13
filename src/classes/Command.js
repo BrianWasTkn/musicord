@@ -83,19 +83,17 @@ export default class Command {
 
 		/** Else, Run it */
 		const returned = this.run(bot, message, args);
-		if (returned) {
-			if (!returned) {
-				return;
-			}
-			if (returned instanceof Object) {
-				const embedObj = Object.assign({ color: 'RANDOM'}, returned)
-				return message.channel.send({ embed: embedObj })
-			}
-			if (Array.isArray(returned)) {
-				return message.channel.send(returned[Math.floor(Math.random() * returned.length)])
-			}
-			return message.channel.send(returned)
+		if (!returned) {
+			return;
 		}
+		if (returned instanceof Object) {
+			const embedObj = Object.assign({ color: 'RANDOM'}, returned)
+			return message.channel.send({ embed: embedObj })
+		}
+		if (Array.isArray(returned)) {
+			return message.channel.send(returned[Math.floor(Math.random() * returned.length)])
+		}
+		return message.channel.send(returned)
 	}
 
 	_checkPermissions(bot, command, message) {
