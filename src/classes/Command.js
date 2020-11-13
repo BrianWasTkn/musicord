@@ -88,7 +88,8 @@ export default class Command {
 				return;
 			}
 			if (returned instanceof Object) {
-				return message.channel.send({ embed: returned })
+				const embedObj = Object.assign({ color: 'RANDOM'}, returned)
+				return message.channel.send({ embed: embedObj })
 			}
 			if (Array.isArray(returned)) {
 				return message.channel.send(returned[Math.floor(Math.random() * returned.length)])
