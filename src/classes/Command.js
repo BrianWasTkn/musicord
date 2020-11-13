@@ -84,6 +84,12 @@ export default class Command {
 		/** Else, Run it */
 		const returned = this.run(bot, message, args);
 		if (returned) {
+			if (returned instanceof Object) {
+				return message.channel.send({ embed: returned })
+			}
+			if (Array.isArray(returned)) {
+				return message.channel.send(returned[Math.floor(Math.random() * returned.length)])
+			}
 			return message.channel.send(returned)
 		}
 	}
