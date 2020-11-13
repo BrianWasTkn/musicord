@@ -107,6 +107,7 @@ export async function run(bot) {
 			})
 		})
 		.on('searchResult', async (message, result) => {
+			result = result.slice(0, 5) // Slice the results from 12 => 5
 			message.channel.send({
 				embed: {
 					author: {
@@ -147,6 +148,6 @@ export async function run(bot) {
 		})
 		logInit('Musicord', 'DisTube Event Emitter Loaded')
 	} catch(error) {
-		console.error(error)
+		logError('Listener', 'playerEventListener', error)
 	}
 }

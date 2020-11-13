@@ -29,15 +29,15 @@ export default class Musicord extends Client {
 		// 	logInit('Init', 'Events Loaded');
 		try {
 			this._registerCommands();
-			logInit('Init', 'Commands Registered')
+			logInit('Musicord', 'Commands Registered')
 			try {
-				this._listenPlayerEvents(this);
-				logInit('Init', 'Player listener initiated')
+				this._loadListeners(this);
+				logInit('Musicord', 'Listeners loaded')
 			} catch(error) {
-				logError('Init', 'cannot initiate player events', error)
+				logError('Musicord', 'cannot initiate player events', error)
 			}
 		} catch(error) {
-			logError('Init', 'cannot register commands', error)
+			logError('Musicord', 'cannot register commands', error)
 		}
 		// } catch(error) {
 		// 	logError('Init', 'cannot load events', error)
@@ -67,7 +67,7 @@ export default class Musicord extends Client {
 		})
 	}
 
-	_listenPlayerEvents(bot) {
+	_loadListeners(bot) {
 		readdirSync(join(__dirname, '..', 'listeners'))
 		.forEach(l => {
 			const listener = require(join(__dirname, '..', 'listeners', l))
