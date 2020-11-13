@@ -48,7 +48,7 @@ The queue finished playing all the songs in queue.
 		})
 		.on('empty', async message => {
 			message.channel.send(`
-**__${emotes.error} | Channel Empty**
+**__${emotes.error} | Channel Empty__**
 The channel is now empty, leaving channel...
 				`)
 			await message.member.voice.channel.leave()
