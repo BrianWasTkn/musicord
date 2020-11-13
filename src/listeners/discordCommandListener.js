@@ -1,4 +1,4 @@
-import { logError } from '../utils/logger.js'
+import { logError, logInit } from '../utils/logger.js'
 
 export async function run(bot) {
 	try {
