@@ -1,4 +1,4 @@
-export const playerEventListener = async function run(bot) {
+export async function run(bot) {
 	try {
 			const emotes = {
 			success: ':white_check_mark:',
