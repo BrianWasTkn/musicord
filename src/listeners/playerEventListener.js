@@ -29,8 +29,8 @@ export async function run(bot) {
 					},
 					color: 'BLUE',
 					fields: [
-						{ name: 'Song', value: `[${song.name}](${song.url})` },
-						{ name: 'Duration', value: `\`${song.formattedDuration}\`` },
+						{ name: '**__Song__**', value: `[**__${song.name}__**](${song.url})` },
+						{ name: '**__Duration__**', value: `**\`${song.formattedDuration}\`**` },
 					],
 					footer: {
 						text: `Requested by ${song.user.tag}`,
@@ -48,8 +48,8 @@ export async function run(bot) {
 					},
 					color: 'BLUE',
 					fields: [
-						{ name: 'Song', value: `[${song.name}](${song.url})` },
-						{ name: 'Duration', value: `\`${song.formattedDuration}\`` }
+						{ name: '**__Song__**', value: `[**__${song.name}__**](${song.url})` },
+						{ name: '**__Duration__**', value: `**\`${song.formattedDuration}\`**` },
 					],
 					footer: {
 						text: `Requested by ${song.user.tag}`,
