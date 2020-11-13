@@ -24,24 +24,24 @@ export default class Musicord extends Client {
 	}
 
 	_loadAll() {
+		// try {
+		// 	this._loadEvents(this);
+		// 	logInit('Init', 'Events Loaded');
 		try {
-			this._loadEvents(this);
-			logInit('Init', 'Events Loaded');
+			this._registerCommands();
+			logInit('Init', 'Commands Registered')
 			try {
-				this._registerCommands();
-				logInit('Init', 'Commands Registered')
-				try {
-					this._listenPlayerEvents(this);
-					logInit('Init', 'Player listener initiated')
-				} catch(error) {
-					logError('Init', 'cannot initiate player events', error)
-				}
+				this._listenPlayerEvents(this);
+				logInit('Init', 'Player listener initiated')
 			} catch(error) {
-				logError('Init', 'cannot register commands', error)
+				logError('Init', 'cannot initiate player events', error)
 			}
 		} catch(error) {
-			logError('Init', 'cannot load events', error)
+			logError('Init', 'cannot register commands', error)
 		}
+		// } catch(error) {
+		// 	logError('Init', 'cannot load events', error)
+		// }
 	}
 
 	_loadEvents(bot) {
