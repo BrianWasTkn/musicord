@@ -23,28 +23,37 @@ export async function run(bot) {
 		.on('playSong', async (message, queue, song) => {
 			message.channel.send({
 				embed: {
-					title: `**__${emotes.music} Now Playing__**`,
+					author: {
+						name: 'Now Playing',
+						iconURL: bot.user.avatarURL()
+					},
 					color: 'BLUE',
 					fields: [
-						{ name: '**Song**', value: `[${song.name}](${song.url})` },
-						{ name: '**Duration**', value: song.formattedDuration },
-						{ name: '**Requested by**', value: song.user.tag }
-					]
+						{ name: 'Song', value: `[${song.name}](${song.url})`, inline: true },
+						{ name: 'Duration', value: `\`${song.formattedDuration}\``, inline: true },
+					],
+					footer: {
+						text: `Requested by ${song.user.tag}`,
+						iconURL: message.author.avatarURL()
+					}
 				}
 			})
 		})
 		.on('addSong', async (message, queue, song) => {
 			message.channel.send({
 				embed: {
-					title: `**__${emotes.music} Added to Queue__**`,
+					author: {
+						name: 'Added to Queue',
+						iconURL: bot.user.avatarURL()
+					},
 					color: 'BLUE',
 					fields: [
-						{ name: '**Song**', value: `[${song.name}](${song.url})` },
-						{ name: '**Duration**', value: song.formattedDuration },
-						{ name: '**Added by**', value: song.user.tag }
+						{ name: 'Song', value: `[${song.name}](${song.url})` },
+						{ name: 'Duration', value: `\`${song.formattedDuration}\`` }
 					],
 					footer: {
-						text: `Volume: ${status(queue).volume}% | Loop: ${status(queue).looped}`
+						text: `Requested by ${song.user.tag}`,
+						iconURL: message.author.avatarURL()
 					}
 				}
 			})
@@ -52,7 +61,10 @@ export async function run(bot) {
 		.on('noRelated', async message => {
 			message.channel.send({
 				embed: {
-					title: `**__${emotes.error} Nothing Found__**`,
+					author: {
+						name: 'Nothing Found',
+						iconURL: bot.user.avatarURL()
+					},
 					color: 'RED',
 					description: '**No related song has been found.**'
 				}
@@ -61,26 +73,34 @@ export async function run(bot) {
 		.on('finish', async message => {
 			message.channel.send({
 				embed: {
-					title: `**__${emotes.success} Finished Playing__**`,
-					color: 'GREEN',
-					description: '**The queue finished playing all songs in queue.**'
+					author: {
+						name: 'Finished Playing',
+						iconURL: bot.user.avatarURL()
+					},
+					color: 'BLUE',
+					description: 'The queue had finished playing all the songs in the queue.'
 				}
 			})
 		})
 		.on('empty', async message => {
-			await message.member.voice.channel.leave();
 			message.channel.send({
 				embed: {
-					title: `**__${emotes.music} Channel Empty__**`,
-					color: 'ORANGE',
-					description: '**The channel is now empty, leaving channel...**'
+					author: {
+						name: 'Channel Empty',
+						iconURL: bot.user.avatarURL()
+					},
+					color: 'RED',
+					description: 'Voice channel is now **empty**.\nLeaving channel in **60** seconds...'
 				}
 			})
 		})
 		.on('addList', async (message, queue, playlist) => {
 			message.channel.send({
 				embed: {
-					title: `**__${emotes.success} | ${playlist.songs.length} songs added__**`,
+					author: {
+						name: `${playlist.songs.length} songs added`,
+						iconURL: bot.user.avatarURL()
+					},
 					color: 'BLUE',
 					description: `Playlist **${playlist.name}** added to the queue.`
 				}
@@ -89,11 +109,14 @@ export async function run(bot) {
 		.on('searchResult', async (message, result) => {
 			message.channel.send({
 				embed: {
-					title: `**__${emotes.success} Search Results__**`,
+					author: {
+						name: 'Search Results',
+						iconURL: bot.user.avatarURL()
+					},
 					color: 'BLUE',
-					description: results.map((song, index) => `**${index + 1}.** [**__${song.name}__**](${song.url}) - \`${song.formattedDuration}\``),
 					fields: [
-						{ name: '**__Instructions:__**', value: '**Type the number of your choice.\nYou can type `cancel` to cancel your search.**' }
+						{ name: `${result.length} found`, value: result.map((song, index) => `**${index + 1}.** [**__${song.name}__**](${song.url}) - \`${song.formattedDuration}\``) },
+						{ name: 'Instructions**', value: '**Type the number of your choice.\nYou can type `cancel` to cancel your search.**' }
 					]
 				}
 			})
@@ -101,8 +124,11 @@ export async function run(bot) {
 		.on('searchCancel', async (message) => {
 			message.channel.send({
 				embed: {
-					title: `**__${emotes.success} Search Cancelled__**`,
-					color: 'RED',
+					author: {
+						name: 'Search Cancelled',
+						iconURL: bot.user.avatarURL()
+					},
+					color: 'BLUE',
 					description: 'You cancelled the search!'
 				}
 			})
@@ -110,7 +136,10 @@ export async function run(bot) {
 		.on('error', async (message, err) => {
 			message.channel.send({
 				embed: {
-					title: `**__${emotes.error} Player Error__**`,
+					author: {
+						name: 'Player Error',
+						iconURL: bot.user.avatarURL()
+					},
 					color: 'RED',
 					description: err
 				}
