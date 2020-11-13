@@ -12,8 +12,8 @@ export async function run(bot) {
 		// queue status
 		const status = (queue) => ({
 			looped: queue.repeatMode ? queue.repeatMode === 2 ? 'queue' : 'track' : 'off',
-			volume: `${queue.volume}%`,
-			autoPlay: queue.autoPlay ? 'on' : "off"
+			volume: queue.volume,
+			autoPlay: queue.autoPlay ? 'on' : 'off'
 		})
 
 		// all events

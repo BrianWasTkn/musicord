@@ -1,9 +1,9 @@
 import Command from '../classes/Command.js'
 
 export default new Command({
-	name: 'pause',
-	aliases: ['freeze'],
-	description: 'pause the current playing track',
+	name: 'resume',
+	aliases: ['unfreeze'],
+	description: 'resume playing the current queue',
 	usage: 'command',
 	cooldown: 3e3,
 	music: true
@@ -17,14 +17,14 @@ export default new Command({
 
 	/** Check if paused */
 	const paused = bot.player.isPaused(message);
-	if (paused) {
-		return 'The player is already paused.'
+	if (!paused) {
+		return 'The player is not paused.'
 	}
 
-	/** Else, pause */
+	/** Else, play */
 	try {
-		await bot.player.pause(message);
-		return 'The player has been paused.'
+		await bot.player.resume(message);
+		return 'The player has been resumed.'
 	} catch(error) {
 		console.error(error)
 	}

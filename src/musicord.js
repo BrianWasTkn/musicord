@@ -20,11 +20,11 @@ export const run = async() => {
 
 	try {
 		if (config.token) {
-			await logInit('Main', 'Launching Musicord...')
+			await logInit('Init', 'Launching Musicord...')
 			await musicord()
 		}
 	} catch(error) {
-		await logError('Main', 'invalid or unknown token', error)
+		await logError('Init', 'invalid or unknown token', error)
 		process.exit(1)
 	}
 }
@@ -46,7 +46,7 @@ const musicord = async () => {
 /** Run the whole bot */
 try {
 	run()
-	logInit('Main', 'Bot initialized')
+	logInit('Init', 'Bot initialized')
 } catch(error) {
-	logError('Main', 'Bot failed to run', error)
+	logError('Init', 'Bot failed to run', error)
 }
