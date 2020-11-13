@@ -9,7 +9,7 @@ export default new Command({
 	return {
 		author: {
 			name: message.guild.name,
-			iconURl: message.guild.iconURL()
+			iconURL: message.guild.iconURL()
 		},
 		color: 'BLUE',
 		fields: [
