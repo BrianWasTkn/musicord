@@ -6,7 +6,7 @@ export async function run(bot) {
 			if (message.channel.type !== 'dm' && !message.author.bot) {
 
 				let prefix = false;
-				for (const pref of bot.config.prefix.length) {
+				for (const pref of bot.config.prefix) {
 					if (message.content.toLowerCase().startsWith(pref)) prefix = pref;
 				}
 				if (!prefix) return;
