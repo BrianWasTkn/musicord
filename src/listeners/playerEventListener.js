@@ -1,3 +1,5 @@
+import { logInit, logError } from '../utils/logger.js'
+
 export async function run(bot) {
 	try {
 
