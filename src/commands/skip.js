@@ -23,7 +23,7 @@ export default new Command({
 			iconURL: queue.songs[0].user.avatarURL()
 		},
 		fields: [
-			{ name: 'Now Playing', value: `\`${queue.songs[0]}\`` }
+			{ name: 'Now Playing', value: `\`${queue.songs[0].name}\`` }
 		]
 	}
 })
