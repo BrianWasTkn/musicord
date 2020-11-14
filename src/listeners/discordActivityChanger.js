@@ -4,18 +4,14 @@ export async function run(bot) {
 	try {
 
 		/** Set first Presence */
-		try {
-			console.log(bot.user)
-			await bot.user.setPresence({
-				activity: {
-					name: `${bot.prefix[0]}help`,
-					type: 'STREAMING',
-					url: 'https://twitch.tv/onlyhitus'
-				}
-			})
-		} catch(error) {
-			logError('Listener', 'Unable to set client presence', error.stack)
-		}
+		console.log(bot)
+		await bot.user.setPresence({
+			activity: {
+				name: `${bot.prefix[0]}help`,
+				type: 'STREAMING',
+				url: 'https://twitch.tv/onlyhitus'
+			}
+		})
 
 		/** Interval */
 		setInterval(async () => {
