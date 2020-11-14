@@ -5,13 +5,17 @@ export async function run(bot) {
 
 		/** Set first Presence */
 		try {
-			await bot.user.setPresence({
-				activity: {
-					name: `${bot.prefix[0]}help`,
-					type: 'STREAMING',
-					url: 'https://twitch.tv/onlyhitus'
-				}
-			})
+			/** Timeout: Bot needs to emit the ready event */
+			/** To instantiate ClientUser */
+			setTimeout(async () => {
+				await bot.user.setPresence({
+					activity: {
+						name: `${bot.prefix[0]}help`,
+						type: 'STREAMING',
+						url: 'https://twitch.tv/onlyhitus'
+					}
+				})
+			}, 1e4);
 		} catch(error) {
 			logError('Listener', 'Unable to set first client presence', error)
 		}
