@@ -5,6 +5,7 @@ export async function run(bot) {
 
 		/** Set first Presence */
 		try {
+			console.log(bot.user)
 			await bot.user.setPresence({
 				activity: {
 					name: `${bot.prefix[0]}help`,
