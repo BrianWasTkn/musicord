@@ -34,10 +34,10 @@ export default class Musicord extends Client {
 				this._loadListeners(this);
 				logInit('Musicord', 'Listeners loaded')
 			} catch(error) {
-				logError('Musicord', 'cannot initiate player events', error)
+				logError('Musicord', 'Cannot initiate player events', error)
 			}
 		} catch(error) {
-			logError('Musicord', 'cannot register commands', error)
+			logError('Musicord', 'Cannot register commands', error.stack)
 		}
 		// } catch(error) {
 		// 	logError('Init', 'cannot load events', error)
