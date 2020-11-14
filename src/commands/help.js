@@ -11,7 +11,7 @@ export default new Command({
 }, async (bot, message, [cmd]) => {
 	
 	/** Import Commands */
-	const command = bot.commands.get(cmd.toLowerCase()) || bot.aliases.get(cmd.toLowerCase());
+	const command = cmd ? bot.commands.get(cmd.toLowerCase()) || bot.aliases.get(cmd.toLowerCase()) : false;
 	
 	/** Command Info */
 	if (command) {

@@ -10,7 +10,7 @@ export async function run(bot) {
 				url: 'https://twitch.tv/onlyhitus'
 			})
 		} catch(error) {
-			logError('Listener', 'Unable to set client presence', error)
+			logError('Listener', 'Unable to set client presence', error.stack)
 		}
 
 		/** Interval */

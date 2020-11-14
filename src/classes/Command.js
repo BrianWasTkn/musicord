@@ -1,4 +1,5 @@
 import discord from 'discord.js'
+import config from '../config.js'
 
 export default class Command {
 	constructor(options, func) {
@@ -6,7 +7,7 @@ export default class Command {
 		this.run = func;
 
 		/** Basic Info */
-		this.usage				= options.usage === 'command' ? this.name : options.usage;
+		this.usage				= options.usage === 'command' ? `${config.prefix[0]}${options.name}` : options.usage;
 		this.permissions 	= ["SEND_MESSAGES"].concat(options.permissions || []);
 		this.description	= options.description || 'No description provided.';
 		this.cooldown			= options.cooldown || this.defaultCooldown;
