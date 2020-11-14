@@ -5,9 +5,12 @@ export async function run(bot) {
 
 		/** Set first Presence */
 		try {
-			await bot.user.setActivity(`${bot.config.prefix[0]}help`, {
-				type: 'STREAMING',
-				url: 'https://twitch.tv/onlyhitus'
+			await bot.user.setPresence({
+				activity: {
+					name: `${bot.prefix[0]}help`,
+					type: 'STREAMING',
+					url: 'https://twitch.tv/onlyhitus'
+				}
 			})
 		} catch(error) {
 			logError('Listener', 'Unable to set client presence', error.stack)
@@ -21,9 +24,12 @@ export async function run(bot) {
 				`Music for ${bot.users.cache.size} users`
 			];
 			try {
-				await bot.user.setActivity(activities[Math.floor(Math.random() * activities.length)], {
-					type: 'STREAMING',
-					url: 'https://twitch.tv/onlyhitus'
+				await bot.user.setPresence({
+					activity: {
+						name: activities[Math.floor(Math.random() * activities.length)],
+						type: 'STREAMING',
+						url: 'https://twitch.tv/onlyhitus'
+					}
 				})
 			} catch(error) {
 				logError('Listener', 'Unable to set client presence at interval', error)
