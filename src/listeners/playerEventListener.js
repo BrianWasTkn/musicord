@@ -3,14 +3,6 @@ import { logInit, logError } from '../utils/logger.js'
 export async function run(bot) {
 	try {
 
-		// emojis
-		const emotes = {
-			music: ':musical_note:',
-			success: ':white_check_mark:',
-			error: ':x:',
-			queue: ':ping_pong:'
-		}
-
 		// queue status
 		const status = (queue) => ({
 			looped: queue.repeatMode ? queue.repeatMode === 2 ? 'queue' : 'track' : 'off',

@@ -1,5 +1,6 @@
 import Command from '../classes/Command.js'
 import { logError } from '../utils/logger.js'
+import { fromMs, toMs } from 'hh-mm-ss' 
 
 export default new Command({
 	name: 'seek',
@@ -17,30 +18,19 @@ export default new Command({
 	}
 
 	/** ReGex */
-	const number = Number(timestamp);
-	const patterns = {
-		seconds: /(00\:\d\d)/gi.exec(timestamp),
-		minutes: /(\d\d\:\d\d)/gi.exec(timestamp),
-		hours: /(\d\d\:\d\d\:\d\d)/gi.exec(timestamp)
-	}
-
-	/** Check */
-	let time;
-	if (patterns.seconds[1]) {
-		time = patterns.seconds
-	} else if (patterns.minutes[1]) {
-		time = patterns.minutes
-	} else if (patterns.hours[1]) {
-		time = patterns.hours
-	} else if (number) {
-		time = number
+	const tsRegex = /^((?:\d\d)\:(?:\d\d)\:(?:\d\d)\:)$/gi;
+	let parse;
+	if (Number(timestamp)) {
+		parse = fromMs(Math.floor(Math.abs(timestamp) * 1000))
+	} else if (tsRegex.exec(timestamp)[1])  {
+		parse = toMs(tsRegex.exec(timestamp)[1])
 	} else {
-		return `Unable to parse \`${time}\` as a time.`
+		return 'Unable to parse timestamp.'
 	}
 
 	/** Do the thing */
 	try {
-		await bot.player.seek(message, time)
+		await bot.player.seek(message, parse)
 	} catch(error) {
 		logError('Command', 'Unable to seek to the track', 'error')
 	}
