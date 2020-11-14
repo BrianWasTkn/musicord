@@ -18,7 +18,7 @@ export default new Command({
 	}
 
 	/** ReGex */
-	const tsRegex = /^((?:\d\d)\:(?:\d\d)\:(?:\d\d)\:)$/gi;
+	const tsRegex = /^((?:\d\d)\:(?:\d\d)\:(?:\d\d))$/gi;
 	let parse;
 	if (Number(timestamp)) {
 		parse = fromMs(Math.floor(Math.abs(timestamp) * 1000))
