@@ -7,11 +7,11 @@ const run = async () => {
 	try {
 		/** Process Error: unhandledRejection */
 		process.on('unhandledRejection', async (error) => {
-			await logError('Process', 'unhandledRejection', error)
+			await logError('Process', 'unhandledRejection', error.stack)
 		})
 		/** Process Error: uncaughtException */
 		process.on('uncaughtException', async (error) => {
-			await logError('Process', 'uncaughtException', error)
+			await logError('Process', 'uncaughtException', error.stack)
 		})
 	} catch(error) {
 		await logError('Error(process)', 'process error handler', error)
