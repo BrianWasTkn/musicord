@@ -8,9 +8,9 @@ export default class Command {
 		/** Basic Info */
 		this.usage				= options.usage === 'command' ? this.name : options.usage;
 		this.permissions 	= ["SEND_MESSAGES"].concat(options.permissions || []);
-		this.aliases 			= [options.name].concat(options.aliases || []);
 		this.description	= options.description || 'No description provided.';
 		this.cooldown			= options.cooldown || this.defaultCooldown;
+		this.aliases 			= options.aliases || [options.name];
 		this.music				= options.music || false;
 		this.name 				= options.name;
 

@@ -16,9 +16,9 @@ export async function run(bot) {
 		/** Interval */
 		setInterval(async () => {
 			const activities = [
-				`music in ${bot.guilds.size} servers`,
+				`Music in ${bot.guilds.cache.size} servers`,
 				`${bot.config.prefix[0]}help`,
-				`music for ${bot.users.size} users`
+				`Music for ${bot.users.cache.size} users`
 			];
 			try {
 				await bot.user.setActivity(activities[Math.floor(Math.random() * activities.length)], {

@@ -1,5 +1,5 @@
 {
-  "name": "musicord",
+  "name": "Musicord",
   "version": "0.1.0",
   "description": "A discord music bot, made with Discord.JS V12 that can play any song from 700+ sources!",
   "main": "src/launch.js",

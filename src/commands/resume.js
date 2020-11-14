@@ -1,4 +1,5 @@
 import Command from '../classes/Command.js'
+import { logError } from '../utils/logger.js'
 
 export default new Command({
 	name: 'resume',
@@ -20,6 +21,6 @@ export default new Command({
 		await bot.player.resume(message);
 		return 'The player has been resumed.'
 	} catch(error) {
-		console.error(error)
+		logError('Command',' Unable to resume the queue', error)
 	}
 })

@@ -2,9 +2,9 @@ import Command from '../classes/Command.js'
 import { logError } from '../utils/logger.js'
 
 export default new Command({
-	name: 'skip',
-	aliases: ['playnext', 's'],
-	description: 'skip the current track',
+	name: 'shuffle',
+	aliases: ['randomize'],
+	description: 'shuffle the current queue',
 	usage: 'command',
 	cooldown: 3e3,
 	music: true
@@ -18,8 +18,8 @@ export default new Command({
 
 	/** Do the thing */
 	try {
-		await bot.player.skip(message)
+		await bot.player.shuffle(message)
 	} catch(error) {
-		logError('Command', 'Unable to skip the current track', error)
+		logError('Command', 'Unable to shuffle the queue', 'error')
 	}
 })

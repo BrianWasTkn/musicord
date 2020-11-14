@@ -1,4 +1,5 @@
 import Command from '../classes/Command.js'
+import { logError } from '../utils/logger.js'
 
 export default new Command({
 	name: 'pause',
@@ -26,6 +27,6 @@ export default new Command({
 		await bot.player.pause(message);
 		return 'The player has been paused.'
 	} catch(error) {
-		console.error(error)
+		logError('Command',' Unable to pause the queue', error)
 	}
 })

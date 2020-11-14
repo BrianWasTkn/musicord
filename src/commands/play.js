@@ -1,4 +1,5 @@
 import Command from '../classes/Command.js'
+import { logError } from '../utils/logger.js'
 
 export default new Command({
 	name: 'play',
@@ -19,6 +20,6 @@ export default new Command({
 	try {
 		await bot.player.play(message, args.join(' '))
 	} catch(error) {
-		console.error(error)
+		logError('Command',' Unable to play the track', error)
 	}
 })

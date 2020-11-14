@@ -116,7 +116,7 @@ export async function run(bot) {
 					},
 					color: 'BLUE',
 					fields: [
-						{ name: `**__${result.length} songs found__**`, value: result.map((song, index) => `**#${index + 1}:** [**__${song.name}__**](${song.url}) - \`${song.formattedDuration}\``) },
+						{ name: `**__${result.length} songs found__**`, value: result.map((song, index) => `**#${index + 1}:** [**${song.name}**](${song.url}) - \`${song.formattedDuration}\``) },
 						{ name: '**__Instructions__**', value: '**Type the number of your choice.\nYou can type `cancel` to cancel your search.**' }
 					]
 				}
