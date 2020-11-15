@@ -7,6 +7,8 @@ export async function run(bot) {
 		.on('warn', (info) => logError('Discord', 'A warning emitted by Discord', info))
 		.on('error', (error) => logError('Discord', 'An error emitted by Discord', error))
 		.on('rateLimit', (rateLimit) => logError('Discord', 'Rate Limit warning', rateLimit))
+
+		logInit('Listener', 'Discord Event listeners loaded')
 	} catch(error) {
 		logError('Listener', 'Unable to initiate discord event listeners', error)
 	}

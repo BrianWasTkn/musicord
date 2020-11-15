@@ -138,7 +138,7 @@ export async function run(bot) {
 				}
 			})
 		})
-		logInit('Musicord', 'DisTube Event Emitter Loaded')
+		logInit('Musicord', 'DisTube Player Events Loaded')
 	} catch(error) {
 		logError('Listener', 'playerEventListener', error)
 	}

@@ -36,8 +36,8 @@ export async function run(bot) {
 					logError('Listener', 'Unable to set client presence at interval', error)
 				}
 			}, 1000 * 60) // 1 Minute (1000ms * 60secs)
-			logInit('Musicord', 'Activity Changer Loaded')
 		})
+		logInit('Musicord', 'Activity Changer Loaded')
 	} catch(error) {
 		logError('Listener', 'Unable to initiate the activity changer', error)
 	}
