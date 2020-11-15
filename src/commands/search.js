@@ -16,14 +16,15 @@ export default new Command({
 	}
 
 	/** Do the thing */
+	let results, found, msg, choice, index;
 	try {
 		/** Search Results */
-		const results = await bot.player.search(args.join(' '))
-		const found = results.map((song, index) => `**#${index + 1}:** [${song.name}](${song.url}) - \`${song.formattedDuration}\``).slice(0, 10)
+		results = await bot.player.search(args.join(' '))
+		found = results.map((song, index) => `**#${index + 1}:** [${song.name}](${song.url}) - \`${song.formattedDuration}\``).slice(0, 10)
 		
 		/** Send Message */
 		try {
-			const msg = await message.channel.send({
+			msg = await message.channel.send({
 				embed: {
 					author: {
 						name: 'Search Results',
@@ -43,7 +44,6 @@ export default new Command({
 		}
 
 		/** Await Message */
-		let choice;
 		try {
 			choice = await message.channel.awaitMessages(m => m.author.id === message.author.id, {
 				max: 1,
@@ -61,7 +61,6 @@ export default new Command({
 		}
 
 		/** Parsing Index */
-		let index;
 		try {
 			// Parse Index Number
 			index = parseInt(choice.first().content, 10);
