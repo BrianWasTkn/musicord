@@ -27,14 +27,14 @@ export default new Command({
 				},
 				color: 'BLUE',
 				fields: [
-					{ name: `**__${result.length} songs found__**`, value: found },
+					{ name: `**__${result.length} songs found__**`, value: found.slice(0, 5) },
 					{ name: '**__Instructions__**', value: '**Type the number of your choice.\nYou can type `cancel` to cancel your search.**' }
 				]
 			}
 		})
 		/** Awaited Message */
 		try {
-			const choice = message.channel.awaitMessages(m => m.author.id === message.author.id, {
+			const choice = await message.channel.awaitMessages(m => m.author.id === message.author.id, {
 				max: 1,
 				time: 3e4,
 				errors: ['time']
@@ -42,11 +42,12 @@ export default new Command({
 			if (!choice) throw Error('No Choice');
 			let index = parseInt(choice, 10);
 			await bot.player.play(message, results[index - 1].url)
+			await msg.delete()
 		} catch(error) {
 			logError('Command', 'An error in message Collector', error)
 			return 'You cancelled the search'
 		}
 	} catch(error) {
-		logError('Command', 'Unable to skip the current track', error)
+		logError('Command', 'Unable to search tracks', error)
 	}
 })
