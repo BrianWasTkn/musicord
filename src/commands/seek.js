@@ -21,7 +21,7 @@ export default new Command({
 	const tsRegex = /^((?:\d\d)\:(?:\d\d)\:(?:\d\d))$/gi;
 	let parse;
 	if (Number(timestamp)) {
-		parse = fromMs(Math.floor(Math.abs(timestamp) * 1000))
+		parse = fromMs(timestamp * 1000)
 	} else if (tsRegex.exec(timestamp)[1])  {
 		parse = toMs(tsRegex.exec(timestamp)[1])
 	} else {
