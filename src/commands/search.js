@@ -9,12 +9,6 @@ export default new Command({
 	cooldown: 3e3,
 	music: true
 }, async (bot, message, args) => {
-	
-	/** Check Playing State */
-	const isPlaying = bot.player.isPlaying(message);
-	if (!isPlaying) {
-		return 'There\'s nothing playing in the queue.'
-	}
 
 	/** Args */
 	if (!args) {
