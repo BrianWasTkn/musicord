@@ -55,7 +55,7 @@ export default class Command {
 
 			if (now < expiration) {
 				const timeLeft = (expiration - now) / 1000;
-				return `please wait **${timeLeft.toFixed(1)}** seconds before re-using the \`${comamnd.name}\` command.`
+				return `please wait **${timeLeft.toFixed(1)}** seconds before re-using the \`${command.name}\` command.`
 			} 
 		} 
 	}
