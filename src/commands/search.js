@@ -50,14 +50,12 @@ export default new Command({
 				time: 1e4,
 				errors: ['time']
 			})
-			// No Answer
-			if (!choice.first()) {
-				throw new Error(`Next time if you're just gonna let me waste my time don't use this command again okay?`)
-			}
 		} catch(error) {
 			/** Log Error */
-			logError('Command', 'An error in messageCollector', error.stack)
-			return error;
+			if (!choice) {
+				logError('Command', 'An error in messageCollector', error)
+				return 'Next time if you\'re just gonna let me waste my time don\'t use this command again okay?'
+			}
 		}
 
 		/** Parsing Index */
