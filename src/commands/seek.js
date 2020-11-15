@@ -17,7 +17,7 @@ export default new Command({
 		return 'There\'s nothing playing in the queue.'
 	}
 
-	/** ReGex */
+	/** 
 	const time = timestamp.split(':'),
 	numbered = time.map(Number),
 	hours = time.length > 2 ? time[0] : 00,
@@ -32,6 +32,7 @@ export default new Command({
 	} else {
 		return 'Unable to parse timestamp.'
 	}
+	*/
 
 	/** Do the thing */
 	try {
