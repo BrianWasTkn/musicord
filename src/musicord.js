@@ -14,7 +14,7 @@ const run = async () => {
 			logError('Process', 'uncaughtException', error.stack)
 		})
 	} catch(error) {
-		logError('Error(process)', 'process error handler', error)
+		logError('Error', 'process error handler', error)
 		process.exit(1)
 	}
 
@@ -24,7 +24,7 @@ const run = async () => {
 			await musicord()
 		}
 	} catch(error) {
-		logError('Error(launch)', 'Invalid or Unknown Token', error)
+		logError('Error', 'Invalid or Unknown Token', error)
 		process.exit(1)
 	}
 }
@@ -37,7 +37,7 @@ const musicord = async () => {
 		logInit('Musicord', 'Waiting for login...')
 		await bot.login(config.token);
 	} catch(error) {
-		logError('Error(musicord)', 'Unable to login', error)
+		logError('Error', 'Unable to login', error)
 		process.exit(1)
 	}
 
@@ -48,5 +48,5 @@ try {
 	run()
 	logInit('Musicord', 'Bot initialized')
 } catch(error) {
-	logError('Error(main)', 'Bot failed to run', error)
+	logError('Error', 'Bot failed to run', error)
 }

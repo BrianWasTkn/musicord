@@ -26,7 +26,7 @@ export default class Command {
 	 */
 	_processCooldown(message, command) {
 		/** Check in the collection */
-		if (!command.cooldowns.has(command.name)) {
+		if (!message.client.cooldowns.has(command.name)) {
 			message.client.cooldowns.set(command.name, new discord.Collection());
 		}
 
