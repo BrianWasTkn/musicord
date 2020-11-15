@@ -17,8 +17,8 @@ export default new Command({
 
 	/** Do the thing */
 	try {
-		const result = await bot.player.search(args.join(' '))
-		const found = result.map((song, index) => `**#${index + 1}:** [**${song.name}**](${song.url}) - **\`${song.formattedDuration}\`**`).slice(0, 5)
+		const results = await bot.player.search(args.join(' '))
+		const found = results.map((song, index) => `**#${index + 1}:** [**${song.name}**](${song.url}) - **\`${song.formattedDuration}\`**`).slice(0, 5)
 		const msg = await message.channel.send({
 			embed: {
 				author: {
@@ -51,7 +51,7 @@ export default new Command({
       };
 			// play it.
 			try {
-				await bot.player.play(message, result[index - 1].url)
+				await bot.player.play(message, results[index - 1].url)
 				try {
 					await msg.delete()
 				} catch(error) {
