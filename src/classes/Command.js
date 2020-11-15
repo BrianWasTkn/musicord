@@ -17,7 +17,6 @@ export default class Command {
 
 		/** Cooldowns */
 		this.defaultCooldown = 3000;
-		this.cooldowns = new discord.Collection();
 	}
 
 	/**
