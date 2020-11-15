@@ -27,7 +27,7 @@ export default new Command({
 				},
 				color: 'BLUE',
 				fields: [
-					{ name: `**__${result.length} songs found__**`, value: found.slice(0, 5) },
+					{ name: `**__${found.length} songs found__**`, value: found.slice(0, 5) },
 					{ name: '**__Instructions__**', value: '**Type the number of your choice.\nYou can type `cancel` to cancel your search.**' }
 				]
 			}
@@ -41,7 +41,7 @@ export default new Command({
 			})
 			if (!choice) throw Error('No Choice');
 			let index = parseInt(choice, 10);
-			await bot.player.play(message, results[index - 1].url)
+			await bot.player.play(message, result[index - 1].url)
 			await msg.delete()
 		} catch(error) {
 			logError('Command', 'An error in message Collector', error)
