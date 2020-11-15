@@ -1,6 +1,5 @@
 import Command from '../classes/Command.js'
 import { logError } from '../utils/logger.js'
-import { SearchResult } from 'distube'
 
 export default new Command({
 	name: 'search',
