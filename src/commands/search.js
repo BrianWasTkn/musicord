@@ -27,7 +27,7 @@ export default new Command({
 				},
 				color: 'BLUE',
 				fields: [
-					{ name: `**__${found.length} songs found__**`, value: found },
+					{ name: `**__${found.length} songs found__**`, value: found.join('\n') },
 					{ name: '**__Instructions__**', value: '**Type the number of your choice.\nYou can type `cancel` to cancel your search.**' }
 				]
 			}
