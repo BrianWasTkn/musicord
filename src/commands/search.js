@@ -17,7 +17,7 @@ export default new Command({
 
 	/** Do the thing */
 	try {
-		const result = bot.player.search(args.join(' '))
+		const result = await bot.player.search(args.join(' '))
 		const found = result.map((song, index) => `**#${index + 1}:** [**${song.name}**](${song.url}) - **\`${song.formattedDuration}\`**`)
 		const msg = await message.channel.send({
 			embed: {
