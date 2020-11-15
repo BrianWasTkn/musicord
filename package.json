@@ -1,5 +1,5 @@
 {
-  "name": "Musicord",
+  "name": "musicord",
   "version": "0.1.0",
   "description": "A discord music bot, made with Discord.JS V12 that can play any song from 700+ sources!",
   "main": "src/main.js",
@@ -29,6 +29,7 @@
   "homepage": "https://github.com/BrianWasTkn/Musicord-DisTube#readme",
   "dependencies": {
     "chalk": "^4.1.0",
+    "discord-music-player": "^5.0.4",
     "discord.js": "^12.4.1",
     "distube": "^2.7.0",
     "esm": "^3.2.25",

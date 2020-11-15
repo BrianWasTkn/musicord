@@ -18,6 +18,11 @@ export default new Command({
 	}
 
 	/** ReGex */
+	const time = timestamp.split(':'),
+	numbered = time.map(Number),
+	hours = time.length > 2 ? time[0] : 00,
+	minutes = time.length > 1
+
 	const tsRegex = /^((?:\d\d)\:(?:\d\d)\:(?:\d\d))$/gi;
 	let parse;
 	if (Number(timestamp)) {

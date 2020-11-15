@@ -20,9 +20,9 @@ export async function run(bot) {
 			/** Interval */
 			setInterval(async () => {
 				const activities = [
-					`Music in ${bot.guilds.cache.size} servers`,
+					`Music in ${bot.guilds.cache.size.toLocaleString()} servers`,
 					`${bot.config.prefix[0]}help`,
-					`Music for ${bot.users.cache.size} users`
+					`Music for ${bot.users.cache.size.toLocaleString()} users`
 				];
 				try {
 					await bot.user.setPresence({

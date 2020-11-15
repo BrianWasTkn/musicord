@@ -1,6 +1,7 @@
 import { Client, Collection } from 'discord.js'
 import { join } from 'path'
 import { readdirSync } from 'fs'
+import { Player } from 'discord-music-player' // test
 import distube from 'distube'
 
 import { logInit, logError } from '../utils/logger.js'
@@ -17,6 +18,7 @@ export default class Musicord extends Client {
 		this.config = config;
 		this.utils = utils;
 		this.player = new distube(this, playerOpts);
+		this.test = new Player(this);
 		this.commands = new Collection();
 		this.aliases = new Collection();
 		this.cooldowns = new Collection();

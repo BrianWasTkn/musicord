@@ -8,7 +8,7 @@ export default new Command({
 	usage: 'command',
 	cooldown: 3e3,
 	music: true
-}, async (bot, message, args) => {
+}, async (bot, message) => {
 	
 	/** Check Playing State */
 	const isPlaying = bot.player.isPlaying(message);
