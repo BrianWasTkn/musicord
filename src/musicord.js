@@ -7,24 +7,24 @@ const run = async () => {
 	try {
 		/** Process Error: unhandledRejection */
 		process.on('unhandledRejection', async (error) => {
-			await logError('Process', 'unhandledRejection', error.stack)
+			logError('Process', 'unhandledRejection', error.stack)
 		})
 		/** Process Error: uncaughtException */
 		process.on('uncaughtException', async (error) => {
-			await logError('Process', 'uncaughtException', error.stack)
+			logError('Process', 'uncaughtException', error.stack)
 		})
 	} catch(error) {
-		await logError('Error(process)', 'process error handler', error)
+		logError('Error(process)', 'process error handler', error)
 		process.exit(1)
 	}
 
 	try {
 		if (config.token) {
-			await logInit('Musicord', 'Launching Musicord...')
+			logInit('Musicord', 'Launching Musicord...')
 			await musicord()
 		}
 	} catch(error) {
-		await logError('Error(launch)', 'Invalid or Unknown Token', error)
+		logError('Error(launch)', 'Invalid or Unknown Token', error)
 		process.exit(1)
 	}
 }
@@ -34,10 +34,10 @@ const musicord = async () => {
 
 	/** Login our bot */
 	try {
-		await logInit('Musicord', 'Waiting for login...')
+		logInit('Musicord', 'Waiting for login...')
 		await bot.login(config.token);
 	} catch(error) {
-		await logError('Error(musicord)', 'Unable to login', error)
+		logError('Error(musicord)', 'Unable to login', error)
 		process.exit(1)
 	}
 
