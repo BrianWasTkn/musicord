@@ -56,7 +56,7 @@ export default new Command({
 			}
 		} catch(error) {
 			/** Log Error */
-			logError('Command', 'An error in messageCollector', error)
+			logError('Command', 'An error in messageCollector', error.stack)
 			return error;
 		}
 
