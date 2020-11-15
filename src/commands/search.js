@@ -43,8 +43,9 @@ export default new Command({
 		}
 
 		/** Await Message */
+		let choice;
 		try {
-			const choice = await message.channel.awaitMessages(m => m.author.id === message.author.id, {
+			choice = await message.channel.awaitMessages(m => m.author.id === message.author.id, {
 				max: 1,
 				time: 1e4,
 				errors: ['time']
