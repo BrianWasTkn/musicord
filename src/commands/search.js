@@ -19,7 +19,7 @@ export default new Command({
 	try {
 		/** Search Results */
 		const results = await bot.player.search(args.join(' '))
-		const found = results.map((song, index) => `**#${index + 1}:** [**${song.name}**](${song.url}) - **\`${song.formattedDuration}\`**`).slice(0, 10)
+		const found = results.map((song, index) => `**#${index + 1}:** [${song.name}](${song.url}) - \`${song.formattedDuration}\``).slice(0, 10)
 		
 		/** Send Message */
 		try {
@@ -33,7 +33,7 @@ export default new Command({
 					color: 'BLUE',
 					description: found.join('\n'),
 					fields: [
-						{ name: 'Instructions', value: 'Type the **number** of your choice.\nYou can cancel by typing out `cancel` right now.**' }
+						{ name: 'Instructions', value: 'Type the **number** of your choice.\nYou can cancel by typing out `cancel` right now.' }
 					]
 				}
 			})
@@ -52,17 +52,18 @@ export default new Command({
 			// No Answer
 			if (!choice.first()) {
 				throw new Error(`Next time if you're just gonna let me waste my time don't use this command again okay?`)
-			};
+			}
 		} catch(error) {
 			/** Log Error */
 			logError('Command', 'An error in messageCollector', error)
-			return error
+			return error;
 		}
 
 		/** Parsing Index */
+		let index;
 		try {
 			// Parse Index Number
-			let index = parseInt(choice.first().content, 10);
+			index = parseInt(choice.first().content, 10);
 			// Quick check if it's a number
 			if (isNaN(index) || index > results.length || index < 1) {
 	      throw new Error(`Cannot parse ${index} as number.`)
