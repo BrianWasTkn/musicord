@@ -17,54 +17,77 @@ export default new Command({
 
 	/** Do the thing */
 	try {
+		/** Search Results */
 		const results = await bot.player.search(args.join(' '))
-		const found = results.map((song, index) => `**#${index + 1}:** [**${song.name}**](${song.url}) - **\`${song.formattedDuration}\`**`).slice(0, 5)
-		const msg = await message.channel.send({
-			embed: {
-				author: {
-					name: 'Search Results',
-					iconURL: message.guild.iconURL()
-				},
-				color: 'BLUE',
-				fields: [
-					{ name: `**__${found.length} songs found__**`, value: found.join('\n') },
-					{ name: '**__Instructions__**', value: '**Type the number of your choice.\nYou can type `cancel` to cancel your search.**' }
-				]
-			}
-		})
-		/** Awaited Message */
+		const found = results.map((song, index) => `**#${index + 1}:** [**${song.name}**](${song.url}) - **\`${song.formattedDuration}\`**`).slice(0, 10)
+		
+		/** Send Message */
+		try {
+			const msg = await message.channel.send({
+				embed: {
+					author: {
+						name: 'Search Results',
+						iconURL: message.guild.iconURL()
+					},
+					title: `Found ${found.length} tracks`,
+					color: 'BLUE',
+					description: found.join('\n'),
+					fields: [
+						{ name: 'Instructions', value: 'Type the **number** of your choice.\nYou can cancel by typing out `cancel` right now.**' }
+					]
+				}
+			})
+		} catch(error) {
+			/** Log Error */
+			logError('Command', 'Cannot send search results message', error)
+		}
+
+		/** Await Message */
 		try {
 			const choice = await message.channel.awaitMessages(m => m.author.id === message.author.id, {
 				max: 1,
 				time: 1e4,
 				errors: ['time']
 			})
-			// no answer
+			// No Answer
 			if (!choice.first()) {
 				throw new Error(`Next time if you're just gonna let me waste my time don't use this command again okay?`)
 			};
-			// index parsing
+		} catch(error) {
+			/** Log Error */
+			logError('Command', 'An error in messageCollector', error)
+			return error
+		}
+
+		/** Parsing Index */
+		try {
+			// Parse Index Number
 			let index = parseInt(choice.first().content, 10);
-			// check if a number
+			// Quick check if it's a number
 			if (isNaN(index) || index > results.length || index < 1) {
-        throw new Error(`Cannot parse ${index} as number.`)
-      };
-			// play it.
+	      throw new Error(`Cannot parse ${index} as number.`)
+	    };
+		} catch(error) {
+			/** Log Error */
+			logError('Command', 'Parsing error', error)
+		}
+
+		/** Play */
+		try {
+			await bot.player.play(message, results[index - 1].url)
 			try {
-				await bot.player.play(message, results[index - 1].url)
-				try {
-					await msg.delete()
-				} catch(error) {
-					logError('Command', 'Cannot delete search embed', error)
-				}
+				/** Delete Message */
+				await msg.delete()
 			} catch(error) {
-				logError('Command', 'Cannot play searched song', error)
+				/** Log Error */
+				logError('Command', 'Cannot delete search embed', error)
 			}
 		} catch(error) {
-			logError('Command', 'An error in message Collector', error)
-			return 'You cancelled the search'
+			/** Log Error */
+			logError('Command', 'Cannot play searched song', error)
 		}
 	} catch(error) {
+		/** Log Error */
 		logError('Command', 'Unable to search tracks', error)
 	}
 })
