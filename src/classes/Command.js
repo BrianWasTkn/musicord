@@ -57,9 +57,7 @@ export default class Command {
 				const timeLeft = (expiration - now) / 1000;
 				return `please wait **${timeLeft.toFixed(1)}** seconds before re-using the \`${comamnd.name}\` command.`
 			} 
-			return false;
 		} 
-		return false;
 	}
 
 	async execute(bot, command, message, args) {
@@ -101,8 +99,6 @@ export default class Command {
 		if (!message.member.permissions.has(command.permissions)) {
 			return `**Missing Permissions**\nMake sure you have the following permissions:\n\n\`${command.permissions.join('`, `')}\``
 		}
-
-		return false;
 	}
 
 	_checkVoiceState(message, command) {
@@ -120,7 +116,5 @@ export default class Command {
 				}
 			}
 		}
-		
-		return false;
 	}
 }
