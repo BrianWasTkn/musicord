@@ -6,7 +6,6 @@ import distube from 'distube'
 
 import { logInit, logError } from '../utils/logger.js'
 import Utilities from './Utilities.js'
-import emotes from '../utils/emotes.js'
 import config from '../config.js'
 import botPackage from '../../package.json'
 
@@ -14,7 +13,6 @@ export default class Musicord extends Client {
 	constructor(discordOpts, playerOpts) {
 		super(discordOpts);
 		this.package = botPackage;
-		this.emotes = emotes;
 		this.config = config;
 		this.utils = new Utilities();
 		this.player = new distube(this, playerOpts);
