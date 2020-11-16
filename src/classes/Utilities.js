@@ -58,5 +58,4 @@ export default class Utilities {
 
     return parsed.filter(g => !g.startsWith('0')).join(', ');
   }
-return parse(60)
 }
