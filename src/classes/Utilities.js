@@ -39,4 +39,24 @@ export default class Utilities {
 			return new Error('NoEmbed')
 		}
 	}
+
+	/** Parse Time */
+	parseTime(time) {
+    const methods = [
+      { name: 'day', count: 86400 },
+      { name: 'hour', count: 3600 },
+      { name: 'minute', count: 60 },
+      { name: 'second', count: 1 }
+    ];
+
+    const parsed = [ 
+    	`${Math.floor(time / methods[0].count).toString()} ${methods[0].name}` 
+    ];
+    for (let i = 0; i < 3; i++) {
+      parsed.push(`${Math.floor(time % methods[i].count / methods[i + 1].count).toString()} ${methods[i + 1].count > 1 ? `${methods[i + 1].name}s` : methods[i + 1].name}`);
+    }
+
+    return parsed.filter(g => !g.startsWith('0')).join(', ');
+  }
+return parse(60)
 }

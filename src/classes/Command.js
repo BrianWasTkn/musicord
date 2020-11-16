@@ -1,5 +1,6 @@
 import discord from 'discord.js'
 import config from '../config.js'
+import utils from './Utilities.js'
 
 export default class Command {
 	constructor(options, func) {
@@ -55,7 +56,14 @@ export default class Command {
 
 			if (now < expiration) {
 				const timeLeft = (expiration - now) / 1000;
-				return `please wait **${timeLeft.toFixed(1)}** seconds before re-using the \`${command.name}\` command.`
+				return {
+					title: 'Cooldown',
+					color: 'BLUE',
+					description: `Command **${command.name}** on cooldown.\nWait ${timeLeft > 60 ? ${utils.parseTime(timeLeft)} : `${timeLeft.toFixed()} seconds`} and try again.`,
+					footer: { 
+						text: 'Thanks for support!'
+					} 
+				}
 			} 
 		} 
 	}
