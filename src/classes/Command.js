@@ -59,7 +59,7 @@ export default class Command {
 				return {
 					title: 'Cooldown',
 					color: 'BLUE',
-					description: `Command **${command.name}** on cooldown.\nWait ${timeLeft > 60 ? ${utils.parseTime(timeLeft)} : `${timeLeft.toFixed()} seconds`} and try again.`,
+					description: `Command **${command.name}** on cooldown.\nWait ${timeLeft > 60 ? ${message.client.utils.parseTime(timeLeft)} : `${timeLeft.toFixed()} seconds`} and try again.`,
 					footer: { 
 						text: 'Thanks for support!'
 					} 
