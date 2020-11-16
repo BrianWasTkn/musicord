@@ -44,7 +44,7 @@ export async function run(bot) {
 						{ name: 'Duration', value: `\`${song.formattedDuration}\`` },
 					],
 					footer: {
-						text: `Requested by ${song.user.tag}`,
+						text: `Added by ${song.user.tag}`,
 						iconURL: song.user.avatarURL()
 					}
 				}
@@ -82,7 +82,7 @@ export async function run(bot) {
 						iconURL: message.guild.iconURL()
 					},
 					color: 'RED',
-					description: 'Voice channel is now **empty**.\nLeaving channel in **60** seconds...'
+					description: 'Voice channel is now **empty**.\nLeft the channel after 60 seconds...'
 				}
 			})
 		})
@@ -99,17 +99,18 @@ export async function run(bot) {
 			})
 		})
 		.on('searchResult', async (message, result) => {
-			result = result.slice(0, 5) // Slice the results from 12 => 5
+			result = result.slice(0, 10).map((song, index) => `**#${index + 1}:** [**${song.name}**](${song.url}) - \`${song.formattedDuration}\``) // Slice the results from 15 => 10
 			message.channel.send({
 				embed: {
 					author: {
 						name: 'Search Results',
 						iconURL: message.guild.iconURL()
 					},
+					title: `Found ${result.length} tracks`,
 					color: 'BLUE',
+					description: result.join('\n'),
 					fields: [
-						{ name: `**__${result.length} songs found__**`, value: result.map((song, index) => `**#${index + 1}:** [**${song.name}**](${song.url}) - \`${song.formattedDuration}\``) },
-						{ name: '**__Instructions__**', value: '**Type the number of your choice.\nYou can type `cancel` to cancel your search.**' }
+						{ name: 'Instructions', value: 'Type the **number** of your choice.\nYou can cancel by typing out `cancel` right now.\nYou have **30 seconds** to proceed otherwise your search is cancelled.' }
 					]
 				}
 			})
