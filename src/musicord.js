@@ -6,11 +6,11 @@ import { logInit, logError } from './utils/logger.js'
 const run = async () => {
 	try {
 		/** Process Error: unhandledRejection */
-		process.on('unhandledRejection', async (error) => {
+		process.on('unhandledRejection', error => {
 			logError('Process', 'unhandledRejection', error.stack)
 		})
 		/** Process Error: uncaughtException */
-		process.on('uncaughtException', async (error) => {
+		process.on('uncaughtException', error => {
 			logError('Process', 'uncaughtException', error.stack)
 		})
 	} catch(error) {
