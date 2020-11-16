@@ -1,6 +1,5 @@
 import discord from 'discord.js'
 import config from '../config.js'
-import utils from './Utilities.js'
 
 export default class Command {
 	constructor(options, func) {
@@ -59,7 +58,7 @@ export default class Command {
 				return {
 					title: 'Cooldown',
 					color: 'BLUE',
-					description: `Command **${command.name}** on cooldown.\nWait ${timeLeft > 60 ? ${message.client.utils.parseTime(timeLeft)} : `${timeLeft.toFixed()} seconds`} and try again.`,
+					description: `Command **${command.name}** on cooldown.\nWait **${timeLeft > 60 ? message.client.utils.parseTime(timeLeft) : `${timeLeft.toFixed()} seconds`}** and try again.`,
 					footer: { 
 						text: 'Thanks for support!'
 					} 
