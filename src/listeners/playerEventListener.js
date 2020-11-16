@@ -99,7 +99,7 @@ export async function run(bot) {
 			})
 		})
 		.on('searchResult', async (message, result) => {
-			result = result.slice(0, 10).map((song, index) => `**#${index + 1}:** [**${song.name}**](${song.url}) - \`${song.formattedDuration}\``) // Slice the results from 15 => 10
+			result = result.slice(0, 10).map((song, index) => `**#${index + 1}:** [${song.name}](${song.url}) - \`${song.formattedDuration}\``) // Slice the results from 15 => 10
 			message.channel.send({
 				embed: {
 					author: {

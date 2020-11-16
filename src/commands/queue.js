@@ -67,7 +67,7 @@ export default new Command({
 					// Next/Skip
 					case emojis[1]:
 						try { 
-							await reaction.users.remove()
+							await reaction.users.remove(user)
 							try {
 								await bot.player.skip(message);
 							} catch(error) {
@@ -80,7 +80,7 @@ export default new Command({
 					// Pause
 					case emojis[2]:
 						try { 
-							await reaction.users.remove()
+							await reaction.users.remove(user)
 							try {
 								await bot.player.pause(message);
 							} catch(error) {
@@ -93,7 +93,7 @@ export default new Command({
 					// Stop
 					case emojis[3]:
 						try { 
-							await reaction.users.remove()
+							await reaction.users.remove(user)
 							try {
 								await bot.player.stop(message);
 							} catch(error) {
@@ -109,8 +109,8 @@ export default new Command({
 						break;
 					// shuffle
 					case emojis[5]:
-					try { 
-							await reaction.users.remove()
+						try { 
+							await reaction.users.remove(user)
 							try {
 								await bot.player.shuffle(message);
 							} catch(error) {
@@ -118,8 +118,7 @@ export default new Command({
 							}
 						} catch (error) { 
 							logError('Command', 'cannot remove reaction', error) 
-						}
-						message.channel.send('shuffle');
+						};
 						break;
 				}
 			})

@@ -17,33 +17,13 @@ export default new Command({
 	}
 
 	/** Methods */
-	let repeatMode;
-	switch(method) {
-		case 'queue':
-			repeatMode = 2
-			break;
-		case 'song':
-		case 'track':
-			repeatMode = 1
-			break;
-		default:
-			repeatMode = 0
-	}
+	method = method.toLowerCase();
+	const mode = method ? method === 'queue' ? 2 : 1 : 0;
 
 	/** Do the thing */
 	try {
-		const queue = await bot.player.setRepeatMode(message, repeatMode);
-		switch(queue.repeatMode) {
-			case 2:
-				return 'Now looping **__queue__**'
-				break;
-			case 1:
-				return 'Now looping **__track__**'
-				break;
-			case 0:
-				return 'Loop is now **__off__**'
-				break;
-		}
+		const queue = await bot.player.setRepeatMode(message, mode);
+		return queue.repeatMode ? queue.repeatMode == 2 ? 'Now looping the **__whole queue__**' : 'Now looping the **__current track__**' : 'Loop is now **__off__**'
 	} catch(error) {
 		logError('Command', 'Unable to loop the current track', error)
 	}
