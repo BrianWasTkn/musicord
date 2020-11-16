@@ -6,7 +6,7 @@ export default new Command({
 	aliases: ['find'],
 	description: 'search a track',
 	usage: '<track>',
-	cooldown: 3e3,
+	cooldown: 1e4,
 	music: true
 }, async (bot, message, args) => {
 
@@ -77,7 +77,7 @@ export default new Command({
 			await bot.player.play(message, results[index - 1].url)
 			try {
 				/** Delete Search Result Message */
-				await msg.delete(`Search results by ${message.author.tag}`)
+				await msg.delete({ reason: `Search results by ${message.author.tag}`})
 			} catch(error) {
 				/** Log Error */
 				logError('Command', 'Cannot delete search embed', error)

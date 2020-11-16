@@ -6,8 +6,7 @@ export default new Command({
 	aliases: ['command-info', 'cmd'],
 	description: 'skip the current track',
 	usage: '[command]',
-	cooldown: 3e3,
-	music: true
+	cooldown: 3e3
 }, async (bot, message, [cmd]) => {
 	
 	/** Import Commands */

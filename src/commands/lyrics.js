@@ -7,7 +7,7 @@ export default new Command({
 	aliases: ['l'],
 	description: 'view the lyrics of the current track.',
 	usage: '[...songName]',
-	cooldown: 3e3,
+	cooldown: 5e3,
 	music: true
 }, async (bot, message, args) => {
 	
@@ -38,7 +38,7 @@ export default new Command({
 		console.log(response);
 		return 'done'
 	} catch(error) {
-		logError('Command', 'Unable to request lyrics', error)
+		logError('Command', 'Unable to request lyrics', error.stack)
 	}
 
 })
