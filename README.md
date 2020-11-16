@@ -13,7 +13,6 @@ The bot has the following features available to improve your music experience. S
 
 ## Installation
 Musicord is made with [**Discord.JS**](https://discord.js.org) and with other packages as well. View the list of all dependencies by clicking to this [**link**](docs/PACKAGES.md).
-**
 
 **Pre-requisites**
 * **Node.JS** - make sure **version 12**of node is installed.
@@ -30,5 +29,5 @@ $ npm run start
 ```
 
 -----------------------------
-**Maintained and created by**
+**Maintained and made by**
 [**BrianWasTaken**](https://github.com/BrianWasTkn) **@ 2020**
