@@ -20,7 +20,7 @@ export default new Command({
 	try {
 		/** Search Results */
 		results = await bot.player.search(args.join(' '))
-		found = results.map((song, index) => `**#${index + 1}:** [${song.name}](${song.url}) - \`${song.formattedDuration}\``).slice(0, 10)
+		found = results.map((song, index) => `**#${index + 1}:** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\``).slice(0, 10)
 		
 		/** Send Message */
 		try {
@@ -34,7 +34,7 @@ export default new Command({
 					color: 'BLUE',
 					description: found.join('\n'),
 					fields: [
-						{ name: 'Instructions', value: 'Type the **number** of your choice.\nYou can cancel by typing out `cancel` right now.' }
+						{ name: 'Instructions', value: 'Type the **number** of your choice.\nYou can cancel by typing out `cancel` right now.\nYou have **30 seconds** to proceed otherwise your search is cancelled.' }
 					]
 				}
 			})
@@ -47,7 +47,7 @@ export default new Command({
 		try {
 			choice = await message.channel.awaitMessages(m => m.author.id === message.author.id, {
 				max: 1,
-				time: 1e4,
+				time: 3e4,
 				errors: ['time']
 			})
 		} catch(error) {
@@ -69,14 +69,15 @@ export default new Command({
 		} catch(error) {
 			/** Log Error */
 			logError('Command', 'Parsing error', error)
+			return error
 		}
 
 		/** Play */
 		try {
 			await bot.player.play(message, results[index - 1].url)
 			try {
-				/** Delete Message */
-				await msg.delete()
+				/** Delete Search Result Message */
+				await msg.delete(`Search results by ${message.author.tag}`)
 			} catch(error) {
 				/** Log Error */
 				logError('Command', 'Cannot delete search embed', error)

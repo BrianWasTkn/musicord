@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"FOUND",
+				"found"
+			],
+			[
 				"fo",
 				"function"
 			],
@@ -351,6 +355,41 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "src/commands/search.js",
+			"settings":
+			{
+				"buffer_size": 2385,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/listeners/playerEventListener.js",
+			"settings":
+			{
+				"buffer_size": 3685,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/config.js",
+			"settings":
+			{
+				"buffer_size": 357,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "node_modules/distube/src/DisTube.js",
+			"settings":
+			{
+				"buffer_size": 41221,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -416,20 +455,29 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/Discord/Desktop/discord.js/music-DisTube"
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube",
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src",
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/classes",
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/commands",
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/listeners"
 	],
 	"file_history":
 	[
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube/node_modules/distube/src/DisTube.js",
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube/.gitignore",
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/commands/seek.js",
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/listeners/discordEventListener.js",
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/classes/Command.js",
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube/node_modules/distube/src/SearchResult.js",
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube/package.json",
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube/README.md",
+		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/musicord.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/node_modules/@distube/youtube-dl/lib/util.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/commands/loop.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/commands/stop.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/listeners/playerEventListener.js",
-		"/C/Users/Discord/Desktop/discord.js/music-DisTube/node_modules/distube/src/DisTube.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/node_modules/distube/src/duration.js",
-		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/commands/seek.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/main.js",
-		"/C/Users/Discord/Desktop/discord.js/music-DisTube/package.json",
-		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/musicord.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/main.cjs",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/classes/MessageCollector.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/node_modules/discord.js/src/structures/interfaces/TextBasedChannel.js",
@@ -438,9 +486,7 @@
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/classes/Client.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/commands/pause.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/commands/help.js",
-		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/classes/Command.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/config.js",
-		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/listeners/discordEventListener.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/commands/play.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/node_modules/discord.js/src/structures/ClientUser.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/commands/resume.js",
@@ -466,7 +512,6 @@
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/.git/COMMIT_EDITMSG",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/events/ready.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/events/error.js",
-		"/C/Users/Discord/Desktop/discord.js/music-DisTube/.gitignore",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/listeners/commandListener.js",
 		"/C/Users/Discord/Desktop/discord.js/music-DisTube/src/Musicord.js",
 		"/C/Users/Discord/Desktop/github/musicord/src/processes/initDiscordEvents.js",
@@ -545,13 +590,11 @@
 		"/C/Users/Discord/Desktop/github/crib/node_modules/eris/lib/command/CommandClient.js",
 		"/C/Users/Discord/Desktop/github/crib/node_modules/eris/lib/Client.js",
 		"/C/Users/Discord/Desktop/github/crib/src/commands/Owner/game.js",
-		"/C/Users/Discord/Desktop/github/crib/src/commands/Owner/status.js",
-		"/C/Users/Discord/Desktop/github/crib/package-lock.json",
-		"/C/Users/Discord/Desktop/github/crib/package.json"
+		"/C/Users/Discord/Desktop/github/crib/src/commands/Owner/status.js"
 	],
 	"find":
 	{
-		"height": 31.0
+		"height": 54.0
 	},
 	"find_in_files":
 	{
@@ -582,8 +625,125 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "src/commands/search.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2385,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								672,
+								1060
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 400.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/listeners/playerEventListener.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3685,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1183,
+								1183
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2160.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/config.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 357,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								297,
+								297
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "node_modules/distube/src/DisTube.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 41221,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7080.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
 			]
 		}
 	],

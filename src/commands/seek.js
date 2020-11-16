@@ -17,26 +17,22 @@ export default new Command({
 		return 'There\'s nothing playing in the queue.'
 	}
 
-	/** 
-	const time = timestamp.split(':'),
-	numbered = time.map(Number),
-	hours = time.length > 2 ? time[0] : 00,
-	minutes = time.length > 1
-
-	const tsRegex = /^((?:\d\d)\:(?:\d\d)\:(?:\d\d))$/gi;
-	let parse;
-	if (Number(timestamp)) {
-		parse = fromMs(timestamp * 1000)
-	} else if (tsRegex.exec(timestamp)[1])  {
-		parse = toMs(tsRegex.exec(timestamp)[1])
+	/** Parsing Time */
+	let parse, ms, ts;
+	ms = toMs(timestamp);
+	ts = fromMs(timestamp);
+	if (ms) {
+		parse = ms;
+	} else if (ts) {
+		parse = toMs(ts)
 	} else {
-		return 'Unable to parse timestamp.'
+		return `Unable to parse **${timestamp}** as time.`
 	}
-	*/
 
 	/** Do the thing */
 	try {
-		await bot.player.seek(message, parse)
+		await bot.player.seek(message, parse * 1000)
+		return `Seeked track at **${fromMs(parse)}**`
 	} catch(error) {
 		logError('Command', 'Unable to seek to the track', 'error')
 	}

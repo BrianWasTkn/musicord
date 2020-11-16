@@ -28,13 +28,17 @@ export default new Command({
 	}
 
 	/** Map Songs */
-	const songs = queue ? queue.songs.map((song, index) => `**${index === 0 ? ':musical_note:' : `${index+1}.`}** [${song.name}](${song.url}) - \`${song.formattedDuration}\` `) : false;
+	const songs = queue ? queue.songs.map((song, index) => `**${index === 0 ? ':musical_note:' : `#${index+1}:`}** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\` `) : false;
 	return {
+		author: {
+			name: message.guild.name,
+			iconURL: message.guild.iconURL()
+		},
 		title: 'Server Queue',
 		color: 'BLUE',
 		fields: [
-			{ name: '**__Now Playing:__**', value: songs[0] },
-			{ name: '**__Server Queue:__**', value: songs[1] ? songs.slice(1).join('\n') : '**No more songs in queue.**' }
+			{ name: 'Now Playing', value: songs[0] },
+			{ name: 'Server Queue', value: songs[1] ? songs.slice(1).join('\n') : '**No more songs in queue.**' }
 		]
 	}
 })
