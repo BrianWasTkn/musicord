@@ -45,7 +45,7 @@ export default class Musicord extends Client {
 	readdirSync(join(__dirname, '..', 'events'))
 		.map(evt => evt.split('.')[0])
 		.forEach(evt => {
-			bot.on(evt, (...args) => {
+			bot.on(evt, async (...args) => {
 				await require(join(__dirname, '..', 'events', evt)).run(bot, ...args);
 			})
 		})
