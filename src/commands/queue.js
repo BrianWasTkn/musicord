@@ -1,4 +1,5 @@
 import Command from '../classes/Command.js'
+import { logError } from '../utils/logger.js'
 
 export default new Command({
 	name: 'queue',
@@ -85,8 +86,10 @@ export default new Command({
 				await message.channel.send('ended')
 				await msg.reactions.removeAll()
 			})
+		} catch (error) {
+			logError('Command', 'queue', error)
 		}
 	} catch(error) {
-
+		logError('Command', 'queue', error)
 	}
 })
