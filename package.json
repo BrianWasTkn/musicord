@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/BrianWasTkn/Musicord-DisTube#readme",
   "dependencies": {
+    "axios": "^0.21.0",
     "chalk": "^4.1.0",
     "discord-music-player": "^5.0.4",
     "discord.js": "^12.4.1",
