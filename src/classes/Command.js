@@ -38,8 +38,8 @@ export default class Command {
 		/** Check if on cooldown */
 		const check = this._checkCooldown(command, message, now, timestamps, cooldown);
 		if (check) {
-			/** Return Cooldown Message */
-			return check;
+			/** Return Cooldown Embed */
+			return { embed: check };
 		}
 
 		/** Process Cooldown */
