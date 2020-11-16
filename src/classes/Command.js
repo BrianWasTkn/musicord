@@ -53,7 +53,7 @@ export default class Command {
 		if (timestamps.has(message.author.id)) {
 			const expiration = timestamps.get(message.author.id) + cooldown;
 
-			if (now < expiration) {
+			if (now < Math.floor(expiration)) {
 				const timeLeft = (expiration - now) / 1000;
 				return {
 					title: 'Cooldown',
