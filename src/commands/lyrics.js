@@ -29,7 +29,7 @@ export default new Command({
 			/** Message */
 			return {
 				title: `Lyrics for **${queue.songs[0].name}**`,
-				description: lyrics;
+				description: lyrics
 			}
 		} catch(error) {
 			logError('Command', 'Unable to request lyrics', error.stack)
