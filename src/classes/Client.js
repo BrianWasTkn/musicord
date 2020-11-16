@@ -5,7 +5,7 @@ import { Player } from 'discord-music-player' // test
 import distube from 'distube'
 
 import { logInit, logError } from '../utils/logger.js'
-import utils from '../utils/utilities.js'
+import Utils from './Utilities.js'
 import emotes from '../utils/emotes.js'
 import config from '../config.js'
 import botPackage from '../../package.json'
@@ -16,7 +16,7 @@ export default class Musicord extends Client {
 		this.package = botPackage;
 		this.emotes = emotes;
 		this.config = config;
-		this.utils = utils;
+		this.utils = new Utilities();
 		this.player = new distube(this, playerOpts);
 		this.test = new Player(this);
 		this.commands = new Collection();
@@ -46,7 +46,7 @@ export default class Musicord extends Client {
 		.map(evt => evt.split('.')[0])
 		.forEach(evt => {
 			bot.on(evt, (...args) => {
-				require(join(__dirname, '..', 'events', evt)).run(bot, ...args);
+				await require(join(__dirname, '..', 'events', evt)).run(bot, ...args);
 			})
 		})
 	}

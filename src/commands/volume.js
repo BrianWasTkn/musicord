@@ -8,7 +8,7 @@ export default new Command({
 	usage: '<1-100>',
 	cooldown: 3e3,
 	music: true
-}, async (bot, message, args) => {
+}, async (bot, message, [rate]) => {
 	
 	/** Check Playing State */
 	const isPlaying = bot.player.isPlaying(message);
@@ -17,7 +17,7 @@ export default new Command({
 	}
 
 	/** Parse */
-	let percent = args ? parseInt(args, 100) : false;
+	let percent = rate ? parseInt(rate, 100) : false;
 	if (!percent) {
 		return 'You need a percentage.'
 	}
