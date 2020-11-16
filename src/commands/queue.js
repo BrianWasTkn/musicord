@@ -49,8 +49,8 @@ export default new Command({
 		try {
 			/** Emojis -> queueMessage */
 			const emojis = ['⏮️', '⏭️', '⏸️', '⏹️', '🔁', '🔀'];
-			for await (const emoji of emojis) {
-				msg.react(emoji)
+			for (const emoji of emojis) {
+				await msg.react(emoji)
 			}
 
 			/** Collector */
@@ -58,24 +58,67 @@ export default new Command({
 			const collector = await msg.createReactionCollector(filter, { time: 60000 });
 			
 			/** Controls */
-			collector.on('collect', (r, u) => {
-				switch(r.emoji.name) {
+			collector.on('collect', async (reaction, user) => {
+				switch(reaction.emoji.name) {
+					// Previous
 					case emojis[0]:
-						message.channel.send('previous');
+						await message.channel.send('Coming Soon:tm:');
 						break;
+					// Next/Skip
 					case emojis[1]:
-						message.channel.send('next');
+						try { 
+							await reaction.users.remove()
+							try {
+								await bot.player.skip(message);
+							} catch(error) {
+								logError('Command', 'cannot skip', error) 
+							}
+						} catch (error) { 
+							logError('Command', 'cannot remove reaction', error) 
+						}
 						break;
+					// Pause
+					case emojis[2]:
+						try { 
+							await reaction.users.remove()
+							try {
+								await bot.player.pause(message);
+							} catch(error) {
+								logError('Command', 'cannot pause', error) 
+							}
+						} catch (error) { 
+							logError('Command', 'cannot remove reaction', error) 
+						}
+						break;
+					// Stop
 					case emojis[3]:
-						message.channel.send('pause');
+						try { 
+							await reaction.users.remove()
+							try {
+								await bot.player.stop(message);
+							} catch(error) {
+								logError('Command', 'cannot stop', error) 
+							}
+						} catch (error) { 
+							logError('Command', 'cannot remove reaction', error) 
+						}
 						break;
+					// repeat
 					case emojis[4]:
-						message.channel.send('stop');
-						break;
-					case emojis[5]:
 						message.channel.send('repeat');
 						break;
-					case emojis[6]:
+					// shuffle
+					case emojis[5]:
+					try { 
+							await reaction.users.remove()
+							try {
+								await bot.player.shuffle(message);
+							} catch(error) {
+								logError('Command', 'cannot shuffle', error) 
+							}
+						} catch (error) { 
+							logError('Command', 'cannot remove reaction', error) 
+						}
 						message.channel.send('shuffle');
 						break;
 				}
