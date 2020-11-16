@@ -23,6 +23,7 @@ export default class Musicord extends Client {
 		this._loadAll();
 	}
 
+	/** Load Functions */
 	_loadAll() {
 		try {
 			this._registerCommands();
@@ -38,31 +39,19 @@ export default class Musicord extends Client {
 		}
 	}
 
-	/** reserved */
-	_loadEvents(bot) {
-	readdirSync(join(__dirname, '..', 'events'))
-		.map(evt => evt.split('.')[0])
-		.forEach(evt => {
-			bot.on(evt, async (...args) => {
-				await require(join(__dirname, '..', 'events', evt)).run(bot, ...args);
-			})
-		})
-	}
-
+	/** Register Commands */
 	_registerCommands() {
 	readdirSync(join(__dirname, '..', 'commands'))
-		.filter(cmd => cmd.endsWith('.js'))
-		.forEach(cmd => {
-			const command = require(join(__dirname, '..', 'commands', cmd)).default
+		.forEach(item => {
+			// Item in the array is either a file.js or a folder
+			const command = item.endsWith('.js') ? require(join(__dirname, '..', 'commands', item)).default : readdirSync(join(__dirname, '..', 'commands', item)).map(cmd => require(join(__dirname, '..', 'commands', item, cmd)).default)
+			// Push to collection
 			this.commands.set(command.name, command);
-			if (command.aliases) {
-				command.aliases.forEach(alias => {
-					this.aliases.set(alias, command)
-				})
-			}
+			if (command.aliases) command.aliases.forEach(alias => this.aliases.set(alias, command))
 		})
 	}
 
+	/** Listeners */
 	_loadListeners(bot) {
 		readdirSync(join(__dirname, '..', 'listeners'))
 		.forEach(async l => {
@@ -70,14 +59,13 @@ export default class Musicord extends Client {
 		})
 	}
 
+	/** Getters */
 	get version() {
 		return this.package.version;
 	}
-
 	get dependencies() {
 		return Object.keys(this.package.dependencies);
 	}
-
 	get prefix () {
 		return this.config.prefix;
 	}

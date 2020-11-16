@@ -5,7 +5,9 @@ export default new Command({
 	name: 'bassboost',
 	aliases: ['toggle-bassboost'],
 	description: 'bassboost filter',
-	usage: '<db | -30 to 20>'
+	usage: '<db | -30 to 20>',
+	cooldown: 1000,
+	music: true
 }, async message => {
 	try {
 		const queue = await message.client.player.setFilter(message, 'bassboost')
