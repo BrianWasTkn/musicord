@@ -13,15 +13,11 @@ export async function run(bot) {
 
 				const [cmd, ...args] = message.content.slice(prefix.length).split(' ');
 				const command = bot.commands.get(cmd.toLowerCase()) || bot.aliases.get(cmd.toLowerCase());
-
-				if (!command) {
-					return;
-				} else {
-					try {
-						await command.execute(bot, command, message, args);
-					} catch(error) {
-						logError('Listener', `unable to execute "${command.name}"`, error)
-					}
+				if (!command) return;
+				try {
+					await command.execute(bot, command, message, args);
+				} catch(error) {
+					logError('Listener', `unable to execute "${command.name}"`, error)
 				}
 			}
 		})
