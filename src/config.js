@@ -27,12 +27,12 @@ export default {
 			phaser: "aphaser=in_gain=0.4",
 			subboost: "asubboost",
 			reverse: "areverse",
-			mcompand: "mcompand"
+			mcompand: "mcompand",
 			tremolo: "tremolo",
 			vibrato: "vibrato=f=6.5",
 			pulsator: "apulsator=hz=1",
 			gate: "agate",
-			haas: "haas",
+			haas: "haas"
 		}
 	},
 
