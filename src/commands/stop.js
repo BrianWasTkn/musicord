@@ -4,7 +4,7 @@ import { logError } from '../utils/logger.js'
 export default new Command({
 	name: 'stop',
 	aliases: ['shutup'],
-	description: 'skip the current track',
+	description: 'stop the queue',
 	usage: 'command',
 	cooldown: 3e3,
 	music: true

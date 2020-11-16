@@ -71,19 +71,19 @@ export default class Command {
 		/** Process Cooldown */
 		const cooldown = this._processCooldown(message, command);
 		if (cooldown) {
-			return message.reply(cooldown);
+			return message.channel.send(cooldown);
 		}
 
 		/** Check Permissions */
 		const permission = this._checkPermissions(bot, command, message);
 		if (permission) {
-			return message.reply(permission);
+			return message.channel.send({ embed: permission });
 		}
 
 		/** Process VoiceState */
 		const state = this._checkVoiceState(message, command);
 		if (state) {
-			return message.reply(state)
+			return message.channel.send({ embed: state })
 		}
 
 		/** Else, Run it */
@@ -104,7 +104,14 @@ export default class Command {
 	_checkPermissions(bot, command, message) {
 		/** User Permissions */
 		if (!message.member.permissions.has(command.permissions)) {
-			return `**Missing Permissions**\nMake sure you have the following permissions:\n\n\`${command.permissions.join('`, `')}\``
+			return {
+				title: 'Missing Permissions',
+				color: 'RED',
+				description: 'You don\'t have enough permissions to run this command!',
+				fields: [
+					{ name: `\`${command.permissions.length}\` missing permissions`, value: `\`${command.permissions.join('`, `')}\`` }
+				]
+			}
 		}
 	}
 
@@ -112,14 +119,27 @@ export default class Command {
 		if (command.music) {
 			const channel = message.member.voice.channel;
 			if (!channel) {
-				return '**voice channel!** you\'re not in a voice channel, please join in one.'
+				return {
+					title: 'Voice Channel',
+					color: 'RED',
+					description: 'Please join a **voice channel** first to use this command.\nThanks for using Musicord!'
+				}
 			} else {
 				const myPermissions = channel.permissionsFor(message.client.user);
 				if (!myPermissions.has('CONNECT')) {
+					return {
+						title: 'Missing Permissions',
+						color: 'RED',
+						description: 'I don\'t have permissions to `CONNECT` in your voice channel.\nPlease check the voice channel permissions and try again.'
+					}
 					return '**oops!** looks like i don\'t have permissions to connect in your channel...'
 				}
 				if (!myPermissions.has('SPEAK')) {
-					return '**oh no!** I cannot `SPEAK` in your channel, make sure I have permissions to talk in your channel so I can play the track.'
+					return {
+						title: 'Missing Permissions',
+						color: 'RED',
+						description: 'I don\'t have permissions to `SPEAK` in your voice channel.\nPlease check the voice channel permissions so I can play the track.'
+					}
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-import Command from '../classes/Command.js'
+import Command from '../../classes/Command.js'
 
 export default new Command({
 	name: 'ping',
