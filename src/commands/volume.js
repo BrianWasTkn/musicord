@@ -17,14 +17,13 @@ export default new Command({
 	}
 
 	/** Parse */
-	console.log(args)
-	if (!args) {
-		return 'You need a percentage'
+	if (!args.length) {
+		return 'You need a percentage.'
 	}
-	const percent = args[0] ? parseInt(args[0]) : 100;
 
 	/** Do the thing */
 	try {
+		const percent = !isNaN(args[0]) ? parseInt(args[0]) : 100;
 		const queue = await bot.player.setVolume(message, percent)
 		return `Successfully set the volume to **${queue.volume}%**`
 	} catch(error) {
