@@ -51,6 +51,7 @@ export default class Musicord extends Client {
 
 	_registerCommands() {
 	readdirSync(join(__dirname, '..', 'commands'))
+		.filter(cmd => cmd.endsWith('.js'))
 		.forEach(cmd => {
 			const command = require(join(__dirname, '..', 'commands', cmd)).default
 			this.commands.set(command.name, command);
