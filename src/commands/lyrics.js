@@ -1,6 +1,6 @@
 import Command from '../classes/Command.js'
 import { logError } from '../utils/logger.js'
-import axios from 'axios'
+import findLyrics from 'lyrics-finder'
 
 export default new Command({
 	name: 'lyrics',
@@ -17,28 +17,25 @@ export default new Command({
 		return 'There\'s nothing playing in the queue.'
 	}
 
-	/** Request Headers */
-	const queue = bot.player.getQueue(message);
-	const options = {
-	  method: 'GET',
-	  url: 'https://shazam.p.rapidapi.com/auto-complete',
-	  params: {
-	  	term: queue.songs[0].name, 
-	  	locale: 'en-US'
-	  },
-	  headers: {
-	    'x-rapidapi-key': '2948dd87c1msh02e7cfdca24dc04p19ffb5jsn907344f5baf4',
-	    'x-rapidapi-host': 'shazam.p.rapidapi.com'
-	  }
-	};
-
-	/** Request Lyrics */
+	/** First Phase */
 	try {
-		const response = await axios.request(options);
-		console.log(response);
-		return 'done'
+		const queue = bot.player.getQueue(message);
+		/** Request Lyrics */
+		try {
+			let lyrics = await findLyrics("", queue.songs[0].name);
+			if (lyrics.split('').length > 1000) {
+				lyrics = lyrics.split(' ').slice(0, 1000).join('')
+			}
+			/** Message */
+			return {
+				title: `Lyrics for **${queue.songs[0].name}**`,
+				description: lyrics;
+			}
+		} catch(error) {
+			logError('Command', 'Unable to request lyrics', error.stack)
+		}
 	} catch(error) {
-		logError('Command', 'Unable to request lyrics', error.stack)
+		logError('Command', 'Unable to get queue', error.stack)
 	}
 
 })

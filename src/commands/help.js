@@ -20,7 +20,7 @@ export default new Command({
 			fields: [
 				{ name: 'Description', value: command.description },
 				{ name: 'Triggers', value: `\`${command.aliases.join('`, `')}\``, inline: true },
-				{ name: 'Usage', value: command.usage, inline: true },
+				{ name: 'Usage', value: `\`${command.usage}\``, inline: true },
 				{ name: 'Permissions', value: `\`${command.permissions.join('`, `')}\``, inline: true }
 			],
 			footer: {

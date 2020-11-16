@@ -27,14 +27,15 @@
   },
   "homepage": "https://github.com/BrianWasTkn/Musicord-DisTube#readme",
   "dependencies": {
-    "axios": "^0.21.0",
     "chalk": "^4.1.0",
     "discord-music-player": "^5.0.4",
     "discord.js": "^12.4.1",
     "distube": "^2.7.0",
     "esm": "^3.2.25",
     "ffmpeg-static": "^4.2.7",
+    "lyrics-finder": "^21.4.0",
     "ms": "^2.1.2",
-    "opusscript": "0.0.7"
+    "opusscript": "0.0.7",
+    "string-progressbar": "^1.0.1"
   }
 }
