@@ -5,7 +5,7 @@ import { Player } from 'discord-music-player' // test
 import distube from 'distube'
 
 import { logInit, logError } from '../utils/logger.js'
-import Utils from './Utilities.js'
+import Utilities from './Utilities.js'
 import emotes from '../utils/emotes.js'
 import config from '../config.js'
 import botPackage from '../../package.json'
