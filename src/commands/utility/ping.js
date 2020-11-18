@@ -7,10 +7,7 @@ export default new Command({
 	usage: 'command'
 }, async (bot, message, args) => {
 	return {
-		author: {
-			name: message.guild.name,
-			iconURL: message.guild.iconURL()
-		},
+		title: message.guild.name,
 		color: 'BLUE',
 		fields: [
 			{ name: 'Shard ID', value: message.guild.shard.id },

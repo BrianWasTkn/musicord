@@ -20,12 +20,10 @@ export default new Command({
 			fields: [
 				{ name: 'Description', value: command.description },
 				{ name: 'Triggers', value: `\`${command.aliases.join('`, `')}\``, inline: true },
-				{ name: 'Usage', value: `\`${command.usage}\``, inline: true },
 				{ name: 'Permissions', value: `\`${command.permissions.join('`, `')}\``, inline: true }
+				{ name: 'Usage', value: `\`${command.usage}\``, inline: true },
 			],
-			footer: {
-				text: `To view all commands, run ${bot.config.prefix[0]}help | To view per-command info, run ${bot.config.prefix[0]}help <command>`
-			}
+			footer: { text: `To view all commands, run ${bot.config.prefix[0]}help | To view per-command info, run ${bot.config.prefix[0]}help <command>` }
 		}
 	} else {
 		return {
