@@ -49,6 +49,15 @@ export default class Command {
 		}, command.cooldown);
 	}
 
+	/**
+	 * Check Cooldowns
+	 * @param {Object} [command] the message object
+	 * @param {Object} [message] the command object
+	 * @param {Number} [now] the date now
+	 * @param {discord.Collection} [timestamps] the collection of timestamps
+	 * @param {Number} [cooldown] the cooldown of the command
+	 * @returns {Object} [embed.Object] the embed object
+	 */
 	_checkCooldown(command, message, now, timestamps, cooldown) {
 		if (timestamps.has(message.author.id)) {
 			const expiration = timestamps.get(message.author.id) + cooldown;
