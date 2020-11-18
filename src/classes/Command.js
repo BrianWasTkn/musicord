@@ -16,7 +16,7 @@ export default class Command {
 		this.name 				= options.name;
 
 		/** Cooldowns */
-		this.defaultCooldown = 3000;
+		this.defaultCooldown = 5000;
 	}
 
 	/**
@@ -122,7 +122,6 @@ export default class Command {
 						color: 'RED',
 						description: 'I don\'t have permissions to `CONNECT` in your voice channel.\nPlease check the voice channel permissions and try again.'
 					}
-					return '**oops!** looks like i don\'t have permissions to connect in your channel...'
 				}
 				if (!myPermissions.has('SPEAK')) {
 					return {
