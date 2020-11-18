@@ -2,10 +2,10 @@
   "name": "musicord",
   "version": "1.2.0",
   "description": "A discord music bot, made with Discord.JS V12 that can play any song from 700+ sources!",
-  "main": "src/main.js",
+  "main": "src/__main__.js",
   "scripts": {
-    "start": "node src/main.js",
-    "dev": "nodemon src/main.js"
+    "start": "node src/__main__.js",
+    "dev": "nodemon src/__main__.js"
   },
   "repository": {
     "type": "git",
