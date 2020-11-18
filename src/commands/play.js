@@ -11,9 +11,8 @@ export default new Command({
 }, async (bot, message, args) => {
 
 	/** Missing Args (Bug?) */
-	if (!args) {
-		const error = bot.utils.fancyText(bot.emotes.error, 'Missing Args', 'You need something to play.')
-		return error
+	if (args.length < 1) {
+		return 'you need something to play.'
 	}
 
 	/** Play */
