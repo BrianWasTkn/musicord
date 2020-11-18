@@ -36,17 +36,42 @@ export const startReactionCollector = async (message, embed, time) => {
 					break;
 				case emojis[1]:
 					await message.client.player.skip(message)
+					await message.channel.send({
+						embed: {
+							title: 'Track Skipped',
+							color: 'BLUE',
+							description: `Track successfully skipped by **${message.author.tag}**.\n${queue.songs[0] ? 'Proceeding to play the next track in the queue.' : 'The player has been stopped as no more songs are left to play.'}`,
+							footer: { text: 'Run "crib play" or "crib search" to either play or search for a track.' }
+						}
+					})
 					break;
 				case emojis[2]: 
 					await message.client.player.pause(message)
+					await message.channel.send({
+						embed: {
+							title: 'Track Paused',
+							color: 'BLUE',
+							description: `Track successfully paused by **${message.author.tag}**.`,
+							footer: { text: 'Run "crib play" or "crib search" to either play or search for a track.' }
+						}
+					})
 					break;
 				case emojis[3]:
-					await message.client.player.stop(message)
+					await message.client.player.stop(message);;
+					await message.channel.send({
+						embed: {
+							title: 'Player Stopped',
+							color: 'BLUE',
+							description: `The player has been stopped by **${message.author.tag}**.`,
+							footer: { text: 'Run "crib play" or "crib search" to either play or search for a track.' }
+						}
+					});
 					break;
 				case emojis[4]:
 					const queue = message.client.player.getQueue(message);
 					const mode = queue.repeatMode ? queue.repeatMode === 0 ? 1 : 2 : 0;
 					await message.client.player.setRepeatMode(message, mode)
+					await message.channel.send(`🔁 ${queue.repeatMode ? queue.repeatMode === 2 ? 'Now looping **__queue__**' : 'Now looping **__track__**' : 'Loop is now **__off__**'}`)
 					break;
 				case emojis[5]:
 					await message.client.player.shuffle(message);

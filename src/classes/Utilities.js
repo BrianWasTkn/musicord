@@ -17,27 +17,33 @@ export default class Utilities {
 	}
 
 	/** Codeblock Text */
-	codeBlock(string, syntax = null) {
+	codeBlock(string, syntax = 'js') {
 		return `\`\`\`${syntax}\n${string}\n\`\`\``;
 	}
 
 	/** Embedify */
 	embedify({ author, title, color, description, fields, footer } = {}) {
-		return {
-			author,
-			title,
-			color,
-			description,
-			fields,
-			footer
+		return { 
+			embed: {
+				author,
+				title,
+				color,
+				description,
+				fields,
+				footer
+			}
 		}
 	}
 
-	/** TODO: Unembedify */
+	/** Unembedify */
 	unembedify(embed) {
-		if(!embed instanceof Object) {
-			return new Error('NoEmbed')
-		}
+		if(!embed instanceof Object) return new Error('NoEmbed');
+		const structure = '';
+		if (embed.title) structure += `**__${embed.title.toUpperCase()}__**`
+		if (embed.description) structure += embed.description
+		if (embed.fields) structure += embed.fields.map(f => `\n**${f.name}**\n${f.value}`)
+		if (embed.footer) structure += `\n\n**${embed.footer.text}**`
+		return structure;
 	}
 
 	/** Parse Time */

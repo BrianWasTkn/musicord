@@ -17,7 +17,7 @@ export default new Command({
 	}
 
 	/** Parse */
-	if (!args.length < 0) {
+	if (args.length <= 0) {
 		return 'You need a percentage.'
 	}
 

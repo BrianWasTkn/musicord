@@ -106,7 +106,7 @@ export async function run(bot) {
 			})
 		})
 		.on('searchResult', async (message, result) => {
-			result = result.slice(0, 10).map((song, index) => `**#${index + 1}:** [${song.name}](${song.url}) - \`${song.formattedDuration}\``) // Slice the results from 15 => 10
+			result = result.slice(0, 10).map((song, index) => `**#${index + 1}:** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\``) // Slice the results from 15 => 10
 			await message.channel.send({
 				embed: {
 					title: `Found ${result.length} tracks`,
@@ -130,7 +130,7 @@ export async function run(bot) {
 			})
 		})
 		.on('error', async (message, err) => {
-			message.channel.send({
+			await message.channel.send({
 				embed: {
 					title: 'Player Error',
 					color: 'RED',
