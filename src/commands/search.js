@@ -68,8 +68,9 @@ export default new Command({
 				case index > results.length:
 					throw new Error(`Your choice shouldn't be greater than ${found.length}.`)
 					break;
-				case index < 1;
+				case index < 1:
 					throw new Error(`Are you really dumb? Imagine answering negative numbers.`)
+					break;
 			}
 		} catch(error) {
 			/** Log Error */

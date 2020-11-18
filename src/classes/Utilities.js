@@ -1,6 +1,4 @@
 export default class Utilities {
-	constructor() {}
-
 	/** Text Sanitizer */
 	sanitize(string) {
 		if (string instanceof String) {
