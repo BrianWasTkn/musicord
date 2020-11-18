@@ -20,22 +20,19 @@ export default new Command({
 	try {
 		/** Search Results */
 		results = await bot.player.search(args.join(' '))
-		found = results.map((song, index) => `**#${index + 1}:** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\``).slice(0, 10)
+		found = results.slice(0, 10).map((song, index) => `**#${index + 1}:** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\``)
 		
 		/** Send Message */
 		try {
 			msg = await message.channel.send({
 				embed: {
-					author: {
-						name: 'Search Results',
-						iconURL: message.guild.iconURL()
-					},
 					title: `Found ${found.length} tracks`,
 					color: 'BLUE',
 					description: found.join('\n'),
 					fields: [
-						{ name: 'Instructions', value: 'Type the **number** of your choice.\nYou can cancel by typing out `cancel` right now.\nYou have **30 seconds** to proceed otherwise your search is cancelled.' }
-					]
+						{ name: 'Instructions', value: 'Type the **number** of your choice.\nYou can cancel by typing out `cancel` right now.' }
+					],
+					footer: { text: 'You have 30 seconds to proceed otherwise your search is cancelled.' }
 				}
 			})
 		} catch(error) {
