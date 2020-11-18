@@ -20,14 +20,14 @@ export default new Command({
 	/** Parsing Time */
 	let parsed;
 	if (args.join(' ').match(/:/g)) {
-		parsed = formatToSecond(args) * 1000;
+		parsed = formatToSecond(args.join(' '));
 	} else {
-		parsed = args[0] * 1000;
+		parsed = formatToSecond(formatDuration(args.join(' ')));
 	}
 
 	/** Do the thing */
 	try {
-		await bot.player.seek(message, parsed)
+		await bot.player.seek(message, parsed * 1000);
 		return `Seeked track at **${formatDuration(parsed)}**`
 	} catch(error) {
 		log('commandError', 'seek', error)
