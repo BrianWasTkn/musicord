@@ -19,7 +19,7 @@ export default new Command({
 	/** Check if args contains a flag to clear the queue */
 	if (args.join(' ').includes('--clear')) {
 		await bot.player.stop(message)
-		return bot.utils.fancyText(bot.emotes.success, 'Queue Cleared', 'The queue has been cleared.')
+		return 'The queue has been cleared.'
 	}
 
 	/** Fetch Server Queue */

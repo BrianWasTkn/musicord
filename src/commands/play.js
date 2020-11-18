@@ -17,7 +17,21 @@ export default new Command({
 
 	/** Play */
 	try {
-		await bot.player.play(message, args.join(' '))
+		const sIndex = args.indexOf('--skip'),
+		rIndex = args.indexOf('--related');
+
+		if (args.length > (sIndex + 1)) {
+			/** Play Skip */
+			args.splice(sIndex, 2); // removes the flag from the args array
+			await bot.player.playSkip(message, args.join(' '));
+		} else if (args.length > rIndex) {
+			/** Add related song */
+			args.splice(rIndex, 2); // removes the flag from the args array
+			await bot.player.addRelatedVideo(message);
+		} else {
+			/** Play Song */
+			await bot.player.play(message, args.join(' ')) ;
+		}
 	} catch(error) {
 		log('commandError', 'play', error)
 		return error;

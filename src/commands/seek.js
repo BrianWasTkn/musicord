@@ -1,6 +1,6 @@
 import Command from '../classes/Command.js'
 import { log } from '../utils/logger.js'
-import { fromMs, toMs } from 'hh-mm-ss' 
+import { formatToSecond, formatDuration } from '../utils/duration.js'
 
 export default new Command({
 	name: 'seek',
@@ -9,7 +9,7 @@ export default new Command({
 	usage: '<hh:mm:ss: any | seconds: Number>',
 	cooldown: 3e3,
 	music: true
-}, async (bot, message, [timestamp]) => {
+}, async (bot, message, args) => {
 	
 	/** Check Playing State */
 	const isPlaying = bot.player.isPlaying(message);
@@ -18,21 +18,17 @@ export default new Command({
 	}
 
 	/** Parsing Time */
-	let parse, ms, ts;
-	ms = toMs(timestamp);
-	ts = fromMs(timestamp);
-	if (ms) {
-		parse = ms;
-	} else if (ts) {
-		parse = toMs(ts)
+	let parsed;
+	if (args.join(' ').match(/:/g)) {
+		parsed = formatToSecond(args) * 1000;
 	} else {
-		return `Unable to parse **${timestamp}** as time.`
+		parsed = args[0] * 1000;
 	}
 
 	/** Do the thing */
 	try {
-		await bot.player.seek(message, parse * 1000)
-		return `Seeked track at **${fromMs(parse)}**`
+		await bot.player.seek(message, parsed)
+		return `Seeked track at **${formatDuration(parsed)}**`
 	} catch(error) {
 		log('commandError', 'seek', error)
 		return error;
