@@ -23,8 +23,9 @@ export default new Command({
 		/** Request Lyrics */
 		try {
 			let lyrics = await findLyrics("", queue.songs[0].name);
+			if (!lyrics) lyrics = 'No lyrics found.'
 			if (lyrics.split('').length > 1000) {
-				lyrics = lyrics.split(' ').slice(0, 1000).join('')
+				lyrics = `${lyrics.substr(0, 1000)}...`
 			}
 			/** Message */
 			return {

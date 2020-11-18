@@ -61,9 +61,16 @@ export default new Command({
 			// Parse Index Number
 			index = parseInt(choice.first().content, 10);
 			// Quick check if it's a number
-			if (isNaN(index) || index > results.length || index < 1) {
-	      throw new Error(`Cannot parse ${index} as number.`)
-	    };
+			switch(index) {
+				case isNaN(index):
+					throw new Error(`Cannot parse ${index} as number.`)
+					break;
+				case index > results.length:
+					throw new Error(`Your choice shouldn't be greater than ${found.length}.`)
+					break;
+				case index < 1;
+					throw new Error(`Are you really dumb? Imagine answering negative numbers.`)
+			}
 		} catch(error) {
 			/** Log Error */
 			log('commandError', 'search@parse_choice', error)

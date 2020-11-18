@@ -19,7 +19,13 @@ export default new Command({
 	/** Else, play */
 	try {
 		await bot.player.resume(message);
-		return 'The player has been resumed.'
+		await message.channel.send({ 
+			embed: {
+				title: 'Player Resumed',
+				color: 'BLUE',
+				description: `User **${message.author.tag}** has resumed the queue.`
+			}
+		})
 	} catch(error) {
 		log('commandError', 'resume', error)
 		return error;
