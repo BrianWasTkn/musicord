@@ -166,7 +166,7 @@ export default class Musicord extends Client {
 			})
 			// find the 'cmd' {String}
 			const command = array.find(c => c.name === cmd);
-			if (!command) res(command);
+			if (command) res(command);
 			else rej('unknownCommand');
 		})
 	}

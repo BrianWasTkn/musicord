@@ -89,7 +89,7 @@ export default class Command {
 		const returned = await this.run(bot, message, args); // Promise
 		if (!returned) return;
 		if (returned instanceof Object) {
-			const embedObj = Object.assign({ color: 'RANDOM'}, returned);
+			const embedObj = Object.assign({ color: 'RANDOM', footer: { text: `Thanks for using ${bot.user.tag}!` } }, returned);
 			return message.channel.send({ embed: embedObj });
 		}
 		if (Array.isArray(returned)) {
