@@ -58,10 +58,8 @@ export default class Command {
 				return {
 					title: 'Cooldown',
 					color: 'BLUE',
-					description: `Command \`${command.name}\` on cooldown.\nWait **${timeLeft > 60 ? message.client.utils.parseTime(timeLeft) : `${timeLeft.toFixed()} seconds`}** and try again.`,
-					footer: { 
-						text: 'Thanks for support!'
-					} 
+					description: `Command \`${command.name}\` on cooldown.\nWait **${timeLeft > 60 ? message.client.utils.parseTime(timeLeft) : `${timeLeft.toFixed(1)} seconds`}** and try again.`,
+					footer: { text: 'Thanks for support!' } 
 				}
 			} 
 		} 
@@ -99,7 +97,7 @@ export default class Command {
 				color: 'RED',
 				description: 'You don\'t have enough permissions to run this command!',
 				fields: [
-					{ name: `\`${command.permissions.length}\` missing permissions`, value: `\`${command.permissions.join('`, `')}\`` }
+					{ name: `\`${command.permissions.length}\` missing ${command.permissions.length > 1 ? 'permissions' : 'permission'}`, value: `\`${command.permissions.join('`, `')}\`` }
 				]
 			}
 		}
