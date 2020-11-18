@@ -5,7 +5,7 @@ export default new Command({
 	aliases: ['re-load'],
 	description: 'reload something.',
 	permissions: ['ADMINISTRATOR'],
-	usage: '<...opt>'
+	usage: '<...opt: String>'
 }, async (bot, message, [cmd]) => {
 	if (!cmd) return 'You need something to reload';
 

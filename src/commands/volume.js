@@ -5,7 +5,7 @@ export default new Command({
 	name: 'volume',
 	aliases: ['set-volume'],
 	description: 'set the volume of the current track.',
-	usage: '<1-100>',
+	usage: '<1-100: Number>',
 	cooldown: 3e3,
 	music: true
 }, async (bot, message, args) => {

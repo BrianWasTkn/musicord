@@ -5,13 +5,13 @@ export default new Command({
 	name: 'search',
 	aliases: ['find'],
 	description: 'search a track',
-	usage: '<track>',
+	usage: '<track: any>',
 	cooldown: 1e4,
 	music: true
 }, async (bot, message, args) => {
 
 	/** Args */
-	if (!args) {
+	if (args.length < 1) {
 		return 'You need to search something.'
 	}
 

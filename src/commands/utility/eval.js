@@ -6,7 +6,7 @@ export default new Command({
 	aliases: ['e'],
 	description: 'Evaluate arbitrary javascript code.',
 	permissions: ['ADMINISTRATOR'],
-	usage: '<...code>',
+	usage: '<...code: any>',
 	cooldown: 3e3
 }, async (bot, message, args) => {
 

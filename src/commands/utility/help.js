@@ -5,7 +5,7 @@ export default new Command({
 	name: 'help',
 	aliases: ['command-info', 'cmd'],
 	description: 'skip the current track',
-	usage: '[command]',
+	usage: '[command: String]',
 	cooldown: 5000
 }, async (bot, message, [cmd]) => {
 	

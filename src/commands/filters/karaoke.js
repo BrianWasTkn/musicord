@@ -5,7 +5,7 @@ export default new Command({
 	name: 'karaoke',
 	aliases: ['toggle-karaoke'],
 	description: 'karaoke filter',
-	usage: '<on | off>',
+	usage: '<on | off>: String',
 	cooldown: 1000,
 	music: true
 }, async message => {

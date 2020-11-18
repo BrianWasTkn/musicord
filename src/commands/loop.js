@@ -5,7 +5,7 @@ export default new Command({
 	name: 'loop',
 	aliases: ['repeat'],
 	description: 'loop either the current track or the whole queue.',
-	usage: 'command',
+	usage: '<queue: String | song: String | off: String>',
 	cooldown: 3e3,
 	music: true
 }, async (bot, message, [method]) => {

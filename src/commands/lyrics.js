@@ -6,7 +6,7 @@ export default new Command({
 	name: 'lyrics',
 	aliases: ['l'],
 	description: 'view the lyrics of the current track.',
-	usage: '[...songName]',
+	usage: '[...songName: String]',
 	cooldown: 5e3,
 	music: true
 }, async (bot, message, args) => {
