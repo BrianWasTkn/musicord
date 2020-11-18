@@ -45,7 +45,7 @@ export const startReactionCollector = async (message, embed, time) => {
 					break;
 				case emojis[4]:
 					const queue = message.client.player.getQueue(message);
-					const mode = queue.repeatMode ? queue.repeatMode === 0 ? 2 : 1 : 0;
+					const mode = queue.repeatMode ? queue.repeatMode === 0 ? 1 : 2 : 0;
 					await message.client.player.setRepeatMode(message, mode)
 					break;
 				case emojis[5]:
