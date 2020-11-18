@@ -18,7 +18,13 @@ export default new Command({
 
 	/** Do the thing */
 	try {
-		await bot.player.shuffle(message)
+		const queue = await bot.player.shuffle(message),
+		songs = queue.songs.map((song, index) => `**${index + 1}**: [${song.name}](${song.url}) - \`${song.formattedDuration}\``);
+		return {
+			title: 'Queue Order',
+			color: 'BLUE',
+			description: `The queue has been shuffled successfully.\nThe new order is shown below.\n\n${songs.join('\n')}`
+		}
 	} catch(error) {
 		log('commandError', 'shuffle', error)
 		return error;
