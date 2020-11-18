@@ -2,17 +2,8 @@ import { log } from '../utils/logger.js'
 
 export async function run(bot) {
 	try {
-
-		/** Simple queue function that returns the current queue value */
-		const status = queue => ({
-			looped: queue.repeatMode ? queue.repeatMode === 2 ? 'queue' : 'track' : 'off',
-			volume: queue.volume,
-			autoPlay: queue.autoPlay ? 'on' : 'off'
-		})
-
 		/** Distube#Events */
-		bot.player
-		.on('playSong', async (message, queue, song) => {
+		bot.player.on('playSong', async (message, queue, song) => {
 			await message.channel.send({
 				embed: {
 					title: 'Now Playing',
@@ -26,8 +17,7 @@ export async function run(bot) {
 					footer: { text: `Run "crib search" or "crib play" to search or play a track.` }
 				}
 			})
-		})
-		.on('addSong', async (message, queue, song) => {
+		}).on('addSong', async (message, queue, song) => {
 			await message.channel.send({
 				embed: {
 					title: 'Added to Queue',
@@ -41,8 +31,7 @@ export async function run(bot) {
 					footer: { text: `Run "crib search" or "crib play" to search or play more tracks.` }
 				}
 			})
-		})
-		.on('initQueue', async queue => {
+		}).on('initQueue', async queue => {
 			queue.volume = 100;
 			await queue.initMessage.channel.send({
 				embed: {
@@ -60,8 +49,7 @@ export async function run(bot) {
 					footer: { text: `Run "crib search" or "crib play" to search or play more tracks.` }
 				}
 			})
-		})
-		.on('noRelated', async message => {
+		}).on('noRelated', async message => {
 			await message.channel.send({
 				embed: {
 					title: 'Nothing Found',
@@ -70,8 +58,7 @@ export async function run(bot) {
 					footer: { text: `Thanks for using ${message.client.user.username}!` }
 				}
 			})
-		})
-		.on('finish', async message => {
+		}).on('finish', async message => {
 			await message.channel.send({
 				embed: {
 					title: 'Queue Finished',
@@ -80,8 +67,7 @@ export async function run(bot) {
 					footer: { text: `Thanks for using ${message.client.user.username}!` }
 				}
 			})
-		})
-		.on('empty', async message => {
+		}).on('empty', async message => {
 			await message.channel.send({
 				embed: {
 					title: 'Channel Empty',
@@ -90,8 +76,7 @@ export async function run(bot) {
 					footer: { text: `Thanks for using ${message.client.user.username}!` }
 				}
 			})
-		})
-		.on('addList', async (message, queue, playlist) => {
+		}).on('addList', async (message, queue, playlist) => {
 			await message.channel.send({
 				embed: {
 					title: 'Added to Queue',
@@ -104,8 +89,7 @@ export async function run(bot) {
 					footer: { text: `Run "crib search" or "crib play" to search or play more tracks.` }
 				}
 			})
-		})
-		.on('searchResult', async (message, result) => {
+		}).on('searchResult', async (message, result) => {
 			result = result.slice(0, 10).map((song, index) => `**#${index + 1}:** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\``) // Slice the results from 15 => 10
 			await message.channel.send({
 				embed: {
@@ -118,8 +102,7 @@ export async function run(bot) {
 					footer: { text: 'You have 30 seconds to proceed otherwise your search is cancelled.' }
 				}
 			})
-		})
-		.on('searchCancel', async message => {
+		}).on('searchCancel', async message => {
 			await message.channel.send({
 				embed: {
 					title: 'Seach Cancelled',
@@ -128,8 +111,7 @@ export async function run(bot) {
 					footer: { text: `Run "crib search" or "crib play" to search or play more tracks.` }
 				}
 			})
-		})
-		.on('error', async (message, err) => {
+		}).on('error', async (message, err) => {
 			await message.channel.send({
 				embed: {
 					title: 'Player Error',

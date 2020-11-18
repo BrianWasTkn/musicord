@@ -4,11 +4,10 @@ const addReactions = (msg, emojis) => {
 	try {
 		for await (const emoji of emojis) {
 			// A timeout to avoid rateLimits.
-			setTimeout(async () => {
+			setTimeout(() => {
 				msg.react(emoji)
 			}, 1000);
 		}
-		return true;
 	} catch (error) {
 		log('error', 'playerReactionCollector@add_reactions', error)
 	}

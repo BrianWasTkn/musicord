@@ -4,6 +4,7 @@
 */
 
 import { Constants } from 'discord.js'
+const { Colors } = Constants;
 
 export const red = 0xE74C3C
 export const orange = 0xF39C12
@@ -14,5 +15,5 @@ export const grey = 0x34495E
 export const purple = 0x9932CC
 
 
-export const indigo = Constants.Colors.BLUE
-export const blurple = Constants.Colors.BLURPLE
+export const indigo = Colors.BLUE
+export const blurple = Colors.BLURPLE

@@ -20,6 +20,8 @@ export async function run(bot) {
 					log('listenerError', 'commandListener@error', error)
 				}
 			}
+		}).on('messageEdit', async (oldMessage, newMessage) => {
+			// TODO: able to run commands when edit a message.
 		})
 		log('main', 'Command Listener')
 	} catch(error) {
