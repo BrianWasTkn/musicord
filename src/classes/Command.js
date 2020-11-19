@@ -7,16 +7,13 @@ export default class Command {
 		this.run = func;
 
 		/** Basic Info */
-		this.usage				= options.usage === 'command' ? `${config.prefix[0]}${options.name}` : `${config.prefix[0]}${options.name} ${options.usage}`;
-		this.permissions 	= ["SEND_MESSAGES"].concat(options.permissions || []);
-		this.description	= options.description || 'No description provided.';
-		this.cooldown			= options.cooldown || this.defaultCooldown;
-		this.aliases 			= options.aliases || [options.name];
-		this.music				= options.music || false;
-		this.name 				= options.name;
-
-		/** Cooldowns */
-		this.defaultCooldown = 5000;
+		this.usage = options.usage === 'command' ? `${config.prefix[0]}${options.name}` : `${config.prefix[0]}${options.name} ${options.usage}`;
+		this.permissions = ["SEND_MESSAGES"].concat(options.permissions || []);
+		this.description = options.description || 'No description provided.';
+		this.cooldown = options.cooldown || 3000;
+		this.aliases = options.aliases || [options.name];
+		this.music = options.music || false;
+		this.name = options.name;
 	}
 
 	/**
@@ -37,10 +34,7 @@ export default class Command {
 
 		/** Check if on cooldown */
 		const check = this._checkCooldown(command, message, now, timestamps, cooldown);
-		if (check) {
-			/** Return Cooldown Embed */
-			return { embed: check };
-		}
+		if (check) return check;
 
 		/** Process Cooldown */
 		timestamps.set(message.author.id, now)
@@ -77,9 +71,9 @@ export default class Command {
 	async execute(bot, command, message, args) {
 		/** Process Cooldown */
 		const cooldown = this._processCooldown(message, command);
-		if (cooldown) return message.channel.send(cooldown);
+		if (cooldown) return message.channel.send({ embed: cooldown});
 		/** Check Permissions */
-		const permission = this._checkPermissions(bot, command, message);
+		const permission = this._checkPermissions(command, message);
 		if (permission) return message.channel.send({ embed: permission });
 		/** Process VoiceState */
 		const state = this._checkVoiceState(message, command);
@@ -98,7 +92,7 @@ export default class Command {
 		return message.channel.send(returned);
 	}
 
-	_checkPermissions(bot, command, message) {
+	_checkPermissions(command, message) {
 		/** User Permissions */
 		if (!message.member.permissions.has(command.permissions)) {
 			return {

@@ -1,11 +1,11 @@
 import { Client, Collection } from 'discord.js'
-import { join } from 'path'
-import { readdirSync } from 'fs'
 import { Player } from 'discord-music-player' // test
-
-import { log } from '../utils/logger.js'
 import DisTube from './Player.js'
 import Utilities from './Utilities.js'
+
+import { join } from 'path'
+import { readdirSync } from 'fs'
+import { log } from '../utils/logger.js'
 import config from '../config.js'
 import botPackage from '../../package.json'
 
@@ -95,29 +95,11 @@ export default class Musicord extends Client {
 	 */
 	async reloadCommands() {
 		return new Promise((res, rej) => {
-			try {
-				// clear all commands
-				this.commands.clear();
-				try { 
-					// clear all aliases
-					this.aliases.clear();
-					try {
-						// then load all
-						try { 
-							this._registerCommands();
-							res();
-						} catch(e) { 
-							rej(e) 
-						}
-					} catch(e) {
-						rej(e);
-					}
-				} catch(e) {
-					rej(e);
-				}
-			} catch(e) {
-				rej(e);
-			}
+			this.commands.clear();
+			this.aliases.clear();
+			if (this.commands || this.aliases) rej('Error');
+			try { this._registerCommands() } catch { rej('ResgistrationError') }
+			res();
 		})
 	}
 
@@ -129,7 +111,7 @@ export default class Musicord extends Client {
 	async unloadCommand(cmd) {
 		return new Promise((res, rej) => {
 			const command = this.commands.get(cmd) || this.aliases.get(cmd);
-			if (!command) reject('UnknownCommand');
+			if (!command) rej('UnknownCommand');
 			// delete from collection
 			this.commands.delete(command.name);
 			command.aliases.forEach(a => this.aliases.delete(a, command));
@@ -144,20 +126,12 @@ export default class Musicord extends Client {
 	 */
 	async loadCommand(cmd) {
 		return new Promise((res, rej) => {
-			// array to push all items
 			const array = [];
-			// loop through ./src/commands
 			readdirSync(join(__dirname, '..', 'commands'))
 			.forEach(item => {
-				// ./src/commands/*.js files
-				if (item.endsWith('.js')) {
-					array.push(require(join(__dirname, '..', 'commands')).default);
-				} else {
-					readdirSync(join(__dirname, '..', 'commands', item))
-					.forEach(c => array.push(require(join(__dirname, '..', 'commands', item, c)).default))
-				}
+				if (item.endsWith('.js')) array.push(require(join(__dirname, '..', 'commands')).default);
+				else readdirSync(join(__dirname, '..', 'commands', item)).forEach(c => array.push(require(join(__dirname, '..', 'commands', item, c)).default))
 			})
-			// find the 'cmd' {String}
 			const command = array.find(c => c.name === cmd);
 			if (command) res(command);
 			else rej('unknownCommand');

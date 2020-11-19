@@ -5,6 +5,11 @@ export default class Player extends distube {
 		super(client, options);
 	}
 
+	/**
+	 * DisTube#nowplaying - extra function added by: BrianWasTkn
+	 * Resolves: first song in queue.
+	 * @param {Object} message Discord.Message
+	 */
 	nowPlaying(message) {
 		return new Promise(async(resolve, reject) => {
 			const queue = this.guildQueues.get(message.guild.id);
@@ -13,6 +18,11 @@ export default class Player extends distube {
 		})
 	}
 
+	/**
+	 * DisTube#mapQueue - extra function added by: BrianWasTkn
+	 * Resolves: An array of mapped song strings.
+	 * @param {Object} message Discord.Message
+	 */
 	mapQueue(message) {
 		const queue = super.getQueue(message);
 		if (!queue) return new Error('NotPlaying');
@@ -20,11 +30,17 @@ export default class Player extends distube {
 		return mapped;
 	}
 
+	/**
+	 * DisTube#remove - extra method added by: BrianWasTkn
+	 * Resolves: the queue.
+	 * @param {Object} message Discord.Message object
+	 * @param {Number} index the index of the song in the queue
+	 */
 	remove(message, index) {
 		return new Promise((resolve, reject) => {
 			let queue = super.getQueue(message);
 			if (!queue) reject('NoQueue');
-			if (isNaN(index) || !index) reject('InvalidNumber');
+			if (isNaN(index) || !index) reject('Invalid/Empty_Number');
 			else if (index > queue.songs.length) reject('TooHigh');
 			else if (index < 1) reject('TooLow');
 			let song = queue.songs[index];
