@@ -8,71 +8,49 @@ import moment from 'moment'
 
 export const log = (type, content, error = null) => {
 	const timestamp = moment().format("YYYY-MM-DD HH:mm:ss");
+	const stamp = (tag, msg, error = false) => {
+		console.log(
+		`[${chalk.whiteBright(timestamp)}]:`,
+		chalk.hex('#57d6ff')(tag),
+		chalk.whiteBright('=>'),
+		error ? chalk.redBright(msg) : chalk.greenBright(msg)
+		)
+	}
 
 	switch(type) {
 		case 'node':
-			console.log(
-			`[${chalk.whiteBright(timestamp)}]:`, 
-			`${chalk.yellowBright('Process ')}`,
-			`${chalk.whiteBright('=>')} ${chalk.greenBright(content)}`);
-			console.log(chalk.whiteBright(error))
+			stamp('Process ', content);
 			break;
 		case 'main':
-			console.log(
-			`[${chalk.whiteBright(timestamp)}]:`, 
-			`${chalk.hex('#57d6ff')('Launcher')}`,
-			`${chalk.whiteBright('=>')} ${chalk.greenBright(content)}`);
+			stamp('Launcher', content);
 			break;
 		case 'command':
-			console.log(
-			`[${chalk.whiteBright(timestamp)}]:`, 
-			`${chalk.magentaBright('Command ')}`,
-			`${chalk.whiteBright('=>')} ${chalk.greenBright(content)}`);
+			stamp('Command ', content);
 			break;
 		case 'discord':
-			console.log(
-			`[${chalk.whiteBright(timestamp)}]:`, 
-			`${chalk.hex('#7289DA')('Discord ')}`,
-			`${chalk.whiteBright('=>')} ${chalk.hex('#7289DA')(content)}`);
+			stamp('Discord ', content);
 			break;
 		case 'event':
-			console.log(
-			`[${chalk.whiteBright(timestamp)}]:`, 
-			`${chalk.blueBright('Emitter ')}`,
-			`${chalk.whiteBright('=>')} ${chalk.greenBright(content)}`);
+			stamp('Emitter ', content);
 			break;
 		case 'error':
-			console.log(
-			`[${chalk.whiteBright(timestamp)}]:`, 
-			`${chalk.redBright('Error   ')}`,
-			`${chalk.whiteBright('=>')} ${chalk.redBright(content)}`);
+			stamp('Error   ', content, true);
 			console.log(error)
 			break;
 		case 'eventError':
-			console.log(
-			`[${chalk.whiteBright(timestamp)}]:`, 
-			`${chalk.redBright('EventERR')}`,
-			`${chalk.whiteBright('=>')} ${chalk.redBright(content)}`);
+			stamp('EVTError', content, true);
 			console.log(error)
 			break;
 		case 'commandError':
-			console.log(
-			`[${chalk.whiteBright(timestamp)}]:`, 
-			`${chalk.redBright('CMDError')}`,
-			`${chalk.whiteBright('=>')} ${chalk.redBright(content)}`);
+			stamp('CMDError', content, true);
 			console.log(error)
 			break;
 		case 'listenerError':
-			console.log(
-			`[${chalk.whiteBright(timestamp)}]:`, 
-			`${chalk.redBright('LNRError')}`,
-			`${chalk.whiteBright('=>')} ${chalk.redBright(content)}`);
+			stamp('LNRError', content, true);
 			console.log(error)
 			break;
 		default: 
-			console.log(
-			`[${chalk.whiteBright(timestamp)}]:`, 
-			`${chalk.whiteBright('Console ')}`,
-			`${chalk.whiteBright('=>')} ${chalk.greenBright(content)}`)
+			stamp('Console ', content);
+			break;
 	}
 }

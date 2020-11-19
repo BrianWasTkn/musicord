@@ -27,7 +27,7 @@ export const startReactionCollector = async (message, embed, time) => {
 			/** Collectors */
 			const filter = (reaction, user) => user.id !== message.client.user.id && user.id === message.author.id;
 			const collector = await embed.createReactionCollector(filter, {
-				time: 60000
+				time: time
 			})
 
 			collector.on('stop', async (reaction, user) => {
@@ -90,6 +90,14 @@ export const startReactionCollector = async (message, embed, time) => {
 					// Shuffle
 					case emojis[5]:
 						await message.client.player.shuffle(message);
+						await message.channel.send({
+							embed: {
+								title: 'Queue Shuffled',
+								color: 'BLUE',
+								description: `The player queue has been shuffled by **${message.author.tag}**.`,
+								footer: { text: 'Run "crib play" or "crib search" to either play or search for a track.' }
+							}
+						});
 						break;
 
 					// stop collector

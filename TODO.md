@@ -4,6 +4,7 @@
 [] create custom emojis
 [] create msg collector for alternative for reaction collector
 [] add vote-[skip, remove, stop]
+[] be creative, add collectors or stuff like games or idk on each individual player listener
 
 # Source Code 
 [] add more listeners
