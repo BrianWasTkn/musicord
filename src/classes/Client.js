@@ -151,17 +151,10 @@ export default class Musicord extends Client {
 			.forEach(item => {
 				// ./src/commands/*.js files
 				if (item.endsWith('.js')) {
-					// push
 					array.push(require(join(__dirname, '..', 'commands')).default);
-				} 
-				// ./src/commands/*/*.js files
-				if (!item.endsWith('.js')) {
-					// folder
+				} else {
 					readdirSync(join(__dirname, '..', 'commands', item))
-					.forEach(c => {
-						// push
-						array.push(require(join(__dirname, '..', 'commands', item, c)).default)
-					})
+					.forEach(c => array.push(require(join(__dirname, '..', 'commands', item, c)).default))
 				}
 			})
 			// find the 'cmd' {String}
