@@ -110,15 +110,18 @@ class Musicord extends Client {
 	 * @returns {Object} object of aliases and commands
 	 */
 	async reloadCommands() {
-		const items = [],
-		files = readdirSync(join(__dirname, '..', 'commands'));
+		const files = readdirSync(join(__dirname, '..', 'commands'));
 
 		// clear the collection
 		try { this.commands.clear(); try { this.aliases.clear(); } 
-		catch { throw new Error('Cannot clear aliases'); } } 
+		catch { return new Error('Cannot clear aliases'); } } 
 		catch { return new Error('Cannot clear commands'); }
 
-		// push commands -> items[]
+		// then create a new collection
+		this.commands = new Collection();
+		this.aliases = new Collection();
+
+		// push commands into items[]
 		files.forEach(f => {
 			if (!f.endsWith('.js')) { readdirSync(join(__dirname, '..', 'commands', f)).forEach(i => {
 				items.push(require(join(__dirname, '..', 'commands', f, i)).default);
@@ -127,9 +130,11 @@ class Musicord extends Client {
 			}
 		})
 
-		// then load commands and aliases
-		items.map(c => c.name)
-		.forEach(c => { try { this.loadCommand(c); } catch {} });
+		// then push it in our new collection
+		items.forEach(command => {
+			this.commands.set(command.name, command);
+			command.aliases.forEach(a => this.aliases.set(a, command));
+		})
 		return { commands: this.commands, aliases: this.aliases };
 	}
 

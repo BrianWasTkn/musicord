@@ -18,7 +18,7 @@ class Player extends distube {
 
 	/**
 	 * DisTube#mapQueue - extra function added by: BrianWasTkn
-	 * Resolves: An array of mapped song strings.
+	 * Resolves: An array of decorated song items.
 	 * @param {Object} message Discord.Message
 	 */
 	mapQueue(message) {

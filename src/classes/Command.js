@@ -32,9 +32,7 @@ class Command {
 		 * Command Usage
 		 * @type {String}
 		 */
-		this.usage = options.usage === 'command' 
-		? `${config.prefix[0]}${options.name}` 
-		: `${config.prefix[0]}${options.name} ${options.usage}`;
+		this.usage = options.usage === 'command' ? `${config.prefix[0]}${options.name}` : `${config.prefix[0]}${options.name} ${options.usage}`;
 
 		/**
 		 * Command Permissions
@@ -100,7 +98,7 @@ class Command {
 		}, command.cooldown);
 	}
 
-	async execute(bot, command, message, args) {
+	async execute(bot, command, message, args ) {
 		// Check cooldown and command permissions.
 		const checks = [this._processCooldown, this._checkPermissions];
 		for (const check of checks) {
