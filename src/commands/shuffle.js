@@ -22,7 +22,7 @@ export default new Command({
 	/** Do the thing */
 	try {
 		const queue = await bot.player.shuffle(message),
-		songs = queue.songs.map((song, index) => `**${index + 1}**: [${song.name}](${song.url}) - \`${song.formattedDuration}\``);
+		songs = queue.songs.map((song, index) => `**#${index + 1}**: [${song.name}](${song.url}) - \`${song.formattedDuration}\``);
 		const msgs = [dynamicEmbed({
 			title: 'Queue Shuffled',
 			color: 'BLUE',

@@ -1,7 +1,8 @@
 import Command from '../classes/Command/Music.js'
 import { log } from '../utils/logger.js'
 import { 
-	simpleEmbed, 
+	simpleEmbed,
+	dynamicEmbed, 
 	errorEmbed 
 } from '../utils/embed.js'
 
@@ -29,26 +30,27 @@ export default new Command({
 	
 	/** Send Queue */
 	try {
-		const msg = await message.channel.send({
-			embed: {
-				author: { name: message.guild.name, iconURL: message.guild.iconURL() },
-				title: 'Server Queue',
-				color: 'BLUE',
-				fields: [
-					{ name: 'Now Playing', value: songs[0] },
-					{ name: 'Server Queue', value: songs[1] ? songs.slice(1).join('\n') : '**No more songs in queue.**' }
-				]
+		const msg = await message.channel.send(dynamicEmbed({
+			title: 'Server Queue',
+			color: 'BLUE',
+			fields: {
+				'Currently Playing': { 	content: songs[0] },
+				'Server Queue': { 			content: songs[1] ? songs.slice(1).join('\n') : 'No more left to play in queue.' }
+			},
+			footer: {
+				text: `Thanks for using ${bot.user.username}!`,
+				icon: bot.user.avatarURL()
 			}
-		})
+		}));
 
 		/** Message Reactions */
 		try {
 			/** Emojis -> queueMessage */
 			const emojis = ['⏮️', '⏭️', '⏸️', '⏹️', '🔁', '🔀', ':x:'];
-			for await (const emoji of emojis) {
-				setTimeout(() => {
-					msg.react(emoji);
-				}, 1000)
+			for (const emoji of emojis) {
+				setTimeout(async () => {
+					await msg.react(emoji);
+				}, 1000) // Apply a timeout to preserve rateLimits.
 			}
 
 			/** Collector */
@@ -149,7 +151,7 @@ export default new Command({
 			collector.on('end', async (reaction, user) => {
 				await message.channel.send('ended')
 				await msg.reactions.removeAll()
-			})
+			});
 		} catch (error) {
 			log('commandError', 'queue@create_collector', error.stack);
 			return errorEmbed(message, error);

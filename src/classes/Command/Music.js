@@ -29,16 +29,23 @@ export default class Music extends Command {
 		 * @type {Boolean}
 		 */
 		this.private = false;
+
+		/**
+		 * Command Function
+		 * @type {*}
+		 */
+		this.run = fn;
 	}
 
 	async execute(bot, command, message, args) {
 		try {
-			for (const check of [super._checkPermissions, this._processVoice, this._checkClientPermissions]) {
+			for (const check of [super._processCooldown, super._checkPermissions, this._processVoice, this._checkClientPermissions]) {
 				const embed = check(message);
 				if (embed) return message.channel.send(embed);
 			}
 			try {
-				return super.execute(bot, command, message, args);
+				const returned = await this.run(bot, message, args);
+				await message.channel.send(returned);
 			} catch(error) {
 				log('commandError', 'command@super_execute', error);
 			}
@@ -75,11 +82,14 @@ export default class Music extends Command {
 				icon: message.client.user.avatarURL()
 			}
 		}) 
-		if (!myPermissions.has('CONNECT')) {
+		if (!channel.joinable) {
 			return embedify(`Make sure I have permissions to ${Permissions.CONNECT} in your voice channel.`);
 		}
-		if (!myPermissions.has('SPEAK')) {
+		if (!channel.speakable) {
 			return embedify(`Please ensure I can ${Permissions.SPEAK} in your voice channel to play music.`);
+		}
+		if (channel.full) {
+			return embedify(`Voice channel "${channel.name}" is already full.`)
 		}
 	}
 }

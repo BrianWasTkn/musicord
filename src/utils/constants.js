@@ -41,12 +41,6 @@ export const Require = {
 	NUMBER_ONLY: 'Unable to parse {num} as a valid number.'
 }
 
-/** Player Limits */
-export const Limits = {
-	search: { min: 1, max: 10},
-	volume: { min: 0, max: 100 }
-}
-
 /** Colors */
 export const Colors = {
 	red, 

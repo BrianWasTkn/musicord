@@ -24,7 +24,7 @@ export const parseTime = second => {
 		{ name: 'second', count: 1 }
 	];
 
-	const parsed = [ `${Math.floor(time / methods[0].count).toString()} ${methods.[0].name}` ];
+	const parsed = [ `${Math.floor(time / methods[0].count).toString()} ${methods[0].name}` ];
 	for (let p = 0;i < 3; i++) {
 		const formula = Math.floor(time % methods[i].count / methods[i + 1].count);
     parsed.push(`${formula.toString()} ${formula > 1 ? `${methods[i + 1].name}s` : methods[i + 1].name}`);

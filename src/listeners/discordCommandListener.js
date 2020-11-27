@@ -1,4 +1,5 @@
 import { log } from '../utils/logger.js'
+import ArgParser from '../classes/ArgParser.js'
 
 export async function run(bot) {
 	try {
@@ -18,7 +19,8 @@ export async function run(bot) {
 					if (!command) return;
 					else try { 
 						// Run the command
-						await command.execute(bot.command, message, args); 
+						message.args = new ArgParser(bot, message, args);
+						await command.execute(bot, command, message, args); 
 					} catch(error) { 
 						log('listenerError', 'commandListener@exec_command', error)
 					}

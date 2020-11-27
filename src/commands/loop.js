@@ -42,6 +42,10 @@ export default new Command({
 			description: `Now looping **${repeatMode(queue)}** for the player.`,
 			fields: {
 				'Action by': { content: message.author.tag }
+			},
+			footer: {
+				text: `Thanks for using ${bot.user.username}!`,
+				icon: bot.user.avatarURL()
 			}
 		})
 	} catch(error) {

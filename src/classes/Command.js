@@ -12,7 +12,7 @@ class Command {
 	constructor(options, func) {
 		/**
 		 * Command Function
-		 * @type {Promise<void>}
+		 * @type {Promise<any>}
 		 */
 		this.run = func;
 
@@ -77,9 +77,11 @@ class Command {
 		// Check cooldown
 		if (timestamps.has(message.author.id)) {
 			const expiration = timestamps.get(message.author.id) + cooldown;
+			// On cooldown
 			if (now < expiration) {
 				let timeLeft = (expiration - now) / 1000;
 				timeLeft = timeLeft > 60 ? parseTime(timeLeft) : `${timeLeft.toFixed(1)} seconds`;
+				// Return a message
 				return embedify({
 					title: 'Cooldown, Slow down.',
 					color: 'BLUE',

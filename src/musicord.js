@@ -1,5 +1,5 @@
 import config from './config.js'
-import { Musicord } from './classes/Client.js'
+import Musicord from './classes/Client.js'
 
 import { log } from './utils/logger.js'
 
