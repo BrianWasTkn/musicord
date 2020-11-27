@@ -1,3 +1,5 @@
+import discord from 'discord.js'
+
 const idPattern = /^([0-9]{17,19})$/;
 const userMentionPattern = /<@!?([0-9]{17,19})>/;
 const channelMentionPattern = /<#([0-9]{17,19})>/;
@@ -5,11 +7,11 @@ const roleMentionPattern = /<@&([0-9]{17,19})>/;
 
 class ArgParser {
 	constructor(client, message, args) {
-		/** @property {Discord.Message} the message object instantiated */
-		this.msg = message;
-		/** @property {Discord.Client} the discord.client */
+		/** @property {discord.Message} the message object */
+		this.message = message;
+		/** @property {discord.Client} the client instantiated */
 		this.client = client;
-		/** @property {Array<any>} the arguments */
+		/** @property {Array<any>} the command arguments */
 		this.args = args;
 	}
 
@@ -21,8 +23,8 @@ class ArgParser {
 		return this.args.join().length;
 	}
 
-	random(limit = 0) {
-		return this.args[Math.floor(Math.random() * (this.args.length - limit))];
+	random() {
+		return this.args[Math.floor(Math.random() * this.args.length)];
 	}
 
 	gather() {
@@ -35,7 +37,7 @@ class ArgParser {
 
 	resolveUser(rest = false) {
 		let user = rest ? this.args.gather() : this.args.shift();
-		const args = this.args, message = this.msg;
+		const args = user;
 		let resolved = null;
 		if (!user) {
 			return;
@@ -43,13 +45,13 @@ class ArgParser {
 			const idMatch = idPattern.exec(args) || userMentionPattern.exec(args);
 			// <GuildMember>.id
 			if (idMatch) {
-				resolved = message.guild.members.cache.get(idMatch[1]);
+				resolved = this.message.guild.members.cache.get(idMatch[1]);
 			} // <GuildMember>.tag
 			else if (args.length > 5 && args.slice(-5, -4) === '#') {
-				resolved = message.guild.members.cache.find(m => m.tag === args || `${m.displayName}#${m.discriminator}` === args);
+				resolved = this.message.guild.members.cache.find(m => m.tag === args || `${m.displayName}#${m.discriminator}` === args);
 			} // <GuildMember>.username || <GuildMember>.displayName
 			else {
-				resolved = message.guild.members.cache.find(m => m.username === args || m.displayName === args);
+				resolved = this.message.guild.members.cache.find(m => m.username === args || m.displayName === args);
 			}
 		}
 
@@ -58,7 +60,7 @@ class ArgParser {
 
 	resolveChannel(rest = false) {
 		let channel = rest ? this.args.gather() : this.args.shift();
-		const args = this.args, message = this.msg;
+		const args = channel;
 		let resolved = null;
 		if (!channel) {
 			return;
@@ -66,10 +68,10 @@ class ArgParser {
 			const idMatch = idPattern.exec(args) || channelMentionPattern.exec(args);
 			// <GuildChannel>.id
 			if (idMatch) {
-				resolved = message.guild.channels.cache.get(idMatch[1]);
+				resolved = this.message.guild.channels.cache.get(idMatch[1]);
 			} // <GuildChannel>.name
 			else {
-				resolved = message.guild.channels.cache.find(c => c.name === args);
+				resolved = this.message.guild.channels.cache.find(c => c.name === args);
 			}
 		}
 
@@ -78,7 +80,7 @@ class ArgParser {
 
 	resolveRole(rest = false) {
 		let role = rest ? this.args.gather() : this.args.shift();
-		const args = this.args, message = this.msg;
+		const args = role;
 		let resolved = null;
 		if (!role) {
 			return;
@@ -86,23 +88,51 @@ class ArgParser {
 			const idMatch = idPattern.exec(args) || roleMentionPattern.exec(args);
 			// <Role>.id
 			if (idMatch) {
-				resolved = message.guild.channels.cache.get(idMatch[1]);
+				resolved = this.message.guild.channels.cache.get(idMatch[1]);
 			} // <Role>.name
 			else {
-				resolved = message.guild.channels.cache.find(c => c.name === args);
+				resolved = this.message.guild.channels.cache.find(c => c.name === args);
 			}
 		}
 
 		return resolved || null;
 	}
 
-	resolveUsers() {
+	_massResolve(type) {
 		const resolved = [];
-		let user;
-		while((user === this.resolveUser()) !== null) {
+		// A function to check what method we'll use
+		// depending to whatever the resolve type is.
+		const resolve = (type) => {
+			if (type === 'user') {
+				return this.resolveUser();
+			} else if (type === 'role') {
+				return this.resolveRole();
+			} else if (type === 'channel') {
+				return this.resolveChannel();
+			}
+		};
+
+		let res;
+		while((res === resolve(type)) !== null) {
+			// Push
 			resolved.push(user);
 		}
+
+		// Return the array of resolved items
+		// Either: <GuildMember>, <GuildChannel>, or <Role>
 		return resolved;
+	}
+
+	resolveUsers() {
+		return this._massResolve('user');
+	}
+
+	resolveChannels() {
+		return this._massResolve('channel');
+	}
+
+	resolveRoles() {
+		return this._massResolve('role');
 	}
 
 }
