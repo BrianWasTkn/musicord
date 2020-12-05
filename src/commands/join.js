@@ -1,5 +1,9 @@
 import Command from '../classes/Command.js'
 
+/**
+ * Represents a Join Command
+ * @class @extends Command
+ */
 export default class Join extends Command {
 	constructor(client) {
 		super(client, {
@@ -14,10 +18,16 @@ export default class Join extends Command {
 		});
 	}
 
+	/**
+	 * Runs this command
+	 * @param {Object} Options an object of parameters to use within this command
+	 * @param {import'discord.js'.Message} Options.msg a discord message object
+	 * @returns {Promise<void>|Promise<import'discord.js'.Message>}
+	 */
 	async execute({ msg }) {
 
 		/** Voice Channel */
-		const channel = msg.member.voice.channel;
+		const { channel } = msg.member.voice;
 
 		/** Joinable */
 		if (!channel.joinable) {
@@ -45,19 +55,24 @@ export default class Join extends Command {
 			}
 		}
 
-		/** Do the thing */
+		/** Leave */
 		try {
-			/* Leave */
-			const voice = await channel.join();
+			const connection = await channel.join();
+			/* Deafen */
 			try {
+				const { voice } = await connection.voice.setSelfDeaf(true);
 				/* Message */
-				await msg.channel.send(super.createEmbed({
-					title: 'Channel Joined',
-					color: 'RED',
-					text: `Successfully join **${voice.channel.name}**.`
-				}));
-			} catch(error) {
-				super.log('join@msg', error);
+				try {
+					await msg.channel.send(super.createEmbed({
+						title: 'Channel Joined',
+						color: 'RED',
+						text: `Successfully join **${connection.channel.name}**.`
+					}));
+				} catch(error) {
+					super.log('join@msg', error);
+				}
+			} catch {
+				super.log('join@self_deafen', error);
 			}
 		} catch(error) {
 			super.log('join', error);

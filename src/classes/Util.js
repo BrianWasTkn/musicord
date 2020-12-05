@@ -1,9 +1,18 @@
 import chalk from 'chalk'
 import moment from 'moment'
 import Discord from 'discord.js'
+import { Colors } from './Constants'
 
+/**
+ * A class representing Musicord utilities.
+ * @class
+ */
 export default class Util {
 	constructor(client) {
+		/**
+		 * A discord client
+		 * @type {Discord.Client}
+		 */
 		this.client = client;
 	}
 
@@ -48,8 +57,7 @@ export default class Util {
 
 	/**
 	 * Creates an "alt-embed"
-	 * @param {Object} embed an obj that contains props
-	 * @returns {Discord.MessageEmbed} the native embed obj
+	 * @returns {MessageEmbed} the native embed obj
 	 */
 	dynamicEmbed({
 		author = {}, fields = {}, footer = {},
@@ -70,7 +78,7 @@ export default class Util {
 		return Object.assign(embed, {
 			author: { name: author.text, iconURL: author.icon },
 			footer: { text: footer.text, iconURL: footer.icon },
-			title, description: text, thumbnail: icon, color,
+			title, description: text, thumbnail: icon, color: Colors[color],
 			fields: Object.entries(fields).map(f => ({
 				name: f[0], value: f[1].content, inline: f[1].inline || false
 			}))
@@ -144,7 +152,7 @@ export default class Util {
 
 	/**
 	 * Cooldown Formatter
-	 * @param {number} ms the amount of time in seconds
+	 * @param {number} s the amount of time in seconds
 	 * @returns {String} parsed cooldown string
 	 */
 	formatCooldown(s) {
@@ -178,9 +186,9 @@ export default class Util {
 	/**
 	 * Player Controls
 	 * @param {Song} song a distube song
-	 * @param {MessageEmbed} embed a discord embed
-	 * @param {Message} msg a discord message
-	 * @returns <void>
+	 * @param {Discord.MessageEmbed} embed a discord embed
+	 * @param {Discord.Message} msg a discord message
+	 * @returns {Promise<any>}
 	 */
 	async handleControls({ song, embed, msg }) {
 		/* Emojis */
@@ -314,14 +322,13 @@ export default class Util {
 
 	/**
 	 * Repeat Mode
-	 * @param {Message} msg a discord message
 	 * @param {Queue} queue a distube queue
 	 * @param {String} q something to return if mode is queue
 	 * @param {String} t something to return if mode is track
 	 * @param {String} o something to return if mode is off
 	 * @returns {String} the mode
 	 */
-	repeatMode(msg, queue, q = 'Queue', t = 'Track', o = 'Off') {
+	repeatMode(queue, q = 'Queue', t = 'Track', o = 'Off') {
 		return queue.repeatMode
 		? queue.repeatMode === 2
 			? q
@@ -330,7 +337,7 @@ export default class Util {
 	}
 
 	/**
-	 * Sleep
+	 * Delays the code for whatever time in ms
 	 * @param {number} ms time in milliseconds
 	 * @returns {Promise<void>}
 	 */
@@ -338,18 +345,4 @@ export default class Util {
 		return Discord.Util.delayFor(ms);
 	}
 
-}
-
-/* Colors */
-const Colors = {
-	RED: 0xE74C3C, 
-	ORANGE: 0xF39C12,
-	YELLOW: 0xF1C40F,
-	GREEN: 0x2ECC71,
-	BLUE: 0x3498DB,
-	PURPLE: 0x9932CC,
-	GREY: 0x34495E,
-	GRAY: this.GREY,
-	BLURPLE: 0x7289DA,
-	GREYPLE: 0x99AAB5
 }

@@ -16,7 +16,7 @@ export default class Finish extends Listener {
 			await msg.channel.send(super.createEmbed({
 				title: 'Queue Cleared',
 				color: 'RED',
-				text: 'The player has finished playing all the songs in queue.'
+				text: 'The player in this guild has finished playing all the tracks that were queued.'
 			}));
 		} catch(error) {
 			super.log('Finish@sendMessage', error);

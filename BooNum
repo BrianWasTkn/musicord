@@ -1,4 +1,0 @@
-Boolean(Number(5))
-Boolean(Number(-5))
-Boolean(Number('sdmfnb'))
-Boolean(Number('5'))

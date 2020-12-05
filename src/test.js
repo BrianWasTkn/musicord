@@ -1,32 +1,24 @@
-const parse = s => {
+const { Collection } = require('discord.js');
 
-	/* String and Time amount to use */
-	const times = [
-		{ name: 'day', value: 60 * 60 * 24 },
-		{ name: 'hour', value: 60 * 60 },
-		{ name: 'minute', value: 60 },
-		{ name: 'second', value: 1 }
-	]
+const e = new Collection();
+e.set('124354164144313454013', {
+	user: 'another someone who blah blah#0045',
+	time: new Date(Date.now()),
+	won: Math.floor(Math.random() * 500) * 1000
+});
+e.set('444646113', {
+	user: 'maybe someone idk lol#5421',
+	time: new Date(Date.now()),
+	won: Math.floor(Math.random() * 600) * 1000
+});
+const obj = {};
+e.keyArray().forEach(w => {
+	obj[w] = e.get(w)
+});
 
-	/* Maths */
-	const calc = (s, index, modulus = true) => {
-		return modulus 
-		? Math.floor(s % times[index].value) 
-			: Math.floor(s / times[index].value);
-	}
-
-	/* Formatting Time */
-	let results = [ `${calc(s, 0, false).toString()} ${times[0].name}` ];
-	for (let i = 0 ; i < 3 ; i++) {
-		const formula = Math.floor(s % times[i].value / times[i + 1].value);
-		const label = formula > 1 ? `${times[i + 1].name}s` : times[i + 1].name;
-		results.push(`${formula.toString()} ${label}`)
-	}
-
-	/* Return */
-	results = results.filter(r => !r.startsWith('0')).reverse();
-	results = [[results.reverse()[0], ...(results.reverse[1] || [])].join(', '), [results[0], results[1]].reverse().join(' and ')];
-	return results.join(', ');
+const l = () => {
+	console.log(Date.now());
+	console.clear();
+	return l();
 }
-
-console.log(parse(60 * 60 + 1 + 61));
+console.log(l());

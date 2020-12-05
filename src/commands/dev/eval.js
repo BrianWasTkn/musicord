@@ -53,7 +53,7 @@ export default class Eval extends Command {
 			try {
 				/** Hide token */
 				result = this.sanitize(evaled);
-				token = new RegExp(bot.config.token, 'gi');
+				token = new RegExp(Bot.config.token, 'gi');
 				result = result.replace(token, 'N0.T0K4N.4Y0U');
 				/** return Message */
 				await msg.channel.send(super.createEmbed({

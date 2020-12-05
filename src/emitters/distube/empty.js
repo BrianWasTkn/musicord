@@ -16,7 +16,7 @@ export default class Empty extends Listener {
 			await msg.channel.send(super.createEmbed({
 				title: 'Channel Empty',
 				color: 'ORANGE',
-				text: `I left **${msg.member.voice.channel.name}** after 60 seconds of inactivity.`
+				text: `I left **${Bot.distube.getQueue(msg).connection.channel.name}** after 60 seconds of inactivity.`
 			}));
 		} catch(error) {
 			super.log('Finish@sendMessage', error);

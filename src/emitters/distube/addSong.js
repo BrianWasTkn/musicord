@@ -14,14 +14,23 @@ export default class AddSong extends Listener {
 	async run({ Bot, msg, queue, song }) {
 		try {
 			/* Message */
-			await msg.channel.send(super.createEmbed({
+			const m = await msg.channel.send(super.createEmbed({
 				title: 'Added to Queue',
 				color: 'GREEN',
 				text: `Added [**__${song.name}__**](${song.url}) to the queue.`,
 				fields: {
-					'Duration': { 	content: `\`${song.formattedDuration}\``, 	inline: true },
-					'Added by': { 	content: song.user.tag, 										inline: true },
-					'# of Plays': { content: song.views.toLocaleString(), 			inline: true }
+					'Duration': {
+						content: `\`${song.formattedDuration}\``,
+						inline: true 
+					},
+					'# of Plays': { 
+						content: song.views.toLocaleString(),
+						inline: true
+					}
+					'Requested by': {
+						content: song.user.tag,
+						inline: true 
+					},
 				},
 				footer: {
 					text: `Thanks for using ${Bot.user.username}!`,

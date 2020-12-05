@@ -22,7 +22,7 @@ export default class Ping extends Command {
 		return newObj[status];
 	}
 
-	async execute({ Bot, msg, args }) {
+	async execute({ Bot, msg }) {
 		try {
 			const shard = msg.guild.shard;
 			await msg.channel.send(super.createEmbed({
@@ -30,7 +30,7 @@ export default class Ping extends Command {
 				color: 'YELLOW',
 				fields: {
 					'Status': { content: this.keyMirror(shard.status), inline: true },
-					'Shard ID':{content: shard.id,								inline: true },
+					'Shard ID':{content: shard.id,	inline: true },
 					'Latency':{ content: `\`${shard.ping}ms\``,		inline: true }
 				},
 				footer: {

@@ -17,11 +17,20 @@ export default class PlaySong extends Listener {
 			const m = await msg.channel.send(super.createEmbed({
 				title: 'Now Playing',
 				color: 'BLUE',
-				text: `Now Playing [**__${song.name}__**](${song.url}) on the queue.`,
+				text: `Now Playing [**__${song.name}__**](${song.url})...`,
 				fields: {
-					'Duration': { 	content: `\`${song.formattedDuration}\``, 	inline: true },
-					'Requested by': { 	content: song.user.tag,									inline: true },
-					'# of Plays': { content: song.views.toLocaleString(), 			inline: true }
+					'Duration': {
+						content: `\`${song.formattedDuration}\``,
+						inline: true 
+					},
+					'# of Plays': { 
+						content: song.views.toLocaleString(),
+						inline: true
+					}
+					'Requested by': {
+						content: song.user.tag,
+						inline: true 
+					},
 				},
 				footer: {
 					text: `Thanks for using ${Bot.user.username}!`,

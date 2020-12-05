@@ -15,7 +15,7 @@ export default class Avatar extends Command {
 
 	formatLinks(user) {
 		/* Vars */
-		const formats = ['png', 'jpg', 'webp'], links = {}, ret = [];
+		const formats = ['png', 'jpg', 'webp'], ret = [];
 		/* Format */
 		formats.forEach(f => {
 			ret.push(`[${f}](${user.avatarURL({ format: f })})`)
@@ -24,7 +24,7 @@ export default class Avatar extends Command {
 		return ret.join(' | ');
 	}
 
-	async execute({ Bot, msg, args }) {
+	async execute({ Bot, msg }) {
 		try {
 			const user = msg.mentions.users.first() || msg.member;
 			await msg.channel.send(super.createEmbed({

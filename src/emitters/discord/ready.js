@@ -4,7 +4,8 @@ export default class Ready extends Listener {
 	constructor(client) {
 		super(client);
 		/* Handle */
-		client.on('ready', this.handle);
+		const { Constants: Events } = require('discord.js');
+		client.on(Events.CLIENT_READY, this.handle);
 	}
 
 	async handle() {

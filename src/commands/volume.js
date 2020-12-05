@@ -12,23 +12,6 @@ export default class Volume extends Command {
 			category: 'Music',
 			checks: ['voice', 'queue']
 		});
-
-		/**
-		 * Command Category 
-		 * @type {String}
-		 */
-		this.category = 'Music';
-
-		/**
-		 * Custom Checking
-		 * * `dj` - dj role
-		 * * `voice` - if member in voice channel
-		 * * `queue` - if queue is present
-		 * * `paused` - if player paused
-		 * * `stopped` - if player stopped
-		 * @type {String[]}
-		 */
-		this.checks = ['voice', 'queue'];
 	}
 
 	async execute({ Bot, msg, args }) {

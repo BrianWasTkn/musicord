@@ -75,7 +75,7 @@ export default class Help extends Command {
 
 		/* Iterator */
 		const obj = {};
-		struc.map((f, i) => {
+		alignment.map((f, i) => {
 			obj[`${f[i].title} Commands`] = {
 				content: `\`${f[i].commands.join('`, `')}\``
 			}

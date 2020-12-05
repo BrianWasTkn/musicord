@@ -2,8 +2,8 @@ import Discord from 'discord.js'
 
 /**
  * Creates a command class
+ * @class @exports Command 
  */
-
 export default class Command {
 	constructor(client, options, extension) {
 
@@ -15,7 +15,7 @@ export default class Command {
 
 		/**
 		 * Command Name
-		 * @type {String|RegExP}
+		 * @type {String}
 		 */
 		this.name = options.name;
 
@@ -53,7 +53,7 @@ export default class Command {
 
 		/**
 		 * Command Required Permissions
-		 * @type {String[]}
+		 * @type {PermissionString[]}
 		 */
 		if ('permissions' in options && options.permissions.length > 1) {
 			this.permissions = ['SEND_MESSAGES'].concat(options.permissions);
@@ -69,7 +69,7 @@ export default class Command {
 
 		/**
 		 * Custom Checking
-		 * * `dj` - dj role
+		 * * `dj` - the dj role
 		 * * `voice` - if member in voice channel
 		 * * `queue` - if queue is present
 		 * @type {String[]}
@@ -77,12 +77,19 @@ export default class Command {
 		this.checks = extension.checks || [];
 	}
 
-	/** Shortcut for logging */
+	/**
+	 * A shortcut for logging
+	 * @param {String} msg the tag of the command
+	 * @param {Error} error an object of an error
+	 */
 	log(msg, error) {
 		return this.client.utils.log('Command', 'error', msg, error);
 	}
 
-	/** Creates an Embed */
+	/**
+	 * An alternative for a Discord.MessageEmbed
+	 * @param {Object} Options An object of re-structured Discord.Embed
+	 */
 	createEmbed({
 		author = {}, fields = {}, footer = {},
 		title = null, icon = null, text = null,
@@ -94,6 +101,14 @@ export default class Command {
 		});
 	}
 
+	/**
+	 * Handles the cooldown for each user using this command.
+	 * @param {Object} Options an object of parameters
+	 * @param {Discord.Client} Options.Bot The discord client
+	 * @param {Command} Options.command This command
+	 * @param {Discord.Message} Options.msg The discord message
+	 * @returns {Discord.MessageEmbed|null} An embed, if any
+	 */
 	handleCooldown({ Bot, command, msg }) {
 		/** Check if on cooldown collection */
 		if (!Bot.cooldowns.has(command.name)) {
@@ -133,6 +148,14 @@ export default class Command {
 		}, command.cooldown);
 	}
 
+	/**
+	 * Checks if the member has the right permissions to run this command.
+	 * @param {Object} Options an object of parameters
+	 * @param {Discord.Client} Options.Bot The discord client
+	 * @param {Command} Options.command This command
+	 * @param {Discord.Message} Options.msg The discord message
+	 * @returns {Discord.MessageEmbed|null} An embed, if any
+	 */
 	checkPermissions({ Bot, command, msg }) {
 		if (!msg.member.permissions.has(command.permissions)) {
 			return this.createEmbed({

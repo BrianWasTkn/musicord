@@ -30,6 +30,13 @@ export default class Play extends Command {
 
 		/** Else, Do it */
 		try {
+			/* Join */
+			const { channel } = msg.member.voice;
+			/* Check if not in channel */
+			if (!channel) {
+				try { await channel.join(); } 
+				catch(error) { super.log('play@join', error); }
+			}
 			/* Play */
 			await Bot.distube.play(msg);
 		} catch(error) {

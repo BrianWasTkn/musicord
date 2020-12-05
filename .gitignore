@@ -1,3 +1,14 @@
-# js modules
+# module dirs
 node_modules
 .env
+
+# extras
+*.ts
+
+# sublime text
+*.sublime-*
+
+# repl
+BooNum
+moment
+old

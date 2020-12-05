@@ -17,7 +17,7 @@ export default class Stop extends Command {
 	async execute({ Bot, msg }) {
 		try {
 			/* Stop */
-			const queue = await Bot.distube.stop(msg);
+			await Bot.distube.stop(msg);
 			try {
 				/* Return a message */
 				await msg.channel.send(super.createEmbed({

@@ -1,5 +1,11 @@
 import distube from 'distube'
+import Discord from 'discord.js'
 
+/**
+ * Extends a distube class
+ * @class DisTube
+ * @extends {distube}
+ */
 export default class DisTube extends distube {
 	constructor(client, options) {
 		super(client, options);
@@ -7,8 +13,8 @@ export default class DisTube extends distube {
 
 	/**
 	 * DisTube#nowplaying - extra function added by: BrianWasTkn
-	 * Resolves: first song in queue.
-	 * @param {Object} message Discord.Message
+	 * @param {Discord.Message} message Discord.Message
+	 * @returns {distube.Song} A distube song
 	 */
 	nowPlaying(message) {
 		const queue = super.getQueue(message);
@@ -18,8 +24,9 @@ export default class DisTube extends distube {
 
 	/**
 	 * DisTube#mapQueue - extra function added by: BrianWasTkn
-	 * Resolves: An array of decorated song items.
-	 * @param {Object} message Discord.Message
+	 * @param {Discord.Message} message a Discord.Message object
+	 * @param {Boolean} filterFirst if add an emote to filter the first song
+	 * @returns {Array<String>} an array of mapped song strings
 	 */
 	mapQueue(message, filterFirst = false) {
 		const queue = super.getQueue(message);
@@ -32,9 +39,9 @@ export default class DisTube extends distube {
 
 	/**
 	 * DisTube#remove - extra method added by: BrianWasTkn
-	 * Resolves: the queue.
-	 * @param {Object} message Discord.Message object
+	 * @param {Discord.Message} message Discord.Message object
 	 * @param {Number} index the index of the song in the queue
+	 * @returns {Promise<distube.Queue>} the new order of songs in queue.
 	 */
 	remove(message, index) {
 		return new Promise((resolve, reject) => {

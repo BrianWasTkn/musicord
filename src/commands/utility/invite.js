@@ -1,3 +1,4 @@
+import { Client, Message } from 'discord.js';
 import Command from '../../classes/Command.js'
 
 export default class Invite extends Command {
@@ -13,6 +14,13 @@ export default class Invite extends Command {
 		});
 	}
 
+	/**
+	 * Executes this command
+	 * @param {Object} Options An object of command parameters to use.
+	 * @param {Client} Options.Bot The main discord client
+	 * @param {Message} Options.msg The discord message
+	 * @param {String[]} Options.args an array of strings from the command
+ 	 */
 	async execute({ Bot, msg, args }) {
 		try {
 			const invite = await Bot.generateInvite({

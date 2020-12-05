@@ -16,7 +16,7 @@ export default class SearchCancel extends Listener {
 			await msg.channel.send(super.createEmbed({
 				title: 'Search Cancelled',
 				color: 'RED',
-				text: 'You have been idled or not answering me for 30 seconds so your search has been timed-out.',
+				text: 'Your search has been cancelled.',
 				footer: {
 					text: `Thanks for using ${Bot.user.username}!`,
 					icon: Bot.user.avatarURL()

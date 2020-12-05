@@ -1,5 +1,4 @@
 import Command from '../classes/Command.js'
-import { Collection } from 'discord.js'
 
 export default class VoteSkip extends Command {
 	constructor(client) {
@@ -31,9 +30,10 @@ export default class VoteSkip extends Command {
 
 		/** Start Collecting */
 		try {
-			const voters = new Collection();
-			const filter = m => m.content === '!voteskip' || m.content === '!revoke';
-			const collector = await msg.channel.createMessageCollector(filter, {
+			const { Collection } = require('discord.js'),
+				voters = new Collection(),
+				filter = m => m.content === '!voteskip' || m.content === '!revoke',
+				collector = await msg.channel.createMessageCollector(filter, {
 				time: 30000,
 				errors: ['time']
 			});
@@ -42,7 +42,7 @@ export default class VoteSkip extends Command {
 			try {
 				voters.set(msg.author.id, 'voted');
 			} catch(error) {
-				super.log('voteskip@set_vote', error)
+				super.log('voteskip@set_vote', error);
 			}
 
 			/** Collector Events */

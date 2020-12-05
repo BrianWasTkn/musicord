@@ -17,10 +17,20 @@ export default class AddList extends Listener {
 			await msg.channel.send(super.createEmbed({
 				title: 'Added to Queue',
 				color: 'GREEN',
-				text: `Added [**__${playlist.name}__**](${playlist.url}) with **${playlist.songs.length}** items to the queue.`,
+				text: `Added playlist [**__${playlist.name}__**](${playlist.url}) to the queue.`,
 				fields: {
-					'Duration': { content: `\`${playlist.formattedDuration}\``,	inline: true },
-					'Added by': { content: playlist.user.tag,									inline: true }
+					'Playlist Duration': { 
+						content: `\`${playlist.formattedDuration}\``,	
+						inline: true 
+					},
+					'Playlist Length': {
+						content: `${playlist.songs.length} tracks`,
+						inline: true
+					},
+					'Requested by': { 
+						content: playlist.user.tag,
+						inline: true 
+					}
 				},
 				footer: {
 					text: `Thanks for using ${Bot.user.username}!`,

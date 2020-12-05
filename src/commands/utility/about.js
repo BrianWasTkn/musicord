@@ -1,5 +1,4 @@
 import Command from '../../classes/Command.js'
-import { version } from 'discord.js'
 import moment from 'moment'
 
 export default class About extends Command {
@@ -14,8 +13,15 @@ export default class About extends Command {
 			category: 'Utility'
 		});
 	}
-
-	async execute({ Bot, msg, args }) {
+	
+	/**
+	 * Executes this command
+	 * @param {Object} Options An object of parameters to use within this command
+	 * @param {import'discord.js'.Client} Options.Bot a discord client
+	 * @param {import'discor.djs'.Message} Optons.msg a discord message
+	 * @returns {Promise<import'discord.js'.Message>} A Message
+	 */
+	async execute({ Bot, msg }) {
 		try {
 			/* Application */
 			const app = await Bot.fetchApplication();
@@ -40,7 +46,7 @@ export default class About extends Command {
 			};
 			const version = () => ({
 				musicord: Bot.package.version,
-				discord: version,
+				discord: require('discord.js').version,
 				distube: require('../../../node_modules/distube/package.json').version,
 			});
 			const channels = {

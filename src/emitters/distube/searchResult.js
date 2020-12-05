@@ -15,7 +15,7 @@ export default class SearchResult extends Listener {
 		try {
 			/* Map Results */
 			result = result.map((song, index) => {
-				return `**#${index + 1}: [__${song.name}__](${song.url}) - \`${song.formattedDuration}\``;
+				return `**${index + 1}.** [__${song.name}__](${song.url}) - \`${song.formattedDuration}\``;
 			});
 
 			/* Message */
@@ -24,8 +24,9 @@ export default class SearchResult extends Listener {
 				color: 'GREEN',
 				text: result.join('\n'),
 				fields: {
-					'Instructions': { content: 'Type the **# number** of your choice.', inline: true },
-					'Expiration': { content: '30 seconds', inline: true }
+					'Instructions': {
+						content: 'Type the number of your choice within 30 seconds or your search will be timed-out.'
+					}
 				},
 				footer: {
 					text: `Thanks for using ${Bot.user.username}!`,

@@ -17,7 +17,7 @@ export default class Pause extends Command {
 	async execute({ Bot, msg }) {
 		try {
 			/* Pause */
-			const queue = await Bot.distube.pause(msg);
+			await Bot.distube.pause(msg);
 			try {
 				/* Message */
 				await msg.channel.send(super.createEmbed({

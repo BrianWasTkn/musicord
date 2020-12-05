@@ -1,37 +1,108 @@
-import { Client, Collection } from 'discord.js'
+import { Client, Collection, ClientPresence } from 'discord.js'
 import { readdirSync } from 'fs'
 import { join } from 'path'
 
 import DisTube from './DisTube.js'
 
+/**
+ * Represents a Musicord client extending Client
+ * @class @extends client
+ */
 export default class Musicord extends Client {
+	/**
+	 * The base constructor for Musicord
+	 * @param {ClientOptions} clientOptions Discord.Client options
+	 * @param {DisTubeOptions} playerOptions DisTube options
+	 */
 	constructor(clientOptions, playerOptions) {
-		super(clientOptions);
+		super(clientOptions(this));
+
+		/**
+		 * Bot Presence
+		 * @type {ClientPresence}
+		 */
+		this.presence = new ClientPresence(this, {
+			client_status: {
+				web: 'offline',
+				mobile: 'online',
+				desktop: 'offline'
+			}
+		})
+
+		/**
+		 * Bot Package
+		 * @type {Object}
+		 */
 		this.package = require('../../package.json');
+
+		/**
+		 * DisTube Player
+		 * @type {DisTube}
+		 */
 		this.distube = new DisTube(this, playerOptions);
-		this.config = require('../config/config.js').default;
+
+		/**
+		 * The main config
+		 * @type {Object}
+		 */
+		this.config = require('../config/default.js').default;
+
+		/**
+		 * Musicord Utilities
+		 * @type {Object}
+		 */
 		this.utils = new (require('./Util.js').default)(this);
+
+		/**
+		 * Musicord managers
+		 * @type {Collection<string, Manager>}
+		 */
 		this.managers = new Collection();
+
+		/**
+		 * Musicord commands
+		 * @type {Collection<string, Command>}
+		 */
 		this.commands = new Collection();
+
+		/**
+		 * Command Aliases
+		 * @type {Collection<string, Command>}
+		 */
 		this.aliases = new Collection();
+
+		/**
+		 * Command Cooldowns
+		 * @type {Collection<string, Collection<Snowflake, Number>}
+		 */
 		this.cooldowns = new Collection();
+
+		
 		this.loadAll();
 	}
 
+	
 	get prefix() {
 		return this.config.prefix;
 	}
 
 	get developers() {
-		return this.config.developers;
+		return this.config.developers(this).map(dev => dev.id);
 	}
 
+	/**
+	 * Loads all functions
+	 */
 	loadAll() {
 		this.hydrateListeners();
 		this.importCommands();
 		this.handleManagers();
 	}
 
+	/**
+	 * Starts listening for individual distube/discord events
+	 * @returns {void}
+	 */
 	hydrateListeners() {
 		try {
 			/* Check every inch of emitters */
@@ -50,6 +121,10 @@ export default class Musicord extends Client {
 		}
 	}
 
+	/**
+	 * Imports and registers commands and it's aliases in Musicord.commands collection
+	 * @returns {void}
+	 */
 	importCommands() {
 		try {
 			const commands = readdirSync(join(__dirname, '..', 'commands'));
@@ -81,6 +156,10 @@ export default class Musicord extends Client {
 		}
 	}
 
+	/**
+	 * Handles and registers all managers
+	 * @returns {void}
+	 */
 	handleManagers() {
 		try {
 			const managers = readdirSync(join(__dirname, '..', 'managers'));
