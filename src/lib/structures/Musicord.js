@@ -1,8 +1,11 @@
-import { Client, Collection, ClientPresence } from 'discord.js'
+import { Client, Collection, ClientPresence, Constants } from 'discord.js'
 import { readdirSync } from 'fs'
 import { join } from 'path'
 
 import DisTube from './DisTube'
+
+require('../discord/Message').default;
+console.log(require('../discord/Message').default);
 
 /**
  * Represents a Musicord client extending Client
@@ -97,12 +100,78 @@ export default class Musicord extends Client {
 	 * Loads all functions
 	 * @returns {void}
 	 */
-	loadAll() {
+	async loadAll() {
 		this.utils.log('Musicord', 'main', 'Launching Bot...');
-		this.hydrateListeners();
-		this.importCommands();
-		this.handleManagers();
-		this.loadExtras();
+		if (this.config.devMode) {
+			this.utils.log('Musicord', 'main', 'Entering Developer mode...');
+			this._loadDev();
+			this.loadExtras();
+		} else {
+			this.hydrateListeners();
+			this.importCommands();
+			this.handleManagers();
+			this.loadExtras();
+		}
+	}
+
+	/**
+	 * Enters Dev mode
+	 * @returns <void>
+	 */
+	_loadDev() {
+		/* Commands */
+		readdirSync(join(__dirname, '..', '..', 'commands'))
+		.forEach(dir => {
+			readdirSync(join(__dirname, '..', '..', 'commands', dir))
+			.forEach(cmd => {
+				const command = new (require(join(__dirname, '..', '..', 'commands', dir, cmd)).default)(this);
+				this.commands.set(command.name, command);
+				command.aliases.forEach(alias => this.aliases.set(alias, command));
+				this.utils.log('Musicord', 'main', `Command: "${command.name}" loaded.`);
+			});
+		});
+
+		/* Player Events */
+		for (const d of readdirSync(join(__dirname, '..', 'emitters', 'distube'))) {
+			const i = new (require(join(__dirname, '..', 'emitters', 'distube', d)).default)(this);
+			this.utils.log('Musicord', 'main', `DisTube: "${d.split('.')[0]}" emitter loaded.`);
+		}
+
+		/* Events */
+		const { Events } = Constants;
+		this.on(Events.CLIENT_READY, async () => {
+			this.utils.log('Musicord', 'main', `${this.user.tag} is now ready.`);
+			this.user.setPresence({
+				status: 'dnd',
+				activity: {
+					type: 'WATCHING',
+					name: 'Developer Mode'
+				}
+			});
+		}).on(Events.MESSAGE_CREATE, async msg => {
+			const { author, channel, guild } = msg;
+
+			if (!msg.content.startsWith(this.prefix)) return;
+			if (!this.developers.includes(author.id)) return;
+
+			const [cmd, ...args] = msg.content.slice(this.prefix.length).trim().split(/ +/g);
+			const command = this.commands.get(cmd) || this.aliases.get(cmd);
+
+			if (command) {
+				await command.execute({ Bot: this, msg, args });
+			} else {
+				let nearCommands = [];
+				this.commands
+					.filter(c => c.name.toLowerCase().includes(cmd.toLowerCase()))
+					.forEach(c => nearCommands.push(c));
+
+				return msg.channel.send([
+					':lock: Developer Mode',
+					`No command(s) were found for "${cmd.toLowerCase()}".`,
+					nearCommands.length > 0 ? `Did you mean: \`${nearCommands.join(', ')}\`?` : ''
+				].join(' '));
+			}
+		});
 	}
 
 	/**
@@ -143,7 +212,6 @@ export default class Musicord extends Client {
 				});
 			});
 
-			console.log(this.commands.array()[0]);
 			this.utils.log('Musicord', 'main', `${this.commands.size} Commands Loaded`);
 		} catch(error) {
 			this.utils.log('Musicord', 'error', 'Error: ImportCommands', error);

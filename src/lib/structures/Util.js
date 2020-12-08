@@ -16,6 +16,10 @@ export default class Util {
 		this.client = client;
 	}
 
+	sleep(ms = 1000) {
+		return Discord.Util.delayFor(ms);
+	}
+
 	/**
 	 * Logger
 	 * @param {Object} Class the class logged

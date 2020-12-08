@@ -45,7 +45,7 @@ export default class Phone extends Command {
 
 		/* Check */
 		if (!recipient.collector.first()) {
-			return await m.edit(super.createEmbed({
+			return await msg.channel.send(super.createEmbed({
 				title: 'Empty User',
 				color: 'RED',
 				text: 'You\'re now bot banned.',
@@ -65,7 +65,7 @@ export default class Phone extends Command {
 
 		/* Check, again */
 		if (!user) {
-			return await recipient.embed.edit(super.createEmbed({
+			return await msg.channel.send(super.createEmbed({
 				title: 'Invalid User',
 				color: 'RED',
 				text: 'Lol imagine sending a message to someone that doesn\'t exist, weirdo.'

@@ -11,18 +11,32 @@ export default class PresenceManager extends Manager {
 	}
 
 	async handle({ Bot }) {
-		try {	
+		if (Bot.config.devMode) {
+			Bot.user.setPresence({
+				status: 'dnd',
+				activity: {
+					name: 'Developer Mode',
+					type: 'WATCHING'
+				}
+			}).then(presence => {
+				[ `PresenceManager@status: ${presence.status}`,
+				`PresenceManager@appID: ${presence.activities[0].applicationID}`,
+				`PresenceManager@name: ${presence.activities[0].name}`
+				].forEach(tag => {
+					Bot.utils.log('Manager', 'main', tag);
+				});
+			}).catch(error => {
+				super.log('DevMode:PresenceManager@presence', error);
+			});
+		} else {
 			/** Interval */
 			setInterval(async () => {
-				const activities = [
-					`${Bot.users.cache.size} users`,
-					`${Bot.prefix}help`
-				];
+				const activities = Bot.config.activities(Bot);
 				try {
 					await Bot.user.setPresence({
 						activity: {
 							name: activities[Math.floor(Math.random() * activities.length)],
-							type: 'LISTENING',
+							type: 'STREAMING',
 							url: 'https://twitch.tv/onlyhitus'
 						}
 					})
@@ -30,8 +44,6 @@ export default class PresenceManager extends Manager {
 					super.log('PresenceManager@set_presence_interval', error)
 				}
 			}, 1000 * 60) // 1 Minute (1000ms * 60secs)
-		} catch(error) {
-			super.log('PresenceManager@interval', error);
 		}
 	}
 }

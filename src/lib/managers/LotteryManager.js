@@ -10,92 +10,94 @@ export default class LotteryManager extends Manager {
 		}));
 	}
 
+	randomNumber(min, max) {
+		return Math.floor(Math.random() * (max - min + 1) + min);
+	}
+
 	async handle({ Bot }) {
+		/* DevMode */
+		if (Bot.config.devMode) return;
+
 		/* Fetch */
 		const Lotto = Bot.config.lottery(Bot);
 		const { 
 			active, winners, multiplier,
-			interval, prize, lastRoll, host: { 
+			interval, lastRoll, logs, host: { 
 				guild, channel, role 
-			}
+			}, prize: { min, max, limit }
 		} = Lotto;
 
 		/* Interval to check if active */
+		const check = async () => {
+			setTimeout(() => {
+
+			}, 5e3);
+		}
 		const check = setInterval(async () => {
 			if (!active) {
 				return;
 			} else {
 				clearInterval(check);
-				repeat();
+				if (new Date().getMinutes() === 00) {
+					await run();
+				} else {
+					return;
+				}
+				run();
 			};
 		}, 1000);
 
 		/* Interval to Roll */
-		const repeat = () => {
-			setInterval(async () => {
-				if (active) {
-					await roll();
-				}
-			}, interval * 60 * 60 * 1000);
+		const run = async () => {
+			await roll();
+			const timeout = () => {
+				setTimeout(async () => {
+					if (active) {
+						await roll();
+						timeout();
+					}
+				}, interval * 60 * 60 * 1000);
+			}
 		};
+
+		/* Runs the first roll and proceed to interval */
+		run();
 
 		/* Roll */
 		const roll = async () => {
-			/* Filter */
 			const members = guild.roles.cache.get(role.id).members;
 			const winner = members.filter(m => !m.bot).random();
-			/* Prize */
-			let coins = randomNumber(prize.min, prize.max);
-			coins = coins + (Math.floor(coins * (multiplier / 10))); // Apply multiplier
-			/* Limit */
-			if (coins > (prize.limit * 1000)) {
-				coins = prize.limit * 1000;
-			}
-			/* Set */
-			Lotto.winners += 1;
-			Lotto.lastRoll = Date.now(); // TODO: able to use mongoose to save timestamps
-			winners.set(winner.id, {
-				coins: coins * 1000,
-				timestamp: Date.now()
-			});
-			/* Message */
-			try {
-				await channel.send(super.createEmbed({
-					author: {
-						text: `${guild.name} — Auto Lottery`,
-						icon: guild.iconURL()
-					},
-					title: 'Lottery Winner',
-					icon: winner.avatarURL(),
-					color: 'GOLD',
-					text: `**${winner.tag}** walked away with **${(coins * 1000).toLocaleString()} coins!`,
-					fields: {
-						'Winner ID': {
-							content: winner.id,
-							inline: true
-						},
-						'Multiplier': {
-							content: `${multiplier}%`,
-							inline: true
-						},
-						'Requirement': {
-							content: role.mention,
-							inline: true
-						}
-					},
-					footer: {
-						text: `Next winner in: ${interval} hours.`,
-						icon: winner.avatarURL()
-					}
-				}));
-			} catch(error) {
-				super.log('LotteryManager@msg', error);
-			}
-		}
 
-		/* Random Number */
-		const randomNumber = (min, max) => {
-			return Math.floor(Math.random() * (max - min + 1) + min)
+			let coins = this.randomNumber(min / 1000, max / 1000);
+			coins += (Math.floor(coins * (multiplier / 100))) * 1000;
+			if (coins > (limit * 1000)) coins = limit * 1000;
+			
+			Lotto.lastRoll = Date.now(); // TODO: able to use mongoose to save timestamps
+			if (winners.has(winner.id)) {
+				winners.get(winner.id).push({
+					coins, timestamp: Date.now()
+				});
+			} else {
+				winners.set(winner.id, {
+					coins, timestamp: Date.now()
+				});
+			}
+
+			await channel.send(super.createEmbed({
+				title: 'Lottery Winner',
+				icon: winner.avatarURL(),
+				color: 'GOLD',
+				text: `**${winner.tag}** walked away with **${(coins * 1e3).toLocaleString()}** coins.`,
+				author: { text: guild.name, icon: guild.iconURL() },
+				footer: { text: `Next winner in ${interval} hours.`, icon: guild.iconURL() },
+				fields: {
+					'Winner ID': { content: winner.id, inline: true },
+					'Multiplier': {content: multiplier, inline: true },
+					'Requirement':{content: role.mention, inline: true }
+				}
+			})).catch(error => {
+				return super.log('LotteryManager@msg', error);
+			})
 		}
 	}
 }

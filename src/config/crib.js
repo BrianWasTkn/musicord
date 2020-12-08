@@ -1,6 +1,8 @@
 import { Collection } from 'discord.js'
 
-const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+const random = (min, max) => {
+	return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
 export default {
 	/* Main Guild */
@@ -18,16 +20,18 @@ export default {
 		interval: 12,
 		/** {Date} The last rolled timestamp */
 		lastRoll: null,
-		/** {Number} Prize multi: (won / 1000) * (1-10) */
-		multiplier: random(1, 5),
+		/** {Number} Prize multi: (won / 1000) * (1-100) */
+		multiplier: random(1, 100),
+		/* {GuildChannel} Logs channel */
+		logs: this.default.lottery(Bot).host.guild.channels.cache.get(),
 		/** {Object} Prize Caps */
 		prize: {
 			/* Minimum */
-			min: 200,
+			min: 2e5,
 			/* Maximum */
-			max: 500,
+			max: 5e5,
 			/* Limit */
-			limit: 1000
+			limit: 1e6
 		},
 		/* The main guild */
 		host: {

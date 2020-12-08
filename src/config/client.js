@@ -4,6 +4,11 @@ const { prefix } = support;
 export default {
 	/* Token */
 	token: 'Njg2OTY5MDIwMzg1MzI5MTgy.Xme7wQ.8NNvk2zlQ6I08eQcqDNRD7OxlZs',
+	/* Activities */
+	activities: Bot => ([
+		`${Bot.users.cache.size} users`,
+		`${Bot.prefix}help`
+	]),
 	/* Client Options */
 	client_options: {
 		/* {String} Calculated Shards */

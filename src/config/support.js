@@ -2,7 +2,7 @@ export default {
 	/* Bot Prefix */
 	prefix: 'm!',
 	/* Developer Mode */
-	dev: false,
+	devMode: true,
 	/* Blacklists */
 	blacklists: Bot => ([
 		Bot.users.cache.get()

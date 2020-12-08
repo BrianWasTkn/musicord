@@ -1,3 +1,82 @@
+const { Collection } = require('discord.js');
+
+const winners = new Collection();
+winners.set('691416705917779999', [{
+	coins: 5e3,
+	timestamp: new Date().getHours()
+}]);
+
+if (winners.has('691416705917779999')) {
+	winners.get('691416705917779999').push({
+		coins: 1e4,
+		timestamp: Date.now()
+	});
+}
+
+console.log(winners);
+
+/**
+const random = (min, max) => {
+	return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+const roll = () => {
+	let { thres, limit, multi } = {
+		thres: 1e5, limit: 6e5, multi: Math.floor(Math.random() * 100)
+	}
+
+	let inc = thres + Math.floor(thres * (multi / 100));
+	thres /= 1e3;
+	let coins = random(thres, inc / 1e3);
+	coins = Math.floor(coins + (coins * (multi / 100)));
+	console.log({
+		coins: (coins * 1e3).toLocaleString(),
+		thres: thres * 1e3, multi
+	})
+}
+
+const rolrl = () => {
+	let { min, max, limit, multi, odds } = { 
+		min: 1e5, max: 5e5, limit: 6e5, multi: randomNum(20, 100),
+		odds: Math.random()
+	};
+
+	min = Math.floor(min + (min * (multi / 100)));
+
+	let coins = random(min / 1e3, max / 1e3);
+	coins = Math.floor(coins + (coins * odds)) / 1e3 * 1e3;
+	if (coins > limit) coins = limit;
+	console.log({
+		coins: (coins * 1e3).toLocaleString(),
+		min, odds: Math.floor(odds * 100), max
+	})
+}
+
+const int = () => {
+	roll();
+	const timeout = () => {
+		setTimeout(() => {
+			roll();
+			timeout();
+		}, 1000);
+	}
+	timeout();
+}
+
+int();
+*/
+
+/**
+const e = (time) => {
+	setTimeout(() => {
+		console.log(Date.now());
+		e(Math.random() * 3)
+	}, Math.floor(time) * 1e3);
+}
+
+e(1);
+*/
+
 /**
 class Something {
 	constructor(obj) {
