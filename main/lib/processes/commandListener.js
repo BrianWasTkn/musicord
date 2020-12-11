@@ -8,8 +8,10 @@ exports.run = async ctx => {
 		const cmd = args.shift();
 		const command = ctx.cmds.get(c => c.name === cmd || c.aliases.includes(cmd));
 
-		if (!member.permissions.has(['SEND_MESSAGES'].concat(command.permissions || []))) {
-			return;
+		if (command.permissions) {
+			if (!member.permissions.has(command.permissions)) {
+				return;
+			}
 		}
 
 		if (command) {
