@@ -1,5 +1,7 @@
 exports.run = async ctx => {
 	ctx.on('ready', async () => {
-		console.log(`${ctx.user.tag} is now ready.`)
+		const msg = `${ctx.user.tag} is now ready.`;
+		await ctx.channels.cache.get('695614620781641778').send(msg)
+		console.log(msg);
 	});
 }
