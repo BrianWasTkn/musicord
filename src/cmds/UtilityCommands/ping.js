@@ -1,6 +1,6 @@
 import { Command } from '../../lib/command/Command.js'
 
-export async function() {
+export default async function run() {
 	return new Command(
 		async ({ ctx, msg, args }) => {
 			const { channel, guild: shard } = msg;
