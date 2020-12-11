@@ -25,6 +25,7 @@ export class Musicord extends Client {
 		}
 		/* {Function} Our discord, distube and collector listeners */
 		for (const p of readdirSync(join(__dirname, '..', 'processes'))) {
+			this.utils.log('Musicord', 'main', `Loaded: ${p}`);
 			if (config.main.devMode) await require(`../processes/${p}`).runDev.bind(this);
 			else await require(`../processes/${p}`).run.bind(this);
 		}
@@ -32,6 +33,7 @@ export class Musicord extends Client {
 		for (const dir of readdirSync(join(__dirname, '..', '..', 'cmds'))) {
 			readdirSync(join(__dirname, '..', '..', 'cmds', dir)).forEach(cmd => {
 				const command = require(`../../cmds/${dir}/${cmd}`).default;
+				this.utils.log('Musicord', 'main', `Loaded: ${command.name}`);
 				this.commands.set(command.help.name, command);
 				command.help.aliases.forEach(a => this.aliases.set(a, command.help.name));
 			});
