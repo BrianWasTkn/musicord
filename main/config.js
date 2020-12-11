@@ -81,10 +81,10 @@ const cribConfig = {
 			/* {Guild} guild - the memers crib discord server */
 			guild: ctx.guilds.cache.get('691416705917779999'),
 			/* {Role} role - the required role for this guild */
-			role: this.lottery(ctx).host.guild.roles.cache.get('692517500814098462'),
+			role: cribConfig.lottery(ctx).host.guild.roles.cache.get('692517500814098462'),
 			/* {GuildChannel} channel - the main channel for this guild */
 			// channel: this.lottery(Bot).host.guild.channels.cache.get('717351680676462712')
-			channel: this.lottery(ctx).host.guild.channels.cache.get('745155004041789523')
+			channel: cribConfig.lottery(ctx).host.guild.channels.cache.get('745155004041789523')
 		}
 	})
 }
