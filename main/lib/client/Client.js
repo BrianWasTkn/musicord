@@ -18,7 +18,7 @@ module.exports = class Musicord extends Client {
 			})
 		});
 
-		readdirSync(join(__dirname, '..', 'listeners')).forEach(lis => {
+		readdirSync(join(__dirname, '..', 'listeners')).forEach(async lis => {
 			await require(join(__dirname, '..', 'listeners', lis)).run(this);
 			console.log(`Loaded: ${lis}`);
 		})
