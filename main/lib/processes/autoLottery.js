@@ -68,7 +68,7 @@ exports.run = async ctx => {
 				],
 				footer: {
 					text: winner.id,
-					iconURL: winner.avatarURL()
+					iconURL: winner.avatarURL() || winner.user.avatarURL()
 				}
 			}});
 		}
