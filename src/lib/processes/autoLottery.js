@@ -1,5 +1,5 @@
 function randomNumber(min, max) {
-	return Math.floor(Math.random() * (max + min + 1) + min);
+	return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 export async function runDev() {}
@@ -11,7 +11,7 @@ export async function run() {
 			prize: { min, max, limit }, host: { guild, role, channel }
 		} = this.crib.lottery(this);
 		/* First interval to roll */
-		const intervalCheck = setInterval(async () => {
+		const runCheck = setInterval(async () => {
 			if (!active) return;
 			else {
 				if (new Date().getMinutes() === Number('00')) {
@@ -32,13 +32,17 @@ export async function run() {
 			await loop();
 		}
 
+		/* A func to roll winners */
 		const roll = async () => {
 			const members = guild.roles.cache.get(role.id).members;
 			const winner = members.filter(m => !m.bot).random();
 
 			let won = randomNumber(min, max);
-			won += Math.floor(won * (multi / 100)) * 1000;
-			if (won > (limit * 1000)) won = limit * 1000;
+			let raw = won;
+			won += Math.floor(won * (multi / 100));
+			if (won > (limit * 1000)) won = (limit * 1000 + 1) / 1000;
+			won *= 1000;
+			raw *= 1000;
 
 			if (!winners.has(winner.id)) {
 				winners.set(winner.id, [{
@@ -46,8 +50,8 @@ export async function run() {
 					timestamp: Date.now()
 				}]); 
 			} else {
-				winnerInCollection = winners.get(winner.id);
-				winners.set(winner.id, [...winnerInCollection, {
+				collectionWonOfWinners = winners.get(winner.id);
+				winners.set(winner.id, [...collectionWonOfWinners, {
 					coins: won,
 					timestamp: Date.now()
 				}]);
@@ -69,5 +73,8 @@ export async function run() {
 				}
 			}});
 		}
+
+		/* Run */
+		await runCheck();
 	});
 }
