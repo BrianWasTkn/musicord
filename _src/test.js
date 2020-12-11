@@ -1,4 +1,13 @@
 
+let items = [
+	{ v: 12 },
+	{ v: 15 },
+	{ v: 5 }
+]
+
+console.log(items.sort((p, c) => c.v - p.v))
+
+/**
 const obj = { e: Math.E },
 another = { pi: Math.PI }
 
@@ -9,6 +18,7 @@ function log() {
 
 const func = log.bind({ obj, another });
 func();
+*/
 
 /**
 const { Collection } = require('discord.js');

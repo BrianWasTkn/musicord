@@ -1,6 +1,19 @@
+
+let items = [
+	{ v: 12 },
+	{ v: 15 },
+	{ v: 5 }
+]
+
+items = items.sort((p, c) => p.v - c.v);
+
+console.log(items)
+
+/**
 import { Discord } from './another'
 
 export function run() { new Discord('e'); }
+*/
 
 /**
 const { Collection } = require('discord.js');

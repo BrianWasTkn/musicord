@@ -1,3 +1,7 @@
+function randomInArray(array) {
+	return array[Math.floor(Math.random() * array.length)]
+}
+
 export async function run() {
 	this.on('ready', async () => {
 		this.user.setPresence({
@@ -12,6 +16,17 @@ export async function run() {
 					type, name 
 				} 
 			} = presence;
+
+			try {
+				setInterval(async () => {
+					this.user.setPresence({ activity: randomInArray(this.config.bot.activies(this)) })
+				}, this.config.main.presence_interval * 1000);
+			} catch(error) {
+				this.utils.log(
+					'Musicord', 'error',
+					'activityChanger@presence_interval', error
+				);
+			}
 			
 			this.utils.log(
 				'Musicord', 'main', 

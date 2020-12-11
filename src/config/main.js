@@ -8,10 +8,12 @@ const bot = {
 	/* {String} token - discord token to login */
 	token: 'Njg2OTY5MDIwMzg1MzI5MTgy.Xme7wQ.8NNvk2zlQ6I08eQcqDNRD7OxlZs',
 	/* {String[]} activities - an array of bot activities */
-	activities: Bot => ([
-		`${Bot.users.cache.size} users`,
-		`${Bot.prefix}help`
-	])
+	activities: Ctx => ([
+		{ type: 'LISTENING', name: `${Ctx.prefix}help` },
+		{ type: 'WATCHING', name: `${Ctx.users.cache.size} users` }
+	]),
+	/* {Number} presence_interval - the interval of activities */
+	presence_interval: 5
 }
 
 const client_options = {
