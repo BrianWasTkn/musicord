@@ -25,11 +25,6 @@ const clientOptions = {
 	shards: 'auto',
 	/* {String} disableMentions - automatically filter @everyone/here mentions */
 	disableMentions: 'everyone',
-	/* {Object} allowedMentions - idk lol */
-	allowedMentions: { 
-		/* {String} parse - idk lol */
-		parse: 'users' 
-	},
 	/* {Object} presence - the first presence to use within login */
 	presence: {
 		/* {String} status - either: 'dnd', 'idle', 'online', or 'invisible' */

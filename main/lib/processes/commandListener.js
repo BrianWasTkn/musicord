@@ -8,7 +8,7 @@ exports.run = async ctx => {
 		const cmd = args.shift();
 		const command = ctx.cmds.get(c => c.name === cmd || c.aliases.includes(cmd));
 
-		if (!member.permissions.has(command.permissions)) return;
+		if (!member.permissions.has(command.permissions || ['SEND_MESSAGES'])) return;
 
 		if (command) {
 			await command.execute({ ctx, msg, args });
