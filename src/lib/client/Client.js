@@ -30,7 +30,7 @@ export class Musicord extends Client {
 		}
 		/* {Object} Command Our commands */
 		for (const dir of readdirSync(join(__dirname, '..', '..', 'cmds'))) {
-			readdirSync(`../cmds/${dir}`).forEach(cmd => {
+			readdirSync(readdirSync(join(__dirname, '..', '..', 'cmds', dir))).forEach(cmd => {
 				const command = require(`../cmds/${subdir}/${cmd}`)();
 				this.commands.set(command.name, command);
 				command.aliases.forEach(a => this.aliases.set(a, command.name));
