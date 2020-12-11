@@ -8,7 +8,6 @@ module.exports = class Musicord extends Client {
 	constructor(client, player) {
 		super(client);
 		this.config = require('../../config.js');
-		this.crib = this.config.cribConfig;
 		this.distube = new distube(this, player);
 		this.cmds = new Collection();
 		this.cooldowns = new Collection();
