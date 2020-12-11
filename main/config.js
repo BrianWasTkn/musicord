@@ -90,6 +90,6 @@ const playerConfig = {
 }
 
 module.exports = {
-	main, clientOptions, playerConfig
+	main, clientOptions, playerConfig,
 	cribConfig, customOptions
 }
