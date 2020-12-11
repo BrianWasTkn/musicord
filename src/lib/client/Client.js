@@ -29,7 +29,7 @@ export class Musicord extends Client {
 			else require(`../processes/${p}`).run.bind(this);
 		}
 		/* {Object} Command Our commands */
-		for (const dir of readdirSync(join(__dirname, '..', 'cmds'))) {
+		for (const dir of readdirSync(join(__dirname, '..', '..', 'cmds'))) {
 			readdirSync(`../cmds/${dir}`).forEach(cmd => {
 				const command = require(`../cmds/${subdir}/${cmd}`)();
 				this.commands.set(command.name, command);
