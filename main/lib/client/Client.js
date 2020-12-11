@@ -1,6 +1,6 @@
 const { Client } = require('discord.js');
 const { readdirSync } = require('fs');
-const { join } = require('join');
+const { join } = require('path');
 
 module.exports = class Musicord extends Client {
 	constructor(options) {
