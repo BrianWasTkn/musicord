@@ -30,7 +30,7 @@
     "chalk": "^4.1.0",
     "discord-music-player": "^5.0.4",
     "discord.js": "^12.4.1",
-    "distube": "^2.7.0",
+    "distube": "^2.8.7",
     "esm": "^3.2.25",
     "ffmpeg-static": "^4.2.7",
     "lyrics-finder": "^21.4.0",
