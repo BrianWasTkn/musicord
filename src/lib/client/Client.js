@@ -20,11 +20,12 @@ export class Musicord extends Client {
 		/* {Object} Crib memers crib objects/funcs */
 		this.crib = config.crib;
 		/* {Collection} Some collections so we could fetch */
-		for (const collections of ['commands', 'aliases', 'cooldowns', 'processes']) {
-			this[collections] = new Collection();
-		}
+		this.commands = new Collection();
+		this.aliases = new Collection();
+		this.cooldowns = new Collection();
+		
 		/* {Function} Our discord, distube and collector listeners */
-		for (const p of readdirSync(join(__dirname, '..', 'processes'))) {
+		readdirSync(join(__dirname, '..', 'processes')).forEach(p => {
 			const proc = require(`../processes/${p}`);
 			if (config.main.devMode) {
 				await proc.runDev.bind(this);
@@ -33,17 +34,17 @@ export class Musicord extends Client {
 				await proc.run.bind(this);
 				this.utils.log('Musicord', 'main', `dev:Loaded: ${proc}`);
 			}
-		}
+		});
 
 		/* {Object} Command Our commands */
-		for (const dir of readdirSync(join(__dirname, '..', '..', 'cmds'))) {
+		readdirSync(join(__dirname, '..', '..', 'cmds')).forEach(dir => {
 			readdirSync(join(__dirname, '..', '..', 'cmds', dir)).forEach(cmd => {
 				const command = require(`../../cmds/${dir}/${cmd}`).default;
 				this.utils.log('Musicord', 'main', `Loaded: ${command.name}`);
 				this.commands.set(command.help.name, command);
 				command.help.aliases.forEach(a => this.aliases.set(a, command.help.name));
 			});
-		}
+		})
 	}
 
 	get developers() {
