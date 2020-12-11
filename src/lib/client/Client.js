@@ -25,7 +25,7 @@ export class Musicord extends Client {
 		}
 		/* {Function} Our discord, distube and collector listeners */
 		for (let p of readdirSync(join(__dirname, '..', 'processes'))) {
-			if (config.bot.devMode) await require(`../processes/${p}`).runDev.bind(this);
+			if (config.main.devMode) await require(`../processes/${p}`).runDev.bind(this);
 			else require(`../processes/${p}`).run.bind(this);
 		}
 		/* {Object} Command Our commands */
