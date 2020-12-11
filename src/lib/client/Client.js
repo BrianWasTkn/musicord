@@ -27,14 +27,14 @@ export class Musicord extends Client {
 		for (const p of readdirSync(join(__dirname, '..', 'processes'))) {
 			const proc = require(`../processes/${p}`);
 			if (config.main.devMode) {
-				await proc.run.bind(this);
-				this.utils.log('Musicord', 'main', `Loaded: ${proc}`);
-			} else {
 				await proc.runDev.bind(this);
-				this.utils.log('Musicord', 'main', `Loaded: ${proc}`);
+				this.utils.log('Musicord', 'main', `dev:Loaded: ${proc}`);
+			} else {
+				await proc.run.bind(this);
+				this.utils.log('Musicord', 'main', `dev:Loaded: ${proc}`);
 			}
 		}
-		
+
 		/* {Object} Command Our commands */
 		for (const dir of readdirSync(join(__dirname, '..', '..', 'cmds'))) {
 			readdirSync(join(__dirname, '..', '..', 'cmds', dir)).forEach(cmd => {
