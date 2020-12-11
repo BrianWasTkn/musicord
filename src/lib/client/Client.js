@@ -3,17 +3,45 @@ import { readdirSync } from 'fs'
 import { join } from 'path'
 
 import { DisTube } from './Music.js'
-import { Util } from './Util.js'
 
 export class Musicord extends Client {
-	constructor(clientOpts, playerOpts, customOpts) {
-		super(customOpts);
+	constructor(config) {
+		super(config.clientOptions);
+		this._setup(config);
+	}
+
+	async _setup(config) {
+		/** {Object} ConfigStructure the main config for this client */
 		this.config = require('../../config/main.js').default;
-		this.distube = new DisTube(this, playerOpts);
-		this.util = new Util();
-		
-		for (const collections of ['commands', 'aliases', 'cooldowns']) {
+		/* {DisTube} DisTube the music player we'll use for this client */
+		this.distube = new DisTube(this, config.playerOptions);
+		/* {Util} Util certain utilities */
+		this.util = require('../util/index.js').default;
+		/* {Object} Crib memers crib objects/funcs */
+		this.crib = config.crib;
+		/* {Collection} Some collections so we could fetch */
+		for (const collections of ['commands', 'aliases', 'cooldowns', 'processes']) {
 			this[collections] = new Collection();
 		}
+		/* {Function} Our discord, distube and collector listeners */
+		for (let proc of readdirSync('../processes')) {
+			await require(`../processes/${proc}`).run.bind(this);
+		}
+		/* {Object} Command Our commands */
+		for (const dir of readdirSync('../cmds')) {
+			readdirSync(`../cmds/${dir}`).forEach(cmd => {
+				const command = require(`../cmds/${subdir}/${cmd}`)();
+				this.commands.set(command.name, command);
+				command.aliases.forEach(a => this.aliases.set(a, command.name));
+			});
+		}
+	}
+
+	get developers() {
+		return this.config.developers(this).map(dev => dev.id);
+	}
+
+	get prefix() {
+		return this.config.bot.prefix;
 	}
 }
