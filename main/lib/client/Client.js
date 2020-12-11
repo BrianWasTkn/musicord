@@ -9,7 +9,7 @@ module.exports = class Musicord extends Client {
 		super(client);
 		this.config = require('../../config.js');
 		this.crib = this.config.cribConfig;
-		this.player = new distube(this, player);
+		this.distube = new distube(this, player);
 		this.cmds = new Collection();
 		this.cooldowns = new Collection();
 		this._setup();
