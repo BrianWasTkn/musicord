@@ -1,7 +1,7 @@
 import { Musicord } from './lib/client/Client'
 import config from './config/main'
 
-const login = async () => {
+const run = async () => {
 	const { main, clientOptions, playerOptions, crib } = config;
 	const ctx = new Musicord({ clientOptions, playerOptions, crib, main });
 
@@ -16,4 +16,4 @@ const login = async () => {
 	}
 };
 
-login();
+run();

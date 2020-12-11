@@ -1,1 +1,1 @@
-worker: node src/esm.js
+worker: node main/main.js
