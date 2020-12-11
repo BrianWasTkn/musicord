@@ -15,7 +15,7 @@ export class Command {
 
 	get help () {
 		return Object.assign({
-			triggers: [this.cmd.help.name].concat(this.cmd.help.aliases || []),
+			aliases: [this.cmd.help.name].concat(this.cmd.help.aliases || []),
 			usage: '{command}'
 		}, this.cmd.help, {
 			userPerms: ['SEND_MESSAGES'].concat(this.cmd.help.userPerms || []),
