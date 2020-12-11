@@ -33,7 +33,7 @@ exports.clientOptions = {
 		/* {Object} activity - the activity */
 		activity: {
 			/* {String} name - the thing to display in member sidebar */
-			name: `${bot.prefix[0]}help`,
+			name: `${main.prefix[0]}help`,
 			/* {String} type - wether: 'STREAMING', 'PLAYING', 'LISTENING', or 'WATCHING' */
 			type: 'LISTENING'
 			/* {String} url - (only in STREAMING) the url of this presence */
