@@ -1,4 +1,4 @@
-const Musicord = require('./lib/client/Client');
+const Client = require('./lib/client/Client');
 
 const ctx = new Client();
 
