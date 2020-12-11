@@ -1,5 +1,5 @@
-import Musicord from './lib/structures/Musicord.js'
-import config from './config/default.js'
+import { Musicord } from './lib/structures/Musicord'
+import config from './config/default'
 import chalk from 'chalk'
 import moment from 'moment'
 

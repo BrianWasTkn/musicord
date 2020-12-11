@@ -1,3 +1,16 @@
+
+const obj = { e: Math.E },
+another = { pi: Math.PI }
+
+function log() {
+	let { e } = this.obj, { pi } = this.another;
+	return console.log({ e, pi });
+}
+
+const func = log.bind({ obj, another });
+func();
+
+/**
 const { Collection } = require('discord.js');
 
 const winners = new Collection();
@@ -14,6 +27,7 @@ if (winners.has('691416705917779999')) {
 }
 
 console.log(winners);
+*/
 
 /**
 const random = (min, max) => {

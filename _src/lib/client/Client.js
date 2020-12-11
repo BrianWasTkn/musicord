@@ -5,13 +5,12 @@ import { join } from 'path'
 import DisTube from './DisTube'
 
 require('../discord/Message').default;
-console.log(require('../discord/Message').default);
 
 /**
  * Represents a Musicord client extending Client
  * @class @extends client
  */
-export default class Musicord extends Client {
+export class Musicord extends Client {
 	/**
 	 * The base constructor for Musicord
 	 * @param {ClientOptions} clientOptions Discord.Client options
@@ -19,18 +18,6 @@ export default class Musicord extends Client {
 	 */
 	constructor(clientOptions, playerOptions) {
 		super(clientOptions);
-
-		/**
-		 * Bot Presence
-		 * @type {ClientPresence}
-		 */
-		this.presence = new ClientPresence(this, {
-			client_status: {
-				web: 'offline',
-				mobile: 'online',
-				desktop: 'offline'
-			}
-		});
 
 		/**
 		 * Bot Package
@@ -60,7 +47,7 @@ export default class Musicord extends Client {
 		 * Musicord Utilities
 		 * @type {Object}
 		 */
-		this.utils = new (require('./Util.js').default)(this);
+		this.utils = new (require('./Util.js').Util)(this);
 
 		/**
 		 * Musicord managers
@@ -88,12 +75,23 @@ export default class Musicord extends Client {
 		this.loadAll();
 	}
 
+	get blacklists() {
+		return this.config.blacklists(this).map(bl => bl.id);
+	}
+
 	get prefix() {
 		return this.config.prefix;
 	}
 
 	get developers() {
 		return this.config.developers(this).map(dev => dev.id);
+	}
+
+	/**
+	 * Custom Functions
+	 */
+	async sendMessage(channel, ...content) {
+		return await this.channels.cache.get(channel.id).send(...content);
 	}
 
 	/**
@@ -137,40 +135,10 @@ export default class Musicord extends Client {
 			this.utils.log('Musicord', 'main', `DisTube: "${d.split('.')[0]}" emitter loaded.`);
 		}
 
-		/* Events */
-		const { Events } = Constants;
-		this.on(Events.CLIENT_READY, async () => {
-			this.utils.log('Musicord', 'main', `${this.user.tag} is now ready.`);
-			this.user.setPresence({
-				status: 'dnd',
-				activity: {
-					type: 'WATCHING',
-					name: 'Developer Mode'
-				}
-			});
-		}).on(Events.MESSAGE_CREATE, async msg => {
-			const { author, channel, guild } = msg;
-
-			if (!msg.content.startsWith(this.prefix)) return;
-			if (!this.developers.includes(author.id)) return;
-
-			const [cmd, ...args] = msg.content.slice(this.prefix.length).trim().split(/ +/g);
-			const command = this.commands.get(cmd) || this.aliases.get(cmd);
-
-			if (command) {
-				await command.execute({ Bot: this, msg, args });
-			} else {
-				let nearCommands = [];
-				this.commands
-					.filter(c => c.name.toLowerCase().includes(cmd.toLowerCase()))
-					.forEach(c => nearCommands.push(c));
-
-				return msg.channel.send([
-					':lock: Developer Mode',
-					`No command(s) were found for "${cmd.toLowerCase()}".`,
-					nearCommands.length > 0 ? `Did you mean: \`${nearCommands.join(', ')}\`?` : ''
-				].join(' '));
-			}
+		/* Discord Events */
+		readdirSync(join(__dirname, 'events')).forEach(event => {
+			this.on(event.split('.')[0], require(`./events/${event}`).run.bind(this));
+			this.utils.log('Musicord', 'main', `Discord: "${d.split('.')}[0]`);
 		});
 	}
 
@@ -247,6 +215,11 @@ export default class Musicord extends Client {
 		});
 
 		/* Prototypes */
+		Object.defineProperty(String.prototype, 'toCamelCase', {
+			value: () => {
+				return this.replace()
+			}
+		});
 		Object.defineProperty(Math, 'random', {
 			value: (min, max) => {
 				return min && max ? (Math.random() * (max - min + 1) + min) : Math.random();

@@ -7,7 +7,7 @@ import { Colors } from './Constants'
  * A class representing Musicord utilities.
  * @class
  */
-export default class Util {
+export class Util {
 	constructor(client) {
 		/**
 		 * A discord client
@@ -345,8 +345,8 @@ export default class Util {
 	 * @param {number} ms time in milliseconds
 	 * @returns {Promise<void>}
 	 */
-	sleep(ms) {
-		return Discord.Util.delayFor(ms);
+	async sleep(ms) {
+		return await Discord.Util.delayFor(ms);
 	}
 
 }

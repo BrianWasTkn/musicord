@@ -9,6 +9,10 @@ export default {
 		`${Bot.users.cache.size} users`,
 		`${Bot.prefix}help`
 	]),
+	custom_options: {
+		/* {Boolean} To reply if command not found */
+		unknownCommandMessage: false,
+	},
 	/* Client Options */
 	client_options: {
 		/* {String} Calculated Shards */
