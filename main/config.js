@@ -1,6 +1,6 @@
 const { Collection } = require('discord.js');
 
-exports.main = {
+const main = {
 	/* {Boolean} devMode - developer mode */
 	devMode: false,
 	/* {String[]|RegEx[]} prefix - bot prefix */
@@ -16,7 +16,7 @@ exports.main = {
 	presence_interval: 5
 }
 
-exports.clientOptions = {
+const clientOptions = {
 	/* {String} shards - wether to calculate shards 'auto'matically or manually */
 	shards: 'auto',
 	/* {String} disableMentions - automatically filter @everyone/here mentions */
@@ -41,7 +41,7 @@ exports.clientOptions = {
 	}
 }
 
-exports.customOptions = {
+const customOptions = {
 	/* {Boolean} unknownCommandMessage - wether to display a message if cmd is unknown */
 	unknownCommandMessage: false,
 	/* {Boolean} deleteCommandInvocation - wether to delete commands when executed */
@@ -50,7 +50,7 @@ exports.customOptions = {
 	pruning: false
 }
 
-exports.cribConfig = {
+const cribConfig = {
 	/* {Object} lottery - the lotto system for memers crib */
 	lottery: ctx => ({
 		/* {Boolean} active - wether to start it as active */
@@ -85,6 +85,11 @@ exports.cribConfig = {
 	})
 }
 
-exports.playerConfig = {
+const playerConfig = {
 	searchSongs: true
+}
+
+module.exports = {
+	main, clientOptions, playerConfig
+	cribConfig, customOptions
 }

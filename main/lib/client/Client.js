@@ -5,11 +5,11 @@ const { join } = require('path');
 const distube = require('distube');
 
 module.exports = class Musicord extends Client {
-	constructor(options) {
-		super(options);
+	constructor(client, player) {
+		super(client);
 		this.config = require('../../config.js');
 		this.crib = this.config.cribConfig;
-		this.player = new Player(this);
+		this.player = new Player(this, player);
 		this.cmds = new Collection();
 		this.cooldowns = new Collection();
 		this._setup();
@@ -31,6 +31,5 @@ module.exports = class Musicord extends Client {
 			console.log(`Loaded: ${lis}`);
 		})
 
-		super.login('Njg2OTY5MDIwMzg1MzI5MTgy.Xme7wQ.8NNvk2zlQ6I08eQcqDNRD7OxlZs');
 	}
 }
