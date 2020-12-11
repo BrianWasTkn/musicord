@@ -16,7 +16,7 @@ export class Musicord extends Client {
 		/* {DisTube} DisTube the music player we'll use for this client */
 		this.distube = new DisTube(this, config.playerOptions);
 		/* {Util} Util certain utilities */
-		this.util = require('../util/index.js').default;
+		this.utils = require('../util/main.js').default;
 		/* {Object} Crib memers crib objects/funcs */
 		this.crib = config.crib;
 		/* {Collection} Some collections so we could fetch */
