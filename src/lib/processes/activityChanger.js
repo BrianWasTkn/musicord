@@ -3,6 +3,7 @@ function randomInArray(array) {
 }
 
 export async function run() {
+	console.log('test')
 	this.on('ready', async () => {
 		this.user.setPresence({
 			status: 'online',
