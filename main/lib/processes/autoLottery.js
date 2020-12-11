@@ -22,13 +22,10 @@ exports.run = async ctx => {
 		/* The interval */
 		const runInterval = async () => {
 			await roll();
-			const loop = async () => {
-				setInterval(async () => {
-					if (active) await roll();
-					else return;
-				}, interval * 1e3);
-			}
-			await loop();
+			setInterval(async () => {
+				if (active) await roll();
+				else return;
+			}, interval * 1e3);
 		}
 
 		/* A func to roll winners */
