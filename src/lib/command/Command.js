@@ -3,7 +3,7 @@ import { Collection } from 'discord.js'
 export class Command {
 	constructor(fn, help, config) {
 		this.run = fn;
-		this.props = { help, config };
+		this.cmd = { help, config };
 		this.rateLimited = new Collection();
 	}
 
