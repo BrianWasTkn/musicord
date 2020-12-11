@@ -6,7 +6,7 @@ exports.run = async ctx => {
 		if (!msg.content.startsWith(prefix)) return;
 		const args = msg.content.slice(prefix.length).trim().split(/ +/g);
 		const cmd = args.shift();
-		const command = ctx.commands.get(c => c.name === cmd || c.aliases.includes(cmd));
+		const command = ctx.cmds.get(c => c.name === cmd || c.aliases.includes(cmd));
 
 		if (!member.permissions.has(command.permissions)) return;
 
