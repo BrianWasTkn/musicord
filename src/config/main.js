@@ -84,6 +84,10 @@ const crib_config = {
 	})
 }
 
+const player_options = {
+	searchSongs: true
+}
+
 
 export default {
 	main: {
