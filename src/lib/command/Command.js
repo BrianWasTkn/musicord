@@ -7,21 +7,10 @@ export class Command {
 		this.rateLimited = new Collection();
 	}
 
-	async execute({ ctx, msg, args, addCD }) {
+	async execute({ ctx, msg, args }) {
 		const { guild, channel, author, member } = msg;
 
-		/* Arguments */
-		if (this.config.reqArgs) {
-			let usage = this.help.usage.replace('{command}', ctx.prefix + this.help.name);
-			return channel.send([
-				'**Missing Args**',
-				'You\'re missing some command arguments.\n',
-				`**Proper Usage:** ${ctx.prefix}${this.help.name} ${usage}`
-			].join('\n'));
-		}
-
-		/* Channel */
-		if (true) {}
+		return this.run({ ctx, msg, args });
 	}
 
 	get help () {
