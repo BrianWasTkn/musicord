@@ -1,4 +1,4 @@
-import { Musicord } from './lib/client/Musicord'
+import { Musicord } from './lib/client/Client'
 import config from './config/main'
 
 const { main, clientOptions, playerOptions, crib } = config;
