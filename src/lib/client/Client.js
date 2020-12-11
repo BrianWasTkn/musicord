@@ -25,7 +25,7 @@ export class Musicord extends Client {
 		this.cooldowns = new Collection();
 		
 		/* {Function} Our discord, distube and collector listeners */
-		readdirSync(join(__dirname, '..', 'processes')).forEach(p => {
+		readdirSync(join(__dirname, '..', 'processes')).forEach(async p => {
 			const proc = require(`../processes/${p}`);
 			if (config.main.devMode) {
 				await proc.runDev.bind(this);
