@@ -1,1 +1,1 @@
-worker: node src/__launch__.js
+worker: node src/esm.js
