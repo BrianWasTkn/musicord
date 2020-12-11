@@ -1,5 +1,9 @@
 const { Collection } = require('discord.js');
 
+function randomNumber(min, max) {
+	return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 const main = {
 	/* {Boolean} devMode - developer mode */
 	devMode: false,
