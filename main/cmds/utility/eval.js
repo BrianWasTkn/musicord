@@ -13,7 +13,7 @@ module.exports = {
 	name: 'eval',
 	aliases: ['e'],
 	permissions: ['ADMINISTRATOR'],
-	execute: async ({ msg, args }) => {
+	execute: async ({ ctx, msg, args }) => {
 		const { channel } = msg;
 		const code = args.join(' ');
 		const asynchronous = ['return', 'await'].includes(code);
