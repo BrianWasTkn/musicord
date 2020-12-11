@@ -10,8 +10,8 @@ function codeBlock(str, lang = 'js') {
 }
 
 module.exports = {
-	name: 'ping',
-	aliases: ['pong'],
+	name: 'eval',
+	aliases: ['e'],
 	permissions: ['ADMINISTRATOR'],
 	execute: async ({ msg, args }) => {
 		const { channel } = msg;
