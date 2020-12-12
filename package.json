@@ -34,6 +34,7 @@
     "esm": "^3.2.25",
     "ffmpeg-static": "^4.2.7",
     "lyrics-finder": "^21.4.0",
+    "moment": "^2.29.1",
     "ms": "^2.1.2",
     "opusscript": "0.0.7",
     "programmatic-repl": "^1.1.4",
