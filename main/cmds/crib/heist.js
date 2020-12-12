@@ -22,7 +22,7 @@ module.exports = new Command(
 			let winners = col.random(Math.floor(Math.random() * col.size));
 			let losers = col.filter(l => !winners.includes(winners));
 
-			await channel.send(`**${col.size}** ${col > 1 ? 'people' : 'person'} is teaming up to win the grand prize.`);
+			await channel.send(`**${col.size}** ${col.size > 1 ? 'people are' : 'person is'} teaming up to win the grand prize.`);
 			await channel.send(winners ? winners.map(w => `+ ${w.author.username}`) : '# none', {
 				code: 'diff'
 			});
