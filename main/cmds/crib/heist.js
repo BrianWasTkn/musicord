@@ -30,8 +30,8 @@ async ({ msg }) => {
 
 		await channel.send(`**${col.size}** ${col.size > 1 ? 'people are' : 'person is'} teaming up to win the grand prize.`);
 		await require('discord.js').Util.delayFor(Math.round(Math.random() * 5) * 1000);
-		let wString = (winners.length > 1 ? winners.map(w => `+ ${w.author.username} grabbed ${coins.toLocaleString()} coins!`) : ['# None']).join('\n');
-		let lString = (winners.length > 1 ? losers.map(l => `+ ${l.author.username} died LOL`) : ['# None']).join('\n');
+		let wString = winners.length > 1 ? winners.map(w => `+ ${w.author.username} grabbed ${coins.toLocaleString()} coins!`).join('\n') : ['# None'];
+		let lString = losers.length > 1 ? losers.map(l => `- ${l.author.username} died LOL`).join('\n') : ['# None'];
 		await channel.send(`${wString}\n${lString}`, { code: 'diff' });
 		// await channel.send(winners.length > 1 ? winners.map(w => `+ ${w.author.username} grabbed ${coins.toLocaleString()} coins`).join('\n') : '# none', {
 		// 	code: 'diff'
