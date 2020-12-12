@@ -34,7 +34,7 @@ async ({ msg }) => {
 		authors.forEach(a => {
 			let odds = Math.random();
 			if (odds > 0.66) {
-				success.push(`+ ${a.username} walked away with ${coins.toLocaleString()} coins!`);
+				success.push(`+ ${a.username} walked away with {coins} coins!`);
 			} else if (odds > 0.33) {
 				empty.push(`- ${a.username} died wtf?`);
 			} else {
@@ -43,6 +43,7 @@ async ({ msg }) => {
 		});
 
 		let coins = Math.floor(10e6 / success.length);
+		success = success.forEach(s => s.replace('{coins}', coins.toLocaleString()));
 		let order = [success, fail, empty].sort(() => Math.random() - 0.5);
 		await channel.send([
 			...order[1].join('\n'), ...order[2].join('\n'), ...order[3].join('\n')
