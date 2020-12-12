@@ -33,10 +33,24 @@ async ({ msg }) => {
 		await require('discord.js').Util.delayFor(Math.round(Math.random() * 5) * 1000);
 	
 		// if (winners) {}
+		winners = winners.length > 0 ? winners.map(w => {
+			return `+ ${w.author.username} grabbed ${coins.toLocaleString()} coins.`;
+		}) : [];
+		losers = losers.length > 0 ? losers.map(l => {
+			return `- ${l.author.username} died LOL`;
+		}) : [];
 
-		let wString = winners.length > 1 ? (winners.map(w => `+ ${w.author.username} grabbed ${coins.toLocaleString()} coins!`).join('\n')) : [];
-		let lString = losers.length > 1 ? (losers.map(l => `- ${l.author.username} died LOL`).join('\n')) : [];
-		await channel.send([wString, lString].join('\n'), { code: 'diff' });
+		if ([...winners, ...losers].length <= 0) {
+			return await channel.send(`\`${col.map(u => u.author.username)}\` failed the event.`);
+		} else {
+			await channel.send(`${winners.join('\n')}\n${losers.join('\n')}`, {
+				code: 'diff'
+			});
+		}
+
+		// let wString = winners.length > 1 ? (winners.map(w => `+ ${w.author.username} grabbed ${coins.toLocaleString()} coins!`).join('\n')) : [];
+		// let lString = losers.length > 1 ? (losers.map(l => `- ${l.author.username} died LOL`).join('\n')) : [];
+		// await channel.send([wString, lString].join('\n'), { code: 'diff' });
 		// await channel.send(winners.length > 1 ? winners.map(w => `+ ${w.author.username} grabbed ${coins.toLocaleString()} coins`).join('\n') : '# none', {
 		// 	code: 'diff'
 		// });
