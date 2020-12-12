@@ -46,7 +46,7 @@ module.exports = new Command(
 			color: role.color,
 			thumbnail: `https://dummyimage.com/1920x1280/${role.color.toString(16)}/010101&text=+`,
 			description: `
-Here you go, **${member.user.tag}**. Such fancy color we got there for your **${roleToBeChanged.name}** role! The hex is \`#${role.color.toString(16)}\` by the way.`,
+Here you go, **${member.user.tag}**. Such fancy color we got there for your **${roleToBeChanged.mention}** role! The hex is \`#${role.color.toString(16)}\` by the way.`,
 			author: {
 				name: guild.name,
 				iconURL: guild.iconURL()
