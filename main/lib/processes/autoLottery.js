@@ -71,6 +71,7 @@ exports.run = async ctx => {
 			await channel.send({ embed: {
 				title: 'Lottery Winner',
 				color: 'GOLD',
+				thumbnail: guild.iconURL(),
 				description: `**${winner.user.tag}** walked away with **${won.toLocaleString()}** coins with a **${multi}%** multiplier!`,
 				fields: [
 					{ name: 'Winner ID', value: winner.id, inline: true },
