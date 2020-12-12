@@ -19,9 +19,9 @@ module.exports = class Musicord extends Client {
 		readdirSync(join(__dirname, '..', '..', 'cmds')).forEach(dir => {
 			readdirSync(join(__dirname, '..', '..', 'cmds', dir)).forEach(cmd => {
 				const command = require(join(__dirname, '..', '..', 'cmds', dir, cmd));
-				this.cmds.set(command.name, command);
-				command.aliases.forEach(alias => this.cmds.set(alias, command));
-				this.utils.log('Musicord', 'main', `Command Loaded: ${command.name}`);
+				this.cmds.set(command.props.name, command);
+				command.props.aliases.forEach(alias => this.cmds.set(alias, command));
+				this.utils.log('Musicord', 'main', `Command Loaded: ${command.props.name}`);
 			})
 		});
 
