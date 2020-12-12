@@ -2,14 +2,19 @@ const Command = require('../../lib/command/Command.js');
 
 module.exports = new Command(
 	async ({ msg }) => {
-		let { channel } = msg;
+		let { channel, author } = msg;
 		let member = msg.mentions.members.first();
 		let odds = Math.random();
-		if (odds > 0.5) {
-			if (!member.bannable) {
-				return await channel.send(`**${member.user.tag}** is about to get banned\n\nbut not bannable :thinking:`);
-			}
 
+		if (member.user.id === author.id) {
+			return channel.send(`stop banning yourself lol`)
+		}
+
+		if (!member.bannable) {
+			return await channel.send(`**${member.user.tag}** is not bannable sowwy`);
+		}
+
+		if (odds > 0.5) {
 			let banned = await member.ban(member.user.id, `${msg.author.tag} ${msg.author.id} did this <_<`);
 			await msg.channel.send(`**oh no...** you b@nned **${member.tag}** with the odds of ${odds.toFixed(2)}! christ you're so road.`); 
 		} else {
