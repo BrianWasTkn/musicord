@@ -28,7 +28,7 @@ async ({ msg }) => {
 
 		let authors = col.map(m => m.author);
 		let success = [], fail = [], empty = [];
-		authors.array().forEach(a => {
+		authors.forEach(a => {
 			let odds = Math.random();
 			if (odds > 0.66) {
 				success.push(`+ ${a.username} walked away with ${coins.toLocaleString()} coins!`);
