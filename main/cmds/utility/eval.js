@@ -1,5 +1,6 @@
 const { Util } = require('discord.js');
 const { inspect } = require('util');
+const Command = require('../../lib/command/Command.js');
 
 function sanitize(str) {
 	return Util.escapeMarkdown(str);
@@ -9,11 +10,8 @@ function codeBlock(str, lang = 'js') {
 	return `\`\`\`${lang}\n${str}\n\`\`\``;
 }
 
-module.exports = {
-	name: 'eval',
-	aliases: ['e'],
-	permissions: ['ADMINISTRATOR'],
-	execute: async ({ ctx, msg, args }) => {
+module.exports = new Command(
+	async ({ ctx, msg, args }) => {
 		const { channel } = msg;
 		const code = args.join(' ');
 		const asynchronous = ['return', 'await'].includes(code);
@@ -47,5 +45,10 @@ module.exports = {
 				{ name: 'Latency', value: codeBlock(`${evalTime}ms`) }
 			]
 		}}).catch(console.error);
+	}, {
+		name: 'eval',
+		aliases: ['e'],
+		userPerms: ['ADMINISTRATOR'],
+		botPerms: ['EMBED_LINKS']
 	}
-}
+)

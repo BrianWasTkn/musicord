@@ -26,8 +26,6 @@ const roll = () => {
 		multi = randomNumber(1, 10);
 	}
 	
-
-
 	let won = randomNumber(min, max);
 	let raw = won;
 	won += Math.floor(won * (multi / 100));

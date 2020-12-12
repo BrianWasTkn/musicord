@@ -9,6 +9,7 @@ module.exports = class Musicord extends Client {
 		super(client);
 		this.config = require('../../config.js');
 		this.distube = new distube(this, player);
+		this.utils = new (require('./Util.js'))(this);
 		this.cmds = new Collection();
 		this.cooldowns = new Collection();
 		this._setup();
@@ -20,14 +21,13 @@ module.exports = class Musicord extends Client {
 				const command = require(join(__dirname, '..', '..', 'cmds', dir, cmd));
 				this.cmds.set(command.name, command);
 				command.aliases.forEach(alias => this.cmds.set(alias, command));
-				console.log(`Loaded: ${command.name}`);
+				this.utils.log('Musicord', 'main', `Command Loaded: ${command.name}`);
 			})
 		});
 
 		readdirSync(join(__dirname, '..', 'processes')).forEach(async lis => {
 			await require(join(__dirname, '..', 'processes', lis)).run(this);
-			console.log(`Loaded: ${lis}`);
-		})
-
+			this.utils.log('Musicord', 'main', `Listener Loaded: ${lis}`);
+		});
 	}
 }
