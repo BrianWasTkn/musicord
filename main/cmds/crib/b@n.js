@@ -6,6 +6,10 @@ module.exports = new Command(
 		let member = msg.mentions.members.first();
 		let odds = Math.random();
 
+		if (member.user.bot) {
+			return channel.send(`are you out of ur mind lol, imagine b@nning bots.`);
+		}
+
 		if (member.user.id === author.id) {
 			return channel.send(`stop banning yourself lol`)
 		}
