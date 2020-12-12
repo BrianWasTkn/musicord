@@ -14,7 +14,7 @@ module.exports = new Command(
 
 		collector.on('collect', async m => {
 			await m.react('💰');
-			if (entries.has(m.author.id)) return;
+			if (entries.has(m.author.id)) return m.reply('you already joined.');
 			else entries.set(m.author.id, true);
 		}).on('end', async col => {
 			console.log(col.first());
