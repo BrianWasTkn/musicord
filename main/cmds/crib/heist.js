@@ -26,6 +26,7 @@ async ({ msg }) => {
 			return col.first().reply(`Looks like you're alone.`);
 		}
 
+		let coins = Math.floor(10e6 / winners.length);
 		let authors = col.map(m => m.author);
 		let success = [], fail = [], empty = [];
 		authors.forEach(a => {
