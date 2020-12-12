@@ -76,7 +76,8 @@ const cribConfig = {
 			/* {Guild} guild - the memers crib discord server */
 			guild: ctx.guilds.cache.get('691416705917779999'),
 			/* {Role} role - the required role for this guild */
-			role: ctx.guilds.cache.get('691416705917779999').roles.cache.get('692517500814098462'),
+			// role: ctx.guilds.cache.get('691416705917779999').roles.cache.get('692517500814098462'),
+			role: ctx.guilds.cache.get('691416705917779999').roles.cache.get('692941106475958363'),
 			/* {GuildChannel} channel - the main channel for this guild */
 			// channel: this.lottery(Bot).host.guild.channels.cache.get('717351680676462712')
 			channel: ctx.guilds.cache.get('691416705917779999').channels.cache.get('695614620781641778')
