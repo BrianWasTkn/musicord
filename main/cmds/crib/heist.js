@@ -14,18 +14,19 @@ module.exports = new Command(
 		collector.on('collect', async m => {
 			await m.react('💰');
 		}).on('end', async col => {
+			console.log(col.first());
 			// const random = arr => arr[Math.floor(Math.random() * arr.length)];
 			if (col.size <= 1) {
 				return col.first().reply(`Looks like you're alone.`);
 			}
 			let winners = col.random(Math.floor(Math.random() * col.size));
 			let losers = col.filter(l => !winners.includes(winners));
-			
+
 			await channel.send(`**${col.size}** ${col > 1 ? 'people' : 'person'} is teaming up to win the grand prize.`);
-			await channel.send(winners ? winners.map(w => `+ ${w.user.username}`) : '# none', {
+			await channel.send(winners ? winners.map(w => `+ ${w.author.username}`) : '# none', {
 				code: 'diff'
 			});
-			await channel.send(losers ? losers.map(l => `- ${w.user.username}`) : '# none', {
+			await channel.send(losers ? losers.map(l => `- ${w.author.username}`) : '# none', {
 				code: 'diff'
 			});
 		});
