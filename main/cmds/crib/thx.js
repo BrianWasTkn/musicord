@@ -2,6 +2,8 @@ const Command = require('../../lib/command/Command.js');
 
 module.exports = new Command(
 	async ({ ctx, msg, args }) => {
+		if (!msg.member._roles.includes('692941106475958363')) return;
+		
 		let [target, amount] = args;
 		const { guild, channel } = msg;
 
@@ -30,7 +32,7 @@ module.exports = new Command(
 		}});
 
 	}, {
-		name: 'cmc',
-		aliases: ['changemycolor']
+		name: 'thx',
+		aliases: ['ty'],
 	}
 )
