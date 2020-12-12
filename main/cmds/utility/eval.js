@@ -21,17 +21,13 @@ module.exports = new Command(
 		try {
 			evaled = await eval(asynchronous ? `(async()=>{${code}})()` : code);
 		} catch(error) {
-			evaled = error;
+			evaled = error.message;
 		}
 		evalTime = Date.now() - before;
 		type = typeof evaled;
 
 		if (type !== 'string') {
-			try {
-				evaled = inspect(evaled, { depth: 0 });
-			} catch(error) {
-				evaled = error;
-			}
+			evaled = inspect(evaled, { depth: 0 });
 		}
 
 		result = sanitize(evaled);
