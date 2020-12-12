@@ -41,7 +41,7 @@ async ({ msg }) => {
 		}) : [];
 
 		if ([...winners, ...losers].length <= 0) {
-			return await channel.send(`\`${col.map(u => u.author.username)}\` failed the event.`);
+			return await channel.send(`\`${col.map(u => u.author.username).join('`, `')}\` failed the event.`);
 		} else {
 			await channel.send(`${winners.join('\n')}\n${losers.join('\n')}`, {
 				code: 'diff'
