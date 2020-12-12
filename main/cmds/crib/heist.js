@@ -33,12 +33,12 @@ async ({ msg }) => {
 		let success = [], fail = [], empty = [];
 		authors.forEach(a => {
 			let odds = Math.random();
-			if (odds > 0.66) {
+			if (odds > 0.60) {
 				success.push(`+ ${a.username} walked away with {coins} coins!`);
-			} else if (odds > 0.33) {
-				empty.push(`- ${a.username} died wtf?`);
-			} else {
+			} else if (odds > 0.1) {
 				fail.push(`# ${a.username} remained unseen.`);
+			} else {
+				empty.push(`- ${a.username} died wtf?`);
 			}
 		});
 
