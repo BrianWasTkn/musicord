@@ -21,12 +21,13 @@ module.exports = new Command(
 			}
 			let winners = col.random(Math.floor(Math.random() * col.size));
 			let losers = col.filter(l => !winners.includes(winners));
+			let coins = Math.floor(10e6 / winners.size);
 
 			await channel.send(`**${col.size}** ${col.size > 1 ? 'people are' : 'person is'} teaming up to win the grand prize.`);
-			await channel.send(winners ? winners.map(w => `+ ${w.author.username}`) : '# none', {
+			await channel.send(winners ? winners.map(w => `+ ${w.author.username} grabbed ${coins}`).join('\n') : '# none', {
 				code: 'diff'
 			});
-			await channel.send(losers ? losers.map(l => `- ${w.author.username}`) : '# none', {
+			await channel.send(losers ? losers.map(l => `- ${l.author.username} died LOL`).join('\n') : '# none', {
 				code: 'diff'
 			});
 		});
