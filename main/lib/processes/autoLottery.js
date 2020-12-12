@@ -76,7 +76,7 @@ exports.run = async ctx => {
 			await channel.send([
 				'**Auto Lottery:tm:**',
 				`\n${winner.user.mention} walked away with **${won.toLocaleString()} coins (${raw.toLocaleString()} original) ** <${emoji.animated ? 'a:' : ''}:${emoji.name}:${emoji.id}>`,
-				`\n\n**Multiplier:** ${multiplier}% | **Times Won:** ${winnerObj.length}`,
+				`\n\n**Multiplier:** ${multi}% | **Times Won:** ${winnerObj.length}`,
 				`\n**Biggest Winning so far:** ${winnerObj.sort((p, c) => p.coins - c.coins).reverse()[0].coins.toLocaleString()}`
 			].join(' '));
 			// await channel.send({ embed: {
