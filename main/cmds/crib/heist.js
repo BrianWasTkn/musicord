@@ -44,10 +44,10 @@ async ({ msg }) => {
 
 		let coins = Math.floor(10e6 / success.length);
 		success = success.forEach(s => s.replace('{coins}', coins.toLocaleString()));
-		let order = [success, fail, empty].sort(() => Math.random() - 0.5);
-		await channel.send([
-			(...order[1]).join('\n'), (...order[2]).join('\n'), (...order[3]).join('\n')
-		].join('\n'), {
+		let order = [
+			success.join('\n'), fail.join('\n'), empty.join('\n')
+		].sort(() => Math.random() - 0.5);
+		await channel.send([ order[0], order[1], order[2] ].join('\n'), {
 			code: 'diff'
 		});
 
