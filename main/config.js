@@ -53,7 +53,7 @@ const cribConfig = {
 	/* {Object} lottery - the lotto system for memers crib */
 	lottery: ctx => ({
 		/* {Boolean} active - wether to start it as active */
-		active: false,
+		active: true,
 		/* {Collection} winners - a collection of winners (TODO: add mongodb or redis for this) */
 		winners: new Collection(),
 		/* {Number} interval - interval in hours */
