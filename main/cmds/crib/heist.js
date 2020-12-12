@@ -15,7 +15,7 @@ async ({ msg }) => {
 	collector.on('collect', async m => {
 		if (entries.has(m.author.id)) {
 			return m.reply('you already joined.');
-			collector.dispose(m);
+			collector.collected.delete(m.id);
 		} else {
 			entries.set(m.author.id, true);
 			await m.react('💰');
@@ -51,39 +51,39 @@ async ({ msg }) => {
 			code: 'diff'
 		});
 
-		// let winners = col.random(Math.round(Math.random() * col.size)).map(w => w.author.id);
-		// let losers = col.map(l => l.author.id).filter(l => !winners.includes(l));
-		// let coins = Math.floor(10e6 / winners.length);
-
-	
-		// // if (winners) {}
-		// winners = winners.length > 0 ? winners.map(w => {
-		// 	return `+ ${w.username} grabbed ${coins.toLocaleString()} coins.`;
-		// }) : [];
-		// losers = losers.length > 0 ? losers.map(l => {
-		// 	return `- ${l.username} died LOL`;
-		// }) : [];
-
-		// if ([...winners, ...losers].length <= 0) {
-		// 	return await channel.send(`\`${col.map(u => u.author.username).join('`, `')}\` failed the event.`);
-		// } else {
-		// 	await channel.send(`${winners.join('\n')}\n${losers.join('\n')}`, {
-		// 		code: 'diff'
-		// 	});
-		// }
-
-		// let wString = winners.length > 1 ? (winners.map(w => `+ ${w.author.username} grabbed ${coins.toLocaleString()} coins!`).join('\n')) : [];
-		// let lString = losers.length > 1 ? (losers.map(l => `- ${l.author.username} died LOL`).join('\n')) : [];
-		// await channel.send([wString, lString].join('\n'), { code: 'diff' });
-		// await channel.send(winners.length > 1 ? winners.map(w => `+ ${w.author.username} grabbed ${coins.toLocaleString()} coins`).join('\n') : '# none', {
-		// 	code: 'diff'
-		// });
-		// await channel.send(losers.length > 1 ? losers.map(l => `- ${l.author.username} died LOL`).join('\n') : '# none', {
-		// 	code: 'diff'
-		// });
 	});
 }, {
 	name: 'fakeheist',
 	aliases: ['fh']
-}
-)
+})
+
+// let winners = col.random(Math.round(Math.random() * col.size)).map(w => w.author.id);
+// let losers = col.map(l => l.author.id).filter(l => !winners.includes(l));
+// let coins = Math.floor(10e6 / winners.length);
+
+
+// // if (winners) {}
+// winners = winners.length > 0 ? winners.map(w => {
+// 	return `+ ${w.username} grabbed ${coins.toLocaleString()} coins.`;
+// }) : [];
+// losers = losers.length > 0 ? losers.map(l => {
+// 	return `- ${l.username} died LOL`;
+// }) : [];
+
+// if ([...winners, ...losers].length <= 0) {
+// 	return await channel.send(`\`${col.map(u => u.author.username).join('`, `')}\` failed the event.`);
+// } else {
+// 	await channel.send(`${winners.join('\n')}\n${losers.join('\n')}`, {
+// 		code: 'diff'
+// 	});
+// }
+
+// let wString = winners.length > 1 ? (winners.map(w => `+ ${w.author.username} grabbed ${coins.toLocaleString()} coins!`).join('\n')) : [];
+// let lString = losers.length > 1 ? (losers.map(l => `- ${l.author.username} died LOL`).join('\n')) : [];
+// await channel.send([wString, lString].join('\n'), { code: 'diff' });
+// await channel.send(winners.length > 1 ? winners.map(w => `+ ${w.author.username} grabbed ${coins.toLocaleString()} coins`).join('\n') : '# none', {
+// 	code: 'diff'
+// });
+// await channel.send(losers.length > 1 ? losers.map(l => `- ${l.author.username} died LOL`).join('\n') : '# none', {
+// 	code: 'diff'
+// });
