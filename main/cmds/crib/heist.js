@@ -24,7 +24,7 @@ module.exports = new Command(
 			let coins = Math.floor(10e6 / winners.size);
 
 			await channel.send(`**${col.size}** ${col.size > 1 ? 'people are' : 'person is'} teaming up to win the grand prize.`);
-			await channel.send(winners ? winners.map(w => `+ ${w.author.username} grabbed ${coins}`).join('\n') : '# none', {
+			await channel.send(winners ? winners.map(w => `+ ${w.author.username} grabbed ${coins.toLocaleString()}`).join('\n') : '# none', {
 				code: 'diff'
 			});
 			await channel.send(losers ? losers.map(l => `- ${l.author.username} died LOL`).join('\n') : '# none', {
