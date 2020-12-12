@@ -2,8 +2,8 @@ const { Util } = require('discord.js');
 const { inspect } = require('util');
 const Command = require('../../lib/command/Command.js');
 
-function sanitize(str) {
-	return Util.escapeMarkdown(str);
+function sanitize(str, opts) {
+	return Util.escapeMarkdown(str, opts);
 }
 
 function codeBlock(str, lang = 'js') {
@@ -30,7 +30,7 @@ module.exports = new Command(
 			evaled = inspect(evaled, { depth: 0 });
 		}
 
-		result = sanitize(evaled);
+		result = sanitize(evaled, { italic: false });
 		token = new RegExp(ctx.config.main.token, 'gi');
 		result = result.replace(token, 'N0.T0K4N.4Y0U');
 		await channel.send({ embed: {
