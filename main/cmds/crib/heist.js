@@ -24,12 +24,12 @@ module.exports = new Command(
 			if (col.size <= 1) {
 				return col.first().reply(`Looks like you're alone.`);
 			}
-			let winners = col.random(Math.floor(Math.random() * col.size));
+			let winners = col.random(Math.round(Math.random() * col.size));
 			let losers = col.filter(l => !winners.includes(winners));
 			let coins = Math.floor(10e6 / winners.length);
 
 			await channel.send(`**${col.size}** ${col.size > 1 ? 'people are' : 'person is'} teaming up to win the grand prize.`);
-			await channel.send(winners ? winners.map(w => `+ ${w.author.username} grabbed ${coins.toLocaleString()}`).join('\n') : '# none', {
+			await channel.send(winners ? winners.map(w => `+ ${w.author.username} grabbed ${coins.toLocaleString()} coins`).join('\n') : '# none', {
 				code: 'diff'
 			});
 			await channel.send(losers ? losers.map(l => `- ${l.author.username} died LOL`).join('\n') : '# none', {
