@@ -35,6 +35,7 @@ exports.run = async ctx => {
 
 			let won = randomNumber(min, max);
 			let raw = won;
+			let odds = Math.random();
 
 			if (odds > 0.9) {
 				multi = randomNumber(90, 100);
@@ -49,7 +50,7 @@ exports.run = async ctx => {
 			} else {
 				multi = randomNumber(1, 10);
 			}
-			
+
 			won += Math.floor(won * (multi / 100));
 			if (won > (limit * 1000)) won = (limit * 1000 + 1) / 1000;
 			won *= 1000; raw *= 1000;
