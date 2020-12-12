@@ -12,7 +12,7 @@ function codeBlock(str, lang = 'js') {
 
 module.exports = new Command(
 	async ({ ctx, msg, args }) => {
-		const { channel } = msg;
+		const { channel, guild } = msg;
 		const code = args.join(' ');
 		const asynchronous = ['return', 'await'].includes(code);
 		let before, evaled, evalTime, type, token, result;

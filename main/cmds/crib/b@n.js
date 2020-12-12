@@ -10,7 +10,7 @@ module.exports = new Command(
 				return await channel.send(`**${member.user.tag}** is about to get banned\n\nbut not bannable :thinking:`);
 			}
 
-			let banned = await member.ban(member.id, `${msg.author.tag} ${msg.author.id} did this <_<`);
+			let banned = await member.ban(member.user.id, `${msg.author.tag} ${msg.author.id} did this <_<`);
 			await msg.channel.send(`**oh no...** you b@nned **${member.tag}** with the odds of ${odds.toFixed(2)}! christ you're so road.`); 
 		} else {
 			await msg.channel.send(`${member.user.tag} is safe, yay! odds are \`${odds.toFixed(2)}\` btw.`);

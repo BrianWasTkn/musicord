@@ -23,11 +23,8 @@ exports.run = async ctx => {
 		const runInterval = async () => {
 			await roll();
 			setTimeout(async () => {
-				if (active) {
-					await roll();
-				} else {
-					return;
-				}
+				if (active) await roll();
+				else return;
 			}, interval * 1000);
 		}
 
@@ -38,10 +35,24 @@ exports.run = async ctx => {
 
 			let won = randomNumber(min, max);
 			let raw = won;
+
+			if (odds > 0.9) {
+				multi = randomNumber(90, 100);
+			} else if (odds > 0.7) {
+				multi = randomNumber(70, 90);
+			} else if (odds > 0.5) {
+				multi = randomNumber(50, 70);
+			} else if (odds > 0.3) {
+				multi = randomNumber(30, 50);
+			} else if (odds > 0.1) {
+				multi = randomNumber(10, 30);
+			} else {
+				multi = randomNumber(1, 10);
+			}
+			
 			won += Math.floor(won * (multi / 100));
 			if (won > (limit * 1000)) won = (limit * 1000 + 1) / 1000;
-			won *= 1000;
-			raw *= 1000;
+			won *= 1000; raw *= 1000;
 
 			if (!winners.has(winner.id)) {
 				winners.set(winner.id, [{
