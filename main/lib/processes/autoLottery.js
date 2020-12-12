@@ -55,7 +55,7 @@ exports.run = async ctx => {
 			}
 
 			won += Math.floor(won * (multi / 100));
-			if (won > (limit * 1000)) won = (limit * 1000 + 1) / 1000;
+			if (won > limit) won = (limit * 1000 + 1) / 1000;
 			won *= 1000; raw *= 1000;
 
 			if (!winners.has(winner.id)) {
@@ -79,21 +79,6 @@ exports.run = async ctx => {
 				`\n\n**Multiplier:** ${multi}% | **Times Won:** ${winnerObj.length}`,
 				`\n**Biggest Winning so far:** ${winnerObj.sort((p, c) => p.coins - c.coins).reverse()[0].coins.toLocaleString()}`
 			].join(' '));
-			// await channel.send({ embed: {
-			// 	title: 'Lottery Winner',
-			// 	color: 'GOLD',
-			// 	thumbnail: guild.iconURL(),
-			// 	description: `**${winner.user.tag}** walked away with **${won.toLocaleString()}** coins with a **${multi}%** multiplier!`,
-			// 	fields: [
-			// 		{ name: 'Original', value: raw.toLocaleString(), inline: true },
-			// 		{ name: 'Times Won', value: `${winnerObj.length} time(s)`, inline: true },
-			// 		{ name: 'Biggest Winning', value: winnerObj.sort((p, c) => p.coins - c.coins).reverse()[0].coins.toLocaleString(), inline: true }
-			// 	],
-			// 	footer: {
-			// 		text: winner.id,
-			// 		iconURL: winner.user.avatarURL() || winner.avatarURL()
-			// 	}
-			// }});
 		}
 
 		/* Run */
