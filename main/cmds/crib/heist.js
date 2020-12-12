@@ -36,7 +36,7 @@ async ({ msg }) => {
 			if (odds > 0.66) {
 				success.push(`+ ${a.username} walked away with ${coins.toLocaleString()} coins!`);
 			} else if (odds > 0.33) {
-				empty.push(`- ${a.username} drowned in water, OOF.`);
+				empty.push(`- ${a.username} died wtf?`);
 			} else {
 				fail.push(`# ${a.username} remained unseen.`);
 			}
