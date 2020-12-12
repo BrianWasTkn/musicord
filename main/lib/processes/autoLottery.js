@@ -22,8 +22,12 @@ exports.run = async ctx => {
 		/* The interval */
 		const runInterval = async () => {
 			setTimeout(async () => {
-				if (active) await roll();
-				else return;
+				if (active) {
+					await roll();
+					await runInterval();
+				} else {
+					return;
+				}
 			}, interval * 1000);
 		}
 
@@ -83,9 +87,6 @@ exports.run = async ctx => {
 					iconURL: winner.user.avatarURL() || winner.avatarURL()
 				}
 			}});
-
-			/* Return */
-			return await runInterval();
 		}
 
 		/* Run */
