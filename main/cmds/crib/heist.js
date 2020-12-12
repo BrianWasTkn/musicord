@@ -25,11 +25,10 @@ async ({ msg }) => {
 		if (col.size <= 1) {
 			return col.first().reply(`Looks like you're alone.`);
 		}
-		
+
 		await channel.send(`**${col.size}** ${col.size > 1 ? 'people are' : 'person is'} teaming up to win the grand prize.`);
 		await require('discord.js').Util.delayFor(Math.round(Math.random() * 3) * 1000);
 
-		let coins = Math.floor(10e6 / winners.length);
 		let authors = col.map(m => m.author);
 		let success = [], fail = [], empty = [];
 		authors.forEach(a => {
@@ -43,6 +42,7 @@ async ({ msg }) => {
 			}
 		});
 
+		let coins = Math.floor(10e6 / success.length);
 		let order = [success, fail, empty].sort(() => Math.random() - 0.5);
 		await channel.send([
 			...order[1].join('\n'), ...order[2].join('\n'), ...order[3].join('\n')
