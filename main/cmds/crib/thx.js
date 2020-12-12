@@ -8,8 +8,8 @@ module.exports = new Command(
 		const { guild, channel } = msg;
 
 		let member = guild.members.cache.get(target)
-		|| guild.members.find(m => m.username.toLowerCase() === target.toLowerCase())
-		|| guild.members.find(m => m.tag.toLowerCase() === target.toLowerCase())
+		|| guild.members.cache.find(m => m.username.toLowerCase() === target.toLowerCase())
+		|| guild.members.cache.find(m => m.tag.toLowerCase() === target.toLowerCase())
 		|| msg.mentions.members.first() || false;
 
 		if (!member) {

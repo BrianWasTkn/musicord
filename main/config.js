@@ -8,7 +8,7 @@ const main = {
 	/* {Boolean} devMode - developer mode */
 	devMode: false,
 	/* {String[]|RegEx[]} prefix - bot prefix */
-	prefix: ['crib ', '//'],
+	prefix: ['crib ', '//', ','],
 	/* {String} token - discord token to login */
 	token: 'Njg2OTY5MDIwMzg1MzI5MTgy.Xme7wQ.8NNvk2zlQ6I08eQcqDNRD7OxlZs',
 	/* {String[]} activities - an array of bot activities */
