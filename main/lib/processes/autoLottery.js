@@ -4,7 +4,7 @@ function randomNumber(min, max) {
 
 exports.run = async ctx => {
 	ctx.on('ready', async () => {
-		const { 
+		let { 
 			active, winners, interval, lastRoll, multi,
 			prize: { min, max, limit }, host: { guild, role, channel }
 		} = ctx.config.cribConfig.lottery(ctx);
@@ -18,15 +18,6 @@ exports.run = async ctx => {
 		// 		} else return;
 		// 	}
 		// }, 500);
-
-		/* The interval */
-		const runInterval = async () => {
-			await roll();
-			setTimeout(async () => {
-				if (active) await roll();
-				else return;
-			}, interval * 1000);
-		}
 
 		/* A func to roll winners */
 		const roll = async () => {
@@ -83,6 +74,15 @@ exports.run = async ctx => {
 					iconURL: winner.user.avatarURL() || winner.avatarURL()
 				}
 			}});
+		}
+
+		/* The interval */
+		const runInterval = async () => {
+			await roll();
+			setTimeout(async () => {
+				if (active) await roll();
+				else return;
+			}, interval * 1000);
 		}
 
 		/* Run */
