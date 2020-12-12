@@ -5,6 +5,7 @@ module.exports = new Command(
 		const { channel, guild } = msg;
 		channel.send(`Type \`JOIN EVENT\` to join!`);
 		let filter = m => m.content.toLowerCase() === 'join event';
+		const entries = new (require('discord.js').Collection)();
 		const collector = await channel.createMessageCollector(filter, {
 			max: Infinity,
 			time: 30000,
@@ -13,6 +14,8 @@ module.exports = new Command(
 
 		collector.on('collect', async m => {
 			await m.react('💰');
+			if (entries.has(m.author.id)) return;
+			else entries.set(m.author.id, true);
 		}).on('end', async col => {
 			console.log(col.first());
 			// const random = arr => arr[Math.floor(Math.random() * arr.length)];
