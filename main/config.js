@@ -57,7 +57,7 @@ const cribConfig = {
 		/* {Collection} winners - a collection of winners (TODO: add mongodb or redis for this) */
 		winners: new Collection(),
 		/* {Number} interval - interval in hours */
-		interval: 60,
+		interval: 10,
 		/* {Date} lastRoll- the date of last timestamp */
 		lastRoll: Date.now(),
 		/* {Number} multi - the random multiplier to increase winnings */

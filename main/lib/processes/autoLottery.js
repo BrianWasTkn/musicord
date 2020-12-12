@@ -74,8 +74,8 @@ exports.run = async ctx => {
 			winnerObj = winners.get(winner.id);
 			let emoji = guild.emojis.cache.get('717347901587587153');
 			await channel.send([
-				'**__Auto Lottery:tm:__**',
-				`\n<@${winner.nickname ? '!' : ''}${winner.user.id}> walked away with **${won.toLocaleString()} coins (${raw.toLocaleString()} original) ** <${emoji.animated ? 'a:' : ''}:${emoji.name}:${emoji.id}>`,
+				`<${emoji.animated ? 'a:' : ''}:${emoji.name}:${emoji.id}> **__Auto Lottery:tm:__**`,
+				`\n<@${winner.nickname ? '!' : ''}${winner.user.id}> walked away with **${won.toLocaleString()} (${raw.toLocaleString()} original)** coins.`,
 				`\n\n**Multiplier:** ${multi}% | **Times Won:** ${winnerObj.length}`,
 				`\n**Biggest Winning so far:** ${winnerObj.sort((p, c) => p.coins - c.coins).reverse()[0].coins.toLocaleString()}`
 			].join(' '));
