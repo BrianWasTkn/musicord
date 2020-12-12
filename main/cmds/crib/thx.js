@@ -24,11 +24,11 @@ module.exports = new Command(
 		let emoji = guild.emojis.cache.get('717347901587587153');
 		await channel.send({ embed: {
 			title: 'Thank you ❤️',
+			thumbnail: guild.iconURL(),
 			color: member.displayHexColor || 'BLUE',
 			description: `
-<:${emoji.name}:${emoji.name}> Thank <@${member.nickname ? '!' : ''}${member.user.id}> for the **${amount.toLocaleString()}** coin heist!
+<:${emoji.name}:${emoji.id}> Please thank <@${member.nickname ? '!' : ''}${member.user.id}> for this wonderful **${amount.toLocaleString()}** coin heist!
 			`,
-			thumbnail: guild.iconURL()
 		}});
 
 	}, {
