@@ -3,8 +3,8 @@ const Command = require('../../lib/command/Command.js');
 module.exports = new Command(
 	async ({ ctx, msg, args }) => {
 		if (!msg.member._roles.includes('692941106475958363')) return;
-		
-		let [target, amount] = args;
+
+		let [target, coins] = args;
 		const { guild, channel } = msg;
 
 		let member = guild.members.cache.get(target)
@@ -16,7 +16,7 @@ module.exports = new Command(
 			return msg.reply('Unknown User');
 		}
 
-		let amount = Number(amount) || parseInt(amount, 10);
+		let amount = Number(coins) || parseInt(coins, 10);
 		if (!amount) {
 			return msg.reply('Invalid or no amount.');
 		}
