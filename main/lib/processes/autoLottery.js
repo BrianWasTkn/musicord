@@ -19,6 +19,14 @@ exports.run = async ctx => {
 		// 	}
 		// }, 500);
 
+		/* The interval */
+		const runInterval = async () => {
+			setTimeout(async () => {
+				if (active) await roll();
+				else return;
+			}, interval * 1000);
+		}
+
 		/* A func to roll winners */
 		const roll = async () => {
 			const members = guild.roles.cache.get(role.id).members;
@@ -74,18 +82,13 @@ exports.run = async ctx => {
 					iconURL: winner.user.avatarURL() || winner.avatarURL()
 				}
 			}});
-		}
 
-		/* The interval */
-		const runInterval = async () => {
-			await roll();
-			setTimeout(async () => {
-				if (active) await roll();
-				else return;
-			}, interval * 1000);
+			/* Return */
+			return await runInterval();
 		}
 
 		/* Run */
-		runInterval();
+		await roll();
+		await runInterval();
 	});
 }
