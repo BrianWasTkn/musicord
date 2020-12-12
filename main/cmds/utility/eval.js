@@ -14,7 +14,7 @@ module.exports = new Command(
 	async ({ ctx, msg, args }) => {
 		const { channel, guild } = msg;
 		const code = args.join(' ');
-		const asynchronous = ['return', 'await'].includes(code);
+		const asynchronous = code.includes('return') || code.includes('await');
 		let before, evaled, evalTime, type, token, result;
 
 		before = Date.now();

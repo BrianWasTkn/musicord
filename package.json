@@ -35,7 +35,9 @@
     "ffmpeg-static": "^4.2.7",
     "lyrics-finder": "^21.4.0",
     "moment": "^2.29.1",
+    "mongoose": "^5.11.7",
     "ms": "^2.1.2",
+    "node-fetch": "^2.6.1",
     "opusscript": "0.0.7",
     "programmatic-repl": "^1.1.4",
     "string-progressbar": "^1.0.1"

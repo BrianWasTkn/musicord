@@ -1,4 +1,35 @@
-function randomNumber(min, max) {
+const fetch = require('lyrics-finder');
+const token = 'Njg2OTY5MDIwMzg1MzI5MTgy.Xme7wQ.8NNvk2zlQ6I08eQcqDNRD7OxlZs';
+
+const run = async () => {
+	let userId = '605419747361947649';
+	console.log('Fetching...');
+	console.log('======================');
+	await fetch(`https://discord.com/api/users/${userId}`, {
+		headers: {
+			'Authorization': `Bot ${token}`
+		}
+	}).then(res => res.json());
+	// await fetch(`https://discord.com/api/users/${userId}`, {
+ //      headers: { 
+ //      	"Authorization": `Bot ${token}`}
+ //  }).then((res) => console.log(res));
+}
+
+run();
+
+/**
+const find = require('lyrics-finder');
+
+const f = async () => {
+	let lyrics = await find('', 'along pt2');
+	console.log(lyrics);
+}
+
+f();
+*/
+
+/**function randomNumber(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
@@ -36,6 +67,7 @@ const roll = () => {
 	});
 }
 
+
 const timeout = () => {
 	setTimeout(() => {
 		roll();
@@ -45,6 +77,7 @@ const timeout = () => {
 
 roll();
 timeout();
+*/
 
 /**
 let items = [

@@ -2,6 +2,7 @@ exports.run = async ctx => {
 	ctx.on('ready', async () => {
 		const msg = `${ctx.user.tag} is now ready.`;
 		const channel = ctx.channels.cache.get('695614620781641778')
+		ctx.utils.log('Musicord', 'main', `${ctx.user.tag} is now ready.`);
 		await channel.send({ embed: {
 			title: 'Logged In',
 			color: 'GREEN',
@@ -9,6 +10,5 @@ exports.run = async ctx => {
 			description: `**${ctx.user.tag}** logged in.`,
 			timestamp: Date.now()
 		}});
-		ctx.utils.log('Musicord', 'main', `${ctx.user.tag} is now ready.`);
 	});
 }

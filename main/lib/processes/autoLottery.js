@@ -28,7 +28,7 @@ exports.run = async ctx => {
 				} else {
 					return;
 				}
-			}, interval * 60 * 60 * 1000);
+			}, interval * 1000 );
 		}
 
 		/* A func to roll winners */

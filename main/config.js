@@ -50,6 +50,9 @@ const customOptions = {
 }
 
 const cribConfig = {
+	memer_lock: ctx => ({
+		category: ctx.channels.cache.get('691416705917779999')
+	}),
 	/* {Object} lottery - the lotto system for memers crib */
 	lottery: ctx => ({
 		/* {Boolean} active - wether to start it as active */
