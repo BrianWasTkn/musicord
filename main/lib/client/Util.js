@@ -13,7 +13,7 @@ module.exports = class Util {
 		const log = (structure, msg, error) => {
 			let timestamp = moment().format('HH:mm:ss');
 			return console.log(
-				chalk.whiteBright(timestamp), structure,
+				`[${chalk.whiteBright(timestamp)}]`, structure,
 				chalk.whiteBright('=>'),
 				msg, error || ''
 			);

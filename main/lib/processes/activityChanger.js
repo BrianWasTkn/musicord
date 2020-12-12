@@ -3,6 +3,6 @@ exports.run = async ctx => {
 		const msg = `${ctx.user.tag} is now ready.`;
 		const channel = ctx.channels.cache.get('695614620781641778')
 		await channel.send(msg);
-		console.log(msg);
+		ctx.utils.log('Musicord', 'main', msg);
 	});
 }
