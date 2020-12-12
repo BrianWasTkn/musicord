@@ -11,15 +11,14 @@ module.exports = new Command(
 			errors: ['time']
 		});
 
-		collector.on('collect', async col => {
-			const m = col.first();
+		collector.on('collect', async m => {
 			await m.react('💰');
 		}).on('end', async col => {
 			// const random = arr => arr[Math.floor(Math.random() * arr.length)];
 			if (col.size <= 1) {
 				return col.first().reply(`Looks like you're alone.`);
 			}
-			
+
 			let winners = col.random(5);
 			let losers = col.filter(l => !winners.includes(i));
 
