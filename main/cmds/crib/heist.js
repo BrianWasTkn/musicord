@@ -20,7 +20,6 @@ module.exports = new Command(
 				await m.react('💰');
 			}
 		}).on('end', async col => {
-			console.log(col.first());
 			// const random = arr => arr[Math.floor(Math.random() * arr.length)];
 			if (col.size <= 1) {
 				return col.first().reply(`Looks like you're alone.`);
