@@ -43,7 +43,7 @@ async ({ msg }) => {
 		});
 
 		let coins = Math.floor(10e6 / success.length);
-		success = success.forEach(s => s.replace('{coins}', coins.toLocaleString()));
+		success = success.map(s => s.replace('{coins}', coins.toLocaleString()));
 		let order = [
 			success.join('\n'), fail.join('\n'), empty.join('\n')
 		].sort(() => Math.random() - 0.5);
