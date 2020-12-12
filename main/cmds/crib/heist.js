@@ -18,10 +18,8 @@ module.exports = new Command(
 			if (col.size <= 1) {
 				return col.first().reply(`Looks like you're alone.`);
 			}
-
 			let winners = col.random(5);
 			let losers = col.filter(l => !winners.includes(i));
-
 			await channel.send(`**${col.size}** ${col > 1 ? 'people' : 'person'} is teaming up to win the grand prize.`);
 			await channel.send(winners ? winners.map(w => `+ ${w.user.username}`) : '# none', {
 				code: 'diff'
