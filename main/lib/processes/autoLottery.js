@@ -72,21 +72,28 @@ exports.run = async ctx => {
 			}
 
 			winnerObj = winners.get(winner.id);
-			await channel.send({ embed: {
-				title: 'Lottery Winner',
-				color: 'GOLD',
-				thumbnail: guild.iconURL(),
-				description: `**${winner.user.tag}** walked away with **${won.toLocaleString()}** coins with a **${multi}%** multiplier!`,
-				fields: [
-					{ name: 'Original', value: raw.toLocaleString(), inline: true },
-					{ name: 'Times Won', value: `${winnerObj.length} time(s)`, inline: true },
-					{ name: 'Biggest Winning', value: winnerObj.sort((p, c) => p.coins - c.coins).reverse()[0].coins.toLocaleString(), inline: true }
-				],
-				footer: {
-					text: winner.id,
-					iconURL: winner.user.avatarURL() || winner.avatarURL()
-				}
-			}});
+			let emoji = guild.emojis.cache.get('717347901587587153');
+			await channel.send([
+				'**Auto Lottery:tm:**',
+				`\n${winner.user.mention} walked away with **${won.toLocaleString()} coins (${raw.toLocaleString()} original) ** <${emoji.animated ? 'a:' : ''}:${emoji.name}:${emoji.id}>`,
+				`\n\n**Multiplier:** ${multiplier}% | **Times Won:** ${winnerObj.length}`,
+				`\n**Biggest Winning so far:** ${winnerObj.sort((p, c) => p.coins - c.coins).reverse()[0].coins.toLocaleString()}`
+			].join(' '));
+			// await channel.send({ embed: {
+			// 	title: 'Lottery Winner',
+			// 	color: 'GOLD',
+			// 	thumbnail: guild.iconURL(),
+			// 	description: `**${winner.user.tag}** walked away with **${won.toLocaleString()}** coins with a **${multi}%** multiplier!`,
+			// 	fields: [
+			// 		{ name: 'Original', value: raw.toLocaleString(), inline: true },
+			// 		{ name: 'Times Won', value: `${winnerObj.length} time(s)`, inline: true },
+			// 		{ name: 'Biggest Winning', value: winnerObj.sort((p, c) => p.coins - c.coins).reverse()[0].coins.toLocaleString(), inline: true }
+			// 	],
+			// 	footer: {
+			// 		text: winner.id,
+			// 		iconURL: winner.user.avatarURL() || winner.avatarURL()
+			// 	}
+			// }});
 		}
 
 		/* Run */
