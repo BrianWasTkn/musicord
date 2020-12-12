@@ -78,7 +78,7 @@ exports.run = async ctx => {
 				thumbnail: guild.iconURL(),
 				description: `**${winner.user.tag}** walked away with **${won.toLocaleString()}** coins with a **${multi}%** multiplier!`,
 				fields: [
-					{ name: 'Winner ID', value: winner.id, inline: true },
+					{ name: 'Original', value: raw.toLocaleString(), inline: true },
 					{ name: 'Times Won', value: `${winnerObj.length} time(s)`, inline: true },
 					{ name: 'Biggest Winning', value: winnerObj.sort((p, c) => p.coins - c.coins).reverse()[0].coins.toLocaleString(), inline: true }
 				],
