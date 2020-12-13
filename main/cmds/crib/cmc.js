@@ -57,7 +57,7 @@ Here you go, **${member.user.tag}**. Such fancy color we got there for your **${
 				name: guild.name,
 				iconURL: guild.iconURL()
 			}
-		}})
+		}});
 
 	}, {
 		name: 'cmc',
