@@ -23,8 +23,10 @@ async ({ msg }) => {
 		}
 	}).on('end', async col => {
 		// const random = arr => arr[Math.floor(Math.random() * arr.length)];
-		if (col.size <= 1) {
+		if (col.size === 1) {
 			return col.first().reply(`Looks like you're alone.`);
+		} else if (col.size === 0) {
+			return channel.send('I guess nobody\'s joining this event, sadness.')
 		}
 
 		await channel.send(`**${col.size}** ${col.size > 1 ? 'people are' : 'person is'} teaming up to win the grand prize.`);
