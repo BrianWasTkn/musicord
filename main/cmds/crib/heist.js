@@ -15,8 +15,8 @@ async ({ msg }) => {
 
 	collector.on('collect', async m => {
 		if (entries.has(m.author.id)) {
-			return m.reply('you already joined.');
 			collector.collected.delete(entries.get(m.author.id));
+			return m.reply('you already joined.');
 		} else {
 			entries.set(m.author.id, m.id);
 			await m.react('💰');
