@@ -23,7 +23,7 @@ module.exports = new Command({
 
 	if (lockChannel) lockChannel = Boolean(lockChannel);
 	else lockChannel = false;
-	
+
 	specAmount = specAmount.toLowerCase();
 	if (specAmount.endsWith('k')) {
 		specAmount = Number(specAmount.replace('k', '000'));
@@ -37,7 +37,7 @@ module.exports = new Command({
 
 	await msg.delete();
 	channel.send(`Type \`JOIN EVENT\` in order to have a chance of splitting up \`${specAmount.toLocaleString()}\` coins!`);
-	await channel.updateOverwrites(guild.id, { 
+	await channel.updateOverwrite(guild.id, { 
 		SEND_MESSAGES: true 
 	}, `FakeHeist by ${author.tag}`);
 	const entries = new Collection();
@@ -81,6 +81,9 @@ module.exports = new Command({
 		].sort(() => Math.random() - 0.5).join('\n');
 		await channel.send(order, { code: 'diff' });
 		ctx.fakeHeist.delete(guild.id);
+		await channel.updateOverwrite(guild.id, { 
+		SEND_MESSAGES: false 
+	}, `FakeHeist by ${author.tag}`);
 	});
 })
 
