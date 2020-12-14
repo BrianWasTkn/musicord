@@ -4,15 +4,13 @@ const { Collection } = require('discord.js');
 module.exports = new Command({
 	name: 'fakeheist',
 	aliases: ['fh']
-}, async ({ msg, args }) => {
+}, async ({ ctx, msg, args }) => {
 	let [specAmount] = args;
 	const { channel, guild, author } = msg;
-	if (!guild.ongoing.has(guild.id)) {
-		guild.onGoing = new Collection([
-			[guild.id, channel.id]
-		]);
+	if (!ctx.fakeHeist.has(guild.id)) {
+		ctx.fakeHeist.set(guild.id, channel.id);
 	} else {
-		let chan = guild.channels.cache.get(guild.ongoing.get(guild.id));
+		let chan = guild.channels.cache.get(ctx.fakeHeist.get(guild.id));
 		return msg.reply(`There's a current event happening on <#${chan.id}>`);
 	}
 
