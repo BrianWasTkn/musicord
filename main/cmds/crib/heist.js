@@ -19,7 +19,7 @@ module.exports = new Command({
 	} else if (specAmount.endsWith('m')) {
 		specAmount = Number(specAmount.replace('m', '000000'));		
 	} else {
-		specAmount = parseInt(specAmount, 10);
+		specAmount = Number(specAmount) || parseInt(specAmount);
 	}
 
 	await msg.delete();
