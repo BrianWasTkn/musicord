@@ -37,9 +37,11 @@ module.exports = new Command({
 
 	await msg.delete();
 	channel.send(`Type \`JOIN EVENT\` in order to have a chance of splitting up \`${specAmount.toLocaleString()}\` coins!`);
-	await channel.updateOverwrite(guild.id, { 
-		SEND_MESSAGES: true 
-	}, `FakeHeist by ${author.tag}`);
+	if (lockChannel) {
+		await channel.updateOverwrite(guild.id, { 
+			SEND_MESSAGES: true 
+		}, `FakeHeist by ${author.tag}`);
+	}
 	const entries = new Collection();
 	let filter = m => (m.content.toLowerCase() === 'join event') && !entries.has(m.author.id);
 	const collector = await channel.createMessageCollector(filter, {
@@ -81,9 +83,11 @@ module.exports = new Command({
 		].sort(() => Math.random() - 0.5).join('\n');
 		await channel.send(order, { code: 'diff' });
 		ctx.fakeHeist.delete(guild.id);
-		await channel.updateOverwrite(guild.id, { 
-		SEND_MESSAGES: false 
-	}, `FakeHeist by ${author.tag}`);
+		if (lockChannel) {
+			await channel.updateOverwrite(guild.id, { 
+				SEND_MESSAGES: false 
+			}, `FakeHeist by ${author.tag}`);
+		}
 	});
 })
 
