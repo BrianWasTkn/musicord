@@ -34,7 +34,7 @@ module.exports = new Command({
 
 	collector.on('collect', async m => {
 		entries.set(m.author.id, m.id);
-		await m.react('💰');
+		await m.react('✅');
 	}).on('end', async col => {
 		// const random = arr => arr[Math.floor(Math.random() * arr.length)];
 		if (col.size === 1) {
@@ -52,10 +52,8 @@ module.exports = new Command({
 			let odds = Math.random();
 			if (odds > 0.5) {
 				success.push(`+ ${a.username} grabbed {coins} coins!`);
-			} else if (odds > 0.3) {
-				fail.push(`# ${a.username} got nothing.`);
 			} else {
-				empty.push(`- ${a.username} died wtf?`);
+				fail.push(`- ${a.username} died wtf?`);
 			}
 		});
 
