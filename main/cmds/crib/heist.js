@@ -59,10 +59,10 @@ module.exports = new Command({
 			if (odds > 0.01) {} {
 				return empty.push(`- ${a.username} died wtf?`);
 			}
-			return fail.push(`- ${a.username} died OOF`)
+			return fail.push(`- ${a.username} died OOF`);
 		});
 
-		let coins = Math.floor(10e6 / success.length);
+		let coins = Math.floor(specAmount / success.length);
 		success = success.map(s => s.replace('{coins}', coins.toLocaleString()));
 		let order = [
 			success.join('\n'), fail.join('\n'), empty.join('\n')
