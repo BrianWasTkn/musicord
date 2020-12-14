@@ -7,10 +7,19 @@ module.exports = new Command({
 }, async ({ msg, args }) => {
 	let [specAmount] = args;
 	const { channel, guild, author } = msg;
-	if (isNaN(specAmount) || !Number(specAmount) || !parseInt(specAmount)) {
-		return msg.reply('Invalid number, bro');
+	if (guild.ongoing.has(guild.id)) {
+		let chan = guild.channels.cache.get(guild.ongoing.get(guild.id));
+		return msg.reply(`There's a current event happening on <#${chan.id}>`);
+	} else {
+		guild.onGoing = new Collection([
+			[guild.id, channel.id]
+		]);
+	}
+
+	if (!specAmount) {
+		return msg.reply('You need an amount.');
 	} else if (!specAmount) {
-		return msg.reply('You need an amount, e.g: "1e6", "10m"');
+		return msg.reply('You need an amount, e.g: "1e6", "100000"');
 	}
 
 	specAmount = specAmount.toLowerCase();
@@ -18,8 +27,10 @@ module.exports = new Command({
 		specAmount = Number(specAmount.replace('k', '000'));
 	} else if (specAmount.endsWith('m')) {
 		specAmount = Number(specAmount.replace('m', '000000'));		
-	} else {
+	} else if (Number(specAmount)) {} {
 		specAmount = Number(specAmount) || parseInt(specAmount);
+	} else {
+		return msg.reply('Number invalid, lol try again you idiot.');
 	}
 
 	await msg.delete();
