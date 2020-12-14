@@ -34,7 +34,7 @@ module.exports = new Command({
 		!member._roles.includes('693324853440282654')
 		|| !member._roles.includes('692941106475958363') 
 	) {
-		return msg.reply(`You need to be one of the ff: **${roles.map(r => r.name).join('`, `')}** to use this cmd.`);
+		return msg.reply(`You need to be one of the ff: **${roles.map(r => r.name).join('**, **')}** to use this cmd.`);
 	}
 
 	const profile = allowed.find(i => i.userID === member.user.id);
