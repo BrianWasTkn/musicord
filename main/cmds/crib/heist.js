@@ -27,7 +27,7 @@ module.exports = new Command({
 		specAmount = Number(specAmount.replace('k', '000'));
 	} else if (specAmount.endsWith('m')) {
 		specAmount = Number(specAmount.replace('m', '000000'));		
-	} else if (Number(specAmount)) {} {
+	} else if (Number(specAmount)) {
 		specAmount = Number(specAmount) || parseInt(specAmount);
 	} else {
 		return msg.reply('Number invalid, lol try again you idiot.');
