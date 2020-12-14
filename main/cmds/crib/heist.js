@@ -52,8 +52,6 @@ module.exports = new Command({
 			return channel.send('I guess nobody\'s joining this event, sadness.')
 		}
 
-		await channel.send(`**${col.size}** ${col.size > 1 ? 'people are' : 'person is'} teaming up to win the grand prize.`);
-		await require('discord.js').Util.delayFor(Math.round(Math.random() * Math.floor(col.size / 2)) * 1000);
 
 		let authors = col.map(m => m.author);
 		let success = [], fail = [], empty = [];
@@ -67,6 +65,9 @@ module.exports = new Command({
 		});
 
 		let coins = Math.floor(specAmount / success.length);
+		await channel.send(`**${col.size}** ${col.size > 1 ? 'people are' : 'person is'} teaming up to win \`${coins.toLocaleString()}\` coins.`);
+		await require('discord.js').Util.delayFor(Math.round(Math.random() * Math.floor(col.size / 2)) * 1000);
+		
 		success = success.map(s => s.replace('{coins}', coins.toLocaleString()));
 		let order = [
 			success.join('\n'), fail.join('\n'), empty.join('\n')
