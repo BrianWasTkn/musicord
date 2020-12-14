@@ -21,7 +21,7 @@ module.exports = new Command({
 		return msg.reply('You need an amount, e.g: "1e6", "100000"');
 	}
 
-	if (lockChannel) lockChannel = Boolean(lockChannel);
+	if (lockChannel === 'true') lockChannel = Boolean(lockChannel);
 	else lockChannel = false;
 
 	specAmount = specAmount.toLowerCase();
