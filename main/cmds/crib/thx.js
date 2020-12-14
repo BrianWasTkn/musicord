@@ -17,13 +17,18 @@ module.exports = new Command(
 		if (!amount) return msg.reply('pls enter a valid numbar tenchu');
 
 		let emoji = guild.emojis.cache.get('717347901587587153');
+		emoji = `<:${emoji.name}:${emoji.id}>`;
 		await channel.send({ embed: {
 			title: 'Thank you ❤️',
-			thumbnail: guild.iconURL(),
+			thumbnail: { url: member.user.avatarURL() },
 			color: member.displayHexColor || 'BLUE',
-			description: `
-<:${emoji.name}:${emoji.id}> Please thank <@${member.nickname ? '!' : ''}${member.user.id}> for this wonderful **${amount.toLocaleString()}** coin heist!
-			`,
+			description: [
+				`Please thank <@${member.nickname ? '!' : ''}${member.user.id}> for`,
+				`this wonderful **${amount.toLocaleString()}** coin heist!`
+			].join(' '),
+			footer: {
+				text: guild.name, iconURL: guild.iconURL()
+			}
 		}});
 
 	}, {

@@ -2,11 +2,28 @@ const Command = require('../../lib/command/Command.js');
 const { Collection } = require('discord.js');
 
 module.exports = new Command(
-async ({ msg }) => {
-	const { channel, guild } = msg;
-	channel.send(`Type \`JOIN EVENT\` to join!`);
-	let filter = m => m.content.toLowerCase() === 'join event';
+async ({ msg, args }) => {
+	let [specAmount] = args;
+	const { channel, guild, author } = msg;
+	if (isNaN(specAmount) || !Number(specAmount) || !parseInt(specAmount)) {
+		return msg.reply('Invalid number, bro');
+	} else if (!specAmount) {
+		return msg.reply('You need an amount, e.g: "1e6", "10m"');
+	}
+
+	specAmount = specAmount.toLowerCase();
+	if (specAmount.endsWith('k')) {
+		specAmount = Number(specAmount.replace('k', '000'));
+	} else if (specAmount.endsWith('m')) {
+		specAmount = Number(specAmount.replace('m', '000000'));		
+	} else {
+		specAmount = parseInt(specAmount, 10);
+	}
+
+	await msg.delete();
+	channel.send(`Type \`JOIN EVENT\` in order to have a chance of splitting up \`${specAmount.toLocaleString()}\` coins!`);
 	const entries = new Collection();
+	let filter = m => m.content.toLowerCase() === 'join event' && !entries.has(author.id);
 	const collector = await channel.createMessageCollector(filter, {
 		max: Infinity,
 		time: 30000,
@@ -14,14 +31,8 @@ async ({ msg }) => {
 	});
 
 	collector.on('collect', async m => {
-		if (entries.has(m.author.id)) {
-			collector.handleDispose(entries.get(m.author.id));
-			// collector.collected.delete(entries.get(m.author.id));
-			return m.reply('you already joined.');
-		} else {
-			entries.set(m.author.id, m.id);
-			await m.react('💰');
-		}
+		entries.set(m.author.id, m.id);
+		await m.react('💰');
 	}).on('end', async col => {
 		// const random = arr => arr[Math.floor(Math.random() * arr.length)];
 		if (col.size === 1) {
@@ -31,17 +42,19 @@ async ({ msg }) => {
 		}
 
 		await channel.send(`**${col.size}** ${col.size > 1 ? 'people are' : 'person is'} teaming up to win the grand prize.`);
-		await require('discord.js').Util.delayFor(Math.round(Math.random() * 3) * 1000);
+		await require('discord.js').Util.delayFor(Math.round(Math.random() * Math.floor(col.size / 2)) * 1000);
 
 		let authors = col.map(m => m.author);
 		let success = [], fail = [], empty = [];
 		authors.forEach(a => {
 			let odds = Math.random();
-			if (odds > 0.60) {
-				success.push(`+ ${a.username} walked away with {coins} coins!`);
-			} else if (odds > 0.1) {
-				fail.push(`# ${a.username} remained unseen.`);
-			} else {
+			if (odds > 0.66) {
+				success.push(`+ ${a.username} grabbed {coins} coins!`);
+			} 
+			if (odds > 0.33) {
+				fail.push(`# ${a.username} got nothing.`);
+			} 
+			if (odds > 0.01) {} {
 				empty.push(`- ${a.username} died wtf?`);
 			}
 		});
@@ -50,11 +63,8 @@ async ({ msg }) => {
 		success = success.map(s => s.replace('{coins}', coins.toLocaleString()));
 		let order = [
 			success.join('\n'), fail.join('\n'), empty.join('\n')
-		].sort(() => Math.random() - 0.5);
-		await channel.send([ order[0], order[1], order[2] ].join('\n'), {
-			code: 'diff'
-		});
-
+		].sort(() => Math.random() - 0.5).join('\n');
+		await channel.send(order, { code: 'diff' });
 	});
 }, {
 	name: 'fakeheist',

@@ -1,7 +1,7 @@
 const { Collection } = require('discord.js');
 
 module.exports = class Command {
-	constructor(callback, props) {
+	constructor(props, callback) {
 		this.fn = callback;
 		this.examples = [];
 		this.props = Object.assign({

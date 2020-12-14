@@ -12,6 +12,7 @@ module.exports = class Musicord extends Client {
 		this.utils = new (require('./Util.js'))(this);
 		this.cmds = new Collection();
 		this.cooldowns = new Collection();
+		this.rateLimits = new Collection();
 		this._setup();
 	}
 
