@@ -34,7 +34,7 @@ module.exports = new Command({
 	await msg.delete();
 	channel.send(`Type \`JOIN EVENT\` in order to have a chance of splitting up \`${specAmount.toLocaleString()}\` coins!`);
 	const entries = new Collection();
-	let filter = m => (m.content.toLowerCase() === 'join event') && !entries.has(author.id);
+	let filter = m => (m.content.toLowerCase() === 'join event') && !entries.has(m.author.id);
 	const collector = await channel.createMessageCollector(filter, {
 		max: Infinity,
 		time: 30000,
