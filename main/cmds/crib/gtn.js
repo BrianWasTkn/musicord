@@ -17,7 +17,7 @@ module.exports = new Command({
 	const filter = m => m.author.id === author.id;
 	const collector = await channel.createMessageCollector(filter, {
 		max: 3,
-		time: 30000,
+		time: Infinity,
 		errors: ['time']
 	});
 
@@ -27,7 +27,6 @@ module.exports = new Command({
 		await ms.delete();
 		await m.delete();
 		ms = await channel.send(questions[iter++]);
-		collector.resetTimer({ time: 30000 });
 	})
 	.on('end', async col => {
 		if (col.size < 5) {
