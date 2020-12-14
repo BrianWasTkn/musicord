@@ -5,7 +5,7 @@ module.exports = new Command({
 	name: 'fakeheist',
 	aliases: ['fh']
 }, async ({ ctx, msg, args }) => {
-	let [specAmount] = args;
+	let [specAmount, lockChannel] = args;
 	const { channel, guild, author } = msg;
 	if (!ctx.fakeHeist.has(guild.id)) {
 		ctx.fakeHeist.set(guild.id, channel.id);
@@ -14,12 +14,16 @@ module.exports = new Command({
 		return msg.reply(`There's a current event happening on <#${chan.id}>`);
 	}
 
+
 	if (!specAmount) {
 		return msg.reply('You need an amount.');
 	} else if (!specAmount) {
 		return msg.reply('You need an amount, e.g: "1e6", "100000"');
 	}
 
+	if (lockChannel) lockChannel = Boolean(lockChannel);
+	else lockChannel = false;
+	
 	specAmount = specAmount.toLowerCase();
 	if (specAmount.endsWith('k')) {
 		specAmount = Number(specAmount.replace('k', '000'));
@@ -33,6 +37,9 @@ module.exports = new Command({
 
 	await msg.delete();
 	channel.send(`Type \`JOIN EVENT\` in order to have a chance of splitting up \`${specAmount.toLocaleString()}\` coins!`);
+	await channel.updateOverwrites(guild.id, { 
+		SEND_MESSAGES: true 
+	}, `FakeHeist by ${author.tag}`);
 	const entries = new Collection();
 	let filter = m => (m.content.toLowerCase() === 'join event') && !entries.has(m.author.id);
 	const collector = await channel.createMessageCollector(filter, {
@@ -57,7 +64,7 @@ module.exports = new Command({
 		let success = [], fail = [], empty = [];
 		authors.forEach(a => {
 			let odds = Math.random();
-			if (odds > 0.65) {
+			if (odds > 0.85) {
 				success.push(`+ ${a.username} grabbed {coins} coins!`);
 			} else {
 				fail.push(`- ${a.username} died wtf?`);

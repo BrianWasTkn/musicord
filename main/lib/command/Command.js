@@ -19,12 +19,12 @@ module.exports = class Command {
 	async execute({ ctx, msg, args }) {
 		const { member, channel, guild } = msg;
 
-		if (!member.permissions.has(this.userPerms)) {
-			return await channel.send('Not enough permissions.');
+		if (!member.permissions.has(this.props.userPerms)) {
+			return msg.reply('You don\'t have enough perms to run this command.');
 		}
 
-		if (!guild.me.permissions.has(this.botPerms)) {
-			return await channel.send('Looks like i dont have perms to run this cmd.');
+		if (!guild.me.permissions.has(this.props.botPerms)) {
+			return msg.reply('Looks like i dont have perms to run this cmd.');
 		}
 
 		return await this.fn({ ctx, msg, args });
