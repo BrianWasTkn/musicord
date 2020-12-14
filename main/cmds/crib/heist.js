@@ -50,16 +50,13 @@ module.exports = new Command({
 		let success = [], fail = [], empty = [];
 		authors.forEach(a => {
 			let odds = Math.random();
-			if (odds > 0.66) {
-				return success.push(`+ ${a.username} grabbed {coins} coins!`);
-			} 
-			if (odds > 0.33) {
-				return fail.push(`# ${a.username} got nothing.`);
-			} 
-			if (odds > 0.01) {} {
-				return empty.push(`- ${a.username} died wtf?`);
+			if (odds > 0.5) {
+				success.push(`+ ${a.username} grabbed {coins} coins!`);
+			} else if (odds > 0.3) {
+				fail.push(`# ${a.username} got nothing.`);
+			} else {
+				empty.push(`- ${a.username} died wtf?`);
 			}
-			return fail.push(`- ${a.username} died OOF`);
 		});
 
 		let coins = Math.floor(specAmount / success.length);
