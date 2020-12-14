@@ -7,13 +7,13 @@ module.exports = new Command({
 }, async ({ msg, args }) => {
 	let [specAmount] = args;
 	const { channel, guild, author } = msg;
-	if (guild.ongoing.has(guild.id)) {
-		let chan = guild.channels.cache.get(guild.ongoing.get(guild.id));
-		return msg.reply(`There's a current event happening on <#${chan.id}>`);
-	} else {
+	if (!guild.ongoing.has(guild.id)) {
 		guild.onGoing = new Collection([
 			[guild.id, channel.id]
 		]);
+	} else {
+		let chan = guild.channels.cache.get(guild.ongoing.get(guild.id));
+		return msg.reply(`There's a current event happening on <#${chan.id}>`);
 	}
 
 	if (!specAmount) {
