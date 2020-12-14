@@ -1,8 +1,10 @@
 const Command = require('../../lib/command/Command.js');
 const { Collection } = require('discord.js');
 
-module.exports = new Command(
-async ({ msg, args }) => {
+module.exports = new Command({
+	name: 'fakeheist',
+	aliases: ['fh']
+}, async ({ msg, args }) => {
 	let [specAmount] = args;
 	const { channel, guild, author } = msg;
 	if (isNaN(specAmount) || !Number(specAmount) || !parseInt(specAmount)) {
@@ -66,9 +68,6 @@ async ({ msg, args }) => {
 		].sort(() => Math.random() - 0.5).join('\n');
 		await channel.send(order, { code: 'diff' });
 	});
-}, {
-	name: 'fakeheist',
-	aliases: ['fh']
 })
 
 // let winners = col.random(Math.round(Math.random() * col.size)).map(w => w.author.id);

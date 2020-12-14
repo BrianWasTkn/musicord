@@ -23,44 +23,41 @@ const allowed = [
 	{ userID: '181264821713371136', role: '723073481633300521' }
 ]
 
-module.exports = new Command(
-	async ({ msg }) => {
-		const { member, channel, guild } = msg;
-		let roles = ['693324853440282654', '692941106475958363'].map(r => guild.roles.cache.get(r));
+module.exports = new Command({
+	name: 'cmc',
+	aliases: ['changemycolor']
+}, async ({ msg }) => {
+	const { member, channel, guild } = msg;
+	let roles = ['693324853440282654', '692941106475958363'].map(r => guild.roles.cache.get(r));
 
-		let missing;
-		for (const role of roles) {
-			if (!member._roles.includes(role.id)) missing = role;
-		}
-
-		if (missing) {
-			return channel.send(`You need to be a **${missing.name}** first before using this command.`);
-		}
-
-		const profile = allowed.find(i => i.userID === member.user.id);
-		if (!profile) {
-			return await channel.send(`You don\'t have a custom role yet.\nRun \`${ctx.prefix[0]}`)
-		}
-
-		let random = Math.random() * 0xffffff;
-		let roleToBeChanged = guild.roles.cache.get(profile.role);
-		let role = await roleToBeChanged.edit({ color: random });
-		await channel.send({ embed: {
-			title: 'Color Changed',
-			color: role.color,
-			thumbnail: {
-				url: `https://dummyimage.com/512x512/${role.color.toString(16)}/010101&text=+`
-			},
-			description: `
-Here you go, **${member.user.tag}**. Such fancy color we got there for your **${roleToBeChanged.name}** role! The hex is \`#${role.color.toString(16)}\` btw, thank you for supporting **${guild.name}**!`,
-			author: {
-				name: guild.name,
-				iconURL: guild.iconURL()
-			}
-		}});
-
-	}, {
-		name: 'cmc',
-		aliases: ['changemycolor']
+	let missing;
+	for (const role of roles) {
+		if (!member._roles.includes(role.id)) missing = role;
 	}
-)
+
+	if (missing) {
+		return channel.send(`You need to be a **${missing.name}** first before using this command.`);
+	}
+
+	const profile = allowed.find(i => i.userID === member.user.id);
+	if (!profile) {
+		return await channel.send(`You don\'t have a custom role yet.\nRun \`${ctx.prefix[0]}`)
+	}
+
+	let random = Math.random() * 0xffffff;
+	let roleToBeChanged = guild.roles.cache.get(profile.role);
+	let role = await roleToBeChanged.edit({ color: random });
+	await channel.send({ embed: {
+		title: 'Color Changed',
+		color: role.color,
+		thumbnail: {
+			url: `https://dummyimage.com/512x512/${role.color.toString(16)}/010101&text=+`
+		},
+		description: `
+Here you go, **${member.user.tag}**. Such fancy color we got there for your **${roleToBeChanged.name}** role! The hex is \`#${role.color.toString(16)}\` btw, thank you for supporting **${guild.name}**!`,
+		author: {
+			name: guild.name,
+			iconURL: guild.iconURL()
+		}
+	}});
+});
