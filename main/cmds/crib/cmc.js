@@ -32,30 +32,34 @@ module.exports = new Command({
 
 	if (
 		!member._roles.includes('693324853440282654')
-		|| !member._roles.includes('692941106475958363') 
+		|| !member._roles.includes('692941106475958363')
+		|| (!member._roles.includes('693324853440282654') 
+			&& !member._roles.includes('692941106475958363')
+		)
 	) {
 		return msg.reply(`You need to be one of the ff: **${roles.map(r => r.name).join('**, **')}** to use this cmd.`);
-	}
-
-	const profile = allowed.find(i => i.userID === member.user.id);
-	if (!profile) {
-		return await channel.send(`You don\'t have a custom role yet.\nRun \`${ctx.prefix[0]} request\` to request this.`)
-	}
-
-	let random = Math.random() * 0xffffff;
-	let roleToBeChanged = guild.roles.cache.get(profile.role);
-	let role = await roleToBeChanged.edit({ color: random });
-	await channel.send({ embed: {
-		title: 'Color Changed',
-		color: role.color,
-		thumbnail: {
-			url: `https://dummyimage.com/512x512/${role.color.toString(16)}/010101&text=+`
-		},
-		description: `
-Here you go, **${member.user.tag}**. Such fancy color we got there for your **${roleToBeChanged.name}** role! The hex is \`#${role.color.toString(16)}\` btw, thank you for supporting **${guild.name}**!`,
-		author: {
-			name: guild.name,
-			iconURL: guild.iconURL()
+	} else {
+		const profile = allowed.find(i => i.userID === member.user.id);
+		if (!profile) {
+			return await channel.send(`You don\'t have a custom role yet.\nRun \`${ctx.prefix[0]} request\` to request this.`)
 		}
-	}});
+
+		let random = Math.random() * 0xffffff;
+		let roleToBeChanged = guild.roles.cache.get(profile.role);
+		let role = await roleToBeChanged.edit({ color: random });
+		await channel.send({ embed: {
+			title: 'Color Changed',
+			color: role.color,
+			thumbnail: {
+				url: `https://dummyimage.com/512x512/${role.color.toString(16)}/010101&text=+`
+			},
+			description: `
+	Here you go, **${member.user.tag}**. Such fancy color we got there for your **${roleToBeChanged.name}** role! The hex is \`#${role.color.toString(16)}\` btw, thank you for supporting **${guild.name}**!`,
+			author: {
+				name: guild.name,
+				iconURL: guild.iconURL()
+			}
+		}});
+	}
+
 });
