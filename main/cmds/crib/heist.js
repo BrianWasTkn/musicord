@@ -72,6 +72,7 @@ module.exports = new Command({
 			success.join('\n'), fail.join('\n'), empty.join('\n')
 		].sort(() => Math.random() - 0.5).join('\n');
 		await channel.send(order, { code: 'diff' });
+		ctx.fakeHeist.delete(guild.id);
 	});
 })
 
