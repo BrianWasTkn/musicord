@@ -36,7 +36,7 @@ module.exports = new Command({
 	) {
 		const profile = allowed.find(i => i.userID === member.user.id);
 		if (!profile) {
-			return await channel.send(`You don\'t have a custom role yet.\nRun \`${ctx.prefix[0]} request\` to request this.`)
+			return await channel.send(`You don\'t have a custom role yet. Ping a mod to create one for you.`)
 		}
 
 		let random = Math.random() * 0xffffff;

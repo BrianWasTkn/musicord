@@ -8,16 +8,6 @@ exports.run = async ctx => {
 			active, winners, interval, lastRoll, multi,
 			prize: { min, max, limit }, host: { guild, role, channel }
 		} = ctx.config.cribConfig.lottery(ctx);
-		/* First interval to roll */
-
-		// const runCheck = setInterval(async () => {
-		// 	if (!active) return;
-		// 	else {
-		// 		if (new Date().getMinutes() === Number('00')) {
-		// 			await runInterval();
-		// 		} else return;
-		// 	}
-		// }, 500);
 
 		/* The interval */
 		const runInterval = async () => {
