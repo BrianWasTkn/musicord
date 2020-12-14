@@ -31,14 +31,9 @@ module.exports = new Command({
 	let roles = ['693324853440282654', '692941106475958363'].map(r => guild.roles.cache.get(r));
 
 	if (
-		!member._roles.includes('693324853440282654')
-		|| !member._roles.includes('692941106475958363')
-		|| (!member._roles.includes('693324853440282654') 
-			&& !member._roles.includes('692941106475958363')
-		)
+		member._roles.includes('693324853440282654')
+		|| member._roles.includes('692941106475958363')
 	) {
-		return msg.reply(`You need to be one of the ff: **${roles.map(r => r.name).join('**, **')}** to use this cmd.`);
-	} else {
 		const profile = allowed.find(i => i.userID === member.user.id);
 		if (!profile) {
 			return await channel.send(`You don\'t have a custom role yet.\nRun \`${ctx.prefix[0]} request\` to request this.`)
@@ -60,6 +55,8 @@ module.exports = new Command({
 				iconURL: guild.iconURL()
 			}
 		}});
+	} else {
+		return msg.reply(`You need to be one of the ff: **${roles.map(r => r.name).join('**, **')}** to use this cmd.`);
 	}
 
 });
