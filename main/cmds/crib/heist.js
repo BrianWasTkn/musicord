@@ -51,14 +51,15 @@ module.exports = new Command({
 		authors.forEach(a => {
 			let odds = Math.random();
 			if (odds > 0.66) {
-				success.push(`+ ${a.username} grabbed {coins} coins!`);
+				return success.push(`+ ${a.username} grabbed {coins} coins!`);
 			} 
 			if (odds > 0.33) {
-				fail.push(`# ${a.username} got nothing.`);
+				return fail.push(`# ${a.username} got nothing.`);
 			} 
 			if (odds > 0.01) {} {
-				empty.push(`- ${a.username} died wtf?`);
+				return empty.push(`- ${a.username} died wtf?`);
 			}
+			return fail.push(`- ${a.username} died OOF`)
 		});
 
 		let coins = Math.floor(10e6 / success.length);
