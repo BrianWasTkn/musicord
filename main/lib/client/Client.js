@@ -23,13 +23,13 @@ module.exports = class Musicord extends Client {
 				const command = require(join(__dirname, '..', '..', 'cmds', dir, cmd));
 				this.cmds.set(command.props.name, command);
 				command.props.aliases.forEach(alias => this.cmds.set(alias, command));
-				this.utils.log('Musicord', 'main', `Command Loaded: ${command.props.name}`);
+				this.utils.log('Musicord', 'main', `Command: ${this.config.main.prefix[0]}${command.props.name}`);
 			})
 		});
 
 		readdirSync(join(__dirname, '..', 'processes')).forEach(async lis => {
 			await require(join(__dirname, '..', 'processes', lis)).run(this);
-			this.utils.log('Musicord', 'main', `Listener Loaded: ${lis}`);
+			this.utils.log('Musicord', 'main', `Listener: ${lis}`);
 		});
 	}
 }
