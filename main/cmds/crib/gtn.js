@@ -9,7 +9,7 @@ module.exports = new Command({
 	let questions = [
 		'Any minimum possible number? Default is `1` only.',
 		'Any max possible number? Default is `100` only.',
-		'What should be the guessing number?'
+		'What should be the guessing number?',
 		'What\'s the price for this event?',
 		'Should we lock the channel after the number has been guessed?'
 	];
