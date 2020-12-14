@@ -37,7 +37,7 @@ module.exports = new Command({
 	let filter = m => (m.content.toLowerCase() === 'join event') && !entries.has(m.author.id);
 	const collector = await channel.createMessageCollector(filter, {
 		max: Infinity,
-		time: 30000,
+		time: 60000,
 		errors: ['time']
 	});
 
