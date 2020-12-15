@@ -8,10 +8,10 @@ module.exports = new Command({
 }, async ({ ctx, msg, args }) => {
 	let [specAmount, lockChannel] = args;
 	const { channel, guild, author } = msg;
-	if (!ctx.fakeHeist.has(guild.id)) {
-		ctx.fakeHeist.set(guild.id, channel.id);
+	if (!ctx.cribFakeHeists.has(guild.id)) {
+		ctx.cribFakeHeists.set(guild.id, channel.id);
 	} else {
-		let chan = guild.channels.cache.get(ctx.fakeHeist.get(guild.id));
+		let chan = guild.channels.cache.get(ctx.cribFakeHeists.get(guild.id));
 		return msg.reply(`There's a current event happening on <#${chan.id}>`);
 	}
 
@@ -84,7 +84,7 @@ module.exports = new Command({
 			success.join('\n'), fail.join('\n'), empty.join('\n')
 		].sort(() => Math.random() - 0.5).join('\n');
 		await channel.send(order, { code: 'diff' });
-		ctx.fakeHeist.delete(guild.id);
+		ctx.cribFakeHeists.delete(guild.id);
 		if (lockChannel) {
 			await channel.updateOverwrite(guild.id, { 
 				SEND_MESSAGES: false 

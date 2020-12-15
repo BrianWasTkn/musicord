@@ -21,17 +21,15 @@ module.exports = new Command({
 		idle: 30000,
 	});
 
-	let ms = await channel.send(questions[iter++]);
-	collector
-	.on('collect', async m => {
-		await ms.delete();
-		await m.delete();
-		ms = await channel.send(questions[iter++]);
-	})
-	.on('end', async col => {
-		if (col.size < 5) {
-			return msg.reply('Either you\'re ignoring me or AFK, who knows, might be the first one.');
-		}
+	await channel.send(questions[iter++]);
+	collector.on('collect', async m => {
+		await channel.send(questions[iter++]);
+		collector.resetTimer({ time: 30000 });
+	}).on('end', async col => {
+		await col.first().channel.send({ embed: {
+			title: 'Timed Out',
+			color: 'RED'
+		}});
 	});
 
 });
