@@ -42,8 +42,9 @@ module.exports = new Command({
 		msg.channel.send(`<@${turn.user.id}>, **\`fight\`**, **\`defend\`**, or **\`end\`**?`);
 		
 		/* await msg */
-		let m = await msg.channel.awaitMessages(m => m.member.user.id === turn.user.id, {
-			max: Infinity,
+		let filter = m => (m.member.user.id === turn.user.id) && (['fight', 'defend', 'end'].some(f => m.content.toLowerCase() === f));
+		let m = await msg.channel.awaitMessages(filter, {
+			max: 1,
 			time: 3e4
 		});
 
