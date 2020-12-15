@@ -26,10 +26,17 @@ module.exports = new Command({
 		await channel.send(questions[iter++]);
 		collector.resetTimer({ time: 30000 });
 	}).on('end', async col => {
-		await col.first().channel.send({ embed: {
-			title: 'Timed Out',
-			color: 'RED'
-		}});
+		const m = col.first();
+		if (!m) {
+			await col.first().channel.send({ embed: {
+				title: 'Timed Out',
+				color: 'RED'
+			}});
+		} else {
+			await m.channel.send(col.map((c, i) => {
+				return `**#${i + 1}:** ${c.content}`;
+			}).join('\n'));
+		}
 	});
 
 });
