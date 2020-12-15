@@ -2,7 +2,8 @@ const Command = require('../../lib/command/Command.js');
 
 module.exports = new Command({
 	name: 'gtn',
-	aliases: ['guessthenumber']
+	aliases: ['guessthenumber'],
+	description: 'Starts a guess the number event.'
 }, async ({ msg, args }) => {
 	const { guild, channel, author } = msg;
 	let iter = 0;
@@ -27,7 +28,7 @@ module.exports = new Command({
 		await ms.delete();
 		await m.delete();
 		ms = await channel.send(questions[iter++]);
-		collector.resetTimer({ time: 30000 });
+		collector.resetTimer({ idle: 30000 });
 	})
 	.on('end', async col => {
 		if (col.size < 5) {

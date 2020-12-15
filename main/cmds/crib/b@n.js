@@ -3,6 +3,7 @@ const Command = require('../../lib/command/Command.js');
 module.exports = new Command({
 	name: 'b@n',
 	aliases: ['bonbon'],
+	description: 'Bans your target on the odds of 50-50.'
 	userPerms: ['BAN_MEMBERS'],
 	botPerms: ['BAN_MEMBERS']
 }, async ({ msg }) => {

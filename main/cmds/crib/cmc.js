@@ -25,7 +25,8 @@ const allowed = [
 
 module.exports = new Command({
 	name: 'cmc',
-	aliases: ['changemycolor']
+	aliases: ['changemycolor'],
+	description: 'Changes your custom role color.'
 }, async ({ msg }) => {
 	const { member, channel, guild } = msg;
 	let roles = ['693324853440282654', '692941106475958363'].map(r => guild.roles.cache.get(r));
