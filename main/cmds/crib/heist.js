@@ -75,7 +75,7 @@ module.exports = new Command({
 		});
 
 		let coins = Math.floor(specAmount / success.length);
-		await channel.send(`**${col.size}** ${col.size > 1 ? 'people are' : 'person is'} teaming up to split \`${coins.toLocaleString()}\` coins.`);
+		await channel.send(`**${col.size}** ${col.size > 1 ? 'people are' : 'person is'} teaming up to split \`${specAmount.toLocaleString()}\` coins.`);
 		await require('discord.js').Util.delayFor(Math.round(Math.random() * Math.floor(col.size / 2)) * 1000);
 		
 		success = success.map(s => s.replace('{coins}', coins.toLocaleString()));
