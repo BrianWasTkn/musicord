@@ -13,7 +13,7 @@ module.exports = new Command({
 	if (!enemy) {
 		return msg.channel.send('You cannot fight air okay?');
 	}
-	if (enemy.id === author.user.user.id) {
+	if (enemy.id === author.user.id) {
 		return msg.channel.send('Dumbness, you can\'t fight yourself.');
 	}
 	if (enemy.bot) {
