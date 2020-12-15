@@ -38,7 +38,7 @@ module.exports = new Command({
 		msg.channel.send(`<@${turn.user.id}>, **\`fight\`**, **\`defend\`**, or **\`end\`**?`);
 		
 		/* await msg */
-		let m = await msg.channel.awaitMessages(u => u.user.id === turn.user.id, {
+		let m = await msg.channel.awaitMessages(m => m.member.user.id === turn.user.id, {
 			max: 1,
 			time: 3e4
 		});
