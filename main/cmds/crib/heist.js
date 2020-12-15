@@ -4,7 +4,7 @@ const { Collection } = require('discord.js');
 module.exports = new Command({
 	name: 'fakeheist',
 	aliases: ['fh'],
-	description: 'Immediately starts a heist'
+	description: 'Immediately starts a fake heist event.'
 }, async ({ ctx, msg, args }) => {
 	let [specAmount, lockChannel] = args;
 	const { channel, guild, author } = msg;

@@ -3,6 +3,7 @@ const Command = require('../../lib/command/Command.js');
 module.exports = new Command({
 	name: 'thx',
 	aliases: ['ty'],
+	description: 'Thanks somebody for sponsoring a heist.'
 }, async ({ ctx, msg, args }) => {
 	if (!msg.member._roles.includes('692941106475958363')) return;
 

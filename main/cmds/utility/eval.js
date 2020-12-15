@@ -13,6 +13,7 @@ function codeBlock(str, lang = 'js') {
 module.exports = new Command({
 	name: 'eval',
 	aliases: ['e'],
+	description: 'Run JS code through this bot.',
 	userPerms: ['ADMINISTRATOR'],
 	botPerms: ['EMBED_LINKS']
 }, async ({ ctx, msg, args }) => {
