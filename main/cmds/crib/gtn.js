@@ -17,7 +17,7 @@ module.exports = new Command({
 
 	const filter = m => m.author.id === author.id;
 	const collector = await channel.createMessageCollector(filter, {
-		max: 3,
+		max: questions.length,
 		idle: 30000,
 	});
 
