@@ -69,7 +69,7 @@ exports.run = async ctx => {
 				}
 			],
 			footer: {
-				text: guild.name, iconURL: guild.iconURL()
+				text: guild.name, iconURL: message.guild.iconURL()
 			}
 		}});
 	})
