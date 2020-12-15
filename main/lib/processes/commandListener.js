@@ -4,7 +4,7 @@ exports.run = async ctx => {
 
 		let prefix = false;
 		for (const pref of ctx.config.main.prefix) {
-			if (msg.content.startsWith(pref)) prefix = pref;
+			if (msg.content.toLowerCase().startsWith(pref)) prefix = pref;
 		}
 		if (!prefix) return;
 
