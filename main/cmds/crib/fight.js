@@ -1,5 +1,9 @@
 const Command = require('../../lib/command/Command.js');
 
+function randomNum(min, max) {
+	return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 module.exports = new Command({
 	name: 'fight',
 	aliases: ['f'],
@@ -39,7 +43,7 @@ module.exports = new Command({
 		
 		/* await msg */
 		let m = await msg.channel.awaitMessages(m => m.member.user.id === turn.user.id, {
-			max: 1,
+			max: Infinity,
 			time: 3e4
 		});
 
@@ -53,7 +57,7 @@ module.exports = new Command({
 		if (m.content.toLowerCase() === 'fight') {
 			/* Damages */
 			let bigPunch = Math.random() >= 0.8;
-			let damage = this.randomNum(7, bigPunch ? 50 : 25);
+			let damage = randomNum(7, bigPunch ? 50 : 25);
 			/* Maths */
 			opponent.hp -= (damage - opponent.armor) < 0 ? 5 : damage - opponent.armor;
 			/* Crits */
