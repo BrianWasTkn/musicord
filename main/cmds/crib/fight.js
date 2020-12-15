@@ -92,7 +92,9 @@ module.exports = new Command({
 	const play = async () => {
 		const damage = await performTurn(turn, oppturn);
 		/* Unknown */
-		if (damage === undefined) return;
+		if (damage === undefined) {
+			return;
+		}
 		/* Damage */
 		if (!damage) {
 			oppturn = [turn, turn = oppturn][0];
@@ -113,7 +115,7 @@ module.exports = new Command({
 			const winner = loser === turn ? oppturn : turn;
 			loser.hp = 0;
 			/* Message */
-			await msg.channel.send(`**${winner.user.username}** literally ate **${loser.user.username}** alive, winning with **${winner.hp}HP** left!`)
+			await msg.channel.send(`**${winner.user.username}** literally ate **${loser.user.username}** alive, winning with **${winner.hp < 1 ? 0 : winner.hp}HP** left!`)
 		}
 	}
 
