@@ -103,7 +103,7 @@ module.exports = new Command({
 		/* Message */
 		await msg.channel.send([
 			`**${turn.user.username}** landed a hit on **${oppturn.user.username}** dealing **\`${damage}\`HP**!`,
-			`**${oppturn.user.username}** is left with **\`${oppturn.hp}\`** health left.`
+			`**${oppturn.user.username}** is left with **\`${oppturn.hp < 1 ? 0 : oppturn.hp}\`** health left.`
 		].join('\n'));
 		/* Play or End? */
 		if (turn.hp > 0 && oppturn.hp > 0) {
@@ -115,7 +115,7 @@ module.exports = new Command({
 			const winner = loser === turn ? oppturn : turn;
 			loser.hp = 0;
 			/* Message */
-			await msg.channel.send(`**${winner.user.username}** literally ate **${loser.user.username}** alive, winning with **${winner.hp < 1 ? 0 : winner.hp}HP** left!`)
+			return await msg.channel.send(`**${winner.user.username}** literally ate **${loser.user.username}** alive, winning with **${winner.hp < 1 ? 0 : winner.hp}HP** left!`)
 		}
 	}
 
