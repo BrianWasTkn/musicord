@@ -10,7 +10,7 @@ exports.run = async ctx => {
 
 		const args = msg.content.slice(prefix.length).trim().split(/ +/g);
 		const cmd = args.shift();
-		const command = ctx.cmds.get(cmd);
+		const command = ctx.cmds.get(cmd) || ctx.cmdAliases.get(cmd);
 
 		if (command) {
 			await command.execute({ ctx, msg, args });

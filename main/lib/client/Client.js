@@ -11,6 +11,7 @@ module.exports = class Musicord extends Client {
 		this.distube = new distube(this, player);
 		this.utils = new (require('./Util.js'))(this);
 		this.cmds = new Collection();
+		this.cmdAlias = new Collection();
 		this.cooldowns = new Collection();
 		this.rateLimits = new Collection();
 		// Memers Crib
@@ -24,7 +25,7 @@ module.exports = class Musicord extends Client {
 			readdirSync(join(__dirname, '..', '..', 'cmds', dir)).forEach(cmd => {
 				const command = require(join(__dirname, '..', '..', 'cmds', dir, cmd));
 				this.cmds.set(command.props.name, command);
-				command.props.aliases.forEach(alias => this.cmds.set(alias, command));
+				command.props.aliases.forEach(alias => this.cmdAlias.set(alias, command));
 				this.utils.log('Musicord', 'main', `Command: ${this.config.main.prefix[0]}${command.props.name}`);
 			})
 		});
