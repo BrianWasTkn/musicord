@@ -10,9 +10,9 @@ exports.run = async ctx => {
 			thumbnail: { url: thumbnail },
 			description: `Now playing [**__${name}__**](${url}) on the queue.`,
 			fields: [
-				{ name: 'Duration', value: `\`${formattedDuration}\`` },
-				{ name: 'Requested by', value: `\`${user.tag}\`` },
-				{ name: 'Views', value: `\`${views.toLocaleString()}\`` },
+				{ inline: true, name: 'Duration', value: `\`${formattedDuration}\`` },
+				{ inline: true, name: 'Requested by', value: `\`${user.tag}\`` },
+				{ inline: true, name: 'Views', value: `\`${views.toLocaleString()}\`` },
 			],
 			footer: {
 				text: guild.name, icon: guild.iconURL()
@@ -27,9 +27,9 @@ exports.run = async ctx => {
 			thumbnail: { url: thumbnail },
 			description: `Added [**__${name}__**](${url}) to the queue.`,
 			fields: [
-				{ name: 'Duration', value: `\`${formattedDuration}\`` },
-				{ name: 'Added by', value: `\`${user.tag}\`` },
-				{ name: 'Views', value: `\`${views.toLocaleString()}\`` },
+				{ inline: true, name: 'Duration', value: `\`${formattedDuration}\`` },
+				{ inline: true, name: 'Added by', value: `\`${user.tag}\`` },
+				{ inline: true, name: 'Views', value: `\`${views.toLocaleString()}\`` },
 			],
 			footer: {
 				text: guild.name, icon: guild.iconURL()
@@ -43,9 +43,12 @@ exports.run = async ctx => {
 			thumbnail: { url: thumbnail },
 			description: `Added [**__${name}__**](${url}) to the queue.`,
 			fields: [
-				{ name: 'Duration', value: `\`${formattedDuration}\`` },
-				{ name: 'Added by', value: `\`${user.tag}\`` },
-				{ name: 'Total Song(s)', value: `\`${songs.length.toLocaleString()}\`` },
+				{ inline: true, name: 'Duration', 
+					value: `\`${formattedDuration}\`` },
+				{ inline: true, name: 'Added by', 
+					value: `\`${user.tag}\`` },
+				{ inline: true, name: 'Total Song(s)', 
+					value: `\`${songs.length.toLocaleString()}\`` },
 			],
 			footer: {
 				text: guild.name, icon: guild.iconURL()
