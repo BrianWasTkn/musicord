@@ -50,7 +50,8 @@ module.exports = new Command({
 
 		/* none */
 		if (!m.first()) {
-			return msg.channel.send(`**${turn.user.tag}** didn't replied in time, **${opponent.user.username}** wins!`);
+			await msg.channel.send(`**${turn.user.tag}** didn't replied in time, **${opponent.user.username}** wins!`);
+			return;
 		}
 		/* discord.message */
 		m = m.first();
