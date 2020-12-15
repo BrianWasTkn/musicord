@@ -67,8 +67,7 @@ module.exports = new Command({
 		let authors = col.map(m => m.author);
 		let success = [], fail = [], empty = [];
 		authors.forEach(a => {
-			let odds = Math.random();
-			if (odds > 0.7) {
+			if (Math.random() > Math.random()) {
 				success.push(`+ ${a.username} grabbed {coins} coins!`);
 			} else {
 				fail.push(`- ${a.username} died wtf?`);

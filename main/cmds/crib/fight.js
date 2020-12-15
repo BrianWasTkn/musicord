@@ -73,7 +73,7 @@ module.exports = new Command({
 			if (attacker.armor < 100) {
 				/* Set */
 				attacker.armor += defense;
-				msg.channel.send(`**${attacker.user.username}** increased their defense to **${attacker.armor}**!`);
+				msg.channel.send(`**${attacker.user.username}** increased their defense to **${attacker.armor}** by **${defense}**!`);
 			} else {
 				msg.channel.send('damn, stop being greedy, you already have full health!');
 			}
