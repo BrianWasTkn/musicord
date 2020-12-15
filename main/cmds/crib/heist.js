@@ -65,7 +65,7 @@ module.exports = new Command({
 
 
 		let authors = col.map(m => m.author);
-		let success = [], fail = [], empty = [];
+		let success = [], fail = [];
 		authors.forEach(a => {
 			if (Math.random() > Math.random()) {
 				success.push(`+ ${a.username} grabbed {coins} coins!`);
@@ -80,7 +80,7 @@ module.exports = new Command({
 		
 		success = success.map(s => s.replace('{coins}', coins.toLocaleString()));
 		let order = [
-			success.join('\n'), fail.join('\n'), empty.join('\n')
+			success.join('\n'), fail.join('\n')
 		].sort(() => Math.random() - 0.5).join('\n');
 		await channel.send(order, { code: 'diff' });
 		ctx.fakeHeists.delete(guild.id);
