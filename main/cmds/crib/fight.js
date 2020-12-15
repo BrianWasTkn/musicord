@@ -57,8 +57,8 @@ module.exports = new Command({
 
 		if (m.content.toLowerCase() === 'fight') {
 			/* Damages */
-			let bigPunch = Math.random() >= 0.6;
-			let damage = randomNum(7, bigPunch ? 50 : 25);
+			let bigPunch = Math.random() >= 0.7;
+			let damage = randomNum(7, bigPunch ? 40 : 25);
 			/* Maths */
 			opponent.hp -= (damage - opponent.armor) < 0 ? 5 : damage - opponent.armor;
 			/* Crits */
@@ -67,8 +67,8 @@ module.exports = new Command({
 			return damage;
 		} else if (m.content.toLowerCase() === 'defend') {
 			/* Crits */
-			let crit = Math.random() >= 0.6;
-			let defense = randomNum(7, crit ? 50 : 25);
+			let crit = Math.random() >= 0.7;
+			let defense = randomNum(7, crit ? 40 : 25);
 			/* Maths */
 			if (attacker.armor < 100) {
 				/* Set */
