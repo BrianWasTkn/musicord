@@ -8,6 +8,6 @@ module.exports = new Command({
 	await msg.channel.send([
 		`**${ctx.user.username} Commands**`,
 		`Hey you, yes you. Here are all my commands:\n`,
-		`\`${ctx.cmds.map(c => c.name).join('`, `')}\``
+		`\`${ctx.cmds.map(c => c.props.name).join('`, `')}\``
 	].join('\n'));
 });
