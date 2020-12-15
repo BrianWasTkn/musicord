@@ -11,7 +11,7 @@ module.exports = class Musicord extends Client {
 		this.distube = new distube(this, player);
 		this.utils = new (require('./Util.js'))(this);
 		this.cmds = new Collection();
-		this.cmdAlias = new Collection();
+		this.cmdAliases = new Collection();
 		this.cooldowns = new Collection();
 		this.rateLimits = new Collection();
 		// Memers Crib
