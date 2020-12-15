@@ -6,4 +6,5 @@ module.exports = new Command({
 	description: 'Calculates the taxes when sharing coins to others.'
 }, async ({ msg, args }) => {
 	let [amount] = args;
+	amount = Number(amount);
 });

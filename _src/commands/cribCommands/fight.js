@@ -25,13 +25,13 @@ export default class Fight extends Command {
 	async execute({ Bot, msg, args }) {
 		/* Resolve */
 		let enemy = msg.mentions.members.first();
-		let author = msg.author;
+		let author = msg.member;
 
 		/* Scenarios */
 		if (!enemy) {
 			return msg.channel.send('You.cannot.fight.air.okay?');
 		}
-		if (enemy.id === author.id) {
+		if (enemy.id === author.user.user.id) {
 			return msg.channel.send('Dumbness, you can\'t fight yourself.');
 		}
 		if (enemy.bot) {
@@ -53,17 +53,17 @@ export default class Fight extends Command {
 		/* Turn() */
 		const performTurn = async (attacker, opponent, retry) => {
 			/* ask whoever's turn */
-			msg.channel.send(`${turn.mention}, **\`fight\`**, **\`defend\`**, or **\`end\`**?`);
+			msg.channel.send(`<@${turn.user.id}>, **\`fight\`**, **\`defend\`**, or **\`end\`**?`);
 			
 			/* await msg */
-			let m = await msg.channel.awaitMessages(u => u.id === turn.id, {
+			let m = await msg.channel.awaitMessages(u => u.user.id === turn.user.id, {
 				max: 1,
 				time: 3e4
 			});
 
 			/* none */
 			if (!m.first()) {
-				return msg.channel.send(`**${turn.tag}** didn't replied in time, **${opponent.username}** wins!`);
+				return msg.channel.send(`**${turn.user.tag}** didn't replied in time, **${opponent.user.username}** wins!`);
 			}
 			/* discord.message */
 			m = m.first();
@@ -86,15 +86,15 @@ export default class Fight extends Command {
 				if (attacker.armor < 100) {
 					/* Set */
 					attacker.armor += defense;
-					msg.channel.send(`**${attacker.username}** increased their defense to **${attacker.armor}**!`);
+					msg.channel.send(`**${attacker.user.username}** increased their defense to **${attacker.user.armor}**!`);
 				} else {
 					msg.channel.send('damn, stop being greedy, you already have full health!');
 				}
 				return false;
 			} else if (m.content.toLowerCase() === 'end') {
-				await msg.channel.send(`**${attacker.username}** ended the game lol imagine being that weak.`);
+				await msg.channel.send(`**${attacker.user.username}** ended the game lol imagine being that weak.`);
 			} else {
-				await msg.channel.send(`${attacker.mention} bro, why are you saying alien words?`);
+				await msg.channel.send(`<@${attacker.user.id}> bro, why are you saying alien words?`);
 				if (!retry) {
 					return await performTurn(attacker, opponent, true);
 				}
@@ -113,8 +113,8 @@ export default class Fight extends Command {
 			}
 			/* Message */
 			await msg.channel.send([
-				`**${turn.username}** landed a hit on **${oppturn.username}** dealing **\`${damage}\`HP**!`,
-				`**${oppturn.username}** is left with **\`${oppturn.hp}\`** health left.`
+				`**${turn.user.username}** landed a hit on **${oppturn.user.username}** dealing **\`${damage}\`HP**!`,
+				`**${oppturn.user.username}** is left with **\`${oppturn.hp}\`** health left.`
 			].join('\n'));
 			/* Play or End? */
 			if (turn.hp > 0 && oppturn.hp > 0) {
@@ -126,7 +126,7 @@ export default class Fight extends Command {
 				const winner = loser === turn ? oppturn : turn;
 				loser.hp = 0;
 				/* Message */
-				await msg.channel.send(`**${winner.username}** literally ate **${loser.username}** alive, winning with **${winner.hp}HP** left!`)
+				await msg.channel.send(`**${winner.user.username}** literally ate **${loser.user.username}** alive, winning with **${winner.hp}HP** left!`)
 			}
 		}
 
