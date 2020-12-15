@@ -33,7 +33,7 @@ module.exports = new Command({
 				color: 'RED'
 			}});
 		} else {
-			await m.channel.send(col.map((c, i) => {
+			await m.channel.send(col.array().map((c, i) => {
 				return `**#${i + 1}:** ${c.content}`;
 			}).join('\n'));
 		}
