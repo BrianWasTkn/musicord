@@ -71,7 +71,7 @@ export class Util {
 		/* Assign default values */
 		const embed = {
 			author: { name: null, iconURL: null }, fields: [], 
-			thumbnail: null, title: null, description: null, color: 'BLUE', 
+			thumbnail: { url: null }, title: null, description: null, color: 'BLUE', 
 			footer: { 
 				text: `Thanks for using ${this.client.user.username}!`,
 				iconURL: this.client.user.avatarURL()
@@ -82,7 +82,7 @@ export class Util {
 		return Object.assign(embed, {
 			author: { name: author.text, iconURL: author.icon },
 			footer: { text: footer.text, iconURL: footer.icon },
-			title, description: text, thumbnail: icon, color: Colors[color],
+			title, description: text, thumbnail: { url: icon }, color: Colors[color],
 			fields: Object.entries(fields).map(f => ({
 				name: f[0], value: f[1].content, inline: f[1].inline || false
 			}))
@@ -108,16 +108,16 @@ export class Util {
 			}
 		}
 		/* Pre-vars */
-		const hours = moment.duration(ms).hours();
-		const minut = moment.duration(ms).minutes();
-		const secon = moment.duration(ms).seconds();
+		const h = moment.duration(ms).hours();
+		const m = moment.duration(ms).minutes();
+		const s = moment.duration(ms).seconds();
 		/* Check */
-		if (hours > 0) {
-			return [hours, minut, secon].map(i => format(i)).join(':');
-		} else if (minut > 0) {
-			return [minut, secon].map(i => format(i)).join(':');
-		} else if (secon > 0) {
-			return ['00', secon].map(i => format(i)).join(':');
+		if (h > 0) {
+			return [h, m, s].map(i => format(i)).join(':');
+		} else if (m > 0) {
+			return [m, s].map(i => format(i)).join(':');
+		} else if (s > 0) {
+			return ['00', s].map(i => format(i)).join(':');
 		} else {
 			return '00:00';
 		}
