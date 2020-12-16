@@ -17,8 +17,10 @@ module.exports = new Command({
 
 
 	if (!specAmount) {
+		ctx.fakeHeists.delete(guild.id);
 		return msg.reply('You need an amount.');
 	} else if (!specAmount) {
+		ctx.fakeHeists.delete(guild.id);
 		return msg.reply('You need an amount, e.g: "1e6", "100000"');
 	}
 
