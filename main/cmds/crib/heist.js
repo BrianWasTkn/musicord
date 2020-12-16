@@ -57,6 +57,7 @@ module.exports = new Command({
 		await m.react('✅');
 	}).on('end', async col => {
 		// const random = arr => arr[Math.floor(Math.random() * arr.length)];
+		ctx.fakeHeists.delete(guild.id);
 		if (col.size === 1) {
 			return col.first().reply(`Looks like you're alone.`);
 		} else if (col.size === 0) {
@@ -83,7 +84,6 @@ module.exports = new Command({
 			success.join('\n'), fail.join('\n')
 		].sort(() => Math.random() - 0.5).join('\n');
 		await channel.send(order, { code: 'diff' });
-		ctx.fakeHeists.delete(guild.id);
 		if (lockChannel) {
 			await channel.updateOverwrite(guild.id, { 
 				SEND_MESSAGES: false 
