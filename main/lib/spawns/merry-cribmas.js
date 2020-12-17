@@ -8,13 +8,14 @@ exports.run = async (ctx, msg) => {
 		'50m heist', 'giveaway when', 'ima win dis heist'
 	];
 
+	let string = random(strings);
 	const message = await channel.send([
 		'**:snowman: `SPECIAL EVENT ENCOUNTERED`**',
 		'**It\'s Christmas**',
-		'Take this special gift just for you!'
+		'Take this special gift just for you!\n',
+		`Type \`${string}\``
 	].join('\n'));
 
-	let string = random(strings);
 	let coins = Math.floor(randNum(1000, 20000));
 	const filter = m => m.content.toLowerCase() === string;
 	const collector = await channel.createMessageCollector(filter, {
@@ -26,11 +27,10 @@ exports.run = async (ctx, msg) => {
 		await m.channel.send(`\`${m.author.username}\` answered first!`);
 		await require('discord.js').Util.delayFor(Math.floor(Math.random() * 3));
 	}).on('end', async col => {
-		col = col.first();
-		return {
+		m = col.first();
+		await m.channel.send({ embed: {
 			author: { name: 'Results for \'Merry Cribmas\' event' },
 			color: random(['#8bc34a', '#ef5350']),
 			description: `\`${col.user.username}\` grabbed **${coins}** coins`
-		};
-	})
+		}});
 }

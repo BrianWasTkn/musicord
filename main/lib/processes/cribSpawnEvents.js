@@ -16,8 +16,7 @@ exports.run = async ctx => {
 				return;
 			}
 			/* {Collection} results - the results */
-			const results = await spawn.run(ctx, msg);
-			await msg.channel.send({ embed: results });
+			await spawn.run(ctx, msg);
 		}
 	});
 }
