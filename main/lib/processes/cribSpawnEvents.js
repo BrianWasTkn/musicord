@@ -10,8 +10,6 @@ exports.run = async ctx => {
 		const spawn = require(join(__dirname, '..', 'spawns', random(events)));
 		console.log(spawn);
 
-		const spawn = random(dir);
-
 		if (Math.random() > 0.6) {
 			if (msg.channel.id !== '695614620781641778') {
 				return;
