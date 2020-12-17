@@ -8,7 +8,6 @@ exports.run = async (ctx, msg) => {
 		'50m heist', 'giveaway when', 'ima win dis heist'
 	];
 
-
 	const message = await channel.send([
 		'**:snowman: `SPECIAL EVENT ENCOUNTERED`**',
 		'**It\'s Christmas**',

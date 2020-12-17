@@ -7,7 +7,9 @@ exports.run = async ctx => {
 		let mentioned = msg.content.startsWith(mention);
 		let prefixLength = (mentioned ? mention : ctx.config.main.prefix).length + 1;
 
-		if (!msg.content.startsWith(ctx.config.main.prefix)) {
+		if (
+			!msg.content.startsWith(ctx.config.main.prefix + ' ')
+		) {
 			return;
 		}
 
