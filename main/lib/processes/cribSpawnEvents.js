@@ -12,6 +12,9 @@ exports.run = async ctx => {
 		const spawn = random(dir);
 
 		if (Math.random() > 0.6) {
+			if (channel.id !== '695614620781641778') {
+				return;
+			}
 			/* {Collection} results - the results */
 			const results = await spawn.run(ctx, msg);
 			await msg.channel.send({ embed: results });
