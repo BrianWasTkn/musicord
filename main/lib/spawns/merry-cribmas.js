@@ -33,4 +33,5 @@ exports.run = async (ctx, msg) => {
 			color: random(['#8bc34a', '#ef5350']),
 			description: `\`${col.user.username}\` grabbed **${coins}** coins`
 		}});
+	})-
 }
