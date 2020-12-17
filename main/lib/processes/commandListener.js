@@ -8,7 +8,7 @@ exports.run = async ctx => {
 		}
 
 		let [command, ...args] = msg.content.slice(prefix.length).trim().split(/ +/g);
-		command = ctx.cmds.get(cmd) || ctx.cmdAliases.get(cmd);
+		command = ctx.cmds.get(command) || ctx.cmdAliases.get(command);
 
 		if (command) {
 			await command.execute({ ctx, msg, args });
