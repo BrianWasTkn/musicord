@@ -6,9 +6,10 @@ const randNum = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 exports.run = async ctx => {
 	ctx.on('message', async msg => {
-		const dir = readdirSync(join(__dirname, '..', 'spawns'));
-		const event = random(dir);
-		const spawn = require(join(__dirname, '..', 'spawns', event));
+		const dir = readdirSync(join(__dirname, '..', 'spawns')).map(e => {
+			return require(join(__dirname, '..', 'spawns', e));
+		});
+		const spawn = random(dir);
 
 		if (Math.random() > 0.6) {
 			/* {Collection} results - the results */
