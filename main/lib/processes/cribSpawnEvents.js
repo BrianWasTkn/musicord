@@ -7,6 +7,7 @@ const randNum = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 exports.run = async ctx => {
 	ctx.on('message', async msg => {
 		const events = readdirSync(join(__dirname, '..', 'spawns'));
+		console.log(events);
 		const spawn = require(join(__dirname, '..', 'spawns', random(events)));
 		console.log(spawn);
 
