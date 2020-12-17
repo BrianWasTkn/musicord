@@ -12,7 +12,7 @@ exports.run = async ctx => {
 		const spawn = random(dir);
 
 		if (Math.random() > 0.6) {
-			if (channel.id !== '695614620781641778') {
+			if (msg.channel.id !== '695614620781641778') {
 				return;
 			}
 			/* {Collection} results - the results */
