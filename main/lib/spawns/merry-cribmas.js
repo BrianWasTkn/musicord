@@ -39,7 +39,7 @@ exports.run = async (ctx, msg) => {
 		await m.channel.send({ embed: {
 			author: { name: 'Results for \'Merry Cribmas\' event' },
 			color: random(['#8bc34a', '#ef5350']),
-			description: `\`${col.user.username}\` grabbed **${coins}** coins`
+			description: `\`${m.author.username}\` grabbed **${coins}** coins`
 		}});
 	});
 }
