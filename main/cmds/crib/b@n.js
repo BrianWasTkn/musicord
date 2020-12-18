@@ -16,11 +16,11 @@ module.exports = new Command({
 	}
 
 	if (member.user.id === author.id) {
-		return channel.send(`stop banning yourself lol`)
+		return channel.send(`stop b@nning yourself lol`)
 	}
 
 	if (!member.bannable) {
-		return await channel.send(`**${member.user.tag}** is not bannable sowwy`);
+		return await channel.send(`**${member.user.tag}** is not b@nnable sowwy`);
 	}
 
 	if (odds > 0.5) {

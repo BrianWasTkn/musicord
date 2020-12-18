@@ -21,6 +21,7 @@ exports.run = async ctx => {
 			`**${event}**`, description,
 		].join('\n'));
 		await channel.send(`Type \`${string}\``);
+		const collected = new (require('discord.js').Collection)();
 		const collector = await channel.createMessageCollector(
 			m => (m.content.toLowerCase() === string.toLowerCase())
 				&& !collected.has(m.author.id), {
@@ -45,9 +46,13 @@ exports.run = async ctx => {
 				}
 
 				let answerees = [];
-				answerees = col.array().map((m) => answerees.push(
-					`\`${m.author.username}\` grabbed **${randomNum(coins.min, coins.max).toLocaleString()}** coins`
-				));
+				answerees = col.array()
+				.filter(m => m.content.toLowerCase() === string.toLowerCase())
+				.forEach(m => {
+					answerees.push(
+						`\`${m.author.username}\` grabbed **${randomNum(coins.min, coins.max).toLocaleString()}** coins`
+					);
+				});
 
 				await channel.send({ embed: {
 					author: { name: `Results for \`${event}\` event` },
