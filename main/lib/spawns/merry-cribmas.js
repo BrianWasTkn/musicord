@@ -27,7 +27,15 @@ exports.run = async (ctx, msg) => {
 		await m.channel.send(`\`${m.author.username}\` answered first!`);
 		await require('discord.js').Util.delayFor(Math.floor(Math.random() * 3));
 	}).on('end', async col => {
-		m = col.first();
+		if (!col.first()) {
+			await message.edit([
+				message.content,
+				`\n:x: \`Nobody joined the event.\``
+			]);
+			return;
+		}
+
+		const m = col.first();
 		await m.channel.send({ embed: {
 			author: { name: 'Results for \'Merry Cribmas\' event' },
 			color: random(['#8bc34a', '#ef5350']),
