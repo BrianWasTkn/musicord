@@ -1,8 +1,6 @@
 const Command = require('../../lib/command/Command.js');
 
-function randomNum(min, max) {
-	return Math.floor(Math.random() * (max - min + 1) + min);
-}
+const randomNum = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 module.exports = new Command({
 	name: 'fight',
@@ -102,7 +100,7 @@ module.exports = new Command({
 		}
 		/* Message */
 		await msg.channel.send([
-			`**${turn.user.username}** landed a hit on **${oppturn.user.username}** dealing **\`${damage}\`HP**!`,
+			`**${turn.user.username}** landed a hit on **${oppturn.user.username}** dealing **${damage}HP**!`,
 			`**${oppturn.user.username}** is left with **\`${oppturn.hp < 1 ? 0 : oppturn.hp}\`** health left.`
 		].join('\n'));
 		/* Play or End? */
