@@ -1,4 +1,4 @@
-const random = arr => arr[Math.round(Math.random() * arr.length)];
+const random = arr => arr[Math.floor(Math.random() * arr.length)];
 const randNum = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 exports.run = async (ctx, msg) => {
