@@ -48,12 +48,11 @@ exports.run = async ctx => {
 			}
 
 			let answerees = [];
-			answerees = col.array()
-			.filter(m => m.content.toLowerCase() === string.toLowerCase())
-			.forEach(m => {
-				answerees.push(
-					`\`${m.author.username}\` grabbed **${randomNum(coins.min, coins.max).toLocaleString()}** coins`
-				);
+			answerees = col.array().forEach(m => {
+				answerees.push([
+					m.author.username, random(['grabbed', 'snitched', 'got']),
+					'**', randomNum(coins.min, coins.max) '**', 'coins'
+				].join(' '));
 			});
 
 			await channel.send({ embed: {

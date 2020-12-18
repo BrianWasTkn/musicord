@@ -20,6 +20,6 @@ The bot has the following features available to improve your music experience. S
 ## Self-Hosting
 i'll work this out tmr ok bye.
 
------------------------------
-**Maintained and made by**
-[**BrianWasTaken**](https://github.com/BrianWasTkn) **@ 2020**
+-------
+**Musicord**
+**Made and Maintained by [**BrianWasTaken**](https://github.com/BrianWasTkn)**

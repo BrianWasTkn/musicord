@@ -31,15 +31,15 @@ exports.run = async ctx => {
 			let odds = Math.random();
 
 			if (odds > 0.9) {
-				multi = randomNumber(90, 100);
+				multi = randomNumber(96, 100);
 			} else if (odds > 0.7) {
-				multi = randomNumber(70, 90);
+				multi = randomNumber(70, 95);
 			} else if (odds > 0.5) {
-				multi = randomNumber(50, 70);
+				multi = randomNumber(41, 70);
 			} else if (odds > 0.3) {
-				multi = randomNumber(30, 50);
+				multi = randomNumber(26, 40);
 			} else if (odds > 0.1) {
-				multi = randomNumber(10, 30);
+				multi = randomNumber(10, 25);
 			} else {
 				multi = randomNumber(1, 10);
 			}
