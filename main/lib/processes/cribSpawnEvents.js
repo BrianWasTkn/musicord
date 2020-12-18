@@ -30,38 +30,40 @@ exports.run = async ctx => {
 
 		/* Collector */
 		collector
-			.on('collect', async m => {
-				if (collector.collected.first().id === m.id) {
-					await m.channel.send(`\`${m.author.username}\` answered first!`);
-				}
-				
-				await m.react('✅');
-			})
-			.on('end', async col => {
-				if (col.size < 1) {
-					await message.edit([
-						message.content, 
-						`**<:memerRed:729863510716317776> \`Nobody joined the event.\`**`
-					].join('\n'));
-				}
+		.on('collect', async m => {
+			if (collector.collected.first().id === m.id) {
+				await m.channel.send(`\`${m.author.username}\` answered first!`);
+			}
+			
+			collected.set(m.author.id, m.content);
+			await m.react('✅');
+		})
+		.on('end', async col => {
+			if (col.size < 1) {
+				await message.edit([
+					message.content, 
+					`**<:memerRed:729863510716317776> \`Nobody joined the event.\`**`
+				].join('\n'));
+				return;
+			}
 
-				let answerees = [];
-				answerees = col.array()
-				.filter(m => m.content.toLowerCase() === string.toLowerCase())
-				.forEach(m => {
-					answerees.push(
-						`\`${m.author.username}\` grabbed **${randomNum(coins.min, coins.max).toLocaleString()}** coins`
-					);
-				});
-
-				await channel.send({ embed: {
-					author: { name: `Results for \`${event}\` event` },
-					color: random(['#8bc34a', '#ef5350']),
-					description: answerees.join('\n'),
-					footer: {
-						text: 'Please note this event is on experimental mode. You won\'t get the coins you won YET.'
-					}
-				}});
+			let answerees = [];
+			answerees = col.array()
+			.filter(m => m.content.toLowerCase() === string.toLowerCase())
+			.forEach(m => {
+				answerees.push(
+					`\`${m.author.username}\` grabbed **${randomNum(coins.min, coins.max).toLocaleString()}** coins`
+				);
 			});
+
+			await channel.send({ embed: {
+				author: { name: `Results for \`${event}\` event` },
+				color: random(['#8bc34a', '#ef5350']),
+				description: answerees.join('\n'),
+				footer: {
+					text: 'Please note this event is on experimental mode. You won\'t get the coins you won YET.'
+				}
+			}});
+		});
 	});
 }
