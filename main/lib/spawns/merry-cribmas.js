@@ -10,7 +10,7 @@ exports.run = async (ctx, msg) => {
 
 	let string = random(strings);
 	const message = await channel.send([
-		'**:snowman: `SPECIAL EVENT ENCOUNTERED`**',
+		'**<:memerGold:753138901169995797> `SPECIAL EVENT ENCOUNTERED`**',
 		'**It\'s Christmas**',
 		'Take this special gift just for you!\n',
 		`Type \`${string}\``
@@ -30,7 +30,7 @@ exports.run = async (ctx, msg) => {
 		if (!col.first()) {
 			await message.edit([
 				message.content,
-				`\n:x: \`Nobody joined the event.\``
+				`\n<:memerRed:729863510716317776> \`Nobody joined the event.\``
 			]);
 			return;
 		}

@@ -9,7 +9,7 @@ exports.run = async ctx => {
 		const events = readdirSync(join(__dirname, '..', 'spawns'));
 		const spawn = require(join(__dirname, '..', 'spawns', random(events)));
 
-		if (Math.random() > 0.6) {
+		if (Math.random() > 0.75) {
 			if (msg.channel.id !== '695614620781641778') {
 				return;
 			} else {
