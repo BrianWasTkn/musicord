@@ -1,28 +1,24 @@
 import { Command } from '../../lib/Command.js'
 import fetch from 'node-fetch'
 
-// Resolves a GuildMember
-const resolveUser = (msg) => {
-	return msg.guild.members.cache
-	.get(msg.args[0]) || msg.guild.members.cache
-	.find(m => {
-		return m.user.username.toLowerCase() === msg.args.join(' ').toLowerCase()
-	}) || msg.guild.members.cache.find(m => {
-		return m.user.tag === msg.args.join(' ')
-	}) || msg.mentions.members.first() || null;
-}
-
 export default new Command({
 	name: 'avatar',
 	aliases: ['av'],
 	cooldown: 5000
 }, async (msg) => {
-	const [query] = msg.args;
+	const [...query] = msg.args;
 
-	let member = resolveUser(msg);
-	if (!member) member = msg.member;
+	// Find in any possible scenarios
+	let member = (
+		msg.mentions.members.first()
+		|| msg.guild.members.cache.get(msg.args[0])
+		|| msg.guild.members.cache.find(m => m.user.username === msg.args.join(' '))
+		|| msg.guild.members.cache.find(m => m.user.tag === msg.args.join(' '))
+	) || msg.args[0] || msg.member;
+	// Resolve
+	member = member instanceof String ? member : member.user.id;
 
-	const data = await fetch(`https://discord.com/api/users/${member.user.id || msg.args[0]}`, {
+	const data = await fetch(`https://discord.com/api/users/${member}`, {
 		headers: { 
 			"Authorization": `Bot ${msg.client.token}`
 		}
