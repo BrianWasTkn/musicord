@@ -18,14 +18,16 @@ export class Musicord extends Client {
 	}
 
 	setup() {
-		readdirSync(`${process.cwd()}/src/commands`).forEach(async cmd => {
-			const command = (await import(`../commands/${cmd}`)).default;
-			this.commands.set(command.props.name, command);
-			command.props.aliases.forEach(a => this.aliases.set(a, command));
-			this.utils.log(
-				this.constructor.name, 
-				'main', `Command "${command.props.name}" loaded.`
-			);
+		readdirSync(`${process.cwd()}/src/commands`).forEach(dir => {
+			readdirSync(`${process.cwd()}/src/commands/${dir}`).forEach(async cmd => {
+				const command = (await import(`../commands/${cmd}`)).default;
+				this.commands.set(command.props.name, command);
+				command.props.aliases.forEach(a => this.aliases.set(a, command));
+				this.utils.log(
+					this.constructor.name, 
+					'main', `Command "${command.props.name}" loaded.`
+				);
+			})
 		});
 
 		readdirSync(`${process.cwd()}/src/emitters`).forEach(async em => {

@@ -1,5 +1,6 @@
 export async function run() {
 	this.on('message', async (msg) => {
+		// Channel Types
 		if (msg.channel.type === 'dm' || msg.author.bot) return;
 		
 		// Attach `args`, `label` and
@@ -15,6 +16,6 @@ export async function run() {
 		if (!command) return;
 		// Thanks to `return await`, we
 		// could resolve all promises
-		return await command.execute(message);
+		return await command.execute(msg);
 	});
 }
