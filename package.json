@@ -2,10 +2,10 @@
   "name": "musicord",
   "version": "1.7.0",
   "description": "A discord music bot, made with Discord.JS V12 that can play any song from 700+ sources!",
-  "main": "src/__launch__.js",
+  "main": "src/main.js",
+  "type": "module",
   "scripts": {
-    "start": "node src/__launch__.js",
-    "dev": "nodemon src/__launch__.js"
+    "start": "node src/main.js"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
     "discord-music-player": "^5.0.4",
     "discord.js": "^12.5.1",
     "distube": "^2.8.7",
-    "esm": "^3.2.25",
+    "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
     "lyrics-finder": "^21.4.0",
     "moment": "^2.29.1",
