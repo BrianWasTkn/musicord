@@ -4,7 +4,7 @@ export class Command {
 		this.run = fn;
 	}
 
-	async execute({ Bot, msg, args }) {
-		return await this.run({ Bot, msg, args });
+	async execute(msg) {
+		return await this.run(msg);
 	}
 }

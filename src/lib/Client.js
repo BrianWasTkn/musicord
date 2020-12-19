@@ -5,7 +5,6 @@ import { Player } from './Player.js'
 import { Util } from './Util.js'
 import { config } from '../config.js'
 
-
 export class Musicord extends Client {
 	constructor(config) {
 		super({ disableMentions: 'everyone' });

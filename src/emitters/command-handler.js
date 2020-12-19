@@ -2,15 +2,19 @@ export async function run() {
 	this.on('message', async (msg) => {
 		if (msg.channel.type === 'dm' || msg.author.bot) return;
 		
-		const args = msg.content
+		// Attach `args`, `label` and
+		// `command` in our message object
+		msg.args = msg.content
 			.replace('<@!', '<@')
 			.substring(this.config.prefix.length)
 			.trim().split(/ +/g);
-		const cmd = (args.shift())
+		msg.label = (args.shift())
 			.toLowerCase();
-		const command = this.commands.get(cmd) || this.aliases.get(cmd);
+		msg.command = this.commands.get(cmd) || this.aliases.get(cmd);
 
 		if (!command) return;
-		return await command.execute({ Bot: this, msg, args });
+		// Thanks to `return await`, we
+		// could resolve all promises
+		return await command.execute(message);
 	});
 }
