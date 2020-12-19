@@ -11,7 +11,7 @@ export async function run() {
 			.trim().split(/ +/g);
 		msg.label = (msg.args.shift())
 			.toLowerCase();
-		msg.command = this.commands.get(cmd) || this.aliases.get(cmd);
+		msg.command = this.commands.get(msg.label) || this.aliases.get(msg.label);
 
 		if (!command) return;
 		// Thanks to `return await`, we
