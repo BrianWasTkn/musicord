@@ -29,7 +29,7 @@ export default new Command({
 		title: `Avatar for ${data.username}`,
 		color: 'BLUE',
 		image: {
-			url: `https://cdn.discordapp.com/avatars/${data.avatar}.${data.avatar.substring(0, 2) === 'a_' ? 'gif' : 'png'}?size=4096`
+			url: `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.${data.avatar.substring(0, 2) === 'a_' ? 'gif' : 'png'}?size=4096`
 		}
 	}})
 });
