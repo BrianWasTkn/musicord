@@ -5,17 +5,18 @@ export async function run() {
 		
 		// Attach `args`, `label` and
 		// `command` in our message object
-		msg.args = msg.content
+		const args = msg.content
 			.replace('<@!', '<@')
 			.substring(this.config.prefix.length)
 			.trim().split(/ +/g);
-		msg.label = (msg.args.shift())
+		const label = (args.shift())
 			.toLowerCase();
-		msg.command = this.commands.get(msg.label) || this.aliases.get(msg.label);
+		const command = this.commands.get(label) || this.aliases.get(label);
 
-		if (!msg.command) return;
+		if (!command) return;
+		msg.args = args; msg.label = label; msg.command = command;
 		// Thanks to `return await`, we
 		// could resolve all promises
-		return await msg.command.execute(msg);
+		return await command.execute(msg);
 	});
 }
