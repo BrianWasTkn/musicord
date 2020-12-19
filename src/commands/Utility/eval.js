@@ -28,7 +28,7 @@ export default new Command({
 	}
 
 	result = escapeMarkdown(evaled, { italic: false });
-	token = new RegExp(bot.config.token, 'gi');
+	token = new RegExp(msg.client.token, 'gi');
 	result = result.replace(token, 'N0.T0K4N.4Y0U');
 	await channel.send({ embed: {
 		color: 'BLUE',
