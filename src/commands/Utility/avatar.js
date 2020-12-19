@@ -24,7 +24,7 @@ export default new Command({
 		}
 	}).then(res => res.json());
 
-	const embed = {};
+	const embed = { image: {}, footer: {} };
 	embed.title = `Avatar for ${data.username}`;
 	embed.color = 'ORANGE',
 	embed.image.url = `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.${data.avatar.substring(0, 2) === 'a_' ? 'gif' : 'png'}?size=4096`;
