@@ -24,11 +24,12 @@ export default new Command({
 		}
 	}).then(res => res.json());
 
-	return msg.channel.send({ embed: {
-		title: `Avatar for ${data.username}`,
-		color: 'ORANGE',
-		image: {
-			url: `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.${data.avatar.substring(0, 2) === 'a_' ? 'gif' : 'png'}?size=4096`
-		}
-	}})
+	const embed = {};
+	embed.title = `Avatar for ${data.username}`;
+	embed.color = 'ORANGE',
+	embed.image.url = `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.${data.avatar.substring(0, 2) === 'a_' ? 'gif' : 'png'}?size=4096`;
+	embed.footer.text = msg.client.user.username;
+	embed.footer.iconURL = msg.client.user.avatarURL();
+
+	return msg.channel.send({ embed });
 });
