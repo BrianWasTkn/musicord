@@ -1,12 +1,15 @@
 import { Command } from '../../lib/Command.js'
 import fetch from 'node-fetch'
 
+// Resolves a GuildMember
 const resolveUser = (msg) => {
 	return msg.guild.members.cache
 	.get(msg.args[0]) || msg.guild.members.cache
-	.find(m => m.user.username.toLowerCase() === msg.args.join(' ').toLowerCase())
-	|| msg.guild.members.cache.find(m => m.user.tag === msg.args.join(' '))
-	|| msg.mentions.members.first() || msg.args[0] || null;
+	.find(m => {
+		return m.user.username.toLowerCase() === msg.args.join(' ').toLowerCase()
+	}) || msg.guild.members.cache.find(m => {
+		return m.user.tag === msg.args.join(' ')
+	}) || msg.mentions.members.first() || null;
 }
 
 export default new Command({
@@ -19,7 +22,7 @@ export default new Command({
 	let member = resolveUser(msg);
 	if (!member) member = msg.member;
 
-	const data = await fetch(`https://discord.com/api/users/${member.user.id}`, {
+	const data = await fetch(`https://discord.com/api/users/${member.user.id || msg.args[0]}`, {
 		headers: { 
 			"Authorization": `Bot ${msg.client.token}`
 		}
