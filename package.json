@@ -41,6 +41,6 @@
     "opusscript": "0.0.7",
     "programmatic-repl": "^1.1.4",
     "string-progressbar": "^1.0.1",
-    "ytdl-core": "^4.1.5"
+    "ytdl-core": "^4.2.1"
   }
 }
