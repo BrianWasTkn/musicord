@@ -13,9 +13,9 @@ export async function run() {
 			.toLowerCase();
 		msg.command = this.commands.get(msg.label) || this.aliases.get(msg.label);
 
-		if (!command) return;
+		if (!msg.command) return;
 		// Thanks to `return await`, we
 		// could resolve all promises
-		return await command.execute(msg);
+		return await msg.command.execute(msg);
 	});
 }
