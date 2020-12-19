@@ -1,12 +1,12 @@
 import { Command } from '../../lib/Command.js'
 import fetch from 'node-fetch'
 
-const resolveUser = () => {
-	return this.guild.members.cache
-	.get(this.args[0]) || this.guild.members.cache
-	.find(m => m.user.username.toLowerCase() === this.args.join(' ').toLowerCase())
-	|| this.guild.members.cache.find(m => m.user.tag === this.args.join(' '))
-	|| this.mentions.members.first() || null;
+const resolveUser = (msg) => {
+	return msg.guild.members.cache
+	.get(msg.args[0]) || msg.guild.members.cache
+	.find(m => m.user.username.toLowerCase() === msg.args.join(' ').toLowerCase())
+	|| msg.guild.members.cache.find(m => m.user.tag === msg.args.join(' '))
+	|| msg.mentions.members.first() || null;
 }
 
 export default new Command({
@@ -16,7 +16,7 @@ export default new Command({
 }, async (msg) => {
 	const [query] = msg.args;
 
-	let member = (resolveUser.bind(msg))();
+	let member = resolveUser(msg);
 	if (!member) member = msg.member;
 
 	const data = await fetch(`https://discord.com/api/users/${user.user.id}`, {
