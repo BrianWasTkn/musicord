@@ -6,7 +6,7 @@ const resolveUser = (msg) => {
 	.get(msg.args[0]) || msg.guild.members.cache
 	.find(m => m.user.username.toLowerCase() === msg.args.join(' ').toLowerCase())
 	|| msg.guild.members.cache.find(m => m.user.tag === msg.args.join(' '))
-	|| msg.mentions.members.first() || null;
+	|| msg.mentions.members.first() || msg.args[0] || null;
 }
 
 export default new Command({
