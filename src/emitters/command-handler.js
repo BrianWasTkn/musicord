@@ -9,8 +9,7 @@ export async function run() {
 			.replace('<@!', '<@')
 			.substring(this.config.prefix.length)
 			.trim().split(/ +/g);
-		const label = (args.shift())
-			.toLowerCase();
+		const label = args.shift().toLowerCase();
 		const command = this.commands.get(label) || this.aliases.get(label);
 
 		if (!command) return;
