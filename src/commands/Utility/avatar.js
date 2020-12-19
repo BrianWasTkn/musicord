@@ -16,7 +16,7 @@ export default new Command({
 		|| msg.guild.members.cache.find(m => m.user.tag === msg.args.join(' '))
 	) || msg.args[0] || msg.member;
 	// Resolve
-	member = member instanceof String ? member : member.user.id;
+	member = typeof member === 'string' ? member : member.user.id;
 
 	const data = await fetch(`https://discord.com/api/users/${member}`, {
 		headers: { 
@@ -26,7 +26,7 @@ export default new Command({
 
 	return msg.channel.send({ embed: {
 		title: `Avatar for ${data.username}`,
-		color: 'BLUE',
+		color: 'ORANGE',
 		image: {
 			url: `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.${data.avatar.substring(0, 2) === 'a_' ? 'gif' : 'png'}?size=4096`
 		}
