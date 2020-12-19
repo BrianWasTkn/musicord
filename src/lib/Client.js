@@ -1,9 +1,10 @@
 import { Client, Collection } from 'discord.js'
+import { readdirSync } from 'fs'
+
 import { Player } from './Player.js'
 import { Util } from './Util.js'
 import { config } from '../config.js'
 
-import { readdirSync } from 'fs'
 
 export class Musicord extends Client {
 	constructor(config) {
