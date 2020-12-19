@@ -9,7 +9,7 @@ export async function run() {
 			.replace('<@!', '<@')
 			.substring(this.config.prefix.length)
 			.trim().split(/ +/g);
-		msg.label = (args.shift())
+		msg.label = (msg.args.shift())
 			.toLowerCase();
 		msg.command = this.commands.get(cmd) || this.aliases.get(cmd);
 
