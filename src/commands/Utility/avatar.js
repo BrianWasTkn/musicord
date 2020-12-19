@@ -19,7 +19,7 @@ export default new Command({
 	let member = resolveUser(msg);
 	if (!member) member = msg.member;
 
-	const data = await fetch(`https://discord.com/api/users/${user.user.id}`, {
+	const data = await fetch(`https://discord.com/api/users/${member.user.id}`, {
 		headers: { 
 			"Authorization": `Bot ${msg.client.token}`
 		}
