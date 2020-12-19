@@ -1,4 +1,4 @@
-import { Command } from '../../lib/Command.js'
+import { Command } from '../../lib/Command/Command.js'
 import fetch from 'node-fetch'
 
 export default new Command({

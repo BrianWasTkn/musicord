@@ -1,7 +1,7 @@
 export class Command {
 	constructor(props, fn) {
-		this.props = props;
 		this.run = fn;
+		this.props = props;
 	}
 
 	async execute(msg) {

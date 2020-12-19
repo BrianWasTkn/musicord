@@ -1,9 +1,10 @@
 import { Command } from '../../lib/Command/Command.js'
 
 export default new Command({
-	name: 'ping',
-	aliases: ['pong'],
+	name: 'help',
+	aliases: ['cmds'],
 	cooldown: 3000
 }, async (msg) => {
-	await msg.channel.send(`This guild's latency is \`${msg.guild.shard.ping}ms\``);
+	const { client } = msg;
+	const
 });

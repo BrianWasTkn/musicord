@@ -26,7 +26,6 @@ export class Util {
 			case 'error': 
 				log(chalk.redBright(struct), chalk.redBright(content), chalk.whiteBright(error));
 				break;
-			
 		}
 	}
 }

@@ -1,4 +1,4 @@
-import { Command } from '../../lib/Command.js'
+import { Command } from '../../lib/Command/Command.js'
 
 export default new Command({
 	name: 'play',

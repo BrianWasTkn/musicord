@@ -1,4 +1,4 @@
-import { Command } from '../../lib/Command.js'
+import { Command } from '../../lib/Command/Command.js'
 import { escapeMarkdown } from 'discord.js'
 import { inspect } from 'util'
 
@@ -31,7 +31,7 @@ export default new Command({
 	token = new RegExp(msg.client.token, 'gi');
 	result = result.replace(token, 'N0.T0K4N.4Y0U');
 	await channel.send({ embed: {
-		color: 'BLUE',
+		color: 'ORANGE',
 		description: codeBlock(result),
 		fields: [
 			{ name: 'Type', value: codeBlock(type) },

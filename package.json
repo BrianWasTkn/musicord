@@ -28,6 +28,7 @@
   "homepage": "https://github.com/BrianWasTkn/Musicord-DisTube#readme",
   "dependencies": {
     "chalk": "^4.1.0",
+    "discord-akairo": "^8.1.0",
     "discord-music-player": "^5.0.4",
     "discord.js": "^12.5.1",
     "distube": "^2.8.7",
