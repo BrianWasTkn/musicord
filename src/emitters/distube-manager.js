@@ -3,7 +3,7 @@ export async function run() {
 	distube
 	.on('playSong', async (message, queue, song) => {
 		const { channel, client } = message;
-		await channel.send({
+		await channel.send({ embed: {
 			title: 'Now Playing',
 			thumbnail: { url: song.thumbnail },
 			color: 'ORANGE',
@@ -17,6 +17,6 @@ export async function run() {
 				text: client.user.username,
 				iconURL: client.user.avatarURL()
 			}
-		});
+		}});
 	})
 }
