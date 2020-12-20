@@ -24,7 +24,7 @@ module.exports = class MusicPlay extends Command {
 				color: 'RED',
 				description: 'You need to play something to use this command.',
 				footer: {
-					text: this.client.use.username,
+					text: this.client.user.username,
 					iconURL: this.client.user.avatarURL()
 				}
 			}));
