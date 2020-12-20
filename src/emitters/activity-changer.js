@@ -14,14 +14,15 @@ module.exports = class DiscordReady extends Listener {
 			this.constructor.name, 'main',
 			`${this.client.user.tag} is now logged in to Discord.`
 		);
-		
+
 		await this.client.channels.cache
 		.get('789692296094285825')
 		.send({ embed: {
 			title: 'Ready',
 			color: 'ORANGE',
-			description: `${this.client.user.username} logged in.`,
-			image: { url: this.client.user.avatarURL() },
+			description: `**${this.client.user.tag}** logged in.`,
+			thumbnail: { url: this.client.user.avatarURL() },
+			timestamp: Date.now(),
 			footer: {
 				text: this.client.user.username,
 				iconURL: this.client.user.avatarURL()

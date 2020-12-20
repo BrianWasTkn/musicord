@@ -15,19 +15,18 @@ module.exports = class MusicQueue extends Command {
 		const { channel, guild } = message;
 		const { player } = this.client;
 
-		let queue = await player.getQueue(message);
-		queue = queue.songs.map((song, index) => {
-			const { name, formattedDuration } = song;
-			return `**${index === 0 ? ':musical_note:' : `${index + 1}.`} ${name} - \`${formattedDuration}\`**`
-		}).slice(0, 10);
+		const queue = await player.getQueue(message);
+		const songs = queue.songs.map((song, index) => 
+			`**${index === 0 ? ':musical_note:' : `${index + 1}.`} ${song.name} - \`${song.formattedDuration}\`**`
+		);
 
 		await channel.send(this.client.util.embed({
 			title: guild.name,
 			color: 'ORANGE',
-			thumbnail: { url: queue.thumbnail },
+			thumbnail: { url: songs.thumbnail },
 			fields: [
-				{ name: 'Now Playing', value: queue[0] },
-				{ name: 'In Queue', value: queue.slice(1).join('\n') }
+				{ name: 'Now Playing', value: songs[0] },
+				{ name: 'In Queue', value: songs.slice(1).join('\n') }
 			] 
 		}));
 	}
