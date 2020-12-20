@@ -5,6 +5,7 @@ module.exports = class UtilHelp extends Command {
 		super('help', {
 			aliases: ['help', 'commands'],
 			channel: 'guild',
+			category: 'Utility',
 			typing: true,
 			cooldown: 3000,
 			args: [

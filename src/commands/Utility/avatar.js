@@ -7,6 +7,7 @@ module.exports = class UtilAvatar extends Command {
 		super('avatar', {
 			aliases: ['avatar', 'av'],
 			channel: 'guild',
+			category: 'Utility',
 			typing: true,
 			cooldown: 10000,
 			rateLimit: 2,

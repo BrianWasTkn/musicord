@@ -6,6 +6,7 @@ module.exports = class UtilEval extends Command {
 		super('eval', {
 			aliases: ['eval', 'e'],
 			ownerOnly: true,
+			category: 'Utility',
 			typing: true,
 			cooldown: 1500,
 			quoted: false,

@@ -4,7 +4,7 @@ module.exports = class UtilPing extends Command {
 	constructor() {
 		super('ping', {
 			aliases: ['ping', 'latency'],
-			channel: 'guild',
+			category: 'Utility',
 			typing: true,
 			cooldown: 5000,
 			rateLimit: 2

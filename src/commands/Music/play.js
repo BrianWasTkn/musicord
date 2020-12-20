@@ -8,6 +8,7 @@ module.exports = class MusicPlay extends Command {
 			category: 'Music',
 			typing: true,
 			cooldown: 3000,
+			userPermissions: ['CONNECT'],
 			clientPermissions: ['CONNECT', 'SPEAK'],
 			args: [
 				{ id: 'query', match: 'content' }
