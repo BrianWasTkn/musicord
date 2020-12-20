@@ -1,30 +1,32 @@
-import chalk from 'chalk'
-import moment from 'moment'
+const { ClientUtil } = require('discord-akairo');
+const chalk = require('chalk');
+const moment = require('moment');
 
-export class Util {
+module.exports = class Util extends ClientUtil {
 	constructor(client) {
-		this.client = client;
+		super(client);
+	}
+
+	_log(struct = '', content = '', error = '') {
+		const stamp = moment().format('HH:mm:ss');
+		console.log(
+			chalk.whiteBright(`[${stamp}]`),
+			struct, chalk.whiteBright('=>'),
+			content, error || ''
+		);
 	}
 
 	log(
 		struct = this.client.constructor.name,
 		type = 'main', content = '', error = false
-	) {
-		const log = (struct = '', content = '', error = false) => {
-			const stamp = moment().format('HH:mm:ss');
-			console.log(
-				chalk.whiteBright(`[${stamp}]`),
-				struct, chalk.whiteBright('=>'),
-				content, error || ''
-			);
-		}
+	) {	
 
 		switch(type) {
 			case 'main': 
-				log(chalk.cyanBright(struct), chalk.yellowBright(content));
+				this._log(chalk.cyanBright(struct), chalk.yellowBright(content));
 				break;
 			case 'error': 
-				log(chalk.redBright(struct), chalk.redBright(content), chalk.whiteBright(error));
+				this._log(chalk.redBright(struct), chalk.redBright(content), chalk.whiteBright(error));
 				break;
 		}
 	}

@@ -1,26 +1,37 @@
-import { Command } from '../../lib/Command/Command.js'
+const { Command } = require('discord-akairo')
 
-export default new Command({
-	name: 'play',
-	aliases: ['p'],
-	cooldown: 3000
-}, async (msg) => {
-	const [...query] = msg.args;
-	const { distube } = msg.client;
-	const embed = {};
-	if (!query) {
-		embed.title = 'Missing Arguments';
-		embed.color = 'RED';
-		embed.description = 'You need to play something for this command to work.';
-		embed.footer = {};
-		embed.footer.text = msg.client.user.username;
-		embed.footer.iconURL = msg.client.user.avatarURL();
-		return msg.reply({ embed });
+module.exports = class MusicPlay extends Command {
+	constructor() {
+		super('play', {
+			aliases: ['play', 'p'],
+			channel: 'guild',
+			typing: true,
+			cooldown: 3000,
+			args: [
+				{ id: 'query', type: 'content' }
+			]
+		});
 	}
 
-	try {
-		await distube.play(msg, query.join(' '));
-	} catch(error) {
-		msg.reply(error.message);
+	async exec(message, args) {
+		if (!args.query) {
+			return msg.reply(this.client.util.embed({
+				title: 'Missing Arguments',
+				color: 'RED',
+				description: 'You need to play something to use this command.',
+				footer: {
+					text: this.client.use.username,
+					iconURL: this.client.user.avatarURL()
+				}
+			}));
+		}
+
+		try {
+			const { player } = this.client;
+			await player.play(message, args.query)
+		} catch(error) {
+			await message.channel.send(error.message);
+			this.client.util.log(this.constructor.name, 'error', `play`, error.stack);
+		}
 	}
-});
+}

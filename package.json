@@ -3,7 +3,6 @@
   "version": "1.7.0",
   "description": "A discord music bot, made with Discord.JS V12 that can play any song from 700+ sources!",
   "main": "src/main.js",
-  "type": "module",
   "scripts": {
     "start": "node src/main.js"
   },

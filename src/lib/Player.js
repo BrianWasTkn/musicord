@@ -1,6 +1,6 @@
-import DisTube from 'distube'
+const DisTube = require('distube');
 
-export class Player extends DisTube {
+module.exports = class Player extends DisTube {
 	constructor(client, options) {
 		super(client, options);
 	}

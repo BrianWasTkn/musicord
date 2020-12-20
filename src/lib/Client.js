@@ -1,3 +1,50 @@
+const { 
+	AkairoClient,
+	ListenerHandler,
+	CommandHandler 
+} = require('discord-akairo');
+const { 
+	config 
+} = require('../config.js');
+
+const Player = require('./Player.js');
+const ClientUtil = require('./Util.js');
+
+
+module.exports = class LavaClient extends AkairoClient {
+  constructor() {
+    super({
+      ownerID: config.owners
+    }, {
+      disableMentions: 'everyone'
+    });
+
+    this.player = new Player(this);
+
+    this.util = new ClientUtil(this);
+
+    this.listenerHandler = new ListenerHandler(this, {
+      directory: `${process.cwd()}/src/emitters/`
+    });
+
+    this.commandHandler = new CommandHandler(this, {
+    	directory: `${process.cwd()}/src/commands/`,
+    	prefix: ['lava', ';;'],
+    	handleEdits: true,
+    	commandUtil: true,
+    	defaultCooldown: 1000
+    });
+  }
+
+  async login(token) {
+  	this.commandHandler.loadAll();
+  	this.commandHandler.useListenerHandler(this.listenerHandler);
+  	this.listenerHandler.loadAll();
+  	return super.login(token);
+  }
+}
+
+/**
 import { Client, Collection } from 'discord.js'
 import { readdirSync } from 'fs'
 
@@ -39,3 +86,4 @@ export class Musicord extends Client {
 		});
 	}
 }
+*/

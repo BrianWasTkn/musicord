@@ -1,41 +1,55 @@
-import { Command } from '../../lib/Command/Command.js'
-import { escapeMarkdown } from 'discord.js'
-import { inspect } from 'util'
+const { Command } = require('discord-akairo');
+const { inspect } = require('util');
 
-const codeBlock = (str, syn = 'js') => `\`\`\`${syn}\n${str}\n\`\`\``;
-
-export default new Command({
-	name: 'eval', 
-	aliases: ['e'],
-	permissions: ['ADMINISTRATOR']
-}, async (msg) => {
-	const { channel, guild } = msg;
-	const code = msg.args.join(' ');
-	const asynchronous = code.includes('return') || code.includes('await');
-	let before, evaled, evalTime, type, token, result;
-
-	before = Date.now();
-	try {
-		evaled = await eval(asynchronous ? `(async()=>{${code}})()` : code);
-	} catch(error) {
-		evaled = error.message;
-	}
-	evalTime = Date.now() - before;
-	type = typeof evaled;
-
-	if (type !== 'string') {
-		evaled = inspect(evaled, { depth: 0 });
+module.exports = class UtilEval extends Command {
+	constructor() {
+		super('eval', {
+			aliases: ['eval', 'e'],
+			ownerOnly: true,
+			typing: true,
+		});
 	}
 
-	result = escapeMarkdown(evaled, { italic: false });
-	token = new RegExp(msg.client.token, 'gi');
-	result = result.replace(token, 'N0.T0K4N.4Y0U');
-	await channel.send({ embed: {
-		color: 'ORANGE',
-		description: codeBlock(result),
-		fields: [
-			{ name: 'Type', value: codeBlock(type) },
-			{ name: 'Latency', value: codeBlock(`${evalTime}ms`) }
-		]
-	}}).catch(console.error);
-});
+	inspect(string, options) {
+		return inspect(string, options);
+	}
+
+	codeBlock(str, lang = 'js') {
+		return [
+			`\`\`\`${lang}`,
+			str, '```'
+		].join('\n');
+	}
+
+	async exec(message, args) {
+		const code = args.join(' ');
+		const { guild, channel } = message;
+		const bot = this;
+		const asynchronous = code.includes('await') || code.includes('return');
+		let before, evaled, evalTime, type, token, result;
+
+		try {
+			before = Date.now();
+			evaled = await eval(asynchronous ? `(async () => { ${code} } )()` : code);
+			evalTime = Date.now() - before;
+			type = typeof evaled;
+		} catch(error) {
+			evaled = error.message;
+		}
+
+		if (type !== 'string') {
+			evaled = this.inspect(evaled, { depth: 0 });
+		}
+
+		token = new RegExp(this.client.token, 'gi');
+		evaled = evaled.replace(evaled, 'N0.T0K4N.4Y0U');
+		await channel.send({ embed: {
+			color: 'ORANGE',
+			description: this.codeBlock(evaled),
+			fields: [
+				{ name: 'Type', value: this.codeBlock(type) },
+				{ name: 'Latency', value: this.codeBlock(`${evalTime}ms`) }
+			]
+		}});
+	}
+}

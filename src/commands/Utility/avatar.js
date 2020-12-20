@@ -1,35 +1,49 @@
-import { Command } from '../../lib/Command/Command.js'
-import fetch from 'node-fetch'
+const { Command } = require('discord-akairo');
+const fetch = require('node-fetch');
 
-export default new Command({
-	name: 'avatar',
-	aliases: ['av'],
-	cooldown: 5000
-}, async (msg) => {
-	const [...query] = msg.args;
+module.exports = class UtilAvatar extends Command {
+	constructor() {
+		super('avatar', {
+			aliases: ['avatar', 'av'],
+			channel: 'guild',
+			typing: true,
+			cooldown: 10000,
+			rateLimit: 2
+		});
+	}
 
-	// Find in any possible scenarios
-	let member = (
-		msg.mentions.members.first()
-		|| msg.guild.members.cache.get(msg.args[0])
-		|| msg.guild.members.cache.find(m => m.user.username === msg.args.join(' '))
-		|| msg.guild.members.cache.find(m => m.user.tag === msg.args.join(' '))
-	) || msg.args[0] || msg.member;
-	// Resolve
-	member = typeof member === 'string' ? member : member.user.id;
+	async exec(message, args) {
+		const query = args.join(' ');
 
-	const data = await fetch(`https://discord.com/api/users/${member}`, {
-		headers: { 
-			"Authorization": `Bot ${msg.client.token}`
-		}
-	}).then(res => res.json());
+		let resolvable = (
+			message.mentions.members.first()
+			|| message.guild.members.cache.get(args[0])
+			|| message.guild.members.cache.find(m => m.user.username ===query)
+			|| message.guild.members.cache.find(m => m.user.tag === query)
+		) || args[0] || message.member;
+		resolvable = typeof resolvable === 'string' ? resolvable : resolvable.user.id;
 
-	const embed = { image: {}, footer: {} };
-	embed.title = `Avatar for ${data.username}`;
-	embed.color = 'ORANGE',
-	embed.image.url = `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.${data.avatar.substring(0, 2) === 'a_' ? 'gif' : 'png'}?size=4096`;
-	embed.footer.text = msg.client.user.username;
-	embed.footer.iconURL = msg.client.user.avatarURL();
+		const data = await fetch(`https://discord.com/api/users/${resolvable}`, {
+			headers: { 
+				"Authorization": `Bot ${this.client.token}`
+			}
+		}).then(res => res.json());
 
-	return msg.channel.send({ embed });
-});
+		const resolved = new User(this.client, data);
+		await message.channel.send(this.client.util.embed({
+			title: `Avatar for ${resolved.tag}`,
+			color: 'ORANGE',
+			image: {
+				url: resolved.avatarURL({
+					dynamic: true,
+					size: 4096
+				})
+			},
+			footer: {
+				text: this.client.user.username,
+				iconURL: this.client.user.avatarURL()
+			}
+		}))
+
+	}
+}

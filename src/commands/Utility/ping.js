@@ -1,9 +1,30 @@
-import { Command } from '../../lib/Command/Command.js'
+const { Command } = require('discord-akairo')
 
-export default new Command({
-	name: 'ping',
-	aliases: ['pong'],
-	cooldown: 3000
-}, async (msg) => {
-	await msg.channel.send(`This guild's latency is \`${msg.guild.shard.ping}ms\``);
-});
+module.exports = class UtilPing extends Command {
+	constructor() {
+		super('ping', {
+			aliases: ['ping', 'latency'],
+			channel: 'guild',
+			typing: true,
+			cooldown: 5000,
+			rateLimit: 2
+		});
+	}
+
+	async exec(message) {
+		const { guild, channel } = message;
+		await channel.send({ embed: {
+			title: guild.name,
+			color: 'ORANGE',
+			description: [
+				`**Shard ID:** ${guild.shard.id}`,
+				`**Latency:** \`${guild.shard.ping}ms\``,
+				`**Websocket:** \`${this.client.ws.ping}ms\``
+			].join('\n'),
+			footer: { 
+				text: this.client.user.username, 
+				iconURL: this.client.user.avatarURL()
+			}
+		}});
+	}
+}

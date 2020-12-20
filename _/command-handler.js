@@ -1,5 +1,6 @@
 export async function run() {
 	this.on('message', async (msg) => {
+		return;
 		// Channel Types
 		if (msg.channel.type === 'dm' || msg.author.bot) return;
 		

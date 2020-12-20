@@ -1,9 +1,6 @@
-import { Collection } from 'discord.js'
-
-const config = {
+exports.config = {
 	dev: false,
 	prefix: 'crib',
-	token: process.env.TOKEN || 'Njg2OTY5MDIwMzg1MzI5MTgy.Xme7wQ.8NNvk2zlQ6I08eQcqDNRD7OxlZs'
+	token: process.env.TOKEN,
+	owners: ['605419747361947649']
 };
-
-export { config };

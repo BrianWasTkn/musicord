@@ -1,9 +1,8 @@
-import { Musicord } from './lib/Client.js'
-import { config } from './config.js'
-import dotenv from 'dotenv'
+const LavaClient = require('./lib/Client.js');
 
-dotenv.config();
+const { config } = require('./config.js');
+require('dotenv').config();
 
-const bot = new Musicord(config);
+const bot = new LavaClient();
 
 bot.login(config.token);
