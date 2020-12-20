@@ -23,8 +23,8 @@ module.exports = class DistubePlaySong extends Listener {
 			],
 			timestamp: Date.now(),
 			footer: {
-				text: client.user.username,
-				iconURL: client.user.avatarURL()
+				text: this.client.user.username,
+				iconURL: this.client.user.avatarURL()
 			}
 		}});
 	}
