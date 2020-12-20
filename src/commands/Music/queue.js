@@ -26,7 +26,7 @@ module.exports = class MusicQueue extends Command {
 			thumbnail: { url: songs.thumbnail },
 			fields: [
 				{ name: 'Now Playing', value: songs[0] },
-				{ name: 'In Queue', value: songs.slice(1).join('\n') }
+				{ name: 'In Queue', value: songs[1] ? songs.slice(1).join('\n') : 'Nothing more in queue.' }
 			] 
 		}));
 	}
