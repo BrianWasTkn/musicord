@@ -30,14 +30,14 @@ module.exports = class UtilEval extends Command {
 		const asynchronous = code.includes('await') || code.includes('return');
 		let before, evaled, evalTime, type, token, result;
 
+		before = Date.now();
 		try {
-			before = Date.now();
 			evaled = await eval(asynchronous ? `(async () => { ${code} } )()` : code);
-			evalTime = Date.now() - before;
-			type = typeof evaled;
 		} catch(error) {
 			evaled = error.message;
 		}
+		evalTime = Date.now() - before;
+		type = typeof evaled;
 
 		if (type !== 'string') {
 			evaled = this.inspect(evaled, { depth: 0 });
