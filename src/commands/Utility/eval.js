@@ -7,6 +7,7 @@ module.exports = class UtilEval extends Command {
 			aliases: ['eval', 'e'],
 			ownerOnly: true,
 			typing: true,
+			cooldown: 1500,
 			args: [
 				{ id: 'code', type: 'content' }
 			]

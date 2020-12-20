@@ -36,7 +36,15 @@ module.exports = class LavaClient extends AkairoClient {
     });
   }
 
+  loadEmitters() {
+  	this.listenerHandler.setEmitters({
+  		distube: this.player,
+  		process: process
+  	});
+  }
+
   async login(token) {
+  	this.loadEmitters();
   	this.commandHandler.loadAll();
   	this.commandHandler.useListenerHandler(this.listenerHandler);
   	this.listenerHandler.loadAll();

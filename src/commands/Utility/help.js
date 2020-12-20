@@ -13,9 +13,28 @@ module.exports = class UtilHelp extends Command {
 		});
 	}
 
+	_random(arr) {
+		return arr[Math.floor(Math.random() * arr.length)];
+	}
+
 	async exec(message, args) {
-		const handler = this.client.commandHandler;
-		return message.channel.send(handler.modules.randomKey());
-		// TODO: find the command
+		const { channel } = message;
+		const { handler } = this;
+		const { query } = args;
+
+		if (query) {
+			if (handler.has(query.toLowerCase())) {
+				const command = handler.get(query.toLowerCase());
+				return await channel.send({ embed: {
+					title: [this._random(handler.prefix), command.id].join(' '),
+					color: 'ORANGE',
+					fields: [
+						{ name: 'Category', value: command.category.id },
+						{ name: 'Cooldown', value: `\`${command.cooldown / 1e3}s\`` },
+						{ name: 'Rate Limit', value: `\`${command.ratelimit}\` uses per \`${command.cooldown / 1e3}s\`` }
+					]
+				}});
+			}
+		}
 	}
 }

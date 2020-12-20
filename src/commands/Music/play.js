@@ -5,8 +5,10 @@ module.exports = class MusicPlay extends Command {
 		super('play', {
 			aliases: ['play', 'p'],
 			channel: 'guild',
+			category: 'Music',
 			typing: true,
 			cooldown: 3000,
+			clientPermissions: ['CONNECT', 'SPEAK'],
 			args: [
 				{ id: 'query', type: 'content' }
 			]

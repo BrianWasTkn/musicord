@@ -1,8 +1,8 @@
 const { Listener } = require('discord-akairo');
 
-module.exports = class ActivityListener extends Listener {
+module.exports = class DiscordReady extends Listener {
 	constructor() {
-		super('activityChanger', {
+		super('activity', {
 			emitter: 'client',
 			event: 'ready',
 			type: 'on'
