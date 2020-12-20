@@ -7,6 +7,9 @@ module.exports = class UtilEval extends Command {
 			aliases: ['eval', 'e'],
 			ownerOnly: true,
 			typing: true,
+			args: [
+				{ id: 'code', type: 'content' }
+			]
 		});
 	}
 
@@ -22,9 +25,8 @@ module.exports = class UtilEval extends Command {
 	}
 
 	async exec(message, args) {
-		const code = args.join(' ');
+		const code = args.code;
 		const { guild, channel } = message;
-		const bot = this;
 		const asynchronous = code.includes('await') || code.includes('return');
 		let before, evaled, evalTime, type, token, result;
 
