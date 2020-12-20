@@ -44,7 +44,7 @@ module.exports = class UtilEval extends Command {
 		}
 
 		token = new RegExp(this.client.token, 'gi');
-		evaled = evaled.replace(evaled, 'N0.T0K4N.4Y0U');
+		evaled = evaled.replace(token, 'N0.T0K4N.4Y0U');
 		await channel.send({ embed: {
 			color: 'ORANGE',
 			description: this.codeBlock(evaled),
