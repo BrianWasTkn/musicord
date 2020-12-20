@@ -21,6 +21,7 @@ module.exports = class UtilHelp extends Command {
 		const { channel } = message;
 		const { handler } = this;
 		const { query } = args;
+		console.log(query);
 
 		if (query) {
 			if (handler.has(query.toLowerCase())) {
