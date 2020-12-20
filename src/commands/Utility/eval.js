@@ -8,8 +8,9 @@ module.exports = class UtilEval extends Command {
 			ownerOnly: true,
 			typing: true,
 			cooldown: 1500,
+			quoted: false,
 			args: [
-				{ id: 'code', type: 'content' }
+				{ id: 'code', match: 'content' }
 			]
 		});
 	}
@@ -26,14 +27,14 @@ module.exports = class UtilEval extends Command {
 	}
 
 	async exec(message, args) {
-		const code = args.code;
 		const { guild, channel } = message;
+		const code = args.code;
 		const asynchronous = code.includes('await') || code.includes('return');
 		let before, evaled, evalTime, type, token, result;
 
 		before = Date.now();
 		try {
-			evaled = await eval(asynchronous ? `(async () => { ${code} } )()` : code);
+			evaled = await eval(asynchronous ? `(async()=>{${code}})()` : code);
 		} catch(error) {
 			evaled = error.message;
 		}

@@ -19,23 +19,25 @@ module.exports = class UtilHelp extends Command {
 
 	async exec(message, args) {
 		const { channel } = message;
-		const { handler } = this;
-		const { query } = args;
-		console.log(query);
+		console.log(args);
+		
+		// if (!args.query) {
+		// 	return message.reply(`Command`)
+		// }
 
-		if (query) {
-			if (handler.has(query.toLowerCase())) {
-				const command = handler.get(query.toLowerCase());
-				return await channel.send({ embed: {
-					title: [this._random(handler.prefix), command.id].join(' '),
-					color: 'ORANGE',
-					fields: [
-						{ name: 'Category', value: command.category.id },
-						{ name: 'Cooldown', value: `\`${command.cooldown / 1e3}s\`` },
-						{ name: 'Rate Limit', value: `\`${command.ratelimit}\` uses per \`${command.cooldown / 1e3}s\`` }
-					]
-				}});
-			}
-		}
+		// if (query) {
+		// 	if (handler.has(query.toLowerCase())) {
+		// 		const command = handler.get(query.toLowerCase());
+		// 		return await channel.send({ embed: {
+		// 			title: [this._random(handler.prefix), command.id].join(' '),
+		// 			color: 'ORANGE',
+		// 			fields: [
+		// 				{ name: 'Category', value: command.category.id },
+		// 				{ name: 'Cooldown', value: `\`${command.cooldown / 1e3}s\`` },
+		// 				{ name: 'Rate Limit', value: `\`${command.ratelimit}\` uses per \`${command.cooldown / 1e3}s\`` }
+		// 			]
+		// 		}});
+		// 	}
+		// }
 	}
 }

@@ -29,7 +29,7 @@ module.exports = class LavaClient extends AkairoClient {
 
     this.commandHandler = new CommandHandler(this, {
     	directory: `${process.cwd()}/src/commands/`,
-    	prefix: ['lava', ';;'],
+    	prefix: ['lava', ';;', '>'],
     	handleEdits: true,
     	commandUtil: true,
     	defaultCooldown: 1000

@@ -10,14 +10,16 @@ module.exports = class MusicPlay extends Command {
 			cooldown: 3000,
 			clientPermissions: ['CONNECT', 'SPEAK'],
 			args: [
-				{ id: 'query', type: 'content' }
+				{ id: 'query', match: 'content' }
 			]
 		});
 	}
 
 	async exec(message, args) {
-		if (!args.query) {
-			return msg.reply(this.client.util.embed({
+		const { query } = args;
+
+		if (!query) {
+			return message.reply(this.client.util.embed({
 				title: 'Missing Arguments',
 				color: 'RED',
 				description: 'You need to play something to use this command.',
@@ -30,7 +32,7 @@ module.exports = class MusicPlay extends Command {
 
 		try {
 			const { player } = this.client;
-			await player.play(message, args.query)
+			await player.play(message, query)
 		} catch(error) {
 			await message.channel.send(error.message);
 			this.client.util.log(this.constructor.name, 'error', `play`, error.stack);
