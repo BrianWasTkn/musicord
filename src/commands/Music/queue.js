@@ -23,7 +23,7 @@ module.exports = class MusicQueue extends Command {
 		await channel.send(this.client.util.embed({
 			title: guild.name,
 			color: 'ORANGE',
-			thumbnail: { url: songs.thumbnail },
+			thumbnail: { url: songs[0].thumbnail },
 			fields: [
 				{ name: 'Now Playing', value: songs[0] },
 				{ name: 'In Queue', value: songs[1] ? songs.slice(1).join('\n') : 'Nothing more in queue.' }
