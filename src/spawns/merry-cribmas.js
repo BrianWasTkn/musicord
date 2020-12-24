@@ -4,7 +4,7 @@ exports.config = {
 	// Odds
 	odds: 5,
 	// Collector
-	time: 5000,
+	time: 10000,
 	max: Infinity,
 	// Rewards
 	rewards: {
