@@ -49,12 +49,14 @@ module.exports = class DiscordListener extends Listener {
 		}).on('end', async collected => {
 			await msg.edit([
 				msg.content,
-				'\n:x: `This event has expired.`'
+				'\n<:memerRed:729863510716317776> `This event has expired.`'
 			].join('\n'));
 
 			if (!collected.size) {
 				queue.delete(channel.id);
-				return channel.send('Either no one joined the spawn, sadness.');
+				return channel.send(
+					'**<:memerRed:729863510716317776> No one joined the event.**'
+				);
 			}
 
 			const { rewards, title } = spawn.config;
