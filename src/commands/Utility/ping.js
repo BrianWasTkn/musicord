@@ -1,6 +1,6 @@
 const { Command } = require('discord-akairo')
 
-module.exports = class UtilPing extends Command {
+module.exports = class UtilityCommand extends Command {
 	constructor() {
 		super('ping', {
 			aliases: ['ping', 'latency'],

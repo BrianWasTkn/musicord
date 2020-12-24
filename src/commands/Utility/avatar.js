@@ -2,7 +2,7 @@ const { Command } = require('discord-akairo');
 const { User } = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports = class UtilAvatar extends Command {
+module.exports = class UtilityCommand extends Command {
 	constructor() {
 		super('avatar', {
 			aliases: ['avatar', 'av'],

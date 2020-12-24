@@ -1,10 +1,14 @@
 const { ClientUtil } = require('discord-akairo');
+const { Collection } = require('discord.js');
 const chalk = require('chalk');
 const moment = require('moment');
 
 module.exports = class Util extends ClientUtil {
 	constructor(client) {
 		super(client);
+		this.crib = {
+			heists: new Collection()
+		}
 	}
 
 	_log(struct = '', content = '', error = '') {

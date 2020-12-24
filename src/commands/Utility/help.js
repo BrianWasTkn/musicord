@@ -1,6 +1,6 @@
 const { Command } = require('discord-akairo')
 
-module.exports = class UtilHelp extends Command {
+module.exports = class UtilityCommand extends Command {
 	constructor() {
 		super('help', {
 			aliases: ['help', 'commands'],
@@ -14,31 +14,28 @@ module.exports = class UtilHelp extends Command {
 		});
 	}
 
-	_random(arr) {
-		return arr[Math.floor(Math.random() * arr.length)];
-	}
-
 	async exec(message, args) {
 		const { channel } = message;
-		console.log(args);
-		
-		// if (!args.query) {
-		// 	return message.reply(`Command`)
-		// }
+		if (args.query) {
+			const { query } = args;
+			return channel.send({ embed: {
+				title: `${query.aliases[0]} info`,
+				color: 'ORANGE',
+				fields: [
+					{ name: 'Category', 
+						value: query.categoryID },
+					{ name: 'Cooldown', 
+						value: `${(query.cooldown || query.defaultCooldown) / 1000}s` },
+					{ name: 'RateLimit', 
+						value: `\`${command.rateLimit}\` uses per cooldown` }
+				],
+				footer: {
+					text: this.client.user.username,
+					iconURL: this.client.user.avatarURL()
+				}
+			}});
+		} else {
 
-		// if (query) {
-		// 	if (handler.has(query.toLowerCase())) {
-		// 		const command = handler.get(query.toLowerCase());
-		// 		return await channel.send({ embed: {
-		// 			title: [this._random(handler.prefix), command.id].join(' '),
-		// 			color: 'ORANGE',
-		// 			fields: [
-		// 				{ name: 'Category', value: command.category.id },
-		// 				{ name: 'Cooldown', value: `\`${command.cooldown / 1e3}s\`` },
-		// 				{ name: 'Rate Limit', value: `\`${command.ratelimit}\` uses per \`${command.cooldown / 1e3}s\`` }
-		// 			]
-		// 		}});
-		// 	}
-		// }
+		}
 	}
 }

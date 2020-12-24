@@ -4,15 +4,19 @@ const {
 	CommandHandler 
 } = require('discord-akairo');
 const { 
+  join 
+} = require('path');
+const { 
 	config 
 } = require('../config.js');
 
 const Player = require('./Player.js');
 const ClientUtil = require('./Util.js');
+const LavaManager = require('./Manager.js');
 
 
 module.exports = class LavaClient extends AkairoClient {
-  constructor() {
+  constructor(config) {
     super({
       ownerID: config.owners
     }, {
@@ -24,21 +28,26 @@ module.exports = class LavaClient extends AkairoClient {
     this.util = new ClientUtil(this);
 
     this.listenerHandler = new ListenerHandler(this, {
-      directory: `${process.cwd()}/src/emitters/`
+      directory: join(__dirname, '..', 'emitters')
     });
 
     this.commandHandler = new CommandHandler(this, {
-    	directory: `${process.cwd()}/src/commands/`,
-    	prefix: ['lava', ';;', '>'],
+      directory: join(__dirname, '..', 'commands'),
+    	prefix: config.prefix,
     	handleEdits: true,
     	commandUtil: true,
-    	defaultCooldown: 1000
+    	defaultCooldown: 1000,
+    	allowMention: true
     });
+
+    this.lavaManager = new LavaManager(this);
+
+    this.config = config;
   }
 
   loadEmitters() {
   	this.listenerHandler.setEmitters({
-  		distube: this.player,
+  		distube: this.player, 
   		process: process
   	});
   }
@@ -50,48 +59,8 @@ module.exports = class LavaClient extends AkairoClient {
   	this.listenerHandler.loadAll();
   	return super.login(token);
   }
+
+  async restart() {
+  	return super.destroy(this.token);
+  }
 }
-
-/**
-import { Client, Collection } from 'discord.js'
-import { readdirSync } from 'fs'
-
-import { Player } from './Player.js'
-import { Util } from './Util.js'
-import { config } from '../config.js'
-
-export class Musicord extends Client {
-	constructor(config) {
-		super({ disableMentions: 'everyone' });
-		this.distube = new Player(this);
-		this.config = config;
-		this.utils = new Util(this);
-		this.commands = new Collection();
-		this.aliases = new Collection();
-		this.cooldowns = new Collection();
-		this.setup();
-	}
-
-	setup() {
-		readdirSync(`${process.cwd()}/src/commands`).forEach(dir => {
-			readdirSync(`${process.cwd()}/src/commands/${dir}`).forEach(async cmd => {
-				const command = (await import(`../commands/${dir}/${cmd}`)).default;
-				this.commands.set(command.props.name, command);
-				command.props.aliases.forEach(a => this.aliases.set(a, command));
-				this.utils.log(
-					this.constructor.name, 
-					'main', `Command "${command.props.name}" loaded.`
-				);
-			})
-		});
-
-		readdirSync(`${process.cwd()}/src/emitters`).forEach(async em => {
-			((await import(`../emitters/${em}`)).run.bind(this))();
-			this.utils.log(
-				this.constructor.name, 
-				'main', `Listener "${em.split('.')[0]}" loaded.`
-			);
-		});
-	}
-}
-*/
