@@ -2,7 +2,7 @@ const { Collection } = require('discord.js');
 
 exports.config = {
 	// Odds
-	odds: 5,
+	odds: 3,
 	// Collector
 	time: 10000,
 	max: Infinity,
