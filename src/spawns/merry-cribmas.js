@@ -9,7 +9,7 @@ exports.config = {
 	// Rewards
 	rewards: {
 		min: 5000, 
-		max: 100000
+		max: 50000
 	},
 	// Visuals
 	emoji: '<:memerGold:753138901169995797>',
