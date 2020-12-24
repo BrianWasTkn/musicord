@@ -97,7 +97,7 @@ module.exports = class DiscordListener extends Listener {
 		} = spawn.config;
 		const queue = this.client.lavaManager.spawnQueues;
 
-		const cat = message.guild.channels.cache.get('692516869328076841');
+		const cat = message.guild.channels.cache.get('691595121866571776');
 		if (!cat.children.keyArray().includes(message.channel.id)) return;
 		if (Math.round(Math.random() * 100) < (100 - odds)) return;
 		if (queue.has(message.channel.id)) return;
