@@ -44,7 +44,7 @@ module.exports = class DiscordListener extends Listener {
 				await m.channel.send(`\`${m.author.username}\` answered first!`);
 			} else {
 				// await m.react('✅');
-				await m.react('BetterOkFlex:745459888607723570');
+				await m.react(spawn.config.emoji);
 			}
 		}).on('end', async collected => {
 			await msg.edit([
