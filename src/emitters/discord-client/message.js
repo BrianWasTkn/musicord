@@ -1,7 +1,5 @@
 const { Listener } = require('discord-akairo');
-const { Collection } = require('discord.js');
-const { readdirSync } = require('fs');
-const { join } = require('path');
+const Discord, { TextBasedChannel, Collection } = require('discord.js');
 
 /**
  * Discord Message event
@@ -30,6 +28,16 @@ module.exports = class DiscordListener extends Listener {
 		}
 	}
 
+	/**
+	 * Basically the whole thing
+	 * @method
+	 * @param {Discord.Message} msg the message object returned by the event message
+	 * @param {TextBasedChannel} channel the invocating channel
+	 * @param {Collection<Snowflake, string} queue the channel event queue
+	 * @param {Object} spawn the spawn itself
+	 * @param {Object} options collector options
+	 * @returns {Promise<void>}
+	 */
 	async handleMessageCollector(msg, channel, queue, spawn, options) {
 		const entries = new Collection();
 		const collector = await channel.createMessageCollector(
@@ -99,7 +107,7 @@ module.exports = class DiscordListener extends Listener {
 
 		const cat = message.guild.channels.cache.get('691595121866571776');
 		if (!cat.children.keyArray().includes(message.channel.id)) return;
-		if (Math.round(Math.random() * 100) < (100 - odds)) return;
+		if ((Math.random() * 100) < (100 - odds)) return;
 		if (queue.has(message.channel.id)) return;
 
 		const string = this.random('arr', strings);
