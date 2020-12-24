@@ -75,7 +75,7 @@ module.exports = class DiscordListener extends Listener {
 				author: { name: `Results for '${spawn.config.title}' event` },
 				description: results.join('\n'),
 				color: 'GREEN',
-				footer: { text: 'Claim these in our support channel.' }
+				footer: { text: `Claim these in our ${channel.guild.channels.cache.get('791659327148261406').name} channel.` }
 			}});
 		});
 	}
