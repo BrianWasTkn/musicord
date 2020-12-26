@@ -46,8 +46,8 @@ module.exports = class Crib extends Command {
 			].join(' '));
 
 			const filter = m => m.author.id === turn.user.id;
-			let reply = await channel.awaitMessages(channel, filter, { 
-				time: timeout, max: 1 
+			let reply = await channel.awaitMessages(filter, { 
+				time: 15000, max: 1 
 			});
 
 			if (!reply.first()) {
@@ -56,7 +56,7 @@ module.exports = class Crib extends Command {
 			}
 
 			// Actions
-			reply = reply.first()
+			reply = reply.first();
 			if (reply.content.toLowerCase() === cmds[0]) {
 				const bigPunch = Math.random() >= 0.65;
 				const damage = this.client.util.random('num', { 
