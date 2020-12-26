@@ -42,7 +42,7 @@ module.exports = class Crib extends Command {
 			const cmds = ['slap', 'protecc', 'end'];
 			await channel.send([
 				`${turn.user.toString()},`,
-				`**\`${[cmds[0], cmds[1]].join('`**, **`')}\`** or **\`${cmds[3]}\`**?`
+				`**\`${[cmds[0], cmds[1]].join('`**, **`')}\`** or **\`${cmds[2]}\`**?`
 			].join(' '));
 
 			const reply = await this.client.util.awaitMessage(channel, turn.user, 15000);
