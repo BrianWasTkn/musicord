@@ -6,7 +6,7 @@ const { Listener } = require('discord-akairo');
 */
 module.exports = class DistubeListener extends Listener {
 	constructor() {
-		super('distube:playSong', {
+		super('playSong', {
 			emitter: 'distube',
 			event: 'playSong'
 		});

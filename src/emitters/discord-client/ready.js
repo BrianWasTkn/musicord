@@ -6,7 +6,7 @@ const { Listener } = require('discord-akairo');
 */
 module.exports = class DiscordListener extends Listener {
 	constructor() {
-		super('discord:ready', {
+		super('ready', {
 			emitter: 'client',
 			event: 'ready'
 		});

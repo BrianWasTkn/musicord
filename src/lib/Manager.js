@@ -1,4 +1,5 @@
 const { Collection } = require('discord.js');
+const chalk = require('chalk');
 
 module.exports = class LavaManager {
 	constructor(client) {
@@ -16,14 +17,14 @@ module.exports = class LavaManager {
 	static logCommands(command, isReload) {
 		this.client.util.log(
 			'Command', 'main',
-			`Command "${command.id}" loaded.`
+			`Command ${chalk.cyanBright(command.id)} loaded.`
 		);
 	}
 
 	static logListeners(listener, isReload) {
 		this.client.util.log(
-			'Listener', 'main',
-			`Listener "${listener.id}" loaded.`
+			'Emitter', 'main',
+			`Emitter ${chalk.cyanBright(listener.id)} loaded.`
 		);
 	}
 

@@ -1,10 +1,16 @@
 const { Command } = require('discord-akairo');
 const { Collection } = require('discord.js');
 
+const strings = [
+	'JOIN EVENT', 'COINS WHEN', 'LOL',
+	'MEMERS CRIB', 'E', 'DANK PLS', 
+	'LEMME WIN BRUH', 'I WANNA BE A HELICOPTER'
+];
+
 module.exports = class Crib extends Command {
 	constructor() {
-		super('customHeist', {
-			aliases: ['customheist', 'ch'],
+		super('ch', {
+			aliases: ['ch', 'customheist'],
 			category: 'Crib',
 			channel: 'guild',
 			cooldown: 30000,
@@ -37,7 +43,7 @@ module.exports = class Crib extends Command {
 			if (lock) this.lockChannel(message, true);
 		}
 
-		const string = this.constructor.random('array', ['JOIN EVENT', 'COINS WHEN']);
+		const string = this.constructor.random('array', strings);
 		await channel.send(`Type \`${string}\` to have a chance on splitting up \`${Number(amount).toLocaleString()}\` coins!`);
 		const entries = new Collection();
 		const collector = await channel.createMessageCollector(
@@ -65,7 +71,7 @@ module.exports = class Crib extends Command {
 
 				const coins = Math.floor(Number(amount) / success.length);
 				success = success.map(s => `+ ${s.author.username} got ${coins.toLocaleString()} coins`);
-				fail = fail.map(f => `- ${f.author.username} died LOL`);
+				fail = fail.map(f => `- ${f.author.username} died RIP`);
 				const order = [success.join('\n'), fail.join('\n')].sort(() => Math.random() - 0.5).join('\n');
 				await m.channel.send(order, { code: 'diff' });
 				if (lock) this.lockChannel(message, false);
