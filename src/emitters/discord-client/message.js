@@ -1,5 +1,7 @@
 const { Listener } = require('discord-akairo');
-const Discord, { TextBasedChannel, Collection } = require('discord.js');
+const { Collection } = require('discord.js');
+const { readdirSync } = require('fs');
+const { join } = require('path');
 
 /**
  * Discord Message event
@@ -83,7 +85,7 @@ module.exports = class DiscordListener extends Listener {
 				author: { name: `Results for '${spawn.config.title}' event` },
 				description: results.join('\n'),
 				color: 'GREEN',
-				footer: { text: `Claim these in our ${channel.guild.channels.cache.get('791659327148261406').name} channel.` }
+				footer: { text: `Claim these in our payouts channel.` }
 			}});
 		});
 	}
@@ -96,8 +98,8 @@ module.exports = class DiscordListener extends Listener {
 	*/
 	async exec(message) {
 		if (message.author.bot || message.channel.type === 'dm') return;
-		const { spawns } = this.client.config;
-		const spawn = spawns[this.random('arr', Object.keys(spawns))];
+		const spawns = readdirSync(join(__dirname, '..', '..', 'spawns'));
+		const spawn = require(join(__dirname, '..', '..', 'spawns', this.random('arr', spawns)));
 		let {
 			odds, time, max, type, rewards,
 			emoji, eventType, title, description,
@@ -105,8 +107,9 @@ module.exports = class DiscordListener extends Listener {
 		} = spawn.config;
 		const queue = this.client.lavaManager.spawnQueues;
 
+		// const cat = message.guild.channels.cache.get('724618509958774886'); // bot workplace
 		const cat = message.guild.channels.cache.get('691595121866571776');
-		if (!cat.children.keyArray().includes(message.channel.id)) return;
+		if (!cat.children.has(message.channel.id)) return;
 		if ((Math.random() * 100) < (100 - odds)) return;
 		if (queue.has(message.channel.id)) return;
 

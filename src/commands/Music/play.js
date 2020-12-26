@@ -1,6 +1,6 @@
 const { Command } = require('discord-akairo')
 
-module.exports = class MusicCommand extends Command {
+module.exports = class Music extends Command {
 	constructor() {
 		super('play', {
 			aliases: ['play', 'p'],

@@ -2,7 +2,7 @@ const { Command } = require('discord-akairo');
 const { User } = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports = class UtilityCommand extends Command {
+module.exports = class Util extends Command {
 	constructor() {
 		super('avatar', {
 			aliases: ['avatar', 'av'],
@@ -46,7 +46,6 @@ module.exports = class UtilityCommand extends Command {
 				text: this.client.user.username,
 				iconURL: this.client.user.avatarURL()
 			}
-		}))
-
+		}));
 	}
 }

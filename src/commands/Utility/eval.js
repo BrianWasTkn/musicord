@@ -1,7 +1,7 @@
 const { Command } = require('discord-akairo');
 const { inspect } = require('util');
 
-module.exports = class UtilityCommand extends Command {
+module.exports = class Util extends Command {
 	constructor() {
 		super('eval', {
 			aliases: ['eval', 'e'],

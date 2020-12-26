@@ -1,6 +1,6 @@
 const { Command } = require('discord-akairo')
 
-module.exports = class UtilityCommand extends Command {
+module.exports = class Util extends Command {
 	constructor() {
 		super('help', {
 			aliases: ['help', 'commands'],
@@ -35,7 +35,7 @@ module.exports = class UtilityCommand extends Command {
 				}
 			}});
 		} else {
-
+			return channel.send(`No command found for \`${args.query}\``);
 		}
 	}
 }

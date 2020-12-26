@@ -1,11 +1,11 @@
 const { Command } = require('discord-akairo');
-const { Collection } = require('discord.js');
 
-module.exports = class CribCommand extends Command {
+module.exports = class Crib extends Command {
 	constructor() {
 		super('customHeist', {
 			aliases: ['customheist', 'ch'],
 			category: 'Crib',
+			channel: 'guild',
 			cooldown: 30000,
 			rateLimit: 3,
 			args: [
@@ -65,7 +65,7 @@ module.exports = class CribCommand extends Command {
 				const coins = Math.floor(Number(amount) / success.length);
 				success = success.map(s => `+ ${s.author.username} got ${coins.toLocaleString()} coins`);
 				fail = fail.map(f => `- ${f.author.username} died LOL`);
-				const order = [success.join('\n'), fail.join('\n')].join('\n');
+				const order = [success.join('\n'), fail.join('\n')].sort(() => Math.random() - 0.5).join('\n');
 				await m.channel.send(order, { code: 'diff' });
 				if (lock) this.lockChannel(message, false);
 		});
