@@ -65,7 +65,7 @@ module.exports = class DiscordListener extends Listener {
 			if (!collected.size) {
 				queue.delete(channel.id);
 				return channel.send(
-					'**<:memerRed:729863510716317776> No one joined the event.**'
+					'**<:memerRed:729863510716317776> No one got the event.**'
 				);
 			}
 
