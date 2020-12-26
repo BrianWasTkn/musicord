@@ -1,4 +1,5 @@
 const { Command } = require('discord-akairo');
+const { Collection } = require('discord.js');
 
 module.exports = class Crib extends Command {
 	constructor() {
