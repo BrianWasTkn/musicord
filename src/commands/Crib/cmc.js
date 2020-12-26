@@ -12,6 +12,7 @@ const allowed = [
 	{ userID: '409838637811892226', role: '705783211489230869' },
 	{ userID: '450282847391973376', role: '724692343458103426' },
 	{ userID: '673516525683998756', role: '738041469390291032' },
+	{ userID: '495733792250789891', role: '787358392443863100' },
 	// Boosters
 	{ userID: '509207806742626314', role: '786873354308681739' },
 	{ userID: '316407287545856000', role: '744648152656904383' },
@@ -30,7 +31,7 @@ module.exports = class Crib extends Command {
 			aliases: ['cmc'],
 			category: 'Crib',
 			channel: 'guild',
-			cooldown: 30000,
+			cooldown: 10000,
 			rateLimit: 2
 		});
 	}
