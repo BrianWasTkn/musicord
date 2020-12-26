@@ -45,13 +45,18 @@ module.exports = class Crib extends Command {
 				`**\`${[cmds[0], cmds[1]].join('`**, **`')}\`** or **\`${cmds[2]}\`**?`
 			].join(' '));
 
-			const reply = await this.client.util.awaitMessage(channel, turn.user, 15000);
-			if (!reply.content) {
+			const filter = m => m.author.id === turn.user.id;
+			let reply = await channel.awaitMessages(channel, filter, { 
+				time: timeout, max: 1 
+			});
+
+			if (!reply.first()) {
 				await channel.send(`**${turn.user.username}** didn't replied in time, **${oppturn.user.username}** wins!`);
 				return;
 			}
 
 			// Actions
+			reply = reply.first()
 			if (reply.content.toLowerCase() === cmds[0]) {
 				const bigPunch = Math.random() >= 0.65;
 				const damage = this.client.util.random('num', { 
