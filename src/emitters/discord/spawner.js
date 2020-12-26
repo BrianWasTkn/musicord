@@ -9,7 +9,7 @@ const { join } = require('path');
 */
 module.exports = class DiscordListener extends Listener {
 	constructor() {
-		super('message', {
+		super('spawner', {
 			emitter: 'client',
 			event: 'message'
 		});
