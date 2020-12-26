@@ -14,6 +14,13 @@ module.exports = class LavaManager {
 		client.commandHandler.on('cooldown', this.constructor.displayCooldown);
 	}
 
+	static logHandler(handler, isReload) {
+		this.client.util.log(
+			handler.constructor.name, 'main',
+			`${handler.constructor.name} ${chalk.cyanBright(handler.id)} loaded.`
+		);
+	}
+
 	static logCommands(command, isReload) {
 		this.client.util.log(
 			'Command', 'main',
