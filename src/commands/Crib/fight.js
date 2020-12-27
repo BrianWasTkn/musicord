@@ -60,7 +60,7 @@ module.exports = class Crib extends Command {
 			if (reply.content.toLowerCase() === cmds[0]) {
 				const bigPunch = Math.random() >= 0.65;
 				const damage = this.client.util.random('num', { 
-					min: 7, max: (bigPunch ? 650 : 400) 
+					min: 10, max: (bigPunch ? 100 : 150) 
 				});
 
 				opponent.hp -= (damage - opponent.armor) < 0 ? damage : damage - opponent.armor;
@@ -69,10 +69,10 @@ module.exports = class Crib extends Command {
 			} else if (reply.content.toLowerCase() === cmds[1]) {
 				const crit = Math.random() >= 0.75;
 				const defense = this.client.util.random('num', { 
-					min: 7, max: (crit ? 550 : 300) 
+					min: 15, max: (crit ? 50 : 200) 
 				});
 
-				if (attacker.armor < 5000) {
+				if (attacker.armor < 1000) {
 					attacker.armor += defense;
 					await channel.send([
 						`**${attacker.user.username}** increased their defense`,
