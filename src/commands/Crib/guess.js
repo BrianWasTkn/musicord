@@ -31,7 +31,7 @@ module.exports = class Crib extends Command {
 		let hints = Math.floor(attempts / 2);
 		message.reply([
 			[
-				`You've got **${attempts} attempt${attempts > 1 's' : ''} to try and guess`,
+				`You've got **${attempts} attempt${attempts > 1 ? 's' : ''} to try and guess`,
 				`my random number between **1 and ${int}**.`,
 			].join(' '),
 			'You can type `end` anytime to end, or `hint` to find how high or low your last number was.'
