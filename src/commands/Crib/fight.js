@@ -78,10 +78,12 @@ module.exports = class Crib extends Command {
 						`**${attacker.user.username}** increased their defense`,
 						`to **${attacker.armor}** by **${defense}**!`,
 					].join(' '));
+					return false;
 				} else {
 					await channel.send(
 						`${attacker.user.toString()}, stop being greedy, you already have max armor!`
 					);
+					return false;
 				}
 			} else if (reply.content.toLowerCase() === cmds[2]) {
 				await channel.send(`**${attacker.user.username}** ended the game, nobber.`);
