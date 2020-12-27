@@ -63,6 +63,7 @@ module.exports = class Crib extends Command {
 				else if (collected.size <= 1) return message.reply('I guess nobody wants to join this event, sadness.');
 
 				await m.channel.send(`\`${collected.size}\` people are teaming up to split **${Number(amount).toLocaleString()}** coins.`);
+				if (lock) this.lockChannel(message, false);
 				let success = [], fail = [];
 				collected.array().sort(() => Math.random() - 0.5).forEach(c => {
 					if (Math.random() > 0.66) success.push(c);
@@ -73,8 +74,8 @@ module.exports = class Crib extends Command {
 				success = success.map(s => `+ ${s.author.username} got ${coins.toLocaleString()} coins`);
 				fail = fail.map(f => `- ${f.author.username} died RIP`);
 				const order = [success.join('\n'), fail.join('\n')].sort(() => Math.random() - 0.5).join('\n');
+				await m.channel.send(`Good job everybody, we got \`${coins.toLocaleString}\` coins each!`);
 				await m.channel.send(order, { code: 'diff' });
-				if (lock) this.lockChannel(message, false);
 		});
 	}
 

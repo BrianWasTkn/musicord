@@ -29,7 +29,7 @@ module.exports = class Crib extends Command {
 			return message.reply('Please don\'t pester bots, they might take over us.');
 		}
 
-		author.hp = enemy.hp = 100;
+		author.hp = enemy.hp = 1000;
 		author.armor = enemy.armor = 0;
 		author.crits = enemy.crits = 0;
 		let turn = author;
@@ -60,7 +60,7 @@ module.exports = class Crib extends Command {
 			if (reply.content.toLowerCase() === cmds[0]) {
 				const bigPunch = Math.random() >= 0.65;
 				const damage = this.client.util.random('num', { 
-					min: 7, max: (bigPunch ? 65 : 40) 
+					min: 7, max: (bigPunch ? 650 : 400) 
 				});
 
 				opponent.hp -= (damage - opponent.armor) < 0 ? 5 : damage - opponent.armor;
@@ -69,10 +69,10 @@ module.exports = class Crib extends Command {
 			} else if (reply.content.toLowerCase() === cmds[1]) {
 				const crit = Math.random() >= 0.75;
 				const defense = this.client.util.random('num', { 
-					min: 7, max: (crit ? 55 : 30) 
+					min: 7, max: (crit ? 550 : 300) 
 				});
 
-				if (attacker.armor < 100) {
+				if (attacker.armor < 5000) {
 					attacker.armor += defense;
 					await channel.send([
 						`**${attacker.user.username}** increased their defense`,
