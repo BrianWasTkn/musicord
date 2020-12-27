@@ -84,8 +84,15 @@ module.exports = class DiscordListener extends Listener {
 			await channel.send({ embed: {
 				author: { name: `Results for '${spawn.config.title}' event` },
 				description: results.join('\n'),
-				color: 'GREEN',
+				color: 'GOLD',
 				footer: { text: `Claim these in our payouts channel.` }
+			}});
+			
+			await channel.guild.channels.cache.get('791659327148261406').send({ embed: {
+				author: { name: `Results for '${spawn.config.title}' event` },
+				description: results.join('\n'),
+				color: 'ORANGE',
+				footer: { text: `From: ${channel.name}` }
 			}});
 		});
 	}
