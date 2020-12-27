@@ -58,7 +58,7 @@ module.exports = class Crib extends Command {
 			// Actions
 			reply = reply.first();
 			if (reply.content.toLowerCase() === cmds[0]) {
-				const bigPunch = Math.random() >= 0.65;
+				const bigPunch = Math.random() >= 0.35;
 				const damage = this.client.util.random('num', { 
 					min: 10, max: (bigPunch ? 100 : 150) 
 				});
@@ -90,6 +90,7 @@ module.exports = class Crib extends Command {
 			} else {
 				await channel.send(`${attacker.user.toString()}, why are you not following my instructions bro?`);
 				if (!retry) return await performTurn(attacker, opponent, true);
+				else await channel.send('The game ended due to multiple invalid responses.');
 			}
 		}
 

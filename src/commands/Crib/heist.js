@@ -62,7 +62,7 @@ module.exports = class Crib extends Command {
 				if (!collected.size) return message.reply('Looks like you\'re alone.');
 				else if (collected.size <= 1) return message.reply('I guess nobody wants to join this event, sadness.');
 
-				await m.channel.send(`\`${collected.size}\` people are teaming up to split **${Number(amount).toLocaleString()}** coins.`);
+				await m.channel.send(`\`${collected.size}\` people are teaming up to split **${amount.toLocaleString()}** coins.`);
 				if (lock) this.lockChannel(message, false);
 				let success = [], fail = [];
 				collected.array().sort(() => Math.random() - 0.5).forEach(c => {
