@@ -72,7 +72,7 @@ module.exports = class Crib extends Command {
 
 			const picked = Number(reply.content);
 			if (picked === random) {
-				return channel.send(`Wow, you got the number right! I was thinking of **${random}** too yk.`);
+				return channel.send(`Wow, you got the number **${random}** right.`);
 			}
 			if (attempts <= 1) {
 				return channel.send([
@@ -82,14 +82,14 @@ module.exports = class Crib extends Command {
 			}
 
 			if (!picked || !Number.isInteger(picked)) {
-				msg = `Bruh, It's gotta be a valid number between \`1\` and \`${int}\`, bro.`;
+				msg = `It's gotta be a **valid number** between \`1\` and \`${int}\` only.`;
 			} else if (picked > int || picked < 1) {
-				msg = `Are you serious? It's gotta be a number only between \`1\` and \`${int}\`.`;
+				msg = `It's gotta be a **number only** between \`1\` and \`${int}\` only.`;
 			} else {
-				msg = 'Not this time, ';
+				msg = 'Not this time,';
 			}
 
-      channel.send(`${msg}\`${attempts -= 1}\` attempt${attempts === 1 ? '' : 's'} left and \`${hints}\` hint${hints === 1 ? '' : 's'} left.`);
+      channel.send(`${msg} \`${attempts -= 1}\` attempt${attempts === 1 ? '' : 's'} left and \`${hints}\` hint${hints === 1 ? '' : 's'} left.`);
       await guess(picked);
 		}
 
