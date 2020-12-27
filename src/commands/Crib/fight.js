@@ -63,7 +63,7 @@ module.exports = class Crib extends Command {
 					min: 7, max: (bigPunch ? 650 : 400) 
 				});
 
-				opponent.hp -= (damage - opponent.armor) < 0 ? 5 : damage - opponent.armor;
+				opponent.hp -= (damage - opponent.armor) < 0 ? damage : damage - opponent.armor;
 				attacker.crits += bigPunch ? 1 : 0;
 				return damage;
 			} else if (reply.content.toLowerCase() === cmds[1]) {
