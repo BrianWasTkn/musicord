@@ -39,8 +39,9 @@ module.exports = class Crib extends Command {
 
 		const guess = async lastNumber => {
 			let msg = '';
-			let reply = await channel.createMessageCollector(
-				m => m.author.id === message.author.id, {
+			let reply = await channel.createMessageCollector(m => {
+				return m.author.id === message.author.id;
+			}, {
 					max: 1, time: 15000
 			});
 
