@@ -27,7 +27,7 @@ module.exports = class Crib extends Command {
 		}
 
 		const random = this.client.util.random('num', { min: 1, max: int });
-		let attempts = 2 + Math.round(random / 10);
+		let attempts = 2 + Math.round(int / 10);
 		let hints = Math.floor(attempts / 2);
 		message.reply([
 			[
