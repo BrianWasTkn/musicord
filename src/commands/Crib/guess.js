@@ -19,7 +19,7 @@ module.exports = class Crib extends Command {
 		let { int } = args;
 
 		if (!int) int = 10;
-		if (int < 1) { 
+		if (int < 10) { 
 			return message.reply('Bruh, only 10 and above ty.');
 		}
 		if (int > 100) { 
@@ -39,13 +39,13 @@ module.exports = class Crib extends Command {
 
 		const guess = async lastNumber => {
 			let msg;
-			let reply = await channel.createMessageCollector(m => {
+			let reply = await channel.awaitMessages(m => {
 				return m.author.id === message.author.id;
 			}, {
 					max: 1, time: 15000
 			});
 
-			if (!reply.first()) {
+			if (!reply || !reply.first()) {
 				return channel.send('alright, no game i guess.');
 			}
 
