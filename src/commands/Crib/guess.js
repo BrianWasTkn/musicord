@@ -75,7 +75,10 @@ module.exports = class Crib extends Command {
 				return channel.send(`Wow, you got the number right! I was thinking of **${random}** too yk.`);
 			}
 			if (attempts <= 1) {
-				return channel.send('Unlucky, you ran out of attempts. Game over for you.');
+				return channel.send([
+					'Unlucky, you ran out of attempts so it\'s game over for you.',
+					`The number was **${random}** btw.`
+				].join('\n'));
 			}
 
 			if (!picked || !Number.isInteger(picked)) {
