@@ -38,14 +38,14 @@ module.exports = class Crib extends Command {
 		].join('\n'));
 
 		const guess = async lastNumber => {
-			let msg = '';
+			let msg;
 			let reply = await channel.createMessageCollector(m => {
 				return m.author.id === message.author.id;
 			}, {
 					max: 1, time: 15000
 			});
 
-			if (!reply || !reply.first()) {
+			if (!reply.first()) {
 				return channel.send('alright, no game i guess.');
 			}
 
