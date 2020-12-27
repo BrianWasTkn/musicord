@@ -38,9 +38,9 @@ module.exports = class Crib extends Command {
 		].join('\n'));
 
 		const guess = async lastNumber => {
-			let message = '';
+			let msg = '';
 			let reply = await channel.createMessageCollector(
-				m => m.author.id === message.member.user.id, {
+				m => m.author.id === message.author.id, {
 					max: 1, time: 15000
 			});
 
@@ -78,14 +78,14 @@ module.exports = class Crib extends Command {
 			}
 
 			if (!picked || !Number.isInteger(picked)) {
-				message = `Bruh, It's gotta be a valid number between \`1\` and \`${number}\`, bro.`;
+				msg = `Bruh, It's gotta be a valid number between \`1\` and \`${number}\`, bro.`;
 			} else if (picked > number || picked < 1) {
-				message = `Are you serious? It's gotta be a number only between \`1\` and \`${number}\`.`;
+				msg = `Are you serious? It's gotta be a number only between \`1\` and \`${number}\`.`;
 			} else {
-				message = 'Not this time, ';
+				msg = 'Not this time, ';
 			}
 
-      channel.send(`${message}\`${attempts -= 1}\` attempt${attempts === 1 ? '' : 's'} left and \`${hints}\` hint${hints === 1 ? '' : 's'} left.`);
+      channel.send(`${msg}\`${attempts -= 1}\` attempt${attempts === 1 ? '' : 's'} left and \`${hints}\` hint${hints === 1 ? '' : 's'} left.`);
       await guess(picked);
 		}
 
