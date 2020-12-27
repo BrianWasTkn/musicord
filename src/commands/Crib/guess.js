@@ -63,7 +63,7 @@ module.exports = class Crib extends Command {
 					channel.send('You ran out of hints, sucks to suck.');
 				} else {
 					channel.send([
-						`Your last number (**${lastNumber}**) was too **${random - lastNumber > 0 ? 'high' : 'low'}**.`,
+						`Your last number (**${lastNumber}**) was too **${random - lastNumber > 0 ? 'low' : 'high'}**.`,
 						`You've got \`${attempts}\` attemp${attempts > 0 ? 's' : ''} left and \`${hints -= 1}\` hint${hints === 1 ? '' : 's'} left.`
 					].join('\n'));
 				}
