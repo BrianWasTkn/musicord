@@ -39,7 +39,11 @@ module.exports = class Crib extends Command {
 		}
 
 		const performTurn = async (attacker, opponent, retry) => {
-			const cmds = ['slap', 'protecc', 'end'];
+			const cmds = [
+				this.client.util.random('arr', ['punch', 'slap', 'ban', 'kill']),
+				this.client.util.random('arr', ['defend', 'protecc', 'unban', 'heal']),
+				'end'
+			];
 			await channel.send([
 				`${turn.user.toString()},`,
 				`**\`${[cmds[0], cmds[1]].join('`**, **`')}\`** or **\`${cmds[2]}\`**?`
@@ -60,7 +64,7 @@ module.exports = class Crib extends Command {
 			if (reply.content.toLowerCase() === cmds[0]) {
 				const bigPunch = Math.random() >= 0.35;
 				const damage = this.client.util.random('num', { 
-					min: 10, max: (bigPunch ? 100 : 150) 
+					min: 7, max: (bigPunch ? 35 : 70) 
 				});
 
 				opponent.hp -= (damage - opponent.armor) < 0 ? damage : damage - opponent.armor;
@@ -69,10 +73,10 @@ module.exports = class Crib extends Command {
 			} else if (reply.content.toLowerCase() === cmds[1]) {
 				const crit = Math.random() >= 0.75;
 				const defense = this.client.util.random('num', { 
-					min: 15, max: (crit ? 50 : 200) 
+					min: 7, max: (crit ? 45 : 75) 
 				});
 
-				if (attacker.armor < 1000) {
+				if (attacker.armor < 100) {
 					attacker.armor += defense;
 					await channel.send([
 						`**${attacker.user.username}** increased their defense`,
