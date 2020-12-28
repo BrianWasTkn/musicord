@@ -1,6 +1,6 @@
 exports.config = {
 	// Odds
-	odds: 3,
+	odds: 1.5,
 	// Collector
 	time: 5000,
 	max: Infinity,
@@ -11,12 +11,13 @@ exports.config = {
 	},
 	// Visuals
 	emoji: '<:memerGold:753138901169995797>',
-	eventType: 'SPECIAL',
+	eventType: 'SUPER',
 	title: 'Merry Cribmas',
-	description: 'It\'s a special day for Memers Crib!\nThese are the iconic phrases for Memers Crib.',
+	description: 'It\'s a special day for Memers Crib!\nThese are the iconic phrases for the year.',
 	strings: [
-		'merry chribmas', 'ato', 'amonic', 'nice spam', 'brain',
+		'merry cribmas', 'ato', 'amonic', 'nice spam', 'brain',
 		'damn son', 'ashol', 'atomic bomb', 'tanjunrine',
-		'Lee oh.', 'finding dory', 'baddie claus', 'trending'
+		'Lee oh.', 'finding dory', 'baddie claus', 'trending',
+		'e'
 	]
 }

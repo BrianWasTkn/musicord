@@ -52,7 +52,8 @@ module.exports = class Crib extends Command {
 		});
 
 		collector.on('collect', async m => {
-				await m.react('✅');
+				await m.react('memerGold:753138901169995797');
+				// await m.react('✅');
 				entries.set(m.author.id, true);
 		});
 

@@ -82,9 +82,9 @@ module.exports = class Crib extends Command {
 			}
 
 			if (!picked || !Number.isInteger(picked)) {
-				msg = `It's gotta be a **valid number** between \`1\` and \`${int}\` only.`;
+				msg = `It's gotta be a **valid number** between \`1\` and \`${int}\` only.\n`;
 			} else if (picked > int || picked < 1) {
-				msg = `It's gotta be a **number only** between \`1\` and \`${int}\` only.`;
+				msg = `It's gotta be a **number only** between \`1\` and \`${int}\` only.\n`;
 			} else {
 				msg = 'Not this time,';
 			}

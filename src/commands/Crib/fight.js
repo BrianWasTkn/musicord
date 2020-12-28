@@ -34,7 +34,7 @@ module.exports = class Crib extends Command {
 		author.crits = enemy.crits = 0;
 		let turn = author;
 		let oppturn = enemy;
-		if (Math.random > 0.5) {
+		if (Math.random() > 0.5) {
 			oppturn = [turn, turn = oppturn][0];
 		}
 
