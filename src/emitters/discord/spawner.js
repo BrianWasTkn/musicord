@@ -110,7 +110,7 @@ module.exports = class DiscordListener extends Listener {
 		let {
 			odds, time, max, type, rewards,
 			emoji, eventType, title, description,
-			strings
+			strings, enabled
 		} = spawn.config;
 		const queue = this.client.lavaManager.spawnQueues;
 
@@ -119,6 +119,7 @@ module.exports = class DiscordListener extends Listener {
 		if (!cat.children.has(message.channel.id)) return;
 		if ((Math.random() * 100) < (100 - odds)) return;
 		if (queue.has(message.channel.id)) return;
+		if (!enabled) return;
 
 		const string = this.random('arr', strings);
 		const msg = await message.channel.send([
