@@ -114,7 +114,7 @@ module.exports = class DiscordListener extends Listener {
 		}, (1000 * 60) * (rateLimit || this.client.config.spawnRateLimit));
 
 		// Message
-		const string = this.random('arr', strings);
+		const string = this.client.util.random('arr', strings);
 		const msg = await message.channel.send([
 			`**${emoji} \`${eventType} EVENT ENCOUNTERED\`**`,
 			`**${title}**`, description,
