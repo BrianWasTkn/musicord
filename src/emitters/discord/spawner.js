@@ -15,21 +15,6 @@ module.exports = class DiscordListener extends Listener {
 		});
 	}
 
-	random(type, entry) {
-		switch(type) {
-			case 'arr': 
-				return entry[Math.floor(Math.random() * entry.length)];
-				break;
-			case 'num':
-				const { min, max } = entry;
-				return Math.floor(Math.random() * (max - min + 1) + min);
-				break;
-			default:
-				return this.random(Array.isArray(entry) ? 'arr' : 'num', entry);
-				break;
-		}
-	}
-
 	/**
 	 * Basically the whole thing
 	 * @method
@@ -74,10 +59,14 @@ module.exports = class DiscordListener extends Listener {
 
 			collected.array().forEach(m => {
 				let { min, max } = spawn.config.rewards;
-				let coins = this.random('num', { 
+				let coins = this.client.util.random('num', { 
 					min: min / 1e3, max: max / 1e3 
 				}) * 1000;
-				results.push(`\`${m.author.username}\` grabbed **${coins.toLocaleString()}** coins`);
+				let verb = this.client.util.random('arr', [
+					'grabbed', 'obtained', 'snitched', 'magiked',
+					'won', 'oofed', 'e\'d'
+				])
+				results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
 			});
 
 			queue.delete(channel.id);
@@ -91,7 +80,7 @@ module.exports = class DiscordListener extends Listener {
 			await channel.guild.channels.cache.get('791659327148261406').send({ embed: {
 				author: { name: `Results for '${spawn.config.title}' event` },
 				description: results.join('\n'),
-				color: 'ORANGE',
+				color: 'RANDOM',
 				footer: { text: `From: ${channel.name}` }
 			}});
 		});
@@ -115,12 +104,19 @@ module.exports = class DiscordListener extends Listener {
 		const queue = this.client.lavaManager.spawnQueues;
 
 		// const cat = message.guild.channels.cache.get('724618509958774886'); // bot workplace
+		// Scenarios
 		const cat = message.guild.channels.cache.get('691595121866571776');
 		if (!cat.children.has(message.channel.id)) return;
 		if ((Math.random() * 100) < (100 - odds)) return;
 		if (queue.has(message.channel.id)) return;
 		if (!enabled) return;
 
+		// RateLimiter
+		this.client.setTimeout(() => {
+			queue.delete(message.channel.id);
+		}, 1000 * 60 * this.client.config.spawnRateLimit);
+
+		// Message
 		const string = this.random('arr', strings);
 		const msg = await message.channel.send([
 			`**${emoji} \`${eventType} EVENT ENCOUNTERED\`**`,

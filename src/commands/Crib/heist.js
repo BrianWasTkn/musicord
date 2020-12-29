@@ -43,7 +43,7 @@ module.exports = class Crib extends Command {
 			if (lock) this.lockChannel(message, true);
 		}
 
-		const string = this.constructor.random('array', strings);
+		const string = this.client.util.random('array', strings);
 		await channel.send(`Type \`${string}\` to have a chance on splitting up \`${Number(amount).toLocaleString()}\` coins!`);
 		const entries = new Collection();
 		const collector = await channel.createMessageCollector(
@@ -75,23 +75,8 @@ module.exports = class Crib extends Command {
 				success = success.map(s => `+ ${s.author.username} got ${coins.toLocaleString()} coins`);
 				fail = fail.map(f => `- ${f.author.username} died RIP`);
 				const order = [success.join('\n'), fail.join('\n')].sort(() => Math.random() - 0.5).join('\n');
-				await m.channel.send(`Good job everybody, we got \`${coins.toLocaleString}\` coins each!`);
+				await m.channel.send(`Good job everybody, we got \`${coins.toLocaleString()}\` coins each!`);
 				await m.channel.send(order, { code: 'diff' });
 		});
-	}
-
-	static random(type, entries) {
-		switch(type) {
-			case 'array':
-				return entries[Math.floor(Math.random() * entries.length)];
-				break;
-			case 'number': 
-				const { max, min } = entries;
-				return Math.floor(Math.random() * (max - min + 1) + min);
-				break;
-			default: 
-				this.random('number', entries);
-				break;
-		}
 	}
 }
