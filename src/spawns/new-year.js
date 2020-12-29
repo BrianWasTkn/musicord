@@ -1,14 +1,15 @@
 exports.config = {
 	// Odds
-	odds: 2,
+	chances: 35,
+	rateLimit: 15
 	enabled: true,
 	// Collector
-	time: 7000,
+	time: 10000,
 	max: Infinity,
 	// Rewards
 	rewards: {
 		min: 5000, 
-		max: 20000
+		max: 30000
 	},
 	// Visuals
 	emoji: '<:memerGold:753138901169995797>',

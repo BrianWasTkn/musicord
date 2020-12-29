@@ -97,24 +97,22 @@ module.exports = class DiscordListener extends Listener {
 		const spawns = readdirSync(join(__dirname, '..', '..', 'spawns'));
 		const spawn = require(join(__dirname, '..', '..', 'spawns', this.random('arr', spawns)));
 		let {
-			odds, time, max, type, rewards,
+			chances, rateLimit, time, max, type, rewards,
 			emoji, eventType, title, description,
 			strings, enabled
 		} = spawn.config;
 		const queue = this.client.lavaManager.spawnQueues;
 
-		// const cat = message.guild.channels.cache.get('724618509958774886'); // bot workplace
 		// Scenarios
-		const cat = message.guild.channels.cache.get('691595121866571776');
-		if (!cat.children.has(message.channel.id)) return;
-		if (Math.trunc(Math.random() * 100) < (100 - odds)) return;
+		if (!this.client.config.spawnCategories.includes(message.channel.parentID)) return;
+		if (Math.trunc(Math.random() * 100) < (100 - chances)) return;
 		if (queue.has(message.channel.id)) return;
 		if (!enabled) return;
 
 		// RateLimiter
 		this.client.setTimeout(() => {
 			queue.delete(message.channel.id);
-		}, 1000 * 60 * this.client.config.spawnRateLimit);
+		}, (1000 * 60) * (rateLimit || this.client.config.spawnRateLimit));
 
 		// Message
 		const string = this.random('arr', strings);
