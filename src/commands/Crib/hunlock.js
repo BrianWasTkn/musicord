@@ -46,14 +46,7 @@ module.exports = class Crib extends Command {
 
 		// Check overwrites
 		role = guild.roles.cache.get(role);
-		const permsArr = this.client.util.resolvePermissionNumber(channel.permissionOverwrites.get(role.id));
-		if (!permsArr.includes('SEND_MESSAGES')) {
-			return message.reply('Channel is already unlocked tho...').then(async(m) => {
-				await m.delete({ timeout: 3e3 });
-			});
-		} else {
-			const c = channel.updateOverwrite(role.id, { SEND_MESSAGES: true });
-			await channel.send(`Unlocked **#${c.name}**`);
-		}
+		const c = channel.updateOverwrite(role.id, { SEND_MESSAGES: true });
+		await channel.send(`Unlocked **#${c.name}**`);
 	}
 }
