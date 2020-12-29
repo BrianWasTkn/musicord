@@ -46,7 +46,7 @@ module.exports = class Crib extends Command {
 
 		// Check overwrites
 		role = guild.roles.cache.get(role);
-		const c = channel.updateOverwrite(role.id, { SEND_MESSAGES: true });
+		const c = await channel.updateOverwrite(role.id, { SEND_MESSAGES: true });
 		await channel.send(`Unlocked **#${c.name}**`);
 	}
 }
