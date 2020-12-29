@@ -23,7 +23,7 @@ module.exports = class Crib extends Command {
 			return message.reply('Bro, you need to fight with someone...');
 		}
 		if (enemy.user.id === member.user.id) {
-			return message.reply('Lol imaginr fighting yourself, rude.');
+			return message.reply('Lol imagine fighting yourself, rude.');
 		}
 		if (enemy.user.bot) {
 			return message.reply('Please don\'t pester bots, they might take over us.');

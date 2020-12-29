@@ -1,6 +1,6 @@
 exports.config = {
 	// Odds
-	odds: 2.5,
+	odds: 2,
 	enabled: true,
 	// Collector
 	time: 10000,
