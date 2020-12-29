@@ -29,7 +29,7 @@ module.exports = class Crib extends Command {
 			return message.reply('Please don\'t pester bots, they might take over us.');
 		}
 
-		author.hp = enemy.hp = 1000;
+		author.hp = enemy.hp = 100;
 		author.armor = enemy.armor = 0;
 		author.crits = enemy.crits = 0;
 		let turn = author;
