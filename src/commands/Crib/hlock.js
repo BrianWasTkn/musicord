@@ -14,6 +14,7 @@ module.exports = class Crib extends Command {
 			channel: 'guild',
 			cooldown: 3000,
 			rateLimit: 1,
+			userPermissions: ['MANAGE_MESSAGES'],
 			args: [	
 				{ id: 'id', type: 'number' }
 			]
