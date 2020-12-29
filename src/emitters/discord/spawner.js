@@ -48,7 +48,6 @@ module.exports = class DiscordListener extends Listener {
 			].join('\n'));
 
 			if (!collected.size) {
-				queue.delete(channel.id);
 				return channel.send(
 					'**<:memerRed:729863510716317776> No one got the event.**'
 				);
@@ -69,7 +68,6 @@ module.exports = class DiscordListener extends Listener {
 				results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
 			});
 
-			queue.delete(channel.id);
 			await channel.send({ embed: {
 				author: { name: `Results for '${spawn.config.title}' event` },
 				description: results.join('\n'),
@@ -110,6 +108,7 @@ module.exports = class DiscordListener extends Listener {
 		if (!enabled) return;
 
 		// RateLimiter
+		queue.set(message.channel.id, spawn.title);
 		this.client.setTimeout(() => {
 			queue.delete(message.channel.id);
 		}, (1000 * 60) * (rateLimit || this.client.config.spawnRateLimit));
@@ -124,7 +123,6 @@ module.exports = class DiscordListener extends Listener {
 			'Type', `\`\u200B${string}\u200B\``
 		].join(' '));
 
-		queue.set(message.channel.id, spawn.title);
 		await this.handleMessageCollector(msg, message.channel, queue, spawn, {
 			max, time, string
 		});
