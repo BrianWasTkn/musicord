@@ -1,11 +1,11 @@
 exports.config = {
 	// Odds
 	chances: 10,
-	rateLimit: 30,
+	rateLimit: 20,
 	enabled: true,
 	// Collector
 	time: 30000,
-	max: 3,
+	max: 1,
 	// Rewards
 	rewards: {
 		min: 15000, 
