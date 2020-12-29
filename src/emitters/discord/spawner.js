@@ -93,7 +93,7 @@ module.exports = class DiscordListener extends Listener {
 	async exec(message) {
 		if (message.author.bot || message.channel.type === 'dm') return;
 		const spawns = readdirSync(join(__dirname, '..', '..', 'spawns'));
-		const spawn = require(join(__dirname, '..', '..', 'spawns', this.random('arr', spawns)));
+		const spawn = require(join(__dirname, '..', '..', 'spawns', this.client.util.random('arr', spawns)));
 		let {
 			chances, rateLimit, time, max, type, rewards,
 			emoji, eventType, title, description,
