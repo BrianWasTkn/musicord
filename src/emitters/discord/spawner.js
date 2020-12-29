@@ -107,7 +107,7 @@ module.exports = class DiscordListener extends Listener {
 		// Scenarios
 		const cat = message.guild.channels.cache.get('691595121866571776');
 		if (!cat.children.has(message.channel.id)) return;
-		if ((Math.random() * 100) < (100 - odds)) return;
+		if (Math.trunc(Math.random() * 100) < (100 - odds)) return;
 		if (queue.has(message.channel.id)) return;
 		if (!enabled) return;
 
