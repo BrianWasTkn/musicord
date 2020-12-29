@@ -12,7 +12,7 @@ module.exports = class Crib extends Command {
 				{ id: 'amount', type: 'number' },
 				{ id: 'min', type: 'number', default: 1 },
 				{ id: 'max', type: 'number', default: 100 },
-				{ id: 'lock', type: 'boolean', default: true }
+				{ id: 'lock', type: 'boolean', default: true },
 				{ id: 'prize', type: 'string', default: '100K Coins' }
 			]
 		});
