@@ -25,25 +25,14 @@ module.exports = class Crib extends Command {
 		const { channel, guild } = message;
 		let { id } = args;
 
-		// Check Args
-		if (!id) {
-			return channel.send([
-				'**bruh**',
-				'you need a level number:',
-				`\`${['0', '5', '10', '15', '20'].join('`, `')}\``
-			].join('\n')).then(async m => {
-				await m.delete({ timeout: 3e3 });
-			});
-		}
-
 		// Check role
 		let role;
-		if (id === 0) role = roles(guild)[0];
+		if (id === 0) role = guild.id;
 		else if (id === 5) role = roles(guild)[1];
 		else if (id === 10) role = roles(guild)[2];
 		else if (id === 15) role = roles(guild)[3];
 		else if (id === 20) role = roles(guild)[4];
-		else return message.reply('invalid level number');
+		else return message.reply('invalid level number').then(e => e.delete({ timeout: 3e3 }));
 
 		// Check overwrites
 		role = guild.roles.cache.get(role);
