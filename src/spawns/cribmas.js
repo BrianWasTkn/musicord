@@ -1,7 +1,7 @@
 exports.config = {
 	// Odds
-	chances: 25,
-	rateLimit: 20,
+	chances: 10,
+	rateLimit: 5,
 	enabled: true,
 	// Collector
 	time: 30000,
