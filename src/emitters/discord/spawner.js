@@ -64,7 +64,7 @@ module.exports = class DiscordListener extends Listener {
 				let verb = this.client.util.random('arr', [
 					'grabbed', 'obtained', 'snitched', 'magiked',
 					'won', 'oofed', 'e\'d'
-				])
+				]);
 				results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
 			});
 
@@ -103,7 +103,6 @@ module.exports = class DiscordListener extends Listener {
 
 		// Scenarios
 		if (!this.client.config.spawnCategories.includes(message.channel.parentID)) return;
-		if (Math.trunc(Math.random() * 100) < (100 - chances)) return;
 		if (queue.has(message.channel.id)) return;
 		if (!enabled) return;
 
@@ -112,6 +111,7 @@ module.exports = class DiscordListener extends Listener {
 		this.client.setTimeout(() => {
 			queue.delete(message.channel.id);
 		}, (1000 * 60) * (rateLimit || this.client.config.spawnRateLimit));
+		if (Math.trunc(Math.random() * 100) < (100 - chances)) return;
 
 		// Message
 		const string = this.client.util.random('arr', strings);
