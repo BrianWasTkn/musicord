@@ -61,18 +61,25 @@ module.exports = class DiscordListener extends Listener {
 				let coins = this.client.util.random('num', { 
 					min: min / 1e3, max: max / 1e3 
 				}) * 1000;
+
 				let verb = this.client.util.random('arr', [
 					'grabbed', 'obtained', 'snitched', 'magiked',
 					'won', 'oofed', 'e\'d'
 				]);
+
 				results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
+				m.author.send([
+					`**${spawn.config.emoji} Congratulations!**`,
+					`You ${verb} **${coins.toLocaleString()}** coins from the "${spawn.config.title}" event.`,
+					`Please gather **5 payouts** first and claim it in our payouts channel.`
+				].join('\n')).catch(() => {});
 			});
 
 			await channel.send({ embed: {
 				author: { name: `Results for '${spawn.config.title}' event` },
 				description: results.join('\n'),
 				color: 'GOLD',
-				footer: { text: `Claim these in our payouts channel.` }
+				footer: { text: `Check your Direct Messages.` }
 			}});
 			
 			await channel.guild.channels.cache.get('791659327148261406').send({ embed: {
@@ -102,7 +109,7 @@ module.exports = class DiscordListener extends Listener {
 		const queue = this.client.lavaManager.spawnQueues;
 
 		// Scenarios
-		if (!this.client.config.spawnCategories.includes(message.channel.parentID)) return;
+		if (!this.client.config.spawn.categories.includes(message.channel.parentID)) return;
 		if (queue.has(message.channel.id)) return;
 		if (!enabled) return;
 
@@ -110,7 +117,7 @@ module.exports = class DiscordListener extends Listener {
 		queue.set(message.channel.id, spawn.title);
 		this.client.setTimeout(() => {
 			queue.delete(message.channel.id);
-		}, (1000 * 60) * (rateLimit || this.client.config.spawnRateLimit));
+		}, (1000 * 60) * (rateLimit || this.client.config.spawn.rateLimit));
 		if (Math.trunc(Math.random() * 100) < (100 - chances)) return;
 
 		// Message

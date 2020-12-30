@@ -5,6 +5,10 @@ exports.config = {
 	token: process.env.TOKEN,
 	owners: ['605419747361947649'],
 	// Spawner
-	spawnRateLimit: 15, // In Minutes
-	spawnCategories: ['691595121866571776', '724618509958774886']
+	spawn: {
+		rateLimit: 15,
+		categories: [
+			'691595121866571776', '724618509958774886'
+		]
+	}
 };
