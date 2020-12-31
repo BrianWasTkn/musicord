@@ -1,7 +1,7 @@
 module.exports = {
 	// Odds
-	chances: 50,
-	rateLimit: 10,
+	chances: 40,
+	rateLimit: 15,
 	enabled: true,
 	type: 'multiple',
 	// Collector

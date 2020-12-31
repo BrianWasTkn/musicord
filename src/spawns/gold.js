@@ -1,7 +1,7 @@
 module.exports = {
 	// Odds
-	chances: 50,
-	rateLimit: 10,
+	chances: 25,
+	rateLimit: 5,
 	enabled: true,
 	type: 'once',
 	// Collector
@@ -9,8 +9,8 @@ module.exports = {
 	maxEntries: 1,
 	// Rewards
 	rewards: {
-		min: 1000000, 
-		max: 1500000
+		min: 100000, 
+		max: 250000
 	},
 	// Visuals
 	emoji: '<:memerGold:753138901169995797>',
