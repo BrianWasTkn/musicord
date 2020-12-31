@@ -111,7 +111,7 @@ module.exports = class DiscordListener extends Listener {
 		await this.createCollector({
 			event, channel, queue, spawn, string
 		}, {
-			maxEntries, time, type
+			maxEntries, time
 		});
 	}
 
