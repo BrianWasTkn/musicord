@@ -21,20 +21,16 @@ module.exports = class DiscordListener extends Listener {
 		maxEntries, time, type
 	}) {
 		const entries = new Collection();
-		const filter = m => !entries.has(m.author.id);
+		const filter = m => !entries.has(m.author.id) && m.content.toLowerCase() === string;
 		const collector = await channel.createMessageCollector(filter, { max: maxEntries, time });
 		const { min, max } = spawn.rewards;
 
 		collector.on('collect', async m => {
-			if (m.content.toLowerCase() !== string) {
-				collector.collected.delete(m.id);
+			if (collector.collected.first().id === m.id) {
+				await m.channel.send(`\`${m.author.username}\` answered first!`);
 			} else {
-				if (collector.collected.first().id === m.id) {
-					await m.channel.send(`\`${m.author.username}\` answered first!`);
-				} else {
-					await m.react(spawn.emoji);
-				}
-			} 
+				await m.react(spawn.emoji);
+			}
 		});
 
 		collector.on('end', async c => {
