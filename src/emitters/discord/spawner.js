@@ -67,7 +67,7 @@ module.exports = class DiscordListener extends Listener {
 				author: { name: `Results for '${spawn.title}' event` },
 				description: results.join('\n'),
 				color: 'GOLD',
-				footer: { text: `Check your Direct Messages.` }
+				footer: { text: `Check your direct messages.` }
 			}}).catch(() => {});
 		});
 	}
