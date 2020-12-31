@@ -6,7 +6,7 @@ module.exports = {
 	type: 'multiple',
 	// Collector
 	time: 10000,
-	max: 5,
+	maxEntries: 5,
 	// Rewards
 	rewards: {
 		min: 210000,

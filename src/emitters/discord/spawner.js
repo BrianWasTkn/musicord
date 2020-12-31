@@ -103,7 +103,7 @@ module.exports = class DiscordListener extends Listener {
 
 		// Message
 		const string = this.client.util.random('arr', strings);
-		const event = await channel.send(`**${emoji} \`${eventType} EVENT TIME WEE WOO!\`\n**${title}**\n${description}`);
+		const event = await channel.send(`**${emoji} \`${eventType} EVENT TIME WEE WOO!\`**\n**${title}**\n${description}`);
 		await channel.send(`Type \`${string.split('').join('\u200B')}\``);
 
 		// Collectors
