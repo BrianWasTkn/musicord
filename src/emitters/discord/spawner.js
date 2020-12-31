@@ -85,7 +85,7 @@ module.exports = class DiscordListener extends Listener {
 		const { 
 			chances, rateLimit, time, max, rewards,
 			emoji, eventType, title, description,
-			strings, enabled, maxEntries, queue
+			strings, enabled, maxEntries
 		} = this.pickRandom();
 
 		// Scenarios

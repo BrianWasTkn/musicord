@@ -1,7 +1,3 @@
-function inc(amount, multiplier) {
-	return amount * Math.floor(Math.random() * multiplier);
-}
-
 module.exports = {
 	// Odds
 	chances: 25,
