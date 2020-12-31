@@ -1,6 +1,6 @@
 module.exports = {
 	// Odds
-	chances: 5,
+	chances: 50,
 	rateLimit: 2,
 	enabled: true,
 	type: 'once',
