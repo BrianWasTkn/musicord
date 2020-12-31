@@ -27,7 +27,7 @@ module.exports = class DiscordListener extends Listener {
 
 		collector.on('collect', async m => {
 			if (m.content.toLowerCase() !== string) {
-				return collector.collected.delete(m.id);
+				collector.collected.delete(m.id);
 			} else {
 				if (collector.collected.first().id === m.id) {
 					await m.channel.send(`\`${m.author.username}\` answered first!`);
