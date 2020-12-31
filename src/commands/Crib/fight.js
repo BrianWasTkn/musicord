@@ -64,7 +64,7 @@ module.exports = class Crib extends Command {
 			if (reply.content.toLowerCase() === cmds[0]) {
 				const bigPunch = Math.random() >= 0.35;
 				const damage = this.client.util.random('num', { 
-					min: 7, max: (bigPunch ? 35 : 70) 
+					min: 7, max: (bigPunch ? 35 : 100) 
 				});
 
 				opponent.hp -= (damage - opponent.armor) < 0 ? damage : damage - opponent.armor;
@@ -119,7 +119,7 @@ module.exports = class Crib extends Command {
 				const winner = loser === turn ? oppturn : turn;
 				loser.hp = 0;
 				return await channel.send([
-					`**${winner.user.username}** literally ate **${loser.user.username}** alive,`, 
+					`**${winner.user.username}** literally memed **${loser.user.username}**,`, 
 					`winning with **${winner.crits}** crits and **${winner.hp < 1 ? 0 : winner.hp}HP** left!`
 				].join(' '));
 			}

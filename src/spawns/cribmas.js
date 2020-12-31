@@ -1,15 +1,16 @@
-exports.config = {
+module.exports = {
 	// Odds
-	chances: 10,
-	rateLimit: 5,
+	chances: 15,
+	rateLimit: 3,
 	enabled: true,
+	type: 'once',
 	// Collector
 	time: 30000,
 	max: 1,
 	// Rewards
 	rewards: {
-		min: 15000, 
-		max: 50000
+		min: 69400, 
+		max: 69500
 	},
 	// Visuals
 	emoji: '<:memerGold:753138901169995797>',

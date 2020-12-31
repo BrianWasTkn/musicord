@@ -32,13 +32,13 @@ module.exports = class Crib extends Command {
 			aliases: ['cmc'],
 			category: 'Crib',
 			channel: 'guild',
-			cooldown: 10000,
+			cooldown: 5000,
 			rateLimit: 2
 		});
 	}
 
 	toHex(decimal) {
-		return decimal.toString(16);
+		return decimal.toString(16).padStart(decimal.toString().length, 0);
 	}
 
 	bgColor(hex) {
@@ -62,7 +62,7 @@ module.exports = class Crib extends Command {
 				title: 'Command Error',
 				color: 'RED',
 				description: [
-					`You need to have the **${required[0].name}** role first!`,
+					`You need to have the **${required.join('** or the **')}** role first!`,
 					'Consider **boosting this server** to use this command :>'
 				].join('\n'),
 				timestamp: Date.now(),
@@ -93,7 +93,7 @@ module.exports = class Crib extends Command {
 			].join('\n'),
 			color: role.color,
 			footer: {
-				text: `${member.user.tag} — Thanks for supporting us!`,
+				text: `Thanks for supporting us!`,
 				iconURL: member.user.avatarURL()
 			}
 		}});

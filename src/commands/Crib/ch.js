@@ -53,30 +53,25 @@ module.exports = class Crib extends Command {
 
 		collector.on('collect', async m => {
 				await m.react('memerGold:753138901169995797');
-				// await m.react('✅');
 				entries.set(m.author.id, true);
 		});
 
 		collector.on('end', async collected => {
-				const m = collected.first();
 				this.client.util.crib.heists.delete(guild.id);
 				if (!collected.size) return message.reply('Looks like you\'re alone.');
 				else if (collected.size <= 1) return message.reply('I guess nobody wants to join this event, sadness.');
 
-				await m.channel.send(`\`${collected.size}\` people are teaming up to split **${amount.toLocaleString()}** coins.`);
+				await collector.channel.send(`\`${collected.size}\` people are teaming up to split **${amount.toLocaleString()}** coins.`);
 				if (lock) this.lockChannel(message, false);
-				let success = [], fail = [];
+				let success = [];
 				collected.array().sort(() => Math.random() - 0.5).forEach(c => {
 					if (Math.random() > 0.66) success.push(c);
-					else fail.push(c);
 				});
 
 				const coins = Math.floor(Number(amount) / success.length);
-				success = success.map(s => `+ ${s.author.username} got ${coins.toLocaleString()} coins`);
-				fail = fail.map(f => `- ${f.author.username} died RIP`);
-				const order = [success.join('\n'), fail.join('\n')].sort(() => Math.random() - 0.5).join('\n');
-				await m.channel.send(`Good job everybody, we got \`${coins.toLocaleString()}\` coins each!`);
-				await m.channel.send(order, { code: 'diff' });
+				success = success.length ? success.map(s => s.author.toString()).join('\n') : 'Everyone died LOL';
+				const order = success.sort(() => Math.random() - 0.5).join(', ');
+				await collector.channel.send(`Good job everybody, we got \`${coins.toLocaleString()}\` coins each!\n\n${success}`);
 		});
 	}
 }

@@ -15,79 +15,60 @@ module.exports = class DiscordListener extends Listener {
 		});
 	}
 
-	/**
-	 * Basically the whole thing
-	 * @method
-	 * @param {Discord.Message} msg the message object returned by the event message
-	 * @param {TextBasedChannel} channel the invocating channel
-	 * @param {Collection<Snowflake, string} queue the channel event queue
-	 * @param {Object} spawn the spawn itself
-	 * @param {Object} options collector options
-	 * @returns {Promise<void>}
-	 */
-	async handleMessageCollector(msg, channel, queue, spawn, options) {
+	async createCollector({
+		event, channel, queue, spawn, string
+	}, {
+		maxEntries, time, type
+	}) {
 		const entries = new Collection();
-		const collector = await channel.createMessageCollector(
-			m => (m.content.toLowerCase() === options.string.toLowerCase()) 
-			&& !entries.has(m.author.id), {
-			max: options.max, time: options.time
-		});
+		const filter = m => !entries.has(m.author.id);
+		const collector = await channel.createMessageCollector(filter, { max: maxEntries, timeout: time });
+		const { min, max } = spawn.rewards;
 
 		collector.on('collect', async m => {
-			entries.set(m.author.id, true);
-			if (collector.collected.first().id === m.id) {
-				await m.channel.send(`\`${m.author.username}\` answered first!`);
+			if (m.content.toLowerCase() !== string) {
+				return collector.collected.delete(m.id);
 			} else {
-				// await m.react('✅');
-				await m.react(spawn.config.emoji);
-			}
-		}).on('end', async collected => {
-			await msg.edit([
-				msg.content,
-				'\n<:memerRed:729863510716317776> `This event has expired.`'
-			].join('\n'));
+				if (collector.collected.first().id === m.id) {
+					await m.channel.send(`\`${m.author.username}\` answered first!`);
+				} else {
+					await m.react(spawn.emoji);
+				}
+			} 
+		});
 
-			if (!collected.size) {
-				return channel.send(
-					'**<:memerRed:729863510716317776> No one got the event.**'
-				);
-			}
+		collector.on('end', async c => {
+			await event.edit(`${event.content}\n\n**<:memerRed:729863510716317776> `This event has expired.`**`);
+			if (!c.size) return collector.channel.send('**<:memerRed:729863510716317776> No one got the event.**');
+			const coinObj = { min: min / 1000, max: max / 1000 };
+			const coins = this.client.util.random('num', coinObj) * 1000;
+			const verbs = ['obtained', 'grabbed', 'magiked', 'won', 'procured'];
+			const verb = this.client.util.random('arr', verbs);
 
-			const { rewards, title } = spawn.config;
-			const results = [];
-
-			collected.array().forEach(m => {
-				let { min, max } = spawn.config.rewards;
-				let coins = this.client.util.random('num', { 
-					min: min / 1e3, max: max / 1e3 
-				}) * 1000;
-
-				let verb = this.client.util.random('arr', [
-					'grabbed', 'obtained', 'snitched', 'magiked',
-					'won', 'oofed', 'e\'d'
-				]);
-
-				results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
-				m.author.send([
-					`**${spawn.config.emoji} Congratulations!**`,
-					`You ${verb} **${coins.toLocaleString()}** coins from the "${spawn.config.title}" event.`,
-					`Please gather **5 payouts** first and claim it in our payouts channel.`
-				].join('\n')).catch(() => {});
-			});
-
-			await channel.send({ embed: {
-				author: { name: `Results for '${spawn.config.title}' event` },
-				description: results.join('\n'),
-				color: 'GOLD',
-				footer: { text: `Check your Direct Messages.` }
-			}});
-			
-			await channel.guild.channels.cache.get('791659327148261406').send({ embed: {
-				author: { name: `Results for '${spawn.config.title}' event` },
+			collector.channel.guild.channels.cache.get('791659327148261406').send({ embed: {
+				author: { name: `Results for '${spawn.title}' event` },
 				description: results.join('\n'),
 				color: 'RANDOM',
 				footer: { text: `From: ${channel.name}` }
-			}});
+			}}).catch(() => {});
+
+			const promises = [], results = [];
+			c.array().forEach(m => {
+				results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
+				promises.push(m.author.send([
+					`**${spawn.emoji} Congratulations!**`,
+					`You ${verb} **${coins.toLocaleString()}** coins from the "${spawn.title}" event.`,
+					`Please gather **5 payouts** first and claim it in our payouts channel.`
+				].join('\n')).catch(() => {}));
+			});
+
+			await Promise.all(promises);
+			collector.channel.send({ embed: {
+				author: { name: `Results for '${spawn.title}' event` },
+				description: results.join('\n'),
+				color: 'GOLD',
+				footer: { text: `Check your Direct Messages.` }
+			}}).catch(() => {});
 		});
 	}
 
@@ -99,39 +80,43 @@ module.exports = class DiscordListener extends Listener {
 	*/
 	async exec(message) {
 		if (message.author.bot || message.channel.type === 'dm') return;
-		const spawns = readdirSync(join(__dirname, '..', '..', 'spawns'));
-		const spawn = require(join(__dirname, '..', '..', 'spawns', this.client.util.random('arr', spawns)));
-		let {
-			chances, rateLimit, time, max, type, rewards,
+		const { channel } = message;
+		const { 
+			chances, rateLimit, time, max, rewards,
 			emoji, eventType, title, description,
-			strings, enabled
-		} = spawn.config;
-		const queue = this.client.lavaManager.spawnQueues;
+			strings, enabled, maxEntries, queue
+		} = this.pickRandom();
 
 		// Scenarios
-		if (!this.client.config.spawn.categories.includes(message.channel.parentID)) return;
-		if (queue.has(message.channel.id)) return;
 		if (!enabled) return;
+		if (queue.has(channel.id)) return;
+		if (!this.client.config.spawn.categories.includes(channel.parentID)) return;
 
 		// RateLimiter
-		queue.set(message.channel.id, spawn.title);
+		queue.set(channel.id, title);
 		this.client.setTimeout(() => {
-			queue.delete(message.channel.id);
+			queue.delete(channel.id);
 		}, (1000 * 60) * (rateLimit || this.client.config.spawn.rateLimit));
 		if (Math.trunc(Math.random() * 100) < (100 - chances)) return;
 
 		// Message
 		const string = this.client.util.random('arr', strings);
-		const msg = await message.channel.send([
-			`**${emoji} \`${eventType} EVENT ENCOUNTERED\`**`,
-			`**${title}**`, description,
-		].join('\n'));
-		await message.channel.send([
-			'Type', `\`\u200B${string}\u200B\``
-		].join(' '));
+		const event = await channel.send(`**${emoji} \`${eventType} EVENT TIME WEE WOO!\`\n**${title}**\n${description}`);
+		await channel.send(`Type \`${string.split('').join('\u200B')}\``);
 
-		await this.handleMessageCollector(msg, message.channel, queue, spawn, {
-			max, time, string
+		// Collectors
+		// Types: `spam`, `multiple`, `once`
+		await this.createCollector({
+			event, channel, queue, spawn, string
+		}, {
+			maxEntries, time, type
 		});
+	}
+
+	_pickSpawn() {
+		const spawns = readdirSync(join(__dirname, '..', '..', 'spawns'));
+		const spawn = require(join(__dirname, '..', '..', 'spawns', this.client.util.random('arr', spawns)));
+		const queue = this.client.lavaManager.spawnQueues;
+		return { ...spawn, queue };
 	}
 }

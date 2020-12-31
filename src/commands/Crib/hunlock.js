@@ -35,8 +35,7 @@ module.exports = class Crib extends Command {
 		else return message.reply('invalid level number').then(e => e.delete({ timeout: 3e3 }));
 
 		// Check overwrites
-		role = guild.roles.cache.get(role);
-		const c = await channel.updateOverwrite(role.id, { SEND_MESSAGES: true });
+		const c = await channel.updateOverwrite(role, { SEND_MESSAGES: true });
 		await channel.send(`Unlocked **#${c.name}**`);
 	}
 }

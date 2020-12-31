@@ -25,13 +25,13 @@ module.exports = class Util extends ClientUtil {
 		);
 	}
 
-	async awaitMessage(channel, user, timeout) {
+	async awaitMessage(channel, user, timeout, amount = 1) {
 		const filter = m => m.author.id === user.id;
-		const collector = await channel.createMessageCollector(channel, filter, { 
-			time: timeout, max: 1 
+		const collector = await channel.createMessageCollector(filter, { 
+			time: timeout, max: amount 
 		});
 
-		collector.on('end', async collected => {
+		collector.once('end', async collected => {
 			return collected.first();
 		});
 	}
