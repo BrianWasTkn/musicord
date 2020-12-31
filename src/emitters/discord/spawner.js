@@ -80,6 +80,7 @@ module.exports = class DiscordListener extends Listener {
 	*/
 	async exec(message) {
 		if (message.author.bot || message.channel.type === 'dm') return;
+		const queue = this.client.lavaManager.spawnQueues;
 		const { channel } = message;
 		const { 
 			chances, rateLimit, time, max, rewards,
@@ -113,10 +114,9 @@ module.exports = class DiscordListener extends Listener {
 		});
 	}
 
-	_pickSpawn() {
+	pickRandom() {
 		const spawns = readdirSync(join(__dirname, '..', '..', 'spawns'));
 		const spawn = require(join(__dirname, '..', '..', 'spawns', this.client.util.random('arr', spawns)));
-		const queue = this.client.lavaManager.spawnQueues;
-		return { ...spawn, queue };
+		return spawn;
 	}
 }
