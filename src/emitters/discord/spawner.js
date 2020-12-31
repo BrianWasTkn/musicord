@@ -82,11 +82,12 @@ module.exports = class DiscordListener extends Listener {
 		if (message.author.bot || message.channel.type === 'dm') return;
 		const queue = this.client.lavaManager.spawnQueues;
 		const { channel } = message;
+		const spawn = this.pickRandom();
 		const { 
 			chances, rateLimit, time, max, rewards,
 			emoji, eventType, title, description,
 			strings, enabled, maxEntries
-		} = this.pickRandom();
+		} = spawn;
 
 		// Scenarios
 		if (!enabled) return;
