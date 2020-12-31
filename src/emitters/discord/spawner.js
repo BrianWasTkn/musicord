@@ -45,13 +45,6 @@ module.exports = class DiscordListener extends Listener {
 			const verbs = ['obtained', 'grabbed', 'magiked', 'won', 'procured'];
 			const verb = this.client.util.random('arr', verbs);
 
-			collector.channel.guild.channels.cache.get('791659327148261406').send({ embed: {
-				author: { name: `Results for '${spawn.title}' event` },
-				description: results.join('\n'),
-				color: 'RANDOM',
-				footer: { text: `From: ${channel.name}` }
-			}}).catch(() => {});
-
 			const promises = [], results = [];
 			c.array().forEach(m => {
 				results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
@@ -61,6 +54,13 @@ module.exports = class DiscordListener extends Listener {
 					`Please gather **5 payouts** first and claim it in our payouts channel.`
 				].join('\n')).catch(() => {}));
 			});
+
+			collector.channel.guild.channels.cache.get('791659327148261406').send({ embed: {
+				author: { name: `Results for '${spawn.title}' event` },
+				description: results.join('\n'),
+				color: 'RANDOM',
+				footer: { text: `From: ${channel.name}` }
+			}}).catch(() => {});
 
 			await Promise.all(promises);
 			collector.channel.send({ embed: {
