@@ -22,7 +22,7 @@ module.exports = class DiscordListener extends Listener {
 	}) {
 		const entries = new Collection();
 		const filter = m => !entries.has(m.author.id);
-		const collector = await channel.createMessageCollector(filter, { max: maxEntries, timeout: time });
+		const collector = await channel.createMessageCollector(filter, { max: maxEntries, time });
 		const { min, max } = spawn.rewards;
 
 		collector.on('collect', async m => {
