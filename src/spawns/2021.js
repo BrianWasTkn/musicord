@@ -1,3 +1,7 @@
+function inc(amount, multiplier) {
+	return amount * Math.floor(Math.random() * multiplier);
+}
+
 module.exports = {
 	// Odds
 	chances: 25,
@@ -9,7 +13,7 @@ module.exports = {
 	max: 5,
 	// Rewards
 	rewards: {
-		min: 21000, 
+		min: 210000,
 		max: 210000
 	},
 	// Visuals

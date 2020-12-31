@@ -38,7 +38,7 @@ module.exports = class DiscordListener extends Listener {
 		});
 
 		collector.on('end', async c => {
-			await event.edit(`${event.content}\n\n**<:memerRed:729863510716317776> `This event has expired.`**`);
+			await event.edit(`${event.content}\n\n**<:memerRed:729863510716317776> \`This event has expired.\`**`);
 			if (!c.size) return collector.channel.send('**<:memerRed:729863510716317776> No one got the event.**');
 			const coinObj = { min: min / 1000, max: max / 1000 };
 			const coins = this.client.util.random('num', coinObj) * 1000;
