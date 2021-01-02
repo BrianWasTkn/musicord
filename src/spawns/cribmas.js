@@ -5,8 +5,8 @@ exports.config = {
 	timeout: 30000,
 	entries: 1,
 	rewards: {
-		min: 50000,
-		max: 100000
+		min: 10000,
+		max: 20000
 	} 
 }
 

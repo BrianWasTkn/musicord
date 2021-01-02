@@ -6,7 +6,7 @@ exports.config = {
 	entries: 5,
 	rewards: {
 		min: 1000,
-		max: 10000
+		max: 5000
 	} 
 }
 
