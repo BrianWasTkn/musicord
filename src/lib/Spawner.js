@@ -78,6 +78,7 @@ class Spawner {
 			});
 
 			collector.on('collect', async msg => {
+                                answered.set(msg.author.id, true) 
 				if (collector.collected.first().id === msg.id) {
 					msg.channel.send(`\`${msg.author.username}\` got it first!`);
 				} else {
