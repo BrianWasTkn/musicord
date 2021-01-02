@@ -29,10 +29,8 @@ class Spawner {
 
 	checkSpawn(channel) {
 		const { categories, blChannels } = this.client.config.spawn;
-		const { odds } = this.config;
 
 		if (this.queue.has(channel.id)) return false;
-		if (Math.random() * odds < 100 - odds) return false;
 		if (!categories.includes(channel.parentID)) return false;
 		if (blChannels.includes(channel.id)) return false;
 		return true;

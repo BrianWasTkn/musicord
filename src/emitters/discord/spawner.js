@@ -14,11 +14,17 @@ module.exports = class Lava extends Listener {
 
 	async exec(message) {
 		if (message.author.bot || message.channel.type === 'dm') return;
-		const spawner = this.client.util.random('arr', this.client.spawners.array());
-		if (spawner.queue.has(message.channel.id)) return;
-		
-		const results = await spawner.run(message);
-		if (results) await message.channel.send({ embed: results });
-		else return;
+		// Loop through all spawns and find 
+		// a spawn that hit the odds to run.
+		this.client.spawners.array().forEach(async spawner => {
+			const { queue, config } = spawner;
+			if (Math.random() * config.odds < 100 - config.odds) {
+				continue;
+			} else {
+				const results = await spawner.run(message);
+				if (results) return await message.channel.send({ embed: results });
+				else return;
+			}
+		});
 	}
 }
