@@ -18,7 +18,7 @@ module.exports = class Lava extends Listener {
 		const { queue, config } = spawner;
 		if (queue.has(message.channel.id)) return;
 		
-		if (Math.random() * config.odds >= 100 - config.odds) {
+		if (Math.random() * 100 >= 100 - config.odds) {
 			const results = await spawner.run(message);
 			if (results) await message.channel.send({ embed: results });
 			else return;
