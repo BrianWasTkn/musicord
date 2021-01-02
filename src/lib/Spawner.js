@@ -39,7 +39,7 @@ class Spawner {
 	runCooldown(channel) {
 		const rateLimit = this.config.cooldown || this.client.config.spawn.rateLimit;
 		this.client.setTimeout(() => {
-			this.queue.delete(channel.id);
+			return this.queue.delete(channel.id);
 		}, rateLimit * 60 * 1000);
 	}
 
