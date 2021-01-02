@@ -1,9 +1,4 @@
 const { Listener } = require('discord-akairo');
-const { Collection } = require('discord.js');
-const { readdirSync } = require('fs');
-const { join } = require('path');
-
-const Spawner = require('../../lib/Spawner.js');
 
 /**
  * Discord Message event
@@ -18,13 +13,13 @@ module.exports = class Lava extends Listener {
 	}
 
 	async exec(message) {
-		const spawns = readdirSync(join(process.cwd(), 'src', 'spawns'));
-		const { config, visuals } = require(join(process.cwd(), 'src', 'spawns', this.client.util.random('arr', spawns)));
+		if (message.author.bot || message.channel.type === 'dm') return;
+		// const spawner = this.client.util.random('arr', this.client.spawners.get('0'));
+		const spawner = this.client.spawners.get('0');
+		if (spawner.queue.has(message.channel.id)) return;
 		
-		const spawn = new Spawner(
-			this.client, join(process.cwd(), 'src', 'spawns'), config, visuals
-		);
-
-		await spawn.exec(message);
+		const results = await spawner.run(message);
+		if (results) await message.channel.send({ embed: results });
+		else return;
 	}
 }

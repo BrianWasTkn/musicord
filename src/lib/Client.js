@@ -3,9 +3,15 @@ const {
 	ListenerHandler,
 	CommandHandler 
 } = require('discord-akairo');
+const {
+  Collection
+} = require('discord.js');
 const { 
   join 
 } = require('path');
+const { 
+  readdirSync 
+} = require('fs');
 const { 
 	config 
 } = require('../config.js');
@@ -40,7 +46,17 @@ module.exports = class LavaClient extends AkairoClient {
 
     this.lavaManager = new Manager(this);
 
+    this.spawners = new Collection();
+
     this.config = config;
+  }
+
+  importSpawners() {
+    const spawns = readdirSync(join(__dirname, '..', 'spawns'));
+    spawns.forEach((s, i) => {
+      const { config, visuals } = require(join(__dirname, '..', 'spawns', s));
+      this.spawners.set(i.toString(), new Spawner(this, config, visuals));
+    });
   }
 
   loadEmitters() {
@@ -51,6 +67,7 @@ module.exports = class LavaClient extends AkairoClient {
 
   async login(token) {
   	this.loadEmitters();
+    this.importSpawners();
   	this.commandHandler.loadAll();
   	this.commandHandler.useListenerHandler(this.listenerHandler);
   	this.listenerHandler.loadAll();

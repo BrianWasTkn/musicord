@@ -1,6 +1,6 @@
 exports.config = {
-	odds: 10,
-	cooldown: 5,
+	odds: 14,
+	cooldown: 1,
 	enabled: true,
 	timeout: 10000,
 	entries: 3,
@@ -11,7 +11,7 @@ exports.config = {
 }
 
 exports.visuals = {
-	emoji: '<:memerGold:753138901169995797>',
+	emoji: '<:memerGreen:729863510296887398>',
 	type: 'SUPER',
 	title: 'Get Coinified',
 	description: 'Do you want coins?',

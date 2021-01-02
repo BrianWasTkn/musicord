@@ -1,6 +1,6 @@
 exports.config = {
-	odds: 40,
-	cooldown: 15,
+	odds: 21,
+	cooldown: 21,
 	enabled: true,
 	timeout: 10000,
 	entries: 5,
@@ -11,7 +11,7 @@ exports.config = {
 }
 
 exports.visuals = {
-	emoji: '<:memerGold:753138901169995797>',
+	emoji: '<:memerBlue:729863510330310727>',
 	type: 'COMMON',
 	title: 'It\'s 2021',
 	description: 'Happy New Years!',

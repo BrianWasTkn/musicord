@@ -1,6 +1,6 @@
 exports.config = {
 	odds: 25,
-	cooldown: 5,
+	cooldown: 30,
 	enabled: true,
 	timeout: 5000,
 	entries: 1,
@@ -12,7 +12,7 @@ exports.config = {
 
 exports.visuals = {
 	emoji: '<:memerGold:753138901169995797>',
-	type: 'SUPER	',
+	type: 'GODLY',
 	title: 'Gold Doubloon',
 	description: 'wow a very rare event themks',
 	strings: [
