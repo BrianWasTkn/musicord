@@ -1,6 +1,6 @@
 exports.config = {
 	odds: 25,
-	cooldown: 10,
+	cooldown: 5,
 	enabled: true,
 	timeout: 5000,
 	entries: 1,
