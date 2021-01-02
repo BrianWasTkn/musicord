@@ -92,7 +92,7 @@ class Spawner {
 				].join('\n'));
 
 				if (!collected.size) {
-					resolve({
+					return resolve({
 						description: '**<:memerRed:729863510716317776> No one got the event.**',
 						color: 'RED'
 					});
@@ -122,7 +122,7 @@ class Spawner {
 					footer: { text: `From: ${collector.channel.name}` }
 				}}).catch(() => {});
 
-				resolve({
+				return resolve({
 					author: { name: `Results for '${title}' event` },
 					description: results.join('\n'),
 					color: 'GOLD',
