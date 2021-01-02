@@ -54,8 +54,9 @@ module.exports = class LavaClient extends AkairoClient {
   importSpawners() {
     const spawns = readdirSync(join(__dirname, '..', 'spawns'));
     spawns.forEach((s, i) => {
-      const { config, visuals } = require(join(__dirname, '..', 'spawns', s));
-      this.spawners.set(i.toString(), new Spawner(this, config, visuals));
+      const spawn = require(join(__dirname, '..', 'spawns', s));
+      this.spawners.set(i.toString(), new Spawner(this, spawn.config, spawn.visuals));
+      this.util.log(spawn.constructor.name, 'main', `Spawner "${spawn.visuals.title}" loaded.`)
     });
   }
 
