@@ -20,7 +20,7 @@ export class Utils extends ClientUtil implements LavaUtils {
 		switch (type) {
 			case 'num':
 				const [max, min] = entries;
-				return Math.floor(Math.random() * (max - min + 1) - min);
+				return Math.floor(Math.random() * (max - min + 1) + min);
 				break;
 			case 'arr':
 				return entries[Math.floor(Math.random() * entries?.length)];
