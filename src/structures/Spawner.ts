@@ -1,4 +1,4 @@
-import { Collection, Snowflake, Message, MessageEmbed, Guild } from 'discord.js'
+import { Collection, Snowflake, Message, MessageEmbed, Guild, CollectorFilter } from 'discord.js'
 import { SpawnVisuals, SpawnConfig } from '../typings'
 import { LavaClient } from './LavaClient'
 
@@ -47,7 +47,7 @@ export class Spawner {
 	}
 
 	private runCooldown(channel: any): void {
-		const rateLimit = this.config.cooldown || this.client.config.spawn.rateLimit;
+		const rateLimit: number = this.config.cooldown || this.client.config.spawn.rateLimit;
 		this.client.setTimeout(() => {
 			this.queue.delete(channel.id);
 		}, rateLimit * 60 * 1000);
@@ -58,15 +58,15 @@ export class Spawner {
 		if (!(this.checkSpawn(message.channel))) return;
 
 		queue.set(message.channel.id, message.channel);
-		const event = await this.spawnMessage(message.channel);
-		const results = await this.collectMessages(event, message.channel, message.guild);
+		const event: Message = await this.spawnMessage(message.channel);
+		const results: MessageEmbed = await this.collectMessages(event, message.channel, message.guild);
 		this.runCooldown(message.channel);
 		return results;
 	}
 
 	public async spawnMessage(channel: any): Promise<Message> {
 		const { emoji, type, title, description } = this.spawn;
-		const event = await channel.send(`**${emoji} \`${type} EVENT WOO HOO!\`**\n**${title}**\n${description}`);
+		const event: Message = await channel.send(`**${emoji} \`${type} EVENT WOO HOO!\`**\n**${title}**\n${description}`);
 		return event;
 	}
 
@@ -74,11 +74,11 @@ export class Spawner {
 		return new Promise(async resolve => {
 			const { entries, timeout, rewards } = this.config;
 			const { strings, emoji, title } = this.spawn;
-			const answered = new Collection();
-			const string = this.client.util.random('arr', strings);
+			const answered: Collection<string, boolean> = new Collection();
+			const string: string = this.client.utils.random('arr', strings);
 
 			await channel.send(`Type \`${string}\``);
-			const filter = (m: Message) => {
+			const filter: CollectorFilter = (m: Message) => {
 				return m.content.toLowerCase() === string.toLowerCase()
 				&& !answered.has(m.author.id);
 			}, collector = event.channel.createMessageCollector(filter, {
@@ -86,6 +86,7 @@ export class Spawner {
 			});
 
 			collector.on('collect', async (msg: Message) => {
+				answered.set(msg.author.id, true);
 				if (collector.collected.first().id === msg.id) {
 					msg.channel.send(`\`${msg.author.username}\` got it first!`);
 				} else {
@@ -107,10 +108,11 @@ export class Spawner {
 				}
 
 				const { min, max } = rewards;
-				const coins = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;
-				const verbs = ['obtained', 'grabbed', 'magiked', 'won', 'procured'];
-				const verb = this.client.util.random('arr', verbs);
-				const promises = [], results = [];
+				const coins: number = this.client.utils.random('num', [min / 1000, max / 1000]) * 1000;
+				const verbs: string[] = ['obtained', 'grabbed', 'magiked', 'won', 'procured'];
+				const verb: string = this.client.utils.random('arr', verbs);
+				const promises: Promise<any>[] = []
+				const results: string[] = [];
 
 				collected.array().forEach((m: Message): void => {
 					results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);

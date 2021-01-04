@@ -13,7 +13,7 @@ export class LavaClient extends AkairoClient {
 	public commandHandler: CommandHandler;
 	public spawners: Collection<string, Spawner>;
 	public config: Config;
-	public Util: Util;
+	public utils: Util;
 }
 
 export class Spawner {
@@ -32,7 +32,7 @@ export class Spawner {
 export class Util extends ClientUtil {
 	constructor(client: LavaClient);
 	public random(type: RandomType, entries: any[]): any;
-	public console(struct: string, type: ConsoleType, _: string, err?: Error): void;
+	public log(struct: string, type: ConsoleType, _: string, err?: Error): void;
 }
 
 export interface Config {

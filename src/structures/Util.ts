@@ -1,10 +1,15 @@
-import { ClientUtil } from 'discord-akairo'
 import { LavaClient } from './LavaClient'
 import chalk from 'chalk'
+import moment from 'moment'
 
-export class Util extends ClientUtil {
+export class Util {
+	public client: LavaClient;
 	public constructor(client: LavaClient) {
-		super(client);
+		/**
+		 * The Lava Client
+		 * @type {LavaClient}
+		*/
+		this.client = client;
 	}
 
 	public random(type: string, entries: any[]): any {
@@ -19,20 +24,23 @@ export class Util extends ClientUtil {
 		}
 	}
 
-	public console(struct: string, type: string, _: string, err?: Error): void {
+	public log(struct: string, type: string, _: string, err?: Error): void {
+		const stamp = moment().format('HH:mm:ss');
 		switch (type) {
 			case 'main':
 				console.log(
-					chalk.cyanBright(struct), chalk.whiteBright('=>'), chalk.yellowBright(_)
+					chalk.whiteBright(`[${stamp}]`), chalk.cyanBright(struct), 
+					chalk.whiteBright('=>'), chalk.yellowBright(_)
 				);
 				break;
 			case 'error':
 				console.log(
-					chalk.redBright(struct), chalk.whiteBright('=>'), chalk.redBright(_), err
+					chalk.whiteBright(`[${stamp}]`), chalk.redBright(struct), 
+					chalk.whiteBright('=>'), chalk.redBright(_), err
 				);
-			break;
+				break;
 			default:
-				this.console(struct, 'main', _);
+				this.log(struct, 'main', _);
 				break;
 		}
 	}

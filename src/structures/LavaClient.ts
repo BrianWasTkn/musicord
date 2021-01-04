@@ -1,7 +1,8 @@
-import { AkairoClient, ListenerHandler, CommandHandler, Command } from 'discord-akairo'
+import { AkairoClient, ListenerHandler, CommandHandler, Command, Listener } from 'discord-akairo'
 import { Collection, Message, Role } from 'discord.js'
 import { join } from 'path'
 import { readdirSync } from 'fs'
+import chalk from 'chalk'
 
 import { Spawner } from './Spawner'
 import { Util } from './Util'
@@ -12,9 +13,9 @@ import { Config } from '../typings'
  * @exports @class LavaClient @extends AkairoClient
 */
 export class LavaClient extends AkairoClient {
-	public config: Config;
-	public util: Util;
 	public spawners: Collection<number, Spawner>;
+	public config: Config;
+	public utils: Util;
 	public listenerHandler: ListenerHandler;	
 	public commandHandler: CommandHandler;
 	public constructor(config: Config) {
@@ -24,9 +25,14 @@ export class LavaClient extends AkairoClient {
 			disableMentions: 'everyone'
 		});
 
+		this.spawners = new Collection();
+		this.config = config;
+		this.utils = new Util(this);
+
 		this.listenerHandler = new ListenerHandler(this, {
 			directory: join(__dirname, '..', 'emitters')
 		});
+
 		this.commandHandler = new CommandHandler(this, {
 			directory: join(__dirname, '..', 'commands'),
 			prefix: config.prefixes,
@@ -51,10 +57,6 @@ export class LavaClient extends AkairoClient {
 				return member.roles.cache.has(staff.id);
 			}
 		});
-
-		this.spawners = new Collection();
-		this.config = config;
-		this.util = new Util(this);
 	}
 
 	/**
@@ -66,7 +68,7 @@ export class LavaClient extends AkairoClient {
 		spawns.forEach((s: string) => {
 			const { config, visuals } = require(join(__dirname, '..', 'spawns', s));
 			this.spawners.set(visuals.title, new Spawner(this, config, visuals));
-			this.util.console('Spawner', 'main', `Spawner "${visuals.title}" loaded.`);
+			this.utils.log('Spawner', 'main', `Spawner ${chalk.cyanBright(visuals.title)} loaded.`);
 		});
 	}
 
@@ -76,13 +78,23 @@ export class LavaClient extends AkairoClient {
 	*/
 	private async build(): Promise<void> {
 		this.importSpawners();
-		this.commandHandler.loadAll();
 		this.commandHandler.useListenerHandler(this.listenerHandler);
 		this.listenerHandler.setEmitters({
 			commandHandler: this.commandHandler,
 			listenerHandler: this.listenerHandler,
 			process
 		});
+
+		this.listenerHandler.on('load', (_: Listener, isReload: boolean): void => {
+			this.utils.log('Emitter', 'main', `Emitter ${chalk.cyanBright(_.id)} loaded.`);
+		});
+
+		this.commandHandler.on('load', (_: Command, isReload: boolean): void => {
+			this.utils.log('Command', 'main', `Command ${chalk.cyanBright(_.id)} loaded.`);
+		});
+
+		this.listenerHandler.loadAll();
+		this.commandHandler.loadAll();
 	}
 
 	/**
