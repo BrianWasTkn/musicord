@@ -1,0 +1,19 @@
+{
+	"exclude": ["node_modules"],
+	// "include": ["source/**/*"],
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es2018",
+		"outDir": "build",
+		"resolveJsonModule": true,
+		"sourceMap": false,
+		"inlineSourceMap": false,
+		"inlineSources": false,
+		"incremental": true,
+		"esModuleInterop": true,
+		"noImplicitAny": false,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"typeRoots": [".d.ts", "./node_modules/@types"]
+	}
+}
