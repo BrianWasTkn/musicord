@@ -1,10 +1,14 @@
-import { LavaClient } from './LavaClient'
+import { 
+	LavaClient, LavaUtils,
+	RandomType, ClientUtil
+ } from 'discord-akairo'
 import chalk from 'chalk'
 import moment from 'moment'
 
-export class Util {
+export class Utils extends ClientUtil implements LavaUtils {
 	public client: LavaClient;
 	public constructor(client: LavaClient) {
+		super(client);
 		/**
 		 * The Lava Client
 		 * @type {LavaClient}
@@ -12,7 +16,7 @@ export class Util {
 		this.client = client;
 	}
 
-	public random(type: string, entries: any[]): any {
+	public random(type: RandomType, entries: any[]): any {
 		switch (type) {
 			case 'num':
 				const [max, min] = entries;

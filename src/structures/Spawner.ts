@@ -1,12 +1,17 @@
-import { Collection, Snowflake, Message, MessageEmbed, Guild, CollectorFilter } from 'discord.js'
-import { SpawnVisuals, SpawnConfig } from '../typings'
-import { LavaClient } from './LavaClient'
+import { 
+	Collection, Snowflake, Message, Guild, 
+	CollectorFilter, MessageEmbed
+} from 'discord.js'
+import { 
+	SpawnVisuals, SpawnConfig, 
+	LavaSpawner, LavaClient 
+} from 'discord-akairo'
 
-export class Spawner {
+export class Spawner implements LavaSpawner {
 	public queue: Collection<Snowflake, any>;
 	public spawn: SpawnVisuals;
 	public config: SpawnConfig;
-	public client: LavaClient
+	public client: LavaClient;
 	public constructor(
 		client: LavaClient, 
 		config: SpawnConfig,
@@ -37,7 +42,7 @@ export class Spawner {
 		this.client = client;
 	}
 
-	private checkSpawn(channel: any): boolean {
+	public checkSpawn(channel: any): boolean {
 		const { categories, blChannels } = this.client.config.spawn;
 
 		if (this.queue.has(channel.id)) return false;
@@ -46,7 +51,7 @@ export class Spawner {
 		return true;
 	}
 
-	private runCooldown(channel: any): void {
+	public runCooldown(channel: any): void {
 		const rateLimit: number = this.config.cooldown || this.client.config.spawn.rateLimit;
 		this.client.setTimeout(() => {
 			this.queue.delete(channel.id);
@@ -70,7 +75,7 @@ export class Spawner {
 		return event;
 	}
 
-	private async collectMessages(event: Message, channel: any, guild: Guild): Promise<any> {
+	public async collectMessages(event: Message, channel: any, guild: Guild): Promise<any> {
 		return new Promise(async resolve => {
 			const { entries, timeout, rewards } = this.config;
 			const { strings, emoji, title } = this.spawn;

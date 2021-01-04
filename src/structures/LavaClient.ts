@@ -1,21 +1,30 @@
-import { AkairoClient, ListenerHandler, CommandHandler, Command, Listener } from 'discord-akairo'
-import { Collection, Message, Role } from 'discord.js'
+import { 
+	AkairoClient, ListenerHandler, CommandHandler, Config,
+	LavaClient as ClientLava, LavaCommand, LavaListener
+} from 'discord-akairo'
+import { 
+	Collection, Message, Role, 
+	GuildChannel 
+} from 'discord.js'
+import {
+	Spawner
+} from './Spawner'
+import {
+	Utils
+} from './Util'
+
 import { join } from 'path'
 import { readdirSync } from 'fs'
 import chalk from 'chalk'
-
-import { Spawner } from './Spawner'
-import { Util } from './Util'
-import { Config } from '../typings'
-
 /**
  * Extends the instance of AkairoClient
  * @exports @class LavaClient @extends AkairoClient
 */
-export class LavaClient extends AkairoClient {
-	public spawners: Collection<number, Spawner>;
+export class LavaClient extends AkairoClient implements ClientLava {
+	public spawners: Collection<string, Spawner>;
+	public spawns: Collection<string, GuildChannel>;
 	public config: Config;
-	public utils: Util;
+	public utils: Utils;
 	public listenerHandler: ListenerHandler;	
 	public commandHandler: CommandHandler;
 	public constructor(config: Config) {
@@ -26,8 +35,9 @@ export class LavaClient extends AkairoClient {
 		});
 
 		this.spawners = new Collection();
+		this.spawns = new Collection();
 		this.config = config;
-		this.utils = new Util(this);
+		this.utils = new Utils(this);
 
 		this.listenerHandler = new ListenerHandler(this, {
 			directory: join(__dirname, '..', 'emitters')
@@ -40,18 +50,18 @@ export class LavaClient extends AkairoClient {
 			defaultCooldown: 1500,
 			allowMention: true,
 			handleEdits: true,
-			ignorePermissions: (_: Message, cmd: Command): boolean => {
+			ignorePermissions: (_: Message, cmd: LavaCommand): boolean => {
 				const { member, guild } = _;
 				const staff = guild.roles.cache.find((r: Role): boolean => {
-					return r.name.toLowerCase().includes('staff')
+					return r.name.toLowerCase().includes('staff');
 				});
 
 				return member.roles.cache.has(staff.id);
 			},
-			ignoreCooldown: (_: Message, cmd: Command): boolean => {
+			ignoreCooldown: (_: Message, cmd: LavaCommand): boolean => {
 				const { member, guild } = _;
 				const staff = guild.roles.cache.find((r: Role): boolean => {
-					return r.name.toLowerCase().includes('staff')
+					return r.name.toLowerCase().includes('staff');
 				});
 
 				return member.roles.cache.has(staff.id);
@@ -74,7 +84,7 @@ export class LavaClient extends AkairoClient {
 
 	/**
 	 * Builds all listeners and commands
-	 * @returns {Promise<void>}
+	 * @private @returns {Promise<void>}
 	*/
 	private async build(): Promise<void> {
 		this.importSpawners();
@@ -85,11 +95,11 @@ export class LavaClient extends AkairoClient {
 			process
 		});
 
-		this.listenerHandler.on('load', (_: Listener, isReload: boolean): void => {
+		this.listenerHandler.on('load', (_: LavaListener, isReload: boolean): void => {
 			this.utils.log('Emitter', 'main', `Emitter ${chalk.cyanBright(_.id)} loaded.`);
 		});
 
-		this.commandHandler.on('load', (_: Command, isReload: boolean): void => {
+		this.commandHandler.on('load', (_: LavaCommand, isReload: boolean): void => {
 			this.utils.log('Command', 'main', `Command ${chalk.cyanBright(_.id)} loaded.`);
 		});
 

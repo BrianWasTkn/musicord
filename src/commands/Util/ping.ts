@@ -1,7 +1,8 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { Command, CommandOptions } from 'discord-akairo'
+import { LavaCommand, LavaClient, Command } from 'discord-akairo'
 
-export default class Util extends Command {
+export default class Util extends Command implements LavaCommand {
+  public client: LavaClient;
   public constructor() {
     super('ping', {
       aliases: ['ping', 'pong'],
@@ -17,8 +18,8 @@ export default class Util extends Command {
       color: 'ORANGE',
       description: [
         `**Shard ID:** ${id}`,
-        `**Latency:** \`${ping}ms\`**`,
-        `**Websocket:** \`${client.ws.ping}ms\`**`
+        `**Latency:** \`${ping}ms\``,
+        `**Websocket:** \`${client.ws.ping}ms\``
       ].join('\n'),
       timestamp: Date.now(),
       footer: {

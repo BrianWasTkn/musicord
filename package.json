@@ -7,8 +7,7 @@
     "github": "https://github.com/BrianWasTkn"
   },
   "scripts": {
-    "build": "rimraf ./build && npm run compile",
-    "compile": "tsc --project tsconfig.json && npm run start",
+    "build": "rimraf ./build && tsc --project tsconfig.json",
     "start": "node ./build/lava"
   },
   "keywords": [

@@ -1,8 +1,9 @@
-import { Listener } from 'discord-akairo'
+import { LavaClient, LavaListener, Listener } from 'discord-akairo'
 import chalk from 'chalk'
 import moment from 'moment'
 
-export default class Discord extends Listener {
+export default class Discord extends Listener implements LavaListener {
+	public client: LavaClient;
 	public constructor() {
 		super('ready', {
 			emitter: 'client',
@@ -11,13 +12,6 @@ export default class Discord extends Listener {
 	}
 
 	public async exec(): Promise<void> {
-		const stamp = moment().format('HH:mm:ss');
-		console.log(
-			chalk.whiteBright(`[${stamp}]`),
-			chalk.cyanBright('Discord'),
-			chalk.whiteBright('=>'), chalk.yellowBright(
-				`${this.client.user.tag} logged in.`
-			)
-		)
+		return this.client.utils.log('Discord', 'main', `${this.client.user.tag} has flown within Discord.`);
 	}
 }

@@ -1,4 +1,4 @@
-import { SpawnConfig, SpawnVisuals } from '../typings'
+import { SpawnConfig, SpawnVisuals } from 'discord-akairo'
 
 export const config: SpawnConfig = {
 	odds: 5,
