@@ -8,7 +8,7 @@ module.exports = class Lava extends Listener {
 	constructor() {
 		super('spawner', {
 			emitter: 'client',
-			event: 'nothing'
+			event: 'message'
 		});
 	}
 
