@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { LavaClient } from './structures/LavaClient'
 import { config } from './config'
 
