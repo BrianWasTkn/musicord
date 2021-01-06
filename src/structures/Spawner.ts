@@ -110,7 +110,7 @@ export class Spawner implements LavaSpawner {
 				const coins: number = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;
 				const verbs: string[] = ['obtained', 'grabbed', 'magiked', 'won', 'procured'];
 				const verb: string = this.client.util.random('arr', verbs);
-				const promises: Promise<any>[] = []
+				const promises: Promise<any>[] = [];
 				const results: string[] = [];
 
 				collected.array().forEach((m: Message): void => {
@@ -123,7 +123,7 @@ export class Spawner implements LavaSpawner {
 				});
 
 				await Promise.all(promises);
-				const payouts: any = guild.channels.cache.get('791659327148261406');
+				const payouts: any = guild.channels.cache.get('791659327148261406') || collector.channel;
 				await payouts.send({ embed: {
 					author: { name: `Results for '${title}' event` },
 					description: results.join('\n'),

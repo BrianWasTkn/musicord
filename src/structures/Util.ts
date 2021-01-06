@@ -9,17 +9,12 @@ export class Utils extends ClientUtil implements LavaUtils {
 	public client: LavaClient;
 	public constructor(client: LavaClient) {
 		super(client);
-		/**
-		 * The Lava Client
-		 * @type {LavaClient}
-		*/
-		this.client = client;
 	}
 
 	public random(type: RandomType, entries: any[]): any {
 		switch (type) {
 			case 'num':
-				const [max, min] = entries;
+				const [min, max] = entries;
 				return Math.floor(Math.random() * (max - min + 1) + min);
 				break;
 			case 'arr':
@@ -47,5 +42,13 @@ export class Utils extends ClientUtil implements LavaUtils {
 				this.log(struct, 'main', _);
 				break;
 		}
+	}
+
+	public async sleep(ms): Promise<number> {
+		return new Promise((resolve: Function) => {
+			setTimeout(() => {
+				resolve(ms);
+			}, ms)
+		});
 	}
 }

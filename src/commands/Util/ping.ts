@@ -13,7 +13,20 @@ export default class Util extends Command implements LavaCommand {
   public async exec(_: Message): Promise<Message> {
     const { channel, client, guild } = _;
     const { id, ping } = guild.shard;
-    const embed = new MessageEmbed({
+    const embed: MessageEmbed = new MessageEmbed({
+      title: guild.name,
+      color: 'RED',
+      description: '**Status:** Poking...',
+      timestamp: Date.now(),
+      footer: {
+          iconURL: client.user.avatarURL({ dynamic: true }),
+          text: client.user.username
+      }
+    });
+
+    const msg: Message = await channel.send({ embed });
+    await this.client.util.sleep(3000);
+    return msg.edit({ embed: new MessageEmbed({
       title: guild.name,
       color: 'ORANGE',
       description: [
@@ -26,8 +39,6 @@ export default class Util extends Command implements LavaCommand {
           iconURL: client.user.avatarURL({ dynamic: true }),
           text: client.user.username
       }
-    });
-
-    return channel.send(embed);
+    })})
   }
 }

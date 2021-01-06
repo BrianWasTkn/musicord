@@ -32,6 +32,7 @@ declare module 'discord-akairo' {
 		constructor(client: LavaClient);
 		public random(type: RandomType, entries: any[]): any;
 		public log(struct: string, type: ConsoleType, _: string, err?: Error): void;
+		public sleep(ms: number): Promise<number>;
 	}
 
 	export class LavaSpawner {

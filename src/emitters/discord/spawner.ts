@@ -6,7 +6,7 @@ export default class Discord extends Listener implements LavaListener {
 	public constructor() {
 		super('spawner', {
 			emitter: 'client',
-			event: 'no'
+			event: 'message'
 		});
 	}
 
