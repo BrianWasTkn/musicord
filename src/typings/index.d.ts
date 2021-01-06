@@ -54,6 +54,8 @@ declare module 'discord-akairo' {
 		prefixes: string | string[],
 		owners: Snowflake | Snowflake[],
 		token: string,
+		mastery: object,
+		amari: object,
 		spawn: {
 			rateLimit: number,
 			blChannels: Snowflake[],
