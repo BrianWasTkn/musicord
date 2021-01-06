@@ -9,7 +9,7 @@ export default class Util extends Command implements LavaCommand {
       channel: 'guild',
       userPermissions: 'MANAGE_CHANNELS',
       args: [ 
-        { id: 'type', type: 'role' } 
+        { id: 'role', type: 'role' } 
       ]
     });
   }
