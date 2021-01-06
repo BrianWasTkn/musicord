@@ -12,6 +12,6 @@ export default class Discord extends Listener implements LavaListener {
 	}
 
 	public async exec(): Promise<void> {
-		return this.client.utils.log('Discord', 'main', `${this.client.user.tag} has flown within Discord.`);
+		return this.client.util.log('Discord', 'main', `${this.client.user.tag} has flown within Discord.`);
 	}
 }

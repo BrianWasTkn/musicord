@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { LavaCommand, LavaClient, Command } from 'discord-akairo'
+import { LavaClient, LavaCommand, Command } from 'discord-akairo'
 
 export default class Util extends Command implements LavaCommand {
   public client: LavaClient;

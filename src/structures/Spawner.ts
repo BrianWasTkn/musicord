@@ -18,12 +18,6 @@ export class Spawner implements LavaSpawner {
 		spawn: SpawnVisuals
 	) {
 		/**
-		 * The Queue
-		 * @type {Collection<Snowflake, any>}
-		*/
-		this.queue = new Collection();
-
-		/**
 		 * The Spawn Info
 		 * @type {SpawnVisuals}
 		*/
@@ -45,7 +39,7 @@ export class Spawner implements LavaSpawner {
 	public checkSpawn(channel: any): boolean {
 		const { categories, blChannels } = this.client.config.spawn;
 
-		if (this.queue.has(channel.id)) return false;
+		if (this.client.queue.has(channel.id)) return false;
 		if (!categories.includes(channel.parentID)) return false;
 		if (blChannels.includes(channel.id)) return false;
 		return true;
@@ -54,12 +48,12 @@ export class Spawner implements LavaSpawner {
 	public runCooldown(channel: any): void {
 		const rateLimit: number = this.config.cooldown || this.client.config.spawn.rateLimit;
 		this.client.setTimeout(() => {
-			this.queue.delete(channel.id);
+			this.client.queue.delete(channel.id);
 		}, rateLimit * 60 * 1000);
 	}
 
 	public async run(message: Message): Promise<MessageEmbed> {
-		const { queue } = this;
+		const { queue } = this.client;
 		if (!(this.checkSpawn(message.channel))) return;
 
 		queue.set(message.channel.id, message.channel);
@@ -80,7 +74,7 @@ export class Spawner implements LavaSpawner {
 			const { entries, timeout, rewards } = this.config;
 			const { strings, emoji, title } = this.spawn;
 			const answered: Collection<string, boolean> = new Collection();
-			const string: string = this.client.utils.random('arr', strings);
+			const string: string = this.client.util.random('arr', strings);
 
 			await channel.send(`Type \`${string}\``);
 			const filter: CollectorFilter = (m: Message) => {
@@ -113,9 +107,9 @@ export class Spawner implements LavaSpawner {
 				}
 
 				const { min, max } = rewards;
-				const coins: number = this.client.utils.random('num', [min / 1000, max / 1000]) * 1000;
+				const coins: number = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;
 				const verbs: string[] = ['obtained', 'grabbed', 'magiked', 'won', 'procured'];
-				const verb: string = this.client.utils.random('arr', verbs);
+				const verb: string = this.client.util.random('arr', verbs);
 				const promises: Promise<any>[] = []
 				const results: string[] = [];
 
