@@ -35,7 +35,7 @@ export const config = {
 	mastery: MASTERY_ROLES,
 	amari: AMARI_ROLES,
 	spawn: {
-		rateLimit: 15,
+		rateLimit: 60,
 		blChannels: [...[
 			'691594488103305216', '691595376524001290',
 			'692547222017015828', '694697159848886343',
