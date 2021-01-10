@@ -46,7 +46,7 @@ export class Spawner implements LavaSpawner {
 	}
 
 	public runCooldown(channel: any): void {
-		const rateLimit: number = this.config.cooldown || this.client.config.spawn.rateLimit;
+		const rateLimit: number = this.client.config.spawn.rateLimit || this.config.cooldown;
 		this.client.setTimeout(() => {
 			this.client.queue.delete(channel.id);
 		}, rateLimit * 60 * 1000);
