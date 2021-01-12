@@ -5,7 +5,7 @@ export const config: SpawnConfig = {
 	cooldown: 15,
 	enabled: true,
 	timeout: 5000,
-	entries: 5,
+	entries: 1,
 	rewards: {
 		min: 500000,
 		max: 2500000
@@ -16,9 +16,9 @@ export const visuals: SpawnVisuals = {
 	emoji: '<:memerBlue:729863510330310727>',
 	type: 'COMMON',
 	title: 'Financial Support',
-	description: 'Do you need some money?',
+	description: 'Do you need it?',
 	strings: [
-		'yes', 'mhm', 'i do', 'yep', 'lol okay',
-		'for heist pls', 'i ned money'
+		'im begging you', 'i wanna be a helicopter', 'sure lol why not',
+		'for my wallet pls kthx bye', 'i wanna be a millionaire so fricking bad'
 	]
 }
