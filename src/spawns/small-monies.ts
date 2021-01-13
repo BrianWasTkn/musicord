@@ -1,7 +1,7 @@
 import { SpawnConfig, SpawnVisuals } from 'discord-akairo'
 
 export const config: SpawnConfig = {
-	odds: 25,
+	odds: 3,
 	cooldown: 15,
 	enabled: true,
 	timeout: 10000,
