@@ -1,4 +1,17 @@
 
+import gamble from './configs/gamble'
+import lava from './configs/lava'
+import locks from './configs/locks'
+import spawn from './configs/spawn'
+
+export default {
+	gamble: { ...gamble },
+	bot: { ...lava },
+	heist: { ...locks },
+	spawn: { ...spawn },
+}
+
+/**
 // Crib Roles
 const MASTERY_ROLES = {
   'm1': '794834783582421032', 
@@ -35,6 +48,7 @@ export const config = {
 	mastery: MASTERY_ROLES,
 	amari: AMARI_ROLES,
 	spawn: {
+		enabled: false,
 		rateLimit: 15,
 		blChannels: [...[
 			'691594488103305216', '691595376524001290',
@@ -53,3 +67,4 @@ export const config = {
 		]
 	}
 }
+*/

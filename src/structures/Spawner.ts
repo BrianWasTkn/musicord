@@ -1,6 +1,6 @@
 import { 
-	Collection, Snowflake, Message, Guild, 
-	CollectorFilter, MessageEmbed
+	Collection, Snowflake, Message, Guild, GuildMember,
+	CollectorFilter, MessageEmbed, MessageCollector
 } from 'discord.js'
 import { 
 	SpawnVisuals, SpawnConfig, 
@@ -11,6 +11,7 @@ export class Spawner implements LavaSpawner {
 	public queue: Collection<Snowflake, any>;
 	public spawn: SpawnVisuals;
 	public config: SpawnConfig;
+	public answered: Collection<Snowflake, GuildMember>;
 	public client: LavaClient;
 	public constructor(
 		client: LavaClient, 
@@ -30,6 +31,12 @@ export class Spawner implements LavaSpawner {
 		this.config = config;
 
 		/**
+		 * The Spawn Answerees
+		 * @type {Collection<Snowflake, GuildMember>}
+	  */
+	  this.answered = new Collection();
+
+		/**
 		 * The Discord Client
 		 * @type {LavaClient}
 		*/
@@ -45,21 +52,21 @@ export class Spawner implements LavaSpawner {
 		return true;
 	}
 
-	public runCooldown(channel: any): void {
+	public runCooldown(channel: any): NodeJS.Timeout {
 		const rateLimit: number = this.config.cooldown || this.client.config.spawn.rateLimit;
-		this.client.setTimeout(() => {
+		return this.client.setTimeout(() => {
 			this.client.queue.delete(channel.id);
 		}, rateLimit * 60 * 1000);
 	}
 
-	public async run(message: Message): Promise<MessageEmbed> {
-		const { queue } = this.client;
-		if (!(this.checkSpawn(message.channel))) return;
+	public async run({ channel, guild }: Message): Promise<MessageEmbed> {
+		const check = this.checkSpawn(channel);
+		if (!check) return;
 
-		queue.set(message.channel.id, message.channel);
-		const event: Message = await this.spawnMessage(message.channel);
-		const results: MessageEmbed = await this.collectMessages(event, message.channel, message.guild);
-		this.runCooldown(message.channel);
+		this.client.queue.set(channel.id, channel);
+		const event: Message = await this.spawnMessage(channel);
+		const results: MessageEmbed = await this.collectMessages(event, channel, guild);
+		this.runCooldown(channel);
 		return results;
 	}
 
@@ -71,49 +78,47 @@ export class Spawner implements LavaSpawner {
 
 	public async collectMessages(event: Message, channel: any, guild: Guild): Promise<any> {
 		return new Promise(async resolve => {
+			// Destruct
 			const { entries, timeout, rewards } = this.config;
 			const { strings, emoji, title } = this.spawn;
-			const answered: Collection<string, boolean> = new Collection();
 			const string: string = this.client.util.random('arr', strings);
 
+			// Collectors
 			await channel.send(`Type \`${string}\``);
-			const filter: CollectorFilter = (m: Message) => {
-				return m.content.toLowerCase() === string.toLowerCase()
-				&& !answered.has(m.author.id);
-			}, collector = event.channel.createMessageCollector(filter, {
+			const filter: CollectorFilter = (m: Message): boolean => {
+				let contentMatch = m.content.toLocaleLowerCase() === string.toLocaleLowerCase();
+				return contentMatch && !this.answered.has(m.author.id);
+			};
+			const collector: MessageCollector = await event.channel.createMessageCollector(filter, {
 				max: entries, time: timeout
 			});
 
-			collector.on('collect', async (msg: Message) => {
-				answered.set(msg.author.id, true);
-				if (collector.collected.first().id === msg.id) {
-					msg.channel.send(`\`${msg.author.username}\` got it first!`);
+			// Handle Collect
+			collector.on('collect', async ({ 
+				author, member, id, channel, react 
+			}: Message) => {
+				this.answered.set(author.id, member);
+				if (collector.collected.first().id === id) {
+					await channel.send(`\`${author.username}\` got it first!`);
 				} else {
-					msg.react(emoji);
+					await react(emoji);
 				}
 			});
 
-			collector.on('end', async (collected: Collection<string, Message>) => {
-				await event.edit([
-					event.content + '\n',
-					`**<:memerRed:729863510716317776> ` + `\`This event has expired.\`**`,
-				].join('\n'));
-
-				if (!collected.size) {
-					return resolve({
-						description: '**<:memerRed:729863510716317776> No one got the event.**',
-						color: 'RED'
-					});
-				}
+			// Handle End
+			collector.on('end', async (collected: Collection<Snowflake, Message>) => {
+				await event.edit(`${event.content}\n\n**<:memerRed:729863510716317776> \`This event has expired.\`**`);
+				if (!collected.size) return resolve({ color: 'RED', description: '**<:memerRed:729863510716317776> No one got the event.**' });
 
 				const { min, max } = rewards;
-				const coins: number = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;
 				const verbs: string[] = ['obtained', 'grabbed', 'magiked', 'won', 'procured'];
 				const verb: string = this.client.util.random('arr', verbs);
 				const promises: Promise<any>[] = [];
 				const results: string[] = [];
 
+				// Loop through
 				collected.array().forEach((m: Message): void => {
+					const coins: number = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;
 					results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
 					promises.push(m.author.send([
 						`**${emoji} Congratulations!**`,
@@ -122,6 +127,7 @@ export class Spawner implements LavaSpawner {
 					].join('\n')).catch(() => {}));
 				});
 
+				// Stuff
 				await Promise.all(promises);
 				const payouts: any = guild.channels.cache.get('791659327148261406') || collector.channel;
 				await payouts.send({ embed: {
@@ -131,6 +137,7 @@ export class Spawner implements LavaSpawner {
 					footer: { text: `From: ${channel.name}` }
 				}}).catch(() => {});
 
+				// Resolve the resulting embed
 				return resolve({
 					author: { name: `Results for '${title}' event` },
 					description: results.join('\n'),

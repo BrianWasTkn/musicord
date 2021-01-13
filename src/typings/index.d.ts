@@ -16,8 +16,11 @@ declare module 'discord-akairo' {
 		commandHandler: CommandHandler;
 		spawners: Collection<string, LavaSpawner>;
 		queue: Collection<Snowflake, any>;
-		config: BotConfig;
+		config: any;
 		util: LavaUtils;
+		public fetchUser(userID: string): any;
+		public add(userID: string, amount: number, type: string): Promise<any>;
+		public deduct(userID: string, amount: number, type: string): Promise<any>;
 	}
 
 	export class LavaListener extends Listener {
@@ -48,21 +51,7 @@ declare module 'discord-akairo' {
 		public collectMessages(event: Message, channel: any, guild: Guild): Promise<any>;
 	}
 
-	// Interfaces
-	export interface BotConfig {
-		dev?: boolean,
-		prefixes: string | string[],
-		owners: Snowflake | Snowflake[],
-		token: string,
-		mastery: object,
-		amari: object,
-		spawn: {
-			rateLimit: number,
-			blChannels: Snowflake[],
-			categories: Snowflake[]
-		}
-	}
-
+	// interfaces
 	export interface SpawnConfig {
 		odds: number,
 		cooldown: number,

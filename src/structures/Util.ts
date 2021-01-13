@@ -11,14 +11,14 @@ export class Utils extends ClientUtil implements LavaUtils {
 		super(client);
 	}
 
-	public random(type: RandomType, entries: any[]): any {
+	public random(type: 'arr' | 'num', entries: any[]): any {
 		switch (type) {
 			case 'num':
 				const [min, max] = entries;
 				return Math.floor(Math.random() * (max - min + 1) + min);
 				break;
 			case 'arr':
-				return entries[Math.floor(Math.random() * entries?.length)];
+				return entries[Math.floor(Math.random() * entries.length)];
 				break;
 		}
 	}

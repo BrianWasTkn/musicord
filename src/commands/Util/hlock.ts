@@ -18,7 +18,7 @@ export default class Util extends Command implements LavaCommand {
     await _.delete();
     const { query }: { query: string } = args;
     const { channel }: { channel: any } = _;
-    const target = this.client.config.amari[query] || this.client.config.mastery[query];
+    const target = this.client.config.locks.amari[query] || this.client.config.locks.mastery[query];
     const role: Role = _.guild.roles.cache.get(target);
     if (!role) return;
 
