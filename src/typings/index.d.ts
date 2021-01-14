@@ -1,6 +1,6 @@
 import { 
 	Snowflake, Collection, Message, Guild, 
-	MessageEmbed, GuildChannel, GuildMember
+	MessageEmbed, GuildChannel, GuildMember,
 	EmojiResolvable 
 } from 'discord.js'
 import { 
