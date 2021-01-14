@@ -6,9 +6,7 @@ import {
 	SpawnVisuals, SpawnConfig, 
 	LavaSpawner, LavaClient 
 } from 'discord-akairo'
-import {
-	SpawnProfile
-} from '../models/SpawnProfile'
+import SpawnProfile from '../models/SpawnProfile'
 
 export class Spawner implements LavaSpawner {
 	public queue: Collection<Snowflake, User>;
