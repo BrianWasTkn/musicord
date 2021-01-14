@@ -118,7 +118,7 @@ export class Spawner implements LavaSpawner {
 				const results: string[] = [];
 
 				// Loop through
-				const promises: any[] = collected.array().map((m: Message) => {
+				const promises: any[] = collected.array().map(async (m: Message) => {
 					// Visual stuff
 					const coins: number = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;
 					results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
@@ -129,7 +129,7 @@ export class Spawner implements LavaSpawner {
 					].join('\n');
 
 					// DB
-					let toUpdate = await SpawnProfile.findOne({ userID: m.member.user.id });
+					let toUpdate = await this.client.db.spawns.fetch({ userID: m.member.user.id });
 					toUpdate.unpaid += coins;
 					toUpdate.eventsJoined += 1;
 
