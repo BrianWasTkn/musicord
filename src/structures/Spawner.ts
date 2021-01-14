@@ -62,7 +62,7 @@ export class Spawner implements LavaSpawner {
 	}
 
 	public async run({ channel, guild, member }: Message): Promise<MessageEmbed> {
-		const check = this.checkSpawn(member);
+		const check = this.checkSpawn({ channel, member });
 		if (!check) return;
 
 		this.client.queue.set(member.user.id, channel);
