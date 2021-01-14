@@ -1,6 +1,6 @@
 export default {
-	rateLimit: 30,
-	enabled: false,
+	rateLimit: 0.2,
+	enabled: true,
 	blacklisted: {
 		channels: [
 			'691594488103305216', '691595376524001290',
@@ -14,13 +14,14 @@ export default {
 	whitelisted: {
 		categories: [
 			// Dank Memer
-			'691595121866571776',
+			// '691595121866571776',
 			// Dank Donator
-			'791576124185378817',
+			// '791576124185378817',
 			// Public Chats
-			'691416705917780000',
+			// '691416705917780000',
 			// Priv Server
-			'724618509958774886'
+			// '724618509958774886'
+			'692516869328076841'
 		]
 	}
 }

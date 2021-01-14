@@ -44,17 +44,17 @@ export class Spawner implements LavaSpawner {
 	}
 
 	public checkSpawn(channel: any): boolean {
-		const { categories, blChannels } = this.client.config.spawn;
+		const { whitelisted, blacklisted } = this.client.config.spawn;
 
 		if (this.client.queue.has(channel.id)) return false;
-		if (!categories.includes(channel.parentID)) return false;
-		if (blChannels.includes(channel.id)) return false;
+		if (!whitelisted.categories.includes(channel.parentID)) return false;
+		if (blacklisted.channels.includes(channel.id)) return false;
 		return true;
 	}
 
-	public runCooldown(channel: any): NodeJS.Timeout {
-		const rateLimit: number = this.config.cooldown || this.client.config.spawn.rateLimit;
-		return this.client.setTimeout(() => {
+	public runCooldown(channel: any): void {
+		const rateLimit: number = this.client.config.spawn.rateLimit || this.config.cooldown;
+		this.client.setTimeout(() => {
 			this.client.queue.delete(channel.id);
 		}, rateLimit * 60 * 1000);
 	}
@@ -94,14 +94,12 @@ export class Spawner implements LavaSpawner {
 			});
 
 			// Handle Collect
-			collector.on('collect', async ({ 
-				author, member, id, channel, react 
-			}: Message) => {
-				this.answered.set(author.id, member);
-				if (collector.collected.first().id === id) {
-					await channel.send(`\`${author.username}\` got it first!`);
+			collector.on('collect', async (msg: Message) => {
+				this.answered.set(msg.author.id, msg.member);
+				if (collector.collected.first().id === msg.id) {
+					await msg.channel.send(`\`${msg.author.username}\` got it first!`);
 				} else {
-					await react(emoji);
+					await msg.react(emoji);
 				}
 			});
 
@@ -117,13 +115,15 @@ export class Spawner implements LavaSpawner {
 				const results: string[] = [];
 
 				// Loop through
-				collected.array().forEach((m: Message): void => {
+				collected.array().forEach(async (m: Message): Promise<void> => {
 					const coins: number = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;
 					results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
+					await this.client.db.spawns.add({ userID: m.author.id, amount: coins, type: 'unpaid' });
+					await this.client.db.spawns.add({ userID: m.author.id, amount: 1, type: 'eventsJoined' });
 					promises.push(m.author.send([
 						`**${emoji} Congratulations!**`,
 						`You ${verb} **${coins.toLocaleString()}** coins from the "${title}" event.`,
-						`Please gather **5 __unpaid__ payouts** first and send the overall total with a screenshot in our payouts channel.`
+						`**${coins.toLocaleString()}** coins has been added to your unpaid credits (use our \`lavas\` command).`
 					].join('\n')).catch(() => {}));
 				});
 

@@ -18,9 +18,7 @@ declare module 'discord-akairo' {
 		queue: Collection<Snowflake, any>;
 		config: any;
 		util: LavaUtils;
-		public fetchUser(userID: string): any;
-		public add(userID: string, amount: number, type: string): Promise<any>;
-		public deduct(userID: string, amount: number, type: string): Promise<any>;
+		db: DBInterface;
 	}
 
 	export class LavaListener extends Listener {
@@ -51,25 +49,75 @@ declare module 'discord-akairo' {
 		public collectMessages(event: Message, channel: any, guild: Guild): Promise<any>;
 	}
 
+	export class LavaDB {
+		public constructor(client: LavaClient);
+	}
+
+	export class SpawnDB extends LavaDB {
+		public constructor(client: LavaClient);
+		public _createProfile({ userID }: { userID: Snowflake }): Promise<any>;
+		public fetch({ userID }: { userID: Snowflake }): Promise<any>;
+		public add({ 
+			userID, amount, type  
+		}: { 
+			userID: Snowflake, 
+			amount: number,
+			type: 'paid' | 'unpaid' | 'eventsJoined' | 'cooldown'
+		}): Promise<any>;
+		public remove({ 
+			userID, amount, type  
+		}: { 
+			userID: Snowflake, 
+			amount: number,
+			type: 'paid' | 'unpaid' | 'eventsJoined' | 'cooldown'
+		}): Promise<any>;
+	}
+
+	export class CurrencyDB extends LavaDB {
+		public constructor(client: LavaClient);
+		public _createProfile({ userID }: { userID: Snowflake }): Promise<any>;
+		public fetch({ userID }: { userID: Snowflake }): Promise<any>;
+		public add({
+			userID, amount, type
+		}: {
+			userID: string, 
+			amount: number, 
+			type: 'pocket' | 'vault' | 'space'
+		}): Promise<any>;
+		public deduct({
+			userID, amount, type
+		}: {
+			userID: string, 
+			amount: number, 
+			type: 'pocket' | 'vault' | 'space'
+		}): Promise<any>;
+	}
+
 	// interfaces
+	export interface DBInterface {
+		db: LavaDB;
+		spawns: SpawnDB;
+		currency: CurrencyDB;
+	}
+
 	export interface SpawnConfig {
-		odds: number,
-		cooldown: number,
-		enabled: boolean,
-		timeout: number,
-		entries: number,
+		odds: number;
+		cooldown: number;
+		enabled: boolean;
+		timeout: number;
+		entries: number;
 		rewards: {
-			min: number,
-			max: number
+			min: number;
+			max: number;
 		}
 	}
 
 	export interface SpawnVisuals {
-		emoji: EmojiResolvable,
-		type: SpawnVisualsType,
-		title: string,
-		description: string,
-		strings: string[]
+		emoji: EmojiResolvable;
+		type: SpawnVisualsType;
+		title: string;
+		description: string;
+		strings: string[];
 	}
 
 	// Types

@@ -17,8 +17,8 @@ export default class Currency extends Command implements LavaCommand {
   public async exec(_: Message, args: any): Promise<Message> {
     const { minBet, maxBet, maxWin, maxPocket } = this.client.config.gamble;
     const { channel, member: { user } } = _;
-    let data = await this.client.fetchUser(user.id);
-    const { pocket, vault, space, multiplier } = data;
+    let data = await this.client.db.currency.fetch({ userID: user.id });
+    const { pocket, vault, space, multi } = data;
     let bet = args.amount;
 
     if (!bet) {
@@ -60,16 +60,18 @@ export default class Currency extends Command implements LavaCommand {
     if (userD > botD) {
       let winnings = Math.random() + 0.4;
       won = Math.round(bet * winnings);
-      won = won + Math.round(won * (multiplier / 100));
+      won = won + Math.round(won * (multi / 100));
       if (won > maxWin) won = maxWin;
-      data = await this.client.add(user.id, won, 'pocket');
+      data = await this.client.db.currency.add({ 
+        userID: user.id, amount: won, type: 'pocket'
+      });
       let percentWon = Math.round(won / bet * 100);
       return channel.send({ embed: {
         author: { name: `${user.username}'s winning gambling game` },
         color: 'GREEN',
         description: [
           `You won **${won.toLocaleString()}** coins.`,
-          `**Multiplier** ${multiplier}% | **Percent of bet won** ${percentWon}%\n`,
+          `**Multiplier** ${multi}% | **Percent of bet won** ${percentWon}%\n`,
           `You now have **${data.pocket.toLocaleString()}** coins.`
         ].join('\n'),
         fields: [
@@ -83,7 +85,9 @@ export default class Currency extends Command implements LavaCommand {
     // Ties
     if (userD === botD) {
       let lost = Math.round(bet / 4);
-      data = await this.client.deduct(user.id, lost, 'pocket');
+      data = await this.client.db.currency.deduct({ 
+        userID: user.id, amount: lost, type: 'pocket'
+      });
       return channel.send({ embed: {
         author: { name: `${user.username}'s tie gambling game` },
         color: 'YELLOW',
@@ -101,7 +105,9 @@ export default class Currency extends Command implements LavaCommand {
 
     // Lose 
     if (userD < botD) {
-      data = await this.client.deduct(user.id, bet, 'pocket');
+      data = await this.client.db.currency.deduct({ 
+        userID: user.id, amount: bet, type: 'pocket'
+      });
       return channel.send({ embed: {
         author: { name: `${user.username}'s losing gambling game` },
         color: 'RED',

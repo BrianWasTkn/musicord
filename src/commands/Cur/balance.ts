@@ -15,7 +15,7 @@ export default class Currency extends Command implements LavaCommand {
   public async exec(_: Message, args: any): Promise<Message> {
     const { channel, guild } = _;
     const user = args.member || _.member;
-    const { pocket, vault, space } = await this.client.fetchUser(user.id);
+    const { pocket, vault, space } = await this.client.db.currency.fetch({ userID: user.id });
     const embed: MessageEmbed = new MessageEmbed({
       title: `${user.user.username}'s balance`,
       color: 'RANDOM',

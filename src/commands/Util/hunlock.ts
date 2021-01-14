@@ -7,7 +7,7 @@ export default class Util extends Command implements LavaCommand {
     super('hunock', {
       aliases: ['hunlock', 'hul'],
       channel: 'guild',
-      userPermissions: 'MANAGE_CHANNELS',
+      userPermissions: 'MANAGE_MESSAGES',
       args: [ 
         { id: 'query', type: 'string' } 
       ]

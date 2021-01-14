@@ -10,21 +10,24 @@ import {
 } from 'discord.js'
 import {
 	AkairoClient, ListenerHandler, CommandHandler,
-	LavaListener, LavaCommand
+	LavaClient as ClientLava, LavaListener, LavaCommand, 
+	DBInterface
 } from 'discord-akairo'
 
-import currency from '../models/Currency'
-import guild from '../models/Guild'
+import { LavaDB, CurrencyDB, SpawnDB } from './DB'
+import Currency from '../models/CurrencyProfile'
+import Guild from '../models/GuildSettings'
 
 /**
  * Extends the instance of AkairoClient
  * @exports @class LavaClient @extends AkairoClient
 */
-export class LavaClient extends AkairoClient {
+export class LavaClient extends AkairoClient implements ClientLava {
 	public spawners: Collection<string, Spawner>;
 	public queue: Collection<Snowflake, any>;
 	public config: any;
 	public util: Utils;
+	public db: DBInterface
 	public listenerHandler: ListenerHandler;	
 	public commandHandler: CommandHandler;
 	public constructor(config: any) {
@@ -33,28 +36,26 @@ export class LavaClient extends AkairoClient {
 		}, {
 			disableMentions: 'everyone', 
 			fetchAllMembers: false,
-			ws: { 
-				intents: [
-					'GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS'
-				] 
-			}
+			ws: { intents: [
+				'GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS'
+			]}
 		});
 
-		// Connect on instantiation
-		mongoose.connect(process.env.MONGO, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true
-		}).then(() => {});
-
+		// Lava Things
 		this.spawners = new Collection();
 		this.queue = new Collection();
 		this.config = config;
 		this.util = new Utils(this);
+		this.db = { 
+			db: new LavaDB(this),
+			spawns: new SpawnDB(this),
+			currency: new CurrencyDB(this) 
+		};
 
+		// Akairo Handlers
 		this.listenerHandler = new ListenerHandler(this, {
 			directory: join(__dirname, '..', 'emitters')
 		});
-
 		this.commandHandler = new CommandHandler(this, {
 			directory: join(__dirname, '..', 'commands'),
 			prefix: config.bot.prefix,
@@ -103,6 +104,13 @@ export class LavaClient extends AkairoClient {
 		this.commandHandler.loadAll();
 	}
 
+	public async connectDB(): Promise<void> {
+		await mongoose.connect(process.env.MONGO, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true
+		});
+	}
+
 	/**
 	 * Logins our Bot
 	 * @param {string} token the discord token
@@ -110,82 +118,7 @@ export class LavaClient extends AkairoClient {
 	*/
 	public async login(token: string): Promise<string> {
 		await this._build();
+		await this.connectDB();
 		return super.login(token);
-	}
-
-
-	private createUser({ userID }: { userID: string }): any {
-		const user = new currency({ userID });
-		user.save();
-		return user;
-	}
-
-	/**
-	 * Fetch our User from DB
-	 * @param {string} userID the id of the user
-	 * @returns {*}
-	*/
-	public async fetchUser(userID: string): Promise<any> {
-		const user = this.users.cache.get(userID);
-		if (!user || user.bot) return false;
-		const fetched = await currency.findOne({ userID: user.id });
-		if (!fetched) return this.createUser({ userID: user.id });
-		return fetched;
-	}
-
-	/**
-	 * Add certain amount to someone else's data
-	 * @param {string} userID the id of the user
-	 * @param {number} amount the amount to be added
-	 * @param {string} type the type to be added
-	 * * pocket - pocket amount
-	 * * vault - bank amount
-	 * * space - bank space amount
-	 * @returns {*}
-	*/
-	public async add(
-		userID: string, 
-		amount: number, 
-		type: 'pocket' | 'vault' | 'space'
-	): Promise<any> {
-		const user = this.users.cache.get(userID);
-		if (!user || user.bot) return false;
-		const data = await currency.findOne({ userID: user.id });
-		if (!data) {
-			this.createUser({ userID: user.id });
-			return this.add(user.id, amount, type);
-		}
-
-		data[type] += Number(amount);
-		data.save();
-		return data;
-	}
-
-	/**
-	 * Subtract certain amount to someone else's data
-	 * @param {string} userID the id of the user
-	 * @param {number} amount the amount to be subtracted
-	 * @param {string} type the type to be subtracted
-	 * * pocket - pocket amount
-	 * * vault - bank amount
-	 * * space - bank space amount
-	 * @returns {*}
-	*/
-	public async deduct(
-		userID: string, 
-		amount: number, 
-		type: 'pocket' | 'vault' | 'space'
-	): Promise<any> {
-		const user = this.users.cache.get(userID);
-		if (!user || user.bot) return false;
-		const data = await currency.findOne({ userID: user.id });
-		if (!data) {
-			this.createUser({ userID: user.id });
-			return this.add(user.id, amount, type);
-		}
-
-		data[type] -= Number(amount);
-		data.save();
-		return data;
 	}
 }

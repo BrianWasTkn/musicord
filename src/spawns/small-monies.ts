@@ -1,24 +1,25 @@
 import { SpawnConfig, SpawnVisuals } from 'discord-akairo'
 
 export const config: SpawnConfig = {
-	odds: 10,
+	odds: 100,
+	// odds: 3,
 	cooldown: 15,
 	enabled: true,
-	timeout: 5000,
-	entries: 5,
+	timeout: 10000,
+	entries: 1,
 	rewards: {
-		min: 1000,
-		max: 1000
+		min: 100000,
+		max: 150000
 	} 
 }
 
 export const visuals: SpawnVisuals = {
 	emoji: '<:memerBlue:729863510330310727>',
 	type: 'COMMON',
-	title: 'Heist Money',
-	description: 'Do you need some money to enter a heist?',
+	title: 'Financial Support',
+	description: 'Do you need it?',
 	strings: [
-		'yes', 'mhm', 'i do', 'yep', 'lol okay',
-		'for heist pls', 'i ned money'
+		'im begging you', 'i wanna be a helicopter', 'sure lol why not',
+		'for my wallet pls kthx bye', 'i wanna be a millionaire so fricking bad'
 	]
 }

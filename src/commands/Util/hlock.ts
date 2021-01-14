@@ -7,7 +7,7 @@ export default class Util extends Command implements LavaCommand {
     super('hlock', {
       aliases: ['hlock', 'hl'],
       channel: 'guild',
-      userPermissions: 'MANAGE_CHANNELS',
+      userPermissions: 'MANAGE_MESSAGES',
       args: [ 
         { id: 'query', type: 'string' } 
       ]
