@@ -4,13 +4,13 @@ export const config: SpawnConfig = {
 	odds: 5,
 	cooldown: (member) => {
 		// "Crib Booster" role
-		if (member.roles.cache.has('693324853440282654')) return 3;
+		if (member.roles.cache.has('693324853440282654')) return 5;
 		// "Donator #M+" roles (minimum)
-		if (member.roles.cache.has('768858996659453963')) return 5;
+		if (member.roles.cache.has('768858996659453963')) return 7;
 		// "Mastery #" roles (minimum)
-		if (member.roles.cache.has('794834783582421032')) return 10;
+		if (member.roles.cache.has('794834783582421032')) return 15;
 		// "Amari #" roles (minimum)
-		if (member.roles.cache.has('693380605760634910')) return 20;
+		if (member.roles.cache.has('693380605760634910')) return 25;
 		// Else
 		return 60;
 	},
@@ -18,7 +18,7 @@ export const config: SpawnConfig = {
 	timeout: 10000,
 	entries: 3,
 	rewards: {
-		min: 250000,
+		min: 100000,
 		max: 500000
 	} 
 }
