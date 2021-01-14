@@ -116,6 +116,7 @@ export class Spawner implements LavaSpawner {
 				const verbs: string[] = ['obtained', 'grabbed', 'magiked', 'won', 'procured'];
 				const verb: string = this.client.util.random('arr', verbs);
 				const results: string[] = [];
+				this.answered.clear();
 
 				// Loop through
 				const promises: any[] = collected.array().map(async (m: Message) => {
