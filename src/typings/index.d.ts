@@ -1,6 +1,6 @@
 import { 
 	Snowflake, Collection, Message, Guild, 
-	MessageEmbed, GuildChannel,
+	MessageEmbed, GuildChannel, GuildMember
 	EmojiResolvable 
 } from 'discord.js'
 import { 
@@ -38,8 +38,10 @@ declare module 'discord-akairo' {
 
 	export class LavaSpawner {
 		constructor(client: LavaClient, config: SpawnConfig, visuals: SpawnVisuals);
+		public queue: Collection<Snowflake, User>;
 		public spawn: SpawnVisuals;
 		public config: SpawnConfig;
+		public answered: Collection<Snowflake, GuildMember>;
 		public client: LavaClient;
 
 		public checkSpawn(channel: any): boolean;

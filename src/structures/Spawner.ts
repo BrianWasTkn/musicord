@@ -1,6 +1,7 @@
 import { 
 	Collection, Snowflake, Message, Guild, GuildMember,
-	CollectorFilter, MessageEmbed, MessageCollector
+	CollectorFilter, MessageEmbed, MessageCollector,
+	User
 } from 'discord.js'
 import { 
 	SpawnVisuals, SpawnConfig, 
@@ -8,7 +9,7 @@ import {
 } from 'discord-akairo'
 
 export class Spawner implements LavaSpawner {
-	public queue: Collection<Snowflake, any>;
+	public queue: Collection<Snowflake, User>;
 	public spawn: SpawnVisuals;
 	public config: SpawnConfig;
 	public answered: Collection<Snowflake, GuildMember>;
@@ -32,7 +33,7 @@ export class Spawner implements LavaSpawner {
 
 		/**
 		 * The Spawn Answerees
-		 * @type {Collection<Snowflake, GuildMember>}
+		 * @type {Collection<Snowflake, User>}
 	  */
 	  this.answered = new Collection();
 
@@ -43,30 +44,32 @@ export class Spawner implements LavaSpawner {
 		this.client = client;
 	}
 
-	public checkSpawn(channel: any): boolean {
+	public checkSpawn({ channel, author }: any): boolean {
 		const { whitelisted, blacklisted } = this.client.config.spawn;
 
-		if (this.client.queue.has(channel.id)) return false;
+		if (this.client.queue.has(author.id)) return false;
 		if (!whitelisted.categories.includes(channel.parentID)) return false;
 		if (blacklisted.channels.includes(channel.id)) return false;
 		return true;
 	}
 
-	public runCooldown(channel: any): void {
-		const rateLimit: number = this.client.config.spawn.rateLimit || this.config.cooldown;
+	public runCooldown(member: any): void {
+		const rateLimit: number = this.config.cooldown(member) 
+		|| this.client.config.spawn.rateLimit;
+		
 		this.client.setTimeout(() => {
-			this.client.queue.delete(channel.id);
+			this.client.queue.delete(member.id);
 		}, rateLimit * 60 * 1000);
 	}
 
-	public async run({ channel, guild }: Message): Promise<MessageEmbed> {
-		const check = this.checkSpawn(channel);
+	public async run({ author, channel, guild, member }: Message): Promise<MessageEmbed> {
+		const check = this.checkSpawn(author);
 		if (!check) return;
 
-		this.client.queue.set(channel.id, channel);
+		this.client.queue.set(author.id, channel);
 		const event: Message = await this.spawnMessage(channel);
 		const results: MessageEmbed = await this.collectMessages(event, channel, guild);
-		this.runCooldown(channel);
+		this.runCooldown(member);
 		return results;
 	}
 
@@ -108,27 +111,28 @@ export class Spawner implements LavaSpawner {
 				await event.edit(`${event.content}\n\n**<:memerRed:729863510716317776> \`This event has expired.\`**`);
 				if (!collected.size) return resolve({ color: 'RED', description: '**<:memerRed:729863510716317776> No one got the event.**' });
 
+				// Vars
 				const { min, max } = rewards;
 				const verbs: string[] = ['obtained', 'grabbed', 'magiked', 'won', 'procured'];
 				const verb: string = this.client.util.random('arr', verbs);
-				const promises: Promise<any>[] = [];
 				const results: string[] = [];
 
 				// Loop through
 				collected.array().forEach(async (m: Message): Promise<void> => {
 					const coins: number = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;
 					results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
-					await this.client.db.spawns.add({ userID: m.author.id, amount: coins, type: 'unpaid' });
-					await this.client.db.spawns.add({ userID: m.author.id, amount: 1, type: 'eventsJoined' });
-					promises.push(m.author.send([
+					await this.client.db.spawns.add({ 
+						userID: m.author.id, amount: coins, type: 'unpaid' });
+					await this.client.db.spawns.add({ 
+						userID: m.author.id, amount: 1, type: 'eventsJoined' });
+					await m.author.send([
 						`**${emoji} Congratulations!**`,
 						`You ${verb} **${coins.toLocaleString()}** coins from the "${title}" event.`,
-						`**${coins.toLocaleString()}** coins has been added to your unpaid credits (use our \`lavas\` command).`
-					].join('\n')).catch(() => {}));
+						`**${coins.toLocaleString()}** coins has been added to your unpaid credits (use our \`lava unpaids\` command).`
+					].join('\n')).catch(() => {});
 				});
 
 				// Stuff
-				await Promise.all(promises);
 				const payouts: any = guild.channels.cache.get('791659327148261406') || collector.channel;
 				await payouts.send({ embed: {
 					author: { name: `Results for '${title}' event` },

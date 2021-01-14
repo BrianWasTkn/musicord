@@ -5,7 +5,6 @@ const SpawnProfile: Schema = new Schema({
 	userID: { type: String, required: true },
 	paid: { type: Number, required: false, default: 0 },
 	unpaid: { type: Number, required: false, default: 0 },
-	cooldown: { type: Date, required: false, default: 0 },
 	// Private
 	eventsJoined: { type: Number, required: false, default: 0 },
 });
