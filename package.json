@@ -10,6 +10,9 @@
     "build": "rimraf ./build && tsc --project tsconfig.json",
     "start": "node ./build/lava"
   },
+  "engines": {
+  	"node": "13.x"
+  },
   "keywords": [
     "discord-bot",
     "music-bot"
