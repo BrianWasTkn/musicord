@@ -1,6 +1,6 @@
 {
   "name": "lava",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Lava bot, made with typescript and discord-akairo.",
   "author": {
     "discord": "BrianWasTaken#9793",
@@ -9,9 +9,6 @@
   "scripts": {
     "build": "rimraf ./build && tsc --project tsconfig.json",
     "start": "node ./build/lava"
-  },
-  "engines": {
-  	"node": "13.x"
   },
   "keywords": [
     "discord-bot",

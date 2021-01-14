@@ -104,7 +104,7 @@ declare module 'discord-akairo' {
 
 	export interface SpawnConfig {
 		odds: number;
-		cooldown: number;
+		cooldown: (member: GuildMember) => number;
 		enabled: boolean;
 		timeout: number;
 		entries: number;

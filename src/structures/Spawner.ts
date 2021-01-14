@@ -1,7 +1,6 @@
 import { 
-	Collection, Snowflake, Message, Guild, GuildMember,
-	CollectorFilter, MessageEmbed, MessageCollector,
-	User
+	Message, Guild, Collection, GuildMember, User, Snowflake,
+	CollectorFilter, MessageEmbed, MessageCollector
 } from 'discord.js'
 import { 
 	SpawnVisuals, SpawnConfig, 
