@@ -129,7 +129,8 @@ export class Spawner implements LavaSpawner {
 					].join('\n');
 
 					// DB
-					const toUpdate = new SpawnProfile({ userID: m.member.user.id });
+					let toUpdate = new SpawnProfile({ userID: m.member.user.id });
+					toUpdate = toUpdate.findOne({ userID: m.member.user.id });
 					toUpdate.unpaid += coins;
 					toUpdate.eventsJoined += 1;
 
