@@ -1,7 +1,7 @@
 import { 
 	Snowflake, Collection, Message, Guild, 
 	MessageEmbed, GuildChannel, GuildMember,
-	EmojiResolvable 
+	EmojiResolvable, User 
 } from 'discord.js'
 import { 
 	AkairoClient, ListenerHandler, CommandHandler,
