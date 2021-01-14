@@ -15,12 +15,12 @@ export default class Discord extends Listener implements LavaListener {
 		if (message.author.bot || message.channel.type === 'dm') return;
 		const spawner = this.client.util.random('arr', this.client.spawners.array());
 		const { config } = spawner, { queue } = this.client;
-		if (queue.has(message.member.user.id)) return;
-		
-		if (Math.round(Math.random()) * 100 >= 100 - config.odds) {
+
+		await spawner.runCooldown(message.member);
+		if ((Math.round(Math.random()) * 100) >= (100 - config.odds)) {
 			const results = await spawner.run(message);
 			if (results) await message.channel.send({ embed: results });
 			else return;
-		};
+		}
 	}
 }

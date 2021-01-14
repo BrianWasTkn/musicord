@@ -57,6 +57,7 @@ export class Spawner implements LavaSpawner {
 		const rateLimit: number = this.config.cooldown(member) 
 		|| this.client.config.spawn.rateLimit;
 		
+		this.client.queue.set(member.user.id, true);
 		this.client.setTimeout(() => {
 			this.client.queue.delete(member.user.id);
 		}, rateLimit * 60 * 1000);
@@ -66,10 +67,8 @@ export class Spawner implements LavaSpawner {
 		const check = this.checkSpawn({ channel, member });
 		if (!check) return;
 
-		this.client.queue.set(member.user.id, channel);
 		const event: Message = await this.spawnMessage(channel);
 		const results: MessageEmbed = await this.collectMessages(event, channel, guild);
-		this.runCooldown(member);
 		return results;
 	}
 
