@@ -15,7 +15,7 @@ export default class Discord extends Listener implements LavaListener {
 		if (message.author.bot || message.channel.type === 'dm') return;
 		const spawner = this.client.util.random('arr', this.client.spawners.array());
 		const { config } = spawner, { queue } = this.client;
-		if (queue.has(message.author.id)) return;
+		if (queue.has(message.member.user.id)) return;
 		
 		if (Math.random() * 100 >= 100 - config.odds) {
 			const results = await spawner.run(message);

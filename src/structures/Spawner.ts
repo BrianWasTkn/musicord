@@ -43,10 +43,10 @@ export class Spawner implements LavaSpawner {
 		this.client = client;
 	}
 
-	public checkSpawn({ channel, author }: any): boolean {
+	public checkSpawn({ channel, member }: any): boolean {
 		const { whitelisted, blacklisted } = this.client.config.spawn;
 
-		if (this.client.queue.has(author.id)) return false;
+		if (this.client.queue.has(member.user.id)) return false;
 		if (!whitelisted.categories.includes(channel.parentID)) return false;
 		if (blacklisted.channels.includes(channel.id)) return false;
 		return true;
@@ -57,15 +57,15 @@ export class Spawner implements LavaSpawner {
 		|| this.client.config.spawn.rateLimit;
 		
 		this.client.setTimeout(() => {
-			this.client.queue.delete(member.id);
+			this.client.queue.delete(member.user.id);
 		}, rateLimit * 60 * 1000);
 	}
 
-	public async run({ author, channel, guild, member }: Message): Promise<MessageEmbed> {
-		const check = this.checkSpawn(author);
+	public async run({ channel, guild, member }: Message): Promise<MessageEmbed> {
+		const check = this.checkSpawn(member);
 		if (!check) return;
 
-		this.client.queue.set(author.id, channel);
+		this.client.queue.set(member.user.id, channel);
 		const event: Message = await this.spawnMessage(channel);
 		const results: MessageEmbed = await this.collectMessages(event, channel, guild);
 		this.runCooldown(member);
