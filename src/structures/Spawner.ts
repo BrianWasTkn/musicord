@@ -6,6 +6,9 @@ import {
 	SpawnVisuals, SpawnConfig, 
 	LavaSpawner, LavaClient 
 } from 'discord-akairo'
+import {
+	SpawnProfile
+} from '../models/SpawnProfile'
 
 export class Spawner implements LavaSpawner {
 	public queue: Collection<Snowflake, User>;
@@ -117,21 +120,27 @@ export class Spawner implements LavaSpawner {
 				const results: string[] = [];
 
 				// Loop through
-				collected.array().forEach(async (m: Message): Promise<void> => {
+				const promises: any[] = collected.array().map((m: Message) => {
+					// Visual stuff
 					const coins: number = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;
 					results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
-					await this.client.db.spawns.add({ 
-						userID: m.author.id, amount: coins, type: 'unpaid' });
-					await this.client.db.spawns.add({ 
-						userID: m.author.id, amount: 1, type: 'eventsJoined' });
-					await m.author.send([
+					const content: string = [
 						`**${emoji} Congratulations!**`,
 						`You ${verb} **${coins.toLocaleString()}** coins from the "${title}" event.`,
 						`**${coins.toLocaleString()}** coins has been added to your unpaid credits (use our \`lava unpaids\` command).`
-					].join('\n')).catch(() => {});
+					].join('\n');
+
+					// DB
+					const toUpdate = new SpawnProfile({ userID: m.member.user.id });
+					toUpdate.unpaid += coins;
+					toUpdate.eventsJoined += 1;
+
+					// return an array of unresolved promises
+					return [toUpdate.save(), m.author.send(content).catch(() => {})];
 				});
 
 				// Stuff
+				await Promise.all([...promises]);
 				const payouts: any = guild.channels.cache.get('791659327148261406') || collector.channel;
 				await payouts.send({ embed: {
 					author: { name: `Results for '${title}' event` },
