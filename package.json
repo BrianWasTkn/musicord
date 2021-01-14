@@ -1,6 +1,6 @@
 {
   "name": "lava",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "description": "Lava bot, made with typescript and discord-akairo.",
   "author": {
     "discord": "BrianWasTaken#9793",
