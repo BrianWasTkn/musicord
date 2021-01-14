@@ -4,3 +4,6 @@ build
 
 # Vars
 .env
+
+# Stuff
+atomic

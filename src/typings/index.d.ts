@@ -123,7 +123,7 @@ declare module 'discord-akairo' {
 	}
 
 	// Types
-	export type SpawnVisualsType = 'COMMON' | 'SUPER' | 'GODLY';
+	export type SpawnVisualsType = 'COMMON' | 'SUPER' | 'GODLY' | 'UNCOMMON';
 	export type RandomType = 'arr' | 'num';
 	export type ConsoleType = 'main' | 'error';
 }

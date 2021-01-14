@@ -1,7 +1,7 @@
 import { SpawnConfig, SpawnVisuals } from 'discord-akairo'
 
 export const config: SpawnConfig = {
-	odds: 15,
+	odds: 14,
 	cooldown: (member) => {
 		// "Crib Booster" role
 		if (member.roles.cache.has('693324853440282654')) return 5;
@@ -16,22 +16,20 @@ export const config: SpawnConfig = {
 	},
 	enabled: true,
 	timeout: 10000,
-	entries: 1,
+	entries: Infinity,
 	rewards: {
-		min: 210000,
-		max: 210000
+		min: 140000,
+		max: 140000
 	} 
 }
 
 export const visuals: SpawnVisuals = {
-	emoji: '<:memerBlue:729863510330310727>',
-	type: 'COMMON',
-	title: 'It\'s 2021',
-	description: 'Happy New Years!',
+	emoji: '<:memerRed:729863510716317776>',
+	type: 'UNCOMMON',
+	title: 'Happy Valentines',
+	description: 'Dank of hearts, or Queen of hearts?',
 	strings: [
-		'bye 2020, hi 2021', 'heist when',
-		'back to square twenty one', 'lol imagine still using skype in 2021', 
-		'firecrackers', 'fire works with flame', 'a better start', '2021',
-		'auld lang syne'
+		'yes', 'simps', 'honey', 'love',
+		'relationshits', 'cupid', 'lovers'
 	]
 }

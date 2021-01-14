@@ -1,24 +1,24 @@
 import { SpawnConfig, SpawnVisuals } from 'discord-akairo'
 
 export const config: SpawnConfig = {
-	odds: 5,
+	odds: 3,
 	cooldown: (member) => {
 		// "Crib Booster" role
-		if (member.roles.cache.has('693324853440282654')) return 3;
+		if (member.roles.cache.has('693324853440282654')) return 2;
 		// "Donator #M+" roles (minimum)
-		if (member.roles.cache.has('768858996659453963')) return 5;
+		if (member.roles.cache.has('768858996659453963')) return 4;
 		// "Mastery #" roles (minimum)
-		if (member.roles.cache.has('794834783582421032')) return 10;
+		if (member.roles.cache.has('794834783582421032')) return 8;
 		// "Amari #" roles (minimum)
-		if (member.roles.cache.has('693380605760634910')) return 20;
+		if (member.roles.cache.has('693380605760634910')) return 15;
 		// Else
 		return 60;
 	},
 	enabled: true,
-	timeout: 7500,
+	timeout: 15000,
 	entries: 1,
 	rewards: {
-		min: 500000,
+		min: 250000,
 		max: 500000
 	} 
 }
@@ -31,8 +31,8 @@ export const visuals: SpawnVisuals = {
 	strings: [
 		'gold', 'dis serber op', 'gg', 'what\'s the prize?',
 		'how much tho', 'you got to be kidding me', 
-		'peter piper picked a pack of pickle peper',
-		'a pack of pickle peper peter piper picked',
+		'peter piper picked a pack of pickled pepper',
+		'a pack of pickled peper peter piper picked',
 		'spill the beans of the jelly beans'
 	]
 }
