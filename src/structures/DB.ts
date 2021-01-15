@@ -20,7 +20,7 @@ export class SpawnDB extends LavaDB {
 
 	public _createProfile({ userID }: { userID: Snowflake }): any {
 		const data = new SpawnProfile({ userID });
-		data.save();
+		await data.save();
 		return data;
 	}
 
@@ -52,7 +52,7 @@ export class SpawnDB extends LavaDB {
 	}): Promise<void> {
 		const data = await this.fetch({ userID });
 		data[type] += Number(amount);
-		data.save();
+		await data.save();
 		return data;
 	}
 
@@ -71,7 +71,7 @@ export class SpawnDB extends LavaDB {
 	}): Promise<void> {
 		const data = await this.fetch({ userID });
 		data[type] -= Number(amount);
-		data.save();
+		await data.save();
 		return data;
 	}
 }
@@ -84,7 +84,7 @@ export class CurrencyDB extends LavaDB {
 
 	public _createProfile({ userID }: { userID: Snowflake }): any {
 		const data = new CurrencyProfile({ userID });
-		data.save();
+		await data.save();
 		return data;
 	}
 
@@ -122,7 +122,7 @@ export class CurrencyDB extends LavaDB {
 		if (!user || user.bot) return false;
 		const data = await this.fetch({ userID: user.id });
 		data[type] += amount;
-		data.save();
+		await data.save();
 		return data;
 	}
 
@@ -147,7 +147,7 @@ export class CurrencyDB extends LavaDB {
 		if (!user || user.bot) return false;
 		const data = await CurrencyProfile.findOne({ userID: user.id });
 		data[type] -= amount;
-		data.save();
+		await data.save();
 		return data;
 	}
 }

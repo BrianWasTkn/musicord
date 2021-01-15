@@ -4,6 +4,8 @@ import { Utils } from './Util'
 import { join } from 'path'
 import mongoose from 'mongoose'
 import chalk from 'chalk'
+import dbCur from './db/dbCurrency'
+import dbSpn from './db/dbSpawn'
 
 import {
 	Message, Collection, Snowflake, GuildChannel
@@ -13,10 +15,6 @@ import {
 	LavaClient as ClientLava, LavaListener, LavaCommand, 
 	DBInterface
 } from 'discord-akairo'
-
-import { LavaDB, CurrencyDB, SpawnDB } from './DB'
-import Currency from '../models/CurrencyProfile'
-import Guild from '../models/GuildSettings'
 
 /**
  * Extends the instance of AkairoClient
@@ -47,9 +45,8 @@ export class LavaClient extends AkairoClient implements ClientLava {
 		this.config = config;
 		this.util = new Utils(this);
 		this.db = { 
-			db: new LavaDB(this),
-			spawns: new SpawnDB(this),
-			currency: new CurrencyDB(this) 
+			currency: dbCur(this),
+			spawns: dbSpn(this)
 		};
 
 		// Akairo Handlers

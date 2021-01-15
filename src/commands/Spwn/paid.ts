@@ -22,8 +22,6 @@ export default class Spawn extends Command implements LavaCommand {
 
 	public async exec(_: Message, args: Argument | any): Promise<Message> {
 		const { amount, user } = args;
-		const { channel } = _;
-
 		// Args
 		if (!amount) {
 			return _.reply('You need an amount.').then((m: Message) => {
@@ -35,19 +33,18 @@ export default class Spawn extends Command implements LavaCommand {
 			});
 		}
 
-		// Fetch
-		let data = await this.client.db.spawns.fetch({ userID: user.user.id });
-		data.unpaid -= amount;
-		await data.save();
-
+		// Update
+		await this.client.db.spawns.removeUnpaid(user.user.id, amount);
+		const data = await this.client.spawns.db.fetch(user.user.id);
 		// Message
 		const embed = new MessageEmbed({
 			title: 'Updated',
 			color: 'ORANGE',
 			description: `Paid status for **${user.user.tag}** has been updated.`,
-			fields: [
-				{ name: 'Total Unpaid Left', value: data.unpaid.toLocaleString() }
-			],
+			fields: [{ 
+				name: 'Total Unpaid Left', 
+				value: data.unpaid.toLocaleString() 
+			}],
 			footer: {
 				text: this.client.user.username,
 				iconURL: this.client.user.avatarURL()

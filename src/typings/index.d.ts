@@ -55,51 +55,33 @@ declare module 'discord-akairo' {
 		public constructor(client: LavaClient);
 	}
 
-	export class SpawnDB extends LavaDB {
-		public constructor(client: LavaClient);
-		public _createProfile({ userID }: { userID: Snowflake }): Promise<any>;
-		public fetch({ userID }: { userID: Snowflake }): Promise<any>;
-		public add({ 
-			userID, amount, type  
-		}: { 
-			userID: Snowflake, 
-			amount: number,
-			type: 'paid' | 'unpaid' | 'eventsJoined' | 'cooldown'
-		}): Promise<any>;
-		public remove({ 
-			userID, amount, type  
-		}: { 
-			userID: Snowflake, 
-			amount: number,
-			type: 'paid' | 'unpaid' | 'eventsJoined' | 'cooldown'
-		}): Promise<any>;
-	}
-
-	export class CurrencyDB extends LavaDB {
-		public constructor(client: LavaClient);
-		public _createProfile({ userID }: { userID: Snowflake }): Promise<any>;
-		public fetch({ userID }: { userID: Snowflake }): Promise<any>;
-		public add({
-			userID, amount, type
-		}: {
-			userID: string, 
-			amount: number, 
-			type: 'pocket' | 'vault' | 'space'
-		}): Promise<any>;
-		public deduct({
-			userID, amount, type
-		}: {
-			userID: string, 
-			amount: number, 
-			type: 'pocket' | 'vault' | 'space'
-		}): Promise<any>;
-	}
-
 	// interfaces
 	export interface DBInterface {
-		db: LavaDB;
 		spawns: SpawnDB;
 		currency: CurrencyDB;
+	}
+
+	export interface SpawnDB {
+		create: (userID: Snowflake) => Promise<any>;
+		fetch: (userID: Snowflake) => Promise<any>;
+		addUnpaid: (userID: Snowflake, amount: number) => Promise<any>;
+		removeUnpaid: (userID: Snowflake, amount: number) => Promise<any>;
+		incrementEventsJoined: (userID: Snowflake, amount: number = 1) => Promise<any>;
+		decrementEventsJoined: (userID: Snowflake, amount: number = 1) => Promise<any>;
+	}
+
+	export interface CurrencyDB {
+		create: (userID: Snowflake) => Promise<any>;
+		fetch: (userID: Snowflake) => Promise<any>;
+		[k]: (userID: Snowflake, amount: number) => Promise<any>;
+		addPocket: (userID: Snowflake, amount: number) => Promise<any>;
+		removePocket: (userID: Snowflake, amount: number) => Promise<any>;
+		addVault: (userID: Snowflake, amount: number) => Promise<any>;
+		removeVault: (userID: Snowflake, amount: number) => Promise<any>;
+		addSpace: (userID: Snowflake, amount: number) => Promise<any>;
+		removeSpace: (userID: Snowflake, amount: number) => Promise<any>;
+		addMulti: (userID: Snowflake, amount: number) => Promise<any>;
+		removeMulti: (userID: Snowflake, amount: number) => Promise<any>;
 	}
 
 	export interface SpawnConfig {

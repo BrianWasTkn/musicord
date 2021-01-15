@@ -8,27 +8,25 @@ export default class Currency extends Command implements LavaCommand {
       aliases: ['balance', 'bal'],
       channel: 'guild',
       cooldown: 1e3,
-      args: [{ id: 'member', type: 'member' }]
+      args: [{ 
+        id: 'member', type: 'member' 
+      }]
     });
   }
 
   public async exec(_: Message, args: any): Promise<Message> {
-    const { channel, guild } = _;
     const user = args.member || _.member;
-    const { pocket, vault, space } = await this.client.db.currency.fetch({ userID: user.id });
+    const data = await this.client.db.currency.fetch(user.user.id);
     const embed: MessageEmbed = new MessageEmbed({
       title: `${user.user.username}'s balance`,
       color: 'RANDOM',
       description: [
-        `**Pocket:** ${pocket.toLocaleString()}`,
-        `**Vault:** ${vault.toLocaleString()}/${space.toLocaleString()}`,
-        `**Total:** ${(pocket + vault).toLocaleString()}`
-      ].join('\n'),
-      footer: {
-        text: 'lol imagine having coins fr'
-      }
+        `**Pocket:** ${data.pocket.toLocaleString()}`,
+        `**Vault:** ${data.vault.toLocaleString()}/${data.space.toLocaleString()}`,
+        `**Total:** ${(data.pocket + data.vault).toLocaleString()}`
+      ].join('\n')
     });
 
-    return channel.send({ embed });
+    return _.channel.send({ embed });
   }
 }
