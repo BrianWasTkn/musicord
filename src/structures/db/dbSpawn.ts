@@ -41,7 +41,7 @@ export default client => ({
 		return data;
 	},
 
-	incrementEventsJoined: async (
+	incrementJoinedEvents: async (
 		userID: Snowflake, 
 		amount: number = 1,
 	): Promise<any> => {
@@ -50,7 +50,7 @@ export default client => ({
 		await data.save();
 		return data;
 	},
-	decrementEventsJoined: async (
+	decrementJoinedEvents: async (
 		userID: Snowflake, 
 		amount: number = 1,
 	): Promise<any> => {

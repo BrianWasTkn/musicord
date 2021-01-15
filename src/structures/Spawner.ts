@@ -130,15 +130,13 @@ export class Spawner implements LavaSpawner {
 					].join('\n');
 
 					// DB
-					let data = await this.client.db.spawns.fetch(m.member.user.id);
-					data.unpaid += coins;
-					data.eventsJoined += 1;
-					// return an array of unresolved promises
-					return [data.save(), m.author.send(content).catch(() => {})];
+					await this.client.db.spawns.addUnpaid(m.member.user.id, coins);
+					await this.client.db.spawns.incrementJoinedEvents(m.member.user.id);
+					return m.author.send(content).catch(() => {});
 				});
 
 				// Stuff
-				await Promise.all([...promises]);
+				await Promise.all(promises);
 				const payouts: any = guild.channels.cache.get('796688961899855893') || collector.channel;
 				await payouts.send({ embed: {
 					author: { name: `Results for '${title}' event` },
