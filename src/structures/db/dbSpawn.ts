@@ -38,7 +38,7 @@ const dbSpawn = (client: LavaClient) => ({
 		amount: number,
 	): Promise<any> => {
 		const data = await dbSpawn(client).fetch(userID);
-		data.paid -= amount;
+		data.unpaid -= amount;
 		await data.save();
 		return data;
 	},
