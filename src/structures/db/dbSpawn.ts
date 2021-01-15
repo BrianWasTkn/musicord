@@ -6,7 +6,7 @@ const dbSpawn = (client: LavaClient) => ({
 	create: async (
 		userID: Snowflake
 	): Promise<boolean | any> => {
-		const user: User = await client.users.cache.get(userID);
+		const user: User = client.users.cache.get(userID);
 		if (!user || user.bot) return false;
 		const data = new Spawn({ userID: user.id });
 		return data;

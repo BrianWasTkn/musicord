@@ -34,8 +34,7 @@ export default class Spawn extends Command implements LavaCommand {
 		}
 
 		// Update
-		await this.client.db.spawns.removeUnpaid(user.user.id, amount);
-		const data = await this.client.db.spawns.fetch(user.user.id);
+		const data = await this.client.db.spawns.removeUnpaid(user.user.id, amount);
 		// Message
 		const embed = new MessageEmbed({
 			title: 'Updated',
