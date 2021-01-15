@@ -20,7 +20,7 @@ export default class Spawn extends Command implements LavaCommand {
   public async exec(_: Message, args: any): Promise<Message> {
     const { channel, guild } = _;
     const user = args.member || _.member;
-    const { paid, unpaid, eventsJoined } = await this.client.db.spawns.fetch({ userID: user.id });
+    const { unpaid, eventsJoined } = await this.client.db.spawns.fetch({ userID: user.id });
     const embed: MessageEmbed = new MessageEmbed({
       title: `${user.user.username}'s lavas`,
       color: 'RANDOM',
