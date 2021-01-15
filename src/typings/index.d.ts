@@ -73,7 +73,6 @@ declare module 'discord-akairo' {
 	export interface CurrencyDB {
 		create: (userID: Snowflake) => Promise<any>;
 		fetch: (userID: Snowflake) => Promise<any>;
-		[k]: (userID: Snowflake, amount: number) => Promise<any>;
 		addPocket: (userID: Snowflake, amount: number) => Promise<any>;
 		removePocket: (userID: Snowflake, amount: number) => Promise<any>;
 		addVault: (userID: Snowflake, amount: number) => Promise<any>;
