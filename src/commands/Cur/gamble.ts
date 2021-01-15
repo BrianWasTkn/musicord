@@ -109,7 +109,7 @@ export default class Currency extends Command implements LavaCommand {
         color: 'RED',
         description: [
           `You lost **${bet.toLocaleString()}** coins.\n`,
-          `You now have **${data.pocket.toLocaleString()}** coins.`
+          `You now have **${db.pocket.toLocaleString()}** coins.`
         ].join('\n'),
         fields: [
           { name: user.username, value: `Rolled a \`${userD}\``, inline: true },
