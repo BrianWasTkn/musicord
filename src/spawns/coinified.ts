@@ -8,9 +8,9 @@ export const config: SpawnConfig = {
 		// "Donator #M+" roles (minimum)
 		if (member.roles.cache.has('768858996659453963')) return 10;
 		// "Mastery #" roles (minimum)
-		if (member.roles.cache.has('794834783582421032')) return 20;
+		if (member.roles.cache.has('794834783582421032')) return 15;
 		// "Amari #" roles (minimum)
-		if (member.roles.cache.has('693380605760634910')) return 30;
+		if (member.roles.cache.has('693380605760634910')) return 20;
 		// Else
 		return 60;
 	},
