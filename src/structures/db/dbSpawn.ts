@@ -1,7 +1,8 @@
 import { Snowflake, User } from 'discord.js'
+import { LavaClient } from 'discord-akairo'
 import Spawn from '../../models/SpawnProfile'
 
-export default client => ({
+const dbSpawn = (client: LavaClient) => ({
 	create: async (
 		userID: Snowflake
 	): Promise<any> => {
@@ -10,6 +11,7 @@ export default client => ({
 		const data = new Spawn({ userID: user.id });
 		return data;
 	},
+
 	fetch: async (
 		userID: Snowflake
 	): Promise<any> => {
@@ -26,7 +28,7 @@ export default client => ({
 		userID: Snowflake, 
 		amount: number,
 	): Promise<any> => {
-		const data = await this.fetch(userID);
+		const data = await dbSpawn(client).fetch(userID);
 		data.unpaid += amount;
 		await data.save();
 		return data;
@@ -35,7 +37,7 @@ export default client => ({
 		userID: Snowflake, 
 		amount: number,
 	): Promise<any> => {
-		const data = await this.fetch(userID);
+		const data = await dbSpawn(client).fetch(userID);
 		data.paid -= amount;
 		await data.save();
 		return data;
@@ -45,7 +47,7 @@ export default client => ({
 		userID: Snowflake, 
 		amount?: number,
 	): Promise<any> => {
-		const data = await this.fetch(userID);
+		const data = await dbSpawn(client).fetch(userID);
 		data.eventsJoined += amount;
 		await data.save();
 		return data;
@@ -54,9 +56,11 @@ export default client => ({
 		userID: Snowflake, 
 		amount?: number,
 	): Promise<any> => {
-		const data = await this.fetch(userID);
+		const data = await dbSpawn(client).fetch(userID);
 		data.eventsJoined -= amount;
 		await data.save();
 		return data;
 	}
 });
+
+export default dbSpawn;

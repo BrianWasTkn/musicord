@@ -2,7 +2,7 @@ import { Snowflake } from 'discord.js'
 import { LavaClient } from 'discord-akairo'
 import Currency from '../../models/CurrencyProfile'
 
-export default (client: LavaClient) => ({
+const dbCurrency = (client: LavaClient) => ({
 	create: async (
 		userID: Snowflake
 	): Promise<boolean | any> => {
@@ -11,6 +11,7 @@ export default (client: LavaClient) => ({
 		const data = new Currency({ userID: user.id });
 		return data;
 	},
+
 	fetch: async (
 		userID: Snowflake
 	): Promise<any> => {
@@ -27,7 +28,7 @@ export default (client: LavaClient) => ({
 		userID: Snowflake, 
 		amount: number,
 	): Promise<any> => {
-		const data = await Currency.findOne({ userID });
+		const data = await dbCurrency(client).fetch(userID);
 		data.pocket += amount;
 		await data.save();
 		return data;
@@ -36,7 +37,7 @@ export default (client: LavaClient) => ({
 		userID: Snowflake, 
 		amount: number,
 	): Promise<any> => {
-		const data = await Currency.findOne({ userID });
+		const data = await dbCurrency(client).fetch(userID);
 		data.pocket -= amount;
 		await data.save();
 		return data;
@@ -46,7 +47,7 @@ export default (client: LavaClient) => ({
 		userID: Snowflake, 
 		amount: number,
 	): Promise<any> => {
-		const data = await Currency.findOne({ userID });
+		const data = await dbCurrency(client).fetch(userID);
 		data.vault += amount;
 		await data.save();
 		return data;
@@ -55,7 +56,7 @@ export default (client: LavaClient) => ({
 		userID: Snowflake, 
 		amount: number,
 	): Promise<any> => {
-		const data = await Currency.findOne({ userID });
+		const data = await dbCurrency(client).fetch(userID);
 		data.vault -= amount;
 		await data.save();
 		return data;
@@ -65,7 +66,7 @@ export default (client: LavaClient) => ({
 		userID: Snowflake, 
 		amount: number,
 	): Promise<any> => {
-		const data = await Currency.findOne({ userID });
+		const data = await dbCurrency(client).fetch(userID);
 		data.space += amount;
 		await data.save();
 		return data;
@@ -74,7 +75,7 @@ export default (client: LavaClient) => ({
 		userID: Snowflake, 
 		amount: number,
 	): Promise<any> => {
-		const data = await Currency.findOne({ userID });
+		const data = await dbCurrency(client).fetch(userID);
 		data.space -= amount;
 		await data.save();
 		return data;
@@ -84,7 +85,7 @@ export default (client: LavaClient) => ({
 		userID: Snowflake, 
 		amount: number,
 	): Promise<any> => {
-		const data = await Currency.findOne({ userID });
+		const data = await dbCurrency(client).fetch(userID);
 		data.multi += amount;
 		await data.save();
 		return data;
@@ -93,9 +94,11 @@ export default (client: LavaClient) => ({
 		userID: Snowflake, 
 		amount: number,
 	): Promise<any> => {
-		const data = await Currency.findOne({ userID });
+		const data = await dbCurrency(client).fetch(userID);
 		data.multi -= amount;
 		await data.save();
 		return data;
 	},
 });
+
+export default dbCurrency;
