@@ -15,6 +15,6 @@ export default class Currency extends Command implements LavaCommand {
     const user = _.member;
     const amount = this.client.util.random('num', [100, 500]) * 1000;
     const data = await this.client.db.currency.addPocket(user.user.id, amount);
-    return _.channel.send(`Successfully added **${amount.toLocaleString}** coins to your pocket.`);
+    return _.channel.send(`Successfully added **${amount.toLocaleString()}** coins to your pocket.`);
   }
 }

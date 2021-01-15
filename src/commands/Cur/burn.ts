@@ -19,6 +19,6 @@ export default class Currency extends Command implements LavaCommand {
     if (!amount) return;
     const data = await this.client.db.currency
       .removePocket(_.author.id, amount);
-    return _.channel.send(`Successfully burned **${amount.toLocaleString}** coins from your pocket.`);
+    return _.channel.send(`Successfully burned **${amount.toLocaleString()}** coins from your pocket.`);
   }
 }
