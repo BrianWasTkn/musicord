@@ -18,7 +18,7 @@ export default class Discord extends Listener implements LavaListener {
 		if (queue.has(message.member.user.id)) return;
 		const { config } = spawner;
 
-		if ((Math.round(Math.random()) * 100) >= (100 - config.odds)) {
+		if (Math.round(Math.random() * 100) >= (100 - config.odds)) {
 			const results = await spawner.run(message);
 			if (results) await message.channel.send({ embed: results });
 			else return;

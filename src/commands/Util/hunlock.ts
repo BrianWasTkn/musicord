@@ -18,11 +18,11 @@ export default class Util extends Command implements LavaCommand {
     await _.delete();
     const { query }: { query: string } = args;
     const { channel }: { channel: any } = _;
-    const target = this.client.config.locks.amari[query] || this.client.config.locks.mastery[query];
+    const target = this.client.config.heist.amari[query] || this.client.config.heist.mastery[query];
     const role: Role = _.guild.roles.cache.get(target);
     if (!role) return;
 
-    const perms: object = { SEND_MESSAGES: true };
+    const perms: { [k: string]: boolean } = { SEND_MESSAGES: true };
     const updated: any = await channel.updateOverwrite(role.id, perms);
     return channel.send(`Unlocked for **${role.name}**`);
   }

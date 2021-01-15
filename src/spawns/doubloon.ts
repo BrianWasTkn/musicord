@@ -1,14 +1,14 @@
 import { SpawnConfig, SpawnVisuals } from 'discord-akairo'
 
 export const config: SpawnConfig = {
-	odds: 3,
+	odds: 5,
 	cooldown: (member) => {
 		// "Crib Booster" role
-		if (member.roles.cache.has('693324853440282654')) return 15;
+		if (member.roles.cache.has('693324853440282654')) return 10;
 		// "Donator #M+" roles (minimum)
-		if (member.roles.cache.has('768858996659453963')) return 20;
+		if (member.roles.cache.has('768858996659453963')) return 15;
 		// "Mastery #" roles (minimum)
-		if (member.roles.cache.has('794834783582421032')) return 25;
+		if (member.roles.cache.has('794834783582421032')) return 20;
 		// "Amari #" roles (minimum)
 		if (member.roles.cache.has('693380605760634910')) return 30;
 		// Else
@@ -16,10 +16,10 @@ export const config: SpawnConfig = {
 	},
 	enabled: true,
 	timeout: 15000,
-	entries: 1,
+	entries: 3,
 	rewards: {
-		min: 500000,
-		max: 500000
+		min: 1000000,
+		max: 1000000
 	} 
 }
 
