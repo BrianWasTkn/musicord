@@ -1,6 +1,6 @@
 export default {
 	rateLimit: 60,
-	enabled: false,
+	enabled: true,
 	blacklisted: {
 		channels: [
 			// Dank Memer
