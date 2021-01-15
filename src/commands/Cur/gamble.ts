@@ -43,6 +43,12 @@ export default class Currency extends Command implements LavaCommand {
     if (pocket <= 0) {
       return _.reply('You have no coins lol');
     }
+    if (bet > maxBet) {
+      return _.reply(`You cannot gamble higher than **${maxBet.toLocaleString()}** coins bruh.`)
+    }
+    if (bet < minBet) {
+      return _.reply(`You cannot gamble lower than **${minBet.toLocaleString()}** coins bruh.`)
+    }
     if (bet > pocket) {
       return _.reply(`You only have **${pocket.toLocaleString()}** coins lol don't try me.`);
     }

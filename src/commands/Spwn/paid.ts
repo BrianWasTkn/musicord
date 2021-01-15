@@ -37,9 +37,11 @@ export default class Spawn extends Command implements LavaCommand {
 		const data = await this.client.db.spawns.removeUnpaid(user.user.id, amount);
 		// Message
 		const embed = new MessageEmbed({
-			title: 'Updated',
+			author: {
+				name: `Updated — ${user.user.tag}`,
+				iconURL: user.user.avatarURL({ dynamic: true })
+			},
 			color: 'ORANGE',
-			description: `Paid status for **${user.user.tag}** has been updated.`,
 			fields: [{ 
 				name: 'Total Unpaid Left', 
 				value: data.unpaid.toLocaleString() 
