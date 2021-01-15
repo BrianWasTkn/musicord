@@ -10,7 +10,7 @@ export default class Discord extends Listener implements LavaListener {
 		});
 	}
 
-	public async exec(message: Message): Promise<MessageEmbed> {
+	public async exec(message: Message): Promise<MessageEmbed | any> {
 		if (!this.client.config.spawn.enabled) return;
 		if (message.author.bot || message.channel.type === 'dm') return;
 		const spawner = this.client.util.random('arr', this.client.spawners.array());
@@ -18,10 +18,14 @@ export default class Discord extends Listener implements LavaListener {
 		if (queue.has(message.member.user.id)) return;
 		const { config } = spawner;
 
+		// Odds
 		if (Math.round(Math.random() * 100) >= (100 - config.odds)) {
 			const results = await spawner.run(message);
 			if (results) await message.channel.send({ embed: results });
 			else return;
+		} else {
+			this.client.queue.set(message.member.user.id, message.channel);
+			return await spawner.runCooldown(message.member);
 		}
 	}
 }

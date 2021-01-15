@@ -18,8 +18,8 @@ export const config: SpawnConfig = {
 	timeout: 10000,
 	entries: Infinity,
 	rewards: {
-		min: 100000,
-		max: 500000
+		min: 10000,
+		max: 10000
 	} 
 }
 

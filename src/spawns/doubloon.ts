@@ -18,8 +18,8 @@ export const config: SpawnConfig = {
 	timeout: 15000,
 	entries: 3,
 	rewards: {
-		min: 1000000,
-		max: 1000000
+		min: 500000,
+		max: 500000
 	} 
 }
 
@@ -32,7 +32,7 @@ export const visuals: SpawnVisuals = {
 		'gold', 'dis serber op', 'gg', 'what\'s the prize?',
 		'how much tho', 'you got to be kidding me', 
 		'peter piper picked a pack of pickled pepper',
-		'a pack of pickled peper peter piper picked',
+		'a pack of pickled pepper peter piper picked',
 		'spill the beans of the jelly beans'
 	]
 }
