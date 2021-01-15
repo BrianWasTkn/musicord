@@ -87,7 +87,7 @@ export class Spawner implements LavaSpawner {
 			const string: string = this.client.util.random('arr', strings);
 
 			// Collectors
-			await channel.send(`Type \`${string}\``);
+			await channel.send(`Type \`${string.split('').join('\u200B')}\``);
 			const filter: CollectorFilter = (m: Message): boolean => {
 				let contentMatch = m.content.toLocaleLowerCase() === string.toLocaleLowerCase();
 				return contentMatch && !this.answered.has(m.author.id);
