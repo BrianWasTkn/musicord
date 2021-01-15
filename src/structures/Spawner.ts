@@ -53,12 +53,12 @@ export class Spawner implements LavaSpawner {
 		return true;
 	}
 
-	public runCooldown(member: any): void {
+	public runCooldown(member: any): any {
 		const rateLimit: number = this.config.cooldown(member) 
 		|| this.client.config.spawn.rateLimit;
 		
-		this.client.setTimeout(() => {
-			this.client.queue.delete(member.user.id);
+		return this.client.setTimeout((): boolean => {
+			return this.client.queue.delete(member.user.id);
 		}, rateLimit * 60 * 1000);
 	}
 

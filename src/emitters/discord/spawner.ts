@@ -23,9 +23,6 @@ export default class Discord extends Listener implements LavaListener {
 			const results = await spawner.run(message);
 			if (results) await message.channel.send({ embed: results });
 			else return;
-		} else {
-			this.client.queue.set(message.member.user.id, message.channel);
-			return await spawner.runCooldown(message.member);
 		}
 	}
 }
