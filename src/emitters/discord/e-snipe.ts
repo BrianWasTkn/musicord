@@ -4,7 +4,7 @@ import { Message, PartialMessage } from 'discord.js'
 export default class Discord extends Listener implements LavaListener {
 	public client: LavaClient;
 	public constructor() {
-		super('snipe', {
+		super('e-snipe', {
 			emitter: 'client',
 			event: 'messageUpdate'
 		});
