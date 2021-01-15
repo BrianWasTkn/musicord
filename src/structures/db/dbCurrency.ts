@@ -1,7 +1,8 @@
 import { Snowflake } from 'discord.js'
+import { LavaClient } from 'discord-akairo'
 import Currency from '../../models/CurrencyProfile'
 
-export default client => ({
+export default (client: LavaClient) => ({
 	create: async (
 		userID: Snowflake
 	): Promise<boolean | any> => {
@@ -13,7 +14,7 @@ export default client => ({
 	fetch: async (
 		userID: Snowflake
 	): Promise<any> => {
-		const data = await Currency.findOne({ userID });
+		const data: any = await Currency.findOne({ userID });
 		if (!data) {
 			await this.create(userID);
 			return this.fetch(userID);

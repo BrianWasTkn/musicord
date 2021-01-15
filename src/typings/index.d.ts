@@ -51,10 +51,6 @@ declare module 'discord-akairo' {
 		public collectMessages(event: Message, channel: any, guild: Guild): Promise<any>;
 	}
 
-	export class LavaDB {
-		public constructor(client: LavaClient);
-	}
-
 	// interfaces
 	export interface DBInterface {
 		spawns: SpawnDB;

@@ -1,11 +1,11 @@
-import { Snowflake } from 'discord.js'
+import { Snowflake, User } from 'discord.js'
 import Spawn from '../../models/SpawnProfile'
 
 export default client => ({
 	create: async (
 		userID: Snowflake
 	): Promise<any> => {
-		const user = await client.users.cache.get(userID);
+		const user: User = await client.users.cache.get(userID);
 		if (!user || user.bot) return false;
 		const data = new Spawn({ userID: user.id });
 		return data;
@@ -43,7 +43,7 @@ export default client => ({
 
 	incrementJoinedEvents: async (
 		userID: Snowflake, 
-		amount: number = 1,
+		amount?: number,
 	): Promise<any> => {
 		const data = await this.fetch(userID);
 		data.eventsJoined += amount;
@@ -52,7 +52,7 @@ export default client => ({
 	},
 	decrementJoinedEvents: async (
 		userID: Snowflake, 
-		amount: number = 1,
+		amount?: number,
 	): Promise<any> => {
 		const data = await this.fetch(userID);
 		data.eventsJoined -= amount;
