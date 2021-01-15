@@ -15,10 +15,10 @@ const dbCurrency = (client: LavaClient) => ({
 	fetch: async (
 		userID: Snowflake
 	): Promise<any> => {
-		const data: any = await Currency.findOne({ userID });
+		const data = await Currency.findOne({ userID });
 		if (!data) {
-			await this.create(userID);
-			return this.fetch(userID);
+			await dbCurrency(client).create(userID);
+			return dbCurrency(client).fetch(userID);
 		} else {
 			return data;
 		}

@@ -113,15 +113,17 @@ export class Spawner implements LavaSpawner {
 
 				// Vars
 				const { min, max } = rewards;
-				const verbs: string[] = ['obtained', 'grabbed', 'magiked', 'won', 'procured'];
-				const verb: string = this.client.util.random('arr', verbs);
 				const results: string[] = [];
 				this.answered.clear();
 
 				// Loop through
 				const promises: any[] = collected.array().map(async (m: Message) => {
-					// Visual stuff
+					// Stuff
 					const coins: number = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;
+					const verbs: string[] = ['obtained', 'grabbed', 'magiked', 'won', 'procured'];
+					const verb: string = this.client.util.random('arr', verbs);
+					
+					// Visual stuff
 					results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
 					const content: string = [
 						`**${emoji} Congratulations!**`,
@@ -131,7 +133,7 @@ export class Spawner implements LavaSpawner {
 
 					// DB
 					await this.client.db.spawns.addUnpaid(m.member.user.id, coins);
-					await this.client.db.spawns.incrementJoinedEvents(m.member.user.id);
+					await this.client.db.spawns.incrementJoinedEvents(m.member.user.id, 1);
 					return m.author.send(content).catch(() => {});
 				});
 
