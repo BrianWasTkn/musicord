@@ -16,7 +16,7 @@ export const config: SpawnConfig = {
 	},
 	enabled: true,
 	timeout: 10000,
-	entries: 5,
+	entries: 3,
 	rewards: {
 		min: 5000,
 		max: 25000
