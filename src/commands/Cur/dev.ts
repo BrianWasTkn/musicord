@@ -24,12 +24,11 @@ export default class Currency extends Command implements LavaCommand {
     const { 
       option = 'add', 
       amount = 1, 
-      user = _.member.user 
+      user = _.member 
     } = args;
 
     if (['give', 'g', 'add'].includes(option)) {
-      let data = await this.client.db.currency.fetch({ userID: user.id });
-      data = await this.client.db.currency.add({ userID: user.id, amount, type: 'pocket' });
+      await this.client.db.currency.addPocket(user.user.id, amount);
       return channel.send(`Added **${amount.toLocaleString()}** to ${user.username}'s pocket.`);
     }
   }

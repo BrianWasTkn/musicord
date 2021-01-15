@@ -4,7 +4,7 @@ import Currency from '../../models/CurrencyProfile'
 export default client => ({
 	create: async (
 		userID: Snowflake
-	): Promise<any> => {
+	): Promise<boolean | any> => {
 		const user = await client.users.cache.get(userID);
 		if (!user || user.bot) return false;
 		const data = new Currency({ userID: user.id });

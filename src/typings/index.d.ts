@@ -66,8 +66,8 @@ declare module 'discord-akairo' {
 		fetch: (userID: Snowflake) => Promise<any>;
 		addUnpaid: (userID: Snowflake, amount: number) => Promise<any>;
 		removeUnpaid: (userID: Snowflake, amount: number) => Promise<any>;
-		incrementEventsJoined: (userID: Snowflake, amount: number = 1) => Promise<any>;
-		decrementEventsJoined: (userID: Snowflake, amount: number = 1) => Promise<any>;
+		incrementJoinedEvents: (userID: Snowflake, amount: number) => Promise<any>;
+		decrementJoinedEvents: (userID: Snowflake, amount: number) => Promise<any>;
 	}
 
 	export interface CurrencyDB {

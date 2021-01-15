@@ -85,7 +85,7 @@ export default class Currency extends Command implements LavaCommand {
     // Ties
     if (userD === botD) {
       const lost = Math.round(bet / 4);
-      const db = await this.client.db.removePocket(user.id, lost);
+      const db = await this.client.db.currency.removePocket(user.id, lost);
       return channel.send({ embed: {
         author: { name: `${user.username}'s tie gambling game` },
         color: 'YELLOW',
@@ -103,7 +103,7 @@ export default class Currency extends Command implements LavaCommand {
 
     // Lose 
     if (userD < botD) {
-      const db = await this.client.db.removePocket(user.id, bet);
+      const db = await this.client.db.currency.removePocket(user.id, bet);
       return channel.send({ embed: {
         author: { name: `${user.username}'s losing gambling game` },
         color: 'RED',
