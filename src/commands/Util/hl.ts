@@ -8,9 +8,9 @@ export default class Util extends Command {
       aliases: ['hlock', 'hl'],
       channel: 'guild',
       userPermissions: ['MANAGE_MESSAGES'],
-      args: [ 
-        { id: 'query', type: 'string' } 
-      ]
+      args: [{ 
+        id: 'query', type: 'string' 
+      }]
     });
   }
 
