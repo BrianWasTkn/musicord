@@ -25,6 +25,9 @@ export default class Util extends Command {
     const perms: { [k: string]: boolean | null } = { SEND_MESSAGES: null };
     await this.client.util.sleep(60000);
     const updated: any = await channel.updateOverwrite(role.id, perms);
-    return channel.send(`Locked for **${role.name}**`);
+    return channel.send({ embed: {
+      title: `Locked for **${role.name}**`,
+      color: 'ORANGE'
+    }});
   }
 }

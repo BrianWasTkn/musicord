@@ -8,23 +8,52 @@ export default class Util extends Command {
       aliases: ['hunlock', 'hul'],
       channel: 'guild',
       userPermissions: ['MANAGE_MESSAGES'],
-      args: [{ 
-        id: 'query', type: 'string' 
+      args: [{
+        id: 'role', type: 'role'
       }]
     });
   }
 
+  private embed(display: number, role: Role, color?: string): any {
+    return {
+      color: color || 'ORANGE',
+      title: [
+        `**UNLOCKING IN ${display} SECONDS**`,
+        `**REQ: ${role.name}**`
+      ].join('\n')
+    }
+  }
+
   public async exec(_: Message, args: any): Promise<Message> {
     await _.delete();
-    const { query }: { query: string } = args;
-    const { channel }: { channel: any } = _;
-    const target = this.client.config.heist.amari[query] || this.client.config.heist.mastery[query];
-    const role: Role = _.guild.roles.cache.get(target);
+    const { role, timer } = args;
     if (!role) return;
+    const { channel }: any = _;
 
-    const perms: { [k: string]: boolean | null } = { SEND_MESSAGES: true };
-    await this.client.util.sleep(60000);
+    const msg = await channel.send({ embed: this.embed(60, role) });
+    await this.client.util.sleep(10000);
+    await msg.edit({ embed: this.embed(50, role) });
+    await this.client.util.sleep(10000);
+    await msg.edit({ embed: this.embed(40, role) });
+    await this.client.util.sleep(10000);
+    await msg.edit({ embed: this.embed(30, role) });
+    await this.client.util.sleep(10000);
+    await msg.edit({ embed: this.embed(20, role) });
+    await this.client.util.sleep(10000);
+    await msg.edit({ embed: this.embed(10, role) });
+    await this.client.util.sleep(10000);
+    await msg.edit({ embed: this.embed(3, role, 'RED') });
+    await this.client.util.sleep(1000);
+    await msg.edit({ embed: this.embed(2, role, 'RED') });
+    await this.client.util.sleep(1000);
+    await msg.edit({ embed: this.embed(1, role, 'RED') });
+    await this.client.util.sleep(1000);
+
+    const perms = { SEND_MESSAGES: true };
     const updated: any = await channel.updateOverwrite(role.id, perms);
-    return channel.send(`Unlocked for **${role.name}**`);
+    return channel.send({ embed: {
+      title: `Unlocked for **${role.name}**`,
+      color: 'ORANGE'
+    }});
   }
 }
