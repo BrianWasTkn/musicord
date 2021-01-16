@@ -20,7 +20,7 @@ export default class CommandHandler extends Listener {
 			color: 'INDIGO',
 			description: [
 				`You're currently on cooldown for the \`${command.id}\` command.`,
-				`Please wait **${remaining.toFixed(2)}** seconds and try again.`
+				`Please wait **${(remaining / 100).toFixed(2)}** seconds and try again.`
 			].join('\n'),
 			footer: {
 				text: this.client.user.username,
