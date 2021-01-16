@@ -1,7 +1,7 @@
 import { 
 	Snowflake, Collection, Message, Guild, 
 	MessageEmbed, GuildChannel, GuildMember,
-	EmojiResolvable, User 
+	EmojiResolvable, User, Role
 } from 'discord.js'
 import { 
 	AkairoClient, ListenerHandler, CommandHandler,
@@ -16,6 +16,7 @@ declare module 'discord-akairo' {
 		commandHandler: CommandHandler;
 		spawners: Collection<string, LavaSpawner>;
 		queue: Collection<Snowflake, any>;
+		heists: Collection<Snowflake, Role>;
 		config: any;
 		util: LavaUtils;
 		db: DBInterface;

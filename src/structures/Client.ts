@@ -8,7 +8,8 @@ import dbCur from './db/dbCurrency'
 import dbSpn from './db/dbSpawn'
 
 import {
-	Message, Collection, Snowflake, GuildChannel
+	Message, Collection, Snowflake, GuildChannel,
+	Role
 } from 'discord.js'
 import {
 	AkairoClient, ListenerHandler, CommandHandler,
@@ -23,6 +24,7 @@ import {
 export class LavaClient extends AkairoClient implements ClientLava {
 	public spawners: Collection<string, Spawner>;
 	public queue: Collection<Snowflake, any>;
+	public heists: Collection<Snowflake, Role>;
 	public config: any;
 	public util: Utils;
 	public db: DBInterface
@@ -42,6 +44,7 @@ export class LavaClient extends AkairoClient implements ClientLava {
 		// Lava Things
 		this.spawners = new Collection();
 		this.queue = new Collection();
+		this.heists = new Collection();
 		this.config = config;
 		this.util = new Utils(this);
 		this.db = { 

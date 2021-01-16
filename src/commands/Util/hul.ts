@@ -49,12 +49,17 @@ export default class Util extends Command {
     await this.client.util.sleep(1000);
     await msg.edit({ embed: this.embed(1, role, 'RED') });
     await this.client.util.sleep(1000);
+    await msg.edit({ embed: this.embed(0, role, 'GREEN') });
 
     const perms = { SEND_MESSAGES: true };
     const updated: any = await channel.updateOverwrite(role.id, perms);
     return channel.send({ embed: {
-      title: `Unlocked for **${role.name}**`,
-      color: 'ORANGE'
+      title: `**UNLOCKED FOR \`${role.name}\`**`,
+      color: 'GREEN',
+      footer: {
+        text: _.guild.name,
+        iconURL: _.guild.iconURL({ dynamic: true })
+      }
     }});
   }
 }
