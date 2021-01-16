@@ -20,7 +20,7 @@ export default class Spawn extends Command {
 		});
 	}
 
-	public async exec(_: Message, args: yny): Promise<Message> {
+	public async exec(_: Message, args: any): Promise<Message> {
 		const { amount, user } = args;
 		// Args
 		if (!amount) {
