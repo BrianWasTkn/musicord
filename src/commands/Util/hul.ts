@@ -10,6 +10,9 @@ export default class Util extends Command {
       userPermissions: ['MANAGE_MESSAGES'],
       args: [{
         id: 'role', type: 'role'
+      }, {
+        id: 'interval', type: 'number',
+        default: 10000
       }]
     });
   }
@@ -27,22 +30,22 @@ export default class Util extends Command {
 
   public async exec(_: Message, args: any): Promise<Message> {
     await _.delete();
-    const { role, timer } = args;
+    const { role, interval } = args;
     if (!role) return;
     const { channel }: any = _;
 
     const msg = await channel.send({ embed: this.embed(60, role) });
-    await this.client.util.sleep(10000);
+    await this.client.util.sleep(interval);
     await msg.edit({ embed: this.embed(50, role) });
-    await this.client.util.sleep(10000);
+    await this.client.util.sleep(interval);
     await msg.edit({ embed: this.embed(40, role) });
-    await this.client.util.sleep(10000);
+    await this.client.util.sleep(interval);
     await msg.edit({ embed: this.embed(30, role) });
-    await this.client.util.sleep(10000);
+    await this.client.util.sleep(interval);
     await msg.edit({ embed: this.embed(20, role) });
-    await this.client.util.sleep(10000);
+    await this.client.util.sleep(interval);
     await msg.edit({ embed: this.embed(10, role) });
-    await this.client.util.sleep(10000);
+    await this.client.util.sleep(interval);
     await msg.edit({ embed: this.embed(3, role, 'RED') });
     await this.client.util.sleep(1000);
     await msg.edit({ embed: this.embed(2, role, 'RED') });
