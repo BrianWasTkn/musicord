@@ -12,7 +12,7 @@ export default class Util extends Command {
         id: 'role', type: 'role'
       }, {
         id: 'interval', type: 'number',
-        default: 10000
+        default: 10
       }]
     });
   }
@@ -35,27 +35,28 @@ export default class Util extends Command {
     const { channel }: any = _;
 
     const msg = await channel.send({ embed: this.embed(60, role) });
-    await this.client.util.sleep(interval);
+    await this.client.util.sleep(interval * 1000);
     await msg.edit({ embed: this.embed(50, role) });
-    await this.client.util.sleep(interval);
+    await this.client.util.sleep(interval * 1000);
     await msg.edit({ embed: this.embed(40, role) });
-    await this.client.util.sleep(interval);
+    await this.client.util.sleep(interval * 1000);
     await msg.edit({ embed: this.embed(30, role) });
-    await this.client.util.sleep(interval);
+    await this.client.util.sleep(interval * 1000);
     await msg.edit({ embed: this.embed(20, role) });
-    await this.client.util.sleep(interval);
+    await this.client.util.sleep(interval * 1000);
     await msg.edit({ embed: this.embed(10, role) });
-    await this.client.util.sleep(interval);
+    await this.client.util.sleep(interval * 1000);
     await msg.edit({ embed: this.embed(3, role, 'RED') });
-    await this.client.util.sleep(1000);
+    await this.client.util.sleep(1 * 1000);
     await msg.edit({ embed: this.embed(2, role, 'RED') });
-    await this.client.util.sleep(1000);
+    await this.client.util.sleep(1 * 1000);
     await msg.edit({ embed: this.embed(1, role, 'RED') });
-    await this.client.util.sleep(1000);
+    await this.client.util.sleep(1 * 1000);
     await msg.edit({ embed: this.embed(0, role, 'GREEN') });
 
     const perms = { SEND_MESSAGES: true };
     const updated: any = await channel.updateOverwrite(role.id, perms);
+    this.client.heists.set(channel.id, role);
     return channel.send({ embed: {
       title: `**UNLOCKED FOR \`${role.name}\`**`,
       color: 'GREEN',
