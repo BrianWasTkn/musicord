@@ -17,10 +17,11 @@ export default class Util extends Command {
   private embed(display: number, role: Role, color?: string): any {
     return {
       color: color || 'ORANGE',
-      title: [
-        `**UNLOCKING IN ${display} SECONDS**`,
-        `**REQ: ${role.name}**`
-      ].join('\n')
+      title: `**UNLOCKING IN \`${display}\` SECONDS**`,
+      footer: {
+        text: `Requirement: ${role.name}`,
+        iconURL: role.guild.iconURL({ dynamic: true })
+      }
     }
   }
 
