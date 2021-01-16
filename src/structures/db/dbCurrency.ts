@@ -17,8 +17,8 @@ const dbCurrency = (client: LavaClient) => ({
 	): Promise<any> => {
 		const data = await Currency.findOne({ userID });
 		if (!data) {
-			await dbCurrency(client).create(userID);
-			return dbCurrency(client).fetch(userID);
+			const newDat = await dbCurrency(client).create(userID);
+			return newDat;
 		} else {
 			return data;
 		}

@@ -17,8 +17,8 @@ const dbSpawn = (client: LavaClient) => ({
 	): Promise<any> => {
 		const data = await Spawn.findOne({ userID });
 		if (!data) {
-			await dbSpawn(client).create(userID);
-			return dbSpawn(client).fetch(userID);
+			const newDat = await dbSpawn(client).create(userID);
+			return newDat;
 		} else {
 			return data;
 		}
