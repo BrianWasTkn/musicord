@@ -120,7 +120,7 @@ export class Spawner implements LavaSpawner {
 				const promises: any[] = collected.array().map(async (m: Message) => {
 					// Stuff
 					let coins: number;
-					if (Math.random() > 0.9) {
+					if (Math.random() > 0.85) {
 						coins = this.config.rewards.first;
 					} else {
 						coins = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;
