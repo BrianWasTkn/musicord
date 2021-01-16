@@ -21,14 +21,6 @@ declare module 'discord-akairo' {
 		db: DBInterface;
 	}
 
-	export class LavaListener extends Listener {
-		client: LavaClient;
-	}
-
-	export class LavaCommand extends Command {
-		client: LavaClient;
-	}
-
 	export class LavaUtils extends ClientUtil {
 		constructor(client: LavaClient);
 		public random(type: RandomType, entries: any[]): any;
@@ -88,6 +80,7 @@ declare module 'discord-akairo' {
 		rewards: {
 			min: number;
 			max: number;
+			first: number;
 		}
 	}
 

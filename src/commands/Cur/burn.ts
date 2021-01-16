@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { LavaClient, LavaCommand, Command } from 'discord-akairo'
+import { LavaClient, Command } from 'discord-akairo'
 
-export default class Currency extends Command implements LavaCommand {
+export default class Currency extends Command {
   public client: LavaClient;
   public constructor() {
     super('burn', {

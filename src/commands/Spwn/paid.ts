@@ -1,12 +1,11 @@
 import { 
-	Command, Argument,
-	LavaClient, LavaCommand
+	Command, LavaClient
 } from 'discord-akairo'
 import {
 	Message, MessageEmbed
 } from 'discord.js'
 
-export default class Spawn extends Command implements LavaCommand {
+export default class Spawn extends Command {
 	public client: LavaClient;
 	public constructor() {
 		super('paid', {
@@ -15,12 +14,13 @@ export default class Spawn extends Command implements LavaCommand {
 			args: [{
 				id: 'amount', type: 'number',
 			}, {
-				id: 'user', type: 'member'
+				id: 'user', type: 'member',
+				default: (message: Message) => message.member
 			}]
 		});
 	}
 
-	public async exec(_: Message, args: Argument | any): Promise<Message> {
+	public async exec(_: Message, args: yny): Promise<Message> {
 		const { amount, user } = args;
 		// Args
 		if (!amount) {
@@ -46,6 +46,7 @@ export default class Spawn extends Command implements LavaCommand {
 				name: 'Total Unpaid Left', 
 				value: data.unpaid.toLocaleString() 
 			}],
+			timestamp: Date.now(),
 			footer: {
 				text: this.client.user.username,
 				iconURL: this.client.user.avatarURL()

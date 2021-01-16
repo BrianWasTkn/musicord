@@ -1,17 +1,17 @@
-import { LavaClient, LavaCommand, Command } from 'discord-akairo'
+import { LavaClient, Command } from 'discord-akairo'
 import { Message } from 'discord.js'
 import { inspect } from 'util'
 
-export default class Dev extends Command implements LavaCommand {
+export default class Dev extends Command {
   public client: LavaClient;
   public constructor() {
     super('eval', {
       aliases: ['eval', 'ev'],
       channel: 'guild',
       ownerOnly: true,
-      args: [
-        { id: 'code', match: 'content' }
-      ]
+      args: [{ 
+        id: 'code', match: 'content' 
+      }]
     });
   }
 
@@ -20,10 +20,7 @@ export default class Dev extends Command implements LavaCommand {
   }
 
   private codeBlock(str: string, lang: string = 'js'): string {
-    return [
-      `\`\`\`${lang}`,
-      str, '```'
-    ].join('\n');
+    return `\`\`\`${lang}\n${str}\n\`\`\``;
   }
 
   public async exec(_: Message, args: any): Promise<Message> {
@@ -34,7 +31,7 @@ export default class Dev extends Command implements LavaCommand {
 
     const embed: Message = await channel.send({ embed: {
       color: 'ORANGE',
-      description: 'Evaluating, please wait...',
+      description: 'Preparing pro gamer move...',
       footer: {
         iconURL: this.client.user.avatarURL({ dynamic: true }),
         text: this.client.user.username

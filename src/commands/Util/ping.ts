@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { LavaClient, LavaCommand, Command } from 'discord-akairo'
+import { LavaClient, Command } from 'discord-akairo'
 
-export default class Util extends Command implements LavaCommand {
+export default class Util extends Command {
   public client: LavaClient;
   public constructor() {
     super('ping', {
@@ -25,7 +25,6 @@ export default class Util extends Command implements LavaCommand {
     });
 
     const msg: Message = await channel.send({ embed });
-    await this.client.util.sleep(3000);
     return msg.edit({ embed: new MessageEmbed({
       title: guild.name,
       color: 'ORANGE',

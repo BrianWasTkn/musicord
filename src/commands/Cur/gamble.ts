@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { LavaClient, LavaCommand, Command } from 'discord-akairo'
+import { LavaClient, Command } from 'discord-akairo'
 
-export default class Currency extends Command implements LavaCommand {
+export default class Currency extends Command {
   public client: LavaClient;
   public constructor() {
     super('bet', {
@@ -17,7 +17,8 @@ export default class Currency extends Command implements LavaCommand {
   public async exec(_: Message, args: any): Promise<Message> {
     const { minBet, maxBet, maxWin, maxPocket } = this.client.config.gamble;
     const { channel, member: { user } } = _;
-    const data = await this.client.db.currency.fetch(user.id);
+    const data = await this.client.db.currency
+      .fetch(user.id);
     const { pocket, vault, space, multi } = data;
     let bet = args.amount;
 

@@ -1,8 +1,6 @@
-import { LavaClient, LavaListener, Listener } from 'discord-akairo'
-import chalk from 'chalk'
-import moment from 'moment'
+import { LavaClient, Listener } from 'discord-akairo'
 
-export default class Discord extends Listener implements LavaListener {
+export default class Discord extends Listener {
 	public client: LavaClient;
 	public constructor() {
 		super('ready', {

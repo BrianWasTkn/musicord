@@ -1,7 +1,10 @@
-import { Message, MessageEmbed } from 'discord.js'
-import { LavaClient, LavaCommand, Command } from 'discord-akairo'
+import { 
+  Message, MessageEmbed, 
+  Guild, GuildMember 
+} from 'discord.js'
+import { LavaClient, Command } from 'discord-akairo'
 
-export default class Currency extends Command implements LavaCommand {
+export default class Currency extends Command {
   public client: LavaClient;
   public constructor() {
     super('dev', {
@@ -20,16 +23,20 @@ export default class Currency extends Command implements LavaCommand {
   }
 
   public async exec(_: Message, args: any): Promise<Message> {
-    const { channel, guild } = _;
-    const { 
-      option = 'add', 
-      amount = 1, 
-      user = _.member 
+    const { channel, guild }: {
+      channel: typeof _.channel,
+      guild: Guild
+    } = _;
+
+    const { option, amount, user }: {
+      option: string,
+      amount: number,
+      user: GuildMember
     } = args;
 
     if (['give', 'g', 'add'].includes(option)) {
       await this.client.db.currency.addPocket(user.user.id, amount);
-      return channel.send(`Added **${amount.toLocaleString()}** to ${user.username}'s pocket.`);
+      return channel.send(`Added **${amount.toLocaleString()}** to ${user.user.username}'s pocket.`);
     }
   }
 }

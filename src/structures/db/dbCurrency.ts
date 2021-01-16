@@ -98,7 +98,7 @@ const dbCurrency = (client: LavaClient) => ({
 		data.multi -= amount;
 		await data.save();
 		return data;
-	},
+	}
 });
 
 export default dbCurrency;

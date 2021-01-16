@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { LavaClient, LavaCommand, Command } from 'discord-akairo'
+import { LavaClient, Command } from 'discord-akairo'
 
-export default class Currency extends Command implements LavaCommand {
+export default class Currency extends Command {
   public client: LavaClient;
   public constructor() {
     super('bal', {
@@ -9,14 +9,16 @@ export default class Currency extends Command implements LavaCommand {
       channel: 'guild',
       cooldown: 1e3,
       args: [{ 
-        id: 'member', type: 'member' 
+        id: 'member', type: 'member',
+        default: (message: Message) => message.member 
       }]
     });
   }
 
   public async exec(_: Message, args: any): Promise<Message> {
-    const user = args.member || _.member;
-    const data = await this.client.db.currency.fetch(user.user.id);
+    const user = args.member;
+    const data = await this.client.db.currency
+      .fetch(user.user.id);
     const embed: MessageEmbed = new MessageEmbed({
       title: `${user.user.username}'s balance`,
       color: 'RANDOM',

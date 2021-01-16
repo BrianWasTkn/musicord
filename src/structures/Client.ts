@@ -12,8 +12,8 @@ import {
 } from 'discord.js'
 import {
 	AkairoClient, ListenerHandler, CommandHandler,
-	LavaClient as ClientLava, LavaListener, LavaCommand, 
-	DBInterface
+	LavaClient as ClientLava, DBInterface,
+	Listener, Command
 } from 'discord-akairo'
 
 /**
@@ -90,10 +90,10 @@ export class LavaClient extends AkairoClient implements ClientLava {
 		});
 
 		// Handler Load events
-		this.listenerHandler.on('load', (_: LavaListener, isReload: boolean): void => {
+		this.listenerHandler.on('load', (_: Listener, isReload: boolean): void => {
 			this.util.log('Emitter', 'main', `Emitter ${chalk.cyanBright(_.id)} loaded.`);
 		});
-		this.commandHandler.on('load', (_: LavaCommand, isReload: boolean): void => {
+		this.commandHandler.on('load', (_: Command, isReload: boolean): void => {
 			this.util.log('Command', 'main', `Command ${chalk.cyanBright(_.id)} loaded.`);
 		});
 

@@ -1,13 +1,13 @@
-import { LavaClient, LavaCommand, Command } from 'discord-akairo'
+import { LavaClient, Command } from 'discord-akairo'
 import { Message, Snowflake, Role } from 'discord.js'
 
-export default class Util extends Command implements LavaCommand {
+export default class Util extends Command {
   public client: LavaClient;
   public constructor() {
     super('hunock', {
       aliases: ['hunlock', 'hul'],
       channel: 'guild',
-      userPermissions: 'MANAGE_MESSAGES',
+      userPermissions: ['MANAGE_MESSAGES'],
       args: [ 
         { id: 'query', type: 'string' } 
       ]
@@ -22,7 +22,7 @@ export default class Util extends Command implements LavaCommand {
     const role: Role = _.guild.roles.cache.get(target);
     if (!role) return;
 
-    const perms: { [k: string]: boolean } = { SEND_MESSAGES: true };
+    const perms: { [k: string]: boolean | null } = { SEND_MESSAGES: true };
     const updated: any = await channel.updateOverwrite(role.id, perms);
     return channel.send(`Unlocked for **${role.name}**`);
   }

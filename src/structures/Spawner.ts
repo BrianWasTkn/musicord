@@ -100,7 +100,7 @@ export class Spawner implements LavaSpawner {
 			collector.on('collect', async (msg: Message) => {
 				this.answered.set(msg.author.id, msg.member);
 				if (collector.collected.first().id === msg.id) {
-					await msg.channel.send(`\`${msg.author.username}\` got it first!`);
+					await msg.react('<:memerGold:753138901169995797>');
 				} else {
 					await msg.react(emoji);
 				}
@@ -116,13 +116,18 @@ export class Spawner implements LavaSpawner {
 				const results: string[] = [];
 				this.answered.clear();
 
-				// Loop through
+				// Loop through stuff
 				const promises: any[] = collected.array().map(async (m: Message) => {
 					// Stuff
-					const coins: number = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;
+					let coins: number;
+					if (Math.random() > 0.9) {
+						coins = this.config.rewards.first;
+					} else {
+						coins = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;
+					}
+
 					const verbs: string[] = ['obtained', 'grabbed', 'magiked', 'won', 'procured'];
 					const verb: string = this.client.util.random('arr', verbs);
-					
 					// Visual stuff
 					results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
 					const content: string = [
@@ -131,13 +136,13 @@ export class Spawner implements LavaSpawner {
 						`**${coins.toLocaleString()}** coins has been added to your unpaid credits (use our \`lava unpaids\` command).`
 					].join('\n');
 
-					// DB
+					// Update DB Stuff
 					await this.client.db.spawns.addUnpaid(m.member.user.id, coins);
 					await this.client.db.spawns.incrementJoinedEvents(m.member.user.id, 1);
 					return m.author.send(content).catch(() => {});
 				});
 
-				// Stuff
+				// Promise Stuff
 				await Promise.all(promises);
 				const payouts: any = guild.channels.cache.get('796688961899855893') || collector.channel;
 				await payouts.send({ embed: {

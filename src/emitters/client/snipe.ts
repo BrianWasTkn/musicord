@@ -1,7 +1,7 @@
-import { Listener, LavaListener, LavaClient } from 'discord-akairo'
+import { Listener, LavaClient } from 'discord-akairo'
 import { Message, PartialMessage } from 'discord.js'
 
-export default class Discord extends Listener implements LavaListener {
+export default class Discord extends Listener {
 	public client: LavaClient;
 	public constructor() {
 		super('snipe', {
