@@ -156,7 +156,7 @@ export default class Currency extends Command {
     await this.client.util.sleep(1000);
     return msg.edit({ embed: {
       author: { 
-        name: `${user.username}'s ${state} gambling game`,
+        name: `${user.username}'s ${state} slot machine`,
         iconURL: user.avatarURL({ dynamic: true }) },
       color, description: description.join('\n'),
       fields: [{ 
