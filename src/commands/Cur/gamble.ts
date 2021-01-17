@@ -60,9 +60,20 @@ export default class Currency extends Command {
       return _.reply('It\'s gotta be a real number yeah?')
     }
 
-    // Dice Rolls 
-    const userD = this.client.util.random('num', [1, 12]),
-      botD = this.client.util.random('num', [1, 12]);
+    // Dice Rolls
+    const { util } = this.client;
+    let userD = util.random('num', [1, 12]);
+    let botD = util.random('num', [1, 12]);
+    // Rig
+    if (Math.random() > 0.65) {
+      if (botD > userD) {
+        userD = [botD, botD = userD][0];
+      }
+    } else {
+      if (botD > userD) {
+        botD = [userD, userD = botD][0];      
+      }
+    }
 
     // Win
     let won;
