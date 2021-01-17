@@ -81,26 +81,39 @@ export default class Currency extends Command {
     // Cases
     let winnings: number, color: string;
     if (
-      a.emoji === b.emoji && 
-      c.emoji === b.emoji && 
-      a.emoji === c.emoji
-    ) {
       // Jackpot
+      a.emoji === b.emoji && 
+      a.emoji === c.emoji && 
+      b.emoji === c.emoji
+    ) {
       winnings = (b.winnings * 2) + (multi / 100);
       winnings = Math.round(winnings * bet);
       color = 'GOLD';
-    } else if (a.emoji === b.emoji && a.emoji !== c.emoji) {
+    } else if (
       // Left == Middle
+      a.emoji === b.emoji && 
+      a.emoji !== c.emoji && 
+      b.emoji !== c.emoji
+    ) {
       winnings = a.winnings + (multi / 100);
       winnings = Math.round(winnings * bet);
       color = 'GREEN';
-    } else if (a.emoji === c.emoji && a.emoji !== b.emoji) {
+    } else if (
+      // Left == Right
+      a.emoji !== b.emoji && 
+      a.emoji === c.emoji && 
+      b.emoji !== c.emoji
+    ) {
       // Left == Right
       winnings = b.winnings + (multi / 100);
       winnings = Math.round(winnings * bet);
       color = 'GREEN';
-    } else if (b.emoji === c.emoji && b.emoji !== a.emoji) {
+    } else if (
       // Middle == Right
+      a.emoji !== b.emoji && 
+      a.emoji !== c.emoji && 
+      b.emoji == c.emoji
+    ) {
       winnings = c.winnings + (multi / 100);
       winnings = Math.round(winnings * bet);
       color = 'GREEN';
