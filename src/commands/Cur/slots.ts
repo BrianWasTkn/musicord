@@ -133,6 +133,7 @@ export default class Currency extends Command {
         `You now have **${db.pocket.toLocaleString()}** coins.`
       ];
     } else if (color === 'GREEN') {
+      if (winnings >= maxWin) winnings = maxWin;
       const db = await this.client.db.currency.addPocket(_.author.id, winnings);
       state = 'winning';
       percentWon = Math.round((winnings / bet) * 100);
@@ -142,6 +143,7 @@ export default class Currency extends Command {
         `You now have **${db.pocket.toLocaleString()}** coins.`
       ];
     } else if (color === 'GOLD') {
+      if (winnings >= maxWin) winnings = maxWin;
       const db = await this.client.db.currency.addPocket(_.author.id, winnings);
       state = 'jackpot';
       percentWon = Math.round((winnings / bet) * 100);

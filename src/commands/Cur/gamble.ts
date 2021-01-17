@@ -75,81 +75,61 @@ export default class Currency extends Command {
       }
     }
 
-    // Win
-    let won;
+    // Visuals and DB
+    let winnings: number, won: number, percentWon: number, 
+    description: string[], identifier: string, db: any, color: string;
     if (userD > botD) {
-      let winnings = Math.random();
+      // Win
+      let winnings = Math.random() * 2.5;
       if (winnings < 0.3) winnings += 0.3;
       won = Math.round(bet * winnings);
       won = won + Math.round(won * (multi / 100));
       if (won > maxWin) won = maxWin;
-      const db = await this.client.db.currency.addPocket(user.id, won);
-      const percentWon = Math.round(won / bet * 100);
-      return channel.send({ embed: {
-        author: { 
-          name: `${user.username}'s winning gambling game`,
-          iconURL: user.avatarURL({ dynamic: true }) },
-        color: 'GREEN',
-        description: [
-          `**Winner! You won __${percentWon}%__ of your bet.**`,
-          `You won **${won.toLocaleString()}** coins.\n`,
-          `You now have **${db.pocket.toLocaleString()}** coins.`
-        ].join('\n'),
-        fields: [
-          { name: user.username, value: `Rolled a \`${userD}\``, inline: true },
-          { name: this.client.user.username, value: `Rolled a \`${botD}\``, inline: true },
-        ],
-        footer: { 
-          text: `Multiplier: ${multi}%`,
-          iconURL: this.client.user.avatarURL() }
-      }});
+      percentWon = Math.round(won / bet * 100);
+      db = await this.client.db.currency.addPocket(user.id, won);
+      identifier = 'winning';
+      color = 'GREEN';
+      description = [
+        `**Winner! You won __${percentWon}%__ of your bet.**`,
+        `You won **${won.toLocaleString()}** coins.\n`,
+        `You now have **${db.pocket.toLocaleString()}** coins.`
+      ];
+    } else if (userD === botD) {
+      // Ties
+      bet = Math.round(bet / 4);
+      db = await this.client.db.currency.removePocket(user.id, bet);
+      identifier = 'tie';
+      color = 'YELLOW';
+      description = [
+        `**We Tied! Our dice are on same side.**`,
+        `You lost **${bet.toLocaleString()}** coins.\n`,
+        `You now have **${db.pocket.toLocaleString()}** coins.`
+      ];
+    } else if (userD < botD) {
+      // Lost 
+      db = await this.client.db.currency.removePocket(user.id, bet);
+      identifier = 'losing';
+      color = 'RED';
+      description = [
+        `**You lost! My dice is higher than yours.**`,
+        `You lost **${bet.toLocaleString()}** coins.\n`,
+        `You now have **${db.pocket.toLocaleString()}** coins.`
+      ];
     }
 
-    // Ties
-    if (userD === botD) {
-      const lost = Math.round(bet / 4);
-      const db = await this.client.db.currency.removePocket(user.id, lost);
-      return channel.send({ embed: {
-        author: { 
-          name: `${user.username}'s tie gambling game`,
-          iconURL: user.avatarURL({ dynamic: true }) },
-        color: 'YELLOW',
-        description: [
-          `**We tied! Our dice are on equal sides.**`,
-          `You lost **${lost.toLocaleString()}** coins.\n`,
-          `You now have **${db.pocket.toLocaleString()}** coins.`
-        ].join('\n'),
-        fields: [
-          { name: user.username, value: `Rolled a \`${userD}\``, inline: true },
-          { name: this.client.user.username, value: `Rolled a \`${botD}\``, inline: true },
-        ],
-        footer: { 
-          text: `Multiplier: ${multi}%`,
-          iconURL: this.client.user.avatarURL() }
-      }});
-    }
-
-    // Lose 
-    if (userD < botD) {
-      const db = await this.client.db.currency.removePocket(user.id, bet);
-      return channel.send({ embed: {
-        author: { 
-          name: `${user.username}'s losing gambling game`,
-          iconURL: user.avatarURL({ dynamic: true }) },
-        color: 'RED',
-        description: [
-          `**You Lost! My dice is higher than yours.**`,
-          `You lost **${bet.toLocaleString()}** coins.\n`,
-          `You now have **${db.pocket.toLocaleString()}** coins.`
-        ].join('\n'),
-        fields: [
-          { name: user.username, value: `Rolled a \`${userD}\``, inline: true },
-          { name: this.client.user.username, value: `Rolled a \`${botD}\``, inline: true },
-        ],
-        footer: { 
-          text: `Multiplier: ${multi}%`,
-          iconURL: this.client.user.avatarURL() }
-      }});
-    }
+    // Message
+    return channel.send({ embed: {
+      author: { 
+        name: `${user.username}'s ${identifier} gambling game`,
+        iconURL: user.avatarURL({ dynamic: true }) },
+      color:, description: description.join('\n'),
+      fields: [
+        { name: user.username, value: `Rolled a \`${userD}\``, inline: true },
+        { name: this.client.user.username, value: `Rolled a \`${botD}\``, inline: true },
+      ],
+      footer: { 
+        text: `Multiplier: ${multi}%`,
+        iconURL: this.client.user.avatarURL() }
+    }});
   }
 }
