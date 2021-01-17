@@ -118,7 +118,7 @@ export default class Currency extends Command {
     } else if (color === 'GREEN') {
       const db = await this.client.db.currency.addPocket(_.author.id, winnings);
       state = 'winning';
-      percentWon = Math.round((winnings / bet)) * 100);
+      percentWon = Math.round((winnings / bet) * 100);
       description = [
         `**Winner! You won __${percentWon}%__ of your bet.**`,
         `You won **${winnings.toLocaleString()}** coins.\n`,
@@ -127,7 +127,7 @@ export default class Currency extends Command {
     } else if (color === 'GOLD') {
       const db = await this.client.db.currency.addPocket(_.author.id, winnings);
       state = 'jackpot';
-      percentWon = Math.round((winnings / bet)) * 100);
+      percentWon = Math.round((winnings / bet) * 100);
       description = [
         `**JACKPOT! You won __${percentWon}%__ of your bet.**`,
         `You won **${winnings.toLocaleString()}** coins.\n`,
