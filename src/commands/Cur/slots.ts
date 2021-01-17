@@ -75,8 +75,7 @@ export default class Currency extends Command {
     const outcome = `\> :${a.emoji}:   :${b.emoji}:   :${c.emoji}: <`;
 
     // Cases
-    let winnings: number, 
-    color: string;
+    let winnings: number, color: string;
     if (
       a.emoji === b.emoji && 
       c.emoji === b.emoji && 
@@ -107,9 +106,7 @@ export default class Currency extends Command {
     }
 
     // Visuals and DB
-    let description: string[], 
-    state: string,
-    percentWon: number;
+    let description: string[], state: string, percentWon: number;
     if (color === 'RED') {
       const db = await this.client.db.currency.removePocket(_.author.id, bet);
       state = 'losing';
