@@ -70,7 +70,7 @@ export default class Currency extends Command {
         userD = [botD, botD = userD][0];
       }
     } else {
-      if (botD > userD) {
+      if (userD > botD) {
         botD = [userD, userD = botD][0];      
       }
     }
@@ -78,7 +78,8 @@ export default class Currency extends Command {
     // Win
     let won;
     if (userD > botD) {
-      let winnings = Math.random() + 0.4;
+      let winnings = Math.random();
+      if (winnings < 0.3) winnings += 0.3;
       won = Math.round(bet * winnings);
       won = won + Math.round(won * (multi / 100));
       if (won > maxWin) won = maxWin;
