@@ -7,7 +7,7 @@ export default class Currency extends Command {
     super('bet', {
       aliases: ['gamble', 'roll', 'bet'],
       channel: 'guild',
-      cooldown: 3000,
+      cooldown: 1000,
       args: [{ 
         id: 'amount', match: 'content'
       }]

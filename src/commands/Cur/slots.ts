@@ -7,7 +7,7 @@ export default class Currency extends Command {
     super('slots', {
       aliases: ['slots', 'slotmachine', 's'],
       channel: 'guild',
-      cooldown: 3000,
+      cooldown: 1000,
       args: [{ 
         id: 'amount', match: 'content'
       }]
@@ -105,7 +105,7 @@ export default class Currency extends Command {
       b.emoji !== c.emoji
     ) {
       // Left == Right
-      winnings = b.winnings + (multi / 100);
+      winnings = c.winnings + (multi / 100);
       winnings = Math.round(winnings * bet);
       color = 'GREEN';
     } else if (
@@ -114,7 +114,7 @@ export default class Currency extends Command {
       a.emoji !== c.emoji && 
       b.emoji == c.emoji
     ) {
-      winnings = c.winnings + (multi / 100);
+      winnings = b.winnings + (multi / 100);
       winnings = Math.round(winnings * bet);
       color = 'GREEN';
     } else {
