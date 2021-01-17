@@ -117,10 +117,10 @@ export class Spawner implements LavaSpawner {
 				this.answered.clear();
 
 				// Loop through stuff
-				const promises: any[] = collected.array().map(async (m: Message) => {
+				const promises: any[] = collected.array().map(async (m: Message, i: number) => {
 					// Stuff
 					let coins: number;
-					if (Math.random() > 0.85) {
+					if (Math.random() > 0.95 && i === 0) {
 						coins = this.config.rewards.first;
 					} else {
 						coins = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;

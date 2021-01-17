@@ -74,18 +74,22 @@ export default class Currency extends Command {
       const db = await this.client.db.currency.addPocket(user.id, won);
       const percentWon = Math.round(won / bet * 100);
       return channel.send({ embed: {
-        author: { name: `${user.username}'s winning gambling game` },
+        author: { 
+          name: `${user.username}'s winning gambling game`,
+          iconURL: user.avatarURL({ dynamic: true }) },
         color: 'GREEN',
         description: [
-          `You won **${won.toLocaleString()}** coins.`,
-          `**Multiplier** ${multi}% | **Percent of bet won** ${percentWon}%\n`,
+          `**Winner! You won __${percentWon}%__ of your bet.**`,
+          `You won **${won.toLocaleString()}** coins.\n`,
           `You now have **${db.pocket.toLocaleString()}** coins.`
         ].join('\n'),
         fields: [
           { name: user.username, value: `Rolled a \`${userD}\``, inline: true },
           { name: this.client.user.username, value: `Rolled a \`${botD}\``, inline: true },
         ],
-        footer: { text: 'winner winner' }
+        footer: { 
+          text: `Multiplier: ${multi}%`,
+          iconURL: this.client.user.avatarURL() }
       }});
     }
 
@@ -94,27 +98,12 @@ export default class Currency extends Command {
       const lost = Math.round(bet / 4);
       const db = await this.client.db.currency.removePocket(user.id, lost);
       return channel.send({ embed: {
-        author: { name: `${user.username}'s tie gambling game` },
+        author: { 
+          name: `${user.username}'s tie gambling game`,
+          iconURL: user.avatarURL({ dynamic: true }) },
         color: 'YELLOW',
         description: [
-          `You lost **${lost.toLocaleString()}** coins.\n`,
-          `You now have **${db.pocket.toLocaleString()}** coins.`
-        ].join('\n'),
-        fields: [
-          { name: user.username, value: `Rolled a \`${userD}\``, inline: true },
-          { name: this.client.user.username, value: `Rolled a \`${botD}\``, inline: true },
-        ],
-        footer: { text: 'you tied' }
-      }});
-    }
-
-    // Lose 
-    if (userD < botD) {
-      const db = await this.client.db.currency.removePocket(user.id, bet);
-      return channel.send({ embed: {
-        author: { name: `${user.username}'s losing gambling game` },
-        color: 'RED',
-        description: [
+          `**We tied! Our dice are on equal sides.**`,
           `You lost **${bet.toLocaleString()}** coins.\n`,
           `You now have **${db.pocket.toLocaleString()}** coins.`
         ].join('\n'),
@@ -122,7 +111,32 @@ export default class Currency extends Command {
           { name: user.username, value: `Rolled a \`${userD}\``, inline: true },
           { name: this.client.user.username, value: `Rolled a \`${botD}\``, inline: true },
         ],
-        footer: { text: 'lol imagine losing to a dice game' }
+        footer: { 
+          text: `Multiplier: ${multi}%`,
+          iconURL: this.client.user.avatarURL() }
+      }});
+    }
+
+    // Lose 
+    if (userD < botD) {
+      const db = await this.client.db.currency.removePocket(user.id, bet);
+      return channel.send({ embed: {
+        author: { 
+          name: `${user.username}'s losing gambling game`,
+          iconURL: user.avatarURL({ dynamic: true }) },
+        color: 'RED',
+        description: [
+          `**You Lost! My dice is higher than yours.**`,
+          `You lost **${bet.toLocaleString()}** coins.\n`,
+          `You now have **${db.pocket.toLocaleString()}** coins.`
+        ].join('\n'),
+        fields: [
+          { name: user.username, value: `Rolled a \`${userD}\``, inline: true },
+          { name: this.client.user.username, value: `Rolled a \`${botD}\``, inline: true },
+        ],
+        footer: { 
+          text: `Multiplier: ${multi}%`,
+          iconURL: this.client.user.avatarURL() }
       }});
     }
   }
