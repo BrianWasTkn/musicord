@@ -116,7 +116,7 @@ export default class Currency extends Command {
         color: 'YELLOW',
         description: [
           `**We tied! Our dice are on equal sides.**`,
-          `You lost **${bet.toLocaleString()}** coins.\n`,
+          `You lost **${lost.toLocaleString()}** coins.\n`,
           `You now have **${db.pocket.toLocaleString()}** coins.`
         ].join('\n'),
         fields: [
