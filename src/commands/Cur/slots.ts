@@ -17,7 +17,7 @@ export default class Currency extends Command {
   private _roll(emojis: any): Array<{ emoji: string, winnings: number }> {
     const slots = [];
     for (let i = 0; i < 3; ++i) {
-      slots.push(emojis[i]);
+      slots.push(this.client.util.random('arr', emojis));
     }
     return slots;
   }
