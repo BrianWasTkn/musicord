@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js'
+import { Message, MessageEmbed, Util } from 'discord.js'
 import { LavaClient, Command } from 'discord-akairo'
 
 export default class Currency extends Command {
@@ -72,7 +72,11 @@ export default class Currency extends Command {
     const { slots: emojis } = this.client.config.gamble;
     const slots = this._roll(emojis);
     const [a, b, c] = slots;
-    const outcome = `\> :${a.emoji}:   :${b.emoji}:   :${c.emoji}: <`;
+    const outcome = `**\> :${a.emoji}:   :${b.emoji}:   :${c.emoji}: <**`;
+    await channel.send({ embed: {
+      author: { name: `${user.username}'s slot machine` },
+      description: outcome
+    }})
 
     // Cases
     let winnings: number, color: string;
