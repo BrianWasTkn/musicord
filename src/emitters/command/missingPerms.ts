@@ -24,7 +24,7 @@ export default class CommandHandler extends Listener {
 				`Ensure ${type === 'client' ? 'I' : 'you'} have the following permissions:`
 			].join('\n'),
 			fields: [{
-				name: '\u200B',
+				name: `Missing Permissions • ${missing.length}`,
 				value: `\`${missing.join('`, `')}\``
 			}],
 			footer: {
