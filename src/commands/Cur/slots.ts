@@ -73,7 +73,7 @@ export default class Currency extends Command {
     const slots = this._roll(emojis);
     const [a, b, c] = slots;
     const outcome = `**\> :${a.emoji}:   :${b.emoji}:   :${c.emoji}: <**`;
-    await channel.send({ embed: {
+    const msg = await channel.send({ embed: {
       author: { name: `${user.username}'s slot machine` },
       description: outcome
     }})
@@ -140,7 +140,8 @@ export default class Currency extends Command {
     }
 
     // Message
-    return channel.send({ embed: {
+    await this.client.util.sleep(1000);
+    return msg.edit({ embed: {
       author: { 
         name: `${user.username}'s ${state} gambling game`,
         iconURL: user.avatarURL({ dynamic: true }) },
