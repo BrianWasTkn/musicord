@@ -84,29 +84,29 @@ export default class Currency extends Command {
     ) {
       // Jackpot
       winnings = (b.winnings * 2) + (multi / 100);
-      winnings = winnings * bet;
+      winnings = Math.round(winnings * bet);
       color = 'GOLD';
     } else if (a.emoji === b.emoji && a.emoji !== c.emoji) {
       // Left == Middle
       winnings = a.winnings + (multi / 100);
-      winnings = winnings * bet;
+      winnings = Math.round(winnings * bet);
       color = 'GREEN';
     } else if (a.emoji === c.emoji && a.emoji !== b.emoji) {
       // Left == Right
       winnings = b.winnings + (multi / 100);
-      winnings = winnings * bet;
+      winnings = Math.round(winnings * bet);
       color = 'GREEN';
     } else if (b.emoji === c.emoji && b.emoji !== a.emoji) {
       // Middle == Right
       winnings = c.winnings + (multi / 100);
-      winnings = winnings * bet;
+      winnings = Math.round(winnings * bet);
       color = 'GREEN';
     } else {
       // Lose
       color = 'RED';
     }
 
-    // Visuals
+    // Visuals and DB
     let description: string[], 
     state: string,
     percentWon: number;
