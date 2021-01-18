@@ -122,7 +122,7 @@ export default class Currency extends Command {
       author: { 
         name: `${user.username}'s ${identifier} gambling game`,
         iconURL: user.avatarURL({ dynamic: true }) },
-      color:, description: description.join('\n'),
+      color, description: description.join('\n'),
       fields: [
         { name: user.username, value: `Rolled a \`${userD}\``, inline: true },
         { name: this.client.user.username, value: `Rolled a \`${botD}\``, inline: true },
