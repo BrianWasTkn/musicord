@@ -94,7 +94,7 @@ export default class Currency extends Command {
       a.emoji !== c.emoji && 
       b.emoji !== c.emoji
     ) {
-      winnings = a.winnings + (a.winnings * (multi / 100));
+      winnings = a.winnings + (a.winnings + (multi / 100));
       winnings = Math.round(winnings * bet);
       color = 'GREEN';
     } else if (
@@ -104,7 +104,7 @@ export default class Currency extends Command {
       b.emoji !== c.emoji
     ) {
       // Left == Right
-      winnings = c.winnings + (c.winnings * (multi / 100));
+      winnings = c.winnings + (c.winnings + (multi / 100));
       winnings = Math.round(winnings * bet);
       color = 'GREEN';
     } else if (
@@ -113,7 +113,7 @@ export default class Currency extends Command {
       a.emoji !== c.emoji && 
       b.emoji == c.emoji
     ) {
-      winnings = b.winnings + (b.winnings * (multi / 100));
+      winnings = b.winnings + (b.winnings + (multi / 100));
       winnings = Math.round(winnings * bet);
       color = 'GREEN';
     } else {
