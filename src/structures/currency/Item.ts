@@ -13,27 +13,26 @@ interface Item {
 }
 
 export default class Item {
-	public client: LavaClient;
-	public constructor(
-		client: LavaClient, 
-		fn: Function,
-		props: Item
-	) {
-		this.client = client;
-		this.fn = fn;
-		this.props = props;
-	}
+	// public client: LavaClient;
+	// public constructor(
+	// 	client: LavaClient, 
+	// 	fn: Function,
+	// 	props: Item
+	// ) {
+	// 	this.client = client;
+	// 	this.fn = fn;
+	// 	this.props = props;
+	// }
 
-	private async checkInv(_: Message): boolean {
-		return false;
-	}
+	// private async checkInv(_: Message): boolean {
+	// 	return false;
+	// }
 
-	private async checkAmount(_: Message): boolean {
-		return false;
-	}
+	// private async checkAmount(_: Message): boolean {
+	// 	return false;
+	// }
 
-	public async use(_: Message): any {
-		const inv = await this.checkInv(_);
-	}
-
+	// public async use(_: Message): any {
+	// 	const inv = await this.checkInv(_);
+	// }
 }
