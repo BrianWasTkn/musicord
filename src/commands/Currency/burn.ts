@@ -17,8 +17,7 @@ export default class Currency extends Command {
   public async exec(_: Message, args: any): Promise<Message> {
     const { amount } = args;
     if (!amount) return;
-    const data = await this.client.db.currency
-      .removePocket(_.author.id, amount);
+    const data = await this.client.db.currency.removePocket(_.author.id, amount);
     return _.channel.send(`Successfully burned **${amount.toLocaleString()}** coins from your pocket.`);
   }
 }

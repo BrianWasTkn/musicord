@@ -17,7 +17,7 @@ export default class CommandHandler extends Listener {
 	): Promise<Message> {
 		const embed = this.client.util.embed({
 			title: 'Oh shit, on cooldown',
-			color: 'INDIGO',
+			color: 'RED',
 			description: [
 				`You're currently on cooldown for the \`${command.id}\` command.`,
 				`Please wait **${(remaining / 1000).toFixed(2)}** seconds and try again.`

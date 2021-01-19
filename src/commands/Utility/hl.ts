@@ -15,6 +15,8 @@ export default class Util extends Command {
     await _.delete();
     const role: Role = this.client.heists.get(_.channel.id);
     if (!role) return;
+    const { channel }: any = _;
+    await channel.updateOverwrite(role.id, { SEND_MESSAGES: null });
     return _.channel.send({ embed: {
       title: `**LOCKED FOR \`${role.name}\`**`,
       color: 'GREEN',

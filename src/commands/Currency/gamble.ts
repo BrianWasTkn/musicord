@@ -17,8 +17,7 @@ export default class Currency extends Command {
   public async exec(_: Message, args: any): Promise<Message> {
     const { minBet, maxBet, maxWin, maxPocket } = this.client.config.gamble;
     const { channel, member: { user } } = _;
-    const data = await this.client.db.currency
-      .fetch(user.id);
+    const data = await this.client.db.currency.fetch(user.id);
     const { pocket, vault, space, multi } = data;
     let bet = args.amount;
 
@@ -80,7 +79,7 @@ export default class Currency extends Command {
     description: string[], identifier: string, db: any, color: string;
     if (userD > botD) {
       // Win
-      let winnings = Math.random() * 2.5;
+      let winnings = Math.random() * 1.5;
       if (winnings < 0.3) winnings += 0.3;
       won = Math.round(bet * winnings);
       won = won + Math.round(won * (multi / 100));
@@ -122,7 +121,7 @@ export default class Currency extends Command {
       author: { 
         name: `${user.username}'s ${identifier} gambling game`,
         iconURL: user.avatarURL({ dynamic: true }) },
-      color:, description: description.join('\n'),
+      color, description: description.join('\n'),
       fields: [
         { name: user.username, value: `Rolled a \`${userD}\``, inline: true },
         { name: this.client.user.username, value: `Rolled a \`${botD}\``, inline: true },

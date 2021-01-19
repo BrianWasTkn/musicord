@@ -108,7 +108,7 @@ export class Spawner implements LavaSpawner {
 
 			// Handle End
 			collector.on('end', async (collected: Collection<Snowflake, Message>) => {
-				await event.edit(`${event.content}\n\n**<:memerRed:729863510716317776> \`This event has expired.\`**`);
+				await event.edit(`${event.content}\n\n**<:memerRed:729863510716317776> \`This event has expired.\`**`).catch(() => {});
 				if (!collected.size) return resolve({ color: 'RED', description: '**<:memerRed:729863510716317776> No one got the event.**' });
 
 				// Vars
