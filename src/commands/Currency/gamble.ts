@@ -63,16 +63,6 @@ export default class Currency extends Command {
     const { util } = this.client;
     let userD = util.random('num', [1, 12]);
     let botD = util.random('num', [1, 12]);
-    // Rig
-    if (Math.random() > 0.65) {
-      if (botD > userD) {
-        userD = [botD, botD = userD][0];
-      }
-    } else {
-      if (userD > botD) {
-        botD = [userD, userD = botD][0];      
-      }
-    }
 
     // Visuals and DB
     let winnings: number, won: number, percentWon: number, 

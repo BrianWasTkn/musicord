@@ -4,8 +4,8 @@ import { Utils } from './Util'
 import { join } from 'path'
 import mongoose from 'mongoose'
 import chalk from 'chalk'
-import dbCur from './db/dbCurrency'
-import dbSpn from './db/dbSpawn'
+import cur from './currency/functions'
+import spn from './spawns/functions'
 
 import {
 	Message, Collection, Snowflake, GuildChannel,
@@ -48,8 +48,8 @@ export class LavaClient extends AkairoClient implements ClientLava {
 		this.config = config;
 		this.util = new Utils(this);
 		this.db = { 
-			currency: dbCur(this),
-			spawns: dbSpn(this)
+			currency: cur(this),
+			spawns: spn(this)
 		};
 
 		// Akairo Handlers
