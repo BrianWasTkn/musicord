@@ -25,14 +25,14 @@ export default class Item {
 	}
 
 	private async checkInv(_: Message): boolean {
-
+		return false;
 	}
 
 	private async checkAmount(_: Message): boolean {
-		
+		return false;
 	}
 
-	public async use(_: Message): void {
+	public async use(_: Message): any {
 		const inv = await this.checkInv(_);
 	}
 
