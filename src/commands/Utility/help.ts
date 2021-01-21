@@ -9,7 +9,7 @@ export default class Utility extends Lava.Command {
 			aliases: ['help', 'h'],
 			channel: 'guild',
 			description: 'Lists all or a specific command you wish.',
-			category; 'Utility',
+			category: 'Utility',
 			args: [{
 				id: 'query', type: 'command',
 				default: null
