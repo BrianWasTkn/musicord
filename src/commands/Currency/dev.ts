@@ -2,10 +2,10 @@ import {
   Message, MessageEmbed, 
   Guild, GuildMember 
 } from 'discord.js'
-import { LavaClient, Command } from 'discord-akairo'
+import Lava from 'discord-akairo'
 
-export default class Currency extends Command {
-  public client: LavaClient;
+export default class Currency extends Lava.Command {
+  public client: Lava.Client;
   public constructor() {
     super('dev', {
       aliases: ['dev', 'g'],
@@ -13,11 +13,14 @@ export default class Currency extends Command {
       ownerOnly: true,
       cooldown: 1e3,
       args: [{ 
-        id: 'option', type: 'string' 
+        id: 'option', 
+        type: 'string' 
       }, {
-        id: 'amount', type: 'number'
+        id: 'amount', 
+        type: 'number'
       }, {
-        id: 'user', type: 'member'
+        id: 'user', 
+        type: 'member'
       }]
     });
   }

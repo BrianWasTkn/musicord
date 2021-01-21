@@ -1,7 +1,7 @@
-import { LavaClient, Listener } from 'discord-akairo'
+import Lava from 'discord-akairo'
 
-export default class Discord extends Listener {
-	public client: LavaClient;
+export default class Discord extends Lava.Listener {
+	public client: Lava.Client;
 	public constructor() {
 		super('ready', {
 			emitter: 'client',

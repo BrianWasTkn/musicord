@@ -1,8 +1,8 @@
-import { Listener, Command, LavaClient } from 'discord-akairo'
 import { Message } from 'discord.js'
+import Lava from 'discord-akairo'
 
-export default class CommandHandler extends Listener {
-	public client: LavaClient;
+export default class CommandHandler extends Lava.Listener {
+	public client: Lava.Client;
 	public constructor() {
 		super('missingPermissions', {
 			emitter: 'commandHandler',
@@ -12,7 +12,7 @@ export default class CommandHandler extends Listener {
 
 	public async exec(
 		_: Message,
-		command: Command,
+		command: Lava.Command,
 		type: 'client' | 'user',
 		missing: any
 	): Promise<Message> {

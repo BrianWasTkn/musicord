@@ -2,22 +2,19 @@ import {
 	Message, Guild, Collection, GuildMember, User, Snowflake,
 	CollectorFilter, MessageEmbed, MessageCollector
 } from 'discord.js'
-import { 
-	SpawnVisuals, SpawnConfig, 
-	LavaSpawner, LavaClient 
-} from 'discord-akairo'
-import SpawnProfile from '../models/SpawnProfile'
+import Lava from 'discord-akairo'
+import SpawnProfile from './spawns/model'
 
-export class Spawner implements LavaSpawner {
+export class Spawner implements Lava.Spawner {
 	public queue: Collection<Snowflake, User>;
-	public spawn: SpawnVisuals;
-	public config: SpawnConfig;
+	public spawn: Lava.SpawnVisuals;
+	public config: Lava.SpawnConfig;
 	public answered: Collection<Snowflake, GuildMember>;
-	public client: LavaClient;
+	public client: Lava.Client;
 	public constructor(
-		client: LavaClient, 
-		config: SpawnConfig,
-		spawn: SpawnVisuals
+		client: Lava.Client, 
+		config: Lava.SpawnConfig,
+		spawn: Lava.SpawnVisuals
 	) {
 		/**
 		 * The Spawn Info
@@ -44,18 +41,9 @@ export class Spawner implements LavaSpawner {
 		this.client = client;
 	}
 
-	public checkSpawn({ channel, member }: any): boolean {
-		const { whitelisted, blacklisted } = this.client.config.spawn;
-
-		if (this.client.queue.has(member.user.id)) return false;
-		if (!whitelisted.categories.includes(channel.parentID)) return false;
-		if (blacklisted.channels.includes(channel.id)) return false;
-		return true;
-	}
-
 	public runCooldown(member: any): any {
-		const rateLimit: number = this.config.cooldown(member) 
-		|| this.client.config.spawn.rateLimit;
+		const { spawns } = this.client.config;
+		const rateLimit: number = this.config.cooldown(member) || spawns.cooldown;
 		
 		return this.client.setTimeout((): boolean => {
 			return this.client.queue.delete(member.user.id);
@@ -63,9 +51,6 @@ export class Spawner implements LavaSpawner {
 	}
 
 	public async run({ channel, guild, member }: Message): Promise<MessageEmbed> {
-		const check = this.checkSpawn({ channel, member });
-		if (!check) return;
-
 		this.client.queue.set(member.user.id, channel);
 		const event: Message = await this.spawnMessage(channel);
 		const results: MessageEmbed = await this.collectMessages(event, channel, guild);
@@ -109,7 +94,10 @@ export class Spawner implements LavaSpawner {
 			// Handle End
 			collector.on('end', async (collected: Collection<Snowflake, Message>) => {
 				await event.edit(`${event.content}\n\n**<:memerRed:729863510716317776> \`This event has expired.\`**`).catch(() => {});
-				if (!collected.size) return resolve({ color: 'RED', description: '**<:memerRed:729863510716317776> No one got the event.**' });
+				if (!collected.size) return resolve({ 
+					color: 'RED', 
+					description: '**<:memerRed:729863510716317776> No one got the event.**' 
+				});
 
 				// Vars
 				const { min, max } = rewards;

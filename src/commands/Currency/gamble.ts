@@ -1,21 +1,22 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { LavaClient, Command } from 'discord-akairo'
+import Lava from 'discord-akairo'
 
-export default class Currency extends Command {
-  public client: LavaClient;
+export default class Currency extends Lava.Command {
+  public client: Lava.Client;
   public constructor() {
     super('bet', {
       aliases: ['gamble', 'roll', 'bet'],
       channel: 'guild',
       cooldown: 1000,
       args: [{ 
-        id: 'amount', match: 'content'
+        id: 'amount', 
+        match: 'content'
       }]
     });
   }
 
   public async exec(_: Message, args: any): Promise<Message> {
-    const { minBet, maxBet, maxWin, maxPocket } = this.client.config.gamble;
+    const { caps } = this.client.config.currency;
     const { channel, member: { user } } = _;
     const data = await this.client.db.currency.fetch(user.id);
     const { pocket, vault, space, multi } = data;
@@ -31,32 +32,34 @@ export default class Currency extends Command {
         bet = pocket;
       } else if (bet === 'half') {
         bet = Math.round(pocket / 2);
+      } else if (bet === 'min') {
+        bet = caps.minBet;
       } else if (bet === 'max') {
-        bet = pocket > maxBet ? maxBet : pocket;
+        bet = pocket > caps.maxBet ? caps.maxBet : pocket;
       } else {
-        return _.reply('You need a real number');
+        return channel.send('You need a real number');
       }
     }
 
     // Other Arg checking
     bet = Number(bet);
     if (pocket <= 0) {
-      return _.reply('You have no coins lol');
+      return channel.send('You have no coins lol');
     }
-    if (bet > maxBet) {
-      return _.reply(`You cannot gamble higher than **${maxBet.toLocaleString()}** coins bruh.`)
+    if (bet > caps.maxBet) {
+      return channel.send(`You cannot gamble higher than **${caps.maxBet.toLocaleString()}** coins bruh.`)
     }
-    if (bet < minBet) {
-      return _.reply(`You cannot gamble lower than **${minBet.toLocaleString()}** coins bruh.`)
+    if (bet < caps.minBet) {
+      return channel.send(`You cannot gamble lower than **${caps.minBet.toLocaleString()}** coins bruh.`)
     }
     if (bet > pocket) {
-      return _.reply(`You only have **${pocket.toLocaleString()}** coins lol don't try me.`);
+      return channel.send(`You only have **${pocket.toLocaleString()}** coins lol don't try me.`);
     }
-    if (pocket > maxPocket) {
-      return _.reply('You are too rich to gamble lmfaooo');
+    if (pocket > caps.maxPocket) {
+      return channel.send('You are too rich to gamble lmfaooo');
     }
     if (bet < 1) {
-      return _.reply('It\'s gotta be a real number yeah?')
+      return channel.send('It\'s gotta be a real number yeah?')
     }
 
     // Dice Rolls
@@ -73,7 +76,7 @@ export default class Currency extends Command {
       if (winnings < 0.3) winnings += 0.3;
       won = Math.round(bet * winnings);
       won = won + Math.round(won * (multi / 100));
-      if (won > maxWin) won = maxWin;
+      if (won > caps.maxWin) won = caps.maxWin;
       percentWon = Math.round(won / bet * 100);
       db = await this.client.db.currency.addPocket(user.id, won);
       identifier = 'winning';

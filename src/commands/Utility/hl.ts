@@ -1,8 +1,8 @@
-import { LavaClient, Command } from 'discord-akairo'
 import { Message, Snowflake, Role } from 'discord.js'
+import Lava from 'discord-akairo'
 
-export default class Util extends Command {
-  public client: LavaClient;
+export default class Util extends Lava.Command {
+  public client: Lava.Client;
   public constructor() {
     super('hlock', {
       aliases: ['hlock', 'hl'],

@@ -1,6 +1,6 @@
 import 'dotenv/config'
-import { LavaClient } from './structures/Client'
+import { Client } from './structures/Client'
 import config from './config'
 
-const lava = new LavaClient(config);
-lava.login(config.bot.token);
+const lava = new Client(config);
+lava.login(config.lava.token);

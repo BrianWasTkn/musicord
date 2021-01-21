@@ -1,9 +1,9 @@
-import { LavaClient, Command } from 'discord-akairo'
 import { Message } from 'discord.js'
 import { inspect } from 'util'
+import Lava from 'discord-akairo'
 
-export default class Dev extends Command {
-  public client: LavaClient;
+export default class Dev extends Lava.Command {
+  public client: Lava.Client;
   public constructor() {
     super('eval', {
       aliases: ['eval', 'ev'],

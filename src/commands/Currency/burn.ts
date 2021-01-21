@@ -1,21 +1,21 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { LavaClient, Command } from 'discord-akairo'
+import Lava from 'discord-akairo'
 
-export default class Currency extends Command {
-  public client: LavaClient;
+export default class Currency extends Lava.Command {
+  public client: Lava.Client;
   public constructor() {
     super('burn', {
       aliases: ['burn'],
       channel: 'guild',
       cooldown: 10e3,
       args: [{
-        id: 'amount', type: 'number'
+        id: 'amount', 
+        type: 'number'
       }]
     });
   }
 
-  public async exec(_: Message, args: any): Promise<Message> {
-    const { amount } = args;
+  public async exec(_: Message, { amount }: any): Promise<Message> {
     if (!amount) return;
     if (amount < 1) return _.reply('You thought you can exploit me huh?');
     const data = await this.client.db.currency.removePocket(_.author.id, amount);

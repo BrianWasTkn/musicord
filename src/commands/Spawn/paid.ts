@@ -1,12 +1,10 @@
-import { 
-	Command, LavaClient
-} from 'discord-akairo'
+import Lava from 'discord-akairo'
 import {
 	Message, MessageEmbed
 } from 'discord.js'
 
-export default class Spawn extends Command {
-	public client: LavaClient;
+export default class Spawn extends Lava.Command {
+	public client: Lava.Client;
 	public constructor() {
 		super('paid', {
 			aliases: ['paid'],

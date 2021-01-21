@@ -1,64 +1,48 @@
 import { readdirSync } from 'fs'
-import { Spawner } from './Spawner'
-import { Utils } from './Util'
 import { join } from 'path'
 import mongoose from 'mongoose'
 import chalk from 'chalk'
-import cur from './currency/functions'
-import spn from './spawns/functions'
+import Lava from 'discord-akairo'
+import discord from 'discord.js'
 
-import {
-	Message, Collection, Snowflake, GuildChannel,
-	Role
-} from 'discord.js'
-import {
-	AkairoClient, ListenerHandler, CommandHandler,
-	LavaClient as ClientLava, DBInterface,
-	Listener, Command
-} from 'discord-akairo'
+import { Spawner } from './Spawner'
+import { Utils } from './Util'
+import currency from './currency/functions'
+import spawns from './spawns/functions'
 
 /**
  * Extends the instance of AkairoClient
  * @exports @class LavaClient @extends AkairoClient
 */
-export class LavaClient extends AkairoClient implements ClientLava {
-	public spawners: Collection<string, Spawner>;
-	public queue: Collection<Snowflake, any>;
-	public heists: Collection<Snowflake, Role>;
+export class Client extends Lava.AkairoClient implements Lava.Client {
+	public spawners: discord.Collection<string, Lava.Spawner>;
+	public queue: discord.Collection<discord.Snowflake, any>;
+	public heists: discord.Collection<discord.Snowflake, discord.Role>;
 	public config: any;
-	public util: Utils;
-	public db: DBInterface
-	public listenerHandler: ListenerHandler;	
-	public commandHandler: CommandHandler;
-	public constructor(config: any) {
-		super({
-			ownerID: config.bot.owners
-		}, {
-			disableMentions: 'everyone', 
-			fetchAllMembers: false,
-			ws: { intents: [
-				'GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS'
-			]}
-		});
-
+	public util: Lava.Utils;
+	public db: Lava.DB;
+	public listenerHandler: Lava.ListenerHandler;	
+	public commandHandler: Lava.CommandHandler;
+	public constructor(config: Lava.Config) {
+		super(config.lava.akairo, config.lava.client);
 		// Lava Things
-		this.spawners = new Collection();
-		this.queue = new Collection();
-		this.heists = new Collection();
+		this.spawners = new discord.Collection();
+		this.queue = new discord.Collection();
+		this.heists = new discord.Collection();
 		this.config = config;
 		this.util = new Utils(this);
 		this.db = { 
-			currency: cur(this),
-			spawns: spn(this)
+			currency: currency(this),
+			spawns: spawns(this)
 		};
 
 		// Akairo Handlers
-		this.listenerHandler = new ListenerHandler(this, {
+		this.listenerHandler = new Lava.ListenerHandler(this, {
 			directory: join(__dirname, '..', 'emitters')
 		});
-		this.commandHandler = new CommandHandler(this, {
+		this.commandHandler = new Lava.CommandHandler(this, {
 			directory: join(__dirname, '..', 'commands'),
-			prefix: config.bot.prefix,
+			prefix: config.lava.prefix,
 			commandUtil: true,
 			defaultCooldown: 1500,
 			allowMention: true,
@@ -70,10 +54,10 @@ export class LavaClient extends AkairoClient implements ClientLava {
 	 * Imports our Spawners
 	 * @private @returns {void}
 	*/
-	private _importSpawners(): void {
+	public importSpawners(): void {
 		const spawns = readdirSync(join(__dirname, '..', 'spawns'));
 		spawns.forEach((s: string) => {
-			const { config, visuals } = require(join(__dirname, '..', 'spawns', s));
+			const { config, visuals }: { config: Lava.SpawnConfig, visuals: Lava.SpawnVisuals } = require(join(__dirname, '..', 'spawns', s));
 			this.spawners.set(visuals.title, new Spawner(this, config, visuals));
 			this.util.log('Spawner', 'main', `Spawner ${chalk.cyanBright(visuals.title)} loaded.`);
 		});
@@ -83,8 +67,8 @@ export class LavaClient extends AkairoClient implements ClientLava {
 	 * Builds all listeners and commands
 	 * @private @returns {Promise<void>}
 	*/
-	private async _build(): Promise<void> {
-		this._importSpawners();
+	public async build(): Promise<void> {
+		this.importSpawners();
 		this.commandHandler.useListenerHandler(this.listenerHandler);
 		this.listenerHandler.setEmitters({
 			process,
@@ -93,10 +77,10 @@ export class LavaClient extends AkairoClient implements ClientLava {
 		});
 
 		// Handler Load events
-		this.listenerHandler.on('load', (_: Listener, isReload: boolean): void => {
+		this.listenerHandler.on('load', (_: Lava.Listener, isReload: boolean): void => {
 			this.util.log('Emitter', 'main', `Emitter ${chalk.cyanBright(_.id)} loaded.`);
 		});
-		this.commandHandler.on('load', (_: Command, isReload: boolean): void => {
+		this.commandHandler.on('load', (_: Lava.Command, isReload: boolean): void => {
 			this.util.log('Command', 'main', `Command ${chalk.cyanBright(_.id)} loaded.`);
 		});
 
@@ -117,7 +101,7 @@ export class LavaClient extends AkairoClient implements ClientLava {
 	 * @returns {Promise<string>}
 	*/
 	public async login(token: string): Promise<string> {
-		await this._build();
+		await this.build();
 		await this.connectDB();
 		return super.login(token);
 	}

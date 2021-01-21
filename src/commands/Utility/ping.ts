@@ -1,8 +1,8 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { LavaClient, Command } from 'discord-akairo'
+import Lava from 'discord-akairo'
 
-export default class Util extends Command {
-  public client: LavaClient;
+export default class Util extends Lava.Command {
+  public client: Lava.Client;
   public constructor() {
     super('ping', {
       aliases: ['ping', 'pong'],

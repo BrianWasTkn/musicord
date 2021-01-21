@@ -1,56 +1,54 @@
 import { 
 	Snowflake, Collection, Message, Guild, 
 	MessageEmbed, GuildChannel, GuildMember,
-	EmojiResolvable, User, Role
+	EmojiResolvable, User, Role, ClientOptions
 } from 'discord.js'
 import { 
 	AkairoClient, ListenerHandler, CommandHandler,
 	Listener, Command, ClientUtil
 } from 'discord-akairo'
 
-declare module 'discord-akairo' {
-
+export module 'discord-akairo' {
 	// Structures
-	export class LavaClient extends AkairoClient {
-		listenerHandler: ListenerHandler;
-		commandHandler: CommandHandler;
-		spawners: Collection<string, LavaSpawner>;
+	export class Client extends AkairoClient {
+		spawners: Collection<string, Spawner>;
 		queue: Collection<Snowflake, any>;
 		heists: Collection<Snowflake, Role>;
-		config: any;
-		util: LavaUtils;
-		db: DBInterface;
+		config: Config;
+		util: Utils;
+		db: DB;
+		listenerHandler: ListenerHandler;
+		commandHandler: CommandHandler;
+		importSpawners(): void;
+		build(): Promise<void>;
+		connectDB(): Promise<void>;
+		login(token: string): Promise<string>;
 	}
-
-	export class LavaUtils extends ClientUtil {
+	export class Utils extends ClientUtil {
 		constructor(client: LavaClient);
-		public random(type: RandomType, entries: any[]): any;
-		public log(struct: string, type: ConsoleType, _: string, err?: Error): void;
-		public sleep(ms: number): Promise<number>;
+		random(type: RandomType, entries: any[]): any;
+		log(struct: string, type: ConsoleType, _: string, err?: Error): void;
+		sleep(ms: number): Promise<number>;
+	}
+	export class Spawner {
+		constructor(client: Client, config: SpawnConfig, visuals: SpawnVisuals);
+		queue: Collection<Snowflake, User>;
+		spawn: SpawnVisuals;
+		config: SpawnConfig;
+		answered: Collection<Snowflake, GuildMember>;
+		client: Client;
+		runCooldown(channel: any): void;
+		run(message: Message): Promise<MessageEmbed>;
+		spawnMessage(channel: any): Promise<Message>;
+		collectMessages(event: Message, channel: any, guild: Guild): Promise<any>;
 	}
 
-	export class LavaSpawner {
-		constructor(client: LavaClient, config: SpawnConfig, visuals: SpawnVisuals);
-		public queue: Collection<Snowflake, User>;
-		public spawn: SpawnVisuals;
-		public config: SpawnConfig;
-		public answered: Collection<Snowflake, GuildMember>;
-		public client: LavaClient;
-
-		public checkSpawn(channel: any): boolean;
-		public runCooldown(channel: any): void;
-		public run(message: Message): Promise<MessageEmbed>;
-		public spawnMessage(channel: any): Promise<Message>;
-		public collectMessages(event: Message, channel: any, guild: Guild): Promise<any>;
+	// Interface - DB
+	export interface DB {
+		currency: DBCurrency;
+		spawns: DBSpawns;
 	}
-
-	// interfaces
-	export interface DBInterface {
-		spawns: SpawnDB;
-		currency: CurrencyDB;
-	}
-
-	export interface SpawnDB {
+	export interface DBSpawns {
 		create: (userID: Snowflake) => Promise<any>;
 		fetch: (userID: Snowflake) => Promise<any>;
 		addUnpaid: (userID: Snowflake, amount: number) => Promise<any>;
@@ -58,8 +56,7 @@ declare module 'discord-akairo' {
 		incrementJoinedEvents: (userID: Snowflake, amount: number) => Promise<any>;
 		decrementJoinedEvents: (userID: Snowflake, amount: number) => Promise<any>;
 	}
-
-	export interface CurrencyDB {
+	export interface DBCurrency {
 		create: (userID: Snowflake) => Promise<any>;
 		fetch: (userID: Snowflake) => Promise<any>;
 		addPocket: (userID: Snowflake, amount: number) => Promise<any>;
@@ -72,6 +69,7 @@ declare module 'discord-akairo' {
 		removeMulti: (userID: Snowflake, amount: number) => Promise<any>;
 	}
 
+	// Interface - Spawns 
 	export interface SpawnConfig {
 		odds: number;
 		cooldown: (member: GuildMember) => number;
@@ -84,13 +82,48 @@ declare module 'discord-akairo' {
 			first: number;
 		}
 	}
-
 	export interface SpawnVisuals {
 		emoji: EmojiResolvable;
 		type: SpawnVisualsType;
 		title: string;
 		description: string;
 		strings: string[];
+	}
+
+	// Interface - Config
+	export interface Config {
+		lava: ConfigLava;
+		currency: ConfigCurrency;
+		spawns: ConfigSpawns;
+	}
+	export interface AkairoConfig {
+		ownerID: Snowflake[];
+	}
+	export interface ConfigLava {
+		devMode: boolean;
+		prefix: string[];
+		token: string;
+		akairo: AkairoConfig;
+		client: ClientOptions;
+	}
+	export interface ConfigCurrency {
+		caps: {
+			[k: string]: number;
+		};
+		emojis: Array<{
+			emoji: string;
+			winnings: number;
+		}>;
+	}
+	export interface ConfigSpawns {
+		cooldown: number;
+		enabled: boolean;
+		blacklisted: {
+			[bl: string]: Snowflake[];
+		};
+		whitelisted: {
+			[wl: string]: Snowflake[];
+		}
 	}
 
 	// Types
