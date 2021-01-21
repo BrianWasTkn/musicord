@@ -22,7 +22,7 @@ export default class Utility extends Lava.Command {
 		const categories = [ ...new Set(commands.map(c => c.categoryID))];
 		return categories.map((c: string) => ({
 			name: c, inline: false,
-			value: `\`${commands.filter(c => c.categoryID).map(c => c.aliases[0]).join('`, `')}\``
+			value: `\`${commands.filter(c => c.categoryID === c).map(c => c.aliases[0]).join('`, `')}\``
 		}));
 	}
 
