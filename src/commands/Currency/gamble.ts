@@ -22,7 +22,7 @@ export default class Currency extends Lava.Command {
     const { channel, member: { user } } = _;
     const data = await this.client.db.currency.fetch(user.id);
     const { pocket, vault, space } = data;
-    const multi = this.client.db.currency.util.calcMulti(this.client, _);
+    const multi: number = await this.client.db.currency.util.calcMulti(this.client, _);
     let bet = args.amount;
 
     if (!bet) {
