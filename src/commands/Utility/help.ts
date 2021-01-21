@@ -45,10 +45,8 @@ export default class Utility extends Lava.Command {
 			return _.channel.send({ embed: {
 				color: 'ORANGE',
 				title: command.aliases[0],
+				description: command.description || 'No description provided',
 				fields: [{
-					name: 'Description',
-					value: command.description || 'No description provided.'
-				}, {
 					name: 'Triggers',
 					value: command.aliases.join(', ')
 				}, {
