@@ -22,7 +22,7 @@ export default class Utility extends Lava.Command {
 			const command: Lava.Command = args.query;
 			return _.channel.send({ embed: {
 				color: 'ORANGE',
-				title: args.query.aliases[0],
+				title: command.aliases[0],
 				fields: [{
 					name: 'Description',
 					value: command.description || 'No description provided.'
