@@ -12,7 +12,7 @@ export default class Currency extends Lava.Command {
       cooldown: 1000,
       args: [{ 
         id: 'amount', 
-        type: ['string', 'number']
+        type: Lava.Argument.union('number', 'string')
       }]
     });
   }
