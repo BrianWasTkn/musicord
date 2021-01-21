@@ -10,9 +10,9 @@ export default class Spawn extends Lava.Command {
 			aliases: ['paid'],
 			userPermissions: ['MANAGE_MESSAGES'],
 			args: [{
-				id: 'amount', type: 'number',
+				id: 'amount', type: 'number', unordered: true
 			}, {
-				id: 'user', type: 'member',
+				id: 'user', type: 'member', unordered: true,
 				default: (message: Message) => message.member
 			}]
 		});
