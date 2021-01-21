@@ -88,7 +88,7 @@ export default class Currency extends Lava.Command {
       a.emoji === c.emoji && 
       b.emoji === c.emoji
     ) {
-      winnings = bet + (bet * b.winnings) * 3 * (multi / 100);
+      winnings = Math.round(bet + (bet * b.winnings) * 3 * (multi / 100));
       winnings = Math.round(winnings * bet);
       color = 'GOLD';
     } else if (
@@ -97,7 +97,7 @@ export default class Currency extends Lava.Command {
       a.emoji !== c.emoji && 
       b.emoji !== c.emoji
     ) {
-      winnings = bet + (bet * a.winnings) * 2 * (multi / 100);
+      winnings = Math.round(bet + (bet * a.winnings) * 2 * (multi / 100));
       color = 'GREEN';
     } else if (
       // Left == Right
@@ -106,7 +106,7 @@ export default class Currency extends Lava.Command {
       b.emoji !== c.emoji
     ) {
       // Left == Right
-      winnings = bet + (bet * c.winnings) * 2 * (multi / 100);
+      winnings = Math.round(bet + (bet * c.winnings) * 2 * (multi / 100));
       color = 'GREEN';
     } else if (
       // Middle == Right
@@ -114,7 +114,7 @@ export default class Currency extends Lava.Command {
       a.emoji !== c.emoji && 
       b.emoji == c.emoji
     ) {
-      winnings = bet + (bet * b.winnings) * 2 * (multi / 100);
+      winnings = Math.round(bet + (bet * b.winnings) * 2 * (multi / 100));
       color = 'GREEN';
     } else {
       // Lose
