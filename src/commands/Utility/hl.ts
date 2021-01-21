@@ -7,6 +7,8 @@ export default class Util extends Lava.Command {
     super('hlock', {
       aliases: ['hlock', 'hl'],
       channel: 'guild',
+      description: 'Hlocks the heist channel if you have proper permissions',
+      category: 'Utility',
       userPermissions: ['MANAGE_MESSAGES']
     });
   }

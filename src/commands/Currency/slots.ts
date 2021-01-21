@@ -7,10 +7,12 @@ export default class Currency extends Lava.Command {
     super('slots', {
       aliases: ['slots', 'slotmachine', 's'],
       channel: 'guild',
+      description: 'Spend some amount of coins on a slot machine',
+      category: 'Currency',
       cooldown: 1000,
       args: [{ 
         id: 'amount', 
-        match: 'content'
+        type: ['string', 'number']
       }]
     });
   }

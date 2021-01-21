@@ -7,6 +7,8 @@ export default class Currency extends Lava.Command {
     super('gimme', {
       aliases: ['gimme'],
       channel: 'guild',
+      description: 'Gives you a random amount of coins from 100k to 1m coins',
+      category: 'Currency',
       cooldown: 5000,
     });
   }

@@ -7,6 +7,8 @@ export default class Currency extends Lava.Command {
     super('bal', {
       aliases: ['balance', 'bal'],
       channel: 'guild',
+      description: 'Check yours or someone else\'s coin balance',
+      category: 'Currency',
       cooldown: 1e3,
       args: [{ 
         id: 'member', 

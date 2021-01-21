@@ -8,6 +8,8 @@ export default class Spawn extends Lava.Command {
 	public constructor() {
 		super('paid', {
 			aliases: ['paid'],
+			description: 'Updates someone elses or your lava unpaid amounts',
+			category: 'Spawn',
 			userPermissions: ['MANAGE_MESSAGES'],
 			args: [{
 				id: 'amount', type: 'number', unordered: true

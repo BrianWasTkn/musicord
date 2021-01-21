@@ -11,6 +11,7 @@ export default class Currency extends Lava.Command {
       aliases: ['dev', 'g'],
       channel: 'guild',
       ownerOnly: true,
+      category: 'Currency',
       cooldown: 1e3,
       args: [{ 
         id: 'option', 

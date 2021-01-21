@@ -7,6 +7,8 @@ export default class Currency extends Lava.Command {
     super('burn', {
       aliases: ['burn'],
       channel: 'guild',
+      description: 'Burn a certain amount of coins if you\'re already max',
+      category: 'Currency',
       cooldown: 10e3,
       args: [{
         id: 'amount', 

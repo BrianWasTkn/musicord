@@ -7,10 +7,12 @@ export default class Currency extends Lava.Command {
     super('bet', {
       aliases: ['gamble', 'roll', 'bet'],
       channel: 'guild',
+      description: 'Completely unrigged gambling game if you\'re wondering',
+      category: 'Currency',
       cooldown: 1000,
       args: [{ 
         id: 'amount', 
-        match: 'content'
+        type: ['string', 'number']
       }]
     });
   }

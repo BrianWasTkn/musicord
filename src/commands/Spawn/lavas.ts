@@ -9,6 +9,8 @@ export default class Spawn extends Lava.Command {
     super('lavas', {
       aliases: ['lavas', 'unpaids', 'lvs'],
       channel: 'guild',
+      description: 'Displays yours or someone else\'s lava unpaids',
+      category: 'Spawn',
       cooldown: 5e3,
       args: [{ 
         id: 'member', type: 'member',

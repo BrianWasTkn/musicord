@@ -8,6 +8,8 @@ export default class Util extends Lava.Command {
       aliases: ['hunlock', 'hul'],
       channel: 'guild',
       userPermissions: ['MANAGE_MESSAGES'],
+      description: 'Hunlocks the heist channel if you have right permissions',
+      category: 'Utility',
       args: [{
         id: 'role', type: 'role'
       }, {

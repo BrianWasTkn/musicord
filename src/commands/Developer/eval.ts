@@ -8,6 +8,8 @@ export default class Dev extends Lava.Command {
     super('eval', {
       aliases: ['eval', 'ev'],
       channel: 'guild',
+      description: 'Evaluate custom code for you stupid dev',
+      category: 'Dev',
       ownerOnly: true,
       args: [{ 
         id: 'code', match: 'content' 

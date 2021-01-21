@@ -6,7 +6,9 @@ export default class Util extends Lava.Command {
   public constructor() {
     super('ping', {
       aliases: ['ping', 'pong'],
-      channel: 'guild'
+      channel: 'guild',
+      description: 'Checks the average latency across all shards',
+      category: 'Utility'
     });
   }
 
