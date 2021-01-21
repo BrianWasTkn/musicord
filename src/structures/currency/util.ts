@@ -8,7 +8,7 @@ export default {
 		let total = 0;
 		total += db.multi;
 		if (msg.member.nickname.includes('e')) {
-			total += 2;
+			total += 5;
 		}
 		if (channel.name.includes('dank')) {
 			total += 5;
@@ -18,6 +18,12 @@ export default {
 		}
 		if (db.pocket >= 10000000) {
 			total += 2;
+		}
+		if (msg.guild.emojis.cache.size >= 100) {
+			total += 10;
+			if (msg.guild.emojis.cache.size >= 400) {
+				total += 40;
+			}
 		}
 		return total;
 	}
