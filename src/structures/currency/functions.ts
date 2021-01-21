@@ -1,8 +1,13 @@
 import { Snowflake, User } from 'discord.js'
 import Lava from 'discord-akairo'
 import Currency from './model'
+import utils from './util'
 
 const dbCurrency = (client: Lava.Client) => ({
+	util: {
+		...utils
+	},
+
 	create: async (
 		userID: Snowflake
 	): Promise<boolean | any> => {

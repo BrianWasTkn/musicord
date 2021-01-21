@@ -57,6 +57,7 @@ export module 'discord-akairo' {
 		decrementJoinedEvents: (userID: Snowflake, amount: number) => Promise<any>;
 	}
 	export interface DBCurrency {
+		util: DBCurrencyUtil;
 		create: (userID: Snowflake) => Promise<any>;
 		fetch: (userID: Snowflake) => Promise<any>;
 		addPocket: (userID: Snowflake, amount: number) => Promise<any>;
@@ -67,6 +68,9 @@ export module 'discord-akairo' {
 		removeSpace: (userID: Snowflake, amount: number) => Promise<any>;
 		addMulti: (userID: Snowflake, amount: number) => Promise<any>;
 		removeMulti: (userID: Snowflake, amount: number) => Promise<any>;
+	}
+	export interface DBCurrencyUtil {
+		calcMulti: (Lava: Client, _: Message) => Promise<number>;
 	}
 
 	// Interface - Spawns 
