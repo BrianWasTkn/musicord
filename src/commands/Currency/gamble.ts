@@ -9,7 +9,7 @@ export default class Currency extends Lava.Command {
       channel: 'guild',
       description: 'Completely unrigged gambling game if you\'re wondering',
       category: 'Currency',
-      cooldown: 1000,
+      cooldown: 5000,
       args: [{ 
         id: 'amount', 
         type: Lava.Argument.union('number', 'string')

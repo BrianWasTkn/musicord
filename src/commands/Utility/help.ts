@@ -8,7 +8,7 @@ export default class Utility extends Lava.Command {
 		super('help', {
 			aliases: ['help', 'h'],
 			channel: 'guild',
-			description: 'Lists all or a specific command you wish.',
+			description: 'Sends a whole list of commands, or per commands information if you specify one.',
 			category: 'Utility',
 			args: [{
 				id: 'query', type: 'command',
@@ -21,7 +21,7 @@ export default class Utility extends Lava.Command {
 		const commands = this.handler.modules.array();
 		const categories = [ ...new Set(commands.map(c => c.categoryID))];
 		return categories.map((c: string) => ({
-			name: c, inline: false,
+			name: `${c} Commands — ${commands.filter(cmd => cmd.categoryID === c).map(c => c.aliases[0]).length}`, inline: false,
 			value: `\`${commands.filter(cmd => cmd.categoryID === c).map(c => c.aliases[0]).join('`, `')}\``
 		}));
 	}

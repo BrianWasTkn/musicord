@@ -26,10 +26,10 @@ export module 'discord-akairo' {
 	}
 	export class Utils extends ClientUtil {
 		constructor(client: LavaClient);
-		static paginateArray(array: any[], size: number): (string[])[];
-		static random(type: RandomType, entries: any[]): any;
-		static log(struct: string, type: ConsoleType, _: string, err?: Error): void;
-		static sleep(ms: number): Promise<number>;
+		paginateArray(array: any[], size: number): (string[])[];
+		random(type: RandomType, entries: any[]): any;
+		log(struct: string, type: ConsoleType, _: string, err?: Error): void;
+		sleep(ms: number): Promise<number>;
 	}
 	export class Spawner {
 		constructor(client: Client, config: SpawnConfig, visuals: SpawnVisuals);
