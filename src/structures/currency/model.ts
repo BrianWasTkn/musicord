@@ -12,7 +12,8 @@ export default model('currency', new Schema({
 	lost: { type: Number, required: false, default: 0 },
 	wins: { type: Number, required: false, default: 0 },
 	loses: { type: Number, required: false, default: 0 },
-	// Items
+	// Other
 	items: { type: Array, required: false, default: [] },
-	gifted: { type: Array, required: false, default: 0 }
+	gifted: { type: Array, required: false, default: 0 },
+	cooldowns: { type: Array, required: false, default: [] },
 }));

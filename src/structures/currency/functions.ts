@@ -4,10 +4,7 @@ import Currency from './model'
 import utils from './util'
 
 const dbCurrency = (client: Lava.Client) => ({
-	util: {
-		...utils
-	},
-
+	util: utils,
 	create: async (
 		userID: Snowflake
 	): Promise<boolean | any> => {

@@ -9,7 +9,17 @@ export class Utils extends ClientUtil implements Lava.Utils {
 		super(client);
 	}
 
-	public random(type: Lava.RandomType, entries: any[]): any {
+	public static paginateArray(array: any[], size: number): (string[])[] {
+		let result = [];
+    let j = 0;
+    for (let i = 0; i < Math.ceil(array.length / (size || 10)); i++) {
+      result.push(array.slice(j, j + (size || 10)));
+      j = j + (size || 10);
+    }
+    return result;
+	}
+
+	public static random(type: Lava.RandomType, entries: any[]): any {
 		switch (type) {
 			case 'num':
 				const [min, max] = entries;
@@ -21,7 +31,7 @@ export class Utils extends ClientUtil implements Lava.Utils {
 		}
 	}
 
-	public log(struct: string, type: string, _: string, err?: Error): void {
+	public static log(struct: string, type: string, _: string, err?: Error): void {
 		const stamp = moment().format('HH:mm:ss');
 		switch (type) {
 			case 'main':
