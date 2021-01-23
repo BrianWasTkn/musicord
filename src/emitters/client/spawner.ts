@@ -19,9 +19,9 @@ export default class Discord extends Lava.Listener {
 		if (queue.has(message.member.user.id)) return;
 		if (!spawns.whitelisted.channels.includes(message.channel.id)) return;
 		if (spawns.blacklisted.channels.includes(message.channel.id)) return;
-		const { config } = spawner;
+		if (!spawns.whitelisted.categories.includes(message.channel.parentID)) return;
 
-		if (Math.round(Math.random() * 100) >= (100 - config.odds)) {
+		if (Math.round(Math.random() * 100) >= (100 - spawner.config.odds)) {
 			const results = await spawner.run(message);
 			if (results) await message.channel.send({ embed: results });
 			else return;
