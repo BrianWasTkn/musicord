@@ -16,28 +16,9 @@ export class Spawner implements Lava.Spawner {
 		config: Lava.SpawnConfig,
 		spawn: Lava.SpawnVisuals
 	) {
-		/**
-		 * The Spawn Info
-		 * @type {SpawnVisuals}
-		*/
 		this.spawn = spawn;
-
-		/**
-		 * The Spawn Configuration
-		 * @type {SpawnConfig}
-		*/
 		this.config = config;
-
-		/**
-		 * The Spawn Answerees
-		 * @type {Collection<Snowflake, User>}
-	  */
-	  this.answered = new Collection();
-
-		/**
-		 * The Discord Client
-		 * @type {LavaClient}
-		*/
+		this.answered = new Collection();
 		this.client = client;
 	}
 

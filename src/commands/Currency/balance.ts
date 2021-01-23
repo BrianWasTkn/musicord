@@ -11,18 +11,16 @@ export default class Currency extends Lava.Command {
       category: 'Currency',
       cooldown: 1e3,
       args: [{ 
-        id: 'member', 
-        type: 'member',
+        id: 'member', type: 'member',
         default: (message: Message) => message.member 
       }]
     });
   }
 
-  public async exec(_: Message, args: any): Promise<Message> {
-    const { user } = args.member || _.member;
-    const data = await this.client.db.currency.fetch(user.id);
+  public async exec(_: Message, { member }: any): Promise<Message> {
+    const data = await this.client.db.currency.fetch(member.user.id);
     const embed: MessageEmbed = new MessageEmbed({
-      title: `${user.username}'s balance`,
+      title: `${member.user.username}'s balance`,
       color: 'RANDOM',
       description: [
         `**Pocket:** ${data.pocket.toLocaleString()}`,

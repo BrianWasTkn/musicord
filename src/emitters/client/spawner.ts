@@ -17,7 +17,6 @@ export default class Discord extends Lava.Listener {
 		const spawner = this.client.util.random('arr', this.client.spawners.array());
 		const { queue, config: { spawns } } = this.client;
 		if (queue.has(message.member.user.id)) return;
-		if (!spawns.whitelisted.channels.includes(message.channel.id)) return;
 		if (spawns.blacklisted.channels.includes(message.channel.id)) return;
 		if (!spawns.whitelisted.categories.includes(message.channel.parentID)) return;
 
