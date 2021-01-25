@@ -1,8 +1,16 @@
-import { Message, MessageEmbed, Util } from 'discord.js'
-import Lava from 'discord-akairo'
+import { Argument, Client, Command } from 'discord-akairo'
+import { ColorResolvable } from 'discord.js';
+import { BitField } from 'discord.js';
+import { EmojiResolvable } from 'discord.js';
+import { Message } from 'discord.js'
 
-export default class Currency extends Lava.Command {
-  public client: Lava.Client;
+type SlotEmoji = {
+  emoji: EmojiResolvable;
+  winnings: number;
+}
+
+export default class Currency extends Command {
+  public client: Client;
   public constructor() {
     super('slots', {
       aliases: ['slots', 'slotmachine', 's'],
@@ -12,157 +20,106 @@ export default class Currency extends Lava.Command {
       cooldown: 1000,
       args: [{ 
         id: 'amount', 
-        type: Lava.Argument.union('number', 'string')
+        type: Argument.union('number', 'string')
       }]
     });
   }
 
-  private _roll(emojis: any): Array<{ emoji: string, winnings: number }> {
+  public roll(emojis: SlotEmoji[]): SlotEmoji[] {
+    const { util } = this.client;
     const slots = [];
-    for (let i = 0; i < 3; ++i) {
-      slots.push(this.client.util.random('arr', emojis));
+    for (let i = 0; i < 3; i++) {
+      slots.push(util.randomInArray(emojis));
     }
     return slots;
   }
 
-  public async exec(_: Message, args: any): Promise<Message> {
-    const { caps } = this.client.config.currency;
-    const { channel, member: { user } } = _;
-    const data = await this.client.db.currency.fetch(user.id);
-    const { pocket, vault, space } = data;
-    const multi: number = await this.client.db.currency.util.calcMulti(this.client, _);
+  public async checkArgs(_: Message, args: any): Promise<any> {
+    const { minBet, maxBet, maxPocket } = this.client.config.currency.caps;
+    const db = await this.client.db.currency.fetch(_.author.id);
     let bet = args.amount;
-
-    if (!bet) {
-      return _.reply('You need something to gamble.');
-    }
-
-    // Arg Checks
+    // no bet amounts 
+    if (!bet) [,,'You need something to gamble.'];
+    // transform arguments
     if (isNaN(bet)) {
       if (bet === 'all') {
-        bet = pocket;
+        bet = db.pocket;
       } else if (bet === 'half') {
-        bet = Math.round(pocket / 2);
-      } else if (bet === 'min') {
-        bet = caps.minBet;
+        bet = Math.round(db.pocket / 2);
       } else if (bet === 'max') {
-        bet = pocket > caps.maxBet ? caps.maxBet : pocket;
-      } else {
-        return channel.send('You need a real number');
+        bet = db.pocket > maxBet ? maxBet : db.pocket;
+      } else if (bet === 'min') {
+        bet = minBet;
       }
     }
-
-    // Other Arg checking
-    bet = Number(bet);
-    if (pocket <= 0) {
-      return channel.send('You have no coins lol');
+    // check limits
+    if (db.pocket <= 0) {
+      return [false ,,'You have no coins lol'];
     }
-    if (bet > caps.maxBet) {
-      return channel.send(`You cannot gamble higher than **${caps.maxBet.toLocaleString()}** coins bruh.`)
+    if (bet > maxBet) {
+      return [false ,,`You cannot gamble higher than **${maxBet.toLocaleString()}** coins bruh.`];
     }
-    if (bet < caps.minBet) {
-      return channel.send(`You cannot gamble lower than **${caps.minBet.toLocaleString()}** coins bruh.`)
+    if (bet < minBet) {
+      return [false ,,`You cannot gamble lower than **${minBet.toLocaleString()}** coins bruh.`];
     }
-    if (bet > pocket) {
-      return channel.send(`You only have **${pocket.toLocaleString()}** coins lol don't try me.`);
+    if (bet > db.pocket) {
+      return [false ,,`You only have **${db.pocket.toLocaleString()}** coins lol don't try me.`];
     }
-    if (pocket > caps.maxPocket) {
-      return channel.send('You are too rich to use the slot machine lmfaooo');
+    if (db.pocket > maxPocket) {
+      return [false ,,'You are too rich to use the slot machine lmfaooo'];
     }
     if (bet < 1) {
-      return channel.send('It\'s gotta be a real number yeah?')
+      return [false ,,'It\'s gotta be a real number yeah?'];
     }
+    // else return something
+    return [true, bet, null];
+  }
 
+  public async execute(_: Message, args: any): Promise<Message> {
+    // Check Args
+    const [condition, bet, message] = await this.checkArgs(_, args);
+    if (!condition) return _.channel.send(message);
     // Slot Emojis
-    const { emojis } = this.client.config.currency;
-    const slots = this._roll(emojis);
-    const [a, b, c] = slots;
+    const [ a, b, c ] = this.roll(this.client.config.currency.emojis);
     const outcome = `**>** :${a.emoji}:    :${b.emoji}:    :${c.emoji}: **<**`;
-    const msg = await channel.send({ embed: {
-      author: { name: `${user.username}'s slot machine` },
+    const msg = await _.channel.send({ embed: {
+      author: { name: `${_.author.username}'s slot machine` },
       description: outcome
-    }})
-
-    // Cases
-    let winnings: number, color: string;
-    if (
-      // Jackpot
-      a.emoji === b.emoji && 
-      a.emoji === c.emoji && 
-      b.emoji === c.emoji
-    ) {
-      winnings = Math.round(bet + (bet * b.winnings) * 3 * (multi / 100));
-      winnings = Math.round(winnings * bet);
-      color = 'GOLD';
-    } else if (
-      // Left == Middle
-      a.emoji === b.emoji && 
-      a.emoji !== c.emoji && 
-      b.emoji !== c.emoji
-    ) {
-      winnings = Math.round(bet + (bet * a.winnings) * 2 * (multi / 100));
-      color = 'GREEN';
-    } else if (
-      // Left == Right
-      a.emoji !== b.emoji && 
-      a.emoji === c.emoji && 
-      b.emoji !== c.emoji
-    ) {
-      // Left == Right
-      winnings = Math.round(bet + (bet * c.winnings) * 2 * (multi / 100));
-      color = 'GREEN';
-    } else if (
-      // Middle == Right
-      a.emoji !== b.emoji && 
-      a.emoji !== c.emoji && 
-      b.emoji == c.emoji
-    ) {
-      winnings = Math.round(bet + (bet * b.winnings) * 2 * (multi / 100));
-      color = 'GREEN';
-    } else {
-      // Lose
+    }});
+    // Calc amount
+    const multi = await this.client.db.currency.util.calcMulti(this.client, _);
+    const data = await this.client.db.currency.fetch(_.author.id);
+    let { isWin, winnings, jackpot } = this.calcWinnings({ a, b, c }, data, bet);
+    // Visuals
+    let color: ColorResolvable = 'RED';
+    let description: string, db: any;
+    let state: 'losing' | 'winning' | 'jackpot' = 'losing';
+    if (!isWin) {
       color = 'RED';
+      description = `**RIP! You lost this round.**\nYou lost **${bet.toLocaleString()}** coins.`;
+      db = await this.client.db.currency.removePocket(_.author.id, bet);
+    } else {
+      const { maxWin } = this.client.config.currency.caps;
+      if (winnings > maxWin) winnings = maxWin;
+      let percentWon: number = Math.round((winnings / bet) * 100);
+      db = await this.client.db.currency.addPocket(_.author.id, winnings);
+      if (jackpot) {
+        color = 'GOLD'; state = 'jackpot';
+        description = `**JACKPOT! You won __${percentWon}%__ of your bet.**`;
+      } else {
+        color = 'GREEN'; state = 'winning';
+        description = `**GG! You won __${percentWon}%__ of your bet.**`;
+      }
+      description += `\nYou won **${winnings.toLocaleString()}** coins.`
     }
 
-    // Visuals and DB
-    let description: string[], state: string, percentWon: number;
-    if (color === 'RED') {
-      const db = await this.client.db.currency.removePocket(_.author.id, bet);
-      state = 'losing';
-      description = [
-        `**RIP! You lost this round.**`,
-        `You lost **${bet.toLocaleString()}** coins.\n`,
-        `You now have **${db.pocket.toLocaleString()}** coins.`
-      ];
-    } else if (color === 'GREEN') {
-      if (winnings >= caps.maxWin) winnings = caps.maxWin;
-      const db = await this.client.db.currency.addPocket(_.author.id, winnings);
-      state = 'winning';
-      percentWon = Math.round((winnings / bet) * 100);
-      description = [
-        `**Winner! You won __${percentWon}%__ of your bet.**`,
-        `You won **${winnings.toLocaleString()}** coins.\n`,
-        `You now have **${db.pocket.toLocaleString()}** coins.`
-      ];
-    } else if (color === 'GOLD') {
-      if (winnings >= caps.maxWin) winnings = caps.maxWin;
-      const db = await this.client.db.currency.addPocket(_.author.id, winnings);
-      state = 'jackpot';
-      percentWon = Math.round((winnings / bet) * 100);
-      description = [
-        `**JACKPOT! You won __${percentWon}%__ of your bet.**`,
-        `You won **${winnings.toLocaleString()}** coins.\n`,
-        `You now have **${db.pocket.toLocaleString()}** coins.`
-      ];
-    }
-
-    // Message
+    // Final Message
     await this.client.util.sleep(1000);
     return msg.edit({ embed: {
       author: { 
-        name: `${user.username}'s ${state} slot machine`,
-        iconURL: user.avatarURL({ dynamic: true }) },
-      color, description: description.join('\n'),
+        name: `${_.author.username}'s ${state} slot machine`,
+        iconURL: _.author.avatarURL({ dynamic: true }) },
+      color, description: `${description}\n\nYou now have **${db.pocket.toLocaleString()}** coins.`,
       fields: [{ 
         name: 'Outcome', 
         value: outcome, 
@@ -172,5 +129,24 @@ export default class Currency extends Lava.Command {
         text: `Multiplier: ${multi}%`,
         iconURL: this.client.user.avatarURL() }
     }});
+  }
+  
+  public calcWinnings({ a, b, c }: any, multi: number, bet: number): { isWin: boolean, winnings: number, jackpot: boolean } {
+    let emojis = this.client.config.currency.emojis.map((e: SlotEmoji) => ({ emoji: e.emoji }));
+    let emoji = this.client.util.randomInArray(emojis);
+    let slots = [ a, b, c ];
+    slots = slots.filter((e: SlotEmoji) => e.emoji === emoji.emoji);
+    if (slots.length <= 1) {
+      return { isWin: false, winnings: 0, jackpot: false };
+    } else if (slots.length >= 2) {
+      let winnings = 0;
+      slots.forEach((s: SlotEmoji) => {
+        winnings += (s.winnings * bet) * (multi / 120);
+      });
+
+      let jackpot: boolean = false;
+      if (slots.length === 3) jackpot = true;
+      return { isWin: true, winnings, jackpot };
+    }
   }
 }

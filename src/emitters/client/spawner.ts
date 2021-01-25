@@ -1,8 +1,8 @@
-import { Message, MessageEmbed } from 'discord.js'
-import Lava from 'discord-akairo'
+import { Client, Listener } from 'discord-akairo'
+import { Message } from 'discord.js'
 
-export default class Discord extends Lava.Listener {
-	public client: Lava.Client;
+export default class Discord extends Listener {
+	public client: Client;
 	public constructor() {
 		super('spawner', {
 			emitter: 'client',
@@ -10,11 +10,11 @@ export default class Discord extends Lava.Listener {
 		});
 	}
 
-	public async exec(message: Message): Promise<MessageEmbed | any> {
+	public async exec(message: Message): Promise<Message> {
 		if (!this.client.config.spawns.enabled) return;
 		if (message.author.bot || message.channel.type === 'dm') return;
 
-		const spawner = this.client.util.random('arr', this.client.spawners.array());
+		const spawner = this.client.util.randomInArray(this.client.spawners.array());
 		const { queue, config: { spawns } } = this.client;
 		if (queue.has(message.member.user.id)) return;
 		if (spawns.blacklisted.channels.includes(message.channel.id)) return;

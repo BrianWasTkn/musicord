@@ -27,7 +27,9 @@ export module 'discord-akairo' {
 	export class Utils extends ClientUtil {
 		constructor(client: LavaClient);
 		paginateArray(array: any[], size: number): (string[])[];
-		random(type: RandomType, entries: any[]): any;
+		randomInArray(array: any[]): any;
+		randomNumber(min: number, max: number): number;
+		randomColor(): number;
 		log(struct: string, type: ConsoleType, _: string, err?: Error): void;
 		sleep(ms: number): Promise<number>;
 	}
@@ -116,7 +118,7 @@ export module 'discord-akairo' {
 			[k: string]: number;
 		};
 		emojis: Array<{
-			emoji: string;
+			emoji: EmojiResolvable;
 			winnings: number;
 		}>;
 	}
@@ -133,6 +135,5 @@ export module 'discord-akairo' {
 
 	// Types
 	export type SpawnVisualsType = 'COMMON' | 'SUPER' | 'GODLY' | 'UNCOMMON';
-	export type RandomType = 'arr' | 'num';
 	export type ConsoleType = 'main' | 'error';
 }

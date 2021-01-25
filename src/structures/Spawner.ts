@@ -4,6 +4,7 @@ import {
 } from 'discord.js'
 import Lava from 'discord-akairo'
 import SpawnProfile from './spawns/model'
+import { TextChannel } from 'discord.js';
 
 export class Spawner implements Lava.Spawner {
 	public queue: Collection<Snowflake, User>;
@@ -50,7 +51,7 @@ export class Spawner implements Lava.Spawner {
 			// Destruct
 			const { entries, timeout, rewards } = this.config;
 			const { strings, emoji, title } = this.spawn;
-			const string: string = this.client.util.random('arr', strings);
+			const string: string = this.client.util.randomInArray(strings);
 
 			// Collectors
 			await channel.send(`Type \`${string.split('').join('\u200B')}\``);
@@ -58,7 +59,7 @@ export class Spawner implements Lava.Spawner {
 				let contentMatch = m.content.toLocaleLowerCase() === string.toLocaleLowerCase();
 				return contentMatch && !this.answered.has(m.author.id);
 			};
-			const collector: MessageCollector = await event.channel.createMessageCollector(filter, {
+			const collector: MessageCollector = event.channel.createMessageCollector(filter, {
 				max: entries, time: timeout
 			});
 
@@ -92,11 +93,11 @@ export class Spawner implements Lava.Spawner {
 					if (Math.random() > 0.95 && i === 0) {
 						coins = this.config.rewards.first;
 					} else {
-						coins = this.client.util.random('num', [min / 1000, max / 1000]) * 1000;
+						coins = this.client.util.randomNumber(min / 1000, max / 1000) * 1000;
 					}
 
 					const verbs: string[] = ['obtained', 'grabbed', 'magiked', 'won', 'procured'];
-					const verb: string = this.client.util.random('arr', verbs);
+					const verb: string = this.client.util.randomInArray(verbs);
 					// Visual stuff
 					results.push(`\`${m.author.username}\` ${verb} **${coins.toLocaleString()}** coins`);
 					const content: string = [
