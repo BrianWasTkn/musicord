@@ -155,8 +155,8 @@ export default class Currency extends Command {
     let jackpot = false;
     let emoji = util.randomInArray(emojis);
 
-    emojis = emojis.filter(e => e === emoji);
-    console.log(emojis);
+    let slots = emojis.filter(e => e === emoji);
+    console.log(slots);
     // let f = [['a'], ['b'], ['c'], ['d'], ['e']];
     // let m = []; let c = this.client.util.randomInArray(f);
     // for (let d = 0; d < 3; ++d) {
@@ -165,17 +165,17 @@ export default class Currency extends Command {
     // await _.delete();
     // return m.filter((e, i)=> e[0][0] === c[0]).map(k => [...k]);
 
-    if (emojis.length <= 1) {
+    if (slots.length <= 1) {
       return { isWin: false, winnings: won, jackpot };
-    } else if (emojis.length >= 2) {
-      emojis.forEach((e: EmojiResolvable, i: number) => {
-        let f = (winnings[emojis.indexOf(e)] * bet);
+    } else if (slots.length >= 2) {
+      slots.forEach((e: EmojiResolvable, i: number) => {
+        let f = (winnings[slots.indexOf(e)] * bet);
         won += f + (f * (multi / 100));
       });
 
       won = Math.round(won);
       jackpot = false;
-      if (emojis.length === 3) jackpot = true;
+      if (slots.length === 3) jackpot = true;
       return { isWin: true, winnings: won, jackpot };
     }
   }
