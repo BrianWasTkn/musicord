@@ -157,7 +157,7 @@ export default class Currency extends Command {
     let emoji: SlotEmoji = util.randomInArray(emojis);
 
     let slots = [a, b, c];
-    slots = slots.filter((s: SlotEmoji) => s[0] === emoji[0]);
+    slots = slots.filter((s: SlotEmoji) => s[0][0] === emoji[0]);
     console.log(slots);
 
     // let f = [['a'], ['b'], ['c'], ['d'], ['e']];
