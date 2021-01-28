@@ -154,10 +154,19 @@ export default class Currency extends Command {
     let { util } = this.client;
     let winnings = 0;
     let jackpot = false;
-    let emoji = util.randomInArray(emojis);
+    let emoji: SlotEmoji = util.randomInArray(emojis);
 
     let slots = [a, b, c];
-    slots = slots.filter((s: SlotEmoji) => s[0][0] === emoji[0]);
+    slots = slots.filter((s: SlotEmoji) => s[0] === emoji[0]);
+    console.log(slots);
+
+    // let f = [['a'], ['b'], ['c'], ['d'], ['e']];
+    // let m = []; let c = this.client.util.randomInArray(f);
+    // for (let d = 0; d < 3; ++d) {
+    // m.push(this.client.util.randomInArray(f));
+    // }
+    // await _.delete();
+    // return m.filter((e, i)=> e[0][0] === c[0]).map(k => [...k]);
 
     if (slots.length <= 1) {
       return { isWin: false, winnings, jackpot };
