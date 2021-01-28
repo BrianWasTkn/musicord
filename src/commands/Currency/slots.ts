@@ -53,6 +53,8 @@ export default class Currency extends Command {
         bet = db.pocket > maxBet ? maxBet : db.pocket;
       } else if (bet === 'min') {
         bet = minBet;
+      } else {
+        return [false,,'You actually need a number to slot breh'];
       }
     }
     // check limits
