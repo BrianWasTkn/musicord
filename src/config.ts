@@ -26,7 +26,7 @@ const config: Lava.Config = {
 			maxPocket: 15000000,
 			maxMulti: 150
 		},
-		slots {
+		slots: {
 			emojis: [
 				'clown', 'eyes', 'alien',
 				'peach', 'star2', 'flushed',
