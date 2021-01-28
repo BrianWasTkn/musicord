@@ -96,6 +96,7 @@ export default class Currency extends Command {
       author: { name: `${_.author.username}'s slot machine` },
       description: outcome
     }});
+
     // Calc amount
     const multi = await this.client.db.currency.util.calcMulti(this.client, _);
     const data = await this.client.db.currency.fetch(_.author.id);
@@ -104,34 +105,34 @@ export default class Currency extends Command {
     let color: ColorResolvable = 'RED';
     let description: string, db: any;
     let state: 'losing' | 'winning' | 'jackpot' = 'losing';
-    // Win or Not
-    if (!isWin) {
-      color = 'RED';
-      description = `**RIP! You lost this round.**\nYou lost **${bet.toLocaleString()}** coins.`;
-      db = await this.client.db.currency.removePocket(_.author.id, bet);
-    } else {
+
+    if (isWin) {
       const { maxWin } = this.client.config.currency.caps;
       if (winnings > maxWin) winnings = maxWin;
       let percentWon: number = Math.round((winnings / bet) * 100);
       db = await this.client.db.currency.addPocket(_.author.id, winnings);
-      if (jackpot) {
-        color = 'GOLD'; state = 'jackpot';
-        description = `**JACKPOT! You won __${percentWon}%__ of your bet.**`;
-      } else {
-        color = 'GREEN'; state = 'winning';
-        description = `**GG! You won __${percentWon}%__ of your bet.**`;
-      }
-      description += `\nYou won **${winnings.toLocaleString()}** coins.`
+      color = 'GOLD'; state = 'jackpot';
+      description = [
+        `**JACKPOT! You won __${percentWon}%__ of your bet.**`,
+        `You won **${winnings.toLocaleString()}** coins.`
+      ].join('\n');
+      description = `**JACKPOT! You won __${percentWon}%__ of your bet.**`;
+    } else {
+      color = 'RED'; state = 'losing';
+      description = [
+        `**RIP! You lost this round.**`,
+        `You lost **${bet.toLocaleString()}** coins.`
+      ].join('\n');
     }
 
     // Final Message
+    description += `\nYou now have **${db.pocket.toLocaleString()}** coins left.`
     await this.client.util.sleep(1000);
     return msg.edit({ embed: {
       author: { 
         name: `${_.author.username}'s ${state} slot machine`,
         iconURL: _.author.avatarURL({ dynamic: true }) },
-      color, description: `${description}\n\nYou now have **${db.pocket.toLocaleString()}** coins.`,
-      fields: [{ 
+      color, description, fields: [{ 
         name: 'Outcome', 
         value: outcome, 
         inline: true 
@@ -150,39 +151,70 @@ export default class Currency extends Command {
    */
   public calcWinnings({ a, b, c }: any, multi: number, bet: number): { isWin: boolean, winnings: number, jackpot: boolean } {
 
-    let { slots: slotsObj } = this.client.config.currency;
-    let { emojis, winnings } = slotsObj;
-    let { util } = this.client;
+    const { emojis, winnings } = this.client.config.currency.slots;
+    const slots = [a, b, c];
     let won = 0;
-    let jackpot = false;
-    let emoji = util.randomInArray(emojis);
+    const allEqual = (arr: any[]) => {
+      return arr.every(i => i === arr[0]);
+    }
 
-    let slots = [a, b, c].filter(e => e === emoji);
-    console.log({
-      emojis: slots,
-      raw: [a,b,c],
-      emoji: emoji
-    });
-    // let f = [['a'], ['b'], ['c'], ['d'], ['e']];
-    // let m = []; let c = this.client.util.randomInArray(f);
-    // for (let d = 0; d < 3; ++d) {
-    // m.push(this.client.util.randomInArray(f));
-    // }
-    // await _.delete();
-    // return m.filter((e, i)=> e[0][0] === c[0]).map(k => [...k]);
-
-    if (slots.length <= 1) {
-      return { isWin: false, winnings: won, jackpot };
-    } else if (slots.length >= 2) {
-      slots.forEach((e: EmojiResolvable, i: number) => {
-        let f = (winnings[slots.indexOf(e)] * bet);
-        won += f + (f * (multi / 100));
+    if (allEqual(slots)) {
+      slots.forEach((e: EmojiResolvable) => {
+        let w = winnings[emojis.indexOf(e)];
+        w += w * (multi / 100);
+        won += Math.round(bet * w); 
       });
 
-      won = Math.round(won);
-      jackpot = false;
-      if (slots.length === 3) jackpot = true;
-      return { isWin: true, winnings: won, jackpot };
+      return {
+        isWin: true,
+        winnings: won,
+        jackpot: true
+      }
+    } else {
+      return {
+        isWin: false,
+        winnings: 0,
+        jackpot: false
+      }
     }
+
+    // let { slots: slotsObj } = this.client.config.currency;
+    // let { emojis, winnings } = slotsObj;
+    // let { util } = this.client;
+    // let won = 0;
+    // let jackpot = false;
+    // let emoji = util.randomInArray(emojis);
+
+    // let alph = [a, b, c];
+
+    // if (allEqual(alph));
+
+    // let slots = alph.filter(e => alph.includes);
+    // console.log({
+    //   emojis: slots,
+    //   raw: [a,b,c],
+    //   emoji: emoji
+    // });
+    // // let f = [['a'], ['b'], ['c'], ['d'], ['e']];
+    // // let m = []; let c = this.client.util.randomInArray(f);
+    // // for (let d = 0; d < 3; ++d) {
+    // // m.push(this.client.util.randomInArray(f));
+    // // }
+    // // await _.delete();
+    // // return m.filter((e, i)=> e[0][0] === c[0]).map(k => [...k]);
+
+    // if (slots.length <= 1) {
+    //   return { isWin: false, winnings: won, jackpot };
+    // } else if (slots.length >= 2) {
+    //   slots.forEach((e: EmojiResolvable, i: number) => {
+    //     let f = (winnings[slots.indexOf(e)] * bet);
+    //     won += f + (f * (multi / 100));
+    //   });
+
+    //   won = Math.round(won);
+    //   jackpot = false;
+    //   if (slots.length === 3) jackpot = true;
+    //   return { isWin: true, winnings: won, jackpot };
+    // }
   }
 }
