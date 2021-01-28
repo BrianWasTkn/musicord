@@ -158,7 +158,11 @@ export default class Currency extends Command {
     let emoji = util.randomInArray(emojis);
 
     let slots = [a, b, c].filter(e => e === emoji);
-    console.log(slots);
+    console.log({
+      emojis: slots,
+      raw: [a,b,c],
+      emoji: emoji
+    });
     // let f = [['a'], ['b'], ['c'], ['d'], ['e']];
     // let m = []; let c = this.client.util.randomInArray(f);
     // for (let d = 0; d < 3; ++d) {
