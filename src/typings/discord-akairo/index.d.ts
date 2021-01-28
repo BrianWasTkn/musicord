@@ -117,10 +117,7 @@ export module 'discord-akairo' {
 		caps: {
 			[k: string]: number;
 		};
-		emojis: Array<{
-			emoji: EmojiResolvable;
-			winnings: number;
-		}>;
+		emojis: [EmojiResolvable, number][];
 	}
 	export interface ConfigSpawns {
 		cooldown: number;

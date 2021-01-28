@@ -27,16 +27,27 @@ const config: Lava.Config = {
 			maxMulti: 150
 		},
 		emojis: [
-			{ emoji: 'clown', winnings: 0.50451345 },
-			{ emoji: 'eyes', winnings: 0.64646045 }, 
-			{ emoji: 'alien', winnings: 0.84546106 }, 
-			{ emoji: 'peach', winnings: 1.032563624 }, 
-			{ emoji: 'star2', winnings: 1.25504585 }, 
-			{ emoji: 'flushed', winnings: 1.30845608 }, 
-			{ emoji: 'medal', winnings: 1.5056438 }, 
-			{ emoji: 'trophy', winnings: 1.88025581 }, 
-			{ emoji: 'fire', winnings: 2.0638134 }
+			['clown', 1.1234310],
+			['eyes', 1.3654613],
+			['alien', 1.5646046],
+			['peach', 1.8642608],
+			['star2', 2.14641060],
+			['flushed', 2.3564610],
+			['medal', 2.63464804],
+			['trophy', 3.288604160],
+			['fire', 3.85641601]
 		]
+		// emojis: [
+		// 	{ emoji: 'clown', winnings: 0.50451345 },
+		// 	{ emoji: 'eyes', winnings: 0.64646045 }, 
+		// 	{ emoji: 'alien', winnings: 0.84546106 }, 
+		// 	{ emoji: 'peach', winnings: 1.032563624 }, 
+		// 	{ emoji: 'star2', winnings: 1.25504585 }, 
+		// 	{ emoji: 'flushed', winnings: 1.30845608 }, 
+		// 	{ emoji: 'medal', winnings: 1.5056438 }, 
+		// 	{ emoji: 'trophy', winnings: 1.88025581 }, 
+		// 	{ emoji: 'fire', winnings: 2.0638134 }
+		// ]
 	},
 	// Spawns
 	spawns: {

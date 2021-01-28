@@ -67,8 +67,8 @@ export default class Currency extends Lava.Command {
 
     // Dice Rolls
     const { util } = this.client;
-    let userD = util.random('num', [1, 12]);
-    let botD = util.random('num', [1, 12]);
+    let userD = util.randomNumber(1, 12);
+    let botD = util.randomNumber(1, 12);
 
     // Visuals and DB
     let winnings: number, won: number, percentWon: number, 

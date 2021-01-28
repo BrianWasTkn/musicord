@@ -3,4 +3,4 @@ import { Client } from './structures/Client'
 import config from './config'
 
 const lava = new Client(config);
-lava.login(config.lava.token);
+lava.login();

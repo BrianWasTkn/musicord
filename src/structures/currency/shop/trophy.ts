@@ -1,3 +1,7 @@
+import { Message } from 'discord.js'
+import { Client } from 'discord-akairo'
+
+
 export default {
 	info: {
 		name: 'Trophy',
@@ -10,5 +14,7 @@ export default {
 		usable: false,
 		sellable: true
 	},
-	fn: (): boolean => true
+	fn: (message: Message, client: Client): any => {
+		return true;
+	}
 }

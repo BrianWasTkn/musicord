@@ -3,7 +3,7 @@ import Lava from 'discord-akairo'
 
 export default {
 	calcMulti: async (Lava: Lava.Client, msg: Message): Promise<number> => {
-		const { channel }: { channel: any } = msg;
+		const { channel }: { channel } = msg;
 		const db = await Lava.db.currency.fetch(msg.member.user.id);
 		let total = 0;
 		total += db.multi;

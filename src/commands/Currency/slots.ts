@@ -1,13 +1,9 @@
 import { Argument, Client, Command } from 'discord-akairo'
 import { ColorResolvable } from 'discord.js';
-import { BitField } from 'discord.js';
 import { EmojiResolvable } from 'discord.js';
 import { Message } from 'discord.js'
 
-type SlotEmoji = {
-  emoji: EmojiResolvable;
-  winnings: number;
-}
+type SlotEmoji = [EmojiResolvable, number];
 
 export default class Currency extends Command {
   public client: Client;
@@ -25,6 +21,10 @@ export default class Currency extends Command {
     });
   }
 
+  /**
+   * Picks random objects from the array 3 times for the main slot machine
+   * @param emojis an array of slot emoji objects
+   */
   public roll(emojis: SlotEmoji[]): SlotEmoji[] {
     const { util } = this.client;
     const slots = [];
@@ -34,6 +34,11 @@ export default class Currency extends Command {
     return slots;
   }
 
+  /**
+   * Checks command arguments and caps
+   * @param _ a discord message obj
+   * @param args the passed arguments
+   */
   public async checkArgs(_: Message, args: any): Promise<any> {
     const { minBet, maxBet, maxPocket } = this.client.config.currency.caps;
     const db = await this.client.db.currency.fetch(_.author.id);
@@ -75,13 +80,18 @@ export default class Currency extends Command {
     return [true, bet, null];
   }
 
-  public async execute(_: Message, args: any): Promise<Message> {
+  /**
+   * Basically the whole thang
+   * @param _ a discord message object
+   * @param args the passed command arguments
+   */
+  public async exec(_: Message, args: any): Promise<Message> {
     // Check Args
     const [condition, bet, message] = await this.checkArgs(_, args);
     if (!condition) return _.channel.send(message);
     // Slot Emojis
     const [ a, b, c ] = this.roll(this.client.config.currency.emojis);
-    const outcome = `**>** :${a.emoji}:    :${b.emoji}:    :${c.emoji}: **<**`;
+    const outcome = `**>** :${a[0]}:    :${b[0]}:    :${c[0]}: **<**`;
     const msg = await _.channel.send({ embed: {
       author: { name: `${_.author.username}'s slot machine` },
       description: outcome
@@ -94,6 +104,7 @@ export default class Currency extends Command {
     let color: ColorResolvable = 'RED';
     let description: string, db: any;
     let state: 'losing' | 'winning' | 'jackpot' = 'losing';
+    // Win or Not
     if (!isWin) {
       color = 'RED';
       description = `**RIP! You lost this round.**\nYou lost **${bet.toLocaleString()}** coins.`;
@@ -131,20 +142,33 @@ export default class Currency extends Command {
     }});
   }
   
+  /**
+   * Calculates the overall winnings for the slot machine
+   * @param slots an object of random slotted emojis
+   * @param multi the multiplier of the author
+   * @param bet the bet amount of the author
+   */
   public calcWinnings({ a, b, c }: any, multi: number, bet: number): { isWin: boolean, winnings: number, jackpot: boolean } {
-    let emojis = this.client.config.currency.emojis.map((e: SlotEmoji) => ({ emoji: e.emoji }));
-    let emoji = this.client.util.randomInArray(emojis);
-    let slots = [ a, b, c ];
-    slots = slots.filter((e: SlotEmoji) => e.emoji === emoji.emoji);
+
+    let { emojis } = this.client.config.currency;
+    let { util } = this.client;
+    let winnings = 0;
+    let jackpot = false;
+    let emoji = util.randomInArray(emojis);
+
+    let slots = [a, b, c];
+    slots = slots.filter((e: string) => e[0] === emoji[0]);
+
     if (slots.length <= 1) {
-      return { isWin: false, winnings: 0, jackpot: false };
+      return { isWin: false, winnings, jackpot };
     } else if (slots.length >= 2) {
-      let winnings = 0;
       slots.forEach((s: SlotEmoji) => {
-        winnings += (s.winnings * bet) * (multi / 120);
+        let f = (s[1] * bet);
+        winnings += f + (f * (multi / 100));
       });
 
-      let jackpot: boolean = false;
+      winnings = Math.round(winnings);
+      jackpot = false;
       if (slots.length === 3) jackpot = true;
       return { isWin: true, winnings, jackpot };
     }
