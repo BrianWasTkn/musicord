@@ -3,8 +3,6 @@ import { ColorResolvable } from 'discord.js';
 import { EmojiResolvable } from 'discord.js';
 import { Message } from 'discord.js'
 
-type SlotEmoji = [EmojiResolvable, number];
-
 export default class Currency extends Command {
   public client: Client;
   public constructor() {
@@ -25,7 +23,7 @@ export default class Currency extends Command {
    * Picks random objects from the array 3 times for the main slot machine
    * @param emojis an array of slot emoji objects
    */
-  public roll(emojis: SlotEmoji[]): SlotEmoji[] {
+  public roll(emojis: EmojiResolvable[]): EmojiResolvable[] {
     const { util } = this.client;
     const slots = [];
     for (let i = 0; i < 3; i++) {
@@ -90,8 +88,8 @@ export default class Currency extends Command {
     const [condition, bet, message] = await this.checkArgs(_, args);
     if (!condition) return _.channel.send(message);
     // Slot Emojis
-    const [ a, b, c ] = this.roll(this.client.config.currency.emojis);
-    const outcome = `**>** :${a[0]}:    :${b[0]}:    :${c[0]}: **<**`;
+    const [ a, b, c ] = this.roll(this.client.config.currency.slots.emojis);
+    const outcome = `**>** :${[a, b, c].join(':    :')}: **<**`;
     const msg = await _.channel.send({ embed: {
       author: { name: `${_.author.username}'s slot machine` },
       description: outcome
@@ -150,20 +148,15 @@ export default class Currency extends Command {
    */
   public calcWinnings({ a, b, c }: any, multi: number, bet: number): { isWin: boolean, winnings: number, jackpot: boolean } {
 
-    let { emojis } = this.client.config.currency;
+    let { slots: slotsObj } = this.client.config.currency;
+    let { emojis, winnings } = slotsObj;
     let { util } = this.client;
-    let winnings = 0;
+    let won = 0;
     let jackpot = false;
-    let emoji: SlotEmoji = util.randomInArray(emojis);
+    let emoji = util.randomInArray(emojis);
 
-    let slots = []; let machine = [a, b, c];
-    machine.forEach((s: SlotEmoji, i: number) => {
-      if (s[0] === emoji[0]) {
-        slots.push(s);
-      }
-    })
-
-    console.log(slots);
+    emojis = emojis.filter(e => e === emoji);
+    console.log(emojis);
     // let f = [['a'], ['b'], ['c'], ['d'], ['e']];
     // let m = []; let c = this.client.util.randomInArray(f);
     // for (let d = 0; d < 3; ++d) {
@@ -172,18 +165,18 @@ export default class Currency extends Command {
     // await _.delete();
     // return m.filter((e, i)=> e[0][0] === c[0]).map(k => [...k]);
 
-    if (slots.length <= 1) {
-      return { isWin: false, winnings, jackpot };
-    } else if (slots.length >= 2) {
-      slots.forEach((s: SlotEmoji) => {
-        let f = (s[1] * bet);
-        winnings += f + (f * (multi / 100));
+    if (emojis.length <= 1) {
+      return { isWin: false, winnings: won, jackpot };
+    } else if (emojis.length >= 2) {
+      emojis.forEach((e: EmojiResolvable, i: number) => {
+        let f = (winnings[emojis.indexOf(e)] * bet);
+        won += f + (f * (multi / 100));
       });
 
-      winnings = Math.round(winnings);
+      won = Math.round(won);
       jackpot = false;
-      if (slots.length === 3) jackpot = true;
-      return { isWin: true, winnings, jackpot };
+      if (emojis.length === 3) jackpot = true;
+      return { isWin: true, winnings: won, jackpot };
     }
   }
 }

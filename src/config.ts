@@ -26,17 +26,18 @@ const config: Lava.Config = {
 			maxPocket: 15000000,
 			maxMulti: 150
 		},
-		emojis: [
-			['clown', 1.1234310],
-			['eyes', 1.3654613],
-			['alien', 1.5646046],
-			['peach', 1.8642608],
-			['star2', 2.14641060],
-			['flushed', 2.3564610],
-			['medal', 2.63464804],
-			['trophy', 3.288604160],
-			['fire', 3.85641601]
-		]
+		slots {
+			emojis: [
+				'clown', 'eyes', 'alien',
+				'peach', 'star2', 'flushed',
+				'medal', 'trophy', 'fire'
+			],
+			winnings: [
+				1.1234310, 1.3654613, 1.5646046,
+				1.8642608, 2.14641060, 2.3564610,
+				2.63464804, 3.288604160, 3.85641601
+			]
+		}
 		// emojis: [
 		// 	{ emoji: 'clown', winnings: 0.50451345 },
 		// 	{ emoji: 'eyes', winnings: 0.64646045 }, 
