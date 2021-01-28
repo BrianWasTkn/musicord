@@ -126,7 +126,7 @@ export default class Currency extends Command {
     }
 
     // Final Message
-    description += `\nYou now have **${db.pocket.toLocaleString()}** coins left.`
+    description += `\n\nYou now have **${db.pocket.toLocaleString()}** coins left.`
     await this.client.util.sleep(1000);
     return msg.edit({ embed: {
       author: { 
