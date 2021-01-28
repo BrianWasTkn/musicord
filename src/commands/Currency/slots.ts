@@ -149,7 +149,7 @@ export default class Currency extends Command {
    * @param multi the multiplier of the author
    * @param bet the bet amount of the author
    */
-  public calcWinnings({ a, b, c }: any, multi: number, bet: number): { isWin: boolean, winnings: number, jackpot: boolean } {
+  public calcWinnings({ a, b, c }: any, data: any, bet: number): { isWin: boolean, winnings: number, jackpot: boolean } {
 
     const { emojis, winnings } = this.client.config.currency.slots;
     const slots = [a, b, c];
@@ -161,7 +161,7 @@ export default class Currency extends Command {
     if (allEqual(slots)) {
       slots.forEach((e: EmojiResolvable) => {
         let w = winnings[emojis.indexOf(e)];
-        w += w * (multi / 100);
+        w += w * (data.multi / 100);
         won += Math.round(bet * w); 
       });
 
