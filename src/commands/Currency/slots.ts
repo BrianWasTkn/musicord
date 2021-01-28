@@ -158,7 +158,7 @@ export default class Currency extends Command {
 
     let slots = []; let machine = [a, b, c];
     machine.forEach((s: SlotEmoji, i: number) => {
-      if (machine[i][0] === emoji[0]) {
+      if (s[0] === emoji[0]) {
         slots.push(s);
       }
     })
