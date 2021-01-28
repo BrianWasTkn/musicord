@@ -100,7 +100,7 @@ export class Client extends Lava.AkairoClient implements Lava.Client {
 	 * @param {string} token the discord token
 	 * @returns {Promise<string>}
 	*/
-	public async login(token: string = this.config.token): Promise<string> {
+	public async login(token: string = this.config.lava.token): Promise<string> {
 		await this.build();
 		await this.connectDB();
 		return super.login(token);
