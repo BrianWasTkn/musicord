@@ -116,7 +116,6 @@ export default class Currency extends Command {
         `**JACKPOT! You won __${percentWon}%__ of your bet.**`,
         `You won **${winnings.toLocaleString()}** coins.`
       ].join('\n');
-      description = `**JACKPOT! You won __${percentWon}%__ of your bet.**`;
     } else {
       db = await this.client.db.currency.removePocket(_.author.id, bet);
       color = 'RED'; state = 'losing';
