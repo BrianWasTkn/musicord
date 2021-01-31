@@ -16,8 +16,8 @@ const config: SpawnConfig = {
 	entries: 5,
 	rewards: {
 		min: 1000,
-		max: 10000,
-		first: 100000
+		max: 5000,
+		first: 10000
 	}
 };
 
