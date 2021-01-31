@@ -1,4 +1,5 @@
 import { Client, Listener } from 'discord-akairo'
+import { PresenceData } from 'discord.js'
 
 export default class DiscordListeners extends Listener {
 	public client: Client;
@@ -9,7 +10,15 @@ export default class DiscordListeners extends Listener {
 		});
 	}
 
-	public exec(): void {
-		return this.client.util.log('Discord', 'main', `${this.client.user.tag} has flown within Discord.`);
+	public async exec(): Promise<void> {
+		const activity: PresenceData["activity"] = { 
+			name: 'discord.gg/memer', type: 'STREAMING'
+		};
+		
+		await this.client.user.setPresence({ activity });
+		this.client.util.log(
+			'Discord', 'main', 
+			`${this.client.user.tag} has flown within Discord.`
+		);
 	}
 }
