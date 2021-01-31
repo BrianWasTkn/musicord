@@ -18,8 +18,20 @@ export default class Currency extends Lava.Command {
   }
 
   public async exec(_: Message, { amount }: any): Promise<Message> {
-    if (!amount) return;
-    if (amount < 1) return _.reply('You thought you can exploit me huh?');
+    const db = await this.client.db.currency.fetch(_.author.id);
+
+    if (!amount) {
+      return _.channel.send('You need something to burn, bruh');
+    };
+
+    if (amount < 1) {
+      return _.channel.send('You thought you can exploit me huh?');
+    }
+
+    if (amount >= db.pocket) {
+      return _.channel.send('You ain\'t allowed to burn higher than your pocket lmao');
+    }
+
     const data = await this.client.db.currency.removePocket(_.author.id, amount);
     return _.channel.send(`Successfully burned **${amount.toLocaleString()}** coins from your pocket.`);
   }

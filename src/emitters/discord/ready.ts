@@ -1,7 +1,7 @@
-import Lava from 'discord-akairo'
+import { Client, Listener } from 'discord-akairo'
 
-export default class Discord extends Lava.Listener {
-	public client: Lava.Client;
+export default class DiscordListeners extends Listener {
+	public client: Client;
 	public constructor() {
 		super('ready', {
 			emitter: 'client',
@@ -9,7 +9,7 @@ export default class Discord extends Lava.Listener {
 		});
 	}
 
-	public async exec(): Promise<void> {
+	public exec(): void {
 		return this.client.util.log('Discord', 'main', `${this.client.user.tag} has flown within Discord.`);
 	}
 }

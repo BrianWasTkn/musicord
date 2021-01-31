@@ -10,7 +10,8 @@
   "scripts": {
     "build": "rimraf ./build && tsc --project tsconfig.json",
     "start": "node ./build/lava",
-    "dev": "nodemon --exec ts-node src/lava.ts"
+    "dev": "nodemon --exec ts-node src/lava.ts",
+    "repl": "ts-node"
   },
   "keywords": [
     "discord-bot",

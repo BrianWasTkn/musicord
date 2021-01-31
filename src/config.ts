@@ -1,6 +1,6 @@
-import Lava from 'discord-akairo'
+import { Config } from 'discord-akairo'
 
-const config: Lava.Config = {
+const config: Config = {
 	// Bot
 	lava: {
 		devMode: false,
@@ -13,7 +13,9 @@ const config: Lava.Config = {
 			disableMentions: 'everyone',
 			fetchAllMembers: false,
 			ws: {
-				intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS']
+				intents: [
+					'GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS'
+				]
 			}
 		}
 	},
@@ -84,10 +86,11 @@ const config: Lava.Config = {
 			users: [],
 			channels: [],
 			categories: [
-				'691416705917780000', 
-				'691595121866571776', 
-				'791576124185378817',
-				'724618509958774886'
+				'692516869328076841'
+				// '691416705917780000', 
+				// '691595121866571776', 
+				// '791576124185378817',
+				// '724618509958774886'
 			],
 			guilds: []
 		}

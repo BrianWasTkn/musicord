@@ -32,7 +32,8 @@ export default class Utility extends Lava.Command {
 			const fields: EmbedField[] = this.mapCommands();
 			return _.channel.send({ embed: {
 				title: 'Lava Commands',
-				color: 'RANDOM',
+				thumbnail: { url: this.client.user.avatarURL() },
+				color: 'RED',
 				fields, footer: {
 					text: `${this.handler.modules.size} commands`,
 					iconURL: this.client.user.avatarURL()

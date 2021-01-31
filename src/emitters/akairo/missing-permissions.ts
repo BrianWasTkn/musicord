@@ -1,7 +1,7 @@
 import { Message } from 'discord.js'
 import Lava from 'discord-akairo'
 
-export default class CommandHandler extends Lava.Listener {
+export default class CommandListener extends Lava.Listener {
 	public client: Lava.Client;
 	public constructor() {
 		super('missingPermissions', {

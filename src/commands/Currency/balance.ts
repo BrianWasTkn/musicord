@@ -26,7 +26,10 @@ export default class Currency extends Lava.Command {
         `**Pocket:** ${data.pocket.toLocaleString()}`,
         `**Vault:** ${data.vault.toLocaleString()}/${data.space.toLocaleString()}`,
         `**Total:** ${(data.pocket + data.vault).toLocaleString()}`
-      ].join('\n')
+      ].join('\n'),
+      footer: {
+        text: 'discord.gg/memer',
+      }
     });
 
     return _.channel.send({ embed });

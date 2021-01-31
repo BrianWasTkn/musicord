@@ -4,7 +4,7 @@ import Lava from 'discord-akairo'
 export default class Util extends Lava.Command {
   public client: Lava.Client;
   public constructor() {
-    super('hunock', {
+    super('hunlock', {
       aliases: ['hunlock', 'hul'],
       channel: 'guild',
       userPermissions: ['MANAGE_MESSAGES'],

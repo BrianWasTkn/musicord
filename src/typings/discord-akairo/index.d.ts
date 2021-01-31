@@ -1,50 +1,72 @@
 import { 
 	Snowflake, Collection, Message, Guild, 
 	MessageEmbed, GuildChannel, GuildMember,
-	EmojiResolvable, User, Role, ClientOptions
+	EmojiResolvable, User, Role, ClientOptions,
+	MessageReaction, TextableChannel, GuildTextable,
+	TextBasedChannel, TextChannel
+
 } from 'discord.js'
 import { 
-	AkairoClient, ListenerHandler, CommandHandler,
+	AkairoClient, AkairoHandler, AkairoModule,
+	ListenerHandler, CommandHandler,
 	Listener, Command, ClientUtil
 } from 'discord-akairo'
+import {
+	EventEmitter
+} from 'events'
 
 export module 'discord-akairo' {
 	// Structures
 	export class Client extends AkairoClient {
-		spawners: Collection<string, Spawner>;
-		queue: Collection<Snowflake, any>;
 		heists: Collection<Snowflake, Role>;
 		config: Config;
 		util: Utils;
 		db: DB;
 		listenerHandler: ListenerHandler;
 		commandHandler: CommandHandler;
-		importSpawners(): void;
+		spawnHandler: SpawnHandler;
 		build(): Promise<void>;
 		connectDB(): Promise<void>;
 		login(token: string): Promise<string>;
 	}
 	export class Utils extends ClientUtil {
 		constructor(client: LavaClient);
-		paginateArray(array: any[], size: number): (string[])[];
+		paginateArray(array: any[], size: number): any[][];
 		randomInArray(array: any[]): any;
-		randomNumber(min: number, max: number): number;
+		randomNumber(min?: number, max?: number): number;
 		randomColor(): number;
 		log(struct: string, type: ConsoleType, _: string, err?: Error): void;
-		sleep(ms: number): Promise<number>;
+		sleep(ms?: number): Promise<number>;
 	}
-	export class Spawner {
+	// export class Spawner {
+	// 	constructor(client: Client, config: SpawnConfig, visuals: SpawnVisuals);
+	// 	queue: Collection<Snowflake, User>;
+	// 	spawn: SpawnVisuals;
+	// 	config: SpawnConfig;
+	// 	answered: Collection<Snowflake, GuildMember>;
+	// 	client: Client;
+	// 	runCooldown(channel: any): void;
+	// 	run(message: Message): Promise<MessageEmbed>;
+	// 	spawnMessage(channel: any): Promise<Message>;
+	// 	collectMessages(event: Message, channel: any, guild: Guild): Promise<any>;
+	// }
+	export class SpawnHandler extends AkairoHandler {
+		constructor(client: Client, handlerOptions: AkairoHandlerOptions);
+		client: Client;
+		modules: Collection<string, Spawn>;
+		cooldowns: Collection<Snowflake, Spawn>;
+		queue: Collection<Snowflake, SpawnQueue>;
+		messages: Collection<Snowflake, Message>
+		spawn(spawner: Spawn, message: Message): Promise<void>;
+	}
+	export class Spawn extends AkairoModule {
 		constructor(client: Client, config: SpawnConfig, visuals: SpawnVisuals);
-		queue: Collection<Snowflake, User>;
+		client: Client;
 		spawn: SpawnVisuals;
 		config: SpawnConfig;
-		answered: Collection<Snowflake, GuildMember>;
-		client: Client;
-		runCooldown(channel: any): void;
-		run(message: Message): Promise<MessageEmbed>;
-		spawnMessage(channel: any): Promise<Message>;
-		collectMessages(event: Message, channel: any, guild: Guild): Promise<any>;
+		answered: Collection<Snowflake, User>;
 	}
+
 
 	// Interface - DB
 	export interface DB {
@@ -56,8 +78,8 @@ export module 'discord-akairo' {
 		fetch: (userID: Snowflake) => Promise<any>;
 		addUnpaid: (userID: Snowflake, amount: number) => Promise<any>;
 		removeUnpaid: (userID: Snowflake, amount: number) => Promise<any>;
-		incrementJoinedEvents: (userID: Snowflake, amount: number) => Promise<any>;
-		decrementJoinedEvents: (userID: Snowflake, amount: number) => Promise<any>;
+		incrementJoinedEvents: (userID: Snowflake, amount?: number) => Promise<any>;
+		decrementJoinedEvents: (userID: Snowflake, amount?: number) => Promise<any>;
 	}
 	export interface DBCurrency {
 		util: DBCurrencyUtil;
@@ -78,23 +100,29 @@ export module 'discord-akairo' {
 
 	// Interface - Spawns 
 	export interface SpawnConfig {
-		odds: number;
-		cooldown: (member: GuildMember) => number;
-		enabled: boolean;
-		timeout: number;
-		entries: number;
-		rewards: {
-			min: number;
-			max: number;
-			first: number;
+		odds?: number;
+		type?: SpawnSummonType;
+		cooldown?: (member: GuildMember) => number;
+		enabled?: boolean;
+		timeout?: number;
+		entries?: number;
+		rewards?: {
+			min?: number;
+			max?: number;
+			first?: number;
 		}
 	}
 	export interface SpawnVisuals {
-		emoji: EmojiResolvable;
-		type: SpawnVisualsType;
-		title: string;
-		description: string;
-		strings: string[];
+		emoji?: EmojiResolvable;
+		type?: SpawnVisualsType;
+		title?: string;
+		description?: string;
+		strings?: string[];
+	}
+	export interface SpawnQueue {
+		channel: TextChannel;
+		spawn: Spawn;
+		msgId: Snowflake;
 	}
 
 	// Interface - Config
@@ -134,6 +162,7 @@ export module 'discord-akairo' {
 	}
 
 	// Types
+	export type SpawnSummonType = 'message' | 'react' | 'spam';
 	export type SpawnVisualsType = 'COMMON' | 'SUPER' | 'GODLY' | 'UNCOMMON';
 	export type ConsoleType = 'main' | 'error';
 }

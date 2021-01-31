@@ -1,19 +1,16 @@
-import { SpawnConfig, SpawnVisuals } from 'discord-akairo'
+import { 
+	Client,
+	SpawnConfig, 
+	SpawnVisuals, 
+} from 'discord-akairo'
+import { 
+	GuildMember 
+} from 'discord.js'
+import Spawn from '../structures/Spawn'
 
-export const config: SpawnConfig = {
+const config: SpawnConfig = {
 	odds: 5,
-	cooldown: (member) => {
-		// "Crib Booster" role
-		if (member.roles.cache.has('693324853440282654')) return 3;
-		// "Donator #M+" roles (minimum)
-		if (member.roles.cache.has('768858996659453963')) return 5;
-		// "Mastery #" roles (minimum)
-		if (member.roles.cache.has('794834783582421032')) return 10;
-		// "Amari #" roles (minimum)
-		if (member.roles.cache.has('693380605760634910')) return 20;
-		// Else
-		return 60;
-	},
+	type: 'message',
 	enabled: true,
 	timeout: 10000,
 	entries: 3,
@@ -21,16 +18,35 @@ export const config: SpawnConfig = {
 		min: 1000,
 		max: 5000,
 		first: 10000
-	} 
-}
+	}
+};
 
-export const visuals: SpawnVisuals = {
+const visuals: SpawnVisuals = {
 	emoji: '<:memerBlue:729863510330310727>',
 	type: 'COMMON',
 	title: 'Financial Support',
 	description: 'Do you need it?',
 	strings: [
-		'im begging you', 'i wanna be a helicopter', 'sure lol why not',
-		'for my wallet pls kthx bye', 'i wanna be a millionaire so fricking bad'
+		'yes, im asking for it', 'well, about that...',
+		'f i n a n c i a l', 's u p p o r t', 'imagine needing it',
+		'well, just a few only pls', 'i wanna be a helicopter first',
+		'just imagine being you'
 	]
+}
+
+export default class Common extends Spawn {
+	public constructor(client: Client) {
+		super(client, config, visuals, (member: GuildMember): number => {
+			// "Crib Booster" role
+			if (member.roles.cache.has('693324853440282654')) return 3;
+			// "Donator #M+" roles (minimum)
+			if (member.roles.cache.has('768858996659453963')) return 5;
+			// "Mastery #" roles (minimum)
+			if (member.roles.cache.has('794834783582421032')) return 10;
+			// "Amari #" roles (minimum)
+			if (member.roles.cache.has('693380605760634910')) return 20;
+			// Else
+			return 60;
+		});
+	}
 }
