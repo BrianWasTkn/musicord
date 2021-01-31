@@ -39,7 +39,7 @@ export default class SpawnHandler extends AkairoHandler implements TypeSpawnHand
 				time: spawner.config.timeout
 			};
 			const filter: CollectorFilter = async ({ author, content }: Message): Promise<boolean> => {
-				const notCapped = (await this.client.db.spawns.fetch(author.id)).unpaid <= 10000000;
+				const notCapped = (await this.client.db.spawns.fetch(author.id)).unpaid <= this.client.config.spawns.cap;
 				return notCapped && !author.bot && !spawner.answered.has(author.id) && content === str;
 			};
 
@@ -61,7 +61,7 @@ export default class SpawnHandler extends AkairoHandler implements TypeSpawnHand
 				maxEmojis: 1, max: 1
 			};
 			const filter: CollectorFilter = async (reaction: MessageReaction, user: User) => {
-				const notCapped = (await this.client.db.spawns.fetch(user.id)).unpaid <= 10000000;
+				const notCapped = (await this.client.db.spawns.fetch(user.id)).unpaid <= this.client.config.spawns.cap;
 				return notCapped && !user.bot && !spawner.answered.has(user.id) && reaction.toString() === spawner.spawn.emoji;
 			};
 

@@ -62,6 +62,7 @@ const config: Config = {
 	spawns: {
 		cooldown: 60,
 		enabled: true,
+		cap: 20000000,
 		blacklisted: {
 			users: [],
 			channels: [

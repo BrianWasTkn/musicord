@@ -153,6 +153,7 @@ export module 'discord-akairo' {
 	export interface ConfigSpawns {
 		cooldown: number;
 		enabled: boolean;
+		cap: number;
 		blacklisted: {
 			[bl: string]: Snowflake[];
 		};
