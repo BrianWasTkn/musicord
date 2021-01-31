@@ -30,10 +30,10 @@ export default class SpawnListener extends Listener {
 
 		handler.queue.delete(queue.channel.id);
 		spawner.answered.clear();
-		await msg.edit([
+		msg.edit([
 			msg.content,
 			`**${emoji} \`This event has expired\`**`
-		].join('\n\n'));
+		].join('\n\n')).catch(() => {});
 
 		if (!isEmpty) {
 			return msg.channel.send({ embed: {

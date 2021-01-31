@@ -33,7 +33,7 @@ const visuals: SpawnVisuals = {
 	]
 }
 
-export default class Common extends Spawn {
+export default class COMMON extends Spawn {
 	public constructor(client: Client) {
 		super(client, config, visuals, (member: GuildMember): number => {
 			// "Crib Booster" role
