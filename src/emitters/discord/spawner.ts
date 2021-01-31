@@ -15,9 +15,9 @@ export default class DiscordListener extends Listener {
 		if (message.author.bot || message.channel.type === 'dm') return;
 
 		const spawner: Spawn = this.client.spawnHandler.modules.random();
-		// const { unpaid } = await this.client.db.spawns.fetch(message.author.id);
-		// if (Math.round(Math.random() * 100) < (100 - spawner.config.odds)) return;
-		// if (unpaid >= 10000000) return;
+		const { unpaid } = await this.client.db.spawns.fetch(message.author.id);
+		if (Math.round(Math.random() * 100) < (100 - spawner.config.odds)) return;
+		if (unpaid >= 10000000) return;
 
 		const handler = this.client.spawnHandler;
 		const { whitelisted, blacklisted } = this.client.config.spawns;
