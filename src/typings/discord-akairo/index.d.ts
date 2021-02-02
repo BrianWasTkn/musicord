@@ -4,8 +4,8 @@ import {
 	EmojiResolvable, User, Role, ClientOptions,
 	MessageReaction, TextableChannel, GuildTextable,
 	TextBasedChannel, TextChannel
-
 } from 'discord.js'
+
 import { 
 	AkairoClient, AkairoHandler, AkairoModule,
 	ListenerHandler, CommandHandler,
@@ -38,18 +38,6 @@ export module 'discord-akairo' {
 		log(struct: string, type: ConsoleType, _: string, err?: Error): void;
 		sleep(ms?: number): Promise<number>;
 	}
-	// export class Spawner {
-	// 	constructor(client: Client, config: SpawnConfig, visuals: SpawnVisuals);
-	// 	queue: Collection<Snowflake, User>;
-	// 	spawn: SpawnVisuals;
-	// 	config: SpawnConfig;
-	// 	answered: Collection<Snowflake, GuildMember>;
-	// 	client: Client;
-	// 	runCooldown(channel: any): void;
-	// 	run(message: Message): Promise<MessageEmbed>;
-	// 	spawnMessage(channel: any): Promise<Message>;
-	// 	collectMessages(event: Message, channel: any, guild: Guild): Promise<any>;
-	// }
 	export class SpawnHandler extends AkairoHandler {
 		constructor(client: Client, handlerOptions: AkairoHandlerOptions);
 		client: Client;

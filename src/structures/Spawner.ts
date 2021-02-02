@@ -46,7 +46,7 @@ export default class SpawnHandler extends AkairoHandler implements TypeSpawnHand
 			this.emit('messageStart', this, spawner, message, str);
 			const cooldown = spawner.config.cooldown(message.member);
 			this.cooldowns.set(message.author.id, spawner);
-			this.client.setTimeout(() => this.cooldowns.delete(message.author.id), cooldown);
+			this.client.setTimeout(() => this.cooldowns.delete(message.author.id), cooldown * 60 * 1000);
 			const collector = await message.channel.createMessageCollector(filter, options);
 			collector.on('collect', (msg: Message) => {
 				const isFirst = collector.collected.first().id === msg.id;

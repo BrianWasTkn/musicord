@@ -1,4 +1,97 @@
+import { 
+	Snowflake, 
+	EmojiResolvable, 
+	ClientOptions 
+} from 'discord.js'
 import { Config } from 'discord-akairo'
+
+interface Cfg {
+	bot: ConfigBot;
+	spawns: ConfigSpawns;
+	currency: ConfigCurrency;
+}
+
+interface ConfigBot {
+	dev: boolean;
+	token: string;
+	prefix: string[];
+	ownerID: Snowflake[];
+	clientOptions: ClientOptions;
+}
+
+interface ConfigSpawns {
+	enabled: boolean;
+	unpaidCap: number;
+	defaultCooldown: number;
+	blacklistedChannels: Snowflake[];
+	whitelistedCategories: Snowflake[];
+}
+
+interface ConfigCurrency { 
+	slotEmojis: Array<{ 
+		winnings: number,
+		emoji: EmojiResolvable
+	}>;
+	gambleCaps: {
+		[property: string]: number;
+	}
+}
+
+const currency: ConfigCurrency = {
+	gambleCaps: {
+		minBet: 50,
+		maxBet: 500000,
+		maxWin: 2222222,
+		maxPocket: 10000000,
+		maxMulti: 120
+	},
+	slotEmojis: [{
+		emoji: 'clown', 
+		winnings: 1.1 
+	},{
+		emoji: 'peach', 
+		winnings: 1.3 
+	},{
+		emoji: 'flushed', 
+		winnings: 1.7 
+	},{	
+		emoji: 'star2', 
+		winnings: 2.4 
+	}, {	
+		emoji: 'fire', 
+		winnings: 3.0 
+	}]
+}
+
+const spawns: ConfigSpawns = {
+	enabled: true,
+	unpaidCap: 10000000,
+	defaultCooldown: 60,
+	blacklistedChannels: [],
+	whitelistedCategories: []
+}
+
+const bot: ConfigBot = {
+	dev: false,
+	prefix: ['lava', ';;',],
+	token: process.env.TOKEN,
+	ownerID: ['605419747361947649'],
+	clientOptions: {
+		disableMentions: 'everyone',
+		fetchAllMembers: false,
+		ws: { 
+			intents: [
+				'GUILDS', 
+				'GUILD_MEMBERS', 
+				'GUILD_MESSAGES'
+			]
+		}
+	}
+}
+
+
+
+export const cfg: Cfg = { bot, currency, spawns };
 
 const config: Config = {
 	// Bot
