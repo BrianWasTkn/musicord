@@ -57,7 +57,7 @@ const currency: ConfigCurrency = {
 	},{	
 		emoji: 'star2', 
 		winnings: 2.4 
-	}, {	
+	},{	
 		emoji: 'fire', 
 		winnings: 3.0 
 	}]

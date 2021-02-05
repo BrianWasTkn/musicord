@@ -6,7 +6,8 @@ declare namespace Lava {
     import {
         ClientOptions,
         EmojiResolvable,
-        Snowflake
+        Snowflake,
+        Message
     } from 'discord.js'
     import {
         Document,
@@ -49,17 +50,26 @@ declare namespace Lava {
         gifted: number;
     }
 
-    const DBCurrency: (client: Client) => {
-        create: (userID: Snowflake) => Promise<Document<DBCurrencyDocument>>;
-		fetch: (userID: Snowflake) => Promise<any>;
-		addUnpaid: (userID: Snowflake, amount: number) => Promise<any>;
-		removeUnpaid: (userID: Snowflake, amount: number) => Promise<any>;
-		incrementJoinedEvents: (userID: Snowflake, amount?: number) => Promise<any>;
-		decrementJoinedEvents: (userID: Snowflake, amount?: number) => Promise<any>;
+    interface DBCurrency {
+        util: DBCurrencyUtil;
+		create: (userID: Snowflake) => Promise<Document<DBCurrencyDocument>>;
+		fetch: (userID: Snowflake) => Promise<Document & DBCurrencyDocument>;
+		addPocket: (userID: Snowflake, amount: number) => Promise<any>;
+		removePocket: (userID: Snowflake, amount: number) => Promise<any>;
+		addVault: (userID: Snowflake, amount: number) => Promise<any>;
+		removeVault: (userID: Snowflake, amount: number) => Promise<any>;
+		addSpace: (userID: Snowflake, amount: number) => Promise<any>;
+		removeSpace: (userID: Snowflake, amount: number) => Promise<any>;
+		addMulti: (userID: Snowflake, amount: number) => Promise<any>;
+		removeMulti: (userID: Snowflake, amount: number) => Promise<any>;
     }
+    interface DBCurrencyUtil {
+		calcMulti: (Lava: Client, _: Message) => Promise<number>;
+	}
     //#endregion Interfaces
 
     //#region Types 
+    type DBCurrency = (client: Client) => (Partial<DBCurrency>);
     type CurrencyCaps = { [cap: string]: number };
     type CurrencySlots = { 
         emojis: EmojiResolvable[], 
