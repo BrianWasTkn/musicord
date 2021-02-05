@@ -1,29 +1,29 @@
 import { Snowflake, User } from 'discord.js'
-import Lava from 'discord-akairo'
+import { Document, Model } from 'mongoose'
+import { Client } from 'discord-akairo'
 import Currency from './model'
 import utils from './util'
 
-const dbCurrency = (client: Lava.Client) => ({
+const dbCurrency = (client: Client) => ({
 	util: utils,
 	create: async (
 		userID: Snowflake
-	): Promise<boolean | any> => {
-		const user: User = client.users.cache.get(userID);
-		if (!user || user.bot) return false;
-		const data = new Currency({ userID: user.id });
+	): Promise<Document<Lava.DBCurrencyDocument>> => {
+		const user: User = await client.users.fetch(userID);
+		const data: Document<Lava.DBCurrencyDocument> = new Currency({ userID: user.id });
 		await data.save();
 		return data;
 	},
 
 	fetch: async (
 		userID: Snowflake
-	): Promise<any> => {
+	): Promise<Document & Lava.DBCurrencyDocument> => {
 		const data = await Currency.findOne({ userID });
 		if (!data) {
 			const newDat = await dbCurrency(client).create(userID);
-			return newDat;
+			return (newDat as Document & Lava.DBCurrencyDocument);
 		} else {
-			return data;
+			return (data as Document & Lava.DBCurrencyDocument);
 		}
 	},
 

@@ -1,7 +1,6 @@
 import { Message } from 'discord.js'
 import { Client } from 'discord-akairo'
 
-
 export default {
 	info: {
 		name: 'Trophy',

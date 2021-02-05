@@ -1,15 +1,16 @@
-import { readdirSync } from 'fs'
 import { join } from 'path'
-import mongoose from 'mongoose'
 import chalk from 'chalk'
+import mongoose from 'mongoose'
 import Lava from 'discord-akairo'
+import GLava from 'discord-giveaways'
 import discord from 'discord.js'
 
+import { GiveawayHandler } from './Giveaway'
 import { Utils } from './Util'
-import SpawnHandler from './Spawner'
+import SpawnHandler from './spawns/handler'
 import Spawn from './Spawn'
-import currency from './currency/functions'
-import spawns from './spawns/functions'
+import currencyFN from './currency/functions'
+import spawnsFN from './spawns/functions'
 
 /**
  * Extends the instance of AkairoClient
@@ -20,6 +21,7 @@ export class Client extends Lava.AkairoClient implements Lava.Client {
 	public config: any;
 	public util: Lava.Utils;
 	public db: Lava.DB;
+	public giveawayHandler: GLava.Manager;
 	public listenerHandler: Lava.ListenerHandler;	
 	public commandHandler: Lava.CommandHandler;
 	public spawnHandler: Lava.SpawnHandler;
@@ -30,8 +32,8 @@ export class Client extends Lava.AkairoClient implements Lava.Client {
 		this.config = config;
 		this.util = new Utils(this);
 		this.db = { 
-			currency: currency(this),
-			spawns: spawns(this)
+			currency: currencyFN(this),
+			spawns: spawnsFN(this)
 		};
 
 		// Handlers
@@ -42,6 +44,25 @@ export class Client extends Lava.AkairoClient implements Lava.Client {
 			directory: join(__dirname, '..', 'spawns'),
 			classToHandle: Spawn,
 			automateCategories: true
+		});
+		this.giveawayHandler = new GiveawayHandler(this, {
+			storage: false,
+			updateCountdownEvery: 5000,
+			hasGuildMembersIntent: true,
+			default: {
+				botsCanWin: false,
+				exemptPermissions: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
+				embedColor: '#f00101',
+				reaction: '<:memecoin:717347901587587153>',
+				messages: {
+					giveaway: '**:tada: GIVEAWAY :tada:**',
+					giveawayEnded: '**:tada: ENDED :tada:**',
+					inviteToParticipate: '**React with 🎉 to join!**',
+					timeRemaining: '**Time Remaining:** {duration}',
+					hostedBy: '**Hosted by:** {user}',
+					embedFooter: 'Example Footer'
+				}
+			},
 		});
 		this.commandHandler = new Lava.CommandHandler(this, {
 			directory: join(__dirname, '..', 'commands'),
@@ -71,7 +92,7 @@ export class Client extends Lava.AkairoClient implements Lava.Client {
 			{ key: 'Spawner', handler: this.spawnHandler },
 		];
 		for (const { handler, key } of handlers) {
-			handler.on('load', (_, isReload) => {
+			handler.on('load', (_) => {
 				this.util.log(key, 'main', `${key} ${chalk.cyanBright(_.id)} loaded.`);
 			});
 		}

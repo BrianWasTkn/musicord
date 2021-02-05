@@ -7,7 +7,6 @@ export default class Dev extends Lava.Command {
   public constructor() {
     super('eval', {
       aliases: ['eval', 'ev'],
-      channel: 'guild',
       description: 'Evaluate custom code for you stupid dev',
       category: 'Dev',
       ownerOnly: true,
