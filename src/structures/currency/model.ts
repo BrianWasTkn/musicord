@@ -1,6 +1,6 @@
 import { Document, Schema, model } from 'mongoose'
 
-const CurrencySchema = new Schema({
+export default model<Document<Lava.CurrencyProfile>>('currency', new Schema({
 	userID: { type: String, required: false },
 	// Balance
 	pocket: { type: Number, required: false, default: 1000 },
@@ -16,6 +16,4 @@ const CurrencySchema = new Schema({
 	items: { type: Array, required: false, default: [] },
 	gifted: { type: Array, required: false, default: 0 },
 	cooldowns: { type: Array, required: false, default: [] },
-})
-
-export default model<Document<Lava.DBCurrencyDocument>>('currency', CurrencySchema);
+}));

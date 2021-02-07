@@ -1,5 +1,4 @@
-import { 
-	Client, 
+import {  
 	Command 
 } from 'discord-akairo'
 import { 
@@ -13,7 +12,7 @@ import {
 import repl from 'programmatic-repl'
 
 export default class Dev extends Command {
-	public client: Client;
+	public client: Akairo.Client;
 	public constructor() {
 		super('repl', {
 			aliases: ['repl'],
@@ -49,7 +48,8 @@ export default class Dev extends Command {
 		});
 
 		// from https://dankmemer.lol/source and modified.
-		const run = async () => {
+		const run = async (retry: boolean) => {
+			if (retry) await _.channel.send('Started a REPL session');
 			const msg: Message = await this._collect(_);
 			if (msg.content.toLowerCase() === '.exit' || !msg.content) {
 				return _.channel.send('Exiting REPL...');
@@ -59,7 +59,7 @@ export default class Dev extends Command {
 			let b: any;
 			let a: any;
 			let r: any;
-			let t: string // BABAHAHAHH
+			let t: string; // BABAHAHAHH
 
 			try {
 				b = process.hrtime();
@@ -97,8 +97,10 @@ export default class Dev extends Command {
 					]
 				}
 			})
+
+			await run(true);
 		};
 
-		await run();
+		await run(false);
 	} 
 }

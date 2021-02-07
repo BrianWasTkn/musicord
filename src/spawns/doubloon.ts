@@ -1,14 +1,9 @@
 import { 
-	Client,
-	SpawnConfig, 
-	SpawnVisuals, 
-} from 'discord-akairo'
-import { 
 	GuildMember 
 } from 'discord.js'
 import Spawn from '../structures/Spawn'
 
-const config: SpawnConfig = {
+const config: Akairo.SpawnConfig = {
 	odds: 1,
 	type: 'spam',
 	enabled: true,
@@ -21,7 +16,7 @@ const config: SpawnConfig = {
 	}
 };
 
-const visuals: SpawnVisuals = {
+const visuals: Akairo.SpawnVisual = {
 	emoji: '<:memerGold:753138901169995797>',
 	type: 'GODLY',
 	title: 'Gold Doubloon',
@@ -38,7 +33,7 @@ const visuals: SpawnVisuals = {
 }
 
 export default class GODLY extends Spawn {
-	public constructor(client: Client) {
+	public constructor(client: Akairo.Client) {
 		super(client, config, visuals, (member: GuildMember): number => {
 			// "Crib Booster" role
 			if (member.roles.cache.has('693324853440282654')) return 10;

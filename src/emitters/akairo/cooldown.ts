@@ -1,8 +1,8 @@
 import { Message } from 'discord.js'
-import Lava from 'discord-akairo'
+import { Listener, Command } from 'discord-akairo'
 
-export default class CommandListener extends Lava.Listener {
-	public client: Lava.Client;
+export default class CommandListener extends Listener {
+	public client: Akairo.Client;
 	public constructor() {
 		super('cooldown', {
 			emitter: 'commandHandler',
@@ -12,7 +12,7 @@ export default class CommandListener extends Lava.Listener {
 
 	public async exec(
 		_: Message,
-		command: Lava.Command,
+		command: Command,
 		remaining: number
 	): Promise<Message> {
 		const embed = this.client.util.embed({

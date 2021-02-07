@@ -1,12 +1,14 @@
-import { Client, ClientUtil, Utils as Util } from 'discord-akairo'
-import Lava from 'discord-akairo'
+import { Collection, Role, GuildChannel } from 'discord.js'
+import { ClientUtil } from 'discord-akairo'
 import chalk from 'chalk'
 import moment from 'moment'
 
-export class Utils extends ClientUtil implements Util {
-	public client: Client;
-	public constructor(client: Client) {
+export default class Util extends ClientUtil implements Akairo.Util {
+	public heists: Collection<GuildChannel["id"], Role>;
+	public constructor(public client: Akairo.Client) {
 		super(client);
+
+		this.heists = new Collection();
 	}
 
 	/**
@@ -14,7 +16,7 @@ export class Utils extends ClientUtil implements Util {
 	 * @param array An array with usually many items
 	 * @param size The number of items per array in return
 	 */
-	public paginateArray(array: any[], size: number): (string[])[] {
+	public paginateArray(array: any[], size: number): Array<any[]> {
 		let result = [];
     	let j = 0;
     	for (let i = 0; i < Math.ceil(array.length / (size || 5)); i++) {

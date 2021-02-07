@@ -1,10 +1,11 @@
-import { Argument, Client, Command } from 'discord-akairo'
+import { Argument, Command } from 'discord-akairo'
 import { ColorResolvable } from 'discord.js';
 import { EmojiResolvable } from 'discord.js';
 import { Message } from 'discord.js'
+import { AnyCnameRecord } from 'dns';
 
 export default class Currency extends Command {
-  public client: Client;
+  public client: Akairo.Client;
   public constructor() {
     super('slots', {
       aliases: ['slots', 'slotmachine', 's'],
@@ -38,7 +39,7 @@ export default class Currency extends Command {
    * @param args the passed arguments
    */
   public async checkArgs(_: Message, args: any): Promise<any> {
-    const { minBet, maxBet, maxPocket } = this.client.config.currency.caps;
+    const { minBet, maxBet, maxPocket } = this.client.config.currency.gambleCaps;
     const db = await this.client.db.currency.fetch(_.author.id);
     let bet = args.amount;
     // no bet amounts 
@@ -91,7 +92,7 @@ export default class Currency extends Command {
     const [condition, bet, message] = await this.checkArgs(_, args);
     if (!condition) return _.channel.send(message);
     // Slot Emojis
-    const [ a, b, c ] = this.roll(currency.slots.emojis);
+    const [ a, b, c ] = this.roll(Object.keys(currency.slotMachine));
     const outcome = `**>** :${[a, b, c].join(':    :')}: **<**`;
     const msg = await _.channel.send({ embed: {
       author: { name: `${_.author.username}'s slot machine` },
@@ -108,7 +109,7 @@ export default class Currency extends Command {
     let state: 'losing' | 'winning' | 'jackpot' = 'losing';
 
     if (isWin) {
-      const { maxWin } = currency.caps;
+      const { maxWin } = currency.gambleCaps;
       if (winnings > maxWin) winnings = maxWin;
       let percentWon: number = Math.round((winnings / bet) * 100);
       db = await DB.currency.addPocket(_.author.id, winnings);
@@ -152,21 +153,21 @@ export default class Currency extends Command {
    * @returns {object} 
    */
   public calcWinnings(
-    order: EmojiResolvable[], 
+    slots: EmojiResolvable[], 
     data: any, bet: number
     ): { isWin: boolean, winnings: number } {
 
-    const { emojis, winnings } = this.client.config.currency.slots;
-    const slots: EmojiResolvable[] = [...order];
+    const { slotMachine } = this.client.config.currency;
+    const [ emojis, winnings ] = [Object.keys(slotMachine), Object.values(slotMachine)];
 
     if (slots.every((
       emoji: EmojiResolvable,
-      i: number,
+      _i: number,
       arr: EmojiResolvable[]) => {
       return emoji === arr[0];
     })) {
-      let won: number | number[] = slots.map(s => winnings[emojis.indexOf(s)]);
-      won = won.reduce((p, c) => p + c);
+      let won: any = slots.map((s: string) => winnings[emojis.indexOf(s)]);
+      won = (won as number[]).reduce((p: number, c: number) => p + c);
       let multi = (won + (won * (data.multi / 100)));
       won = Math.round(multi * bet);
 

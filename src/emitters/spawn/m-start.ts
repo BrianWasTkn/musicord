@@ -1,13 +1,12 @@
 import { 
-	Listener, Client,
-	SpawnHandler, Spawn
+	Listener
 } from 'discord-akairo'
 import {
 	Message, TextChannel
 } from 'discord.js'
 
 export default class SpawnListener extends Listener {
-	public client: Client;
+	public client: Akairo.Client;
 	public constructor() {
 		super('spawn-messageStart', {
 			event: 'messageStart',
@@ -16,8 +15,8 @@ export default class SpawnListener extends Listener {
 	}
 
 	public async exec(
-		handler: SpawnHandler, 
-		spawner: Spawn, 
+		handler: Akairo.SpawnHandler, 
+		spawner: Akairo.Spawn, 
 		message: Message,
 		str: string
 	): Promise<void> {
@@ -30,7 +29,7 @@ export default class SpawnListener extends Listener {
 		await message.channel.send(`Type \`${str.split('').join('\u200b')}\``);
 		handler.queue.set(message.channel.id, {
 			msgId: msg.id,
-			channel: (message.channel as TextChannel),
+			channel: (<TextChannel>message.channel),
 			spawn: spawner
 		});
 	}

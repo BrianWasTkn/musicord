@@ -1,28 +1,22 @@
 import { 
 	Collection, User,
-	DMChannel, Snowflake,
+	Snowflake,
 	Message, MessageReaction,
-	TextableChannel, CollectorFilter,
-	MessageCollector, ReactionCollector, 
+	CollectorFilter,
 	MessageCollectorOptions, ReactionCollectorOptions
 } from 'discord.js'
 import { 
-	Spawn,
-	Client,
-	SpawnQueue,
 	AkairoHandler,
-	AkairoHandlerOptions,
-	SpawnHandler as TypeSpawnHandler
+	AkairoHandlerOptions
 } from 'discord-akairo'
 
-export default class SpawnHandler extends AkairoHandler implements TypeSpawnHandler {
-	public client: Client;
-	public modules: Collection<string, Spawn>;
-	public cooldowns: Collection<Snowflake, Spawn>;
-	public queue: Collection<Snowflake, SpawnQueue>;
+export default class SpawnHandler extends AkairoHandler implements Akairo.SpawnHandler {
+	public modules: Collection<string, Akairo.Spawn>;
+	public cooldowns: Collection<Snowflake, Akairo.Spawn>;
+	public queue: Collection<Snowflake, Akairo.SpawnQueue>;
 	public messages: Collection<Snowflake, Message>;
 	public constructor(
-		client: Client,
+		public client: Akairo.Client,
 		handlerOptions: AkairoHandlerOptions
 	) {
 		super(client, handlerOptions);
@@ -31,7 +25,7 @@ export default class SpawnHandler extends AkairoHandler implements TypeSpawnHand
 		this.messages = new Collection();
 	}
 
-	public async spawn(spawner: Spawn, message: Message): Promise<void> {
+	public async spawn(spawner: Akairo.Spawn, message: Message): Promise<void> {
 		if (['spam', 'message'].includes(spawner.config.type)) {
 			const str = this.client.util.randomInArray(spawner.spawn.strings);
 			const options: MessageCollectorOptions = { 
@@ -39,7 +33,7 @@ export default class SpawnHandler extends AkairoHandler implements TypeSpawnHand
 				time: spawner.config.timeout
 			};
 			const filter: CollectorFilter = async ({ author, content }: Message): Promise<boolean> => {
-				const notCapped = (await this.client.db.spawns.fetch(author.id)).unpaid <= this.client.config.spawns.cap;
+				const notCapped = (await this.client.db.spawns.fetch(author.id)).unpaid <= this.client.config.spawns.unpaidCap;
 				return notCapped && !author.bot && !spawner.answered.has(author.id) && content === str;
 			};
 
@@ -52,7 +46,7 @@ export default class SpawnHandler extends AkairoHandler implements TypeSpawnHand
 				const isFirst = collector.collected.first().id === msg.id;
 				this.emit('messageCollect', this, spawner, msg, isFirst);
 			});
-			collector.on('end', (collected: Collection<string, Message>, reason: string) => {
+			collector.on('end', (collected: Collection<string, Message>) => {
 				this.emit('messageResults', this, spawner, message, collected, Boolean(collected.size));
 			});
 		} else if (spawner.config.type === 'react') {
@@ -61,7 +55,7 @@ export default class SpawnHandler extends AkairoHandler implements TypeSpawnHand
 				maxEmojis: 1, max: 1
 			};
 			const filter: CollectorFilter = async (reaction: MessageReaction, user: User) => {
-				const notCapped = (await this.client.db.spawns.fetch(user.id)).unpaid <= this.client.config.spawns.cap;
+				const notCapped = (await this.client.db.spawns.fetch(user.id)).unpaid <= this.client.config.spawns.unpaidCap;
 				return notCapped && !user.bot && !spawner.answered.has(user.id) && reaction.toString() === spawner.spawn.emoji;
 			};
 
@@ -74,7 +68,7 @@ export default class SpawnHandler extends AkairoHandler implements TypeSpawnHand
 			collector.on('remove', (reaction: MessageReaction, user: User) => {
 				this.emit('reactionRemove', this, spawner, message, reaction, user);
 			});
-			collector.on('end', (collected: Collection<string, MessageReaction>, reason: string) => {
+			collector.on('end', (collected: Collection<string, MessageReaction>) => {
 				const queue = this.queue.get(message.channel.id);
 				this.emit('reactionResults', this, spawner, message, queue, collected, Boolean(collected.size));
 				this.queue.delete(message.channel.id);

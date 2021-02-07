@@ -1,9 +1,9 @@
 import { Message } from 'discord.js'
 import { inspect } from 'util'
-import Lava from 'discord-akairo'
+import { Command } from 'discord-akairo'
 
-export default class Dev extends Lava.Command {
-  public client: Lava.Client;
+export default class Dev extends Command {
+  public client: Akairo.Client;
   public constructor() {
     super('eval', {
       aliases: ['eval', 'ev'],
@@ -28,11 +28,11 @@ export default class Dev extends Lava.Command {
     const { guild, channel } = _;
     const code: string = args.code;
     const asynchronous: boolean = code.includes('await') || code.includes('return');
-    let before, evaled, evalTime, type, token, result;
+    let before: number, evaled: string, evalTime: number, type: string, token: RegExp, result: any;
 
     const embed: Message = await channel.send({ embed: {
       color: 'ORANGE',
-      description: 'Preparing pro gamer move...',
+      description: '```\nPreparing pro gamer move...\n```',
       footer: {
         iconURL: this.client.user.avatarURL({ dynamic: true }),
         text: this.client.user.username

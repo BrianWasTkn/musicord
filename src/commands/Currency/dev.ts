@@ -1,11 +1,10 @@
 import { 
-  Message, MessageEmbed, 
-  Guild, GuildMember 
+  Message, Guild, GuildMember 
 } from 'discord.js'
-import Lava from 'discord-akairo'
+import { Command } from 'discord-akairo'
 
-export default class Currency extends Lava.Command {
-  public client: Lava.Client;
+export default class Currency extends Command {
+  public client: Akairo.Client;
   public constructor() {
     super('dev', {
       aliases: ['dev', 'g'],
@@ -27,7 +26,7 @@ export default class Currency extends Lava.Command {
   }
 
   public async exec(_: Message, args: any): Promise<Message> {
-    const { channel, guild }: {
+    const { channel }: {
       channel: typeof _.channel,
       guild: Guild
     } = _;

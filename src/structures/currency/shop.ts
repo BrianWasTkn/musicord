@@ -9,14 +9,10 @@ export default files.map((f: string): ShopItem => {
 });
 
 interface ShopItem {
-	info: {
-		[i: string]: string;
-	};
-	shop: {
-		cost: number;
-		buyable: boolean;
-		usable: boolean;
-		sellable: boolean;
-	}
+	info: { [i: string]: string; };
+	cost: number;
+	buyable: boolean;
+	usable: boolean;
+	sellable: boolean;
 	fn: (_: Message) => Promise<Message>;
 }

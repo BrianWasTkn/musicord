@@ -1,9 +1,8 @@
 import { Message, MessageEmbed, EmbedField } from 'discord.js'
-import Lava from 'discord-akairo'
+import { Command } from 'discord-akairo'
 
-
-export default class Utility extends Lava.Command {
-	public client: Lava.Client;
+export default class Utility extends Command {
+	public client: Akairo.Client;
 	public constructor() {
 		super('help', {
 			aliases: ['help', 'h'],
@@ -42,7 +41,7 @@ export default class Utility extends Lava.Command {
 		}
 
 		if (args.query) {
-			const command: Lava.Command = args.query;
+			const command: Command = args.query;
 			return _.channel.send({ embed: {
 				color: 'ORANGE',
 				title: command.aliases[0],

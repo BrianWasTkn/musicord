@@ -1,14 +1,9 @@
 import { 
-	Client,
-	SpawnConfig, 
-	SpawnVisuals, 
-} from 'discord-akairo'
-import { 
 	GuildMember 
 } from 'discord.js'
 import Spawn from '../structures/Spawn'
 
-const config: SpawnConfig = {
+const config: Akairo.SpawnConfig = {
 	odds: 5,
 	type: 'message',
 	enabled: true,
@@ -21,7 +16,7 @@ const config: SpawnConfig = {
 	}
 };
 
-const visuals: SpawnVisuals = {
+const visuals: Akairo.SpawnVisual = {
 	emoji: '<:memerBlue:729863510330310727>',
 	type: 'COMMON',
 	title: '2021',
@@ -34,7 +29,7 @@ const visuals: SpawnVisuals = {
 }
 
 export default class COMMON extends Spawn {
-	public constructor(client: Client) {
+	public constructor(client: Akairo.Client) {
 		super(client, config, visuals, (member: GuildMember): number => {
 			// "Crib Booster" role
 			if (member.roles.cache.has('693324853440282654')) return 3;

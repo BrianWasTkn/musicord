@@ -1,8 +1,8 @@
-import { Message, MessageEmbed } from 'discord.js'
-import Lava from 'discord-akairo'
+import { Message } from 'discord.js'
+import { Command } from 'discord-akairo'
 
-export default class Currency extends Lava.Command {
-  public client: Lava.Client;
+export default class Currency extends Command {
+  public client: Akairo.Client;
   public constructor() {
     super('burn', {
       aliases: ['burn'],
@@ -32,7 +32,7 @@ export default class Currency extends Lava.Command {
       return _.channel.send('You ain\'t allowed to burn higher than your pocket lmao');
     }
 
-    const data = await this.client.db.currency.removePocket(_.author.id, amount);
+    await this.client.db.currency.removePocket(_.author.id, amount);
     return _.channel.send(`Successfully burned **${amount.toLocaleString()}** coins from your pocket.`);
   }
 }

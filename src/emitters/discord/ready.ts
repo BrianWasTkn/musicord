@@ -1,8 +1,8 @@
-import { Client, Listener } from 'discord-akairo'
+import { Listener } from 'discord-akairo'
 import { PresenceData } from 'discord.js'
 
-export default class DiscordListeners extends Listener {
-	public client: Client;
+export default class DiscordListener extends Listener {
+	public client: Akairo.Client;
 	public constructor() {
 		super('ready', {
 			emitter: 'client',
@@ -16,7 +16,7 @@ export default class DiscordListeners extends Listener {
 		};
 		
 		await this.client.user.setPresence({ activity });
-		this.client.util.log(
+		return this.client.util.log(
 			'Discord', 'main', 
 			`${this.client.user.tag} has flown within Discord.`
 		);

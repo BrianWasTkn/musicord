@@ -1,9 +1,8 @@
-import { Message, GuildChannel, GuildMember } from 'discord.js'
-import Lava from 'discord-akairo'
+import { Message, GuildChannel } from 'discord.js'
 
-export default {
-	calcMulti: async (Lava: Lava.Client, msg: Message): Promise<number> => {
-		const { channel }: { channel } = msg;
+export const utils: Lava.CurrencyUtil = {
+	calcMulti: async (Lava: Akairo.Client, msg: Message): Promise<number> => {
+		const channel = (msg.channel as GuildChannel);
 		const db = await Lava.db.currency.fetch(msg.member.user.id);
 		let total = 0;
 		total += db.multi;

@@ -1,8 +1,8 @@
-import { Message, Snowflake, Role } from 'discord.js'
-import Lava from 'discord-akairo'
+import { Message, Role, GuildChannel } from 'discord.js'
+import { Command } from 'discord-akairo'
 
-export default class Util extends Lava.Command {
-  public client: Lava.Client;
+export default class Util extends Command {
+  public client: Akairo.Client;
   public constructor() {
     super('hunlock', {
       aliases: ['hunlock', 'hul'],
@@ -57,8 +57,8 @@ export default class Util extends Lava.Command {
     await msg.edit({ embed: this.embed(0, role, 'GREEN') });
 
     const perms = { SEND_MESSAGES: true };
-    const updated: any = await channel.updateOverwrite(role.id, perms);
-    this.client.heists.set(channel.id, role);
+    (<GuildChannel>_.channel).updateOverwrite(role.id, perms);
+    this.client.util.heists.set(channel.id, role);
     return channel.send({ embed: {
       title: `**UNLOCKED FOR \`${role.name}\`**`,
       color: 'GREEN',

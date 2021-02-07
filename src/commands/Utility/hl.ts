@@ -1,8 +1,8 @@
-import { Message, Snowflake, Role } from 'discord.js'
-import Lava from 'discord-akairo'
+import { Message, Role } from 'discord.js'
+import { Command } from 'discord-akairo'
 
-export default class Util extends Lava.Command {
-  public client: Lava.Client;
+export default class Util extends Command {
+  public client: Akairo.Client;
   public constructor() {
     super('hlock', {
       aliases: ['hlock', 'hl'],
@@ -13,9 +13,9 @@ export default class Util extends Lava.Command {
     });
   }
 
-  public async exec(_: Message, args: any): Promise<Message> {
+  public async exec(_: Message): Promise<Message> {
     await _.delete();
-    const role: Role = this.client.heists.get(_.channel.id);
+    const role: Role = this.client.util.heists.get(_.channel.id);
     if (!role) return;
     const { channel }: any = _;
     await channel.updateOverwrite(role.id, { SEND_MESSAGES: null });

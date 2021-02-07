@@ -1,15 +1,13 @@
 import { 
-	Listener, Client,
-	SpawnHandler, Spawn,
-	SpawnQueue
+	Listener
 } from 'discord-akairo'
 import {
-	Message, User, Collection,
+	Message, Collection,
 	TextChannel
 } from 'discord.js'
 
 export default class SpawnListener extends Listener {
-	public client: Client;
+	public client: Akairo.Client;
 	public constructor() {
 		super('spawn-messageResults', {
 			event: 'messageResults',
@@ -18,8 +16,8 @@ export default class SpawnListener extends Listener {
 	}
 
 	public async exec(
-		handler: SpawnHandler, 
-		spawner: Spawn, 
+		handler: Akairo.SpawnHandler, 
+		spawner: Akairo.Spawn, 
 		message: Message,
 		collected: Collection<string, Message>,
 		isEmpty: boolean

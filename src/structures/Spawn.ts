@@ -1,34 +1,24 @@
 import { 
-	Message, Guild, Collection, GuildMember, User, Snowflake,
-	CollectorFilter, MessageEmbed, MessageCollector
+	Collection, User
 } from 'discord.js'
 import {
-	Client, 
-	SpawnConfig,
-	SpawnVisuals,
-	AkairoModule,
-	Spawn as TypeSpawn
+	AkairoModule
 } from 'discord-akairo'
-import Lava from 'discord-akairo'
-import SpawnProfile from './spawns/model'
 
-export default class Spawn extends AkairoModule implements TypeSpawn {
-	public client: Client;
-	public answered: Collection<Snowflake, User>;
-	public spawn: SpawnVisuals;
-	public config: SpawnConfig;
+export default class Spawn extends AkairoModule implements Akairo.Spawn {
+	public answered: Collection<User["id"], User>;
 	public constructor(
-		client: Client,
-		config: SpawnConfig,
-		visuals: SpawnVisuals,
-		cooldown: SpawnConfig["cooldown"]
+		public client: Akairo.Client,
+		public config: Akairo.SpawnConfig,
+		public spawn: Akairo.SpawnVisual,
+		cooldown: Akairo.SpawnConfig["cooldown"]
 	) {
-		super(visuals.title, { 
+		super(spawn.title, { 
 			category: 'spawner' 
 		});
 
 		this.client = client;
-		this.spawn = visuals;
+		this.spawn = spawn;
 		this.config = { ...config, cooldown};
 		this.answered = new Collection();
 	}

@@ -1,67 +1,68 @@
 import { Snowflake, User } from 'discord.js'
-import Lava from 'discord-akairo'
+import { Document } from 'mongoose'
 import Spawn from './model'
 
-const dbSpawn = (client: Lava.Client) => ({
-	create: async (
-		userID: Snowflake
-	): Promise<boolean | any> => {
-		const user: User = client.users.cache.get(userID);
-		if (!user || user.bot) return false;
-		const data = new Spawn({ userID: user.id });
-		await data.save();
-		return data;
-	},
+function dbSpawn(client: Akairo.Client): Lava.SpawnFunction {
+	return ({
+		create: async (
+			userID: Snowflake
+		): Promise<Document<Lava.SpawnDocument>> => {
+			const user: User = client.users.cache.get(userID);
+			const data: Document<Lava.SpawnDocument> = new Spawn({ userID: user.id });
+			await data.save();
+			return data;
+		},
 
-	fetch: async (
-		userID: Snowflake
-	): Promise<any> => {
-		const data = await Spawn.findOne({ userID });
-		if (!data) {
-			const newDat = await dbSpawn(client).create(userID);
-			return newDat;
-		} else {
+		fetch: async (
+			userID: Snowflake
+		): Promise<Document & Lava.SpawnDocument> => {
+			const data = await Spawn.findOne({ userID });
+			if (!data) {
+				const newData = await dbSpawn(client).create(userID);
+				return (newData as Document & Lava.SpawnDocument);
+			} else {
+				return (data as Document & Lava.SpawnDocument);
+			}
+		},
+
+		addUnpaid: async (
+			userID: Snowflake,
+			amount: number
+		): Promise<Document & Lava.SpawnDocument> => {
+			const data = await dbSpawn(client).fetch(userID);
+			data.unpaid += amount;
+			await data.save();
+			return data;
+		},
+		removeUnpaid: async (
+			userID: Snowflake,
+			amount: number
+		): Promise<Document & Lava.SpawnDocument> => {
+			const data = await dbSpawn(client).fetch(userID);
+			data.unpaid -= amount;
+			await data.save();
+			return data;
+		},
+
+		incrementJoinedEvents: async (
+			userID: Snowflake,
+			amount?: number
+		): Promise<Document & Lava.SpawnDocument> => {
+			const data = await dbSpawn(client).fetch(userID);
+			data.eventsJoined += amount || 1;
+			await data.save();
+			return data;
+		},
+		decrementJoinedEvents: async (
+			userID: Snowflake,
+			amount?: number
+		): Promise<Document & Lava.SpawnDocument> => {
+			const data = await dbSpawn(client).fetch(userID);
+			data.eventsJoined -= amount || 1;
+			await data.save();
 			return data;
 		}
-	},
-
-	addUnpaid: async (
-		userID: Snowflake, 
-		amount: number,
-	): Promise<any> => {
-		const data = await dbSpawn(client).fetch(userID);
-		data.unpaid += amount;
-		await data.save();
-		return data;
-	},
-	removeUnpaid: async (
-		userID: Snowflake, 
-		amount: number,
-	): Promise<any> => {
-		const data = await dbSpawn(client).fetch(userID);
-		data.unpaid -= amount;
-		await data.save();
-		return data;
-	},
-
-	incrementJoinedEvents: async (
-		userID: Snowflake, 
-		amount?: number,
-	): Promise<any> => {
-		const data = await dbSpawn(client).fetch(userID);
-		data.eventsJoined += amount || 1;
-		await data.save();
-		return data;
-	},
-	decrementJoinedEvents: async (
-		userID: Snowflake, 
-		amount?: number,
-	): Promise<any> => {
-		const data = await dbSpawn(client).fetch(userID);
-		data.eventsJoined -= amount || 1;
-		await data.save();
-		return data;
-	}
-});
+	});
+}
 
 export default dbSpawn;
