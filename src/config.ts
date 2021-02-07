@@ -9,7 +9,7 @@ const currency: Lava.ConfigCurrency = {
 	slotMachine: {
 		'clown': 1.1,
 		'peach': 1.3,
-		'flusged': 1.7,
+		'flushed': 1.7,
 		'star2': 2.4,
 		'fire': 3.0
 	}
