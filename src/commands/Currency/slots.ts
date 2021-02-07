@@ -2,7 +2,6 @@ import { Argument, Command } from 'discord-akairo'
 import { ColorResolvable } from 'discord.js';
 import { EmojiResolvable } from 'discord.js';
 import { Message } from 'discord.js'
-import { AnyCnameRecord } from 'dns';
 
 export default class Currency extends Command {
   public client: Akairo.Client;

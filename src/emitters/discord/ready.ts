@@ -12,7 +12,9 @@ export default class DiscordListener extends Listener {
 
 	public async exec(): Promise<void> {
 		const activity: PresenceData["activity"] = { 
-			name: 'discord.gg/memer', type: 'STREAMING'
+			name: 'discord.gg/memer', 
+			type: 'STREAMING',
+			url: 'https://twitch.tv/badboyhaloislive'
 		};
 		
 		await this.client.user.setPresence({ activity });

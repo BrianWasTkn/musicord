@@ -49,7 +49,7 @@ export default class Dev extends Command {
 
 		// from https://dankmemer.lol/source and modified.
 		const run = async (retry: boolean) => {
-			if (retry) await _.channel.send('Started a REPL session');
+			if (!retry) await _.channel.send('Started a REPL session');
 			const msg: Message = await this._collect(_);
 			if (msg.content.toLowerCase() === '.exit' || !msg.content) {
 				return _.channel.send('Exiting REPL...');
