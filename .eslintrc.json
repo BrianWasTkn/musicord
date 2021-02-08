@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "curly": "error",
+    "quotes": ["error", "single", {
+      "allowTemplateLiterals": true
+    }],
+    "no-unused-vars": "error",
+    "no-func-assign": "error",
+  }
+}

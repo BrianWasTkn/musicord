@@ -1,0 +1,8 @@
+# ignore modules
+node_modules
+
+# typescript build
+dist
+
+# nyc coverage output
+coverage
