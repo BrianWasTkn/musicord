@@ -15,12 +15,13 @@ declare namespace Akairo {
     import {
         Message,
         Collection,
-        User, Role,
+        User, Role, Guild,
         GuildChannel,
         GuildMember,
         EmojiResolvable,
         TextChannel,
-        ClientOptions
+        ClientOptions,
+        Constructable
     } from 'discord.js'
     import {
         EventEmitter
@@ -53,6 +54,7 @@ declare namespace Akairo {
     class GiveawayHandler extends EventEmitter {
         public constructor(client: Client);
         public client: Client;
+        public giveaways: Collection<Guild["id"], CollectionFlake<Message>>;
     }
 
     class Util extends ClientUtil {
@@ -103,6 +105,8 @@ declare namespace Akairo {
         msgId: Snowflake;
     }
     
+    type Structure = Guild | Role | Message | User;
+    type CollectionFlake<T extends Constructable<Structure>> = Collection<T["id"], T>;
     type SpawnVisualsType = 'COMMON' | 'UNCOMMON' | 'SUPER' | 'GODLY';
     type SpawnConfigType = 'message' | 'spam' | 'react';
     type SpawnCooldown = (member: GuildMember) => number;
