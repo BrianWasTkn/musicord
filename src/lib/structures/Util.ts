@@ -17,9 +17,8 @@ export default class Util extends ClientUtil implements Akairo.Util {
 	 * @param size The number of items per array in return
 	 */
 	public paginateArray(array: any[], size: number): Array<any[]> {
-		let result = [];
-    	let j = 0;
-    	for (let i = 0; i < Math.ceil(array.length / (size || 5)); i++) {
+		let result = []; let j = 0;
+		for (let i = 0; i < Math.ceil(array.length / (size || 5)); i++) {
 			result.push(array.slice(j, j + (size || 5)));
 			j = j + (size || 5);
 		}

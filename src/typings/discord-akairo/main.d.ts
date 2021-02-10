@@ -26,6 +26,7 @@ declare namespace Akairo {
     import {
         EventEmitter
     } from 'events'
+    import mongoose from 'mongoose';
 
     class Client extends AkairoClient {
         public constructor(akairoOptions: AkairoOptions, clientOptions: ClientOptions);
@@ -37,7 +38,7 @@ declare namespace Akairo {
         public util: Util;
         public db: Lava.DatabaseEndpoint;
         public handle(): void;
-        public connectDB(): Promise<void>;
+        public connectDB(): Promise<typeof mongoose | void>;
         public build(): Promise<string>;
     }
 
@@ -81,6 +82,18 @@ declare namespace Akairo {
         public answered: Collection<User["id"], User>;
     }
 
+    class ModuleHandler extends AkairoHandler {
+        public constructor(client: Client, options: ModuleHandlerOptions);
+        public modules: Collection<string, Module>;
+        public client: Client;
+    }
+
+    class Module extends AkairoModule {
+        public client: Client;
+        public handler: ModuleHandler;
+        public options: ModuleOptions;
+    }
+
     interface SpawnConfig {
 		odds: number;
 		type: SpawnConfigType;
@@ -104,7 +117,11 @@ declare namespace Akairo {
 		spawn: Spawn;
         msgId: Snowflake;
     }
-    
+
+    interface ModuleHandlerOptions extends AkairoHandlerOptions {
+        classToHandle?: Module;
+    }
+
     type Structure = Guild | Role | Message | User;
     type CollectionFlake<T extends Constructable<Structure>> = Collection<T["id"], T>;
     type SpawnVisualsType = 'COMMON' | 'UNCOMMON' | 'SUPER' | 'GODLY';

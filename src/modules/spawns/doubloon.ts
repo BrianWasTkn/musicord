@@ -1,7 +1,7 @@
 import { 
 	GuildMember 
 } from 'discord.js'
-import Spawn from '../structures/Spawn'
+import Spawn from '../../lib/structures/Spawn'
 
 const config: Akairo.SpawnConfig = {
 	odds: 1,

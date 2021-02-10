@@ -2,23 +2,29 @@ import { join } from 'path'
 import chalk from 'chalk'
 import mongoose from 'mongoose'
 
-import currencyFN from './currency/functions'
-import spawnsFN from './spawns/functions'
-
 import { 
 	AkairoClient,
 	ListenerHandler, 
-	CommandHandler 
+	CommandHandler,
+	AkairoModule
 } from 'discord-akairo'
 
-import GiveawayHandler from './Giveaway'
-import SpawnHandler from './spawns/handler'
+import GiveawayHandler from '../handlers/GiveawayHandler'
+import SpawnHandler from '../handlers/SpawnHandler'
 import Spawn from './Spawn'
 import Util from './Util'
 
+import currencyFN from './currency/functions'
+import spawnsFN from './spawns/functions'
+
+const __modDirs = join(__dirname, '..', '..', 'modules');
+const commandDir = join(__modDirs, 'commands');
+const listenerDir = join(__modDirs, 'emitters');
+const spawnDir = join(__modDirs, 'spawns');
+
 /**
  * Extends the instance of AkairoClient
- * @exports @class LavaClient @extends AkairoClient
+ * @exports @class Client @extends {AkairoClient} @implements {Akairo.Client}
 */
 export class Client extends AkairoClient implements Akairo.Client {
 	public util: Akairo.Util;
@@ -29,7 +35,9 @@ export class Client extends AkairoClient implements Akairo.Client {
 	public spawnHandler: Akairo.SpawnHandler;
 	public giveawayManager: Akairo.GiveawayHandler;
 	public constructor(config: Lava.Config) {
-		super({ ownerID: config.bot.ownerID }, config.bot.clientOptions);
+		super({ 
+			ownerID: config.bot.ownerID 
+		}, config.bot.clientOptions);
 		
 		// Basic Stuff
 		this.config = config;
@@ -42,15 +50,15 @@ export class Client extends AkairoClient implements Akairo.Client {
 		// Handlers
 		this.giveawayManager = new GiveawayHandler(this);
 		this.listenerHandler = new ListenerHandler(this, {
-			directory: join(__dirname, '..', 'emitters')
+			directory: listenerDir
 		});
 		this.spawnHandler = new SpawnHandler(this, {
-			directory: join(__dirname, '..', 'spawns'),
+			directory: spawnDir,
 			classToHandle: Spawn,
 			automateCategories: true
 		});
 		this.commandHandler = new CommandHandler(this, {
-			directory: join(__dirname, '..', 'commands'),
+			directory: commandDir,
 			prefix: config.bot.prefix,
 			commandUtil: true,
 			defaultCooldown: 1500,
@@ -66,19 +74,21 @@ export class Client extends AkairoClient implements Akairo.Client {
 	public async handle(): Promise<void> {
 		this.commandHandler.useListenerHandler(this.listenerHandler);
 		this.listenerHandler.setEmitters({
+			giveawayManager: this.giveawayManager,
 			spawnHandler: this.spawnHandler,
 			commandHandler: this.commandHandler,
 			listenerHandler: this.listenerHandler
 		});
 
-		const handlers = [
-			{ key: 'Emitter', handler: this.listenerHandler },
-			{ key: 'Command', handler: this.commandHandler },
-			{ key: 'Spawner', handler: this.spawnHandler },
-		];
-		for (const { handler, key } of handlers) {
-			handler.on('load', (_) => {
-				this.util.log(key, 'main', `${key} ${chalk.cyanBright(_.id)} loaded.`);
+		const handlers = [{ 
+			key: 'Emitter', handler: this.listenerHandler }, { 
+			key: 'Command', handler: this.commandHandler }, { 
+			key: 'Spawner', handler: this.spawnHandler 
+		}];
+
+		for (const { key, handler } of handlers) {
+			handler.on('load', (e: AkairoModule) => {
+				this.util.log(key, 'main', `${key} ${chalk.cyanBright(e.id)} loaded.`);
 			});
 		}
 
@@ -87,14 +97,17 @@ export class Client extends AkairoClient implements Akairo.Client {
 		this.spawnHandler.loadAll();
 	}
 
-	public async connectDB(): Promise<void> {
+	public async connectDB(): Promise<typeof mongoose | void> {
 		try {
-			await mongoose.connect(process.env.MONGO, {
-				useNewUrlParser: true,
+			const options: mongoose.ConnectionOptions = { 
+				useNewUrlParser: true, 
 				useUnifiedTopology: true
-			});
+			};
+
+			return await mongoose.connect(process.env.MONGO, options);
 		} catch(error) {
 			this.util.log('Mongoose', 'error', error.message);
+			process.exit(1);
 		}
 	}
 
@@ -104,7 +117,7 @@ export class Client extends AkairoClient implements Akairo.Client {
 	 * @returns {Promise<string>}
 	*/
 	public async build(token: string = this.config.bot.token): Promise<string> {
-		await this.handle();
+		this.handle();
 		await this.connectDB();
 		return super.login(token);
 	}
