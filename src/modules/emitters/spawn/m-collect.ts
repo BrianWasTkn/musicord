@@ -2,7 +2,7 @@ import {
 	Listener
 } from 'discord-akairo'
 import {
-	Message 
+	Message, MessageReaction
 } from 'discord.js'
 
 export default class SpawnListener extends Listener {
@@ -19,12 +19,9 @@ export default class SpawnListener extends Listener {
 		spawner: Akairo.Spawn, 
 		msg: Message,
 		isFirst: boolean
-	): Promise<void> {
+	): Promise<MessageReaction> {
 		spawner.answered.set(msg.author.id, msg.member.user);
-		if (isFirst) {
-			await msg.react('<:memerGold:753138901169995797>');
-		} else {
-			await msg.react(spawner.spawn.emoji);
-		}
+		if (isFirst) return msg.react('<:memerGold:753138901169995797>');
+		return msg.react(spawner.spawn.emoji);
 	}
 }

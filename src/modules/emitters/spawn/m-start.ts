@@ -28,9 +28,8 @@ export default class SpawnListener extends Listener {
 
 		await message.channel.send(`Type \`${str.split('').join('\u200b')}\``);
 		handler.queue.set(message.channel.id, {
-			msgId: msg.id,
+			msgId: msg.id, spawn: spawner,
 			channel: (<TextChannel>message.channel),
-			spawn: spawner
 		});
 	}
 }

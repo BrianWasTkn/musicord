@@ -28,10 +28,7 @@ export default class SpawnListener extends Listener {
 
 		handler.queue.delete(queue.channel.id);
 		spawner.answered.clear();
-		msg.edit([
-			msg.content,
-			`**${emoji} \`This event has expired\`**`
-		].join('\n\n')).catch(() => {});
+		msg.edit(`${msg.content}\n\n**${emoji} \`This event has expired\`**`).catch(() => {});
 
 		if (!isEmpty) {
 			return msg.channel.send({ embed: {
@@ -60,7 +57,8 @@ export default class SpawnListener extends Listener {
 					`**Earned:** ${coins.toLocaleString()}`,
 					`**Total Unpaids:** ${db.unpaid.toLocaleString()}`,
 					`**Events Joined:** ${db.eventsJoined}`,
-					'Using `lava unpaids` will show your stats.'
+					'Using `lava unpaids` will show your stats.',
+					'You can mute this DM if you don\'t want notifications.'
 				].join('\n'),
 				footer: {
 					text: `From: ${message.guild.name}`,
