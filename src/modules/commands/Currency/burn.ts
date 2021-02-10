@@ -20,17 +20,9 @@ export default class Currency extends Command {
   public async exec(_: Message, { amount }: any): Promise<Message> {
     const db = await this.client.db.currency.fetch(_.author.id);
 
-    if (!amount) {
-      return _.channel.send('You need something to burn, bruh');
-    };
-
-    if (amount < 1) {
-      return _.channel.send('You thought you can exploit me huh?');
-    }
-
-    if (amount >= db.pocket) {
-      return _.channel.send('You ain\'t allowed to burn higher than your pocket lmao');
-    }
+    if (!amount)  return _.channel.send('You need something to burn, bruh');
+    else if (amount < 1) return _.channel.send('You thought you can exploit me huh?');
+    else if (amount >= db.pocket) return _.channel.send('You ain\'t allowed to burn higher than your pocket lmao');
 
     await this.client.db.currency.removePocket(_.author.id, amount);
     return _.channel.send(`Successfully burned **${amount.toLocaleString()}** coins from your pocket.`);

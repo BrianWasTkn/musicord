@@ -26,11 +26,6 @@ export default class Currency extends Command {
   }
 
   public async exec(_: Message, args: any): Promise<Message> {
-    const { channel }: {
-      channel: typeof _.channel,
-      guild: Guild
-    } = _;
-
     const { option, amount, user }: {
       option: string,
       amount: number,
@@ -39,7 +34,7 @@ export default class Currency extends Command {
 
     if (['give', 'g', 'add'].includes(option)) {
       await this.client.db.currency.addPocket(user.user.id, amount);
-      return channel.send(`Added **${amount.toLocaleString()}** to ${user.user.username}'s pocket.`);
+      return _.channel.send(`Added **${amount.toLocaleString()}** to ${user.user.username}'s pocket.`);
     }
   }
 }
