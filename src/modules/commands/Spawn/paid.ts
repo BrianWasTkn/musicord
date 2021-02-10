@@ -3,8 +3,6 @@ import {
 	Message, MessageEmbed
 } from 'discord.js'
 
-async function deleteMessage(m: Message): Promise<Message> { return m.delete({ timeout: 3000 }) };
-
 export default class Spawn extends Command {
 	public client: Akairo.Client;
 	public constructor() {
@@ -26,31 +24,24 @@ export default class Spawn extends Command {
 		});
 	}
 
+	public async deleteMessage(m: Message): Promise<Message> { 
+		return m.delete({ timeout: 3000 }) 
+	}
+
 	public async exec(_: Message, args: any): Promise<Message> {
 		const { amount, user } = args;
 		// Args
-		if (!amount) return _.reply('You need an amount.').then(deleteMessage);
-		else if (!user) return _.reply('You need a user.').then(deleteMessage);
+		if (!amount) return _.reply('You need an amount.').then(this.deleteMessage);
+		else if (!user) return _.reply('You need a user.').then(this.deleteMessage);
 		// Update
 		const data = await this.client.db.spawns.removeUnpaid(user.user.id, amount);
 		// Message
-		const embed = new MessageEmbed({
-			author: {
-				name: `Updated — ${user.user.tag}`,
-				iconURL: user.user.avatarURL({ dynamic: true })
-			},
-			color: 'ORANGE',
-			fields: [{ 
-				name: 'Total Unpaid Left', 
-				value: data.unpaid.toLocaleString() 
-			}],
-			timestamp: Date.now(),
-			footer: {
-				text: this.client.user.username,
-				iconURL: this.client.user.avatarURL()
-			}
-		});
+		const embed = new MessageEmbed()
+			.setAuthor(`Updated: ${user.user.tag}`, user.user.avatarUrl({ dynamic: true }))
+			.setFooter(this.client.user.username, this.client.user.avatarURL())
+			.addField('Total Unpaids Left', data.unpaid.toLocaleString())
+			.setTimestamp(Date.now()).setColor('ORANGE');
 
-		return _.channel.send(embed);
+		return _.channel.send({ embed });
 	}
 }
