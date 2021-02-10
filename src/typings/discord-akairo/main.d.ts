@@ -83,7 +83,7 @@ declare namespace Akairo {
     }
 
     class ModuleHandler extends AkairoHandler {
-        public constructor(client: Client, options: ModuleHandlerOptions);
+        public constructor(client: Client, options: AkairoHandlerOptions);
         public modules: Collection<string, Module>;
         public client: Client;
     }
@@ -91,7 +91,6 @@ declare namespace Akairo {
     class Module extends AkairoModule {
         public client: Client;
         public handler: ModuleHandler;
-        public options: ModuleOptions;
     }
 
     interface SpawnConfig {
@@ -116,10 +115,6 @@ declare namespace Akairo {
         channel: TextChannel;
 		spawn: Spawn;
         msgId: Snowflake;
-    }
-
-    interface ModuleHandlerOptions extends AkairoHandlerOptions {
-        classToHandle?: Module;
     }
 
     type Structure = Guild | Role | Message | User;
