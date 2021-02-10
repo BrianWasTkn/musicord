@@ -7,12 +7,12 @@ const config: Akairo.SpawnConfig = {
 	odds: 1,
 	type: 'spam',
 	enabled: true,
-	timeout: 15000,
+	timeout: 30000,
 	entries: 3,
 	rewards: {
-		min: 100000,
-		max: 100000,
-		first: 250000
+		min: 50000,
+		max: 50000,
+		first: 100000
 	}
 };
 

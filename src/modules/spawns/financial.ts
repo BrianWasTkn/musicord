@@ -22,10 +22,9 @@ const visuals: Akairo.SpawnVisual = {
 	title: 'Financial Support',
 	description: 'Do you need it?',
 	strings: [
-		'yes, im asking for it', 'well, about that...',
-		'f i n a n c i a l', 's u p p o r t', 'imagine needing it',
-		'well, just a few only pls', 'i wanna be a helicopter first',
-		'just imagine being you'
+		'f i n a n c i a l', 's u p p o r t', 
+		'i wanna be a helicopter', 'suppwot',
+		'surprised pikashit face', 
 	]
 }
 

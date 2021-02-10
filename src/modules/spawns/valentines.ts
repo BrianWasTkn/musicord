@@ -22,8 +22,8 @@ const visuals: Akairo.SpawnVisual = {
 	title: 'Advanced Simpy Valentines',
 	description: 'King of Danks or Queen of Memes?',
 	strings: [
-		'i mean, why not be a queen of memes?',
-		'but king of danks bettur doe', 'yes', 
+		'king melmsie', 'queen valentine',
+		'im alone on valentines', 'yes', 
 		'ok', 'honey boo boo', 'love yourself',
 		'relationshits', 'cupid\'s toe', 'lovers'
 	]

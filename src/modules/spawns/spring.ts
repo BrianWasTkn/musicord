@@ -19,13 +19,12 @@ const config: Akairo.SpawnConfig = {
 const visuals: Akairo.SpawnVisual = {
 	emoji: '<:memerBlue:729863510330310727>',
 	type: 'COMMON',
-	title: 'Winter',
-	description: 'Is it freezing outside?',
+	title: 'Spring',
+	description: 'The earth is on the run',
 	strings: [
-		'h', 'brian was very sleepy when making these', 
-		'its cold asf', 'cold overload', 'cold lord',
-		'snowballz', 'it feels like christmas', 'winter',
-		'PacLantic ocean'
+		'wear caps', 'no beaches or covid',
+		'ice ice baby', 'im finally freeeeeeeee',
+		'pinecones'
 	]
 }
 

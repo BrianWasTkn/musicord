@@ -22,9 +22,9 @@ const visuals: Akairo.SpawnVisual = {
 	title: '2021',
 	description: 'A fresh start.',
 	strings: [
-		'vaccine', '2 in 1', 'use discord instead of skype',
-		'a fresh start', 'the roaring 20s', 'electroswing',
-		'bye 2020, hi 2021', 'back to square twenty one'
+		'super bass', 'poker face', '2 in 1',
+		'yes', 'LOL', 'Gen Y', 'no politics allowed',
+		'ninky mank', 'lady fafa', 'emotional twerking'
 	]
 }
 

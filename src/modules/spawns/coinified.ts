@@ -22,11 +22,11 @@ const visuals: Akairo.SpawnVisual = {
 	title: 'Get Coinified',
 	description: 'Do you want coins?',
 	strings: [
-		'coinification', 'give me now or stupid',
-		'fuck off lava', 'lol imagine being me',
-		'yes', 'i need it now pls', 'crib op',
+		'coinifocation', 'give me now or stupid',
+		'frick off lava', 'lol imagine being',
+		'yes', 'rain on me', 'crib op',
 		'i\'ll join the taken cult', 'ig so',
-		'well yes but actually, STILL YES!'
+		'well yes but actually....'
 	]
 }
 
