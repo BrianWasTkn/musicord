@@ -1,4 +1,4 @@
-import { Message } from 'discord.js'
+import { Message, MessageEmbed } from 'discord.js'
 import { Listener, Command } from 'discord-akairo'
 
 export default class CommandListener extends Listener {
@@ -13,25 +13,19 @@ export default class CommandListener extends Listener {
 	public async exec(
 		_: Message,
 		command: Command,
-		type: 'client' | 'user',
+		type: string,
 		missing: any
 	): Promise<Message> {
-		const embed = this.client.util.embed({
-			title: 'Well rip, no perms',
-			color: 'RED',
-			description: [
-				`${type === 'client' ? 'I' : 'You'} don\'t have enough permissions to run the \`${command.id}\` command.`,
-				`Ensure ${type === 'client' ? 'I' : 'you'} have the following permissions:`
-			].join('\n'),
-			fields: [{
-				name: `Missing Permissions • ${missing.length}`,
-				value: `\`${missing.join('`, `')}\``
-			}],
-			footer: {
-				text: this.client.user.username,
-				iconURL: this.client.user.avatarURL()
-			}
-		});
+		type = type === 'client' ? 'I' : 'You';
+		const description: string[] = [];
+		description[0] = `${type} don\'t have enough permissions to run the \`${command.id}\` command.`;
+		description[1] = `Ensure ${type} have the following permissions:`;
+
+		const embed = new MessageEmbed()
+			.setDescription(description.join('\n')).setColor('RED')
+			.addField(`Missing Permissions • ${missing.length}`, `\`${missing.join('`, `')}\``)
+			.setFooter(this.client.user.username, this.client.user.avatarURL())
+			.setTitle('Well rip, no perms.')
 
 		return _.channel.send({ embed });
 	}
