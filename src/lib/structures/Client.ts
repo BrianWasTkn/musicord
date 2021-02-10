@@ -19,7 +19,7 @@ export class LavaClient extends Client {
     /**
      * build
      */
-    public build(): string {
-        return 'yes';
+    public build(): Promise<string> {
+        return super.login(this.config.token);
     }
 }

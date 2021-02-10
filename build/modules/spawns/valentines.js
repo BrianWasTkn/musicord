@@ -1,0 +1,51 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const Spawn_1 = __importDefault(require("../../lib/structures/Spawn"));
+const config = {
+    odds: 14,
+    type: 'message',
+    enabled: true,
+    timeout: 10000,
+    entries: Infinity,
+    rewards: {
+        min: 1400,
+        max: 1400,
+        first: 14000
+    }
+};
+const visuals = {
+    emoji: '<:memerRed:729863510716317776>',
+    type: 'UNCOMMON',
+    title: 'Advanced Simpy Valentines',
+    description: 'King of Danks or Queen of Memes?',
+    strings: [
+        'king melmsie', 'queen valentine',
+        'im alone on valentines', 'yes',
+        'ok', 'honey boo boo', 'love yourself',
+        'relationshits', 'cupid\'s toe', 'lovers'
+    ]
+};
+class UNCOMMON extends Spawn_1.default {
+    constructor(client) {
+        super(client, config, visuals, (member) => {
+            // "Crib Booster" role
+            if (member.roles.cache.has('693324853440282654'))
+                return 14;
+            // "Donator #M+" roles (minimum)
+            if (member.roles.cache.has('768858996659453963'))
+                return 20;
+            // "Mastery #" roles (minimum)
+            if (member.roles.cache.has('794834783582421032'))
+                return 25;
+            // "Amari #" roles (minimum)
+            if (member.roles.cache.has('693380605760634910'))
+                return 30;
+            // Else
+            return 60;
+        });
+    }
+}
+exports.default = UNCOMMON;

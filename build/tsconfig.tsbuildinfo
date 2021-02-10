@@ -1,0 +1,1536 @@
+{
+  "program": {
+    "fileInfos": {
+      "../node_modules/typescript/lib/lib.es5.d.ts": {
+        "version": "9622e8bd7cc72a7dab819a8011ecbf81d443638082e5cb99ecf2e75ff56ffc9d",
+        "signature": "9622e8bd7cc72a7dab819a8011ecbf81d443638082e5cb99ecf2e75ff56ffc9d",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2015.d.ts": {
+        "version": "dc47c4fa66b9b9890cf076304de2a9c5201e94b740cffdf09f87296d877d71f6",
+        "signature": "dc47c4fa66b9b9890cf076304de2a9c5201e94b740cffdf09f87296d877d71f6",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/typescript/lib/lib.es2016.d.ts": {
+        "version": "7a387c58583dfca701b6c85e0adaf43fb17d590fb16d5b2dc0a2fbd89f35c467",
+        "signature": "7a387c58583dfca701b6c85e0adaf43fb17d590fb16d5b2dc0a2fbd89f35c467",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/typescript/lib/lib.es2017.d.ts": {
+        "version": "8a12173c586e95f4433e0c6dc446bc88346be73ffe9ca6eec7aa63c8f3dca7f9",
+        "signature": "8a12173c586e95f4433e0c6dc446bc88346be73ffe9ca6eec7aa63c8f3dca7f9",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/typescript/lib/lib.es2018.d.ts": {
+        "version": "5f4e733ced4e129482ae2186aae29fde948ab7182844c3a5a51dd346182c7b06",
+        "signature": "5f4e733ced4e129482ae2186aae29fde948ab7182844c3a5a51dd346182c7b06",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/typescript/lib/lib.es2015.core.d.ts": {
+        "version": "46ee15e9fefa913333b61eaf6b18885900b139867d89832a515059b62cf16a17",
+        "signature": "46ee15e9fefa913333b61eaf6b18885900b139867d89832a515059b62cf16a17",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2015.collection.d.ts": {
+        "version": "43fb1d932e4966a39a41b464a12a81899d9ae5f2c829063f5571b6b87e6d2f9c",
+        "signature": "43fb1d932e4966a39a41b464a12a81899d9ae5f2c829063f5571b6b87e6d2f9c",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2015.generator.d.ts": {
+        "version": "cdccba9a388c2ee3fd6ad4018c640a471a6c060e96f1232062223063b0a5ac6a",
+        "signature": "cdccba9a388c2ee3fd6ad4018c640a471a6c060e96f1232062223063b0a5ac6a",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2015.iterable.d.ts": {
+        "version": "8b2a5df1ce95f78f6b74f1a555ccdb6baab0486b42d8345e0871dd82811f9b9a",
+        "signature": "8b2a5df1ce95f78f6b74f1a555ccdb6baab0486b42d8345e0871dd82811f9b9a",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2015.promise.d.ts": {
+        "version": "2bb4b3927299434052b37851a47bf5c39764f2ba88a888a107b32262e9292b7c",
+        "signature": "2bb4b3927299434052b37851a47bf5c39764f2ba88a888a107b32262e9292b7c",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2015.proxy.d.ts": {
+        "version": "7207e317a2cb07a177e7d963ab7b8c0e85dde7f9ddb50351f830239bf597569e",
+        "signature": "7207e317a2cb07a177e7d963ab7b8c0e85dde7f9ddb50351f830239bf597569e",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2015.reflect.d.ts": {
+        "version": "cb609802a8698aa28b9c56331d4b53f590ca3c1c3a255350304ae3d06017779d",
+        "signature": "cb609802a8698aa28b9c56331d4b53f590ca3c1c3a255350304ae3d06017779d",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2015.symbol.d.ts": {
+        "version": "3013574108c36fd3aaca79764002b3717da09725a36a6fc02eac386593110f93",
+        "signature": "3013574108c36fd3aaca79764002b3717da09725a36a6fc02eac386593110f93",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts": {
+        "version": "9d122b7e8c1a5c72506eea50c0973cba55b92b5532d5cafa8a6ce2c547d57551",
+        "signature": "9d122b7e8c1a5c72506eea50c0973cba55b92b5532d5cafa8a6ce2c547d57551",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2016.array.include.d.ts": {
+        "version": "3be5a1453daa63e031d266bf342f3943603873d890ab8b9ada95e22389389006",
+        "signature": "3be5a1453daa63e031d266bf342f3943603873d890ab8b9ada95e22389389006",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2017.object.d.ts": {
+        "version": "17bb1fc99591b00515502d264fa55dc8370c45c5298f4a5c2083557dccba5a2a",
+        "signature": "17bb1fc99591b00515502d264fa55dc8370c45c5298f4a5c2083557dccba5a2a",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts": {
+        "version": "7ce9f0bde3307ca1f944119f6365f2d776d281a393b576a18a2f2893a2d75c98",
+        "signature": "7ce9f0bde3307ca1f944119f6365f2d776d281a393b576a18a2f2893a2d75c98",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2017.string.d.ts": {
+        "version": "6a6b173e739a6a99629a8594bfb294cc7329bfb7b227f12e1f7c11bc163b8577",
+        "signature": "6a6b173e739a6a99629a8594bfb294cc7329bfb7b227f12e1f7c11bc163b8577",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2017.intl.d.ts": {
+        "version": "12a310447c5d23c7d0d5ca2af606e3bd08afda69100166730ab92c62999ebb9d",
+        "signature": "12a310447c5d23c7d0d5ca2af606e3bd08afda69100166730ab92c62999ebb9d",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2017.typedarrays.d.ts": {
+        "version": "b0124885ef82641903d232172577f2ceb5d3e60aed4da1153bab4221e1f6dd4e",
+        "signature": "b0124885ef82641903d232172577f2ceb5d3e60aed4da1153bab4221e1f6dd4e",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts": {
+        "version": "0eb85d6c590b0d577919a79e0084fa1744c1beba6fd0d4e951432fa1ede5510a",
+        "signature": "0eb85d6c590b0d577919a79e0084fa1744c1beba6fd0d4e951432fa1ede5510a",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2018.asynciterable.d.ts": {
+        "version": "a40c4d82bf13fcded295ac29f354eb7d40249613c15e07b53f2fc75e45e16359",
+        "signature": "a40c4d82bf13fcded295ac29f354eb7d40249613c15e07b53f2fc75e45e16359",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2018.intl.d.ts": {
+        "version": "df9c8a72ca8b0ed62f5470b41208a0587f0f73f0a7db28e5a1272cf92537518e",
+        "signature": "df9c8a72ca8b0ed62f5470b41208a0587f0f73f0a7db28e5a1272cf92537518e",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2018.promise.d.ts": {
+        "version": "bb2d3fb05a1d2ffbca947cc7cbc95d23e1d053d6595391bd325deb265a18d36c",
+        "signature": "bb2d3fb05a1d2ffbca947cc7cbc95d23e1d053d6595391bd325deb265a18d36c",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2018.regexp.d.ts": {
+        "version": "c80df75850fea5caa2afe43b9949338ce4e2de086f91713e9af1a06f973872b8",
+        "signature": "c80df75850fea5caa2afe43b9949338ce4e2de086f91713e9af1a06f973872b8",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.es2020.bigint.d.ts": {
+        "version": "7b5a10e3c897fabece5a51aa85b4111727d7adb53c2734b5d37230ff96802a09",
+        "signature": "7b5a10e3c897fabece5a51aa85b4111727d7adb53c2734b5d37230ff96802a09",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/typescript/lib/lib.esnext.intl.d.ts": {
+        "version": "89bf2b7a601b73ea4311eda9c41f86a58994fec1bee3b87c4a14d68d9adcdcbd",
+        "signature": "89bf2b7a601b73ea4311eda9c41f86a58994fec1bee3b87c4a14d68d9adcdcbd",
+        "affectsGlobalScope": true
+      },
+      "../src/config.ts": {
+        "version": "6d1b34c8c6c07e7b07c086cbcf79e952f9b2ec4c5721d994cf01ec6b78453e58",
+        "signature": "546db1dcb79c98d7b9d2062b75b9870df2d16089569a4d2d0a6f429659974905",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/chalk/index.d.ts": {
+        "version": "0d14fa22c41fdc7277e6f71473b20ebc07f40f00e38875142335d5b63cdfc9d2",
+        "signature": "0d14fa22c41fdc7277e6f71473b20ebc07f40f00e38875142335d5b63cdfc9d2",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/globals.d.ts": {
+        "version": "215d8d9a2c480fd460127edc048d68d9931d3b27f95132253a6e71975f060bb1",
+        "signature": "215d8d9a2c480fd460127edc048d68d9931d3b27f95132253a6e71975f060bb1",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/@types/node/async_hooks.d.ts": {
+        "version": "c438b413e94ff76dfa20ae005f33a1c84f2480d1d66e0fd687501020d0de9b50",
+        "signature": "c438b413e94ff76dfa20ae005f33a1c84f2480d1d66e0fd687501020d0de9b50",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/buffer.d.ts": {
+        "version": "bc6a78961535181265845bf9b9e8a147ffd0ca275097ceb670a9b92afa825152",
+        "signature": "bc6a78961535181265845bf9b9e8a147ffd0ca275097ceb670a9b92afa825152",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/child_process.d.ts": {
+        "version": "a4b5411d87995b9fb847f491f4388b38f829d8ab39be3e2fd65a3e40709f29a8",
+        "signature": "a4b5411d87995b9fb847f491f4388b38f829d8ab39be3e2fd65a3e40709f29a8",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/cluster.d.ts": {
+        "version": "123ec69e4b3a686eb49afd94ebe3292a5c84a867ecbcb6bb84bdd720a12af803",
+        "signature": "123ec69e4b3a686eb49afd94ebe3292a5c84a867ecbcb6bb84bdd720a12af803",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/console.d.ts": {
+        "version": "eb5197aade83cb0e360ac407289c53a8009e8fdae7939892a0240d30444496b6",
+        "signature": "eb5197aade83cb0e360ac407289c53a8009e8fdae7939892a0240d30444496b6",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/@types/node/constants.d.ts": {
+        "version": "90c85ddbb8de82cd19198bda062065fc51b7407c0f206f2e399e65a52e979720",
+        "signature": "90c85ddbb8de82cd19198bda062065fc51b7407c0f206f2e399e65a52e979720",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/crypto.d.ts": {
+        "version": "3d9c3ccc05ebc6e288bef007bcc47a2fc0dce748ea634093ef0732b9be743805",
+        "signature": "3d9c3ccc05ebc6e288bef007bcc47a2fc0dce748ea634093ef0732b9be743805",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/dgram.d.ts": {
+        "version": "7e050b767ed10c7ffbc01f314defbf420bf0b5d54ce666e1c87507c035dfc191",
+        "signature": "7e050b767ed10c7ffbc01f314defbf420bf0b5d54ce666e1c87507c035dfc191",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/dns.d.ts": {
+        "version": "51f82a7e0819a91c170eb1ad39ad1917a0cbb8f9354fdaed66a5189745f63f71",
+        "signature": "51f82a7e0819a91c170eb1ad39ad1917a0cbb8f9354fdaed66a5189745f63f71",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/domain.d.ts": {
+        "version": "2866a528b2708aa272ec3eaafd3c980abb23aec1ef831cfc5eb2186b98c37ce5",
+        "signature": "2866a528b2708aa272ec3eaafd3c980abb23aec1ef831cfc5eb2186b98c37ce5",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/@types/node/events.d.ts": {
+        "version": "153d835dc32985120790e10102834b0a5bd979bb5e42bfbb33c0ff6260cf03ce",
+        "signature": "153d835dc32985120790e10102834b0a5bd979bb5e42bfbb33c0ff6260cf03ce",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/@types/node/fs.d.ts": {
+        "version": "2e204fb437b8e98937c933cb7e739b24b871872161997d7dfe98841b861a14f0",
+        "signature": "2e204fb437b8e98937c933cb7e739b24b871872161997d7dfe98841b861a14f0",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/fs/promises.d.ts": {
+        "version": "1c0692002778565d9b3ee0edea6ca133caadd714597228525fec8e2fd9846755",
+        "signature": "1c0692002778565d9b3ee0edea6ca133caadd714597228525fec8e2fd9846755",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/http.d.ts": {
+        "version": "f2f8a385694fd71a421616cbaca477a539f30f4098f11261b1d188d72dc3478a",
+        "signature": "f2f8a385694fd71a421616cbaca477a539f30f4098f11261b1d188d72dc3478a",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/http2.d.ts": {
+        "version": "f15f1f1104aaf47d25124de81949375416e3f8ee704e3d221bea339e35421edb",
+        "signature": "f15f1f1104aaf47d25124de81949375416e3f8ee704e3d221bea339e35421edb",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/https.d.ts": {
+        "version": "c969bf4c7cdfe4d5dd28aa09432f99d09ad1d8d8b839959646579521d0467d1a",
+        "signature": "c969bf4c7cdfe4d5dd28aa09432f99d09ad1d8d8b839959646579521d0467d1a",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/inspector.d.ts": {
+        "version": "6c3857edaeeaaf43812f527830ebeece9266b6e8eb5271ab6d2f0008306c9947",
+        "signature": "6c3857edaeeaaf43812f527830ebeece9266b6e8eb5271ab6d2f0008306c9947",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/module.d.ts": {
+        "version": "bc6a77e750f4d34584e46b1405b771fb69a224197dd6bafe5b0392a29a70b665",
+        "signature": "bc6a77e750f4d34584e46b1405b771fb69a224197dd6bafe5b0392a29a70b665",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/net.d.ts": {
+        "version": "3c5edfced8c5cd35e3680789deabbe4f478b67a42b26d82d91eea9d3f07f4771",
+        "signature": "3c5edfced8c5cd35e3680789deabbe4f478b67a42b26d82d91eea9d3f07f4771",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/os.d.ts": {
+        "version": "ed4ae81196cccc10f297d228bca8d02e31058e6d723a3c5bc4be5fb3c61c6a34",
+        "signature": "ed4ae81196cccc10f297d228bca8d02e31058e6d723a3c5bc4be5fb3c61c6a34",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/path.d.ts": {
+        "version": "84044697c8b3e08ef24e4b32cfe6440143d07e469a5e34bda0635276d32d9f35",
+        "signature": "84044697c8b3e08ef24e4b32cfe6440143d07e469a5e34bda0635276d32d9f35",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/perf_hooks.d.ts": {
+        "version": "4982d94cb6427263c8839d8d6324a8bbe129e931deb61a7380f8fad17ba2cfc0",
+        "signature": "4982d94cb6427263c8839d8d6324a8bbe129e931deb61a7380f8fad17ba2cfc0",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/process.d.ts": {
+        "version": "ae4bc1dd4d9de7bbea6ce419db45af82a81358e6014c9e1235b5d252e06f8ab8",
+        "signature": "ae4bc1dd4d9de7bbea6ce419db45af82a81358e6014c9e1235b5d252e06f8ab8",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/@types/node/punycode.d.ts": {
+        "version": "3f6a1fd73c9dc3bd7f4b79bc075297ca6527904df69b0f2c2c94e4c4c7d9a32c",
+        "signature": "3f6a1fd73c9dc3bd7f4b79bc075297ca6527904df69b0f2c2c94e4c4c7d9a32c",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/querystring.d.ts": {
+        "version": "884560fda6c3868f925f022adc3a1289fe6507bbb45adb10fa1bbcc73a941bb0",
+        "signature": "884560fda6c3868f925f022adc3a1289fe6507bbb45adb10fa1bbcc73a941bb0",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/readline.d.ts": {
+        "version": "6b2bb67b0942bcfce93e1d6fad5f70afd54940a2b13df7f311201fba54b2cbe9",
+        "signature": "6b2bb67b0942bcfce93e1d6fad5f70afd54940a2b13df7f311201fba54b2cbe9",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/repl.d.ts": {
+        "version": "acbed967a379b3e9f73237ba9473f8b337eeea14b7dc64d445430b5d695751da",
+        "signature": "acbed967a379b3e9f73237ba9473f8b337eeea14b7dc64d445430b5d695751da",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/stream.d.ts": {
+        "version": "e7b5a3f40f19d9eea71890c70dfb37ac5dd82cbffe5f95bc8f23c536455732d0",
+        "signature": "e7b5a3f40f19d9eea71890c70dfb37ac5dd82cbffe5f95bc8f23c536455732d0",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/string_decoder.d.ts": {
+        "version": "d67e08745494b000da9410c1ae2fdc9965fc6d593fe0f381a47491f75417d457",
+        "signature": "d67e08745494b000da9410c1ae2fdc9965fc6d593fe0f381a47491f75417d457",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/timers.d.ts": {
+        "version": "b40652bf8ce4a18133b31349086523b219724dca8df3448c1a0742528e7ad5b9",
+        "signature": "b40652bf8ce4a18133b31349086523b219724dca8df3448c1a0742528e7ad5b9",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/tls.d.ts": {
+        "version": "01c351e71743ff26450789ec4ca6a1421c647c9c459aa8007e9e1914073b5db2",
+        "signature": "01c351e71743ff26450789ec4ca6a1421c647c9c459aa8007e9e1914073b5db2",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/trace_events.d.ts": {
+        "version": "a77fdb357c78b70142b2fdbbfb72958d69e8f765fd2a3c69946c1018e89d4638",
+        "signature": "a77fdb357c78b70142b2fdbbfb72958d69e8f765fd2a3c69946c1018e89d4638",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/tty.d.ts": {
+        "version": "3c2ac350c3baa61fd2b1925844109e098f4376d0768a4643abc82754fd752748",
+        "signature": "3c2ac350c3baa61fd2b1925844109e098f4376d0768a4643abc82754fd752748",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/url.d.ts": {
+        "version": "4001971b90f18161f7bd46d68150d32a5da47e3f177956a267a2b29a2771896a",
+        "signature": "4001971b90f18161f7bd46d68150d32a5da47e3f177956a267a2b29a2771896a",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/util.d.ts": {
+        "version": "f28704c27e1bd58068052f5407541a3306f0ffc77f068e2891f46527a4569e25",
+        "signature": "f28704c27e1bd58068052f5407541a3306f0ffc77f068e2891f46527a4569e25",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/v8.d.ts": {
+        "version": "289be113bad7ee27ee7fa5b1e373c964c9789a5e9ed7db5ddcb631371120b953",
+        "signature": "289be113bad7ee27ee7fa5b1e373c964c9789a5e9ed7db5ddcb631371120b953",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/vm.d.ts": {
+        "version": "baf0b82ffc5d2616f44a6fb1f81e8d798545bebf0c30f5d8b003a1dba1acfb3f",
+        "signature": "baf0b82ffc5d2616f44a6fb1f81e8d798545bebf0c30f5d8b003a1dba1acfb3f",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/worker_threads.d.ts": {
+        "version": "c6a5b34f1e725019445754f1e733585f113e0dced75f137bd3c4af5853d3f6ab",
+        "signature": "c6a5b34f1e725019445754f1e733585f113e0dced75f137bd3c4af5853d3f6ab",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/zlib.d.ts": {
+        "version": "15fbe50526244954eb2f933546bca6cdcf0db16c9428d099b3b386c1db5799ab",
+        "signature": "15fbe50526244954eb2f933546bca6cdcf0db16c9428d099b3b386c1db5799ab",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/ts3.4/base.d.ts": {
+        "version": "d44028ae0127eb3e9fcfa5f55a8b81d64775ce15aca1020fe25c511bbb055834",
+        "signature": "d44028ae0127eb3e9fcfa5f55a8b81d64775ce15aca1020fe25c511bbb055834",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/globals.global.d.ts": {
+        "version": "2708349d5a11a5c2e5f3a0765259ebe7ee00cdcc8161cb9990cb4910328442a1",
+        "signature": "2708349d5a11a5c2e5f3a0765259ebe7ee00cdcc8161cb9990cb4910328442a1",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/@types/node/wasi.d.ts": {
+        "version": "4e0a4d84b15692ea8669fe4f3d05a4f204567906b1347da7a58b75f45bae48d3",
+        "signature": "4e0a4d84b15692ea8669fe4f3d05a4f204567906b1347da7a58b75f45bae48d3",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/ts3.6/base.d.ts": {
+        "version": "ad1ae5ae98eceb9af99061e83e867b9897d267aebc8f3b938c9424deabadf4bb",
+        "signature": "ad1ae5ae98eceb9af99061e83e867b9897d267aebc8f3b938c9424deabadf4bb",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/assert.d.ts": {
+        "version": "b3593bd345ebea5e4d0a894c03251a3774b34df3d6db57075c18e089a599ba76",
+        "signature": "b3593bd345ebea5e4d0a894c03251a3774b34df3d6db57075c18e089a599ba76",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/base.d.ts": {
+        "version": "e61a21e9418f279bc480394a94d1581b2dee73747adcbdef999b6737e34d721b",
+        "signature": "e61a21e9418f279bc480394a94d1581b2dee73747adcbdef999b6737e34d721b",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/node/index.d.ts": {
+        "version": "744e6430bafc6f39f66c4fc1e6a0d8c9551260ffd1782aa7e3f5166ac6aa1f86",
+        "signature": "744e6430bafc6f39f66c4fc1e6a0d8c9551260ffd1782aa7e3f5166ac6aa1f86",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/bson/index.d.ts": {
+        "version": "2d23edce1d4a3b33280970484e17ca87b03e2829d8677ae1501de18269f0498f",
+        "signature": "2d23edce1d4a3b33280970484e17ca87b03e2829d8677ae1501de18269f0498f",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/mongodb/index.d.ts": {
+        "version": "a2ac6fc0d290acfaa08c86961baf027844220de5936df299c5e423fc18fde9e4",
+        "signature": "a2ac6fc0d290acfaa08c86961baf027844220de5936df299c5e423fc18fde9e4",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/mongoose/index.d.ts": {
+        "version": "8d2e2731661ef1649d09380144816659c039133fb69955290dd6eca002cb3c68",
+        "signature": "8d2e2731661ef1649d09380144816659c039133fb69955290dd6eca002cb3c68",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@discordjs/collection/dist/index.d.ts": {
+        "version": "7be7f76b784383fa84812ca7eb8ad10315c9d482c0d25f178645365405509d44",
+        "signature": "7be7f76b784383fa84812ca7eb8ad10315c9d482c0d25f178645365405509d44",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/discord.js/typings/index.d.ts": {
+        "version": "bbb87411988e93370461ac33c6437098c8cd39e9a7c92ea0d94b6a375dbe52cc",
+        "signature": "bbb87411988e93370461ac33c6437098c8cd39e9a7c92ea0d94b6a375dbe52cc",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/discord-akairo/src/index.d.ts": {
+        "version": "1cf29400108238b89ae9016b02e409ff1dcd70ccd57c8108664c930c0aca38ea",
+        "signature": "1cf29400108238b89ae9016b02e409ff1dcd70ccd57c8108664c930c0aca38ea",
+        "affectsGlobalScope": false
+      },
+      "../src/lib/handlers/giveawayhandler.ts": {
+        "version": "d1591c7afba9a51b4a4d727b5e43e796c3854754ec1b1e14e0257cf907322008",
+        "signature": "dae5947f815a19ed9d99951d102067b8453efd303ae85f398adde1d5f5557f2a",
+        "affectsGlobalScope": false
+      },
+      "../src/lib/handlers/spawnhandler.ts": {
+        "version": "d9e0af09df5af788204c14931bc41dbc98bb6ca33f81b93966cc4646023686b5",
+        "signature": "7ce25def5d847d5713fb13e92ad7023b42b1e2695b205fea0c6d59e3dea33f8d",
+        "affectsGlobalScope": false
+      },
+      "../src/lib/structures/spawn.ts": {
+        "version": "f09e3701835a1aa53d75b6cff9a66e25ba32c1a88bea4f8bb26c34416faa273e",
+        "signature": "9ee51bb62e48fc7063ab289a34563f1d63d6bdd7d1e383e4bf92e871ee6de8b7",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/moment/ts3.1-typings/moment.d.ts": {
+        "version": "f97edc4d3b4dd0b32766e9633086497565c37657fb591cc84a35864db4bc2fc5",
+        "signature": "f97edc4d3b4dd0b32766e9633086497565c37657fb591cc84a35864db4bc2fc5",
+        "affectsGlobalScope": false
+      },
+      "../src/lib/structures/util.ts": {
+        "version": "ab33375a1b00b7ab81e94f3948aacffa65544ce9b6f48a01d93673467b2320cf",
+        "signature": "525c9687264bc5b34e116c31ab97d10beccfb5e8dd8042a4569093ae399827df",
+        "affectsGlobalScope": false
+      },
+      "../src/lib/structures/currency/util.ts": {
+        "version": "62d0727462b6acf36566ac4be2215b31164aa93f71d0152f125d4467b601db50",
+        "signature": "55401665256e4f86954c34c145b82afb480f5189348eec40d2df4cbeb4b457b3",
+        "affectsGlobalScope": false
+      },
+      "../src/lib/structures/currency/model.ts": {
+        "version": "228c55010149831659faf4ac44216e5bf6254a88ad40feb3fb26de6c7b7b0daf",
+        "signature": "1da75f6dfb6c6de367c3897c58022d620e7b37f9c31e74e00aff8d3f5ba842b8",
+        "affectsGlobalScope": false
+      },
+      "../src/lib/structures/currency/functions.ts": {
+        "version": "34e54d8f0368f96f2384fbb4c26f0174629fb1daafe7dfffc88532cce2432007",
+        "signature": "83757886f9d96732fe7348e862e49d06d9923f12533b92a15c226323f712c2db",
+        "affectsGlobalScope": false
+      },
+      "../src/lib/structures/spawns/model.ts": {
+        "version": "01aaf58e42baff42901d9c02a08060f9988c937c04f862539afed3618e892d87",
+        "signature": "258b232d0b76398371194e89db694b9ca891e562a890b8888cbe93ca7e46eac1",
+        "affectsGlobalScope": false
+      },
+      "../src/lib/structures/spawns/functions.ts": {
+        "version": "f4f303ca2a895c2f1638c4c26d646880c371274db7ae813c8404188b7aa2adc0",
+        "signature": "c10c7997da4fb4bc4bb46f7104622244eeb0c872d5cfd20554c241f5e77a310f",
+        "affectsGlobalScope": false
+      },
+      "../src/lib/structures/client.ts": {
+        "version": "6ed618b9947b496fb4ab64ee58a0cd33260ebbb483d5ece04820b0e6e18a8dda",
+        "signature": "1c2a22ce3ccd93b1ea5e56f1e721d55845ca62b4e91c94c91a2c8f58810491c5",
+        "affectsGlobalScope": false
+      },
+      "../src/lava.ts": {
+        "version": "6bab832fb10361818421fd3d01b22743e0067f035cac6424df855788ba13c6b6",
+        "signature": "0e7c6f172815224902d2b780918250d131abb33ddc0f2e042ab423db53f72370",
+        "affectsGlobalScope": false
+      },
+      "../src/types.d.ts": {
+        "version": "d5ebf4bfeb8d9543dad32a81833fac7dc78f37700d6394aaf83c0408c5ce921a",
+        "signature": "d5ebf4bfeb8d9543dad32a81833fac7dc78f37700d6394aaf83c0408c5ce921a",
+        "affectsGlobalScope": true
+      },
+      "../src/lib/handlers/modulehandler.ts": {
+        "version": "f1bdb936a8d908ffc07d889a69169de10494969973961f0fba9ff508a5b35594",
+        "signature": "b6a5a3691c18c8e5e96ec93294bfbfbffca72dc6f6837ae413a1e73dd813169a",
+        "affectsGlobalScope": false
+      },
+      "../src/lib/structures/module.ts": {
+        "version": "dcaec88ed02965f466e699551571a1e719716e8cf0090675233dc2567d4d4aad",
+        "signature": "ae18d0f8c7f8874ef27cd36e700fd579f10e57a64d7bd013eb77932fada702b6",
+        "affectsGlobalScope": false
+      },
+      "../src/lib/structures/currency/shop.ts": {
+        "version": "8173f566dec08315f62a5fbea59f195550299aaccfbfb62b2289d9af403de328",
+        "signature": "92f51467a45da8f82d1d197719a80cf4861bd31b3576fd1258f9bcbe7d3065a9",
+        "affectsGlobalScope": false
+      },
+      "../src/lib/structures/currency/shop/trophy.ts": {
+        "version": "2624b1864f8fc38dcef8d2e04f28b9189e6c250702d0af7492667883629a7f85",
+        "signature": "ba1689c922f6ba3c890fa5ded18eae3a4b31a7771e1456349d7ef9acb504b548",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/currency/balance.ts": {
+        "version": "5302c9c736fcbc46230773c6622cb8142df3b02b83d188f46a7755b836a4db9e",
+        "signature": "229fd90775ec1a6504e755e1f4e47c805b26de2bfc18c637a75245faf894c35a",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/currency/burn.ts": {
+        "version": "6cb1d32b8ea78dde7412a40a05cec0adc3df0aa1d3be21f2d64a345b88014321",
+        "signature": "85269ac0b703e975abccba309bc82e0654ed917e6068678d0475bb69f72ceec4",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/currency/dev.ts": {
+        "version": "a9798750fba062519a21aaea8b3d056282301e52ae161bff02589e70277b4d1d",
+        "signature": "756a86af953582241508d6c1382b7e93d2ee1ca2931a6fb578f7dc642d7ecdcb",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/currency/gamble.ts": {
+        "version": "5304d6dbbbc02d78732b438f7016a14ae32bc152452b1e24b23a70b5bd588199",
+        "signature": "01bd7829505086330129a03a3813bc1a1142a3a9c650c62b8336949748caf436",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/currency/gimme.ts": {
+        "version": "8f4bf1378e4eed12dc1c3aa8e98f0462a670c1570a72a45e8beb304e355615db",
+        "signature": "d441419317947ef1da43daaa73a2c922c584997f29f35086681be9033ef2d6e9",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/currency/slots.ts": {
+        "version": "2e7c965a1d7bcdae9551cd02c46bfad1cba20ed012f3b38ae950d13a65ff0d82",
+        "signature": "9d898698b9ff79824664f3dfd36fe750fc71ea877730616081719bdba31efe5a",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/developer/eval.ts": {
+        "version": "a7368f4bba5995abce5dc0dd9e10158965e2e673220dbeb19bbea64f67766fa4",
+        "signature": "24c83c387129cbd85ebb207567c91370a4cf02208e1dd51ab0e8a8d861c464ca",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/programmatic-repl/index.d.ts": {
+        "version": "b84ac956d0b47dbf355bc6570829348db7d5ddcc5cae1aed1d6022f34eb6bb8a",
+        "signature": "b84ac956d0b47dbf355bc6570829348db7d5ddcc5cae1aed1d6022f34eb6bb8a",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/developer/repl.ts": {
+        "version": "fd94b44822f7c026208e4500cbddf01d7ec6aa77143b8f9f1edfa82b9ea817cb",
+        "signature": "9fd50ff65992ef5c487189ec34035d6b8e491f3994c72e4c050a67160d53ca06",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/developer/top.ts": {
+        "version": "8f9588b5f431d0e0da81d65add083d063d8adcb6c118e8b2e35b39ed5cc94dc7",
+        "signature": "bb391232eb6ee99f17e77682c19a6e1ce75562f7126a6cb04cfeb5b18bc18d9a",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/spawn/lavas.ts": {
+        "version": "b2b07e59c09a43f1757fc8424a926ba2c61c30a9914d4edf23912e89c16053f8",
+        "signature": "63ac2c4d7d8c84aba423d835bbaa75e3162614e28ebe9b3a2225c96d0db53e8a",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/spawn/paid.ts": {
+        "version": "26fd7c1e76f2b115925ce47548e082946dd52e31a4e73c07065c8b6103c490c7",
+        "signature": "0641cbf06f6320e3c50a94b056b661919bc60c099996bc70459e1bd6b63f91ee",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/utility/help.ts": {
+        "version": "64c545f4cf12e089c06cf8c80eebb6c3be402c53a6ed256d33069df00f35ec5e",
+        "signature": "efc403fd5013a260b026317f78973f7dd5a6a3a0834d14b1873f80966c65455b",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/utility/hl.ts": {
+        "version": "d02aa08690e57e7980636570dbcf8868d4b6bf80b107ade4f383ff46efae3739",
+        "signature": "ada47441f2e33f690d83088b32729330076289c707366b3dee848daa1b012930",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/utility/hul.ts": {
+        "version": "df98fb744938021f8d447622769e8c29a0ce254e7ea9ea067f2a500e3f674791",
+        "signature": "b23a0510a99e79bd876b3424727e81cb513995a4c6e879a572a14cadcb99fbdf",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/commands/utility/ping.ts": {
+        "version": "81ffbe4c9602d44eabe01cccf7be8fbbf8bc57b561a3d60e9d374adb34e8b896",
+        "signature": "ada47441f2e33f690d83088b32729330076289c707366b3dee848daa1b012930",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/emitters/akairo/cooldown.ts": {
+        "version": "bb2555a7cd82c01846d997d972879637be350c3fd1110c4a14ffd2d1d1f03c5b",
+        "signature": "af617cbf361dcc360f9724b59aa39c88d65cc89dfd77925d1866213f1aeb66e6",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/emitters/akairo/missing-permissions.ts": {
+        "version": "810a786a1b05463d7b99d5d3db6bd80fe2cdb5da1a1e22e0d3ebe4a80dc310c0",
+        "signature": "ac2d6e487adaa458934e2c99fcde9caa716bf7aa8f1cbba8347d8ce26c2d61bb",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/emitters/discord/ready.ts": {
+        "version": "49634ee883be782d5f0847a3874517c72d1a9d981573def96f3dc40eb2e7c5fa",
+        "signature": "b9fe95ae85a665a8f431148e75d2f923e04aeb19a38ae104f22d30e6841e4333",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/emitters/discord/spawner.ts": {
+        "version": "1338ef70b647aab5fc9ba198d8a3c2b41a48a8fc8fedfba9c79f7acbdedfec69",
+        "signature": "f925c5a67ad56d68dcee82f64b168492d45f462afe6332c7f9ccbcdf6c351eef",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/emitters/spawn/m-collect.ts": {
+        "version": "e381ec086abc31874ccf0972d028bbc746437ca0e66338fa57e2a7dbef832e4f",
+        "signature": "4acdd2dff42010a24d69e87d76e4997c1941df62c4f10110e7062461be5ac6c8",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/emitters/spawn/m-results.ts": {
+        "version": "9ad8ee6a8eb0c2bd912a1ba69cccfc736b007b8e8e54527388e01fdd986c1ce0",
+        "signature": "887c609ff090cc1fb1c9952bb09b0166dd796576a5a06922925156127580b70e",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/emitters/spawn/m-start.ts": {
+        "version": "2db074af344f5ea4995ae64df15dad590f49531b2a1b2463b47b5ef46c4cdf32",
+        "signature": "47cbe445e24ad8f16c14797cc2a6f5a8b91d94c228fb0ec176ffa90b16442df2",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/spawns/2021.ts": {
+        "version": "920979f76579378ca542d0bac611f66d505aaa88b50506a93eb26f02c9a880af",
+        "signature": "d0a317353144ac3d71b0f32f66918783a8e4756dfe6956fac972c594cae89dd9",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/spawns/coinified.ts": {
+        "version": "b86fd5918450438b093c3a4e1f073162321b23a14d5f920291a609886db4c4d7",
+        "signature": "25fa6b04c3efd84376a33b25161060702c3fb9501bf295dc64cdbae615bf09a3",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/spawns/doubloon.ts": {
+        "version": "5135c88d404d158a7b77105bba69fd47853c44f58b8bf3be6035f50f3cda9f52",
+        "signature": "5b96931690ed9aecb99efdba2eaa9d969172831413bdb58e8c3114696102c6dd",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/spawns/financial.ts": {
+        "version": "68ebda9a665ef78bb6799aa9ea9bc15c63f9663c6920ee7b94b29220dce28c10",
+        "signature": "d0a317353144ac3d71b0f32f66918783a8e4756dfe6956fac972c594cae89dd9",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/spawns/spring.ts": {
+        "version": "d7c0f43e33cc69ec28b686c59698d879bf4a42085acff36ba3120e10be647a2c",
+        "signature": "d0a317353144ac3d71b0f32f66918783a8e4756dfe6956fac972c594cae89dd9",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/spawns/valentines.ts": {
+        "version": "c33226dc57e0ce570a838e584e1f13cf01c38a33945578ae505c8f12820ede1d",
+        "signature": "70eaf445f39105bbca91af07f90a8147f354b721d505f70e240d8806e0cf3bb3",
+        "affectsGlobalScope": false
+      },
+      "../src/typings/discord-akairo/main.d.ts": {
+        "version": "fce63988c0129bdc2ee7962d9d6c5f27113d724310e54f3ae14d933ee831f133",
+        "signature": "fce63988c0129bdc2ee7962d9d6c5f27113d724310e54f3ae14d933ee831f133",
+        "affectsGlobalScope": true
+      }
+    },
+    "options": {
+      "module": 1,
+      "target": 5,
+      "outDir": "./",
+      "skipLibCheck": true,
+      "resolveJsonModule": true,
+      "moduleResolution": 2,
+      "sourceMap": false,
+      "inlineSourceMap": false,
+      "inlineSources": false,
+      "incremental": true,
+      "esModuleInterop": true,
+      "noImplicitAny": false,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "typeRoots": [
+        "../src/typings",
+        "../node_modules/@types"
+      ],
+      "lib": [
+        "lib.es2015.d.ts"
+      ],
+      "project": "../tsconfig.json",
+      "configFilePath": "../tsconfig.json"
+    },
+    "referencedMap": {
+      "../node_modules/@types/bson/index.d.ts": [
+        "../node_modules/@types/node/index.d.ts"
+      ],
+      "../node_modules/@types/mongodb/index.d.ts": [
+        "../node_modules/@types/bson/index.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/index.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/@types/node/tls.d.ts"
+      ],
+      "../node_modules/@types/node/base.d.ts": [
+        "../node_modules/@types/node/assert.d.ts",
+        "../node_modules/@types/node/ts3.6/base.d.ts"
+      ],
+      "../node_modules/@types/node/child_process.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/net.d.ts",
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/@types/node/cluster.d.ts": [
+        "../node_modules/@types/node/child_process.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/net.d.ts"
+      ],
+      "../node_modules/@types/node/console.d.ts": [
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/node/constants.d.ts": [
+        "../node_modules/@types/node/crypto.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/os.d.ts"
+      ],
+      "../node_modules/@types/node/crypto.d.ts": [
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/@types/node/dgram.d.ts": [
+        "../node_modules/@types/node/dns.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/net.d.ts"
+      ],
+      "../node_modules/@types/node/domain.d.ts": [
+        "../node_modules/@types/node/events.d.ts"
+      ],
+      "../node_modules/@types/node/events.d.ts": [
+        "../node_modules/@types/node/events.d.ts"
+      ],
+      "../node_modules/@types/node/fs.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/fs/promises.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/@types/node/url.d.ts"
+      ],
+      "../node_modules/@types/node/fs/promises.d.ts": [
+        "../node_modules/@types/node/fs.d.ts"
+      ],
+      "../node_modules/@types/node/http.d.ts": [
+        "../node_modules/@types/node/net.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/@types/node/url.d.ts"
+      ],
+      "../node_modules/@types/node/http2.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/http.d.ts",
+        "../node_modules/@types/node/net.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/@types/node/tls.d.ts",
+        "../node_modules/@types/node/url.d.ts"
+      ],
+      "../node_modules/@types/node/https.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/http.d.ts",
+        "../node_modules/@types/node/tls.d.ts",
+        "../node_modules/@types/node/url.d.ts"
+      ],
+      "../node_modules/@types/node/index.d.ts": [
+        "../node_modules/@types/node/base.d.ts"
+      ],
+      "../node_modules/@types/node/inspector.d.ts": [
+        "../node_modules/@types/node/events.d.ts"
+      ],
+      "../node_modules/@types/node/module.d.ts": [
+        "../node_modules/@types/node/url.d.ts"
+      ],
+      "../node_modules/@types/node/net.d.ts": [
+        "../node_modules/@types/node/dns.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/@types/node/perf_hooks.d.ts": [
+        "../node_modules/@types/node/async_hooks.d.ts"
+      ],
+      "../node_modules/@types/node/process.d.ts": [
+        "../node_modules/@types/node/tty.d.ts"
+      ],
+      "../node_modules/@types/node/readline.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/@types/node/repl.d.ts": [
+        "../node_modules/@types/node/readline.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/vm.d.ts"
+      ],
+      "../node_modules/@types/node/stream.d.ts": [
+        "../node_modules/@types/node/events.d.ts"
+      ],
+      "../node_modules/@types/node/tls.d.ts": [
+        "../node_modules/@types/node/crypto.d.ts",
+        "../node_modules/@types/node/dns.d.ts",
+        "../node_modules/@types/node/net.d.ts",
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/@types/node/ts3.4/base.d.ts": [
+        "../node_modules/@types/node/async_hooks.d.ts",
+        "../node_modules/@types/node/buffer.d.ts",
+        "../node_modules/@types/node/child_process.d.ts",
+        "../node_modules/@types/node/cluster.d.ts",
+        "../node_modules/@types/node/console.d.ts",
+        "../node_modules/@types/node/constants.d.ts",
+        "../node_modules/@types/node/crypto.d.ts",
+        "../node_modules/@types/node/dgram.d.ts",
+        "../node_modules/@types/node/dns.d.ts",
+        "../node_modules/@types/node/domain.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/fs/promises.d.ts",
+        "../node_modules/@types/node/globals.d.ts",
+        "../node_modules/@types/node/http.d.ts",
+        "../node_modules/@types/node/http2.d.ts",
+        "../node_modules/@types/node/https.d.ts",
+        "../node_modules/@types/node/inspector.d.ts",
+        "../node_modules/@types/node/module.d.ts",
+        "../node_modules/@types/node/net.d.ts",
+        "../node_modules/@types/node/os.d.ts",
+        "../node_modules/@types/node/path.d.ts",
+        "../node_modules/@types/node/perf_hooks.d.ts",
+        "../node_modules/@types/node/process.d.ts",
+        "../node_modules/@types/node/punycode.d.ts",
+        "../node_modules/@types/node/querystring.d.ts",
+        "../node_modules/@types/node/readline.d.ts",
+        "../node_modules/@types/node/repl.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/@types/node/string_decoder.d.ts",
+        "../node_modules/@types/node/timers.d.ts",
+        "../node_modules/@types/node/tls.d.ts",
+        "../node_modules/@types/node/trace_events.d.ts",
+        "../node_modules/@types/node/tty.d.ts",
+        "../node_modules/@types/node/url.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/v8.d.ts",
+        "../node_modules/@types/node/vm.d.ts",
+        "../node_modules/@types/node/worker_threads.d.ts",
+        "../node_modules/@types/node/zlib.d.ts"
+      ],
+      "../node_modules/@types/node/ts3.6/base.d.ts": [
+        "../node_modules/@types/node/globals.global.d.ts",
+        "../node_modules/@types/node/ts3.4/base.d.ts",
+        "../node_modules/@types/node/wasi.d.ts"
+      ],
+      "../node_modules/@types/node/tty.d.ts": [
+        "../node_modules/@types/node/net.d.ts"
+      ],
+      "../node_modules/@types/node/url.d.ts": [
+        "../node_modules/@types/node/querystring.d.ts"
+      ],
+      "../node_modules/@types/node/v8.d.ts": [
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/@types/node/worker_threads.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/fs/promises.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/@types/node/url.d.ts",
+        "../node_modules/@types/node/vm.d.ts"
+      ],
+      "../node_modules/@types/node/zlib.d.ts": [
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/discord-akairo/src/index.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../node_modules/discord.js/typings/index.d.ts": [
+        "../node_modules/@discordjs/collection/dist/index.d.ts",
+        "../node_modules/@types/node/child_process.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/mongoose/index.d.ts": [
+        "../node_modules/@types/mongodb/index.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/mongoose/index.d.ts"
+      ],
+      "../src/lava.ts": [
+        "../src/config.ts",
+        "../src/lib/structures/client.ts"
+      ],
+      "../src/lib/handlers/giveawayhandler.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/lib/handlers/modulehandler.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/lib/handlers/spawnhandler.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/lib/structures/client.ts": [
+        "../node_modules/@types/node/path.d.ts",
+        "../node_modules/chalk/index.d.ts",
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/mongoose/index.d.ts",
+        "../src/lib/handlers/giveawayhandler.ts",
+        "../src/lib/handlers/spawnhandler.ts",
+        "../src/lib/structures/currency/functions.ts",
+        "../src/lib/structures/spawn.ts",
+        "../src/lib/structures/spawns/functions.ts",
+        "../src/lib/structures/util.ts"
+      ],
+      "../src/lib/structures/currency/functions.ts": [
+        "../node_modules/discord.js/typings/index.d.ts",
+        "../node_modules/mongoose/index.d.ts",
+        "../src/lib/structures/currency/model.ts",
+        "../src/lib/structures/currency/util.ts"
+      ],
+      "../src/lib/structures/currency/model.ts": [
+        "../node_modules/mongoose/index.d.ts"
+      ],
+      "../src/lib/structures/currency/shop.ts": [
+        "../node_modules/@types/node/path.d.ts",
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/lib/structures/currency/shop/trophy.ts": [
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/lib/structures/currency/util.ts": [
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/lib/structures/module.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts"
+      ],
+      "../src/lib/structures/spawn.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/lib/structures/spawns/functions.ts": [
+        "../node_modules/discord.js/typings/index.d.ts",
+        "../node_modules/mongoose/index.d.ts",
+        "../src/lib/structures/spawns/model.ts"
+      ],
+      "../src/lib/structures/spawns/model.ts": [
+        "../node_modules/mongoose/index.d.ts"
+      ],
+      "../src/lib/structures/util.ts": [
+        "../node_modules/chalk/index.d.ts",
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts",
+        "../node_modules/moment/ts3.1-typings/moment.d.ts"
+      ],
+      "../src/modules/commands/currency/balance.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/currency/burn.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/currency/dev.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/currency/gamble.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/currency/gimme.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/currency/slots.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/developer/eval.ts": [
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/developer/repl.ts": [
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts",
+        "../node_modules/programmatic-repl/index.d.ts"
+      ],
+      "../src/modules/commands/developer/top.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts",
+        "../node_modules/mongoose/index.d.ts"
+      ],
+      "../src/modules/commands/spawn/lavas.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/spawn/paid.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/utility/help.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/utility/hl.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/utility/hul.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/utility/ping.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/emitters/akairo/cooldown.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/emitters/akairo/missing-permissions.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/emitters/discord/ready.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/emitters/discord/spawner.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/emitters/spawn/m-collect.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/emitters/spawn/m-results.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/emitters/spawn/m-start.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/spawns/2021.ts": [
+        "../node_modules/discord.js/typings/index.d.ts",
+        "../src/lib/structures/spawn.ts"
+      ],
+      "../src/modules/spawns/coinified.ts": [
+        "../node_modules/discord.js/typings/index.d.ts",
+        "../src/lib/structures/spawn.ts"
+      ],
+      "../src/modules/spawns/doubloon.ts": [
+        "../node_modules/discord.js/typings/index.d.ts",
+        "../src/lib/structures/spawn.ts"
+      ],
+      "../src/modules/spawns/financial.ts": [
+        "../node_modules/discord.js/typings/index.d.ts",
+        "../src/lib/structures/spawn.ts"
+      ],
+      "../src/modules/spawns/spring.ts": [
+        "../node_modules/discord.js/typings/index.d.ts",
+        "../src/lib/structures/spawn.ts"
+      ],
+      "../src/modules/spawns/valentines.ts": [
+        "../node_modules/discord.js/typings/index.d.ts",
+        "../src/lib/structures/spawn.ts"
+      ]
+    },
+    "exportedModulesMap": {
+      "../node_modules/@types/bson/index.d.ts": [
+        "../node_modules/@types/node/index.d.ts"
+      ],
+      "../node_modules/@types/mongodb/index.d.ts": [
+        "../node_modules/@types/bson/index.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/index.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/@types/node/tls.d.ts"
+      ],
+      "../node_modules/@types/node/base.d.ts": [
+        "../node_modules/@types/node/assert.d.ts",
+        "../node_modules/@types/node/ts3.6/base.d.ts"
+      ],
+      "../node_modules/@types/node/child_process.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/net.d.ts",
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/@types/node/cluster.d.ts": [
+        "../node_modules/@types/node/child_process.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/net.d.ts"
+      ],
+      "../node_modules/@types/node/console.d.ts": [
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/node/constants.d.ts": [
+        "../node_modules/@types/node/crypto.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/os.d.ts"
+      ],
+      "../node_modules/@types/node/crypto.d.ts": [
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/@types/node/dgram.d.ts": [
+        "../node_modules/@types/node/dns.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/net.d.ts"
+      ],
+      "../node_modules/@types/node/domain.d.ts": [
+        "../node_modules/@types/node/events.d.ts"
+      ],
+      "../node_modules/@types/node/events.d.ts": [
+        "../node_modules/@types/node/events.d.ts"
+      ],
+      "../node_modules/@types/node/fs.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/fs/promises.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/@types/node/url.d.ts"
+      ],
+      "../node_modules/@types/node/fs/promises.d.ts": [
+        "../node_modules/@types/node/fs.d.ts"
+      ],
+      "../node_modules/@types/node/http.d.ts": [
+        "../node_modules/@types/node/net.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/@types/node/url.d.ts"
+      ],
+      "../node_modules/@types/node/http2.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/http.d.ts",
+        "../node_modules/@types/node/net.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/@types/node/tls.d.ts",
+        "../node_modules/@types/node/url.d.ts"
+      ],
+      "../node_modules/@types/node/https.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/http.d.ts",
+        "../node_modules/@types/node/tls.d.ts",
+        "../node_modules/@types/node/url.d.ts"
+      ],
+      "../node_modules/@types/node/index.d.ts": [
+        "../node_modules/@types/node/base.d.ts"
+      ],
+      "../node_modules/@types/node/inspector.d.ts": [
+        "../node_modules/@types/node/events.d.ts"
+      ],
+      "../node_modules/@types/node/module.d.ts": [
+        "../node_modules/@types/node/url.d.ts"
+      ],
+      "../node_modules/@types/node/net.d.ts": [
+        "../node_modules/@types/node/dns.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/@types/node/perf_hooks.d.ts": [
+        "../node_modules/@types/node/async_hooks.d.ts"
+      ],
+      "../node_modules/@types/node/process.d.ts": [
+        "../node_modules/@types/node/tty.d.ts"
+      ],
+      "../node_modules/@types/node/readline.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/@types/node/repl.d.ts": [
+        "../node_modules/@types/node/readline.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/vm.d.ts"
+      ],
+      "../node_modules/@types/node/stream.d.ts": [
+        "../node_modules/@types/node/events.d.ts"
+      ],
+      "../node_modules/@types/node/tls.d.ts": [
+        "../node_modules/@types/node/crypto.d.ts",
+        "../node_modules/@types/node/dns.d.ts",
+        "../node_modules/@types/node/net.d.ts",
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/@types/node/ts3.4/base.d.ts": [
+        "../node_modules/@types/node/async_hooks.d.ts",
+        "../node_modules/@types/node/buffer.d.ts",
+        "../node_modules/@types/node/child_process.d.ts",
+        "../node_modules/@types/node/cluster.d.ts",
+        "../node_modules/@types/node/console.d.ts",
+        "../node_modules/@types/node/constants.d.ts",
+        "../node_modules/@types/node/crypto.d.ts",
+        "../node_modules/@types/node/dgram.d.ts",
+        "../node_modules/@types/node/dns.d.ts",
+        "../node_modules/@types/node/domain.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/fs/promises.d.ts",
+        "../node_modules/@types/node/globals.d.ts",
+        "../node_modules/@types/node/http.d.ts",
+        "../node_modules/@types/node/http2.d.ts",
+        "../node_modules/@types/node/https.d.ts",
+        "../node_modules/@types/node/inspector.d.ts",
+        "../node_modules/@types/node/module.d.ts",
+        "../node_modules/@types/node/net.d.ts",
+        "../node_modules/@types/node/os.d.ts",
+        "../node_modules/@types/node/path.d.ts",
+        "../node_modules/@types/node/perf_hooks.d.ts",
+        "../node_modules/@types/node/process.d.ts",
+        "../node_modules/@types/node/punycode.d.ts",
+        "../node_modules/@types/node/querystring.d.ts",
+        "../node_modules/@types/node/readline.d.ts",
+        "../node_modules/@types/node/repl.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/@types/node/string_decoder.d.ts",
+        "../node_modules/@types/node/timers.d.ts",
+        "../node_modules/@types/node/tls.d.ts",
+        "../node_modules/@types/node/trace_events.d.ts",
+        "../node_modules/@types/node/tty.d.ts",
+        "../node_modules/@types/node/url.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/v8.d.ts",
+        "../node_modules/@types/node/vm.d.ts",
+        "../node_modules/@types/node/worker_threads.d.ts",
+        "../node_modules/@types/node/zlib.d.ts"
+      ],
+      "../node_modules/@types/node/ts3.6/base.d.ts": [
+        "../node_modules/@types/node/globals.global.d.ts",
+        "../node_modules/@types/node/ts3.4/base.d.ts",
+        "../node_modules/@types/node/wasi.d.ts"
+      ],
+      "../node_modules/@types/node/tty.d.ts": [
+        "../node_modules/@types/node/net.d.ts"
+      ],
+      "../node_modules/@types/node/url.d.ts": [
+        "../node_modules/@types/node/querystring.d.ts"
+      ],
+      "../node_modules/@types/node/v8.d.ts": [
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/@types/node/worker_threads.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/fs/promises.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/@types/node/url.d.ts",
+        "../node_modules/@types/node/vm.d.ts"
+      ],
+      "../node_modules/@types/node/zlib.d.ts": [
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/discord-akairo/src/index.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../node_modules/discord.js/typings/index.d.ts": [
+        "../node_modules/@discordjs/collection/dist/index.d.ts",
+        "../node_modules/@types/node/child_process.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/stream.d.ts"
+      ],
+      "../node_modules/mongoose/index.d.ts": [
+        "../node_modules/@types/mongodb/index.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/stream.d.ts",
+        "../node_modules/mongoose/index.d.ts"
+      ],
+      "../src/lib/handlers/giveawayhandler.ts": [
+        "../node_modules/@types/node/events.d.ts"
+      ],
+      "../src/lib/handlers/modulehandler.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/lib/handlers/spawnhandler.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/lib/structures/client.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/mongoose/index.d.ts"
+      ],
+      "../src/lib/structures/currency/model.ts": [
+        "../node_modules/mongoose/index.d.ts"
+      ],
+      "../src/lib/structures/currency/shop.ts": [
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/lib/structures/currency/shop/trophy.ts": [
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/lib/structures/module.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts"
+      ],
+      "../src/lib/structures/spawn.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/lib/structures/spawns/model.ts": [
+        "../node_modules/mongoose/index.d.ts"
+      ],
+      "../src/lib/structures/util.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/currency/balance.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/currency/burn.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/currency/dev.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/currency/gamble.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/currency/gimme.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/currency/slots.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/developer/eval.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/developer/repl.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/developer/top.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/spawn/lavas.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/spawn/paid.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/utility/help.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/utility/hl.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/utility/hul.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/commands/utility/ping.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/emitters/akairo/cooldown.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/emitters/akairo/missing-permissions.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/emitters/discord/ready.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts"
+      ],
+      "../src/modules/emitters/discord/spawner.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/emitters/spawn/m-collect.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/emitters/spawn/m-results.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/emitters/spawn/m-start.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
+      "../src/modules/spawns/2021.ts": [
+        "../src/lib/structures/spawn.ts"
+      ],
+      "../src/modules/spawns/coinified.ts": [
+        "../src/lib/structures/spawn.ts"
+      ],
+      "../src/modules/spawns/doubloon.ts": [
+        "../src/lib/structures/spawn.ts"
+      ],
+      "../src/modules/spawns/financial.ts": [
+        "../src/lib/structures/spawn.ts"
+      ],
+      "../src/modules/spawns/spring.ts": [
+        "../src/lib/structures/spawn.ts"
+      ],
+      "../src/modules/spawns/valentines.ts": [
+        "../src/lib/structures/spawn.ts"
+      ]
+    },
+    "semanticDiagnosticsPerFile": [
+      "../node_modules/@discordjs/collection/dist/index.d.ts",
+      "../node_modules/@types/bson/index.d.ts",
+      "../node_modules/@types/mongodb/index.d.ts",
+      "../node_modules/@types/node/assert.d.ts",
+      "../node_modules/@types/node/async_hooks.d.ts",
+      "../node_modules/@types/node/base.d.ts",
+      "../node_modules/@types/node/buffer.d.ts",
+      "../node_modules/@types/node/child_process.d.ts",
+      "../node_modules/@types/node/cluster.d.ts",
+      "../node_modules/@types/node/console.d.ts",
+      "../node_modules/@types/node/constants.d.ts",
+      "../node_modules/@types/node/crypto.d.ts",
+      "../node_modules/@types/node/dgram.d.ts",
+      "../node_modules/@types/node/dns.d.ts",
+      "../node_modules/@types/node/domain.d.ts",
+      "../node_modules/@types/node/events.d.ts",
+      "../node_modules/@types/node/fs.d.ts",
+      "../node_modules/@types/node/fs/promises.d.ts",
+      "../node_modules/@types/node/globals.d.ts",
+      "../node_modules/@types/node/globals.global.d.ts",
+      "../node_modules/@types/node/http.d.ts",
+      "../node_modules/@types/node/http2.d.ts",
+      "../node_modules/@types/node/https.d.ts",
+      "../node_modules/@types/node/index.d.ts",
+      "../node_modules/@types/node/inspector.d.ts",
+      "../node_modules/@types/node/module.d.ts",
+      "../node_modules/@types/node/net.d.ts",
+      "../node_modules/@types/node/os.d.ts",
+      "../node_modules/@types/node/path.d.ts",
+      "../node_modules/@types/node/perf_hooks.d.ts",
+      "../node_modules/@types/node/process.d.ts",
+      "../node_modules/@types/node/punycode.d.ts",
+      "../node_modules/@types/node/querystring.d.ts",
+      "../node_modules/@types/node/readline.d.ts",
+      "../node_modules/@types/node/repl.d.ts",
+      "../node_modules/@types/node/stream.d.ts",
+      "../node_modules/@types/node/string_decoder.d.ts",
+      "../node_modules/@types/node/timers.d.ts",
+      "../node_modules/@types/node/tls.d.ts",
+      "../node_modules/@types/node/trace_events.d.ts",
+      "../node_modules/@types/node/ts3.4/base.d.ts",
+      "../node_modules/@types/node/ts3.6/base.d.ts",
+      "../node_modules/@types/node/tty.d.ts",
+      "../node_modules/@types/node/url.d.ts",
+      "../node_modules/@types/node/util.d.ts",
+      "../node_modules/@types/node/v8.d.ts",
+      "../node_modules/@types/node/vm.d.ts",
+      "../node_modules/@types/node/wasi.d.ts",
+      "../node_modules/@types/node/worker_threads.d.ts",
+      "../node_modules/@types/node/zlib.d.ts",
+      "../node_modules/chalk/index.d.ts",
+      "../node_modules/discord-akairo/src/index.d.ts",
+      "../node_modules/discord.js/typings/index.d.ts",
+      "../node_modules/moment/ts3.1-typings/moment.d.ts",
+      "../node_modules/mongoose/index.d.ts",
+      "../node_modules/programmatic-repl/index.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.collection.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.core.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.generator.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.iterable.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.promise.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.proxy.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.reflect.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.symbol.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts",
+      "../node_modules/typescript/lib/lib.es2016.array.include.d.ts",
+      "../node_modules/typescript/lib/lib.es2016.d.ts",
+      "../node_modules/typescript/lib/lib.es2017.d.ts",
+      "../node_modules/typescript/lib/lib.es2017.intl.d.ts",
+      "../node_modules/typescript/lib/lib.es2017.object.d.ts",
+      "../node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts",
+      "../node_modules/typescript/lib/lib.es2017.string.d.ts",
+      "../node_modules/typescript/lib/lib.es2017.typedarrays.d.ts",
+      "../node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts",
+      "../node_modules/typescript/lib/lib.es2018.asynciterable.d.ts",
+      "../node_modules/typescript/lib/lib.es2018.d.ts",
+      "../node_modules/typescript/lib/lib.es2018.intl.d.ts",
+      "../node_modules/typescript/lib/lib.es2018.promise.d.ts",
+      "../node_modules/typescript/lib/lib.es2018.regexp.d.ts",
+      "../node_modules/typescript/lib/lib.es2020.bigint.d.ts",
+      "../node_modules/typescript/lib/lib.es5.d.ts",
+      "../node_modules/typescript/lib/lib.esnext.intl.d.ts",
+      "../src/config.ts",
+      "../src/lava.ts",
+      "../src/lib/handlers/giveawayhandler.ts",
+      "../src/lib/handlers/modulehandler.ts",
+      "../src/lib/handlers/spawnhandler.ts",
+      "../src/lib/structures/client.ts",
+      "../src/lib/structures/currency/functions.ts",
+      "../src/lib/structures/currency/model.ts",
+      "../src/lib/structures/currency/shop.ts",
+      "../src/lib/structures/currency/shop/trophy.ts",
+      "../src/lib/structures/currency/util.ts",
+      "../src/lib/structures/module.ts",
+      "../src/lib/structures/spawn.ts",
+      "../src/lib/structures/spawns/functions.ts",
+      "../src/lib/structures/spawns/model.ts",
+      "../src/lib/structures/util.ts",
+      "../src/modules/commands/currency/balance.ts",
+      "../src/modules/commands/currency/burn.ts",
+      "../src/modules/commands/currency/dev.ts",
+      "../src/modules/commands/currency/gamble.ts",
+      "../src/modules/commands/currency/gimme.ts",
+      "../src/modules/commands/currency/slots.ts",
+      "../src/modules/commands/developer/eval.ts",
+      "../src/modules/commands/developer/repl.ts",
+      "../src/modules/commands/developer/top.ts",
+      "../src/modules/commands/spawn/lavas.ts",
+      "../src/modules/commands/spawn/paid.ts",
+      "../src/modules/commands/utility/help.ts",
+      "../src/modules/commands/utility/hl.ts",
+      "../src/modules/commands/utility/hul.ts",
+      "../src/modules/commands/utility/ping.ts",
+      "../src/modules/emitters/akairo/cooldown.ts",
+      "../src/modules/emitters/akairo/missing-permissions.ts",
+      "../src/modules/emitters/discord/ready.ts",
+      "../src/modules/emitters/discord/spawner.ts",
+      "../src/modules/emitters/spawn/m-collect.ts",
+      "../src/modules/emitters/spawn/m-results.ts",
+      "../src/modules/emitters/spawn/m-start.ts",
+      "../src/modules/spawns/2021.ts",
+      "../src/modules/spawns/coinified.ts",
+      "../src/modules/spawns/doubloon.ts",
+      "../src/modules/spawns/financial.ts",
+      "../src/modules/spawns/spring.ts",
+      "../src/modules/spawns/valentines.ts",
+      "../src/types.d.ts",
+      "../src/typings/discord-akairo/main.d.ts"
+    ]
+  },
+  "version": "4.1.3"
+}
