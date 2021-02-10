@@ -24,7 +24,7 @@ const spawnDir = join(__modDirs, 'spawns');
 
 /**
  * Extends the instance of AkairoClient
- * @exports @class Client @extends {AkairoClient} @implements {Akairo.Client}
+ * @exports @class {Client} @extends {AkairoClient} @implements {Akairo.Client}
 */
 export class Client extends AkairoClient implements Akairo.Client {
 	public util: Akairo.Util;
@@ -97,6 +97,10 @@ export class Client extends AkairoClient implements Akairo.Client {
 		this.spawnHandler.loadAll();
 	}
 
+	/**
+	 * connect lava into mongodb
+	 * @returns {typeof mongoose | void}
+	 */
 	public async connectDB(): Promise<typeof mongoose | void> {
 		try {
 			const options: mongoose.ConnectionOptions = { 

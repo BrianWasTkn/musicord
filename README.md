@@ -6,7 +6,7 @@ A multi-purpose discord bot for utilizing unique games and events for your [Dank
 * **Games** - Gambling games, fight or guess the number games, on the go.
 
 ### Self-Hosting
-Although the full code is visible here and is available to self-host on any compatible machine, I wouldn't mind you hosting your own version. But please, don't host a public version of this bot. Currently, there's only one configuration for Lava that doesn't support datadases yet so It's better not to screw things up.
+Although the full code is visible here and is available to self-host on any compatible machine, I wouldn't mind you hosting your own version. But please, don't host a public version of this bot. The main reason is lava is not fully dependent to databases yet. So the functionality and everything still depends to the [local config](./src/config.ts) for easy import.
 
 ### Install
 1. Clone this repository: `git clone https://github.com/BrianWasTkn/lava.git`

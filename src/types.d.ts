@@ -91,6 +91,7 @@ declare namespace Lava {
 
     interface CurrencyUtil {
 		calcMulti: (Lava: Akairo.Client, _: Message) => Promise<number>;
+		showMulti: (Lava: Akairo.Client, _: Message) => Promise<string[]>;
 	}
     //#endregion Interfaces
 

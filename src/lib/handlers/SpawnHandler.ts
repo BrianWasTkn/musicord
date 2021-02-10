@@ -25,6 +25,11 @@ export default class SpawnHandler extends AkairoHandler implements Akairo.SpawnH
 		this.messages = new Collection();
 	}
 
+	/**
+	 * Self-explanatory
+	 * @param {Akairo.Spawn} spawner the spawn module to run
+	 * @param {Message} message a discord message obj
+	 */
 	public async spawn(spawner: Akairo.Spawn, message: Message): Promise<void> {
 		if (['spam', 'message'].includes(spawner.config.type)) {
 			const str = this.client.util.randomInArray(spawner.spawn.strings);

@@ -5,7 +5,7 @@ import path from 'path'
 const dir = path.join(__dirname, 'shop');
 const files: string[] = AkairoHandler.readdirRecursive(dir);
 export default files.map((f: string): ShopItem => {
-	return require(path.join(__dirname, 'shop', f));
+	return require(path.join(dir, f));
 });
 
 interface ShopItem {
