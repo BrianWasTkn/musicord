@@ -18,9 +18,7 @@ export default class DiscordListener extends Listener {
 		};
 		
 		await this.client.user.setPresence({ activity });
-		return this.client.util.log(
-			'Discord', 'main', 
-			`${this.client.user.tag} has flown within Discord.`
-		);
+		const message = `${this.client.user.tag} has flown within Discord.`;
+		return this.client.util.log('Discord', 'main', message);
 	}
 }
