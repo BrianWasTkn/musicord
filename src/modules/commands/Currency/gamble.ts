@@ -75,7 +75,7 @@ export default class Currency extends Lava.Command {
     description: string[], identifier: string, db: any, color: string;
     if (userD > botD) {
       // Win
-      let winnings = Math.random() * 1.5;
+      let winnings = Math.random();
       if (winnings < 0.3) winnings += 0.3;
       won = Math.round(bet * winnings);
       won = won + Math.round(won * (multi / 100));
