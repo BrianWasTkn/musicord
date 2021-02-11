@@ -2,14 +2,13 @@ import { Message, MessageEmbed } from 'discord.js'
 import { Command } from 'discord-akairo'
 import mongoose from 'mongoose'
 
-export default class Dev extends Command {
+export default class Spawn extends Command {
     public client: Akairo.Client;
     public constructor() {
         super('top', {
             aliases: ['top', 't'],
 			description: 'View global top leaderboards for both Currency and Spawns.',
-			category: 'Dev',
-			ownerOnly: true,
+			category: 'Spawn',
             args: [
                 { id: 'type', type: 'string' },
                 { id: 'amount', type: 'number' }
@@ -29,8 +28,11 @@ export default class Dev extends Command {
     }
 
     public async exec(_: Message, args: any): Promise<Message> {
-        const { type = 'unpaids', amount = 10 } = args;
-        const embed = new MessageEmbed();
+        let { type, amount } = args;
+        type = type ?? 'unpaids'; 
+        amount ?? 10;
+        
+        let embed = new MessageEmbed();
         let docs: any[];
         
         if (['unpaid', 'unpaids', 'spawns', 'spawn'].includes(type)) {
