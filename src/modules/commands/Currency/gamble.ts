@@ -22,7 +22,7 @@ export default class Currency extends Lava.Command {
     const { channel, member: { user } } = _;
     const data = await this.client.db.currency.fetch(user.id);
     const { pocket, vault, space } = data;
-    const multi: number = await this.client.db.currency.util.calcMulti(this.client, _);
+    const { total: multi } = await this.client.db.currency.util.calcMulti(this.client, _);
     let bet = args.amount;
 
     if (!bet) {
@@ -71,7 +71,7 @@ export default class Currency extends Lava.Command {
     let botD = util.randomNumber(1, 12);
 
     // Visuals and DB
-    let winnings: number, won: number, percentWon: number, 
+    let won: number, percentWon: number, 
     description: string[], identifier: string, db: any, color: string;
     if (userD > botD) {
       // Win

@@ -99,7 +99,7 @@ export default class Currency extends Command {
     }});
 
     // Calc amount
-    const multi = await DB.currency.util.calcMulti(this.client, _);
+    const { total: multi } = await DB.currency.util.calcMulti(this.client, _);
     const data = await DB.currency.fetch(_.author.id);
     let { isWin, winnings } = this.calcWinnings([a, b, c], data, bet);
     // Visuals
