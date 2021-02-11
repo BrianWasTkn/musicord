@@ -16,6 +16,7 @@ import Util from './Util'
 
 import currencyFN from './currency/functions'
 import spawnsFN from './spawns/functions'
+import giveawayFN from './giveaway/functions'
 
 const __modDirs = join(__dirname, '..', '..', 'modules');
 const commandDir = join(__modDirs, 'commands');
@@ -33,7 +34,7 @@ export class Client extends AkairoClient implements Akairo.Client {
 	public listenerHandler: ListenerHandler;	
 	public commandHandler: CommandHandler;
 	public spawnHandler: Akairo.SpawnHandler;
-	public giveawayManager: Akairo.GiveawayHandler;
+	// public giveawayManager: Akairo.GiveawayHandler;
 	public constructor(config: Lava.Config) {
 		super({ 
 			ownerID: config.bot.ownerID 
@@ -44,11 +45,11 @@ export class Client extends AkairoClient implements Akairo.Client {
 		this.util = new Util(this);
 		this.db = { 
 			currency: currencyFN(this),
-			spawns: spawnsFN(this)
+			spawns: spawnsFN(this),
+			giveaways: giveawayFN(this)
 		};
 
 		// Handlers
-		this.giveawayManager = new GiveawayHandler(this);
 		this.listenerHandler = new ListenerHandler(this, {
 			directory: listenerDir
 		});
@@ -74,7 +75,6 @@ export class Client extends AkairoClient implements Akairo.Client {
 	public async handle(): Promise<void> {
 		this.commandHandler.useListenerHandler(this.listenerHandler);
 		this.listenerHandler.setEmitters({
-			giveawayManager: this.giveawayManager,
 			spawnHandler: this.spawnHandler,
 			commandHandler: this.commandHandler,
 			listenerHandler: this.listenerHandler

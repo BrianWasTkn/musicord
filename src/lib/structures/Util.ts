@@ -3,8 +3,9 @@ import { ClientUtil } from 'discord-akairo'
 import chalk from 'chalk'
 import moment from 'moment'
 
-export default class Util extends ClientUtil implements Akairo.Util {
+class Util extends ClientUtil implements Akairo.Util {
 	public heists: Collection<GuildChannel["id"], Role>;
+	public Colors: Lava.Colors;
 	public constructor(public client: Akairo.Client) {
 		super(client);
 
@@ -60,28 +61,31 @@ export default class Util extends ClientUtil implements Akairo.Util {
 		const stamp = moment().format('HH:mm:ss');
 		switch (type) {
 			case 'main':
-				console.log(
-					chalk.whiteBright(`[${stamp}]`), chalk.cyanBright(struct), 
-					chalk.whiteBright('=>'), chalk.yellowBright(_)
-				);
-				break;
+			console.log(
+				chalk.whiteBright(`[${stamp}]`), chalk.cyanBright(struct), 
+				chalk.whiteBright('=>'), chalk.yellowBright(_)
+			);
+			break;
 			case 'error':
-				console.log(
-					chalk.whiteBright(`[${stamp}]`), chalk.redBright(struct), 
-					chalk.whiteBright('=>'), chalk.redBright(_), err
-				);
-				break;
+			console.log(
+				chalk.whiteBright(`[${stamp}]`), chalk.redBright(struct), 
+				chalk.whiteBright('=>'), chalk.redBright(_), err
+			);
+			break;
 			default:
-				this.log(struct, 'main', _);
-				break;
+			this.log(struct, 'main', _);
+			break;
 		}
 	}
 
 	public sleep(ms: number): Promise<number> {
-		return new Promise((resolve: Function) => {
-			setTimeout(() => {
-				resolve(ms);
-			}, ms)
-		});
+		return new Promise((resolve: Function) => setTimeout(() => resolve(ms), ms));
 	}
 }
+
+/**
+ * Material Colors constant
+ */
+Util.prototype.Colors = require('./Constants').Colors;
+
+export default Util;

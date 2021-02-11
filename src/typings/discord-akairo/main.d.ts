@@ -33,7 +33,7 @@ declare namespace Akairo {
         public listenerHandler: ListenerHandler;
         public commandHandler: CommandHandler;
         public spawnHandler: SpawnHandler;
-        public giveawayManager: GiveawayHandler;
+        // public giveawayManager: GiveawayHandler;
         public config: Lava.Config;
         public util: Util;
         public db: Lava.DatabaseEndpoint;
@@ -55,7 +55,7 @@ declare namespace Akairo {
     class GiveawayHandler extends EventEmitter {
         public constructor(client: Client);
         public client: Client;
-        public giveaways: Collection<Guild["id"], CollectionFlake<Message>>;
+        public giveaways: Collection<Guild["id"], Lava.Giveaway[]>;
     }
 
     class Util extends ClientUtil {
@@ -67,6 +67,8 @@ declare namespace Akairo {
         public randomColor(): number;
         public log(struct: string, type: string, _: string, error?: Error): void;
         public sleep(ms: number): Promise<number>;
+
+        public static Colors: Lava.Colors;
     }
 
     class Spawn extends AkairoModule {

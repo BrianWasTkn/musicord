@@ -2,8 +2,10 @@ declare namespace Lava {
     import {
         ClientOptions,
         EmojiResolvable,
-        Snowflake,
-        Message
+        Snowflake, User,
+        Message, Guild,
+        GuildMember,
+        GuildChannel
     } from 'discord.js'
     import {
         Document,
@@ -15,6 +17,7 @@ declare namespace Lava {
 
     //#region Interfaces
 
+    // Util 
     // Configs
     interface Config {
         bot: ConfigLava;
@@ -47,6 +50,7 @@ declare namespace Lava {
     interface DatabaseEndpoint {
         currency: CurrencyFunction;
         spawns: SpawnFunction;
+        giveaways: GiveawayFunction;
     }
 
     interface CurrencyProfile extends Document {
@@ -68,7 +72,7 @@ declare namespace Lava {
 
     interface CurrencyFunction {
         util: CurrencyUtil;
-		create: (userID: Snowflake) => Promise<Document<CurrencyProfile>>;
+		create: (userID: Snowflake) => Promise<Document<Lava.CurrencyProfile>>;
 		fetch: (userID: Snowflake) => Promise<Document & CurrencyProfile>;
 		addPocket: (userID: Snowflake, amount: number) => Promise<Document & CurrencyProfile>;
 		removePocket: (userID: Snowflake, amount: number) => Promise<Document & CurrencyProfile>;
@@ -81,7 +85,7 @@ declare namespace Lava {
     }
 
     interface SpawnFunction {
-        create: (userID: Snowflake) => Promise<any>;
+        create: (userID: Snowflake) => Promise<Document<SpawnDocument>>;
 		fetch: (userID: Snowflake) => Promise<Document & SpawnDocument>;
 		addUnpaid: (userID: Snowflake, amount: number) => Promise<Document & SpawnDocument>;
 		removeUnpaid: (userID: Snowflake, amount: number) => Promise<Document & SpawnDocument>;
@@ -89,14 +93,36 @@ declare namespace Lava {
 		decrementJoinedEvents: (userID: Snowflake, amount?: number) => Promise<Document & SpawnDocument>;
     }
 
+    interface GiveawayFunction {
+        fetchAll: () => Promise<Array<Document & Giveaway>>;
+        fetchGiveaway: (messageID: Message["id"]) => Promise<Document & Giveaway>;
+    }
+
     interface CurrencyUtil {
 		calcMulti: (Lava: Akairo.Client, _: Message) => Promise<number>;
 		showMulti: (Lava: Akairo.Client, _: Message) => Promise<string[]>;
 	}
+
+    interface Giveaway extends Document {
+        _id: Guild["id"];
+        channelID: GuildChannel["id"];
+        messageID: Message["id"];
+        giveaway: GiveawayOptions;
+    }
+
+    interface GiveawayOptions {
+        winnerCount: number;
+        host: User["id"];
+        prize: string;
+        startTime: number;
+        endTime: number;
+        ended: boolean;
+    }
     //#endregion Interfaces
 
     //#region Types 
     type CurrencyFunctions = (client: Akairo.Client) => (Partial<CurrencyFunction>);
     type CurrencyCaps = { [cap: string]: number };
     type CurrencySlots = { [emoji: EmojiResolvable]: number };
+    type Colors = { [color: string]: number; };
 }
