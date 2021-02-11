@@ -13,8 +13,7 @@ export const utils: Lava.CurrencyUtil = {
 		let total = 0; total += db.multi;
 		let unlocked = [];
 		if (msg.guild.id === '691416705917779999') {
-			const crib = await Lava.guilds.fetch('691416705917779999');
-			unlocked.push(`${crib.name} - \`10%\``);
+			unlocked.push(`${msg.guild.name} - \`10%\``);
 			total += 10;
 		}
 		if (msg.member.nickname.toLowerCase().includes('taken')) {
