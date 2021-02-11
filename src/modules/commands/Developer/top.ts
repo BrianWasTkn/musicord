@@ -17,14 +17,15 @@ export default class Dev extends Command {
         });
     }
 
-    private map<T extends Lava.CurrencyProfile | Lava.SpawnDocument>(docs: (mongoose.Document & T)[], amount: number, key: string): Promise<string>[] {
-        return docs
+    private async map<T extends Lava.CurrencyProfile | Lava.SpawnDocument>(docs: (mongoose.Document & T)[], amount: number, key: string): Promise<string[]> {
+        let all = docs.filter((m: mongoose.Document & T) => m[key] < Infinity)
         .sort((a: (mongoose.Document & T), b: (mongoose.Document & T)) => b[key] - a[key])
-        .filter((m: mongoose.Document & T) => m[key] < Infinity).slice(0, amount)
-        .map(async(m: mongoose.Document & T, i: number) => {
+        .slice(0, amount).map(async(m: mongoose.Document & T, i: number) => {
             const user = await this.client.users.fetch(m.userID);
             return (<string>(`${i + 1}. **${m[key].toLocaleString()}** - ${user.tag}`));
         });
+
+        return await Promise.all(all);
     }
 
     public async exec(_: Message, args: any): Promise<Message> {
@@ -35,11 +36,11 @@ export default class Dev extends Command {
         if (['unpaid', 'unpaids', 'spawns', 'spawn'].includes(type)) {
             docs = await mongoose.models["spawn-profile"].find({});
             embed.setTitle('Top Unpaids').setColor('RANDOM')
-            .setDescription((this.map<Lava.SpawnDocument>(docs, amount, 'unpaid')).join('\n'));
+            .setDescription((await this.map<Lava.SpawnDocument>(docs, amount, 'unpaid')).join('\n'));
         } else if (['pocket', 'wallet'].includes(type)) {
             docs = await mongoose.models["currency"].find({});
             embed.setTitle('Top Pockets').setColor('RANDOM')
-            .setDescription((this.map<Lava.CurrencyProfile>(docs, amount, 'pocket')).join('\n'));
+            .setDescription((await this.map<Lava.CurrencyProfile>(docs, amount, 'pocket')).join('\n'));
         }
 
         return _.channel.send({ embed });

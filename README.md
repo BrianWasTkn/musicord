@@ -17,10 +17,10 @@ Although the full code is visible here and is available to self-host on any comp
 6. Done.
 
 ### Plans
-* [] **DankUtils** - Implementation of `taxcalc` or `heiststart` that's fully customizable.
-* [] **Music** - Usage of Lavalink so ya'll can listen into sick beats.
-* [] **Modularity** - Modular loading of functions instead of static methods in `ClientUtil`
-* [] **Premium?** - Eh, i'm not EA whatever. 
+* [ ] **DankUtils** - Implementation of `taxcalc` or `heiststart` that's fully customizable.
+* [ ] **Music** - Usage of Lavalink so ya'll can listen into sick beats.
+* [ ] **Modularity** - Modular loading of functions instead of static methods in `ClientUtil`
+* [ ] **Premium?** - Eh, i'm not EA whatever. 
 
 ### Author
 **Copyright © 2021**\
