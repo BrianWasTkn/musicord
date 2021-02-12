@@ -37,7 +37,7 @@ export default class Spawn extends Command {
 		const data = await this.client.db.spawns.removeUnpaid(user.user.id, amount);
 		// Message
 		const embed = new MessageEmbed()
-			.setAuthor(`Updated: ${user.user.tag}`, user.user.avatarUrl({ dynamic: true }))
+			.setAuthor(`Updated: ${user.user.tag}`, user.user.avatarURL({ dynamic: true }))
 			.setFooter(this.client.user.username, this.client.user.avatarURL())
 			.addField('Total Unpaids Left', data.unpaid.toLocaleString())
 			.setTimestamp(Date.now()).setColor('ORANGE');
