@@ -30,8 +30,8 @@ const visuals: Akairo.SpawnVisual = {
 }
 
 export default class UNCOMMON extends Spawn {
-	public constructor(client: Akairo.Client) {
-		super(client, config, visuals, (member: GuildMember): number => {
+	public constructor() {
+		super(config, visuals, (member: GuildMember): number => {
 			// "Crib Booster" role
 			if (member.roles.cache.has('693324853440282654')) return 14;
 			// "Donator #M+" roles (minimum)

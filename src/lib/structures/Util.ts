@@ -1,5 +1,11 @@
-import { Collection, Role, GuildChannel } from 'discord.js'
-import { ClientUtil } from 'discord-akairo'
+import { 
+	Role, Collection, GuildChannel, 
+	TextChannel, CollectorFilter,
+	Message, MessageCollector,
+	MessageCollectorOptions,
+	ReactionCollectorOptions 
+} from 'discord.js'
+import { ClientUtil, AkairoHandler } from 'discord-akairo'
 import chalk from 'chalk'
 import moment from 'moment'
 
@@ -78,8 +84,25 @@ class Util extends ClientUtil implements Akairo.Util {
 		}
 	}
 
+	/**
+	 * Delay for a specified amount of time
+	 * @param ms number in milliseconds
+	 */
 	public sleep(ms: number): Promise<number> {
 		return new Promise((resolve: Function) => setTimeout(() => resolve(ms), ms));
+	}
+
+	public async collectMessageAndEmit(
+		options: MessageCollectorOptions,
+		filter: CollectorFilter,
+		channel: TextChannel, 
+		event: string, 
+		handler: AkairoHandler
+	): Promise<MessageCollector> {
+		const collector = channel.createMessageCollector(filter, options);
+		collector.on('collect', (message: Message) => handler.emit(`${event}Collect`, message));
+		collector.on('end', (collected: Collection<string, Message>) => handler.emit(`${event}End`, collected));
+		return collector;
 	}
 }
 

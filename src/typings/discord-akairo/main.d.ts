@@ -58,6 +58,12 @@ declare namespace Akairo {
         public giveaways: Collection<Guild["id"], Lava.Giveaway[]>;
     }
 
+    class ModuleHandler extends AkairoHandler {
+        public constructor(client: Client, options: AkairoHandlerOptions);
+        public modules: Collection<string, Module>;
+        public client: Client;
+    }
+
     class Util extends ClientUtil {
         public constructor(client: Client);
         public heists: Collection<GuildChannel["id"], Role>;
@@ -73,7 +79,6 @@ declare namespace Akairo {
 
     class Spawn extends AkairoModule {
         public constructor(
-            client: Client, 
             config: SpawnConfig,
             spawn: SpawnVisual, 
             cooldown: SpawnConfig["cooldown"]
@@ -82,12 +87,6 @@ declare namespace Akairo {
         public spawn: SpawnVisual;
         public config: SpawnConfig;
         public answered: Collection<User["id"], User>;
-    }
-
-    class ModuleHandler extends AkairoHandler {
-        public constructor(client: Client, options: AkairoHandlerOptions);
-        public modules: Collection<string, Module>;
-        public client: Client;
     }
 
     class Module extends AkairoModule {
