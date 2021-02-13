@@ -41,8 +41,10 @@ export default class Utility extends Command {
     }
 
     private handleCollect(this: Message, entries: Collection<string, GuildMember>): void | Collection<string, GuildMember> {
-        this.react('<:memerGold:753138901169995797>');
-        if (entries.has(this.author.id)) return;
+        if (entries.has(this.author.id)) {
+            this.react('<:memerGold:753138901169995797>');
+            return;
+        }
         else return entries.set(this.author.id, this.member);
     }
 
