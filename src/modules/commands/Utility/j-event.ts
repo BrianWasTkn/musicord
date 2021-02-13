@@ -37,15 +37,15 @@ export default class Utility extends Command {
         ]
     }
 
-    private collect(
+    private async collect(
         msg: Message, 
         filter: CollectorFilter, 
         options: MessageCollectorOptions,
         entries: Collection<string, boolean>
-    ): Collection<string, Message> {
+    ): Promise<Collection<string, Message>> {
         let collection: Collection<string, Message>;
 
-        const collector = msg.channel.createMessageCollector(filter, options);
+        const collector = await msg.channel.createMessageCollector(filter, options);
         collector.on('collect', (m: Message) => this.handleCollect.bind(m, collector, entries));
         collector.on('end', (collected: Collection<string, Message>) => collection = collected);
 
@@ -82,13 +82,14 @@ export default class Utility extends Command {
         const filter: CollectorFilter = (m: Message) => m.content.toLowerCase() === string.toLowerCase() && !entries.has(m.author.id);
         const options: MessageCollectorOptions = { max: Infinity, time: 3e4 };
         
-        const collected = [...(this.collect(_, filter, options, entries)).values()];
+        const collection = await this.collect(_, filter, options, entries);
+        const collected = [...collection.values()];
         let success: Message[] = [];
         events.delete(guild.id);
-        await lockChan(null);
+        if (lock) await lockChan(null);
 
         if (!collected.length || collected.length <= 1) {
-            return _.reply('**:skull: No one joined.**'); 
+            return _.reply('**:skull: RIP! No one joined.**'); 
         }
 
         await channel.send(`**\`${collected.length}\` are teaming up to split __${amount.toLocaleString()}__ coins...**`);
