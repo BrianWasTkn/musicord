@@ -37,21 +37,6 @@ export default class Utility extends Command {
         ]
     }
 
-    private async collect(
-        msg: Message, 
-        filter: CollectorFilter, 
-        options: MessageCollectorOptions,
-        entries: Collection<string, boolean>
-    ): Promise<Collection<string, Message>> {
-        let collection: Collection<string, Message>;
-
-        const collector = await msg.channel.createMessageCollector(filter, options);
-        collector.on('collect', (m: Message) => this.handleCollect.bind(m, collector, entries));
-        collector.on('end', (collected: Collection<string, Message>) => collection = collected);
-
-        return collection;
-    }
-
     private handleCollect(this: Message, collector: MessageCollector, entries: Collection<string, boolean>): boolean | Promise<MessageReaction> {
         if (collector.collected.size >= 30) {
             this.reply('**The event is already full!**');
@@ -82,21 +67,23 @@ export default class Utility extends Command {
         const filter: CollectorFilter = (m: Message) => m.content.toLowerCase() === string.toLowerCase() && !entries.has(m.author.id);
         const options: MessageCollectorOptions = { max: Infinity, time: 3e4 };
         
-        const collection = await this.collect(_, filter, options, entries);
-        const collected = [...collection.values()];
-        let success: Message[] = [];
-        events.delete(guild.id);
-        if (lock) await lockChan(null);
+        const collector = channel.createMessageCollector(filter, options);
+        collector.on('collect', (m: Message) => this.handleCollect.bind(m, collector, entries));
+        collector.on('end', async (collected: Collection<string, Message>) => {
+            let success: Message[] = [];
+            events.delete(guild.id);
+            if (lock) await lockChan(null);
 
-        if (!collected.length || collected.length <= 1) {
-            return _.reply('**:skull: RIP! No one joined.**'); 
-        }
+            if (!collected.size || collected.size <= 1) {
+                return _.reply('**:skull: RIP! No one joined.**'); 
+            }
 
-        await channel.send(`**\`${collected.length}\` are teaming up to split __${amount.toLocaleString()}__ coins...**`);
-        collected.sort(() => Math.random() - 0.5).forEach(c => Math.random() > 0.1 ? success.push(c) : {});
-        const coins = Math.round(amount / success.length);
-        const order = success.length ? success.map(s => s.author.toString()).join(', ') : '**Everybody died LOL :skull::skull::skull:**';
-        return channel.send(`**Good job everybody, we split up \`${coins.toLocaleString()}\` coins each!\n\n${order}`);
+            await channel.send(`**\`${collected.size}\` are teaming up to split __${amount.toLocaleString()}__ coins...**`);
+            collected.array().sort(() => Math.random() - 0.5).forEach(c => Math.random() > 0.1 ? success.push(c) : {});
+            const coins = Math.round(amount / success.length);
+            const order = success.length ? success.map(s => s.author.toString()).join(', ') : '**Everybody died LOL :skull::skull::skull:**';
+            return channel.send(`**Good job everybody, we split up \`${coins.toLocaleString()}\` coins each!\n\n${order}`);
+        });
     }
 
     private async lockChan(this: Message, bool: boolean): Promise<TextChannel> {
