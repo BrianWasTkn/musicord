@@ -146,12 +146,14 @@ export default class Currency extends Command {
     // ty daunt
     const won: number[] = rate.map((_, i, ar) => ar[emojis.indexOf(slots[i])]).filter(Boolean);
     console.log('Won:', won);
-    const filter = (emoji: string, i: number, ar: string[]) => ar.indexOf(emoji) === i;
+    const filter = (thing: string, i: number, ar: string[]) => ar.indexOf(thing) === i;
     const length = slots.filter(filter).length;
+    const [emojWins] = won.filter((ew: number, i: number, a: number[]) => a.indexOf(ew) !== i);
     console.log('Length:', length);
 
     if (length === 1 || length === 2) {
-      const winnings: number = won.map(w => bet * (w + (w * multi))).reduce((p, c) => p + c);
+      let winnings: any = Array(length === 1 ? 3 : length).fill(emojWins) // emoji's base winnings as items
+      winnings = winnings.map((e: number) => bet * (e + (e * multi))).reduce((p: number, c: number) => p + c);
       console.log(winnings);
       return { length, winnings: Math.round(winnings) };
     } else {
