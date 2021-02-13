@@ -151,7 +151,7 @@ export default class Currency extends Command {
     if (length === 1 || length === 2) {
       let winnings: any = Array(length === 1 ? 3 : length).fill(emojWins) // emoji's base winnings as items
       winnings = winnings.map((e: number) => bet * e).reduce((p: number, c: number) => {
-        ret4rn Math.round((p + c) / (multi / 100))
+        return Math.round((p + c) / (multi / 100))
       });
 
       return { length, winnings: Math.round(winnings) };
