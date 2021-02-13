@@ -94,12 +94,12 @@ export default class Utility extends Command {
         await channel.send(`**\`${collected.length}\` are teaming up to split __${amount.toLocaleString()}__ coins...**`);
         collected.sort(() => Math.random() - 0.5).forEach(c => Math.random() > 0.1 ? success.push(c) : {});
         const coins = Math.round(amount / success.length);
-        const order = success.length ? success.map(s => s.author.toString()).join(', ') : '**Everybody died LOL**';
+        const order = success.length ? success.map(s => s.author.toString()).join(', ') : '**Everybody died LOL :skull::skull::skull:**';
         return channel.send(`**Good job everybody, we split up \`${coins.toLocaleString()}\` coins each!\n\n${order}`);
     }
 
     private async lockChan(this: Message, bool: boolean): Promise<TextChannel> {
         const change: PermissionOverwriteOption = { SEND_MESSAGES: bool };
-        return await (<TextChannel>this.channel).updateOverwrite(this.guild.id, change, `Event by ${this.author.tag}`);
+        return await (<TextChannel>this.channel).updateOverwrite(this.guild.id, change, `JEvent by: ${this.author.tag}`);
     }
 }
