@@ -22,7 +22,6 @@ const __modDirs = join(__dirname, '..', '..', 'modules');
 const commandDir = join(__modDirs, 'commands');
 const listenerDir = join(__modDirs, 'emitters');
 const spawnDir = join(__modDirs, 'spawns');
-const gameDir = join(__modDirs, 'games');
 
 /**
  * Extends the instance of AkairoClient
