@@ -1,6 +1,6 @@
 {
   "name": "lava",
-  "version": "2.09.00",
+  "version": "2.09.01",
   "description": "Lava, made with typescript and discord-akairo.",
   "author": {
     "name": "Brian",
@@ -15,7 +15,7 @@
   },
   "keywords": [
     "discord-bot",
-    "music-bot"
+    "dank-memer"
   ],
   "license": "ISC",
   "dependencies": {
