@@ -82,7 +82,7 @@ export default class Utility extends Command {
             await this.client.util.sleep(this.client.util.randomNumber(5, 10) * 1000);
             entries.array().sort(() => Math.random() - 0.5).forEach(c => Math.random() > 0.65 && success.length <= 30 ? success.push(c) : {});
             const coins = Math.round(amount / success.length);
-            const order = success.length ? success.map(s => `+ ${s.nickname} got ${coins.toLocaleString()}`) : ['- Everybody died LOL'];
+            const order = success.length ? success.map(s => `+ ${s.nickname === null ? s.user.username : s.nickname} got ${coins.toLocaleString()}`) : ['- Everybody died LOL'];
             await channel.send(`**Good job everybody, we split up \`${(coins ? coins : 1).toLocaleString()}\` coins each!**`);
             await channel.send({
                 code: 'diff',
