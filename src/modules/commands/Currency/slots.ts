@@ -153,8 +153,9 @@ export default class Currency extends Command {
 
     if (length === 1 || length === 2) {
       let winnings: any = Array(length === 1 ? 3 : length).fill(emojWins) // emoji's base winnings as items
+      console.log('Winnings[]:', winnings);
       winnings = winnings.map((e: number) => bet * (e + (e * multi))).reduce((p: number, c: number) => p + c);
-      console.log(winnings);
+      console.log('Number Winnings:', winnings);
       return { length, winnings: Math.round(winnings) };
     } else {
       return { length, winnings: 0 };
