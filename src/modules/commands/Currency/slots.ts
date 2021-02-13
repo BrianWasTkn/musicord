@@ -141,6 +141,7 @@ export default class Currency extends Command {
   private calcWinnings(bet: number, slots: string[], multi: number): { [k: string]: number } {
     const { slotMachine } = this.client.config.currency;
     const rate: number[] = Object.values(slotMachine);
+    console.log('Rate:', rate);
     // ty daunt
     const won: number[] = rate.map((_, i, ar) => ar[slots.indexOf(slots[i])]);
     console.log('Won:', won);
@@ -149,9 +150,9 @@ export default class Currency extends Command {
     console.log('Length:', length);
 
     if (length === 1 || length === 2) {
-      const winnings: number = won.map(w => bet * (w + (w * multi))).reduce((p, c) => p + c);
+      const winnings: number[] = won.map(w => bet * (w + (w * multi)))//.reduce((p, c) => p + c);
       console.log(winnings);
-      return { length, winnings: 5 || Math.round(winnings) };
+      return { length, winnings: bet /**|| Math.round(winnings)*/ };
     } else {
       return { length, winnings: 0 };
     }
