@@ -141,9 +141,10 @@ export default class Currency extends Command {
   private calcWinnings(bet: number, slots: string[], multi: number): { [k: string]: number } {
     const { slotMachine } = this.client.config.currency;
     const rate: number[] = Object.values(slotMachine);
+    const emojis: string[] = Object.keys(slotMachine);
     console.log('Rate:', rate);
     // ty daunt
-    const won: number[] = rate.map((_, i, ar) => ar[slots.indexOf(slots[i])]);
+    const won: number[] = rate.map((_, i, ar) => ar[emojis.indexOf(slots[i])]);
     console.log('Won:', won);
     const filter = (emoji: string, i: number, ar: string[]) => ar.indexOf(emoji) === i;
     const length = slots.filter(filter).length;
