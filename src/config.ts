@@ -7,11 +7,11 @@ const currency: Lava.ConfigCurrency = {
 		maxMulti: 120
 	},
 	slotMachine: {
-		'clown': 1.1,
-		'peach': 1.3,
-		'flushed': 1.7,
-		'star2': 2.4,
-		'fire': 3.0
+		'clown': 0.5540560,
+		'peach': 0.83164241,
+		'flushed': 1.20150468,
+		'star2': 1.6156104601,
+		'fire': 2.01015608
 	}
 }
 
