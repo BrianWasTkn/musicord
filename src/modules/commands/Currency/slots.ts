@@ -144,16 +144,16 @@ export default class Currency extends Command {
     const emojis: string[] = Object.keys(slotMachine);
     console.log('Rate:', rate);
     // ty daunt
-    const won: number[] = rate.map((_, i, ar) => ar[emojis.indexOf(slots[i])]);
+    const won: number[] = rate.map((_, i, ar) => ar[emojis.indexOf(slots[i])]).filter(Boolean);
     console.log('Won:', won);
     const filter = (emoji: string, i: number, ar: string[]) => ar.indexOf(emoji) === i;
     const length = slots.filter(filter).length;
     console.log('Length:', length);
 
     if (length === 1 || length === 2) {
-      const winnings: number[] = won.map(w => bet * (w + (w * multi)))//.reduce((p, c) => p + c);
+      const winnings: number = won.map(w => bet * (w + (w * multi))).reduce((p, c) => p + c);
       console.log(winnings);
-      return { length, winnings: bet /**|| Math.round(winnings)*/ };
+      return { length, winnings: Math.round(winnings) };
     } else {
       return { length, winnings: 0 };
     }
