@@ -79,7 +79,7 @@ export default class Utility extends Command {
             }
 
             await channel.send(`**\`${collected.size}\` are teaming up to split __${amount.toLocaleString()}__ coins...**`);
-            collected.array().sort(() => Math.random() - 0.5).forEach(c => Math.random() > 0.1 ? success.push(c) : {});
+            collected.array().sort(() => Math.random() - 0.5).forEach(c => Math.random() > 0.65 && success.length <= 30 ? success.push(c) : {});
             const coins = Math.round(amount / success.length);
             const order = success.length ? success.map(s => s.author.toString()).join(', ') : '**Everybody died LOL :skull::skull::skull:**';
             return channel.send(`**Good job everybody, we split up \`${coins.toLocaleString()}\` coins each!**\n\n${order}`);
