@@ -4,7 +4,6 @@ import {
     Collection, 
     TextChannel,
     CollectorFilter,
-    MessageCollector,
     MessageCollectorOptions,
     PermissionOverwriteOption
  } from 'discord.js'

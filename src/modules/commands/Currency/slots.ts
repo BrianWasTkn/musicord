@@ -20,19 +20,6 @@ export default class Currency extends Command {
   }
 
   /**
-   * Picks random objects from the array 3 times for the main slot machine
-   * @param emojis an array of slot emoji objects
-   */
-  public roll(emojis: EmojiResolvable[]): EmojiResolvable[] {
-    const { util } = this.client;
-    const slots = [];
-    for (let i = 0; i < 3; i++) {
-      slots.push(util.randomInArray(emojis));
-    }
-    return slots;
-  }
-
-  /**
    * Checks command arguments and caps
    * @param _ a discord message obj
    * @param args the passed arguments
@@ -42,7 +29,7 @@ export default class Currency extends Command {
     const db = await this.client.db.currency.fetch(_.author.id);
     let bet = args.amount;
     // no bet amounts 
-    if (!bet) [,,'You need something to gamble.'];
+    if (!bet) return [,,'You need something to gamble.'];
     // transform arguments
     if (isNaN(bet)) {
       if (bet === 'all') {
@@ -86,12 +73,12 @@ export default class Currency extends Command {
    * @param args the passed command arguments
    */
   public async exec(_: Message, args: any): Promise<Message> {
-    const { db: DB, config: { currency } } = this.client;
+    const { util, db: DB, config: { currency } } = this.client;
     // Check Args
     const [condition, bet, message] = await this.checkArgs(_, args);
     if (!condition) return _.channel.send(message);
     // Slot Emojis
-    const [ a, b, c ] = this.roll(Object.keys(currency.slotMachine));
+    const [ a, b, c ] = Array(3).fill(null).map(() => util.randomInArray(Object.keys(currency.slotMachine)));
     const outcome = `**>** :${[a, b, c].join(':    :')}: **<**`;
     const msg = await _.channel.send({ embed: {
       author: { name: `${_.author.username}'s slot machine` },
@@ -100,23 +87,30 @@ export default class Currency extends Command {
 
     // Calc amount
     const { total: multi } = await DB.currency.util.calcMulti(this.client, _);
-    const data = await DB.currency.fetch(_.author.id);
-    let { isWin, winnings } = this.calcWinnings([a, b, c], data, bet);
+    let { length, winnings } = this.calcWinnings(bet, [a, b, c], multi);
     // Visuals
     let color: ColorResolvable = 'RED';
     let description: string, db: any;
     let state: 'losing' | 'winning' | 'jackpot' = 'losing';
 
-    if (isWin) {
+    if (length === 1 || length === 2) {
       const { maxWin } = currency.gambleCaps;
       if (winnings > maxWin) winnings = maxWin;
       let percentWon: number = Math.round((winnings / bet) * 100);
       db = await DB.currency.addPocket(_.author.id, winnings);
-      color = 'GOLD'; state = 'jackpot';
-      description = [
-        `**JACKPOT! You won __${percentWon}%__ of your bet.**`,
-        `You won **${winnings.toLocaleString()}** coins.`
-      ].join('\n');
+      if (length === 1) {
+        color = 'GOLD'; state = 'jackpot';
+        description = [
+          `**JACKPOT! You won __${percentWon}%__ of your bet.**`,
+          `You won **${winnings.toLocaleString()}** coins.`
+        ].join('\n');
+      } else {
+        color = 'GREEN'; state = 'winning';
+        description = [
+          `**Winner! You won __${percentWon}%__ of your bet.**`,
+          `You won **${winnings.toLocaleString()}** coins.`
+        ].join('\n');
+      }
     } else {
       db = await DB.currency.removePocket(_.author.id, bet);
       color = 'RED'; state = 'losing';
@@ -143,36 +137,20 @@ export default class Currency extends Command {
         iconURL: this.client.user.avatarURL() }
     }});
   }
-  
-  /**
-   * Calculates the overall winnings for the slot machine
-   * @param {EmojiResolvable} order  an array of emojis
-   * @param {object} data the mongodb data of te author
-   * @param {number} bet the bet amount of the author
-   * @returns {object} 
-   */
-  public calcWinnings(
-    slots: EmojiResolvable[], 
-    data: any, bet: number
-    ): { isWin: boolean, winnings: number } {
 
+  private calcWinnings(bet: number, slots: string[], multi: number): { [k: string]: number } {
     const { slotMachine } = this.client.config.currency;
-    const [ emojis, winnings ] = [Object.keys(slotMachine), Object.values(slotMachine)];
+    const rate: number[] = Object.values(slotMachine);
+    // ty daunt
+    const won: number[] = rate.map((_, i, ar) => ar[slots.indexOf(slots[i])]);
+    const filter = (emoji: string, i: number, ar: string[]) => ar.indexOf(emoji) === i;
+    const length = slots.filter(filter).length;
 
-    if (slots.every((
-      emoji: EmojiResolvable,
-      _i: number,
-      arr: EmojiResolvable[]) => {
-      return emoji === arr[0];
-    })) {
-      let won: any = slots.map((s: string) => winnings[emojis.indexOf(s)]);
-      won = (won as number[]).reduce((p: number, c: number) => p + c);
-      let multi = (won + (won * (data.multi / 100)));
-      won = Math.round(multi * bet);
-
-      return { isWin: true, winnings: won };
+    if (length === 1 || length === 2) {
+      const winnings: number = won.map(w => bet * (w + (w + multi))).reduce((p, c) => p + c);
+      return { length, winnings: Math.round(winnings) };
+    } else {
+      return { length, winnings: 0 };
     }
-    
-    return { isWin: false, winnings: 0 };
   }
 }
