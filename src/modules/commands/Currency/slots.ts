@@ -73,7 +73,7 @@ export default class Currency extends Command {
    * @param args the passed command arguments
    */
   public async exec(_: Message, args: any): Promise<Message> {
-    const { util, db: DB, config: { currency } } = this.client;
+    const { util, db: { currency: DB }, config: { currency } } = this.client;
     // Check Args
     const [condition, bet, message] = await this.checkArgs(_, args);
     if (!condition) return _.channel.send(message);
@@ -86,7 +86,7 @@ export default class Currency extends Command {
     }});
 
     // Calc amount
-    const { total: multi } = await DB.currency.util.calcMulti(this.client, _);
+    const { total: multi } = await DB.util.calcMulti(this.client, _);
     let { length, winnings } = this.calcWinnings(bet, [a, b, c], multi);
     // Visuals
     let color: ColorResolvable = 'RED';
@@ -97,7 +97,7 @@ export default class Currency extends Command {
       const { maxWin } = currency.gambleCaps;
       if (winnings > maxWin) winnings = maxWin;
       let percentWon: number = Math.round((winnings / bet) * 100);
-      db = await DB.currency.addPocket(_.author.id, winnings);
+      db = await DB.addPocket(_.author.id, winnings);
       if (length === 1) {
         color = 'GOLD'; state = 'jackpot';
         description = [
@@ -112,7 +112,7 @@ export default class Currency extends Command {
         ].join('\n');
       }
     } else {
-      db = await DB.currency.removePocket(_.author.id, bet);
+      db = await DB.removePocket(_.author.id, bet);
       color = 'RED'; state = 'losing';
       description = [
         `**RIP! You lost this round.**`,
@@ -143,12 +143,15 @@ export default class Currency extends Command {
     const rate: number[] = Object.values(slotMachine);
     // ty daunt
     const won: number[] = rate.map((_, i, ar) => ar[slots.indexOf(slots[i])]);
+    console.log('Won:', won);
     const filter = (emoji: string, i: number, ar: string[]) => ar.indexOf(emoji) === i;
     const length = slots.filter(filter).length;
+    console.log('Length:', length);
 
     if (length === 1 || length === 2) {
-      const winnings: number = won.map(w => bet * (w + (w + multi))).reduce((p, c) => p + c);
-      return { length, winnings: Math.round(winnings) };
+      const winnings: number = won.map(w => bet * (w + (w * multi))).reduce((p, c) => p + c);
+      console.log(winnings);
+      return { length, winnings: 5 || Math.round(winnings) };
     } else {
       return { length, winnings: 0 };
     }
