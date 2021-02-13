@@ -79,7 +79,7 @@ export default class Utility extends Command {
         string = typeof string === 'function' ? string(_) : string;
         await channel.send(`**Type \`${string.toUpperCase()}\` to split __${amount.toLocaleString()}__ coins!**`);
         const entries: Collection<string, boolean> = new Collection();
-        const filter: CollectorFilter = (m: Message) => !entries.has(m.author.id);
+        const filter: CollectorFilter = (m: Message) => m.content.toLowerCase() === string.toLowerCase() && !entries.has(m.author.id);
         const options: MessageCollectorOptions = { max: Infinity, time: 3e4 };
         
         const collected = [...(this.collect(_, filter, options, entries)).values()];
