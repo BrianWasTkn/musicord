@@ -44,7 +44,7 @@ export default class Utility extends Command {
         }
 
         entries.set(this.author.id, true);
-        return this.react('memerGold:753138901169995797');
+        return this.react('<:memerGold:753138901169995797>');
     }
 
     public async exec(_: Message, args: any): Promise<Message> {
@@ -68,7 +68,7 @@ export default class Utility extends Command {
         const options: MessageCollectorOptions = { max: Infinity, time: 3e4 };
         
         const collector = channel.createMessageCollector(filter, options);
-        collector.on('collect', (m: Message) => this.handleCollect.bind(m, collector, entries));
+        collector.on('collect', (m: Message) => (this.handleCollect.bind(m))(collector, entries));
         collector.on('end', async (collected: Collection<string, Message>) => {
             let success: Message[] = [];
             events.delete(guild.id);
@@ -82,7 +82,7 @@ export default class Utility extends Command {
             collected.array().sort(() => Math.random() - 0.5).forEach(c => Math.random() > 0.1 ? success.push(c) : {});
             const coins = Math.round(amount / success.length);
             const order = success.length ? success.map(s => s.author.toString()).join(', ') : '**Everybody died LOL :skull::skull::skull:**';
-            return channel.send(`**Good job everybody, we split up \`${coins.toLocaleString()}\` coins each!\n\n${order}`);
+            return channel.send(`**Good job everybody, we split up \`${coins.toLocaleString()}\` coins each!**\n\n${order}`);
         });
     }
 
