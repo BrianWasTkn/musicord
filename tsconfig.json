@@ -20,11 +20,18 @@
 
     /* Module Resolution Options */
     "moduleResolution": "node",               /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+    "esModuleInterop": true,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "./src/types/*",
+        "./node_modules/*"
+      ]
+    },
     "typeRoots": [
-      "./types", 
+      "./src/types", 
       "./node_modules/@types"
     ],                                        /* List of folders to include type definitions from. */
-    "esModuleInterop": true,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
 
     /* Source Map Options */
     "inlineSourceMap": false,                 /* Emit a single file with source maps instead of having a separate file. */

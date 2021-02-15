@@ -1,3 +1,5 @@
-import { LavaClient } from './lib/structures/Client'
+import 'dotenv/config'
+import Bot from './structures/Client'
+import config from './config'
 
-new LavaClient().build();
+new Bot(config.token);
