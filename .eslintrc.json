@@ -5,7 +5,9 @@
       "allowTemplateLiterals": true
     }],
     "no-unused-vars": "error",
-    "no-func-assign": "error",
-    "explicit-module-boundary-types": "ignore"
+    "no-func-assign": "off",
+    "no-var-requires": "off",
+    "no-explicit-any": "off",
+    "explicit-module-boundary-types": "off"
   }
 }
