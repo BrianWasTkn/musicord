@@ -27,7 +27,7 @@ export class Lava {
         const patchListeners = this._patchEvents.bind(this);
         
         patchCommands(join(__dirname, '..', 'commands'));
-        patchListeners(join(__dirname, '..', 'events'));
+        patchListeners(join(__dirname, '..', 'services'));
     }
 
     private _patchCommands(this: Lava, commandsDir: string): Lava {
