@@ -9,7 +9,6 @@ import {
 	AkairoModule
 } from 'discord-akairo'
 
-import GiveawayHandler from '../handlers/GiveawayHandler'
 import SpawnHandler from '../handlers/SpawnHandler'
 import Spawn from './Spawn'
 import Util from './Util'
@@ -36,9 +35,8 @@ export class Client extends AkairoClient implements Akairo.Client {
 	public spawnHandler: Akairo.SpawnHandler;
 	// public giveawayManager: Akairo.GiveawayHandler;
 	public constructor(config: Lava.Config) {
-		super({ 
-			ownerID: config.bot.ownerID 
-		}, config.bot.clientOptions);
+		const { ownerID } = config.bot;
+		super({ ownerID }, config.bot.clientOptions);
 		
 		// Basic Stuff
 		this.config = config;
