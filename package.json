@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "rimraf ./dist && tsc --project tsconfig.json",
     "lint": "eslint . --ext .js,.ts"
   },
   "keywords": [],
