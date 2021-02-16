@@ -22,6 +22,9 @@ Although the full code is visible here and is available to self-host on any comp
 * [ ] **Modularity** - Modular loading of functions instead of static methods in `ClientUtil`
 * [ ] **Premium?** - Eh, i'm not EA whatever. 
 
+### Acknowledgements
+* **Dauntless#0711** - Core function of the slot machine
+
 ### Author
 **Copyright © 2021**\
 **Made by [BrianWasTaken](https://github.com/BrianWasTkn)**

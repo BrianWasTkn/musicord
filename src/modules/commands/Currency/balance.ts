@@ -31,7 +31,7 @@ export default class Currency extends Command {
         text: 'discord.gg/memer',
       }
     });
-
+    
     return _.channel.send({ embed });
   }
 }

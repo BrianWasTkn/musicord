@@ -143,17 +143,16 @@ export default class Currency extends Command {
     const rate: number[] = Object.values(slotMachine);
     const emojis: string[] = Object.keys(slotMachine);
     // ty daunt
-    const filter = (thing: string, i: number, ar: string[]) => ar.indexOf(thing) === i;
-    const length = slots.filter(filter).length;
+    const length = slots.filter((thing: string, i: number, ar: string[]) => ar.indexOf(thing) === i).length;
     const won: number[] = rate.map((_, i, ar) => ar[emojis.indexOf(slots[i])]).filter(Boolean); // mapped to their index
-    const [emojWins] = won.filter((ew: number, i: number, a: number[]) => a.indexOf(ew) !== i);
+    const [emojRate] = won.filter((ew: number, i: number, a: number[]) => a.indexOf(ew) !== i);
 
     if (length === 1 || length === 2) {
-      let winnings: any = Array(length === 1 ? 3 : length).fill(emojWins) // emoji's base winnings as items
+      let winnings: any = Array(length === 1 ? 3 : length).fill(emojRate) // emoji's base winnings as items
       winnings = winnings
-      .map((e: number) => e + (multi / 100))
-      .map((e: number) => bet * e)
-      .reduce((p: number, c: number) => p + c);
+        .map((w: number) => w * bet)
+        .map((w: number) => w + (w * (multi / 100)))
+        .reduce((p: number, c: number) => p + c);
 
       return { length, winnings: Math.round(winnings) };
     } else {
