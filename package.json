@@ -27,5 +27,5 @@
     "eris": "^0.14.0",
     "moment": "^2.29.1"
   },
-  "types": "./types/lava.d.ts"
+  "types": "./src/types/lava.d.ts"
 }

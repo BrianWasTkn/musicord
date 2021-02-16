@@ -1,48 +1,39 @@
 {
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"],
-  "compilerOptions": {
-    /* Visit https://aka.ms/tsconfig.json to read more about this file */
+	"include": ["src/**/*"],
+	"exclude": ["node_modules"],
+	"compilerOptions": {
+		/* Visit https://aka.ms/tsconfig.json to read more about this file */
 
-    /* Basic Options */
-    "incremental": true,                      /* Enable incremental compilation */
-    "target": "es2018",                       /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */
-    "module": "commonjs",                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */
-    "lib": ["es6"],                           /* Specify library files to be included in the compilation. */
-    "sourceMap": false,                       /* Generates corresponding '.map' file. */
-    "outDir": "./dist",                       /* Redirect output structure to the directory. */
+		/* Basic Options */
+		"incremental": true,                      /* Enable incremental compilation */
+		"target": "es2018",                       /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */
+		"module": "commonjs",                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */
+		"lib": ["es6"],                           /* Specify library files to be included in the compilation. */
+		"sourceMap": false,                       /* Generates corresponding '.map' file. */
+		"outDir": "./dist",                       /* Redirect output structure to the directory. */
 
-    /* Strict Type-Checking Options */
-    "strict": true,                           /* Enable all strict type-checking options. */
-    "noImplicitAny": false,                   /* Raise error on expressions and declarations with an implied 'any' type. */
+		/* Strict Type-Checking Options */
+		"strict": false,                           /* Enable all strict type-checking options. */
+		"noImplicitAny": false,                   /* Raise error on expressions and declarations with an implied 'any' type. */
 
-    /* Additional Checks */
+		/* Additional Checks */
 
-    /* Module Resolution Options */
-    "moduleResolution": "node",               /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
-    "esModuleInterop": true,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
-    "baseUrl": ".",
-    "paths": {
-      "*": [
-        "./src/types/*",
-        "./node_modules/*"
-      ]
-    },
-    "typeRoots": [
-      "./src/types", 
-      "./node_modules/@types"
-    ],                                        /* List of folders to include type definitions from. */
+		/* Module Resolution Options */
+		"moduleResolution": "node",               /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+		"esModuleInterop": true,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+		"baseUrl": ".",
+		"typeRoots": ["./node_modules/@types"],	  /* List of folders to include type definitions from. */
 
-    /* Source Map Options */
-    "inlineSourceMap": false,                 /* Emit a single file with source maps instead of having a separate file. */
-    "inlineSources": false,                   /* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap' to be set. */
+		/* Source Map Options */
+		// "inlineSourceMap": false,                 /* Emit a single file with source maps instead of having a separate file. */
+		// "inlineSources": false,                   /* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap' to be set. */
 
-    /* Experimental Options */
-    "experimentalDecorators": true,           /* Enables experimental support for ES7 decorators. */
-    "emitDecoratorMetadata": true,            /* Enables experimental support for emitting type metadata for decorators. */
+		/* Experimental Options */
+		// "experimentalDecorators": true,           /* Enables experimental support for ES7 decorators. */
+		// "emitDecoratorMetadata": true,            /* Enables experimental support for emitting type metadata for decorators. */
 
-    /* Advanced Options */
-    "skipLibCheck": true,                     /* Skip type checking of declaration files. */
-    "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
-  }
-}
+		/* Advanced Options */
+		// "skipLibCheck": true,                     /* Skip type checking of declaration files. */
+		// "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
+	}
+}  

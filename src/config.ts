@@ -1,5 +1,7 @@
-export default <Lava.Config> {
+import { ConfigInterface } from './types/interfaces/ConfigInterfaces'
+
+export default <ConfigInterface> {
     token: <string> process.env.TOKEN,
-    prefix: 'l!',
-    owners: ''
+    owners: '605419747361947649',
+    prefix: 'lava'
 }
