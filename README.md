@@ -1,7 +1,7 @@
 <div align="center">
   
 # Lava
-A multi-purpose discord bot for utilizing unique games and events for your [Dank Memer](https://dankmemer.lol 'Visit site')-based discord server.
+A multi-purpose discord bot for utilizing unique games and events for your [Dank Memer](https://dankmemer.lol 'Visit site')-based discord server.\
 [![Discord](https://img.shields.io/discord/691416705917779999?color=FB8B23&label=Discord&logo=Discord&logoColor=fafafa&style=for-the-badge)](https://discord.gg/memer)
 
 </div>
