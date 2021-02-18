@@ -1,0 +1,9 @@
+# Folders
+node_modules
+build
+
+# Files
+README.md 
+tsconfig.json
+package-lock.json
+package.json

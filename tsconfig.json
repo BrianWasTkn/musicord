@@ -1,22 +1,22 @@
 {
-	"exclude": ["node_modules"],
-	"include": ["src/**/*"],
-	"compilerOptions": {
-		"module": "commonjs",
-		"target": "es2018",
-		"outDir": "build",
-		"skipLibCheck": true,
-		"resolveJsonModule": true,
-		"moduleResolution": "node",
-		"sourceMap": false,
-		"inlineSourceMap": false,
-		"inlineSources": false,
-		"incremental": true,
-		"esModuleInterop": true,
-		"noImplicitAny": false,
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
-		"typeRoots": ["./src/typings", "./node_modules/@types"],
-		"lib": ["es6"]
-	}
+    "exclude": ["node_modules"],
+    "include": ["src/**/*"],
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2018",
+        "outDir": "build",
+        "skipLibCheck": true,
+        "resolveJsonModule": true,
+        "moduleResolution": "node",
+        "sourceMap": false,
+        "inlineSourceMap": false,
+        "inlineSources": false,
+        "incremental": true,
+        "esModuleInterop": true,
+        "noImplicitAny": false,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "typeRoots": ["./src/typings", "./node_modules/@types"],
+        "lib": ["es6"]
+    }
 }
