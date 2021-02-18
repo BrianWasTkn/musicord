@@ -1,7 +1,11 @@
 # Lava
 > Provide utilities for your [Dank Memer](https://dankmemer.lol 'Visit Site')-based discord server.
 
+<div align="center">
+  
 [![Support](https://img.shields.io/discord/691416705917779999?color=FB8B23&label=Support&logo=Discord&logoColor=fafafa&style=for-the-badge)](https://discord.gg/memer)
+
+</div>
 
 ## Features
 * **Spawner** - Spawn events on a channel to earn $$$ (not real ones, ok?).
