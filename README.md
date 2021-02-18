@@ -26,5 +26,5 @@ Although the full code is visible here and is available to self-host on any comp
 
 ## Author
 **Lava** © [BrianWasTaken](https://github.com/BrianWasTkn).\
-Authored and maintained by BrianWasTaken.\
+Authored and maintained by BrianWasTaken.
 > Github [@BrianWasTaken](https://github.com/BrianWasTkn)
