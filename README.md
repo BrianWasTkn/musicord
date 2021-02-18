@@ -18,12 +18,13 @@ Although the full code is visible here and is available to self-host on any comp
 2. Open up your terminal and change your dir into lava: `cd lava`
 3. Install the required dependencies: `npm i`
 4. Since Lava's source is made with typescript, build the source code: `npm run build`
-5. Run the bot something: `npm run start` or `node build/lava.js`
+5. Run the bot something: `npm run start` or `node build/lava`
 6. Done.
 
 ## Acknowledgements
 * **Dauntless#0711** - *core of slot machine* - [discord](https://discord.com/invite/Ha7pRB4)
 
 ## Author
-**Copyright © [BrianWasTaken](https://github.com/BrianWasTkn)**\
-Made and maintained by Brian.
+**Lava** © [BrianWasTaken](https://github.com/BrianWasTkn).\
+Authored and maintained by BrianWasTaken.\
+> Github [@BrianWasTaken](https://github.com/BrianWasTkn)
