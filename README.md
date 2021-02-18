@@ -1,14 +1,11 @@
-<div align="center">
-  
 # Lava
-A multi-purpose discord bot for utilizing unique games and events for your [Dank Memer](https://dankmemer.lol 'Visit site')-based discord server.\
-[![Discord](https://img.shields.io/discord/691416705917779999?color=FB8B23&label=Discord&logo=Discord&logoColor=fafafa&style=for-the-badge)](https://discord.gg/memer)
+> Provide utilities for your [Dank Memer](https://dankmemer.lol 'Visit Site')-based discord server.
 
-</div>
+[![Support](https://img.shields.io/discord/691416705917779999?color=FB8B23&label=Support&logo=Discord&logoColor=fafafa&style=for-the-badge)](https://discord.gg/memer)
 
 ## Features
 * **Spawner** - Spawn events on a channel to earn $$$ (not real ones, ok?).
-* **Games** - Gambling games, fight or guess the number games, on the go.
+* **Games** - Gambling games, fight or spam games, on the go.
 
 ## Self-Hosting
 Although the full code is visible here and is available to self-host on any compatible machine, I wouldn't mind you hosting your own version. But please, don't host a public version of this bot. The main reason is lava is not fully dependent to databases yet. So the functionality and everything still depends to the [local config](./src/config.ts) for easy import.
