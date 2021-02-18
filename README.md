@@ -4,7 +4,7 @@
 
 <div align="center">
   
-[![Support](https://img.shields.io/discord/691416705917779999?color=FB8B23&label=Support&logo=Discord&logoColor=fafafa&style=for-the-badge)](https://discord.gg/memer)
+[![Support](https://img.shields.io/discord/691416705917779999?color=FB8B23&label=Support&style=for-the-badge)](https://discord.gg/memer)
 
 </div>
 
