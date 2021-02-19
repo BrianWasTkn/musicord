@@ -26,8 +26,8 @@ Although the full code is visible here and is available to self-host on any comp
 2. Open up your terminal and change your dir into lava: `cd lava`
 3. Install the required dependencies: `npm i`
 4. Since Lava's source is made with typescript, build the source code: `npm run build`
-5. Run the bot something: `npm run start` or `node build/lava`
-6. Done.
+5. Fill in the `.env` variables and our config in `src/config`
+6. Run the bot something: `npm run start` or `node build/lava`
 
 ## Acknowledgements
 
