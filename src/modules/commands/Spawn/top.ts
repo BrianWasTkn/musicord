@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 
 export default class Spawn extends Command {
     public client: Akairo.Client
-    
+
     constructor() {
         super('top', {
             aliases: ['top', 't'],

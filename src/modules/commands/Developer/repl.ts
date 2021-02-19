@@ -5,7 +5,7 @@ import repl from 'programmatic-repl'
 
 export default class Dev extends Command {
     public client: Akairo.Client
-    
+
     constructor() {
         super('repl', {
             aliases: ['repl'],

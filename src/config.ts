@@ -10,7 +10,7 @@ const currency: Lava.ConfigCurrency = {
         maxWin: 2222222,
         maxPocket: 10000000,
         maxMulti: 120,
-    }
+    },
 }
 
 const spawns: Lava.ConfigSpawn = {
@@ -43,11 +43,11 @@ const bot: Lava.ConfigLava = {
     prefix: ['lava', ';;'],
     token: process.env.TOKEN,
     ownerID: ['605419747361947649'],
-    intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES']
+    intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES'],
 }
 
-export default <Lava.Config> { 
-    bot, 
-    currency, 
-    spawns
+export default <Lava.Config>{
+    bot,
+    currency,
+    spawns,
 }

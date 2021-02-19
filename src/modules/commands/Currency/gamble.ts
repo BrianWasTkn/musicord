@@ -4,7 +4,7 @@ import { Document } from 'mongoose'
 
 export default class Currency extends Command {
     public client: Akairo.Client
-    
+
     constructor() {
         super('bet', {
             aliases: ['gamble', 'roll', 'bet'],
@@ -28,9 +28,7 @@ export default class Currency extends Command {
             maxBet,
             maxPocket,
         } = this.client.config.currency.gambleCaps
-        const {
-            pocket
-        } = await this.client.db.currency.fetch(_.author.id)
+        const { pocket } = await this.client.db.currency.fetch(_.author.id)
         let bet = args.amount
 
         // no bet amounts
@@ -53,26 +51,29 @@ export default class Currency extends Command {
 
         // check limits
         if (pocket <= 0) return 'You have no coins :skull:'
-        if (bet > maxBet) return `You can't gamble higher than **${maxBet.toLocaleString()}** coins >:(`
-        if (bet < minBet) return `C'mon, you're not gambling lower than **${minBet.toLocaleString()}** yeah?`
-        if (bet > pocket) return `You only have **${pocket.toLocaleString()}** lol don't try me`
+        if (bet > maxBet)
+            return `You can't gamble higher than **${maxBet.toLocaleString()}** coins >:(`
+        if (bet < minBet)
+            return `C'mon, you're not gambling lower than **${minBet.toLocaleString()}** yeah?`
+        if (bet > pocket)
+            return `You only have **${pocket.toLocaleString()}** lol don't try me`
         if (pocket > maxPocket) return `You're too rich to dice the gamble`
         if (bet < 1) return 'It should be a positive number yeah?'
 
         // else return something
-        return bet;
+        return bet
     }
 
     public async exec(_: Message, args: any): Promise<Message> {
-        const { maxWin } = this.client.config.currency.gambleCaps;
+        const { maxWin } = this.client.config.currency.gambleCaps
         const {
             util,
-            db: { currency: DB }
+            db: { currency: DB },
         } = this.client
 
         const { total: multi } = await DB.util.calcMulti(this.client, _)
-        const bet = await this.checkArgs(_, args);
-        if (typeof bet === 'string') return _.channel.send(bet);
+        const bet = await this.checkArgs(_, args)
+        if (typeof bet === 'string') return _.channel.send(bet)
 
         // Dice Rolls
         const userD = util.randomNumber(1, 12)
@@ -93,15 +94,17 @@ export default class Currency extends Command {
 
             identifier = ties ? 'tie' : 'losing'
             color = ties ? 'YELLOW' : 'RED'
-            description = ties ? [
-                `**We Tied! Our dice are on same side.**`,
-                `You lost **${bet.toLocaleString()}** coins.\n`,
-                `You now have **${db.pocket.toLocaleString()}** coins.`,
-            ] : [
-                `**You lost! My dice is higher than yours.**`,
-                `You lost **${bet.toLocaleString()}** coins.\n`,
-                `You now have **${db.pocket.toLocaleString()}** coins.`,
-            ]
+            description = ties
+                ? [
+                      `**We Tied! Our dice are on same side.**`,
+                      `You lost **${bet.toLocaleString()}** coins.\n`,
+                      `You now have **${db.pocket.toLocaleString()}** coins.`,
+                  ]
+                : [
+                      `**You lost! My dice is higher than yours.**`,
+                      `You lost **${bet.toLocaleString()}** coins.\n`,
+                      `You now have **${db.pocket.toLocaleString()}** coins.`,
+                  ]
         } else if (userD > botD) {
             let winnings = Math.random()
             if (winnings < 0.3) winnings += 0.3
@@ -118,16 +121,27 @@ export default class Currency extends Command {
                 `You won **${won.toLocaleString()}** coins.\n`,
                 `You now have **${db.pocket.toLocaleString()}** coins.`,
             ]
-        } 
+        }
 
         // Message
         return _.channel.send({
             embed: new MessageEmbed()
-            .setAuthor(`${_.author.username}'s ${identifier} gambling game`, _.author.displayAvatarURL({ dynamic: true }))
-            .setColor(color).setDescription(description.join('\n'))
-            .addField(_.author.username, `Rolled a \`${userD}\``, true)
-            .addField(this.client.user.username, `Rolled a \`${botD}\``, true)
-            .setFooter(`Multiplier: ${multi}%`, this.client.user.avatarURL())
+                .setAuthor(
+                    `${_.author.username}'s ${identifier} gambling game`,
+                    _.author.displayAvatarURL({ dynamic: true })
+                )
+                .setColor(color)
+                .setDescription(description.join('\n'))
+                .addField(_.author.username, `Rolled a \`${userD}\``, true)
+                .addField(
+                    this.client.user.username,
+                    `Rolled a \`${botD}\``,
+                    true
+                )
+                .setFooter(
+                    `Multiplier: ${multi}%`,
+                    this.client.user.avatarURL()
+                ),
         })
     }
 }

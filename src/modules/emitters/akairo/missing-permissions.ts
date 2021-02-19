@@ -3,7 +3,7 @@ import { Listener, Command } from 'discord-akairo'
 
 export default class CommandListener extends Listener {
     public client: Akairo.Client
-    
+
     constructor() {
         super('missingPermissions', {
             emitter: 'commandHandler',

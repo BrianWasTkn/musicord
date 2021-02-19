@@ -3,7 +3,7 @@ import { Command } from 'discord-akairo'
 
 export default class Currency extends Command {
     public client: Akairo.Client
-    
+
     constructor() {
         super('burn', {
             aliases: ['burn'],

@@ -10,7 +10,7 @@ import Currency from './model'
 export default function dbCurrency(
     client: Akairo.Client
 ): Lava.CurrencyFunction {
-    return {
+    return ({
         util: utils,
 
         /**
@@ -161,5 +161,5 @@ export default function dbCurrency(
             await data.save()
             return data
         },
-    }
+    })
 }

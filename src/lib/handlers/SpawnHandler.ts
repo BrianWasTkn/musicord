@@ -8,10 +8,7 @@ import {
     MessageCollectorOptions,
     ReactionCollectorOptions,
 } from 'discord.js'
-import { 
-    AkairoHandler, 
-    AkairoHandlerOptions 
-} from 'discord-akairo'
+import { AkairoHandler, AkairoHandlerOptions } from 'discord-akairo'
 
 export default class SpawnHandler
     extends AkairoHandler
@@ -104,10 +101,7 @@ export default class SpawnHandler
             }
 
             this.emit('reactionStart', this, spawner, message) // send message, react to "react :emoji:" and call runCooldown()
-            const collector = message.createReactionCollector(
-                filter,
-                options
-            )
+            const collector = message.createReactionCollector(filter, options)
             collector.on('collect', (reaction: MessageReaction, user: User) => {
                 const isFirst =
                     collector.collected.first().users.cache.first().id ===

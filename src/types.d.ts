@@ -1,4 +1,3 @@
-
 declare namespace Lava {
     import {
         ClientOptions,
@@ -19,21 +18,18 @@ declare namespace Lava {
         CommandHandler,
         CommandHandlerOptions,
     } from 'discord-akairo'
-    import mongoose, { 
-        Document, 
-        Model
-    } from 'mongoose'
+    import mongoose, { Document, Model } from 'mongoose'
 
     //#region Interfaces
 
     // Core
     interface Konstructor {
-        dev?: boolean;
-        ownerID?: string[];
-        prefix?: string | string[];
-        intents?: ClientOptions["ws"]["intents"][]
-        token: string;
-        config: Config;
+        dev?: boolean
+        ownerID?: string[]
+        prefix?: string | string[]
+        intents?: ClientOptions['ws']['intents'][]
+        token: string
+        config: Config
     }
 
     // Configs
@@ -48,7 +44,7 @@ declare namespace Lava {
         token: string
         prefix: string[]
         ownerID: Snowflake[]
-        intents: ClientOptions["ws"]["intents"][]
+        intents: ClientOptions['ws']['intents'][]
     }
 
     interface ConfigSpawn {
@@ -62,7 +58,7 @@ declare namespace Lava {
     interface ConfigCurrency {
         gambleCaps: CurrencyCaps
     }
-    
+
     // Database
     interface DatabaseEndpoint {
         currency: CurrencyFunction

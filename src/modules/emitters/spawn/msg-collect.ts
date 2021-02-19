@@ -3,7 +3,7 @@ import { Message, MessageReaction } from 'discord.js'
 
 export default class SpawnListener extends Listener {
     public client: Akairo.Client
-    
+
     constructor() {
         super('spawn-messageCollect', {
             event: 'messageCollect',

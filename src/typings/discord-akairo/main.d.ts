@@ -31,7 +31,7 @@ declare namespace Akairo {
     class Client extends AkairoClient {
         public handlers: Handlers
         public config: Lava.Config
-        public util: Util;
+        public util: Util
         public db: Lava.DatabaseEndpoint
         public build(token?: string): Promise<string>
 
@@ -52,14 +52,14 @@ declare namespace Akairo {
     class GiveawayHandler extends EventEmitter {
         public client: Client
         public giveaways: Collection<Guild['id'], Lava.Giveaway[]>
-        
+
         public constructor(client: Client)
     }
 
     class ModuleHandler extends AkairoHandler {
         public modules: Collection<string, Module>
         public client: Client
-        
+
         public constructor(client: Client, options: AkairoHandlerOptions)
     }
 
@@ -92,10 +92,10 @@ declare namespace Akairo {
 
     interface Handlers {
         emitter: ListenerHandler
-        command: CommandHandler;
-        spawn: SpawnHandler;
+        command: CommandHandler
+        spawn: SpawnHandler
     }
-        
+
     interface SpawnConfig {
         odds: number
         type: SpawnConfigType

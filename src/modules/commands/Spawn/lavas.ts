@@ -3,7 +3,7 @@ import { Message, MessageEmbed } from 'discord.js'
 
 export default class Spawn extends Command {
     public client: Akairo.Client
-    
+
     constructor() {
         super('lavas', {
             aliases: ['lavas', 'unpaids', 'lvs'],

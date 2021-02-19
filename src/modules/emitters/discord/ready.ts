@@ -3,7 +3,7 @@ import { Listener } from 'discord-akairo'
 
 export default class DiscordListener extends Listener {
     public client: Akairo.Client
-    
+
     constructor() {
         super('ready', {
             emitter: 'client',

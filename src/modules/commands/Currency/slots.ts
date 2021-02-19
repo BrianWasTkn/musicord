@@ -4,7 +4,7 @@ import { Document } from 'mongoose'
 
 export default class Currency extends Command {
     public client: Akairo.Client
-    
+
     constructor() {
         super('slots', {
             aliases: ['slots', 'slotmachine', 's'],
@@ -46,9 +46,7 @@ export default class Currency extends Command {
             maxBet,
             maxPocket,
         } = this.client.config.currency.gambleCaps
-        const {
-            pocket
-        } = await this.client.db.currency.fetch(_.author.id)
+        const { pocket } = await this.client.db.currency.fetch(_.author.id)
         let bet = args.amount
 
         // no bet amounts
@@ -71,14 +69,17 @@ export default class Currency extends Command {
 
         // check limits
         if (pocket <= 0) return 'You have no coins :skull:'
-        if (bet > maxBet) return `You can't gamble higher than **${maxBet.toLocaleString()}** coins >:(`
-        if (bet < minBet) return `C'mon, you're not gambling lower than **${minBet.toLocaleString()}** yeah?`
-        if (bet > pocket) return `You only have **${pocket.toLocaleString()}** lol don't try me`
+        if (bet > maxBet)
+            return `You can't gamble higher than **${maxBet.toLocaleString()}** coins >:(`
+        if (bet < minBet)
+            return `C'mon, you're not gambling lower than **${minBet.toLocaleString()}** yeah?`
+        if (bet > pocket)
+            return `You only have **${pocket.toLocaleString()}** lol don't try me`
         if (pocket > maxPocket) return `You're too rich to machine the slot`
         if (bet < 1) return 'It should be a positive number yeah?'
 
         // else return something
-        return bet;
+        return bet
     }
 
     /**
@@ -95,17 +96,18 @@ export default class Currency extends Command {
 
         // Check Args
         const bet = await this.checkArgs(_, args)
-        if (typeof bet === 'string') return _.channel.send(bet);
+        if (typeof bet === 'string') return _.channel.send(bet)
 
         // Slot Emojis
-        const [a, b, c] = Array(3).fill(null)
+        const [a, b, c] = Array(3)
+            .fill(null)
             .map(() => util.randomInArray(Object.keys(this.slotMachine)))
         const outcome = `**>** :${[a, b, c].join(':    :')}: **<**`
         const msg = await _.channel.send({
             embed: new MessageEmbed()
-            .setAuthor(`${_.author.username}'s slot machine`)
-            .setDescription(outcome)
-        });
+                .setAuthor(`${_.author.username}'s slot machine`)
+                .setDescription(outcome),
+        })
 
         // Calc amount
         const { total: multi } = await DB.util.calcMulti(this.client, _)
@@ -124,16 +126,18 @@ export default class Currency extends Command {
             db = await DB.addPocket(_.author.id, winnings)
 
             // Embed
-            const jackpot = length === 1;
+            const jackpot = length === 1
             color = jackpot ? 'GOLD' : 'GREEN'
             state = jackpot ? 'jackpot' : 'winning'
-            description = jackpot ? [
-                `**JACKPOT! You won __${percentWon}%__ of your bet.**`,
-                `You won **${winnings.toLocaleString()}** coins.`,
-            ].join('\n') : [
-                `**Winner! You won __${percentWon}%__ of your bet.**`,
-                `You won **${winnings.toLocaleString()}** coins.`,
-            ].join('\n')
+            description = jackpot
+                ? [
+                      `**JACKPOT! You won __${percentWon}%__ of your bet.**`,
+                      `You won **${winnings.toLocaleString()}** coins.`,
+                  ].join('\n')
+                : [
+                      `**Winner! You won __${percentWon}%__ of your bet.**`,
+                      `You won **${winnings.toLocaleString()}** coins.`,
+                  ].join('\n')
         } else {
             db = await DB.removePocket(_.author.id, bet)
             color = 'RED'
@@ -149,10 +153,17 @@ export default class Currency extends Command {
         await this.client.util.sleep(1000)
         return msg.edit({
             embed: new MessageEmbed()
-            .setAuthor(`${_.author.username}'s ${state} slot machine`, _.author.avatarURL({ dynamic: true }))
-            .setColor(color).setDescription(description)
-            .addField('Outcome', outcome, true)
-            .setFooter(`Multiplier: ${multi}%`, this.client.user.avatarURL())
+                .setAuthor(
+                    `${_.author.username}'s ${state} slot machine`,
+                    _.author.avatarURL({ dynamic: true })
+                )
+                .setColor(color)
+                .setDescription(description)
+                .addField('Outcome', outcome, true)
+                .setFooter(
+                    `Multiplier: ${multi}%`,
+                    this.client.user.avatarURL()
+                ),
         })
     }
 

@@ -4,7 +4,7 @@ import { Command } from 'discord-akairo'
 
 export default class Dev extends Command {
     public client: Akairo.Client
-    
+
     constructor() {
         super('eval', {
             aliases: ['eval', 'ev'],

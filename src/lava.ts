@@ -1,6 +1,6 @@
 /**
  * Starting Point
- * Author: BrianWasTkn 
+ * Author: BrianWasTkn
  */
 
 import 'dotenv/config'
@@ -9,5 +9,5 @@ import config from './config'
 
 new Lava({
     ...config.bot,
-    config: config
-}).build();
+    config: config,
+}).build()

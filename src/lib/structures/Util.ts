@@ -8,10 +8,7 @@ import {
     MessageCollector,
     MessageCollectorOptions,
 } from 'discord.js'
-import { 
-    ClientUtil, 
-    AkairoHandler 
-} from 'discord-akairo'
+import { ClientUtil, AkairoHandler } from 'discord-akairo'
 import chalk from 'chalk'
 import moment from 'moment'
 
@@ -19,7 +16,7 @@ class Util extends ClientUtil implements Akairo.Util {
     public heists: Collection<GuildChannel['id'], Role>
     public events: Collection<string, string>
     public Colors: Lava.Colors
-    
+
     constructor(public client: Akairo.Client) {
         super(client)
 

@@ -3,7 +3,7 @@ import { Command } from 'discord-akairo'
 
 export default class Util extends Command {
     public client: Akairo.Client
-    
+
     constructor() {
         super('hlock', {
             aliases: ['hlock', 'hl'],
