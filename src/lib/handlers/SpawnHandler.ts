@@ -20,17 +20,14 @@ export default class SpawnHandler
     public cooldowns: Collection<Snowflake, Akairo.Spawn>
     public queue: Collection<Snowflake, Akairo.SpawnQueue>
     public messages: Collection<Snowflake, Message>
-    public client: Akairo.Client
-    public lava: Lava.Class
     public constructor(
-        lava: Lava.Class,
+        public client: Akairo.Client,
         options: AkairoHandlerOptions
     ) {
-        super(lava.bot, options)
+        super(client, options)
         this.queue = new Collection()
         this.cooldowns = new Collection()
         this.messages = new Collection()
-        this.lava = lava;
     }
 
     /**
@@ -40,7 +37,7 @@ export default class SpawnHandler
      */
     public async spawn(spawner: Akairo.Spawn, message: Message): Promise<void> {
         if (['spam', 'message'].includes(spawner.config.type)) {
-            const str = this.lava.bot.util.randomInArray(spawner.spawn.strings)
+            const str = this.client.util.randomInArray(spawner.spawn.strings)
             const options: MessageCollectorOptions = {
                 max: spawner.config.entries,
                 time: spawner.config.timeout,
@@ -50,8 +47,8 @@ export default class SpawnHandler
                 content,
             }: Message): Promise<boolean> => {
                 const notCapped =
-                    (await this.lava.db.spawns.fetch(author.id)).unpaid <=
-                    this.lava.config.spawns.unpaidCap
+                    (await this.client.db.spawns.fetch(author.id)).unpaid <=
+                    this.client.config.spawns.unpaidCap
                 return (
                     notCapped &&
                     !author.bot &&
@@ -63,7 +60,7 @@ export default class SpawnHandler
             this.emit('messageStart', this, spawner, message, str)
             const cooldown = spawner.config.cooldown(message.member)
             this.cooldowns.set(message.author.id, spawner)
-            this.lava.bot.setTimeout(
+            this.client.setTimeout(
                 () => this.cooldowns.delete(message.author.id),
                 cooldown * 60 * 1000
             )
@@ -96,8 +93,8 @@ export default class SpawnHandler
                 user: User
             ) => {
                 const notCapped =
-                    (await this.lava.db.spawns.fetch(user.id)).unpaid <=
-                    this.lava.config.spawns.unpaidCap
+                    (await this.client.db.spawns.fetch(user.id)).unpaid <=
+                    this.client.config.spawns.unpaidCap
                 return (
                     notCapped &&
                     !user.bot &&

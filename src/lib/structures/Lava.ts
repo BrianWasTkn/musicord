@@ -9,7 +9,6 @@ import {
     join
 } from 'path'
 
-import Client from './Client'
 import dbCurrency from "./currency/functions";
 import dbSpawn from "./spawns/functions";
 import Spawn from './Spawn'

@@ -39,8 +39,7 @@ declare namespace Akairo {
     }
 
     class SpawnHandler extends AkairoHandler {
-        public lava: Lava.Class
-        public client: Lava.Class["bot"]
+        public client: Akairo.Client
         public modules: Collection<string, Spawn>
         public cooldowns: Collection<Snowflake, Spawn>
         public queue: Collection<Snowflake, SpawnQueue>
