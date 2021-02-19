@@ -65,13 +65,15 @@ export default class Currency extends Command {
     }
 
     public async exec(_: Message, args: any): Promise<Message> {
-        const { maxWin } = this.client.config.currency.gambleCaps
         const {
             util,
             db: { currency: DB },
+            config: { currency }
         } = this.client
 
-        const { total: multi } = await DB.util.calcMulti(this.client, _)
+        const { maxWin, maxMulti } = currency.gambleCaps
+        let { total: multi } = await DB.util.calcMulti(this.client, _)
+        if (multi >= maxMulti) multi = maxMulti;
         const bet = await this.checkArgs(_, args)
         if (typeof bet === 'string') return _.channel.send(bet)
 
@@ -94,8 +96,7 @@ export default class Currency extends Command {
 
             identifier = ties ? 'tie' : 'losing'
             color = ties ? 'YELLOW' : 'RED'
-            description = ties
-                ? [
+            description = ties ? [
                       `**We Tied! Our dice are on same side.**`,
                       `You lost **${bet.toLocaleString()}** coins.\n`,
                       `You now have **${db.pocket.toLocaleString()}** coins.`,

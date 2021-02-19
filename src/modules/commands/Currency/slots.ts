@@ -23,15 +23,15 @@ export default class Currency extends Command {
 
     private get slotMachine(): { [slot: string]: number } {
         return {
-            middle_finger: 0.395656,
-            clown: 0.445656,
-            eyes: 0.51661316,
-            eggplant: 0.59861346,
-            peach: 0.613164241,
-            alien: 0.68150468,
-            star2: 0.716104601,
-            flushed: 0.77015608,
-            fire: 0.80643166,
+            middle_finger: 0.501,
+            clown: 0.503,
+            eyes: 0.505,
+            eggplant: 0.509,
+            peach: 0.603,
+            alien: 0.608,
+            star2: 0.702,
+            flushed: 0.707,
+            fire: 0.806,
         }
     }
 
@@ -110,7 +110,9 @@ export default class Currency extends Command {
         })
 
         // Calc amount
-        const { total: multi } = await DB.util.calcMulti(this.client, _)
+        const { maxWin, maxMulti } = currency.gambleCaps
+        let { total: multi } = await DB.util.calcMulti(this.client, _)
+        if (multi >= maxMulti) multi = maxMulti;
         let { length, winnings } = this.calcWinnings(bet, [a, b, c], multi)
 
         // Visuals
@@ -120,7 +122,6 @@ export default class Currency extends Command {
         let state: string = 'losing'
 
         if (length === 1 || length === 2) {
-            const { maxWin } = currency.gambleCaps
             if (winnings > maxWin) winnings = maxWin
             let percentWon: number = Math.round((winnings / bet) * 100)
             db = await DB.addPocket(_.author.id, winnings)
