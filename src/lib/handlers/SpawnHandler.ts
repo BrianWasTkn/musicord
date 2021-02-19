@@ -8,7 +8,10 @@ import {
     MessageCollectorOptions,
     ReactionCollectorOptions,
 } from 'discord.js'
-import { AkairoHandler, AkairoHandlerOptions } from 'discord-akairo'
+import { 
+    AkairoHandler, 
+    AkairoHandlerOptions 
+} from 'discord-akairo'
 
 export default class SpawnHandler
     extends AkairoHandler
@@ -17,14 +20,17 @@ export default class SpawnHandler
     public cooldowns: Collection<Snowflake, Akairo.Spawn>
     public queue: Collection<Snowflake, Akairo.SpawnQueue>
     public messages: Collection<Snowflake, Message>
+    public client: Akairo.Client
+    public lava: Lava.Class
     public constructor(
-        public client: Akairo.Client,
-        handlerOptions: AkairoHandlerOptions
+        lava: Lava.Class,
+        options: AkairoHandlerOptions
     ) {
-        super(client, handlerOptions)
+        super(lava.bot, options)
         this.queue = new Collection()
         this.cooldowns = new Collection()
         this.messages = new Collection()
+        this.lava = lava;
     }
 
     /**
@@ -34,7 +40,7 @@ export default class SpawnHandler
      */
     public async spawn(spawner: Akairo.Spawn, message: Message): Promise<void> {
         if (['spam', 'message'].includes(spawner.config.type)) {
-            const str = this.client.util.randomInArray(spawner.spawn.strings)
+            const str = this.lava.bot.util.randomInArray(spawner.spawn.strings)
             const options: MessageCollectorOptions = {
                 max: spawner.config.entries,
                 time: spawner.config.timeout,
@@ -44,24 +50,24 @@ export default class SpawnHandler
                 content,
             }: Message): Promise<boolean> => {
                 const notCapped =
-                    (await this.client.db.spawns.fetch(author.id)).unpaid <=
-                    this.client.config.spawns.unpaidCap
+                    (await this.lava.db.spawns.fetch(author.id)).unpaid <=
+                    this.lava.config.spawns.unpaidCap
                 return (
                     notCapped &&
                     !author.bot &&
                     !spawner.answered.has(author.id) &&
-                    content === str
+                    content.toLowerCase() === str.toLowerCase()
                 )
             }
 
             this.emit('messageStart', this, spawner, message, str)
             const cooldown = spawner.config.cooldown(message.member)
             this.cooldowns.set(message.author.id, spawner)
-            this.client.setTimeout(
+            this.lava.bot.setTimeout(
                 () => this.cooldowns.delete(message.author.id),
                 cooldown * 60 * 1000
             )
-            const collector = await message.channel.createMessageCollector(
+            const collector = message.channel.createMessageCollector(
                 filter,
                 options
             )
@@ -90,8 +96,8 @@ export default class SpawnHandler
                 user: User
             ) => {
                 const notCapped =
-                    (await this.client.db.spawns.fetch(user.id)).unpaid <=
-                    this.client.config.spawns.unpaidCap
+                    (await this.lava.db.spawns.fetch(user.id)).unpaid <=
+                    this.lava.config.spawns.unpaidCap
                 return (
                     notCapped &&
                     !user.bot &&
@@ -101,7 +107,7 @@ export default class SpawnHandler
             }
 
             this.emit('reactionStart', this, spawner, message) // send message, react to "react :emoji:" and call runCooldown()
-            const collector = await message.createReactionCollector(
+            const collector = message.createReactionCollector(
                 filter,
                 options
             )

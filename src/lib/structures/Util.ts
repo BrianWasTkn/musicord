@@ -7,9 +7,11 @@ import {
     Message,
     MessageCollector,
     MessageCollectorOptions,
-    ReactionCollectorOptions,
 } from 'discord.js'
-import { ClientUtil, AkairoHandler } from 'discord-akairo'
+import { 
+    ClientUtil, 
+    AkairoHandler 
+} from 'discord-akairo'
 import chalk from 'chalk'
 import moment from 'moment'
 
@@ -17,7 +19,8 @@ class Util extends ClientUtil implements Akairo.Util {
     public heists: Collection<GuildChannel['id'], Role>
     public events: Collection<string, string>
     public Colors: Lava.Colors
-    public constructor(public client: Akairo.Client) {
+    
+    constructor(public client: Akairo.Client) {
         super(client)
 
         this.heists = new Collection()
@@ -25,11 +28,11 @@ class Util extends ClientUtil implements Akairo.Util {
     }
 
     /**
-     * Divides the items of an array into arrays
+     * Divides the items of an array into arrays (dankmemer.lol/source)
      * @param array An array with usually many items
      * @param size The number of items per array in return
      */
-    public paginateArray(array: any[], size: number): Array<any[]> {
+    paginateArray(array: any[], size: number): Array<any[]> {
         let result = []
         let j = 0
         for (let i = 0; i < Math.ceil(array.length / (size || 5)); i++) {
@@ -43,7 +46,7 @@ class Util extends ClientUtil implements Akairo.Util {
      * Returns a random item from an array
      * @param array An array of anything
      */
-    public randomInArray(array: any[]): any {
+    randomInArray(array: any[]): any {
         return array[Math.floor(Math.random() * array.length)]
     }
 
@@ -52,14 +55,14 @@ class Util extends ClientUtil implements Akairo.Util {
      * @param min The minimum number possible
      * @param max The maximum number possible
      */
-    public randomNumber(min: number, max: number): any {
+    randomNumber(min: number, max: number): any {
         return Math.floor(Math.random() * (max - min + 1) + min)
     }
 
     /**
      * Generates a random decimal color resolvable
      */
-    public randomColor(): number {
+    randomColor(): number {
         return Math.random() * 0xffffff
     }
 
@@ -70,7 +73,7 @@ class Util extends ClientUtil implements Akairo.Util {
      * @param _ The message to be displayed
      * @param err An error object
      */
-    public log(struct: string, type: string, _: string, err?: Error): void {
+    log(struct: string, type: string, _: string, err?: Error): void {
         const stamp = moment().format('HH:mm:ss')
         switch (type) {
             case 'main':
@@ -100,13 +103,13 @@ class Util extends ClientUtil implements Akairo.Util {
      * Delay for a specified amount of time
      * @param ms number in milliseconds
      */
-    public sleep(ms: number): Promise<number> {
+    sleep(ms: number): Promise<number> {
         return new Promise((resolve: Function) =>
             setTimeout(() => resolve(ms), ms)
         )
     }
 
-    public async collectMessageAndEmit(
+    async collectMessageAndEmit(
         options: MessageCollectorOptions,
         filter: CollectorFilter,
         channel: TextChannel,

@@ -1,11 +1,11 @@
+import { ColorResolvable, Message, MessageEmbed } from 'discord.js'
 import { Argument, Command } from 'discord-akairo'
-import { ColorResolvable } from 'discord.js'
-import { EmojiResolvable } from 'discord.js'
-import { Message } from 'discord.js'
+import { Document } from 'mongoose'
 
 export default class Currency extends Command {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('slots', {
             aliases: ['slots', 'slotmachine', 's'],
             channel: 'guild',
@@ -21,68 +21,64 @@ export default class Currency extends Command {
         })
     }
 
+    private get slotMachine(): { [slot: string]: number } {
+        return {
+            middle_finger: 0.395656,
+            clown: 0.445656,
+            eyes: 0.51661316,
+            eggplant: 0.59861346,
+            peach: 0.613164241,
+            alien: 0.68150468,
+            star2: 0.716104601,
+            flushed: 0.77015608,
+            fire: 0.80643166,
+        }
+    }
+
     /**
      * Checks command arguments and caps
      * @param _ a discord message obj
      * @param args the passed arguments
      */
-    public async checkArgs(_: Message, args: any): Promise<any> {
+    public async checkArgs(_: Message, args: any): Promise<string | number> {
         const {
             minBet,
             maxBet,
             maxPocket,
         } = this.client.config.currency.gambleCaps
-        const db = await this.client.db.currency.fetch(_.author.id)
+        const {
+            pocket
+        } = await this.client.db.currency.fetch(_.author.id)
         let bet = args.amount
+
         // no bet amounts
-        if (!bet) return [, , 'You need something to gamble.']
+        if (!bet) return 'You need something to gamble'
+
         // transform arguments
         if (isNaN(bet)) {
             if (bet === 'all') {
-                bet = db.pocket
+                bet = pocket
             } else if (bet === 'half') {
-                bet = Math.round(db.pocket / 2)
+                bet = Math.round(pocket / 2)
             } else if (bet === 'max') {
-                bet = db.pocket > maxBet ? maxBet : db.pocket
+                bet = pocket > maxBet ? maxBet : pocket
             } else if (bet === 'min') {
                 bet = minBet
             } else {
-                return [false, , 'You actually need a number to slot breh']
+                return 'You actually need a number to slot...'
             }
         }
+
         // check limits
-        if (db.pocket <= 0) {
-            return [false, , 'You have no coins lol']
-        }
-        if (bet > maxBet) {
-            return [
-                false,
-                ,
-                `You cannot gamble higher than **${maxBet.toLocaleString()}** coins bruh.`,
-            ]
-        }
-        if (bet < minBet) {
-            return [
-                false,
-                ,
-                `You cannot gamble lower than **${minBet.toLocaleString()}** coins bruh.`,
-            ]
-        }
-        if (bet > db.pocket) {
-            return [
-                false,
-                ,
-                `You only have **${db.pocket.toLocaleString()}** coins lol don't try me.`,
-            ]
-        }
-        if (db.pocket > maxPocket) {
-            return [false, , 'You are too rich to use the slot machine lmfaooo']
-        }
-        if (bet < 1) {
-            return [false, , "It's gotta be a real number yeah?"]
-        }
+        if (pocket <= 0) return 'You have no coins :skull:'
+        if (bet > maxBet) return `You can't gamble higher than **${maxBet.toLocaleString()}** coins >:(`
+        if (bet < minBet) return `C'mon, you're not gambling lower than **${minBet.toLocaleString()}** yeah?`
+        if (bet > pocket) return `You only have **${pocket.toLocaleString()}** lol don't try me`
+        if (pocket > maxPocket) return `You're too rich to machine the slot`
+        if (bet < 1) return 'It should be a positive number yeah?'
+
         // else return something
-        return [true, bet, null]
+        return bet;
     }
 
     /**
@@ -96,49 +92,48 @@ export default class Currency extends Command {
             db: { currency: DB },
             config: { currency },
         } = this.client
+
         // Check Args
-        const [condition, bet, message] = await this.checkArgs(_, args)
-        if (!condition) return _.channel.send(message)
+        const bet = await this.checkArgs(_, args)
+        if (typeof bet === 'string') return _.channel.send(bet);
+
         // Slot Emojis
-        const [a, b, c] = Array(3)
-            .fill(null)
-            .map(() => util.randomInArray(Object.keys(currency.slotMachine)))
+        const [a, b, c] = Array(3).fill(null)
+            .map(() => util.randomInArray(Object.keys(this.slotMachine)))
         const outcome = `**>** :${[a, b, c].join(':    :')}: **<**`
         const msg = await _.channel.send({
-            embed: {
-                author: { name: `${_.author.username}'s slot machine` },
-                description: outcome,
-            },
-        })
+            embed: new MessageEmbed()
+            .setAuthor(`${_.author.username}'s slot machine`)
+            .setDescription(outcome)
+        });
 
         // Calc amount
         const { total: multi } = await DB.util.calcMulti(this.client, _)
         let { length, winnings } = this.calcWinnings(bet, [a, b, c], multi)
+
         // Visuals
         let color: ColorResolvable = 'RED'
-        let description: string, db: any
-        let state: 'losing' | 'winning' | 'jackpot' = 'losing'
+        let description: string
+        let db: Document & Lava.CurrencyProfile
+        let state: string = 'losing'
 
         if (length === 1 || length === 2) {
             const { maxWin } = currency.gambleCaps
             if (winnings > maxWin) winnings = maxWin
             let percentWon: number = Math.round((winnings / bet) * 100)
             db = await DB.addPocket(_.author.id, winnings)
-            if (length === 1) {
-                color = 'GOLD'
-                state = 'jackpot'
-                description = [
-                    `**JACKPOT! You won __${percentWon}%__ of your bet.**`,
-                    `You won **${winnings.toLocaleString()}** coins.`,
-                ].join('\n')
-            } else {
-                color = 'GREEN'
-                state = 'winning'
-                description = [
-                    `**Winner! You won __${percentWon}%__ of your bet.**`,
-                    `You won **${winnings.toLocaleString()}** coins.`,
-                ].join('\n')
-            }
+
+            // Embed
+            const jackpot = length === 1;
+            color = jackpot ? 'GOLD' : 'GREEN'
+            state = jackpot ? 'jackpot' : 'winning'
+            description = jackpot ? [
+                `**JACKPOT! You won __${percentWon}%__ of your bet.**`,
+                `You won **${winnings.toLocaleString()}** coins.`,
+            ].join('\n') : [
+                `**Winner! You won __${percentWon}%__ of your bet.**`,
+                `You won **${winnings.toLocaleString()}** coins.`,
+            ].join('\n')
         } else {
             db = await DB.removePocket(_.author.id, bet)
             color = 'RED'
@@ -153,25 +148,11 @@ export default class Currency extends Command {
         description += `\n\nYou now have **${db.pocket.toLocaleString()}** coins.`
         await this.client.util.sleep(1000)
         return msg.edit({
-            embed: {
-                author: {
-                    name: `${_.author.username}'s ${state} slot machine`,
-                    iconURL: _.author.avatarURL({ dynamic: true }),
-                },
-                color,
-                description,
-                fields: [
-                    {
-                        name: 'Outcome',
-                        value: outcome,
-                        inline: true,
-                    },
-                ],
-                footer: {
-                    text: `Multiplier: ${multi}%`,
-                    iconURL: this.client.user.avatarURL(),
-                },
-            },
+            embed: new MessageEmbed()
+            .setAuthor(`${_.author.username}'s ${state} slot machine`, _.author.avatarURL({ dynamic: true }))
+            .setColor(color).setDescription(description)
+            .addField('Outcome', outcome, true)
+            .setFooter(`Multiplier: ${multi}%`, this.client.user.avatarURL())
         })
     }
 
@@ -180,9 +161,8 @@ export default class Currency extends Command {
         slots: string[],
         multi: number
     ): { [k: string]: number } {
-        const { slotMachine } = this.client.config.currency
-        const rate: number[] = Object.values(slotMachine)
-        const emojis: string[] = Object.keys(slotMachine)
+        const rate: number[] = Object.values(this.slotMachine)
+        const emojis: string[] = Object.keys(this.slotMachine)
         // ty daunt
         const length = slots.filter(
             (thing: string, i: number, ar: string[]) => ar.indexOf(thing) === i

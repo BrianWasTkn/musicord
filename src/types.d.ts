@@ -1,22 +1,41 @@
+
 declare namespace Lava {
     import {
         ClientOptions,
         EmojiResolvable,
         Snowflake,
         User,
+        IntentsString,
         Message,
         Guild,
         GuildMember,
         GuildChannel,
     } from 'discord.js'
-    import { Document, Model } from 'mongoose'
-
-    //#region Classes
-    //#endregion Classes
+    import {
+        AkairoClient,
+        AkairoOptions,
+        AkairoHandlerOptions,
+        ListenerHandler,
+        CommandHandler,
+        CommandHandlerOptions,
+    } from 'discord-akairo'
+    import mongoose, { 
+        Document, 
+        Model
+    } from 'mongoose'
 
     //#region Interfaces
 
-    // Util
+    // Core
+    interface Konstructor {
+        dev?: boolean;
+        ownerID?: string[];
+        prefix?: string | string[];
+        intents?: ClientOptions["ws"]["intents"][]
+        token: string;
+        config: Config;
+    }
+
     // Configs
     interface Config {
         bot: ConfigLava
@@ -29,7 +48,7 @@ declare namespace Lava {
         token: string
         prefix: string[]
         ownerID: Snowflake[]
-        clientOptions: ClientOptions
+        intents: ClientOptions["ws"]["intents"][]
     }
 
     interface ConfigSpawn {
@@ -44,12 +63,11 @@ declare namespace Lava {
         gambleCaps: CurrencyCaps
         slotMachine: CurrencySlots
     }
-
+    
     // Database
     interface DatabaseEndpoint {
         currency: CurrencyFunction
         spawns: SpawnFunction
-        giveaways: GiveawayFunction
     }
 
     interface CurrencyProfile extends Document {

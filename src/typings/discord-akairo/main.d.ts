@@ -28,47 +28,60 @@ declare namespace Akairo {
     import { EventEmitter } from 'events'
     import mongoose from 'mongoose'
 
+    // class Client extends AkairoClient {
+    //     public constructor(
+    //         akairoOptions: AkairoOptions,
+    //         clientOptions: ClientOptions
+    //     )
+    //     public listenerHandler: ListenerHandler
+    //     public commandHandler: CommandHandler
+    //     public spawnHandler: SpawnHandler
+    //     // public giveawayManager: GiveawayHandler;
+    //     public config: Lava.Config
+    //     public util: Util
+    //     public db: Lava.DatabaseEndpoint
+    //     public handle(): void
+    //     public connectDB(): Promise<typeof mongoose | void>
+    //     public build(): Promise<string>
+    // }
+
     class Client extends AkairoClient {
-        public constructor(
-            akairoOptions: AkairoOptions,
-            clientOptions: ClientOptions
-        )
-        public listenerHandler: ListenerHandler
-        public commandHandler: CommandHandler
-        public spawnHandler: SpawnHandler
-        // public giveawayManager: GiveawayHandler;
+        public handlers: Handlers
         public config: Lava.Config
-        public util: Util
+        public util: Util;
         public db: Lava.DatabaseEndpoint
-        public handle(): void
-        public connectDB(): Promise<typeof mongoose | void>
-        public build(): Promise<string>
+        public build(token?: string): Promise<string>
+
+        public constructor(args: Konstructor)
     }
 
     class SpawnHandler extends AkairoHandler {
-        public constructor(client: Client, options: AkairoHandlerOptions)
-        public client: Client
+        public lava: Lava.Class
+        public client: Lava.Class["bot"]
         public modules: Collection<string, Spawn>
         public cooldowns: Collection<Snowflake, Spawn>
         public queue: Collection<Snowflake, SpawnQueue>
         public messages: Collection<Snowflake, Message>
         public spawn(spawner: Lava.Spawner, message: Message): Promise<void>
+
+        public constructor(client: Client, options: AkairoHandlerOptions)
     }
 
     class GiveawayHandler extends EventEmitter {
-        public constructor(client: Client)
         public client: Client
         public giveaways: Collection<Guild['id'], Lava.Giveaway[]>
+        
+        public constructor(client: Client)
     }
 
     class ModuleHandler extends AkairoHandler {
-        public constructor(client: Client, options: AkairoHandlerOptions)
         public modules: Collection<string, Module>
         public client: Client
+        
+        public constructor(client: Client, options: AkairoHandlerOptions)
     }
 
     class Util extends ClientUtil {
-        public constructor(client: Client)
         public heists: Collection<GuildChannel['id'], Role>
         public events: Collection<string, string>
         public paginateArray(array: any[], size: number): Array<any[]>
@@ -77,27 +90,30 @@ declare namespace Akairo {
         public randomColor(): number
         public log(struct: string, type: string, _: string, error?: Error): void
         public sleep(ms: number): Promise<number>
-
         public static Colors: Lava.Colors
+
+        public constructor(client: Client)
     }
 
     class Spawn extends AkairoModule {
+        public client: Client
+        public spawn: SpawnVisual
+        public config: SpawnConfig
+        public answered: Collection<User['id'], User>
+
         public constructor(
             config: SpawnConfig,
             spawn: SpawnVisual,
             cooldown: SpawnConfig['cooldown']
         )
-        public client: Client
-        public spawn: SpawnVisual
-        public config: SpawnConfig
-        public answered: Collection<User['id'], User>
     }
 
-    class Module extends AkairoModule {
-        public client: Client
-        public handler: ModuleHandler
+    interface Handlers {
+        emitter: ListenerHandler
+        command: CommandHandler;
+        spawn: SpawnHandler;
     }
-
+        
     interface SpawnConfig {
         odds: number
         type: SpawnConfigType

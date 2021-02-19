@@ -1,3 +1,6 @@
+import { AkairoHandlerOptions } from "discord-akairo"
+import { join } from "path"
+
 const currency: Lava.ConfigCurrency = {
     gambleCaps: {
         minBet: 50,
@@ -49,13 +52,11 @@ const bot: Lava.ConfigLava = {
     prefix: ['lava', ';;'],
     token: process.env.TOKEN,
     ownerID: ['605419747361947649'],
-    clientOptions: {
-        disableMentions: 'everyone',
-        fetchAllMembers: false,
-        ws: {
-            intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES'],
-        },
-    },
+    intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES']
 }
 
-export default { bot, currency, spawns }
+export default <Lava.Config> { 
+    bot, 
+    currency, 
+    spawns
+}
