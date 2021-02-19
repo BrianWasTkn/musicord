@@ -1,9 +1,11 @@
 import { Message, MessageEmbed } from 'discord.js'
-import Lava from 'discord-akairo'
+import { Argument, Command } from 'discord-akairo'
+import { Document } from 'mongoose'
 
-export default class Currency extends Lava.Command {
+export default class Currency extends Command {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('bet', {
             aliases: ['gamble', 'roll', 'bet'],
             channel: 'guild',
@@ -14,93 +16,101 @@ export default class Currency extends Lava.Command {
             args: [
                 {
                     id: 'amount',
-                    type: Lava.Argument.union('number', 'string'),
+                    type: Argument.union('number', 'string'),
                 },
             ],
         })
     }
 
-    public async exec(_: Message, args: any): Promise<Message> {
-        const { gambleCaps: caps } = this.client.config.currency
+    private async checkArgs(_: Message, args: any): Promise<string | number> {
         const {
-            channel,
-            member: { user },
-        } = _
-        const data = await this.client.db.currency.fetch(user.id)
-        const { pocket, vault, space } = data
-        const { total: multi } = await this.client.db.currency.util.calcMulti(
-            this.client,
-            _
-        )
+            minBet,
+            maxBet,
+            maxPocket,
+        } = this.client.config.currency.gambleCaps
+        const {
+            pocket
+        } = await this.client.db.currency.fetch(_.author.id)
         let bet = args.amount
 
-        if (!bet) {
-            return _.reply('You need something to gamble.')
-        }
+        // no bet amounts
+        if (!bet) return 'You need something to gamble'
 
-        // Arg Checks
+        // transform arguments
         if (isNaN(bet)) {
             if (bet === 'all') {
                 bet = pocket
             } else if (bet === 'half') {
                 bet = Math.round(pocket / 2)
-            } else if (bet === 'min') {
-                bet = caps.minBet
             } else if (bet === 'max') {
-                bet = pocket > caps.maxBet ? caps.maxBet : pocket
+                bet = pocket > maxBet ? maxBet : pocket
+            } else if (bet === 'min') {
+                bet = minBet
             } else {
-                return channel.send('You need a real number')
+                return 'You actually need a number to bet...'
             }
         }
 
-        // Other Arg checking
-        bet = Number(bet)
-        if (pocket <= 0) {
-            return channel.send('You have no coins lol')
-        }
-        if (bet > caps.maxBet) {
-            return channel.send(
-                `You cannot gamble higher than **${caps.maxBet.toLocaleString()}** coins bruh.`
-            )
-        }
-        if (bet < caps.minBet) {
-            return channel.send(
-                `You cannot gamble lower than **${caps.minBet.toLocaleString()}** coins bruh.`
-            )
-        }
-        if (bet > pocket) {
-            return channel.send(
-                `You only have **${pocket.toLocaleString()}** coins lol don't try me.`
-            )
-        }
-        if (pocket > caps.maxPocket) {
-            return channel.send('You are too rich to gamble lmfaooo')
-        }
-        if (bet < 1) {
-            return channel.send("It's gotta be a real number yeah?")
-        }
+        // check limits
+        if (pocket <= 0) return 'You have no coins :skull:'
+        if (bet > maxBet) return `You can't gamble higher than **${maxBet.toLocaleString()}** coins >:(`
+        if (bet < minBet) return `C'mon, you're not gambling lower than **${minBet.toLocaleString()}** yeah?`
+        if (bet > pocket) return `You only have **${pocket.toLocaleString()}** lol don't try me`
+        if (pocket > maxPocket) return `You're too rich to dice the gamble`
+        if (bet < 1) return 'It should be a positive number yeah?'
+
+        // else return something
+        return bet;
+    }
+
+    public async exec(_: Message, args: any): Promise<Message> {
+        const { maxWin } = this.client.config.currency.gambleCaps;
+        const {
+            util,
+            db: { currency: DB }
+        } = this.client
+
+        const { total: multi } = await DB.util.calcMulti(this.client, _)
+        const bet = await this.checkArgs(_, args);
+        if (typeof bet === 'string') return _.channel.send(bet);
 
         // Dice Rolls
-        const { util } = this.client
-        let userD = util.randomNumber(1, 12)
-        let botD = util.randomNumber(1, 12)
+        const userD = util.randomNumber(1, 12)
+        const botD = util.randomNumber(1, 12)
 
         // Visuals and DB
         let won: number,
             percentWon: number,
             description: string[],
             identifier: string,
-            db: any,
+            db: Document & Lava.CurrencyProfile,
             color: string
-        if (userD > botD) {
-            // Win
+
+        if (botD === userD || botD > userD) {
+            const ties = botD === userD
+            let lost = ties ? Math.round(bet / 4) : bet
+            await DB.removePocket(_.author.id, lost)
+
+            identifier = ties ? 'tie' : 'losing'
+            color = ties ? 'YELLOW' : 'RED'
+            description = ties ? [
+                `**We Tied! Our dice are on same side.**`,
+                `You lost **${bet.toLocaleString()}** coins.\n`,
+                `You now have **${db.pocket.toLocaleString()}** coins.`,
+            ] : [
+                `**You lost! My dice is higher than yours.**`,
+                `You lost **${bet.toLocaleString()}** coins.\n`,
+                `You now have **${db.pocket.toLocaleString()}** coins.`,
+            ]
+        } else if (userD > botD) {
             let winnings = Math.random()
             if (winnings < 0.3) winnings += 0.3
             won = Math.round(bet * winnings)
             won = won + Math.round(won * (multi / 100))
-            if (won > caps.maxWin) won = caps.maxWin
+            if (won > maxWin) won = maxWin
             percentWon = Math.round((won / bet) * 100)
-            db = await this.client.db.currency.addPocket(user.id, won)
+            db = await DB.addPocket(_.author.id, won)
+
             identifier = 'winning'
             color = 'GREEN'
             description = [
@@ -108,55 +118,16 @@ export default class Currency extends Lava.Command {
                 `You won **${won.toLocaleString()}** coins.\n`,
                 `You now have **${db.pocket.toLocaleString()}** coins.`,
             ]
-        } else if (userD === botD) {
-            // Ties
-            bet = Math.round(bet / 4)
-            db = await this.client.db.currency.removePocket(user.id, bet)
-            identifier = 'tie'
-            color = 'YELLOW'
-            description = [
-                `**We Tied! Our dice are on same side.**`,
-                `You lost **${bet.toLocaleString()}** coins.\n`,
-                `You now have **${db.pocket.toLocaleString()}** coins.`,
-            ]
-        } else if (userD < botD) {
-            // Lost
-            db = await this.client.db.currency.removePocket(user.id, bet)
-            identifier = 'losing'
-            color = 'RED'
-            description = [
-                `**You lost! My dice is higher than yours.**`,
-                `You lost **${bet.toLocaleString()}** coins.\n`,
-                `You now have **${db.pocket.toLocaleString()}** coins.`,
-            ]
-        }
+        } 
 
         // Message
-        return channel.send({
-            embed: {
-                author: {
-                    name: `${user.username}'s ${identifier} gambling game`,
-                    iconURL: user.avatarURL({ dynamic: true }),
-                },
-                color,
-                description: description.join('\n'),
-                fields: [
-                    {
-                        name: user.username,
-                        value: `Rolled a \`${userD}\``,
-                        inline: true,
-                    },
-                    {
-                        name: this.client.user.username,
-                        value: `Rolled a \`${botD}\``,
-                        inline: true,
-                    },
-                ],
-                footer: {
-                    text: `Multiplier: ${multi}%`,
-                    iconURL: this.client.user.avatarURL(),
-                },
-            },
+        return _.channel.send({
+            embed: new MessageEmbed()
+            .setAuthor(`${_.author.username}'s ${identifier} gambling game`, _.author.displayAvatarURL({ dynamic: true }))
+            .setColor(color).setDescription(description.join('\n'))
+            .addField(_.author.username, `Rolled a \`${userD}\``, true)
+            .addField(this.client.user.username, `Rolled a \`${botD}\``, true)
+            .setFooter(`Multiplier: ${multi}%`, this.client.user.avatarURL())
         })
     }
 }

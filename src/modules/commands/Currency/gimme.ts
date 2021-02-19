@@ -3,7 +3,8 @@ import { Command } from 'discord-akairo'
 
 export default class Currency extends Command {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('gimme', {
             aliases: ['gimme'],
             channel: 'guild',
@@ -14,7 +15,7 @@ export default class Currency extends Command {
         })
     }
 
-    public async exec(_: Message): Promise<Message> {
+    async exec(_: Message): Promise<Message> {
         const user = _.member
         const amount = this.client.util.randomNumber(100, 1000) * 1000
         await this.client.db.currency.addPocket(user.user.id, amount)

@@ -1,11 +1,12 @@
-import { Command } from 'discord-akairo'
 import { Message, CollectorFilter, AwaitMessagesOptions } from 'discord.js'
+import { Command } from 'discord-akairo'
 import { inspect } from 'util'
 import repl from 'programmatic-repl'
 
 export default class Dev extends Command {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('repl', {
             aliases: ['repl'],
             description: 'Start a REPL session',
@@ -14,11 +15,11 @@ export default class Dev extends Command {
         })
     }
 
-    public _codeBlock(str: string, lang: string = 'js'): string {
+    private _codeBlock(str: string, lang: string = 'js'): string {
         return `\`\`\`${lang}\n${str}\n\`\`\``
     }
 
-    public async _collect(_: Message): Promise<Message> {
+    private async _collect(_: Message): Promise<Message> {
         const filter: CollectorFilter = ({ author }: Message) =>
             author.id === _.author.id
         const options: AwaitMessagesOptions = { max: 1, time: 600000 }
@@ -27,7 +28,7 @@ export default class Dev extends Command {
         return [...collected.values()][0]
     }
 
-    public async exec(_: Message): Promise<any> {
+    async exec(_: Message): Promise<any> {
         const REPL = new repl(
             {
                 name: 'lava.repl',

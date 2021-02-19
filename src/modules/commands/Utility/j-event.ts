@@ -64,7 +64,7 @@ export default class Utility extends Command {
         } else return entries.set(this.author.id, this.member)
     }
 
-    public async exec(_: Message, args: any): Promise<Message> {
+    async exec(_: Message, args: any): Promise<Message> {
         await _.delete().catch(() => {})
         const {
             amount,

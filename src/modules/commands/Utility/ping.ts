@@ -3,7 +3,8 @@ import { Command } from 'discord-akairo'
 
 export default class Util extends Command {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('ping', {
             aliases: ['ping', 'pong'],
             channel: 'guild',
@@ -12,7 +13,7 @@ export default class Util extends Command {
         })
     }
 
-    public async exec(_: Message): Promise<Message> {
+    async exec(_: Message): Promise<Message> {
         const { channel, client, guild } = _
         const { id, ping } = guild.shard
         const embed: MessageEmbed = new MessageEmbed({

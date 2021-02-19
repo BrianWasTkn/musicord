@@ -3,7 +3,8 @@ import { Command } from 'discord-akairo'
 
 export default class Util extends Command {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('hunlock', {
             aliases: ['hunlock', 'hul'],
             channel: 'guild',
@@ -36,7 +37,7 @@ export default class Util extends Command {
         }
     }
 
-    public async exec(_: Message, args: any): Promise<Message> {
+    async exec(_: Message, args: any): Promise<Message> {
         await _.delete()
         const { role, interval } = args
         if (!role) return

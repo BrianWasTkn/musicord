@@ -3,7 +3,8 @@ import { Message, MessageEmbed } from 'discord.js'
 
 export default class Spawn extends Command {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('lavas', {
             aliases: ['lavas', 'unpaids', 'lvs'],
             channel: 'guild',
@@ -20,7 +21,7 @@ export default class Spawn extends Command {
         })
     }
 
-    public async exec(_: Message, args: any): Promise<Message> {
+    async exec(_: Message, args: any): Promise<Message> {
         const user = args.member
         const data = await this.client.db.spawns.fetch(user.id)
         const embed: MessageEmbed = new MessageEmbed({

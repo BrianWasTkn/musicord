@@ -3,7 +3,8 @@ import { Message, MessageEmbed } from 'discord.js'
 
 export default class Spawn extends Command {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('paid', {
             aliases: ['paid'],
             description: 'Updates someone elses or your lava unpaid amounts',
@@ -25,11 +26,11 @@ export default class Spawn extends Command {
         })
     }
 
-    public async deleteMessage(m: Message): Promise<Message> {
+    private async deleteMessage(m: Message): Promise<Message> {
         return m.delete({ timeout: 3000 })
     }
 
-    public async exec(_: Message, args: any): Promise<Message> {
+    async exec(_: Message, args: any): Promise<Message> {
         const { amount, user } = args
         // Args
         if (!amount)

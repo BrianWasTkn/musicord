@@ -40,7 +40,7 @@ export default class Currency extends Command {
      * @param _ a discord message obj
      * @param args the passed arguments
      */
-    public async checkArgs(_: Message, args: any): Promise<string | number> {
+    private async checkArgs(_: Message, args: any): Promise<string | number> {
         const {
             minBet,
             maxBet,
@@ -86,7 +86,7 @@ export default class Currency extends Command {
      * @param _ a discord message object
      * @param args the passed command arguments
      */
-    public async exec(_: Message, args: any): Promise<Message> {
+    async exec(_: Message, args: any): Promise<Message> {
         const {
             util,
             db: { currency: DB },

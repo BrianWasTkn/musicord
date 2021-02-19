@@ -3,7 +3,8 @@ import { Command } from 'discord-akairo'
 
 export default class Currency extends Command {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('bal', {
             aliases: ['balance', 'bal'],
             channel: 'guild',

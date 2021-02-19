@@ -4,7 +4,8 @@ import { Command } from 'discord-akairo'
 
 export default class Dev extends Command {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('eval', {
             aliases: ['eval', 'ev'],
             description: 'Evaluate custom code for you stupid dev',
@@ -28,7 +29,7 @@ export default class Dev extends Command {
     }
 
     public async exec(_: Message, args: any): Promise<Message> {
-        const { guild, channel } = _
+        const { channel } = _
         const code: string = args.code
         const asynchronous: boolean =
             code.includes('await') || code.includes('return')
@@ -36,9 +37,7 @@ export default class Dev extends Command {
             evaled: string,
             evalTime: number,
             type: string,
-            token: RegExp,
-            result: any
-
+            token: RegExp
         const embed: Message = await channel.send({
             embed: {
                 color: 'ORANGE',

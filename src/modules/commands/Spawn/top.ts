@@ -4,7 +4,8 @@ import mongoose from 'mongoose'
 
 export default class Spawn extends Command {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('top', {
             aliases: ['top', 't'],
             description:
@@ -38,7 +39,7 @@ export default class Spawn extends Command {
         })
     }
 
-    public async exec(_: Message, args: any): Promise<Message> {
+    async exec(_: Message, args: any): Promise<Message> {
         let { type, amount } = args
         type = type || 'unpaids'
         amount = amount || 10

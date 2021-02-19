@@ -3,7 +3,8 @@ import { Command } from 'discord-akairo'
 
 export default class Currency extends Command {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('burn', {
             aliases: ['burn'],
             channel: 'guild',
@@ -19,7 +20,7 @@ export default class Currency extends Command {
         })
     }
 
-    public async exec(_: Message, { amount }: any): Promise<Message> {
+    async exec(_: Message, { amount }: any): Promise<Message> {
         const db = await this.client.db.currency.fetch(_.author.id)
 
         if (!amount) return _.channel.send('You need something to burn, bruh')

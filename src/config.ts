@@ -1,5 +1,7 @@
-import { AkairoHandlerOptions } from "discord-akairo"
-import { join } from "path"
+/**
+ * Base Config
+ * Author: BrianWasTkn
+ */
 
 const currency: Lava.ConfigCurrency = {
     gambleCaps: {
@@ -8,18 +10,7 @@ const currency: Lava.ConfigCurrency = {
         maxWin: 2222222,
         maxPocket: 10000000,
         maxMulti: 120,
-    },
-    slotMachine: {
-        middle_finger: 0.395656,
-        clown: 0.445656,
-        eyes: 0.51661316,
-        eggplant: 0.59861346,
-        peach: 0.613164241,
-        alien: 0.68150468,
-        star2: 0.716104601,
-        flushed: 0.77015608,
-        fire: 0.80643166,
-    },
+    }
 }
 
 const spawns: Lava.ConfigSpawn = {

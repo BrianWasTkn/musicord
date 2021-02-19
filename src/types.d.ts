@@ -61,7 +61,6 @@ declare namespace Lava {
 
     interface ConfigCurrency {
         gambleCaps: CurrencyCaps
-        slotMachine: CurrencySlots
     }
     
     // Database
@@ -186,6 +185,5 @@ declare namespace Lava {
         client: Akairo.Client
     ) => Partial<CurrencyFunction>
     type CurrencyCaps = { [cap: string]: number }
-    type CurrencySlots = { [emoji: EmojiResolvable]: number }
     type Colors = { [color: string]: number }
 }
