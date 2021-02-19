@@ -13,6 +13,7 @@ import dbSpawn from './spawns/functions'
 import Spawn from './Spawn'
 import SpawnHandler from '../handlers/SpawnHandler'
 import mongoose from 'mongoose'
+import chalk from 'chalk'
 import Util from './Util'
 
 export default class Lava extends AkairoClient implements Akairo.Client {
@@ -35,15 +36,13 @@ export default class Lava extends AkairoClient implements Akairo.Client {
         this.util = new Util(this)
         this.db = {
             currency: { ...dbCurrency(this) },
-            spawns: { ...dbSpawn(this) }
+            spawns: { ...dbSpawn(this) },
         }
         this.handlers = {
             emitter: new ListenerHandler(this, this.listenerHandlerOptions),
-            command: new CommandHandler(this,this.commandHandlerOptions),
-            spawn: new SpawnHandler(this, this.spawnHandlerOptions)
+            command: new CommandHandler(this, this.commandHandlerOptions),
+            spawn: new SpawnHandler(this, this.spawnHandlerOptions),
         }
-
-        this._patch()
     }
 
     private async _patch(): Promise<void> {
@@ -55,16 +54,18 @@ export default class Lava extends AkairoClient implements Akairo.Client {
         })
 
         const handlers = [
-            { id: 'Emitter', emmiter: this.handlers.emitter },
-            { id: 'Command', emmiter: this.handlers.command },
-            { id: 'Spawn', emmiter: this.handlers.spawn },
+            { e: 'Emitter', emmiter: this.handlers.emitter },
+            { e: 'Command', emmiter: this.handlers.command },
+            { e: 'Spawner', emmiter: this.handlers.spawn },
         ]
 
-        for (const { id, emmiter } of handlers) {
+        for (const { e, emmiter } of handlers) {
             emmiter.on('load', (module: AkairoModule) => {
-                if (emmiter.modules.last().id === module.id) {
-                    this.util.log(id, 'main', `${emmiter.modules.size} ${id}s loaded.`)
-                }
+                this.util.log(
+                    'Lava',
+                    'main',
+                    `${e} ${chalk.cyanBright(module.id)} loaded.`
+                )
             })
         }
 
@@ -107,10 +108,10 @@ export default class Lava extends AkairoClient implements Akairo.Client {
                 useUnifiedTopology: true,
             })
             .then((mongo: typeof mongoose) => {
-                this.util.log('Akairo ', 'main', `Mongoose: ${mongo.version}`)
+                this.util.log('Lava', 'main', `Mongoose: ${mongo.version}`)
             })
             .catch((err) => {
-                this.util.log('Akairo ', 'error', err.message, err)
+                this.util.log('Lava', 'error', err.message, err)
                 process.exit(1)
             })
     }

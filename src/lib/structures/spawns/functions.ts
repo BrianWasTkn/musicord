@@ -3,7 +3,7 @@ import { Document } from 'mongoose'
 import Spawn from './model'
 
 function dbSpawn(client: Akairo.Client): Lava.SpawnFunction {
-    return ({
+    return {
         create: async (
             userID: Snowflake
         ): Promise<Document<Lava.SpawnDocument>> => {
@@ -64,7 +64,7 @@ function dbSpawn(client: Akairo.Client): Lava.SpawnFunction {
             await data.save()
             return data
         },
-    })
+    }
 }
 
 export default dbSpawn
