@@ -14,12 +14,12 @@ export default class DiscordListener extends Listener {
         if (!this.client.config.spawns.enabled) return
         if (message.author.bot || message.channel.type === 'dm') return
 
-        const spawner: Akairo.Spawn = this.client.spawnHandler.modules.random()
+        const spawner: Akairo.Spawn = this.client.handlers.spawn.modules.random()
         const { unpaid } = await this.client.db.spawns.fetch(message.author.id)
         if (Math.round(Math.random() * 100) < 100 - spawner.config.odds) return
         if (unpaid >= 10000000) return
 
-        const handler = this.client.spawnHandler
+        const handler = this.client.handlers.spawn
         const {
             whitelistedCategories,
             blacklistedChannels,

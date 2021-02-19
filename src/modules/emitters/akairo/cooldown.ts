@@ -3,14 +3,15 @@ import { Listener, Command } from 'discord-akairo'
 
 export default class CommandListener extends Listener {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('cooldown', {
             emitter: 'commandHandler',
             event: 'cooldown',
         })
     }
 
-    public async exec(
+    async exec(
         _: Message,
         command: Command,
         remaining: number

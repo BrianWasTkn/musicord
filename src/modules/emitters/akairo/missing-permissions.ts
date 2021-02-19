@@ -3,14 +3,15 @@ import { Listener, Command } from 'discord-akairo'
 
 export default class CommandListener extends Listener {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('missingPermissions', {
             emitter: 'commandHandler',
             event: 'missingPermissions',
         })
     }
 
-    public async exec(
+    async exec(
         _: Message,
         command: Command,
         type: string,

@@ -28,23 +28,6 @@ declare namespace Akairo {
     import { EventEmitter } from 'events'
     import mongoose from 'mongoose'
 
-    // class Client extends AkairoClient {
-    //     public constructor(
-    //         akairoOptions: AkairoOptions,
-    //         clientOptions: ClientOptions
-    //     )
-    //     public listenerHandler: ListenerHandler
-    //     public commandHandler: CommandHandler
-    //     public spawnHandler: SpawnHandler
-    //     // public giveawayManager: GiveawayHandler;
-    //     public config: Lava.Config
-    //     public util: Util
-    //     public db: Lava.DatabaseEndpoint
-    //     public handle(): void
-    //     public connectDB(): Promise<typeof mongoose | void>
-    //     public build(): Promise<string>
-    // }
-
     class Client extends AkairoClient {
         public handlers: Handlers
         public config: Lava.Config
