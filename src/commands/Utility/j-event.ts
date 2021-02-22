@@ -11,7 +11,8 @@ import { Command } from 'discord-akairo'
 
 export default class Utility extends Command {
     public client: Akairo.Client
-    public constructor() {
+    
+    constructor() {
         super('jEvent', {
             aliases: ['event', 'je'],
             channel: 'guild',
@@ -51,6 +52,7 @@ export default class Utility extends Command {
             'MEME',
             'LMAO',
             'LAMO',
+            'E',
         ]
     }
 
@@ -87,7 +89,7 @@ export default class Utility extends Command {
         let string = this.client.util.randomInArray(this.strings)
         string = typeof string === 'function' ? string(_) : string
         await channel.send(
-            `**<:memerGold:753138901169995797> \`CUSTOM EVENT NICE\`**\n**Spam Spam Spam**\nSplit **${amount.toLocaleString()}** coins, now.`
+            `**<:memerGold:753138901169995797> \`CUSTOM EVENT NICE\`**\n**Spam Spam Spam**\nSplit **${amount.toLocaleString()}**, now.`
         )
         await channel.send(`Spam \`${string.toUpperCase()}\` **${hits}** times`)
         const entries: Collection<string, GuildMember> = new Collection()
@@ -120,7 +122,7 @@ export default class Utility extends Command {
                 .array()
                 .sort(() => Math.random() - 0.5)
                 .forEach((c) =>
-                    Math.random() > 0.55 && success.length <= 30
+                    Math.random() > 0.5 && success.length <= 15
                         ? success.push(c)
                         : {}
                 )
@@ -137,7 +139,7 @@ export default class Utility extends Command {
                 `**Good job everybody, we split up \`${(coins
                     ? coins
                     : 1
-                ).toLocaleString()}\` coins each!**`
+                ).toLocaleString()}\` each!**`
             )
             await channel.send({
                 code: 'diff',

@@ -29,8 +29,8 @@ export default class Currency extends Command {
             eggplant: 0.509,
             peach: 0.603,
             alien: 0.608,
-            star2: 0.702,
-            flushed: 0.707,
+            star2: 0.703,
+            flushed: 0.709,
             fire: 0.806,
         }
     }

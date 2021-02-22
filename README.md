@@ -18,7 +18,7 @@
 
 ## Self-Hosting
 
-Although the full code is visible here and is available to self-host on any compatible machine, I wouldn't mind you hosting your own version. But please, don't host a public version of this bot. The main reason is lava is not fully dependent to databases yet. So the functionality and everything still depends to the [local config](./src/config.ts) for easy import.
+Although the full code is visible and is available here to self-host on any compatible machine, I wouldn't mind you hosting your own. Just don't host a public version of this bot for you or somebody including you as an interest.
 
 ## Install
 
@@ -26,12 +26,12 @@ Although the full code is visible here and is available to self-host on any comp
 2. Open up your terminal and change your dir into lava: `cd lava`
 3. Install the required dependencies: `npm i`
 4. Since Lava's source is made with typescript, build the source code: `npm run build`
-5. Fill in the `.env` variables and our config in `src/config`
+5. Copy `.env-example` and rename it to `.env` and fill out the fields
 6. Run the bot something: `npm run start` or `node build/lava`
 
 ## Acknowledgements
 
--   **Dauntless#0711** - _core of slot machine_ - [discord](https://discord.com/invite/Ha7pRB4)
+-   **Amity#0711** - _core of slot machine_ - [discord](https://discord.com/invite/Ha7pRB4)
 
 ## Author
 

@@ -63,6 +63,12 @@ class Util extends ClientUtil implements Akairo.Util {
         return Math.random() * 0xffffff
     }
 
+    isPromise(something: any): boolean {
+        return something
+        && typeof something.then === 'function'
+        && typeof something.catch === 'function'
+    }
+
     /**
      * Logs something into the console
      * @param struct The constructor name

@@ -18,7 +18,10 @@ declare namespace Lava {
         CommandHandler,
         CommandHandlerOptions,
     } from 'discord-akairo'
-    import mongoose, { Document, Model } from 'mongoose'
+    import mongoose, { 
+        Document, 
+        Model 
+    } from 'mongoose'
 
     //#region Interfaces
 
@@ -84,6 +87,13 @@ declare namespace Lava {
         userID: Snowflake
         unpaid: number
         eventsJoined: number
+    }
+
+    interface BotSettings extends Document {
+        prefix: string[] | string;
+        owners: string[];
+        devMode: boolean;
+        spawners: boolean;
     }
 
     interface CurrencyFunction {

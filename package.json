@@ -10,14 +10,12 @@
     "scripts": {
         "build": "rimraf ./build && tsc --project tsconfig.json",
         "start": "node ./build/lava",
-        "dev": "nodemon --exec ts-node src/lava.ts",
-        "repl": "ts-node",
         "format": "prettier --write ."
     },
-    "keywords": [
-        "discord-bot",
-        "dank-memer"
-    ],
+    "_moduleAliases": {
+        "@lava/core": "build/lib/structures",
+        "@lava/handlers": "build/lib/handlers"
+    },
     "license": "ISC",
     "dependencies": {
         "chalk": "^4.1.0",
@@ -25,6 +23,7 @@
         "discord.js": "^12.5.1",
         "dotenv": "^8.2.0",
         "erela.js": "^2.3.2",
+        "module-alias": "^2.2.2",
         "moment": "^2.29.1",
         "mongoose": "^5.11.16",
         "programmatic-repl": "^1.1.4"

@@ -54,18 +54,15 @@ export default class Lava extends AkairoClient implements Akairo.Client {
         })
 
         const handlers = [
-            { e: 'Emitter', emmiter: this.handlers.emitter },
-            { e: 'Command', emmiter: this.handlers.command },
-            { e: 'Spawner', emmiter: this.handlers.spawn },
-        ]
-
-        for (const { e, emmiter } of handlers) {
-            emmiter.on('load', (module: AkairoModule) => {
-                this.util.log(
-                    'Lava',
-                    'main',
-                    `${e} ${chalk.cyanBright(module.id)} loaded.`
-                )
+            { e: 'Emitter', emitter: this.handlers.emitter },
+            { e: 'Command', emitter: this.handlers.command },
+            { e: 'Spawner', emitter: this.handlers.spawn }
+        ];
+        
+        for (const { e, emitter } of handlers) {
+            emitter.on('load', (module: AkairoModule) => {
+                const msg = chalk`${e} {cyanBright ${module.id}} loaded.`
+                this.util.log('Lava', 'main', msg)
             })
         }
 
@@ -76,13 +73,13 @@ export default class Lava extends AkairoClient implements Akairo.Client {
 
     private get listenerHandlerOptions(): AkairoHandlerOptions {
         return {
-            directory: join(__dirname, '..', '..', 'modules', 'emitters'),
+            directory: join(__dirname, '..', '..', 'emitters'),
         }
     }
 
     private get spawnHandlerOptions(): AkairoHandlerOptions {
         return {
-            directory: join(__dirname, '..', '..', 'modules', 'spawns'),
+            directory: join(__dirname, '..', '..', 'spawns'),
             classToHandle: Spawn,
             automateCategories: true,
         }
@@ -90,7 +87,8 @@ export default class Lava extends AkairoClient implements Akairo.Client {
 
     private get commandHandlerOptions(): CommandHandlerOptions {
         return {
-            directory: join(__dirname, '..', '..', 'modules', 'commands'),
+            directory: join(__dirname, '..', '..', 'commands'),
+            // classToHandle: require('./Command').default,
             prefix: this.config.bot.prefix,
             commandUtil: true,
             defaultCooldown: 1500,

@@ -28,8 +28,8 @@ export default class Spawn extends Command {
             title: `${user.user.username}'s lavas`,
             color: 'RANDOM',
             description: [
-                `**Unpaid Coins:** ${data.unpaid.toLocaleString()}`,
-                `**Events Joined:** ${data.eventsJoined.toLocaleString()}`,
+                `**Unpaids:** ${data.unpaid.toLocaleString()}`,
+                `**Joined:** ${data.eventsJoined.toLocaleString()}`,
             ].join('\n'),
             footer: {
                 text: 'Payments may take long.',

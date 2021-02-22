@@ -1,30 +1,30 @@
 import { GuildMember } from 'discord.js'
-import Spawn from '../../lib/structures/Spawn'
+import Spawn from '../lib/structures/Spawn'
 
 const config: Akairo.SpawnConfig = {
     odds: 5,
     type: 'message',
     enabled: true,
     timeout: 10000,
-    entries: 3,
+    entries: 5,
     rewards: {
         min: 1000,
         max: 5000,
-        first: 5000,
+        first: 10000,
     },
 }
 
 const visuals: Akairo.SpawnVisual = {
     emoji: '<:memerBlue:729863510330310727>',
     type: 'COMMON',
-    title: 'Financial Support',
-    description: 'Do you need it?',
+    title: 'Spring',
+    description: 'The earth is on the run',
     strings: [
-        'f i n a n c i a l',
-        's u p p o r t',
-        'i wanna be a helicopter',
-        'suppwot',
-        'surprised pikashit face',
+        'wear caps',
+        'no beaches or covid',
+        'ice ice baby',
+        'im finally freeeeeeeee',
+        'pinecones',
     ],
 }
 

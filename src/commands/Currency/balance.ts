@@ -5,7 +5,7 @@ export default class Currency extends Command {
     public client: Akairo.Client
 
     constructor() {
-        super('bal', {
+        super('balance', {
             aliases: ['balance', 'bal'],
             channel: 'guild',
             description: "Check yours or someone else's coin balance",
