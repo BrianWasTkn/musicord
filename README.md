@@ -4,7 +4,7 @@
 
 <div align="center">
   
-[![Support](https://img.shields.io/discord/691416705917779999?color=FB8B23&label=Support&style=for-the-badge)](https://discord.gg/memer)
+[![Support](https://img.shields.io/discord/691416705917779999?color=fb8b23&label=Support&style=for-the-badge)](https://discord.gg/memer)
 [![Stars](https://img.shields.io/github/stars/BrianWasTkn/lava?color=FB8B23&logo=github&style=for-the-badge)](.)
 
 [![big da-](https://forthebadge.com/images/badges/made-with-typescript.svg)](https://typescriptlang.org)
