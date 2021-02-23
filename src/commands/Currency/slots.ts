@@ -23,8 +23,8 @@ export default class Currency extends Command {
 
     private get slotMachine(): { [slot: string]: number } {
         return {
-            middle_finger: 0.501,
-            clown: 0.503,
+            middle_finger: 0.406,
+            clown: 0.409,
             eyes: 0.505,
             eggplant: 0.509,
             peach: 0.603,

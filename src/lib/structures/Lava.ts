@@ -45,7 +45,7 @@ export default class Lava extends AkairoClient implements Akairo.Client {
         }
     }
 
-    private async _patch(): Promise<void> {
+    private _patch(): Promise<void> {
         this.handlers.command.useListenerHandler(this.handlers.emitter)
         this.handlers.emitter.setEmitters({
             spawnHandler: this.handlers.spawn,
@@ -115,7 +115,7 @@ export default class Lava extends AkairoClient implements Akairo.Client {
     }
 
     async build(token: string = this.config.bot.token): Promise<string> {
-        await this._patch()
+        this._patch()
         await this._connectDB(process.env.MONGO)
         return this.login(token)
     }

@@ -3,7 +3,7 @@ import { Argument, Command } from 'discord-akairo'
 import { EmbedFieldData } from 'discord.js'
 
 interface Help {
-    query?: string
+    query?: string | undefined
 }
 
 export default class Utility extends Command {
@@ -51,7 +51,7 @@ export default class Utility extends Command {
     }): EmbedFieldData[] {
         return (new MessageEmbed()
             .addField('Description', c.description || 'No description.')
-            .addField('Examples', c.examples.map(e => `- ${e}`).join('\n'))
+            // .addField('Examples', c.examples.map(e => `- ${e}`).join('\n'))
             .addField('Triggers', `\`${c.aliases.join('`, `')}\``)
             .addField('Cooldown', c.cooldown / 1000, true)
             .addField('Category', c.category.id, true)
@@ -60,8 +60,8 @@ export default class Utility extends Command {
     }
 
     public async exec(_: Message, args: Help): Promise<Message> {
-        const cat = this.handler.findCategory(args.query);
-        const cmd = this.handler.findCommand(args.query);
+        const cat = this.handler.findCategory(args.query || '');
+        const cmd = this.handler.findCommand(args.query || '');
         const embed = new MessageEmbed();
 
         if (cmd && !cat) {

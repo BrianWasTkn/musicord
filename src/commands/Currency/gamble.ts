@@ -92,7 +92,7 @@ export default class Currency extends Command {
         if (botD === userD || botD > userD) {
             const ties = botD === userD
             let lost = ties ? Math.round(bet / 4) : bet
-            await DB.removePocket(_.author.id, lost)
+            db = await DB.removePocket(_.author.id, lost)
 
             identifier = ties ? 'tie' : 'losing'
             color = ties ? 'YELLOW' : 'RED'
