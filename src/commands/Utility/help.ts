@@ -38,7 +38,7 @@ export default class Utility extends Command {
 
             fields.push({
                 name: `${category} Commands • ${catCommands.length}`,
-                inline: true,
+                inline: false,
                 value: `\`${catCommands.join('`, `')}\``
             });
         }
