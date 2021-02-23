@@ -45,7 +45,7 @@ export default class Lava extends AkairoClient implements Akairo.Client {
         }
     }
 
-    private _patch(): Promise<void> {
+    private _patch(): void {
         this.handlers.command.useListenerHandler(this.handlers.emitter)
         this.handlers.emitter.setEmitters({
             spawnHandler: this.handlers.spawn,
