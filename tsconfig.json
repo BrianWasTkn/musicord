@@ -1,22 +1,24 @@
 {
-    "exclude": ["node_modules"],
-    "include": ["src/**/*"],
+    "exclude": ["./node_modules"],
     "compilerOptions": {
-        "module": "commonjs",
-        "target": "es2018",
+        "module": "CommonJS",
+        "target": "ESNext",
         "outDir": "build",
+        "strict": false,
         "skipLibCheck": true,
         "resolveJsonModule": true,
         "moduleResolution": "node",
-        "sourceMap": false,
-        "inlineSourceMap": false,
-        "inlineSources": false,
-        "incremental": true,
+        "sourceMap": true,
         "esModuleInterop": true,
-        "noImplicitAny": false,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "typeRoots": ["./src/lib/typings", "./node_modules/@types"],
-        "lib": ["es6"]
+        "baseUrl": ".",
+        "paths": {
+            "@lava/src/*": ["src/*"],
+            "@lava/config/*": ["config/*"],
+            "@lava/lib/*": ["lib/*"]
+        },
+        "typeRoots": [
+            "./src/lib/typings", 
+            "./node_modules/@types"
+        ]
     }
 }

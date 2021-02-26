@@ -36,6 +36,6 @@ export default class DiscordListener extends Listener {
         })
         await this.client.user.setPresence({ activity })
         const message = `${this.client.user.tag} has flown within Discord.`
-        return this.client.util.log('Discord', 'main', message)
+        return this.client.util.log('Dcrd', 'main', message)
     }
 }

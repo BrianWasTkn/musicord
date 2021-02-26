@@ -1,1 +1,1 @@
-worker: node build/lava.js
+worker: node build/bot.js
