@@ -1,4 +1,10 @@
 import {
+  AkairoHandlerOptions,
+  AkairoHandler,
+  AkairoModule,
+  AkairoError,
+} from 'discord-akairo';
+import {
   ReactionCollectorOptions,
   MessageCollectorOptions,
   ReactionCollector,
@@ -13,49 +19,17 @@ import {
   Message,
   User,
 } from 'discord.js';
-import {
-  SpawnVisualsType,
-  SpawnConfigType,
-  SpawnCooldown,
-  SpawnReward,
-  SpawnConfig,
-  SpawnVisual,
-  SpawnQueue,
-} from '../interface/handlers';
-import {
-  AkairoHandlerOptions,
-  AkairoHandler,
-  AkairoModule,
-  AkairoError,
-} from 'discord-akairo';
-import { Lava } from '../Lava';
 
-export class Spawn extends AkairoModule {
-  answered: Collection<User['id'], User>;
-  config: SpawnConfig;
-  client: Lava;
-  spawn: SpawnVisual;
-
-  constructor(
-    config: SpawnConfig,
-    spawn: SpawnVisual,
-    cooldown: SpawnCooldown
-  ) {
-    super(spawn.title, { category: spawn.type });
-    this.spawn = spawn;
-    this.config = { ...config, cooldown };
-    this.answered = new Collection();
-  }
-}
-
-export class SpawnHandler extends AkairoHandler {
-  cooldowns: Collection<Snowflake, Spawn>;
+export default class SpawnHandler
+  extends AkairoHandler
+  implements Akairo.SpawnHandler {
+  cooldowns: Collection<Snowflake, Akairo.Spawn>;
   messages: Collection<Snowflake, Message>;
-  modules: Collection<string, Spawn>;
-  client: Lava;
-  queue: Collection<Snowflake, SpawnQueue>;
+  modules: Collection<string, Akairo.Spawn>;
+  client: Akairo.Client;
+  queue: Collection<Snowflake, Akairo.SpawnQueue>;
 
-  constructor(client: Lava, options: AkairoHandlerOptions) {
+  constructor(client: Akairo.Client, options: AkairoHandlerOptions) {
     super(client, options);
     this.queue = new Collection();
     this.cooldowns = new Collection();
@@ -67,7 +41,7 @@ export class SpawnHandler extends AkairoHandler {
     message: Message,
     ctx: {
       collector: MessageCollector;
-      spawner: Spawn;
+      spawner: Akairo.Spawn;
     }
   ): boolean {
     const isFirst = ctx.collector.collected.first().id === message.id;
@@ -77,7 +51,7 @@ export class SpawnHandler extends AkairoHandler {
   handleMessageEnd(
     this: SpawnHandler,
     collected: Collection<string, Message>,
-    ctx: { message: Message; spawner: Spawn }
+    ctx: { message: Message; spawner: Akairo.Spawn }
   ): boolean {
     const { spawner, message } = ctx;
     spawner.answered.clear();
@@ -97,7 +71,7 @@ export class SpawnHandler extends AkairoHandler {
     user: User,
     ctx: {
       collector: ReactionCollector;
-      spawner: Spawn;
+      spawner: Akairo.Spawn;
       message: Message;
     }
   ): boolean {
@@ -121,7 +95,7 @@ export class SpawnHandler extends AkairoHandler {
     user: User,
     ctx: {
       collector: ReactionCollector;
-      spawner: Spawn;
+      spawner: Akairo.Spawn;
       message: Message;
     }
   ): boolean {
@@ -134,7 +108,7 @@ export class SpawnHandler extends AkairoHandler {
     collected: Collection<string, MessageReaction>,
     ctx: {
       message: Message;
-      spawner: Spawn;
+      spawner: Akairo.Spawn;
     }
   ): boolean {
     return this.emit(
@@ -152,7 +126,7 @@ export class SpawnHandler extends AkairoHandler {
    * @param {Spawn} spawner the spawn module to run
    * @param {Message} message a discord message obj
    */
-  public async spawn(spawner: Spawn, message: Message): Promise<void> {
+  public async spawn(spawner: Akairo.Spawn, message: Message): Promise<void> {
     if (['spam', 'message'].includes(spawner.config.type)) {
       const str = this.client.util.randomInArray(spawner.spawn.strings);
       const options: MessageCollectorOptions = {

@@ -1,3 +1,3 @@
 export type Colors = {
-	[name: string]: number;
-}
+  [name: string]: number;
+};

@@ -1,2 +1,2 @@
-export * from './spawn'
-export * from './item'
+export * from './spawn';
+export * from './item';

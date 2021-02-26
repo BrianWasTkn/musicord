@@ -13,8 +13,8 @@
 
 ## Features
 
--   **Spawner** - Spawn events on a channel to earn $$$ (not real ones, ok?).
--   **Games** - Gambling games, fight or spam games, on the go.
+- **Spawner** - Spawn events on a channel to earn $$$ (not real ones, ok?).
+- **Games** - Gambling games, fight or spam games, on the go.
 
 ## Self-Hosting
 
@@ -31,7 +31,7 @@ Although the full code is visible and is available here to self-host on any comp
 
 ## Acknowledgements
 
--   **Amity#0711** - _core of slot machine_ - [discord](https://discord.com/invite/Ha7pRB4)
+- **Amity#0711** - _core of slot machine_ - [discord](https://discord.com/invite/Ha7pRB4)
 
 ## Author
 
