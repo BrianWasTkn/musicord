@@ -13,7 +13,7 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'Spend some amount of coins on a slot machine',
       category: 'Currency',
-      cooldown: 0,
+      cooldown: 1000,
       args: [
         {
           id: 'amount',
@@ -103,10 +103,9 @@ export default class Currency extends Command {
     if (typeof bet === 'string') return _.channel.send(bet);
 
     // Slot Emojis
-    const hahayes = util.randomInArray(Object.keys(this.slotMachine));
     const [a, b, c] = Array(3)
       .fill(null)
-      .map(() => hahayes);
+      .map(() => util.randomInArray(Object.keys(this.slotMachine)));
     const outcome = `**>** :${[a, b, c].join(':    :')}: **<**`;
     const msg = await _.channel.send({
       embed: new MessageEmbed()
