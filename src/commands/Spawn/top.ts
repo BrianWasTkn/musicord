@@ -2,6 +2,8 @@ import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'discord-akairo';
 import mongoose from 'mongoose';
 import { Lava } from '@lib/Lava';
+import { SpawnDocument } from '@lib/interface/mongo/spawns'
+import { CurrencyProfile } from '@lib/interface/mongo/currency'
 
 export default class Spawn extends Command {
   client: Lava;
@@ -17,7 +19,7 @@ export default class Spawn extends Command {
     });
   }
 
-  private async map<T extends Lava.CurrencyProfile | Lava.SpawnDocument>(
+  private async map<T extends CurrencyProfile | SpawnDocument>(
     docs: (mongoose.Document & T)[],
     amount: number,
     key: string
@@ -46,11 +48,11 @@ export default class Spawn extends Command {
 
     if (['unpaid', 'unpaids', 'spawns', 'spawn'].includes(type)) {
       docs = await mongoose.models['spawn-profile'].find({});
-      mapped = await this.map<Lava.SpawnDocument>(docs, amount, 'unpaid');
+      mapped = await this.map<SpawnDocument>(docs, amount, 'unpaid');
       embed.setTitle('Top Unpaids');
     } else if (['pocket', 'wallet'].includes(type)) {
       docs = await mongoose.models['currency'].find({});
-      mapped = await this.map<Lava.SpawnDocument>(docs, amount, 'pocket');
+      mapped = await this.map<SpawnDocument>(docs, amount, 'pocket');
       embed.setTitle('Top Pockets');
     }
 
