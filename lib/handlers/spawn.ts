@@ -84,7 +84,7 @@ export class SpawnHandler extends AkairoHandler {
     const { spawner, message } = ctx;
     spawner.answered.clear();
     return this.emit(
-      'messageEnd',
+      'messageResults',
       this,
       spawner,
       message,

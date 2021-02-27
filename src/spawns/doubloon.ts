@@ -21,7 +21,7 @@ export default class GODLY extends Spawn {
     super(
       {
         cooldown: (m) => this.cd(m),
-        timeout: 60000,
+        timeout: 30000,
         enabled: true,
         entries: 5,
         type: 'spam',
