@@ -13,7 +13,7 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'Spend some amount of coins on a slot machine',
       category: 'Currency',
-      cooldown: 1000,
+      cooldown: 500,
       args: [
         {
           id: 'amount',

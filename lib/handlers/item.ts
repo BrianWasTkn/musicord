@@ -1,3 +1,6 @@
+import { ItemOptions } from '@lib/interface/handlers/item';
+import { Collection } from 'discord.js';
+import { Lava } from '../Lava';
 import {
   AkairoHandlerOptions,
   AkairoModuleOptions,
@@ -5,9 +8,6 @@ import {
   AkairoModule,
   AkairoError,
 } from 'discord-akairo';
-import { Collection } from 'discord.js';
-import { Lava } from '../Lava';
-import { ItemOptions } from '../interface/handlers/item';
 
 export class ItemHandler extends AkairoHandler {
   modules: Collection<string, Item>;
