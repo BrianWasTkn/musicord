@@ -78,6 +78,7 @@ export class Lava extends AkairoClient {
     this.handlers.emitter.loadAll();
     this.handlers.command.loadAll();
     this.handlers.spawn.loadAll();
+    this.handlers.item.loadAll();
   }
 
   private get listenerHandlerOptions(): AkairoHandlerOptions {
