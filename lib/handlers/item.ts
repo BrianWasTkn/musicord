@@ -18,7 +18,6 @@ export class ItemHandler extends AkairoHandler {
       automateCategories: true,
       classToHandle: Item,
       directory: opt.directory,
-      extensions: ['.js', '.ts'],
     });
   }
 }
