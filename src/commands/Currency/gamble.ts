@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { Argument, Command } from 'discord-akairo';
 import { Document } from 'mongoose';
-import { Lava } from '@lib/Lava'
+import { Lava } from '@lib/Lava';
 
 export default class Currency extends Command {
   client: Lava;
@@ -22,9 +22,12 @@ export default class Currency extends Command {
     });
   }
 
-  private async checkArgs(_: Message, args: {
-    amount: number | string
-  }): Promise<string | number> {
+  private async checkArgs(
+    _: Message,
+    args: {
+      amount: number | string;
+    }
+  ): Promise<string | number> {
     const { minBet, maxBet, maxPocket } = this.client.config.currency;
     const { pocket } = await this.client.db.currency.fetch(_.author.id);
     let bet = args.amount;

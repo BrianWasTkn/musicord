@@ -1,11 +1,11 @@
 import { Listener } from 'discord-akairo';
 import { Message, Collection, TextChannel } from 'discord.js';
-import { SpawnHandler, Spawn } from '@lib/handlers/spawn'
-import { Lava } from '@lib/Lava'
+import { SpawnHandler, Spawn } from '@lib/handlers/spawn';
+import { Lava } from '@lib/Lava';
 
 export default class SpawnListener extends Listener {
   client: Lava;
-  
+
   constructor() {
     super('spawn-messageResults', {
       event: 'messageResults',

@@ -1,6 +1,6 @@
-import { SpawnConfig, SpawnVisual } from '@lib/interface/handlers/spawn'
+import { SpawnConfig, SpawnVisual } from '@lib/interface/handlers/spawn';
 import { GuildMember } from 'discord.js';
-import { Spawn } from '@lib/handlers/spawn'
+import { Spawn } from '@lib/handlers/spawn';
 
 const visuals: SpawnVisual = {
   emoji: '<:memerRed:729863510716317776>',
@@ -12,18 +12,22 @@ const visuals: SpawnVisual = {
 
 export default class UNCOMMON extends Spawn {
   constructor() {
-    super({
-      cooldown: m => this.cd(m),
-      enabled: true,
-      timeout: 10000,
-      entries: Infinity,
-      type: 'message',
-      odds: 14,
-    }, visuals, {
-      first: 150,
-      min: 50,
-      max: 100,
-    });
+    super(
+      {
+        cooldown: (m) => this.cd(m),
+        enabled: true,
+        timeout: 10000,
+        entries: Infinity,
+        type: 'message',
+        odds: 14,
+      },
+      visuals,
+      {
+        first: 150,
+        min: 50,
+        max: 100,
+      }
+    );
   }
 
   cd(member: GuildMember): number {

@@ -1,6 +1,6 @@
-import { SpawnConfig, SpawnVisual } from '@lib/interface/handlers/spawn'
+import { SpawnConfig, SpawnVisual } from '@lib/interface/handlers/spawn';
 import { GuildMember } from 'discord.js';
-import { Spawn } from '@lib/handlers/spawn'
+import { Spawn } from '@lib/handlers/spawn';
 
 const visuals: SpawnVisual = {
   emoji: '<:memerGold:753138901169995797>',
@@ -8,26 +8,32 @@ const visuals: SpawnVisual = {
   title: 'Gold Doubloon',
   description: 'Ah shit here we go again',
   strings: [
-    'noolbouD dloG', 'lady lava', 'queen lava',
+    'noolbouD dloG',
+    'lady lava',
+    'queen lava',
     'peter piper picked a pack of pickled pepper',
-    'she sells shells by the seashore'
+    'she sells shells by the seashore',
   ],
 };
 
 export default class GODLY extends Spawn {
   constructor() {
-    super({
-      cooldown: m => this.cd(m),
-      timeout: 60000,
-      enabled: true,
-      entries: 5,
-      type: 'spam',
-      odds: 2,
-    }, visuals, {
-      first: 100000,
-      min: 50000,
-      max: 50000,
-    });
+    super(
+      {
+        cooldown: (m) => this.cd(m),
+        timeout: 60000,
+        enabled: true,
+        entries: 5,
+        type: 'spam',
+        odds: 2,
+      },
+      visuals,
+      {
+        first: 100000,
+        min: 50000,
+        max: 50000,
+      }
+    );
   }
 
   cd(member: GuildMember): number {

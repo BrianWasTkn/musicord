@@ -1,29 +1,33 @@
-import { SpawnConfig, SpawnVisual } from '@lib/interface/handlers/spawn'
+import { SpawnConfig, SpawnVisual } from '@lib/interface/handlers/spawn';
 import { GuildMember } from 'discord.js';
-import { Spawn } from '@lib/handlers/spawn'
+import { Spawn } from '@lib/handlers/spawn';
 
 const visuals: SpawnVisual = {
   emoji: '<:memerBlue:729863510330310727>',
   type: 'COMMON',
   title: '2021',
-  description: 'How\'s the year going for you?',
+  description: "How's the year going for you?",
   strings: ['rough', 'amazing', 'still the same'],
 };
 
 export default class COMMON extends Spawn {
   constructor() {
-    super({
-      cooldown: m => this.cd(m),
-      timeout: 10000,
-      enabled: true,
-      entries: 5,
-      type: 'message',
-      odds: 5,
-    }, visuals, {
-      first: 21000,
-      min: 10000,
-      max: 10000,
-    });
+    super(
+      {
+        cooldown: (m) => this.cd(m),
+        timeout: 10000,
+        enabled: true,
+        entries: 5,
+        type: 'message',
+        odds: 5,
+      },
+      visuals,
+      {
+        first: 21000,
+        min: 10000,
+        max: 10000,
+      }
+    );
   }
 
   cd(member: GuildMember): number {

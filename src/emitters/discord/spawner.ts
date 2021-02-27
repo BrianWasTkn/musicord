@@ -1,11 +1,11 @@
 import { Listener } from 'discord-akairo';
 import { Message } from 'discord.js';
-import { Spawn } from '@lib/handlers/spawn'
-import { Lava } from '@lib/Lava'
+import { Spawn } from '@lib/handlers/spawn';
+import { Lava } from '@lib/Lava';
 
 export default class DiscordListener extends Listener {
   client: Lava;
-  
+
   public constructor() {
     super('spawner', {
       emitter: 'client',
@@ -23,7 +23,7 @@ export default class DiscordListener extends Listener {
     if (unpaid >= 10000000) return;
 
     const handler = this.client.handlers.spawn;
-    const { cats, bl } = this.client.config.spawn
+    const { cats, bl } = this.client.config.spawn;
     if (handler.cooldowns.has(message.author.id)) return;
     if (handler.queue.has(message.channel.id)) return;
     if (bl.includes(message.channel.id)) return;

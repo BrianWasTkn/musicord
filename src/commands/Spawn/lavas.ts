@@ -1,10 +1,10 @@
 import { Command } from 'discord-akairo';
 import { Message, MessageEmbed } from 'discord.js';
-import { Lava } from '@lib/Lava'
+import { Lava } from '@lib/Lava';
 
 export default class Spawn extends Command {
   client: Lava;
-  
+
   constructor() {
     super('lavas', {
       aliases: ['lavas', 'unpaids', 'lvs'],

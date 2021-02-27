@@ -1,7 +1,7 @@
 import { Message, MessageEmbed, EmbedField } from 'discord.js';
 import { Argument, Command } from 'discord-akairo';
 import { EmbedFieldData } from 'discord.js';
-import { Lava } from '@lib/Lava'
+import { Lava } from '@lib/Lava';
 
 interface Help {
   query?: string | undefined;
@@ -9,7 +9,7 @@ interface Help {
 
 export default class Utility extends Command {
   client: Lava;
-  
+
   constructor() {
     super('help', {
       aliases: ['help', 'h'],
@@ -92,7 +92,9 @@ export default class Utility extends Command {
     } else {
       const fields = this.mapCommands();
       embed
-        .setDescription('Lava is the best bot so sub to me with twitch prime when?')
+        .setDescription(
+          'Lava is the best bot so sub to me with twitch prime when?'
+        )
         .setTitle(`${this.client.user.username} Commands`)
         .setThumbnail(this.client.user.avatarURL())
         .setFooter(`${this.handler.modules.size} total commands`)

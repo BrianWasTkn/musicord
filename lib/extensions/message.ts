@@ -10,9 +10,7 @@ import {
   DMChannel,
   Message,
 } from 'discord.js';
-import {
-  Lava
-} from '@lib/Lava'
+import { Lava } from '@lib/Lava';
 
 type MessageChannel = DMChannel | TextChannel | NewsChannel;
 
@@ -33,28 +31,30 @@ class LavaMessage extends Message {
     mention: boolean = true
   ): Promise<this> {
     // @ts-ignore
-    return this.client.api
-      // @ts-ignore
-      .channels(this.channel.id)
-      .messages.post({
-        data: {
-          content,
-          message_reference: {
-            message_id: this.id,
-          },
-          allowed_mentions: {
-            ...this.client.options.allowedMentions,
-            replied_user: mention,
-          },
-        },
-      })
-      .then((m: object) => {
+    return (
+      this.client.api
         // @ts-ignore
-        return this.client.actions.MessageCreate.handle(m).message;
-      })
-      .catch(() => {
-        return this.channel.send(content);
-      });
+        .channels(this.channel.id)
+        .messages.post({
+          data: {
+            content,
+            message_reference: {
+              message_id: this.id,
+            },
+            allowed_mentions: {
+              ...this.client.options.allowedMentions,
+              replied_user: mention,
+            },
+          },
+        })
+        .then((m: object) => {
+          // @ts-ignore
+          return this.client.actions.MessageCreate.handle(m).message;
+        })
+        .catch(() => {
+          return this.channel.send(content);
+        })
+    );
   }
 }
 

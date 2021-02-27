@@ -1,10 +1,10 @@
 import { Message, Role } from 'discord.js';
 import { Command } from 'discord-akairo';
-import { Lava } from '@lib/Lava'
+import { Lava } from '@lib/Lava';
 
 export default class Util extends Command {
   client: Lava;
-  
+
   constructor() {
     super('hlock', {
       aliases: ['hlock', 'hl'],

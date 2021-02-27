@@ -2,7 +2,7 @@ import { Message, CollectorFilter, AwaitMessagesOptions } from 'discord.js';
 import { Command } from 'discord-akairo';
 import { inspect } from 'util';
 import repl from 'programmatic-repl';
-import { Lava } from '@lib/Lava'
+import { Lava } from '@lib/Lava';
 
 export default class Dev extends Command {
   client: Lava;
