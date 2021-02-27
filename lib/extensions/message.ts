@@ -32,6 +32,7 @@ class LavaMessage extends Message {
   ): Promise<this> {
     // @ts-ignore
     return (
+      // @ts-ignore
       this.client.api
         // @ts-ignore
         .channels(this.channel.id)

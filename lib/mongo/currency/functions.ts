@@ -27,7 +27,7 @@ export function dbCurrency(client: Lava): CurrencyFunction {
      */
     create: async (id: Snowflake): Promise<Document<CurrencyProfile>> => {
       const { id: userID }: User = await client.users.fetch(id);
-      const data: Document<Lava.CurrencyProfile> = new Currency({ userID });
+      const data: Document<CurrencyProfile> = new Currency({ userID });
       await data.save();
       return data;
     },
@@ -39,7 +39,7 @@ export function dbCurrency(client: Lava): CurrencyFunction {
     fetch: async (userID: Snowflake): Promise<Document & CurrencyProfile> => {
       let data = await Currency.findOne({ userID });
       if (!data) data = await dbCurrency(client).create(userID);
-      return data as Document & Lava.CurrencyProfile;
+      return data as Document & CurrencyProfile;
     },
 
     /**
