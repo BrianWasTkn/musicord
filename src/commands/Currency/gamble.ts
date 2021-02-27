@@ -1,5 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { Argument, Command } from 'discord-akairo';
+import { CurrencyProfile } from '@lib/interface/mongo/currency'
 import { Document } from 'mongoose';
 import { Lava } from '@lib/Lava';
 
@@ -88,7 +89,7 @@ export default class Currency extends Command {
       percentWon: number,
       description: string[],
       identifier: string,
-      db: Document & Lava.CurrencyProfile,
+      db: Document & CurrencyProfile,
       color: string;
 
     if (botD === userD || botD > userD) {

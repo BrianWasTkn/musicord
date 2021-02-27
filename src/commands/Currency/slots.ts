@@ -1,5 +1,6 @@
 import { ColorResolvable, Message, MessageEmbed } from 'discord.js';
 import { Argument, Command } from 'discord-akairo';
+import { CurrencyProfile } from '@lib/interface/mongo/currency'
 import { Document } from 'mongoose';
 import { Lava } from '@lib/Lava';
 
@@ -121,7 +122,7 @@ export default class Currency extends Command {
     // Visuals
     let color: ColorResolvable = 'RED';
     let description: string;
-    let db: Document & Lava.CurrencyProfile;
+    let db: Document & CurrencyProfile;
     let state: string = 'losing';
 
     if (length === 1 || length === 2) {

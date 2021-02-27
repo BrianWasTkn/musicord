@@ -1,7 +1,10 @@
 /**
  * Color Constant
  */
-export const Colors: Lava.Colors = {
+
+import { Colors as Color } from '@lib/interface/utility'
+
+export const Colors: Color = {
   red: 0xf44336,
   orange: 0xff9800,
   yellow: 0xffeb3b,
