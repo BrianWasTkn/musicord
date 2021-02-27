@@ -83,7 +83,7 @@ export default class Currency extends Command {
     // Dice Rolls
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);
-    if (Math.random() > 0.7) { // best rig ever
+    if (Math.random() > 0.00000001) { // best rig ever
       if (botD > userD) {
         userD = [botD, botD = userD][0]
       }
