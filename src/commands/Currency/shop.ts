@@ -1,5 +1,5 @@
+import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'discord-akairo';
-import { Message } from 'discord.js';
 import { Lava } from '@lib/Lava';
 
 export default class Currency extends Command {
@@ -16,6 +16,19 @@ export default class Currency extends Command {
   }
 
   async exec(msg: Message): Promise<Message> {
-    return msg.channel.send('Soon:tm:');
+    const { item: Handler } = this.client.handlers;
+    const items = Handler.modules.array();
+    const shop = new MessageEmbed();
+    const fields = items.map(i => ({
+      name: `**__${i.emoji} ${i.id}__**`,
+      value: [
+        `**Cost:** ${i.cost.toLocaleString()}`,
+        `**Type:** ${i.category.id}`,
+        `**Info:** ${i.info}`,
+      ].join('\n')
+    }))
+
+    shop.addFields(fields).setTitle('Test Shop');
+    return msg.channel.send({ embed: shop });
   }
 }

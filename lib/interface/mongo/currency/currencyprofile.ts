@@ -1,9 +1,10 @@
 import { Snowflake } from 'discord.js';
 import { Document } from 'mongoose';
+import { InventorySlot } from '@lib/interface/handlers/item'
 
 export interface CurrencyProfile extends Document {
   userID: Snowflake;
-  items: any[];
+  items: InventorySlot[];
   cooldowns: any[];
   pocket: number;
   vault: number;

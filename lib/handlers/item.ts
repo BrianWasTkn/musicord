@@ -13,7 +13,7 @@ export class ItemHandler extends AkairoHandler {
   modules: Collection<string, Item>;
   client: Lava;
 
-  constructor(client: Lava, opt: { directory: string }) {
+  constructor(client: Lava, opt: { directory?: string }) {
     super(client, {
       automateCategories: true,
       classToHandle: Item,
@@ -28,6 +28,7 @@ export class Item extends AkairoModule {
   buyable: boolean;
   client: Lava;
   usable: boolean;
+  emoji: string;
   info: string;
   cost: number;
 
@@ -40,9 +41,6 @@ export class Item extends AkairoModule {
     this.buyable = opt.buyable;
     this.sellable = opt.sellable;
     this.usable = opt.usable;
-  }
-
-  async exec() {
-    throw new AkairoError(`[Item] Method not implemented yet.`);
+    this.emoji = opt.emoji;
   }
 }

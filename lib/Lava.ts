@@ -49,6 +49,7 @@ export class Lava extends AkairoClient {
       emitter: new ListenerHandler(this, this.listenerHandlerOptions),
       command: new CommandHandler(this, this.commandHandlerOptions),
       spawn: new SpawnHandler(this, this.spawnHandlerOptions),
+      item: new ItemHandler(this, this.itemHandlerOptions)
     };
   }
 
@@ -64,6 +65,7 @@ export class Lava extends AkairoClient {
       { e: 'Emitter', emitter: this.handlers.emitter },
       { e: 'Command', emitter: this.handlers.command },
       { e: 'Spawner', emitter: this.handlers.spawn },
+      { e: 'Item', emitter: this.handlers.item }
     ];
 
     for (const { e, emitter } of handlers) {
@@ -92,10 +94,17 @@ export class Lava extends AkairoClient {
     };
   }
 
+  private get itemHandlerOptions(): AkairoHandlerOptions {
+    return {
+      directory: join(__dirname, '..', 'src', 'items'),
+      classToHandle: Item,
+      automateCategories: true
+    }
+  }
+
   private get commandHandlerOptions(): CommandHandlerOptions {
     return {
       directory: join(__dirname, '..', 'src', 'commands'),
-      // classToHandle: require('./Command').default,
       prefix: this.config.bot.prefix,
       commandUtil: true,
       defaultCooldown: 1500,
