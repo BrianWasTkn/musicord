@@ -67,7 +67,6 @@ export class SpawnHandler extends AkairoHandler {
   }
 
   handleMessageCollect(
-    this: SpawnHandler,
     message: Message,
     ctx: {
       collector: MessageCollector;
@@ -79,7 +78,6 @@ export class SpawnHandler extends AkairoHandler {
   }
 
   handleMessageEnd(
-    this: SpawnHandler,
     collected: Collection<string, Message>,
     ctx: { message: Message; spawner: Spawn }
   ): boolean {
@@ -96,7 +94,6 @@ export class SpawnHandler extends AkairoHandler {
   }
 
   handleReactionCollect(
-    this: SpawnHandler,
     reaction: MessageReaction,
     user: User,
     ctx: {
@@ -120,7 +117,6 @@ export class SpawnHandler extends AkairoHandler {
   }
 
   handleReactionRemove(
-    this: SpawnHandler,
     reaction: MessageReaction,
     user: User,
     ctx: {
@@ -134,7 +130,6 @@ export class SpawnHandler extends AkairoHandler {
   }
 
   handleReactionEnd(
-    this: SpawnHandler,
     collected: Collection<string, MessageReaction>,
     ctx: {
       message: Message;
@@ -188,10 +183,10 @@ export class SpawnHandler extends AkairoHandler {
 
       collector
         .on('collect', (m: Message) => {
-          this.handleMessageCollect.call(this, m, { collector, spawner });
+          this.handleMessageCollect(m, { collector, spawner });
         })
         .on('end', (coll: Collection<string, Message>) => {
-          this.handleMessageEnd.call(this, coll, { message, spawner })
+          this.handleMessageEnd(coll, { message, spawner })
         });
     } else if (spawner.config.type === 'react') {
       const options: ReactionCollectorOptions = {
@@ -218,13 +213,13 @@ export class SpawnHandler extends AkairoHandler {
       const collector = message.createReactionCollector(filter, options);
       collector
         .on('collect', (reaction: MessageReaction, user: User) => {
-          this.handleReactionCollect.call(this, reaction, user, { collector, message, spawner })
+          this.handleReactionCollect(reaction, user, { collector, message, spawner })
         })
         .on('remove', (reaction: MessageReaction, user: User) => {
-          this.handleReactionRemove.call(this, reaction, user, { collector, message, spawner })
+          this.handleReactionRemove(reaction, user, { collector, message, spawner })
         })
         .on('end', (collected: Collection<string, MessageReaction>) => {
-          this.handleReactionEnd.call(this, collected, { message, spawner })
+          this.handleReactionEnd(collected, { message, spawner })
         });
     } else {
       throw new AkairoError(
