@@ -28,7 +28,7 @@ const bl = [
 ];
 
 export const spawnConfig: SpawnConfig = {
-  enabled: true,
+  enabled: false,
   cats,
   bl,
   cap: 10000000,
