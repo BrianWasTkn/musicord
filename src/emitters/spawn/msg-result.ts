@@ -1,9 +1,11 @@
 import { Listener } from 'discord-akairo';
 import { Message, Collection, TextChannel } from 'discord.js';
+import { SpawnHandler, Spawn } from '@lib/handlers/spawn'
+import { Lava } from '@lib/Lava'
 
 export default class SpawnListener extends Listener {
-  public client: Akairo.Client;
-
+  client: Lava;
+  
   constructor() {
     super('spawn-messageResults', {
       event: 'messageResults',
@@ -12,8 +14,8 @@ export default class SpawnListener extends Listener {
   }
 
   async exec(
-    handler: Akairo.SpawnHandler,
-    spawner: Akairo.Spawn,
+    handler: SpawnHandler,
+    spawner: Spawn,
     message: Message,
     collected: Collection<string, Message>,
     isEmpty: boolean
@@ -82,21 +84,25 @@ export default class SpawnListener extends Listener {
     const payouts = <TextChannel>(
       message.guild.channels.cache.get('796688961899855893')
     );
-    await payouts.send({
-      embed: {
-        author: { name: `Results for '${spawner.spawn.title}' event` },
-        description: results.join('\n'),
-        color: 'RANDOM',
-        footer: { text: `From: ${queue.channel.name}` },
-      },
-    });
-    await queue.channel.send({
-      embed: {
-        author: { name: `Results for '${spawner.spawn.title}' event` },
-        description: results.join('\n'),
-        color: 'RANDOM',
-        footer: { text: `Check your DMs for info.` },
-      },
-    });
+
+    try {
+      await payouts.send({
+        embed: {
+          author: { name: `Results for '${spawner.spawn.title}' event` },
+          description: results.join('\n'),
+          color: 'RANDOM',
+          footer: { text: `From: ${queue.channel.name}` },
+        },
+      });
+
+      await queue.channel.send({
+        embed: {
+          author: { name: `Results for '${spawner.spawn.title}' event` },
+          description: results.join('\n'),
+          color: 'RANDOM',
+          footer: { text: `Check your DMs for info.` },
+        },
+      });
+    } catch {}
   }
 }

@@ -1,9 +1,10 @@
 import { PresenceData, TextChannel } from 'discord.js';
 import { Listener } from 'discord-akairo';
+import { Lava } from '@lib/Lava'
 
 export default class DiscordListener extends Listener {
-  public client: Akairo.Client;
-
+  client: Lava;
+  
   constructor() {
     super('ready', {
       emitter: 'client',

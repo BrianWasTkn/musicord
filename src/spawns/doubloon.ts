@@ -1,52 +1,47 @@
+import { SpawnConfig, SpawnVisual } from '@lib/interface/handlers/spawn'
 import { GuildMember } from 'discord.js';
-import Spawn from '../lib/structures/Spawn';
+import { Spawn } from '@lib/handlers/spawn'
 
-const config: Akairo.SpawnConfig = {
-  odds: 1,
-  type: 'spam',
-  enabled: true,
-  timeout: 30000,
-  entries: 3,
-  rewards: {
-    min: 50000,
-    max: 50000,
-    first: 100000,
-  },
-};
-
-const visuals: Akairo.SpawnVisual = {
+const visuals: SpawnVisual = {
   emoji: '<:memerGold:753138901169995797>',
   type: 'GODLY',
   title: 'Gold Doubloon',
   description: 'Ah shit here we go again',
   strings: [
-    'peter piper picked a pack of pickled cheese',
-    'a pack of shredded cheese the chinese sneezed',
-    'what is 1 + 1?',
-    'she sells shitshells by the shitshore',
-    'i scream, you scream, we all scream for ice scheme',
-    'betty booper bought some buttar',
-    'e',
-    'nein',
-    'spill the jeans of the belly jeans',
-    'damk meder in crim bemers',
-    'lady gaga more like lady lava',
+    'noolbouD dloG', 'lady lava', 'queen lava',
+    'peter piper picked a pack of pickled pepper',
+    'she sells shells by the seashore'
   ],
 };
 
 export default class GODLY extends Spawn {
-  public constructor() {
-    super(config, visuals, (member: GuildMember): number => {
-      // "Crib Booster" role
-      if (member.roles.cache.has('693324853440282654')) return 10;
-      // "Donator #M+" roles (minimum)
-      if (member.roles.cache.has('768858996659453963')) return 15;
-      // "Mastery #" roles (minimum)
-      if (member.roles.cache.has('794834783582421032')) return 20;
-      // "Amari #" roles (minimum)
-      if (member.roles.cache.has('693380605760634910')) return 30;
-      // Else
-      return 60;
+  constructor() {
+    super({
+      cooldown: m => this.cd(m),
+      timeout: 60000,
+      enabled: true,
+      entries: 5,
+      type: 'spam',
+      odds: 2,
+    }, visuals, {
+      first: 100000,
+      min: 50000,
+      max: 50000,
     });
+  }
+
+  cd(member: GuildMember): number {
+    const them = {
+      '693324853440282654': 10, // Booster
+      '768858996659453963': 15, // Donator
+      '794834783582421032': 20, // Mastery
+      '693380605760634910': 30, // Amari
+    };
+
+    for (const [id, cd] of Object.entries(them)) {
+      if (this.has(member, id)) return cd;
+    }
+
+    return 60; // Default
   }
 }

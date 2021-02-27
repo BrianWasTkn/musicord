@@ -1,9 +1,11 @@
 import { Listener } from 'discord-akairo';
 import { Message, MessageReaction } from 'discord.js';
+import { SpawnHandler, Spawn } from '@lib/handlers/spawn'
+import { Lava } from '@lib/Lava'
 
 export default class SpawnListener extends Listener {
-  public client: Akairo.Client;
-
+  client: Lava;
+  
   constructor() {
     super('spawn-messageCollect', {
       event: 'messageCollect',
@@ -12,8 +14,8 @@ export default class SpawnListener extends Listener {
   }
 
   async exec(
-    handler: Akairo.SpawnHandler,
-    spawner: Akairo.Spawn,
+    handler: SpawnHandler,
+    spawner: Spawn,
     msg: Message,
     isFirst: boolean
   ): Promise<MessageReaction> {

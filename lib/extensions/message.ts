@@ -10,13 +10,16 @@ import {
   DMChannel,
   Message,
 } from 'discord.js';
+import {
+  Lava
+} from '@lib/Lava'
 
 type MessageChannel = DMChannel | TextChannel | NewsChannel;
 
 class LavaMessage extends Message {
-  client: Akairo.Client;
+  client: Lava;
 
-  constructor(client: Akairo.Client, data: object, channel: MessageChannel) {
+  constructor(client: Lava, data: object, channel: MessageChannel) {
     super(client, data, channel);
   }
 
@@ -31,6 +34,7 @@ class LavaMessage extends Message {
   ): Promise<this> {
     // @ts-ignore
     return this.client.api
+      // @ts-ignore
       .channels(this.channel.id)
       .messages.post({
         data: {

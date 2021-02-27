@@ -1,10 +1,10 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'discord-akairo';
 import mongoose from 'mongoose';
+import { Lava } from '@lib/Lava'
 
 export default class Spawn extends Command {
-  public client: Akairo.Client;
-
+  client: Lava;
   constructor() {
     super('top', {
       aliases: ['top', 't'],

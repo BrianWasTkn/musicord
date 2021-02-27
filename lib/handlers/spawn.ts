@@ -21,30 +21,34 @@ import {
   SpawnConfig,
   SpawnVisual,
   SpawnQueue,
-} from '../interface/handlers';
+} from '@lib/interface/handlers/spawn';
 import {
   AkairoHandlerOptions,
   AkairoHandler,
   AkairoModule,
   AkairoError,
 } from 'discord-akairo';
-import { Lava } from '../Lava';
+import { Lava } from '@lib/Lava';
 
 export class Spawn extends AkairoModule {
-  answered: Collection<User['id'], User>;
-  config: SpawnConfig;
+  answered: Collection<string, User>;
+  config: Partial<SpawnConfig>;
   client: Lava;
   spawn: SpawnVisual;
 
   constructor(
-    config: SpawnConfig,
+    config: Partial<SpawnConfig>,
     spawn: SpawnVisual,
-    cooldown: SpawnCooldown
+    rewards: SpawnReward
   ) {
     super(spawn.title, { category: spawn.type });
     this.spawn = spawn;
-    this.config = { ...config, cooldown };
+    this.config = { ...config, rewards };
     this.answered = new Collection();
+  }
+
+  has(member: GuildMember, role: string): boolean {
+    return member.roles.cache.has(role);
   }
 }
 

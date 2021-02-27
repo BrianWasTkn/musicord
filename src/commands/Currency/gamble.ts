@@ -1,9 +1,10 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { Argument, Command } from 'discord-akairo';
 import { Document } from 'mongoose';
+import { Lava } from '@lib/Lava'
 
 export default class Currency extends Command {
-  public client: Akairo.Client;
+  client: Lava;
 
   constructor() {
     super('bet', {
@@ -21,12 +22,10 @@ export default class Currency extends Command {
     });
   }
 
-  private async checkArgs(_: Message, args: any): Promise<string | number> {
-    const {
-      minBet,
-      maxBet,
-      maxPocket,
-    } = this.client.config.currency.gambleCaps;
+  private async checkArgs(_: Message, args: {
+    amount: number | string
+  }): Promise<string | number> {
+    const { minBet, maxBet, maxPocket } = this.client.config.currency;
     const { pocket } = await this.client.db.currency.fetch(_.author.id);
     let bet = args.amount;
 
@@ -34,7 +33,8 @@ export default class Currency extends Command {
     if (!bet) return 'You need something to gamble';
 
     // transform arguments
-    if (isNaN(bet)) {
+    if (isNaN(bet as number)) {
+      bet = (<string>bet).toLowerCase();
       if (bet === 'all') {
         bet = pocket;
       } else if (bet === 'half') {
@@ -70,9 +70,9 @@ export default class Currency extends Command {
       config: { currency },
     } = this.client;
 
-    const { maxWin, maxMulti } = currency.gambleCaps;
+    const { maxWin, maxMulti } = currency;
     let { total: multi } = await DB.util.calcMulti(this.client, _);
-    if (multi >= maxMulti) multi = maxMulti;
+    if (multi >= maxMulti) multi = maxMulti as number;
     const bet = await this.checkArgs(_, args);
     if (typeof bet === 'string') return _.channel.send(bet);
 
@@ -111,7 +111,7 @@ export default class Currency extends Command {
       if (winnings < 0.3) winnings += 0.3;
       won = Math.round(bet * winnings);
       won = won + Math.round(won * (multi / 100));
-      if (won > maxWin) won = maxWin;
+      if (won > maxWin) won = maxWin as number;
       percentWon = Math.round((won / bet) * 100);
       db = await DB.addPocket(_.author.id, won);
 

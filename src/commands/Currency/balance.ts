@@ -1,9 +1,10 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'discord-akairo';
+import { Lava } from '@lib/Lava'
 
 export default class Currency extends Command {
-  public client: Akairo.Client;
-
+  client: Lava;
+  
   constructor() {
     super('balance', {
       aliases: ['balance', 'bal'],

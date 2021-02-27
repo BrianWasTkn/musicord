@@ -80,13 +80,13 @@ export class Lava extends AkairoClient {
 
   private get listenerHandlerOptions(): AkairoHandlerOptions {
     return {
-      directory: join(__dirname, '..', '..', 'emitters'),
+      directory: join(__dirname, '..', 'src', 'emitters'),
     };
   }
 
   private get spawnHandlerOptions(): AkairoHandlerOptions {
     return {
-      directory: join(__dirname, '..', '..', 'spawns'),
+      directory: join(__dirname, '..', 'src', 'spawns'),
       classToHandle: Spawn,
       automateCategories: true,
     };
@@ -94,7 +94,7 @@ export class Lava extends AkairoClient {
 
   private get commandHandlerOptions(): CommandHandlerOptions {
     return {
-      directory: join(__dirname, '..', '..', 'commands'),
+      directory: join(__dirname, '..', 'src', 'commands'),
       // classToHandle: require('./Command').default,
       prefix: this.config.bot.prefix,
       commandUtil: true,

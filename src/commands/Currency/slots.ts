@@ -1,10 +1,11 @@
 import { ColorResolvable, Message, MessageEmbed } from 'discord.js';
 import { Argument, Command } from 'discord-akairo';
 import { Document } from 'mongoose';
+import { Lava } from '@lib/Lava'
 
 export default class Currency extends Command {
-  public client: Akairo.Client;
-
+  client: Lava;
+  
   constructor() {
     super('slots', {
       aliases: ['slots', 'slotmachine', 's'],
@@ -40,12 +41,10 @@ export default class Currency extends Command {
    * @param _ a discord message obj
    * @param args the passed arguments
    */
-  private async checkArgs(_: Message, args: any): Promise<string | number> {
-    const {
-      minBet,
-      maxBet,
-      maxPocket,
-    } = this.client.config.currency.gambleCaps;
+  private async checkArgs(_: Message, args: {
+    amount: string | number
+  }): Promise<string | number> {
+    const { minBet, maxBet, maxPocket } = this.client.config.currency;
     const { pocket } = await this.client.db.currency.fetch(_.author.id);
     let bet = args.amount;
 
@@ -53,7 +52,8 @@ export default class Currency extends Command {
     if (!bet) return 'You need something to gamble';
 
     // transform arguments
-    if (isNaN(bet)) {
+    if (isNaN(bet as number)) {
+      bet = (<string>bet).toLowerCase()
       if (bet === 'all') {
         bet = pocket;
       } else if (bet === 'half') {
@@ -110,9 +110,9 @@ export default class Currency extends Command {
     });
 
     // Calc amount
-    const { maxWin, maxMulti } = currency.gambleCaps;
+    const { maxWin, maxMulti } = currency;
     let { total: multi } = await DB.util.calcMulti(this.client, _);
-    if (multi >= maxMulti) multi = maxMulti;
+    if (multi >= maxMulti) multi = maxMulti as number;
     let { length, winnings } = this.calcWinnings(bet, [a, b, c], multi);
 
     // Visuals
@@ -122,7 +122,7 @@ export default class Currency extends Command {
     let state: string = 'losing';
 
     if (length === 1 || length === 2) {
-      if (winnings > maxWin) winnings = maxWin;
+      if (winnings > maxWin) winnings = maxWin as number;
       let percentWon: number = Math.round((winnings / bet) * 100);
       db = await DB.addPocket(_.author.id, winnings);
 

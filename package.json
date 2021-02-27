@@ -2,7 +2,7 @@
   "name": "lava",
   "version": "2.09.04",
   "description": "Provide utilities in your Dank Memer-based discord server.",
-  "main": "build/bot",
+  "main": "build/src/index",
   "author": {
     "name": "Brian",
     "discord": "BrianWasTaken#9793",
@@ -14,9 +14,9 @@
     "format": "prettier --write ."
   },
   "_moduleAliases": {
-    "@lava/src": "build/src",
-    "@lava/config": "build/config",
-    "@lava/lib": "build/lib"
+    "@src": "build/src",
+    "@config": "build/config",
+    "@lib": "build/lib"
   },
   "license": "ISC",
   "dependencies": {

@@ -1,10 +1,11 @@
 import { Message } from 'discord.js';
 import { inspect } from 'util';
 import { Command } from 'discord-akairo';
+import { Lava } from '@lib/Lava'
 
 export default class Dev extends Command {
-  public client: Akairo.Client;
-
+  client: Lava;
+  
   constructor() {
     super('eval', {
       aliases: ['eval', 'ev'],

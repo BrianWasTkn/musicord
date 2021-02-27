@@ -1,9 +1,10 @@
 import { Message, Role, GuildChannel } from 'discord.js';
 import { Command } from 'discord-akairo';
+import { Lava } from '@lib/Lava'
 
 export default class Util extends Command {
-  public client: Akairo.Client;
-
+  client: Lava;
+  
   constructor() {
     super('hunlock', {
       aliases: ['hunlock', 'hul'],

@@ -1,9 +1,10 @@
 import { Command } from 'discord-akairo';
 import { Message, MessageEmbed } from 'discord.js';
+import { Lava } from '@lib/Lava'
 
 export default class Spawn extends Command {
-  public client: Akairo.Client;
-
+  client: Lava;
+  
   constructor() {
     super('paid', {
       aliases: ['paid'],

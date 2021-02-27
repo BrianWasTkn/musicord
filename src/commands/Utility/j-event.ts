@@ -7,11 +7,16 @@ import {
   MessageCollectorOptions,
   PermissionOverwriteOption,
 } from 'discord.js';
-import { Command } from 'discord-akairo';
+import { 
+  Command 
+} from 'discord-akairo';
+import { 
+  Lava 
+} from '@lib/Lava'
 
 export default class Utility extends Command {
-  public client: Akairo.Client;
-
+  client: Lava;
+  
   constructor() {
     super('jEvent', {
       aliases: ['event', 'je'],

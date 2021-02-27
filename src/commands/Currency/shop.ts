@@ -1,8 +1,9 @@
 import { Command } from 'discord-akairo';
 import { Message } from 'discord.js';
+import { Lava } from '@lib/Lava'
 
 export default class Currency extends Command {
-  public client: Akairo.Client;
+  client: Lava;
 
   constructor() {
     super('shop', {

@@ -1,8 +1,9 @@
 import { Listener, Command } from 'discord-akairo';
 import { Message } from 'discord.js';
+import { Lava } from '@lib/Lava'
 
 export default class extends Listener {
-  public client: Akairo.Client;
+  client: Lava;
 
   constructor() {
     super('cmdBlocked', {
@@ -14,12 +15,12 @@ export default class extends Listener {
   async exec(msg: Message, cmd: Command, r: string): Promise<void | Message> {
     const owner = r === 'owner';
     if (owner) {
-      return msg.channel.send('Woah now only my "Owners" can do dis');
+      return msg.channel.send('You\'re not my owner, bro');
     } else if (!owner) {
       if (r === 'guild') {
-        return msg.channel.send("This command doesn't work in discord servers");
+        return msg.channel.send('This command doesn\'t work in guilds');
       } else if (r === 'dm') {
-        return msg.channel.send('Not available in DMs sorry');
+        return msg.channel.send('This command doesn\'t work in DMs');
       }
     }
 

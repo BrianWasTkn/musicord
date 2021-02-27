@@ -1,51 +1,43 @@
+import { SpawnConfig, SpawnVisual } from '@lib/interface/handlers/spawn'
 import { GuildMember } from 'discord.js';
-import Spawn from '../lib/structures/Spawn';
+import { Spawn } from '@lib/handlers/spawn'
 
-const config: Akairo.SpawnConfig = {
-  odds: 3,
-  type: 'message',
-  enabled: true,
-  timeout: 10000,
-  entries: Infinity,
-  rewards: {
-    min: 1000,
-    max: 5000,
-    first: 10000,
-  },
-};
-
-const visuals: Akairo.SpawnVisual = {
+const visuals: SpawnVisual = {
   emoji: '<:memerGreen:729863510296887398>',
   type: 'SUPER',
   title: 'Get Coinified',
   description: 'Do you want coins?',
-  strings: [
-    'coinifocation',
-    'give me now or stupid',
-    'frick off lava',
-    'lol imagine being',
-    'yes',
-    'rain on me',
-    'crib op',
-    "i'll join the taken cult",
-    'ig so',
-    'well yes but actually....',
-  ],
+  strings: ['yes', 'yesn\'t', 'no'],
 };
 
 export default class SUPER extends Spawn {
-  public constructor() {
-    super(config, visuals, (member: GuildMember): number => {
-      // "Crib Booster" role
-      if (member.roles.cache.has('693324853440282654')) return 5;
-      // "Donator #M+" roles (minimum)
-      if (member.roles.cache.has('768858996659453963')) return 10;
-      // "Mastery #" roles (minimum)
-      if (member.roles.cache.has('794834783582421032')) return 15;
-      // "Amari #" roles (minimum)
-      if (member.roles.cache.has('693380605760634910')) return 20;
-      // Else
-      return 60;
+  constructor() {
+    super({
+      cooldown: m => this.cd(m),
+      entries: Infinity,
+      timeout: 10000,
+      enabled: true,
+      type: 'message',
+      odds: 3,
+    }, visuals, {
+      first: 250000,
+      min: 25000,
+      max: 5000,
     });
+  }
+
+  cd(member: GuildMember): number {
+    const them = {
+      '693324853440282654': 5, // Booster
+      '768858996659453963': 10, // Donator
+      '794834783582421032': 15, // Mastery
+      '693380605760634910': 20, // Amari
+    };
+
+    for (const [id, cd] of Object.entries(them)) {
+      if (this.has(member, id)) return cd;
+    }
+
+    return 60; // Default
   }
 }

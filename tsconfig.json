@@ -1,9 +1,14 @@
 {
-    "exclude": ["./node_modules"],
+    "exclude": [
+        "node_modules",
+        "./node_modules",
+        "./node_modules/*",
+        "./node_modules/@types/node/index.d.ts"
+    ],
     "compilerOptions": {
         "module": "CommonJS",
         "target": "ESNext",
-        "outDir": "build",
+        "outDir": "build/",
         "strict": false,
         "skipLibCheck": true,
         "resolveJsonModule": true,
@@ -12,13 +17,9 @@
         "esModuleInterop": true,
         "baseUrl": ".",
         "paths": {
-            "@lava/src/*": ["src/*"],
-            "@lava/config/*": ["config/*"],
-            "@lava/lib/*": ["lib/*"]
-        },
-        "typeRoots": [
-            "./src/lib/typings", 
-            "./node_modules/@types"
-        ]
+            "@src/*": ["src/*"],
+            "@config/*": ["config/*"],
+            "@lib/*": ["lib/*"]
+        }
     }
 }

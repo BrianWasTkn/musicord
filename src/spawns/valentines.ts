@@ -1,51 +1,43 @@
+import { SpawnConfig, SpawnVisual } from '@lib/interface/handlers/spawn'
 import { GuildMember } from 'discord.js';
-import Spawn from '../lib/structures/Spawn';
+import { Spawn } from '@lib/handlers/spawn'
 
-const config: Akairo.SpawnConfig = {
-  odds: 14,
-  type: 'message',
-  enabled: true,
-  timeout: 10000,
-  entries: Infinity,
-  rewards: {
-    min: 1400,
-    max: 1400,
-    first: 14000,
-  },
-};
-
-const visuals: Akairo.SpawnVisual = {
+const visuals: SpawnVisual = {
   emoji: '<:memerRed:729863510716317776>',
   type: 'UNCOMMON',
-  title: 'Advanced Simpy Valentines',
-  description: 'King of Danks or Queen of Memes?',
-  strings: [
-    'king melmsie',
-    'queen valentine',
-    'im alone on valentines',
-    'yes',
-    'ok',
-    'honey boo boo',
-    'love yourself',
-    'relationshits',
-    "cupid's toe",
-    'lovers',
-  ],
+  title: 'Toes',
+  description: 'Rated D (13)',
+  strings: ['pjsalt', 'big daddy', 'damn son'],
 };
 
 export default class UNCOMMON extends Spawn {
-  public constructor() {
-    super(config, visuals, (member: GuildMember): number => {
-      // "Crib Booster" role
-      if (member.roles.cache.has('693324853440282654')) return 14;
-      // "Donator #M+" roles (minimum)
-      if (member.roles.cache.has('768858996659453963')) return 20;
-      // "Mastery #" roles (minimum)
-      if (member.roles.cache.has('794834783582421032')) return 25;
-      // "Amari #" roles (minimum)
-      if (member.roles.cache.has('693380605760634910')) return 30;
-      // Else
-      return 60;
+  constructor() {
+    super({
+      cooldown: m => this.cd(m),
+      enabled: true,
+      timeout: 10000,
+      entries: Infinity,
+      type: 'message',
+      odds: 14,
+    }, visuals, {
+      first: 150,
+      min: 50,
+      max: 100,
     });
+  }
+
+  cd(member: GuildMember): number {
+    const them = {
+      '693324853440282654': 1, // Booster
+      '768858996659453963': 3, // Donator
+      '794834783582421032': 10, // Mastery
+      '693380605760634910': 15, // Amari
+    };
+
+    for (const [id, cd] of Object.entries(them)) {
+      if (this.has(member, id)) return cd;
+    }
+
+    return 60; // Default
   }
 }
