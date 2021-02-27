@@ -187,11 +187,12 @@ export class SpawnHandler extends AkairoHandler {
       const collector = message.channel.createMessageCollector(filter, options);
 
       collector
-        .on(
-          'collect',
-          this.handleMessageCollect.bind(this, { collector, spawner })
-        )
-        .on('end', this.handleMessageEnd.bind(this, { message, spawner }));
+        .on('collect', (m: Message) => {
+          this.handleMessageCollect.call(this, m, { collector, spawner });
+        })
+        .on('end', (coll: Collection<string, Message>) => {
+          this.handleMessageEnd.call(this, coll, { message, spawner })
+        });
     } else if (spawner.config.type === 'react') {
       const options: ReactionCollectorOptions = {
         maxUsers: spawner.config.entries,
@@ -216,15 +217,15 @@ export class SpawnHandler extends AkairoHandler {
       this.emit('reactionStart', this, spawner, message); // send message, react to "react :emoji:" and call runCooldown()
       const collector = message.createReactionCollector(filter, options);
       collector
-        .on(
-          'collect',
-          this.handleReactionCollect.bind(this, { message, spawner })
-        )
-        .on(
-          'remove',
-          this.handleReactionCollect.bind(this, { message, spawner })
-        )
-        .on('end', this.handleReactionEnd.bind(this, { message, spawner }));
+        .on('collect', (reaction: MessageReaction, user: User) => {
+          this.handleReactionCollect.call(this, reaction, user, { collector, message, spawner })
+        })
+        .on('remove', (reaction: MessageReaction, user: User) => {
+          this.handleReactionRemove.call(this, reaction, user, { collector, message, spawner })
+        })
+        .on('end', (collected: Collection<string, MessageReaction>) => {
+          this.handleReactionEnd.call(this, collected, { message, spawner })
+        });
     } else {
       throw new AkairoError(
         `[INVALID_TYPE] Spawn type "${spawner.config.type}" is invalid.`
