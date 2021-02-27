@@ -13,12 +13,8 @@ export class ItemHandler extends AkairoHandler {
   modules: Collection<string, Item>;
   client: Lava;
 
-  constructor(client: Lava, opt: { directory?: string }) {
-    super(client, {
-      automateCategories: true,
-      classToHandle: Item,
-      directory: opt.directory,
-    });
+  constructor(client: Lava, opt: AkairoHandlerOptions) {
+    super(client, options);
   }
 }
 
