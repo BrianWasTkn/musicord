@@ -14,7 +14,7 @@ export class ItemHandler extends AkairoHandler {
   client: Lava;
 
   constructor(client: Lava, opt: AkairoHandlerOptions) {
-    super(client, options);
+    super(client, opt);
   }
 }
 
