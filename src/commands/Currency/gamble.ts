@@ -74,15 +74,24 @@ export default class Currency extends Command {
       config: { currency },
     } = this.client;
 
-    const { maxWin, maxMulti } = currency;
+    const { maxWin, maxMulti, maxBet } = currency;
     let { total: multi } = await DB.util.calcMulti(this.client, _);
     if (multi >= maxMulti) multi = maxMulti as number;
     const bet = await this.checkArgs(_, args);
     if (typeof bet === 'string') return _.channel.send(bet);
 
     // Dice Rolls
-    const userD = util.randomNumber(1, 12);
-    const botD = util.randomNumber(1, 12);
+    let userD = util.randomNumber(1, 12);
+    let botD = util.randomNumber(1, 12);
+    if (Math.random() > 0.65) {
+      if (botD > userD) {
+        userD = [botD, botD = userD][0]
+      }
+    } else {
+      if (userD > botD) {
+        botD = [userD, userD = botD][0]
+      }
+    }
 
     // Visuals and DB
     let won: number,
@@ -111,7 +120,7 @@ export default class Currency extends Command {
             `You now have **${db.pocket.toLocaleString()}** coins.`,
           ];
     } else if (userD > botD) {
-      let winnings = Math.random();
+      let winnings = Math.random() * ((<number>maxWin) / (<number>maxBet));
       if (winnings < 0.3) winnings += 0.3;
       won = Math.round(bet * winnings);
       won = won + Math.round(won * (multi / 100));
