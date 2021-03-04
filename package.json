@@ -9,7 +9,7 @@
     "github": "https://github.com/BrianWasTkn"
   },
   "scripts": {
-    "build": "rimraf ./build && tsc --project tsconfig.json",
+    "build": "npm install @discordjs/opus && rimraf ./build && tsc --project tsconfig.json",
     "start": "node ./build/lava",
     "format": "prettier --write ."
   },
