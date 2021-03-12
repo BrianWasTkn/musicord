@@ -1,12 +1,9 @@
 import { Message, CollectorFilter, AwaitMessagesOptions } from 'discord.js';
-import { Command } from 'discord-akairo';
+import { Command } from '@lib/handlers/command';
 import { inspect } from 'util';
 import repl from 'programmatic-repl';
-import { Lava } from '@lib/Lava';
 
 export default class Dev extends Command {
-  client: Lava;
-
   constructor() {
     super('repl', {
       aliases: ['repl'],
@@ -14,10 +11,6 @@ export default class Dev extends Command {
       category: 'Dev',
       ownerOnly: true,
     });
-  }
-
-  private _codeBlock(str: string, lang: string = 'js'): string {
-    return `\`\`\`${lang}\n${str}\n\`\`\``;
   }
 
   private async _collect(_: Message): Promise<Message> {
@@ -50,7 +43,7 @@ export default class Dev extends Command {
     const run = async (retry: boolean) => {
       if (!retry) await _.channel.send('Started a REPL session');
       const msg: Message = await this._collect(_);
-      if (msg.content.toLowerCase() === '.exit' || !msg.content) {
+      if (msg.content.toLowerCase().includes('.exit') || !msg.content) {
         return _.channel.send('Exiting REPL...');
       }
 
@@ -75,7 +68,7 @@ export default class Dev extends Command {
       t = typeof r;
       if (t !== 'string') {
         r = inspect(r, {
-          depth: +!(inspect(r, { depth: 1, showHidden: true }).length > 1900),
+          depth: +!((inspect(r, { depth: 1, showHidden: true })).length > 1900),
           showHidden: true,
         });
       }
@@ -90,10 +83,10 @@ export default class Dev extends Command {
       await msg.channel.send({
         embed: {
           color: 'ORANGE',
-          description: this._codeBlock(r),
+          description: this.codeBlock('js', r),
           fields: [
-            { name: 'Type', value: this._codeBlock(t) },
-            { name: 'Latency', value: this._codeBlock(a) },
+            { name: 'Type', value: this.codeBlock('js', t) },
+            { name: 'Latency', value: this.codeBlock('js', a) },
           ],
         },
       });

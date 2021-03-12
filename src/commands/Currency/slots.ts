@@ -1,15 +1,14 @@
-import { ColorResolvable, Message, MessageEmbed } from 'discord.js';
-import { Argument, Command } from 'discord-akairo';
+import { ColorResolvable, Message, MessageOptions } from 'discord.js';
 import { CurrencyProfile } from '@lib/interface/mongo/currency'
+import { Argument } from 'discord-akairo';
 import { Document } from 'mongoose';
-import { Lava } from '@lib/Lava';
+import { Command } from '@lib/handlers/command'
+import { Embed } from '@lib/utility/embed'
 
 export default class Currency extends Command {
-  client: Lava;
-
   constructor() {
     super('slots', {
-      aliases: ['slots', 'slotmachine', 's'],
+      aliases: ['slotmachine', 'slots', 's'],
       channel: 'guild',
       description: 'Spend some amount of coins on a slot machine',
       category: 'Currency',
@@ -17,23 +16,23 @@ export default class Currency extends Command {
       args: [
         {
           id: 'amount',
-          type: Argument.union('number', 'string'),
+          type: 'gambleAmount',
         },
       ],
     });
   }
 
-  private get slotMachine(): { [slot: string]: number } {
+  private get slotMachine() {
     return {
-      middle_finger: 0.406,
+      middle_finger: 0.403,
       clown: 0.409,
       eyes: 0.505,
-      eggplant: 0.509,
-      peach: 0.603,
-      alien: 0.608,
-      star2: 0.703,
-      flushed: 0.709,
-      fire: 0.806,
+      eggplant: 0.601,
+      peach: 0.607,
+      alien: 0.702,
+      star2: 0.708,
+      flushed: 0.804,
+      fire: 0.901, // +0.001
     };
   }
 
@@ -42,34 +41,12 @@ export default class Currency extends Command {
    * @param _ a discord message obj
    * @param args the passed arguments
    */
-  private async checkArgs(
-    _: Message,
-    args: {
-      amount: string | number;
-    }
-  ): Promise<string | number> {
+  private async checkArgs(_: Message, args: {
+    amount: string | number;
+  }): Promise<string | number> {
     const { minBet, maxBet, maxPocket } = this.client.config.currency;
     const { pocket } = await this.client.db.currency.fetch(_.author.id);
-    let bet = args.amount;
-
-    // no bet amounts
-    if (!bet) return 'You need something to gamble';
-
-    // transform arguments
-    if (isNaN(bet as number)) {
-      bet = (<string>bet).toLowerCase();
-      if (bet === 'all') {
-        bet = pocket;
-      } else if (bet === 'half') {
-        bet = Math.round(pocket / 2);
-      } else if (bet === 'max') {
-        bet = pocket > maxBet ? maxBet : pocket;
-      } else if (bet === 'min') {
-        bet = minBet;
-      } else {
-        return 'You actually need a number to slot...';
-      }
-    }
+    let bet = Number(args.amount);
 
     // check limits
     if (pocket <= 0) return 'You have no coins :skull:';
@@ -91,7 +68,7 @@ export default class Currency extends Command {
    * @param _ a discord message object
    * @param args the passed command arguments
    */
-  async exec(_: Message, args: any): Promise<Message> {
+  async exec(_: Message, args: any): Promise<string | MessageOptions> {
     const {
       util,
       db: { currency: DB },
@@ -100,7 +77,7 @@ export default class Currency extends Command {
 
     // Check Args
     const bet = await this.checkArgs(_, args);
-    if (typeof bet === 'string') return _.channel.send(bet);
+    if (typeof bet === 'string') return bet;
 
     // Slot Emojis
     const [a, b, c] = Array(3)
@@ -108,14 +85,14 @@ export default class Currency extends Command {
       .map(() => util.randomInArray(Object.keys(this.slotMachine)));
     const outcome = `**>** :${[a, b, c].join(':    :')}: **<**`;
     const msg = await _.channel.send({
-      embed: new MessageEmbed()
+      embed: new Embed()
         .setAuthor(`${_.author.username}'s slot machine`)
         .setDescription(outcome),
     });
 
     // Calc amount
     const { maxWin, maxMulti } = currency;
-    let { total: multi } = await DB.util.calcMulti(this.client, _);
+    let { total: multi } = await DB.utils.calcMulti(this.client, _);
     if (multi >= maxMulti) multi = maxMulti as number;
     let { length, winnings } = this.calcWinnings(bet, [a, b, c], multi);
 
@@ -128,7 +105,7 @@ export default class Currency extends Command {
     if (length === 1 || length === 2) {
       if (winnings > maxWin) winnings = maxWin as number;
       let percentWon: number = Math.round((winnings / bet) * 100);
-      db = await DB.addPocket(_.author.id, winnings);
+      db = await DB.add(_.author.id, 'pocket', winnings);
 
       // Embed
       const jackpot = length === 1;
@@ -144,7 +121,7 @@ export default class Currency extends Command {
             `You won **${winnings.toLocaleString()}** coins.`,
           ].join('\n');
     } else {
-      db = await DB.removePocket(_.author.id, bet);
+      db = await DB.remove(_.author.id, 'pocket', bet);
       color = 'RED';
       state = 'losing';
       description = [
@@ -156,17 +133,15 @@ export default class Currency extends Command {
     // Final Message
     description += `\n\nYou now have **${db.pocket.toLocaleString()}** coins.`;
     await this.client.util.sleep(1000);
-    return msg.edit({
-      embed: new MessageEmbed()
-        .setAuthor(
-          `${_.author.username}'s ${state} slot machine`,
-          _.author.avatarURL({ dynamic: true })
-        )
-        .setColor(color)
-        .setDescription(description)
-        .addField('Outcome', outcome, true)
-        .setFooter(`Multiplier: ${multi}%`, this.client.user.avatarURL()),
-    });
+    const title = `${_.author.username}'s ${state} slot machine`;
+    const embed = new Embed()
+      .setFooter(false, `Multiplier: ${multi}%`, this.client.user.avatarURL())
+      .setAuthor(title, _.author.avatarURL({ dynamic: true }))
+      .addField('Outcome', outcome, true)
+      .setDescription(description)
+      .setColor(color)
+
+    return { embed };
   }
 
   private calcWinnings(

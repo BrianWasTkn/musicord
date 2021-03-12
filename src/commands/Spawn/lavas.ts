@@ -1,10 +1,9 @@
-import { Command } from 'discord-akairo';
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, GuildMember, MessageOptions } from 'discord.js';
+import { Command } from '@lib/handlers/command';
+import { Embed } from '@lib/utility/embed';
 import { Lava } from '@lib/Lava';
 
 export default class Spawn extends Command {
-  client: Lava;
-
   constructor() {
     super('lavas', {
       aliases: ['lavas', 'unpaids', 'lvs'],
@@ -22,21 +21,19 @@ export default class Spawn extends Command {
     });
   }
 
-  async exec(_: Message, args: any): Promise<Message> {
+  async exec(_: Message, args: {
+    member: GuildMember
+  }): Promise<MessageOptions> {
+    const { fetch } = this.client.db.spawns;
     const user = args.member;
-    const data = await this.client.db.spawns.fetch(user.id);
-    const embed: MessageEmbed = new MessageEmbed({
-      title: `${user.user.username}'s lavas`,
-      color: 'RANDOM',
-      description: [
-        `**Unpaids:** ${data.unpaid.toLocaleString()}`,
-        `**Joined:** ${data.eventsJoined.toLocaleString()}`,
-      ].join('\n'),
-      footer: {
-        text: 'Payments may take long.',
-      },
-    });
+    const data = await fetch(user.id);
+    const embed = new Embed()
+      .addField('• Events Joined', data.eventsJoined.toLocaleString())
+      .addField('• Unpaids', data.unpaid.toLocaleString())
+      .setTitle(`${user.user.username}'s unpaid coins`)
+      .setFooter(true, 'Payments may take long')
+      .setColor('RANDOM');
 
-    return _.channel.send({ embed });
+    return { embed };
   }
 }

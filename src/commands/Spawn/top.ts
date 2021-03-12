@@ -1,12 +1,11 @@
-import { Message, MessageEmbed } from 'discord.js';
-import { Command } from 'discord-akairo';
-import mongoose from 'mongoose';
-import { Lava } from '@lib/Lava';
-import { SpawnDocument } from '@lib/interface/mongo/spawns'
+import { Message, MessageOptions } from 'discord.js';
 import { CurrencyProfile } from '@lib/interface/mongo/currency'
+import { SpawnDocument } from '@lib/interface/mongo/spawns'
+import { Command } from '@lib/handlers/command';
+import { Embed } from '@lib/utility/embed';
+import mongoose from 'mongoose';
 
 export default class Spawn extends Command {
-  client: Lava;
   constructor() {
     super('top', {
       aliases: ['top', 't'],
@@ -23,42 +22,55 @@ export default class Spawn extends Command {
     docs: (mongoose.Document & T)[],
     amount: number,
     key: string
-  ): Promise<Promise<string>[]> {
+  ): Promise<string[]> {
     let all = docs
       .filter((m: mongoose.Document & T) => m[key] < Infinity)
-      .sort(
-        (a: mongoose.Document & T, b: mongoose.Document & T) => b[key] - a[key]
-      )
-      .slice(0, amount);
+      .sort((a: mongoose.Document & T, b: mongoose.Document & T) => b[key] - a[key])
+      .slice(0, amount)
+      .map(async (m: mongoose.Document & T, i: number) => {
+        const user = await this.client.users.fetch(m.userID);
+        return `**#${i + 1}** *${m[key].toLocaleString()}* — ${user.tag}` as string;
+      });
 
-    return all.map(async (m: mongoose.Document & T, i: number) => {
-      const user = await this.client.users.fetch(m.userID);
-      return <string>`${i + 1}. **${m[key].toLocaleString()}** - ${user.tag}`;
-    });
+    return await Promise.all(all)
   }
 
-  async exec(_: Message, args: any): Promise<Message> {
+  async exec(_: Message, args: {
+    amount: number,
+    type: string,
+  }): Promise<MessageOptions> {
     let { type, amount } = args;
     type = type || 'unpaids';
     amount = amount || 10;
 
-    let embed = new MessageEmbed();
+    let embed = new Embed();
     let docs: any[];
-    let mapped: Promise<string>[];
+    let mapped: string[];
 
-    if (['unpaid', 'unpaids', 'spawns', 'spawn'].includes(type)) {
-      docs = await mongoose.models['spawn-profile'].find({});
-      mapped = await this.map<SpawnDocument>(docs, amount, 'unpaid');
-      embed.setTitle('Top Unpaids');
-    } else if (['pocket', 'wallet'].includes(type)) {
-      docs = await mongoose.models['currency'].find({});
-      mapped = await this.map<SpawnDocument>(docs, amount, 'pocket');
-      embed.setTitle('Top Pockets');
+    switch (type) {
+      case "unpaids":
+      case 'spawns': 
+      case 'unpaid':
+      case 'spawn':
+        docs = await mongoose.models['spawn-profile'].find({});
+        mapped = await this.map<SpawnDocument>(docs, amount, 'unpaid');
+        embed.setTitle('Top ${amount} Unpaids');
+        break;
+      
+      case 'pockets':
+      case 'wallets':
+      case 'pocket':
+      case 'wallet':
+      default:
+        docs = await mongoose.models['currency'].find({});
+        mapped = await this.map<CurrencyProfile>(docs, amount, 'pocket');
+        embed.setTitle('Top ${amount} Pockets');
+        break;
     }
 
     embed
-      .setDescription((await Promise.all(mapped)).join('\n'))
+      .setDescription(mapped.join('\n'))
       .setColor('RANDOM');
-    return _.channel.send({ embed });
+    return { embed }
   }
 }

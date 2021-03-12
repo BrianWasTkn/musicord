@@ -2,7 +2,7 @@ import { PresenceData, TextChannel } from 'discord.js';
 import { Listener } from 'discord-akairo';
 import { Lava } from '@lib/Lava';
 
-export default class DiscordListener extends Listener {
+export default class ClientListener extends Listener {
   client: Lava;
 
   constructor() {
@@ -13,30 +13,32 @@ export default class DiscordListener extends Listener {
   }
 
   async exec(): Promise<void> {
+    const { channels, util, user: bot } = this.client;
     const activity: PresenceData['activity'] = {
       name: 'discord.gg/memer',
       type: 'STREAMING',
       url: 'https://twitch.tv/badboyhaloislive',
     };
 
-    const channel = await this.client.channels.fetch('789692296094285825');
-    const embed = this.client.util.embed({
+    const channel = await channels.fetch('789692296094285825');
+    const embed = util.embed({
       color: 'ORANGE',
       title: 'Logged in',
-      description: `**${this.client.user.tag}** logged in.`,
+      description: `**${bot.tag}** logged in.`,
       timestamp: Date.now(),
       footer: {
-        text: this.client.user.tag,
-        icon_url: this.client.user.avatarURL(),
+        text: bot.tag,
+        icon_url: bot.avatarURL(),
       },
     });
 
-    (channel as TextChannel).send({
-      embed,
-      content: '<@605419747361947649>',
+    (channel as TextChannel).send({ embed, content: '<@605419747361947649>'});
+    await bot.setPresence({ activity });
+    const msg = `${bot.tag} has flown within Discord.`;
+    return util.console({
+      msg,
+      type: 'def',
+      klass: 'Dcod',
     });
-    await this.client.user.setPresence({ activity });
-    const message = `${this.client.user.tag} has flown within Discord.`;
-    return this.client.util.log('Dcrd', 'main', message);
   }
 }

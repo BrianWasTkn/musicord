@@ -3,27 +3,17 @@
  * Author: brian
  */
 
-export { CurrencyProfile } from '../../interface/mongo/currency';
-import { CurrencyProfile } from '../../interface/mongo/currency';
 import { Document, Schema, model } from 'mongoose';
+import { CurrencyProfile } from '@lib/interface/mongo/currency';
 
 export default model<Document<CurrencyProfile>>(
   'currency',
   new Schema({
-    userID: { type: String, required: false },
-    // Balance
-    pocket: { type: Number, required: false, default: 1000 },
+    userID: { type: String, required: true },
+    pocket: { type: Number, required: false, default: 5000000 },
+    items: [{ amount: Number, id: String, end: Number, active: Boolean }],
+    multi: { type: Number, required: false, default: 100 },
     vault: { type: Number, required: false, default: 0 },
     space: { type: Number, required: false, default: 0 },
-    multi: { type: Number, required: false, default: 5 },
-    // Gambling
-    won: { type: Number, required: false, default: 0 },
-    lost: { type: Number, required: false, default: 0 },
-    wins: { type: Number, required: false, default: 0 },
-    loses: { type: Number, required: false, default: 0 },
-    // Other
-    items: { type: Array, required: false, default: [] },
-    gifted: { type: Array, required: false, default: 0 },
-    cooldowns: { type: Array, required: false, default: [] },
   })
 );

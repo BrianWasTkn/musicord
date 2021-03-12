@@ -1,22 +1,16 @@
-import { ItemOptions } from '@lib/interface/handlers/item';
-import { Collection } from 'discord.js';
-import { Lava } from '../Lava';
+import type { Collection, Message } from 'discord.js';
+import type { CurrencyProfile } from '@lib/interface/mongo/currency'
+import type { ItemOptions } from '@lib/interface/handlers/item';
+import type { Document } from 'mongoose';
+import type { Lava } from '../Lava';
 import {
   AkairoHandlerOptions,
   AkairoModuleOptions,
   AkairoHandler,
   AkairoModule,
-  AkairoError,
+  Category
 } from 'discord-akairo';
 
-export class ItemHandler extends AkairoHandler {
-  modules: Collection<string, Item>;
-  client: Lava;
-
-  constructor(client: Lava, opt: AkairoHandlerOptions) {
-    super(client, opt);
-  }
-}
 
 export class Item extends AkairoModule {
   sellable: boolean;
@@ -25,6 +19,7 @@ export class Item extends AkairoModule {
   usable: boolean;
   emoji: string;
   info: string;
+  name: string;
   cost: number;
 
   constructor(id: string, opt: ItemOptions) {
@@ -37,5 +32,70 @@ export class Item extends AkairoModule {
     this.sellable = opt.sellable;
     this.usable = opt.usable;
     this.emoji = opt.emoji;
+    this.name = opt.name;
+  }
+
+  use(msg: Message): any | Promise<any> { }
+}
+
+export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
+  categories: Collection<string, Category<string, ItemModule>>;
+  modules: Collection<string, ItemModule>;
+  client: Lava;
+
+  constructor(client: Lava, {
+    directory = './src/items',
+    extensions = ['.js', '.ts'],
+    classToHandle = Item,
+    automateCategories = true,
+  }: AkairoHandlerOptions) {
+    super(client, {
+      directory,
+      classToHandle,
+      automateCategories,
+    });
+  }
+
+  async use(item: ItemModule, msg: Message): Promise<any> {
+    const fn = item.use;
+    if (!item.usable) 
+      return false;
+    else 
+      return this.client.util.isPromise(fn) ? (await fn(msg)) : fn(msg);
+  }
+
+  async buy(amount: number, uID: string, iID: string): Promise<{
+    amount: number,
+    data: Document<any> & CurrencyProfile,
+    item: ItemModule,
+    paid: number
+  }> {
+    const { maxInventory: maxInv } = this.client.config.currency;
+    const { fetch, remove } = this.client.db.currency;
+    const item = this.modules.get(iID);
+    const paid = amount * item.cost;
+
+    let data = await fetch(uID);
+    data = await remove(uID, 'pocket', paid);
+    data.items.find(i => i.id === item.id).amount += amount;
+    await data.save();
+
+    return { data, amount, item, paid };
+  }
+
+  async sell(amount: number, u: string, i: string): Promise<string | {
+    amount: number,
+    data: Document<any> & CurrencyProfile,
+    item: ItemModule,
+    sold: number
+  }> {
+    const { add } = this.client.db.currency;
+    const item = this.modules.get(i);
+    const sold = amount * (item.cost / 4);
+    const data = await add(u, 'pocket', sold);
+
+    data.items.find(i => i.id === item.id).amount -= amount;
+    await data.save();
+    return { data, amount, item, sold };
   }
 }

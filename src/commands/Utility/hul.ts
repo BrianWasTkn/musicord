@@ -1,10 +1,7 @@
-import { Message, Role, GuildChannel } from 'discord.js';
-import { Command } from 'discord-akairo';
-import { Lava } from '@lib/Lava';
+import { Message, Role, GuildChannel, MessageOptions } from 'discord.js';
+import { Command } from '@lib/handlers/command';
 
 export default class Util extends Command {
-  client: Lava;
-
   constructor() {
     super('hunlock', {
       aliases: ['hunlock', 'hul'],
@@ -37,36 +34,37 @@ export default class Util extends Command {
     };
   }
 
-  async exec(_: Message, args: any): Promise<Message> {
+  async exec(_: Message, args: any): Promise<MessageOptions> {
     await _.delete();
     const { role, interval } = args;
     if (!role) return;
     const { channel }: any = _;
 
-    const msg = await channel.send({ embed: this.embed(60, role) });
-    await this.client.util.sleep(interval * 1000);
-    await msg.edit({ embed: this.embed(50, role) });
-    await this.client.util.sleep(interval * 1000);
-    await msg.edit({ embed: this.embed(40, role) });
-    await this.client.util.sleep(interval * 1000);
-    await msg.edit({ embed: this.embed(30, role) });
-    await this.client.util.sleep(interval * 1000);
-    await msg.edit({ embed: this.embed(20, role) });
-    await this.client.util.sleep(interval * 1000);
-    await msg.edit({ embed: this.embed(10, role) });
-    await this.client.util.sleep(interval * 1000);
-    await msg.edit({ embed: this.embed(3, role, 'RED') });
-    await this.client.util.sleep(1 * 1000);
-    await msg.edit({ embed: this.embed(2, role, 'RED') });
-    await this.client.util.sleep(1 * 1000);
-    await msg.edit({ embed: this.embed(1, role, 'RED') });
-    await this.client.util.sleep(1 * 1000);
-    await msg.edit({ embed: this.embed(0, role, 'GREEN') });
+    let num = 60;
+    let msg = await _.channel.send({ 
+      embed: this.embed(num, role, 'RED') 
+    });
 
+    const run = async (int: number) => {
+      if (num === 0) return;
+      if (num === 10) {
+        await this.client.util.sleep(7e3);
+        num -= num === 10 ? 7 : 1;
+        msg = await msg.edit({ embed: this.embed(num, role, 'RED') })
+        return await run(num);
+      }
+
+      await this.client.util.sleep(int * 1e3);
+      msg = await msg.edit({ embed: this.embed(num, role) });
+      num -= 10;
+      return await run(int);
+    }
+
+    await run(interval);
     const perms = { SEND_MESSAGES: true };
     (<GuildChannel>_.channel).updateOverwrite(role.id, perms);
     this.client.util.heists.set(channel.id, role);
-    return channel.send({
+    return {
       embed: {
         title: `**UNLOCKED FOR \`${role.name}\`**`,
         color: 'GREEN',
@@ -75,6 +73,6 @@ export default class Util extends Command {
           iconURL: _.guild.iconURL({ dynamic: true }),
         },
       },
-    });
+    };
   }
 }

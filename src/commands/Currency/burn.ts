@@ -1,10 +1,7 @@
 import { Message } from 'discord.js';
-import { Command } from 'discord-akairo';
-import { Lava } from '@lib/Lava';
+import { Command } from '@lib/handlers/command';
 
 export default class Currency extends Command {
-  client: Lava;
-
   constructor() {
     super('burn', {
       aliases: ['burn'],
@@ -16,25 +13,30 @@ export default class Currency extends Command {
         {
           id: 'amount',
           type: 'number',
+          default: async (msg: Message) => {
+            const { fetch } = this.client.db.currency;
+            const { pocket } = await fetch(msg.author.id);
+            return Math.round(pocket / 2);
+          }
         },
       ],
     });
   }
 
-  async exec(_: Message, { amount }: any): Promise<Message> {
-    const db = await this.client.db.currency.fetch(_.author.id);
+  async exec(_: Message, { amount }: {
+    amount: number | undefined
+  }): Promise<string> {
+    const { remove, fetch } = this.client.db.currency;
+    const { pocket } = await fetch(_.author.id);
 
-    if (!amount) return _.channel.send('You need something to burn, bruh');
-    else if (amount < 1)
-      return _.channel.send('You thought you can exploit me huh?');
-    else if (amount >= db.pocket)
-      return _.channel.send(
-        "You ain't allowed to burn higher than your pocket lmao"
-      );
+    if (!amount) 
+      return 'You need something to burn, bruh';
+    else if (amount < 1) 
+      return 'Not allowed, sorry not sorry';
+    else if (amount >= pocket) 
+      return 'Imagine burning money higher than your pocket';
 
-    await this.client.db.currency.removePocket(_.author.id, amount);
-    return _.channel.send(
-      `Successfully burned **${amount.toLocaleString()}** coins from your pocket.`
-    );
+    await remove(_.author.id, 'pocket', amount);
+    return `Successfully burned **${amount.toLocaleString()}** coins from your pocket.`;
   }
 }

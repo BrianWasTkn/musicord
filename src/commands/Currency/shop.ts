@@ -1,10 +1,8 @@
-import { Message, MessageEmbed } from 'discord.js';
-import { Command } from 'discord-akairo';
-import { Lava } from '@lib/Lava';
+import { Message, MessageOptions } from 'discord.js';
+import { Command } from '@lib/handlers/command';
+import { Embed } from '@lib/utility/embed'
 
 export default class Currency extends Command {
-  client: Lava;
-
   constructor() {
     super('shop', {
       aliases: ['shop', 'item'],
@@ -15,20 +13,14 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(msg: Message): Promise<Message> {
+  async exec(msg: Message): Promise<string | MessageOptions> {
     const { item: Handler } = this.client.handlers;
     const items = Handler.modules.array();
-    const shop = new MessageEmbed();
-    const fields = items.map(i => ({
-      name: `**__${i.emoji} ${i.id}__**`,
-      value: [
-        `**Cost:** ${i.cost.toLocaleString()}`,
-        `**Type:** ${i.category.id}`,
-        `**Info:** ${i.info}`,
-      ].join('\n')
-    }))
+    const shop = new Embed();
 
-    shop.addFields(fields).setTitle('Test Shop');
-    return msg.channel.send({ embed: shop });
+    const itemMap = items.map(i => `**${i.emoji} ${i.name}** — __${i.cost.toLocaleString()}__\n**${i.categoryID}** — __${i.info}__`);    
+    const fields = this.client.util.paginateArray(itemMap, 5);
+    shop.setDescription(fields[0].join('\n\n')).setTitle('Test Shop');
+    return { embed: shop };
   }
 }

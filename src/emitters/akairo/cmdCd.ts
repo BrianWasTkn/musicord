@@ -7,7 +7,7 @@ export default class CommandListener extends Listener {
 
   constructor() {
     super('cooldown', {
-      emitter: 'commandHandler',
+      emitter: 'command',
       event: 'cooldown',
     });
   }
@@ -18,17 +18,19 @@ export default class CommandListener extends Listener {
     remaining: number
   ): Promise<Message> {
     const description: string[] = [];
-    description[0] = `You're currently on cooldown for the \`${command.id}\` command.`;
-    description[1] = `Please wait **${(remaining / 1000).toFixed(
-      2
-    )}** seconds and try again.`;
+    description.push(`You're currently on cooldown for the \`${command.id}\` command.`);
+    description.push(`Please wait **${(remaining / 1000).toFixed(2)}** seconds and try again.`);
 
-    const embed = new MessageEmbed()
-      .setTitle('Oh shoot, on cooldown.')
-      .setColor('RED')
-      .setDescription(description.join('\n'))
-      .setFooter(this.client.user.username, this.client.user.avatarURL());
-
-    return _.channel.send({ embed });
+    return _.channel.send({ embed: {
+      title: 'Calm down buddy',
+      color: 'RED',
+      description: 
+      `You're currently on cooldown for the \`${command.id}\` command.
+      Please wait **${(remaining / 100).toFixed(2)}** seconds and try again.`,
+      footer: {
+        text: this.client.user.username,
+        icon_url: this.client.user.avatarURL()
+      }
+    }});
   }
 }

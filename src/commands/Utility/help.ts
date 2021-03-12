@@ -1,15 +1,14 @@
-import { Message, MessageEmbed, EmbedField } from 'discord.js';
-import { Argument, Command } from 'discord-akairo';
+import { Message, EmbedField, MessageOptions } from 'discord.js';
 import { EmbedFieldData } from 'discord.js';
-import { Lava } from '@lib/Lava';
+import { Argument } from 'discord-akairo';
+import { Command } from '@lib/handlers/command'
+import { Embed } from '@lib/utility/embed'
 
 interface Help {
   query?: string | undefined;
 }
 
 export default class Utility extends Command {
-  client: Lava;
-
   constructor() {
     super('help', {
       aliases: ['help', 'h'],
@@ -28,33 +27,24 @@ export default class Utility extends Command {
 
   private mapCommands(): EmbedField[] {
     const commands = this.handler.modules.array();
-    const categories = [...new Set(commands.map((c) => c.categoryID))];
     const fields: EmbedField[] = [];
 
-    for (const category of categories) {
-      const catCommands = this.handler
-        .findCategory(category)
-        .map((cmd) => cmd.aliases[0]);
-
+    for (const [category, catCmds] of this.handler.categories) {
+      const cmds = [...catCmds.values()].map(c => c.aliases[0])
       fields.push({
-        name: `${category} Commands • ${catCommands.length}`,
+        name: `${category} Commands • ${cmds.length}`,
+        value: `\`${cmds.join('`, `')}\``,
         inline: false,
-        value: `\`${catCommands.join('`, `')}\``,
       });
     }
 
     return fields;
   }
 
-  private fieldifyCmd(
-    c: Command & {
-      examples?: string[]; // todo: add types for custom command class
-    }
-  ): EmbedFieldData[] {
+  private fieldifyCmd(c: Command): EmbedFieldData[] {
     return (
-      new MessageEmbed()
-        .addField('Description', c.description || 'No description.')
-        // .addField('Examples', c.examples.map(e => `- ${e}`).join('\n'))
+      new Embed()
+        .addField('Description', typeof c.description === 'string' ? c.description : 'No description.')
         .addField('Triggers', `\`${c.aliases.join('`, `')}\``)
         .addField('Cooldown', c.cooldown / 1000, true)
         .addField('Category', c.category.id, true)
@@ -62,46 +52,41 @@ export default class Utility extends Command {
     );
   }
 
-  public async exec(_: Message, args: Help): Promise<Message> {
-    const cat = this.handler.findCategory(args.query || '');
-    const cmd = this.handler.findCommand(args.query || '');
-    const embed = new MessageEmbed();
+  public async exec(_: Message, args: Help): Promise<MessageOptions> {
+    const { query } = args;
+    const cat = this.handler.findCategory(query as string);
+    const cmd = this.handler.findCommand(query as string);
+    const embed = new Embed();
 
     if (cmd && !cat) {
-      const fields = this.fieldifyCmd(cmd);
+
       embed
-        .setTitle(`${this.handler.prefix[0]} ${cmd.aliases[0]} info`)
-        .setFooter(
-          `Requested by: ${_.author.tag}`,
-          _.author.avatarURL({ dynamic: true })
-        )
-        .addFields(fields)
-        .setColor('ORANGE');
-      return _.channel.send({ embed });
+      .setFooter(false, _.author.tag, _.author.avatarURL({ dynamic: true }))
+      .setTitle(`${this.handler.prefix[0]} ${cmd.id} info`)
+      .addFields(this.fieldifyCmd(cmd))
+      .setColor('ORANGE');
+
     } else if (cat) {
+
+      const bot = this.client.user;
       embed
-        .setTitle(`${cat.array()[0].categoryID} Commands`)
-        .setDescription(
-          `\`${cat
-            .array()
-            .map((c) => c.aliases[0])
-            .join('`, `')}\``
-        )
-        .setColor('ORANGE')
-        .setFooter(this.client.user.username, this.client.user.avatarURL());
+      .setDescription(`\`${cat.array().map((c) => c.aliases[0]).join('`, `')}\``)
+      .setTitle(`${cat.array()[0].categoryID} Commands`)
+      .setFooter(false, bot.username, bot.avatarURL())
+      .setColor('ORANGE')
+
     } else {
-      const fields = this.mapCommands();
+
       embed
-        .setDescription(
-          'Lava is the best bot so sub to me with twitch prime when?'
-        )
-        .setTitle(`${this.client.user.username} Commands`)
-        .setThumbnail(this.client.user.avatarURL())
-        .setFooter(`${this.handler.modules.size} total commands`)
-        .addFields(fields)
-        .setColor('ORANGE');
+      .setDescription('Lava will flow in your server\'s utility needs.')
+      .setFooter(false, `${this.handler.modules.size} total commands`)
+      .setTitle(`${this.client.user.username} Commands`)
+      .setThumbnail(this.client.user.avatarURL())
+      .addFields(this.mapCommands())
+      .setColor('ORANGE');
+
     }
 
-    return _.channel.send({ embed });
+    return { embed };
   }
 }

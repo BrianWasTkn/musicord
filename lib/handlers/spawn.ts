@@ -13,7 +13,7 @@ import {
   Message,
   User,
 } from 'discord.js';
-import {
+import type {
   SpawnVisualsType,
   SpawnConfigType,
   SpawnCooldown,
@@ -27,11 +27,12 @@ import {
   AkairoHandler,
   AkairoModule,
   AkairoError,
+  Category,
 } from 'discord-akairo';
 import { Lava } from '@lib/Lava';
 
 export class Spawn extends AkairoModule {
-  answered: Collection<string, User>;
+  answered: Collection<string, boolean>;
   config: Partial<SpawnConfig>;
   client: Lava;
   spawn: SpawnVisual;
@@ -42,9 +43,9 @@ export class Spawn extends AkairoModule {
     rewards: SpawnReward
   ) {
     super(spawn.title, { category: spawn.type });
-    this.spawn = spawn;
-    this.config = { ...config, rewards };
     this.answered = new Collection();
+    this.config = { ...config, rewards };
+    this.spawn = spawn;
   }
 
   has(member: GuildMember, role: string): boolean {
@@ -52,55 +53,62 @@ export class Spawn extends AkairoModule {
   }
 }
 
-export class SpawnHandler extends AkairoHandler {
-  cooldowns: Collection<Snowflake, Spawn>;
+export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
+  cooldowns: Collection<Snowflake, SpawnModule>;
+  categories: Collection<string, Category<string, SpawnModule>>;
   messages: Collection<Snowflake, Message>;
-  modules: Collection<string, Spawn>;
+  modules: Collection<string, SpawnModule>;
   client: Lava;
   queue: Collection<Snowflake, SpawnQueue>;
 
   constructor(client: Lava, options: AkairoHandlerOptions) {
     super(client, options);
-    this.queue = new Collection();
     this.cooldowns = new Collection();
     this.messages = new Collection();
+    this.queue = new Collection();
   }
 
-  handleMessageCollect(
-    message: Message,
-    ctx: {
-      collector: MessageCollector;
-      spawner: Spawn;
+  handleMessageCollect<T extends Message>(args: {
+    collector: MessageCollector,
+    spawner: SpawnModule,
+    msg: T,
+  }): boolean {
+    const { msg, collector, spawner } = args;
+    const { collected } = collector;
+
+    if (spawner.config.type === 'spam') {
+      const filter: CollectorFilter = ({ author }: T) => author.id === msg.author.id;
+      const authorEntries = collected.array().filter(filter);
+      if (authorEntries.length > 1) collected.delete(msg.id);
     }
-  ): boolean {
-    const isFirst = ctx.collector.collected.first().id === message.id;
-    return this.emit('messageCollect', this, ctx.spawner, message, isFirst);
+
+    return this.emit('messageCollect', {
+      msg,
+      spawner,
+      handler: this,
+      isFirst: collected.first().id === msg.id
+    });
   }
 
-  handleMessageEnd(
-    collected: Collection<string, Message>,
-    ctx: { message: Message; spawner: Spawn }
-  ): boolean {
-    const { spawner, message } = ctx;
-    spawner.answered.clear();
-    return this.emit(
-      'messageResults',
-      this,
+  handleMessageEnd<T extends Message>(args: { 
+    collected: Collection<string, T>,
+    spawner: SpawnModule,
+    msg: T,
+  }): boolean {
+    const { collected, spawner, msg } = args;   
+    return this.emit('messageResults', {
+      msg,
       spawner,
-      message,
       collected,
-      Boolean(collected.size)
-    );
+      handler: this,
+      isEmpty: Boolean(collected.size)
+    });
   }
 
   handleReactionCollect(
     reaction: MessageReaction,
     user: User,
-    ctx: {
-      collector: ReactionCollector;
-      spawner: Spawn;
-      message: Message;
-    }
+    ctx: { collector: ReactionCollector, spawner: SpawnModule, message: Message }
   ): boolean {
     const { collector, spawner, message } = ctx;
     const isFirst =
@@ -119,11 +127,7 @@ export class SpawnHandler extends AkairoHandler {
   handleReactionRemove(
     reaction: MessageReaction,
     user: User,
-    ctx: {
-      collector: ReactionCollector;
-      spawner: Spawn;
-      message: Message;
-    }
+    ctx: { collector: ReactionCollector, spawner: SpawnModule, message: Message }
   ): boolean {
     const { collector, spawner, message } = ctx;
     return this.emit('reactionCollect', this, spawner, message, reaction, user);
@@ -131,10 +135,7 @@ export class SpawnHandler extends AkairoHandler {
 
   handleReactionEnd(
     collected: Collection<string, MessageReaction>,
-    ctx: {
-      message: Message;
-      spawner: Spawn;
-    }
+    ctx: { message: Message, spawner: SpawnModule }
   ): boolean {
     return this.emit(
       'reactionResults',
@@ -151,26 +152,26 @@ export class SpawnHandler extends AkairoHandler {
    * @param {Spawn} spawner the spawn module to run
    * @param {Message} message a discord message obj
    */
-  public async spawn(spawner: Spawn, message: Message): Promise<void> {
+  public async spawn(spawner: SpawnModule, message: Message): Promise<void> {
     if (['spam', 'message'].includes(spawner.config.type)) {
       const str = this.client.util.randomInArray(spawner.spawn.strings);
       const options: MessageCollectorOptions = {
         max: spawner.config.entries,
         time: spawner.config.timeout,
+        idle: 3000
       };
 
-      const filter: CollectorFilter = async ({
-        author,
-        content,
-      }: Message): Promise<boolean> => {
-        const notCapped =
-          (await this.client.db.spawns.fetch(author.id)).unpaid <= 10e6;
-        // this.client.config.spawns.unpaidCap
+      const filter: CollectorFilter = async (msg: Message): Promise<boolean> => {
+        const { author, content } = msg;
+        const { fetch } = this.client.db.spawns;
+        const { cap } = this.client.config.spawn
+        const isSpam = spawner.config.type === 'spam';
+
         return (
-          notCapped &&
           !author.bot &&
-          !spawner.answered.has(author.id) &&
-          content.toLowerCase() === str.toLowerCase()
+          (await fetch(author.id)).unpaid <= cap &&
+          content.toLowerCase() === str.toLowerCase() &&
+          (isSpam ? true : !spawner.answered.has(author.id))
         );
       };
 
@@ -182,11 +183,11 @@ export class SpawnHandler extends AkairoHandler {
       const collector = message.channel.createMessageCollector(filter, options);
 
       collector
-        .on('collect', (m: Message) => {
-          this.handleMessageCollect(m, { collector, spawner });
+        .on('collect', (msg: Message) => {
+          this.handleMessageCollect<Message>({ msg, collector, spawner });
         })
-        .on('end', (coll: Collection<string, Message>) => {
-          this.handleMessageEnd(coll, { message, spawner })
+        .on('end', (collected: Collection<string, Message>) => {
+          this.handleMessageEnd<Message>({ collected, spawner, msg: message })
         });
     } else if (spawner.config.type === 'react') {
       const options: ReactionCollectorOptions = {

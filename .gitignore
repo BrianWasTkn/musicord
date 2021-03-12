@@ -4,4 +4,4 @@ build
 
 # Dotfiles
 .env
-.vs-code
+.vscode

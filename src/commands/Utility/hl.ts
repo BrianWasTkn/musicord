@@ -1,10 +1,7 @@
-import { Message, Role } from 'discord.js';
-import { Command } from 'discord-akairo';
-import { Lava } from '@lib/Lava';
+import { Message, Role, MessageOptions } from 'discord.js';
+import { Command } from '@lib/handlers/command';
 
 export default class Util extends Command {
-  client: Lava;
-
   constructor() {
     super('hlock', {
       aliases: ['hlock', 'hl'],
@@ -15,13 +12,13 @@ export default class Util extends Command {
     });
   }
 
-  async exec(_: Message): Promise<Message> {
+  async exec(_: Message): Promise<MessageOptions> {
     await _.delete();
     const role: Role = this.client.util.heists.get(_.channel.id);
     if (!role) return;
     const { channel }: any = _;
     await channel.updateOverwrite(role.id, { SEND_MESSAGES: null });
-    return _.channel.send({
+    return {
       embed: {
         title: `**LOCKED FOR \`${role.name}\`**`,
         color: 'GREEN',
@@ -30,6 +27,6 @@ export default class Util extends Command {
           iconURL: _.guild.iconURL({ dynamic: true }),
         },
       },
-    });
+    };
   }
 }

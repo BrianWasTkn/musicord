@@ -1,67 +1,48 @@
-import { SpawnFunction, SpawnDocument } from '../../interface/mongo/spawns';
-export { SpawnFunction } from '../../interface/mongo/spawns';
-import { Snowflake, User } from 'discord.js';
-import { Document } from 'mongoose';
-import { Lava } from '../../Lava';
+/**
+ * Currency Functions
+ * Author: brian
+ */
+
+import type { Snowflake, User } from 'discord.js';
+import type { Model, Document } from 'mongoose';
+import type { SpawnDocument } from '@lib/interface/mongo/spawns';
+import type { CurrencyUtil } from '@lib/interface/mongo/currency';
+import type { Lava } from '@lib/Lava';
+
 import Spawn from './model';
 
-export function dbSpawn(client: Lava): SpawnFunction {
-  return {
-    create: async (userID: Snowflake): Promise<Document<SpawnDocument>> => {
-      const user: User = client.users.cache.get(userID);
-      const data: Document<SpawnDocument> = new Spawn({
-        userID: user.id,
-      });
-      await data.save();
-      return data;
-    },
+export default class SpawnEndpoint<BaseDocument extends Document> {
+  model: Model<Document<SpawnDocument>>;
+  bot: Lava;
 
-    fetch: async (userID: Snowflake): Promise<Document & SpawnDocument> => {
-      const data = await Spawn.findOne({ userID });
-      if (!data) {
-        const newData = await dbSpawn(client).create(userID);
-        return newData as Document & SpawnDocument;
-      } else {
-        return data as Document & SpawnDocument;
-      }
-    },
+  constructor(client: Lava) {
+    this.model = Spawn;
+    this.bot = client;
+  }
 
-    addUnpaid: async (
-      userID: Snowflake,
-      amount: number
-    ): Promise<Document & SpawnDocument> => {
-      const data = await dbSpawn(client).fetch(userID);
-      data.unpaid += amount;
-      await data.save();
-      return data;
-    },
-    removeUnpaid: async (
-      userID: Snowflake,
-      amount: number
-    ): Promise<Document & SpawnDocument> => {
-      const data = await dbSpawn(client).fetch(userID);
-      data.unpaid -= amount;
-      await data.save();
-      return data;
-    },
+  async create(id: Snowflake): Promise<Document & BaseDocument> {
+    const { id: userID }: User = await this.bot.users.fetch(id);
+    const data = new this.model({ userID });
+    await data.save();
+    return (data as Document & BaseDocument);
+  }
 
-    incrementJoinedEvents: async (
-      userID: Snowflake,
-      amount?: number
-    ): Promise<Document & SpawnDocument> => {
-      const data = await dbSpawn(client).fetch(userID);
-      data.eventsJoined += amount || 1;
-      await data.save();
-      return data;
-    },
-    decrementJoinedEvents: async (
-      userID: Snowflake,
-      amount?: number
-    ): Promise<Document & SpawnDocument> => {
-      const data = await dbSpawn(client).fetch(userID);
-      data.eventsJoined -= amount || 1;
-      await data.save();
-      return data;
-    },
-  };
+  fetch = async(userID: Snowflake): Promise<Document & BaseDocument> => {
+    let data = await this.model.findOne({ userID });
+    return (!data._id ? (await this.create(userID)) : data) as Document & BaseDocument;
+  }
+
+  add = async(userID: Snowflake, key: keyof BaseDocument, amount: number): Promise<Document & BaseDocument> => {
+    const data = await this.fetch(userID);
+    data[key as string] += amount;
+    await data.save();
+    return data;
+  }
+
+  remove = async(userID: Snowflake, key: keyof BaseDocument, amount: number): Promise<Document & BaseDocument> => {
+    const data = await this.fetch(userID);
+    data[key as string] -= amount;
+    await data.save();
+    return data;
+  }
 }

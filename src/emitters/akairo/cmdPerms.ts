@@ -7,7 +7,7 @@ export default class CommandListener extends Listener {
 
   constructor() {
     super('missingPermissions', {
-      emitter: 'commandHandler',
+      emitter: 'command',
       event: 'missingPermissions',
     });
   }
@@ -19,12 +19,12 @@ export default class CommandListener extends Listener {
     missing: any
   ): Promise<Message> {
     type = type === 'client' ? 'I' : 'You';
-    const description: string[] = [];
-    description[0] = `${type} don\'t have enough permissions to run the \`${command.id}\` command.`;
-    description[1] = `Ensure ${type} have the following permissions:`;
+    const d: string[] = [];
+    d.push(`${type} don\'t have enough permissions to run the \`${command.id}\` command.`);
+    d.push(`Ensure ${type} have the following permissions:`);
 
     const embed = new MessageEmbed()
-      .setDescription(description.join('\n'))
+      .setDescription(d.join('\n'))
       .setColor('RED')
       .addField(
         `Missing Permissions • ${missing.length}`,

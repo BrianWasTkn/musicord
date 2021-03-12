@@ -2,13 +2,14 @@ import { AkairoModuleOptions } from 'discord-akairo';
 
 export interface InventorySlot {
 	expire?: number;
-	active?: boolean;
 	amount: number;
+	end?: boolean;
 	id: string;
 } 
 
 export interface ItemOptions extends AkairoModuleOptions {
 	emoji: string;
+	name: string;
   category: string;
   info: string;
   cost: number;

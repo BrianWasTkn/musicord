@@ -1,42 +1,45 @@
-import { Message, MessageEmbed } from 'discord.js';
-import { Command } from 'discord-akairo';
-import { Lava } from '@lib/Lava';
+import { Message, GuildMember, MessageOptions } from 'discord.js';
+import { Command } from '@lib/handlers/command';
+import { Embed } from '@lib/utility/embed'
 
 export default class Currency extends Command {
-  client: Lava;
-
   constructor() {
     super('balance', {
       aliases: ['balance', 'bal'],
       channel: 'guild',
-      description: "Check yours or someone else's coin balance",
+      description: "Check yours or someone else's lava balance.",
       category: 'Currency',
       cooldown: 1e3,
       args: [
         {
           id: 'member',
           type: 'member',
-          default: (message: Message) => message.member,
+          default: (message: Message) => {
+            return message.member;
+          },
         },
       ],
     });
   }
 
-  public async exec(_: Message, { member }: any): Promise<Message> {
-    const data = await this.client.db.currency.fetch(member.user.id);
-    const embed: MessageEmbed = new MessageEmbed({
-      title: `${member.user.username}'s balance`,
-      color: 'RANDOM',
-      description: [
-        `**Pocket:** ${data.pocket.toLocaleString()}`,
-        `**Vault:** ${data.vault.toLocaleString()}/${data.space.toLocaleString()}`,
-        `**Total:** ${(data.pocket + data.vault).toLocaleString()}`,
-      ].join('\n'),
-      footer: {
-        text: 'discord.gg/memer',
-      },
-    });
+  public async exec(_: Message, { member }: {
+    member: GuildMember
+  }): Promise<MessageOptions> {
+    const { fetch } = this.client.db.currency;
+    const { pocket, vault } = await fetch(member.user.id);
+    const dpn: string[] = [];
+    
+    [ `**Pocket:** ${pocket.toLocaleString()}`,
+      `**Vault:** ${vault.toLocaleString()}`,
+      `**Total:** ${(pocket + vault).toLocaleString()}`
+    ].forEach(i => dpn.push(i));
 
-    return _.channel.send({ embed });
+    const embed: Embed = new Embed()
+    .setTitle(`${member.user.username}'s balance`)
+    .setDescription(dpn.join('\n'))
+    .setFooter(false, 'discord.gg/memer')
+    .setColor('RANDOM')
+
+    return { embed };
   }
 }

@@ -30,7 +30,7 @@ export interface SpawnVisual {
 }
 
 export interface SpawnQueue {
-  channel: TextChannel;
+  channel: Snowflake;
   spawn: Spawn;
-  msgId: Snowflake;
+  msg: Snowflake;
 }

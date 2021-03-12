@@ -3,10 +3,10 @@
  * Author: brian
  */
 
-export { CurrencyUtil } from '../../interface/mongo/currency';
-import { CurrencyUtil } from '../../interface/mongo/currency';
-import { Message, GuildChannel } from 'discord.js';
-import { Lava } from '../../Lava';
+import type { Message, GuildChannel } from 'discord.js';
+export type { CurrencyUtil } from '@lib/interface/mongo/currency';
+import type { CurrencyUtil } from '@lib/interface/mongo/currency';
+import type { Lava } from '@lib/Lava';
 
 export const utils: CurrencyUtil = {
   /**
@@ -15,20 +15,23 @@ export const utils: CurrencyUtil = {
    * @param msg a discord msg obj
    * @returns {Promise<number>}
    */
-  calcMulti: async (
-    Lava: Lava,
+  async calcMulti(
+    bot: Lava,
     msg: Message
-  ): Promise<{ unlocked: string[]; total: number }> => {
+  ): Promise<{ unlocked: string[]; total: number }> {
+    const { fetch } = bot.db.currency;
     const channel = msg.channel as GuildChannel;
-    const db = await Lava.db.currency.fetch(msg.member.user.id);
+    const db = await fetch(msg.author.id);
     let total = 0;
     total += db.multi;
     let unlocked = [];
+
+    // Discord-based (26%)
     if (msg.guild.id === '691416705917779999') {
       unlocked.push(`${msg.guild.name} - \`10%\``);
       total += 10;
     }
-    if (msg.member.nickname.toLowerCase().includes('taken')) {
+    if (msg.member.nickname && msg.member.nickname.toLowerCase().includes('taken')) {
       unlocked.push(`Taken Cult - \`5%\``);
       total += 5;
     }
@@ -36,14 +39,27 @@ export const utils: CurrencyUtil = {
       unlocked.push(`#lava - \`2.5%\``);
       total += 2.5;
     }
-    if (msg.guild.emojis.cache.size >= 250) {
-      total += 2.5;
-      unlocked.push(`250 Emojis - \`2.5%\``);
-      if (msg.guild.emojis.cache.size >= 100) {
-        total += 1;
-        unlocked.push(`100 Emojis - \`1%\``);
+    if (msg.guild.id === '691416705917779999') {
+      const g = await bot.guilds.fetch('691416705917779999');
+      unlocked.push(`${g.id} — \`5%\``);
+      total += 5;
+    }
+    if (msg.guild.emojis.cache.size >= 100) {
+      total += 1;
+      unlocked.push(`100 Emojis - \`1%\``);
+      if (msg.guild.emojis.cache.size >= 250) {
+        total += 2.5;
+        unlocked.push(`250 Emojis - \`2.5%\``);
       }
     }
+
+    // Currency-based (10%)
+    const trophy = db.items.find(i => i.id === 'trophy');
+    if (trophy.amount >= 1) {
+      total += 10;
+      unlocked.push(`Trophy — \`10%\``);
+    }
+
     return { total, unlocked };
   },
 };

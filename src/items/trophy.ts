@@ -6,11 +6,12 @@ import { Item } from '@lib/handlers/item'
 export default class Collectible extends Item {
 	constructor() {
 		super('trophy', {
-			category: 'Collectible',
+			category: 'Flex',
 			sellable: false,
 			buyable: true,
 			usable: true,
 			emoji: '🏆',
+			name: 'Trophy',
 			info: 'Grants you another trophy if you use it.',
 			cost: 25000000,
 		});

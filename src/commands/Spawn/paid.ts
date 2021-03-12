@@ -1,10 +1,8 @@
-import { Command } from 'discord-akairo';
-import { Message, MessageEmbed } from 'discord.js';
-import { Lava } from '@lib/Lava';
+import { Message, MessageOptions } from 'discord.js';
+import { Command } from '@lib/handlers/command';
+import { Embed } from '@lib/utility/embed'
 
 export default class Spawn extends Command {
-  client: Lava;
-
   constructor() {
     super('paid', {
       aliases: ['paid'],
@@ -18,7 +16,7 @@ export default class Spawn extends Command {
           unordered: true,
         },
         {
-          id: 'user',
+          id: 'member',
           type: 'member',
           unordered: true,
           default: (message: Message) => message.member,
@@ -27,28 +25,27 @@ export default class Spawn extends Command {
     });
   }
 
-  private async deleteMessage(m: Message): Promise<Message> {
-    return m.delete({ timeout: 3000 });
-  }
+  async exec(_: Message, args: {
+    amount: number,
+    member: Message['member']
+  }): Promise<string | MessageOptions> {
+    const { fetch, remove } = this.client.db.spawns;
+    const { amount, member } = args;
+    if (!amount) 
+      return 'You need an amount'
+    else if (!member) 
+      return 'You need a user'
+    
+    const bot = this.client.user;
+    const old = await fetch(member.user.id);
+    const d = await remove(member.user.id, 'unpaid', amount);
+    const embed = new Embed()
+      .addField('• Old Value', old.unpaid.toLocaleString())
+      .addField('• New Value', d.unpaid.toLocaleString())
+      .setTitle(':white_check_mark: Unpaids Updated.')
+      .setFooter(true, bot.username, bot.avatarURL())
+      .setColor('GREEN');
 
-  async exec(_: Message, args: any): Promise<Message> {
-    const { amount, user } = args;
-    // Args
-    if (!amount) return _.reply('You need an amount.').then(this.deleteMessage);
-    else if (!user) return _.reply('You need a user.').then(this.deleteMessage);
-    // Update
-    const data = await this.client.db.spawns.removeUnpaid(user.user.id, amount);
-    // Message
-    const embed = new MessageEmbed()
-      .setAuthor(
-        `Updated: ${user.user.tag}`,
-        user.user.avatarURL({ dynamic: true })
-      )
-      .setFooter(this.client.user.username, this.client.user.avatarURL())
-      .addField('Total Unpaids Left', data.unpaid.toLocaleString())
-      .setTimestamp(Date.now())
-      .setColor('ORANGE');
-
-    return _.channel.send({ embed });
+    return { embed };
   }
 }

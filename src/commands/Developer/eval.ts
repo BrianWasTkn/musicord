@@ -1,11 +1,9 @@
-import { Message } from 'discord.js';
+import { Message, MessageOptions } from 'discord.js';
 import { inspect } from 'util';
-import { Command } from 'discord-akairo';
-import { Lava } from '@lib/Lava';
+import { Command } from '@lib/handlers/command';
+import { Embed } from '@lib/utility/embed';
 
 export default class Dev extends Command {
-  client: Lava;
-
   constructor() {
     super('eval', {
       aliases: ['eval', 'ev'],
@@ -25,11 +23,7 @@ export default class Dev extends Command {
     return inspect(obj, options);
   }
 
-  private codeBlock(str: string, lang: string = 'js'): string {
-    return `\`\`\`${lang}\n${str}\n\`\`\``;
-  }
-
-  public async exec(_: Message, args: any): Promise<Message> {
+  public async exec(_: Message, args: any): Promise<string | MessageOptions> {
     const { channel } = _;
     const code: string = args.code;
     const asynchronous: boolean =
@@ -39,20 +33,12 @@ export default class Dev extends Command {
       evalTime: number,
       type: string,
       token: RegExp;
-    const embed: Message = await channel.send({
-      embed: {
-        color: 'ORANGE',
-        description: '```\nPreparing pro gamer move...\n```',
-        footer: {
-          iconURL: this.client.user.avatarURL({ dynamic: true }),
-          text: this.client.user.username,
-        },
-      },
-    });
 
     before = Date.now();
     try {
-      evaled = await eval(asynchronous ? `(async()=>{${code}})()` : code);
+      evaled = await eval(asynchronous 
+        ? `(async()=>{${code}})()` 
+        : code);
     } catch (error) {
       evaled = error.message;
     }
@@ -65,15 +51,15 @@ export default class Dev extends Command {
 
     token = new RegExp(this.client.token, 'gi');
     evaled = evaled.replace(token, 'N0.T0K4N.4Y0U');
-    return embed.edit({
+    return {
       embed: {
         color: 'ORANGE',
-        description: this.codeBlock(evaled),
+        description: this.codeBlock('js', evaled.length > 1900 ? 'Too many to print' : evaled),
         fields: [
-          { name: 'Type', value: this.codeBlock(type) },
-          { name: 'Latency', value: this.codeBlock(`${evalTime}ms`) },
+          { name: 'Type', value: this.codeBlock('js', type) },
+          { name: 'Latency', value: this.codeBlock('js', `${evalTime}ms`) },
         ],
       },
-    });
+    };
   }
 }

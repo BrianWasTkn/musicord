@@ -1,10 +1,7 @@
 import { Message } from 'discord.js';
-import { Command } from 'discord-akairo';
-import { Lava } from '@lib/Lava';
+import { Command } from '@lib/handlers/command';
 
 export default class Currency extends Command {
-  client: Lava;
-
   constructor() {
     super('gimme', {
       aliases: ['gimme'],
@@ -15,12 +12,19 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(_: Message): Promise<Message> {
-    const user = _.member;
-    const amount = this.client.util.randomNumber(100, 1000) * 1000;
-    await this.client.db.currency.addPocket(user.user.id, amount);
-    return _.channel.send(
-      `Successfully added **${amount.toLocaleString()}** coins to your pocket.`
-    );
+  async exec({
+    author, channel
+  }: Message): Promise<string> {
+    const { db, config, util } = this.client;
+    const { fetch, add } = db.currency;
+    const { maxPocket } = config.currency;
+    const { pocket } = await fetch(author.id);
+
+    if (pocket >= maxPocket)
+      return 'You\'re already rich wtf??';
+
+    const amount = util.randomNumber(1, <number>maxPocket - pocket);
+    await add(author.id, 'pocket', amount);
+    return `Successfully added **${amount.toLocaleString()}** coins to your pocket.`;
   }
 }

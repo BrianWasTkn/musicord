@@ -1,10 +1,10 @@
 import { CurrencyType, currencyConfig } from './currency';
 import { ConfigInterface, lavaConfig } from './lava';
 import { SpawnConfig, spawnConfig } from './spawn';
-import { akairoConfig } from './akairo';
+import type { AkairoOptions } from 'discord-akairo';
+import type { ClientOptions } from 'discord.js';
 import { discordOptions } from './discord';
-import { AkairoOptions } from 'discord-akairo';
-import { ClientOptions } from 'discord.js';
+import { akairoConfig } from './akairo';
 
 export interface Config {
   currency: CurrencyType;

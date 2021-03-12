@@ -9,8 +9,9 @@ import {
   Role,
 } from 'discord.js';
 import { AkairoHandler, ClientUtil } from 'discord-akairo';
-import { Lava } from '../Lava';
 import { Colors } from '../interface/utility';
+import { Lava } from '../Lava';
+
 import chalk from 'chalk';
 import moment from 'moment';
 
@@ -18,14 +19,12 @@ export class Util extends ClientUtil {
   heists: Collection<string, Role>;
   events: Collection<string, string>;
   client: Lava;
-  Colors: Colors;
 
   constructor(client: Lava) {
     super(client);
 
     this.heists = new Collection();
     this.events = new Collection();
-    this.Colors = require('./constants').Colors;
   }
 
   /**
@@ -70,42 +69,24 @@ export class Util extends ClientUtil {
   isPromise(something: any): boolean {
     return (
       something &&
-      typeof something.then === 'function' &&
-      typeof something.catch === 'function'
+      typeof something.then === 'function'
     );
   }
 
-  /**
-   * Logs something into the console
-   * @param struct The constructor name
-   * @param type Either `main` or `error`
-   * @param _ The message to be displayed
-   * @param err An error object
-   */
-  log(struct: string, type: string, _: string, err?: Error): void {
+  console(args: {
+    klass: string,
+    type?: 'def' | 'err',
+    msg: string,
+  }): void {
     const stamp = moment().format('HH:mm:ss');
-    switch (type) {
-      case 'main':
-        console.log(
-          chalk.whiteBright(`[${stamp}]`),
-          chalk.cyanBright(struct),
-          chalk.whiteBright('=>'),
-          chalk.yellowBright(_)
-        );
-        break;
-      case 'error':
-        console.log(
-          chalk.whiteBright(`[${stamp}]`),
-          chalk.redBright(struct),
-          chalk.whiteBright('=>'),
-          chalk.redBright(_),
-          err
-        );
-        break;
-      default:
-        this.log(struct, 'main', _);
-        break;
-    }
+    const log = (...args) => console.log(...args); // kek
+    const { 
+      klass = this.client.constructor.name, 
+      type = 'def', 
+      msg = null, 
+    } = args;
+
+    return log(chalk`{cyanBright [${stamp} => ${klass}]} {${type == 'err' ? 'red' : 'cyan'}Bright ${msg}}`);
   }
 
   /**
@@ -116,22 +97,5 @@ export class Util extends ClientUtil {
     return new Promise((resolve: Function) =>
       setTimeout(() => resolve(ms), ms)
     );
-  }
-
-  async collectMessageAndEmit(
-    options: MessageCollectorOptions,
-    filter: CollectorFilter,
-    channel: TextChannel,
-    event: string,
-    handler: AkairoHandler
-  ): Promise<MessageCollector> {
-    const collector = channel.createMessageCollector(filter, options);
-    collector.on('collect', (message: Message) =>
-      handler.emit(`${event}Collect`, message)
-    );
-    collector.on('end', (collected: Collection<string, Message>) =>
-      handler.emit(`${event}End`, collected)
-    );
-    return collector;
   }
 }

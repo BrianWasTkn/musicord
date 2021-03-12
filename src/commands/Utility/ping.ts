@@ -1,10 +1,7 @@
+import { Command } from '@lib/handlers/command';
 import { Message } from 'discord.js';
-import { Command } from 'discord-akairo';
-import { Lava } from '@lib/Lava';
 
 export default class Util extends Command {
-  client: Lava;
-
   constructor() {
     super('ping', {
       aliases: ['ping', 'pong'],
@@ -14,10 +11,10 @@ export default class Util extends Command {
     });
   }
 
-  async exec(_: Message): Promise<Message> {
+  async exec(_: Message): Promise<string> {
     const { channel, guild } = _;
     const { ping } = guild.shard;
 
-    return channel.send(`**Ponge:** ${ping}ms`);
+    return `**Ponge:** ${ping}ms`;
   }
 }

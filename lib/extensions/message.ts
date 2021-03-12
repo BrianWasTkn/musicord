@@ -10,15 +10,23 @@ import {
   DMChannel,
   Message,
 } from 'discord.js';
-import { Lava } from '@lib/Lava';
+import type { 
+  Lava 
+} from '@lib/Lava';
 
 type MessageChannel = DMChannel | TextChannel | NewsChannel;
 
 class LavaMessage extends Message {
   client: Lava;
+  db: Lava["db"]
 
-  constructor(client: Lava, data: object, channel: MessageChannel) {
+  constructor(
+    client: Lava,
+    data: object,
+    channel: MessageChannel
+  ) {
     super(client, data, channel);
+    this.db = client.db;
   }
 
   embed(embed: MessageEmbed): Promise<Message> {
@@ -28,7 +36,8 @@ class LavaMessage extends Message {
   msgReply(
     content: StringResolvable | APIMessage,
     options: MessageOptions | MessageAdditions,
-    mention: boolean = true
+    mention: boolean = true,
+    delTout?: number
   ): Promise<this> {
     // @ts-ignore
     return (
@@ -48,9 +57,11 @@ class LavaMessage extends Message {
             },
           },
         })
-        .then((m: object) => {
+        .then(async (m: object) => {
           // @ts-ignore
-          return this.client.actions.MessageCreate.handle(m).message;
+          let msg: Message = this.client.actions.MessageCreate.handle(m).message;
+          if (delTout) msg = await msg.delete({ timeout: delTout });
+          return msg;
         })
         .catch(() => {
           return this.channel.send(content);
@@ -59,4 +70,4 @@ class LavaMessage extends Message {
   }
 }
 
-Structures.extend('Message', () => LavaMessage);
+Structures.extend<'Message', typeof LavaMessage>('Message', () => LavaMessage);
