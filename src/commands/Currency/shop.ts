@@ -1,6 +1,6 @@
 import { Message, MessageOptions } from 'discord.js';
 import { Command } from '@lib/handlers/command';
-import { Embed } from '@lib/utility/embed'
+import { Embed } from '@lib/utility/embed';
 
 export default class Currency extends Command {
   constructor() {
@@ -18,7 +18,12 @@ export default class Currency extends Command {
     const items = Handler.modules.array();
     const shop = new Embed();
 
-    const itemMap = items.map(i => `**${i.emoji} ${i.name}** — __${i.cost.toLocaleString()}__\n**${i.categoryID}** — __${i.info}__`);    
+    const itemMap = items.map(
+      (i) =>
+        `**${i.emoji} ${i.name}** — __${i.cost.toLocaleString()}__\n**${
+          i.categoryID
+        }** — __${i.info}__`
+    );
     const fields = this.client.util.paginateArray(itemMap, 5);
     shop.setDescription(fields[0].join('\n\n')).setTitle('Test Shop');
     return { embed: shop };

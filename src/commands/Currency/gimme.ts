@@ -12,16 +12,13 @@ export default class Currency extends Command {
     });
   }
 
-  async exec({
-    author, channel
-  }: Message): Promise<string> {
+  async exec({ author, channel }: Message): Promise<string> {
     const { db, config, util } = this.client;
     const { fetch, add } = db.currency;
     const { maxPocket } = config.currency;
     const { pocket } = await fetch(author.id);
 
-    if (pocket >= maxPocket)
-      return 'You\'re already rich wtf??';
+    if (pocket >= maxPocket) return "You're already rich wtf??";
 
     const amount = util.randomNumber(1, <number>maxPocket - pocket);
     await add(author.id, 'pocket', amount);

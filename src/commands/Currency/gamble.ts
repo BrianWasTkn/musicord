@@ -1,16 +1,16 @@
 import { Message, MessageOptions } from 'discord.js';
-import { CurrencyProfile } from '@lib/interface/mongo/currency'
+import { CurrencyProfile } from '@lib/interface/mongo/currency';
 import { Document } from 'mongoose';
-import { Argument } from 'discord-akairo'
+import { Argument } from 'discord-akairo';
 import { Command } from '@lib/handlers/command';
-import { Embed } from '@lib/utility/embed'
+import { Embed } from '@lib/utility/embed';
 
 export default class Currency extends Command {
   constructor() {
     super('bet', {
       aliases: ['gamble', 'roll', 'bet'],
       channel: 'guild',
-      description: "A very rigged gambling game for lava grinders.",
+      description: 'A very rigged gambling game for lava grinders.',
       category: 'Currency',
       cooldown: 1000,
       args: [
@@ -22,9 +22,12 @@ export default class Currency extends Command {
     });
   }
 
-  private async checkArgs(_: Message, args: {
-    amount: number | string;
-  }): Promise<string | number> {
+  private async checkArgs(
+    _: Message,
+    args: {
+      amount: number | string;
+    }
+  ): Promise<string | number> {
     const { minBet, maxBet, maxPocket } = this.client.config.currency;
     const { pocket } = await this.client.db.currency.fetch(_.author.id);
     let bet = args.amount;
@@ -55,16 +58,15 @@ export default class Currency extends Command {
     let { total: multi } = await DB.utils.calcMulti(this.client, _);
     if (multi >= maxMulti) multi = maxMulti as number;
     const bet = await this.checkArgs(_, args);
-    if (typeof bet === 'string') return bet
+    if (typeof bet === 'string') return bet;
 
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);
-    if (Math.random() > 0.7) // best rig ever
-      if (botD > userD) 
-        userD = [botD, botD = userD][0];
-    else
-      if (userD > botD) 
-        botD = [userD, userD = botD][0];
+    if (Math.random() > 0.7)
+      if (botD > userD)
+        // best rig ever
+        userD = [botD, (botD = userD)][0];
+      else if (userD > botD) botD = [userD, (userD = botD)][0];
 
     // vis and db
     let w: number,
@@ -93,7 +95,7 @@ export default class Currency extends Command {
             `You now have **${db.pocket.toLocaleString()}** coins.`,
           ];
     } else if (userD > botD) {
-      let wngs = Math.random() * ((<number>maxWin) / (<number>maxBet));
+      let wngs = Math.random() * (<number>maxWin / <number>maxBet);
       if (wngs < 0.3) wngs += 0.3;
       w = Math.round(bet * wngs);
       w = w + Math.round(w * (multi / 100));
@@ -111,7 +113,10 @@ export default class Currency extends Command {
     }
 
     const embed = new Embed()
-      .setAuthor(`${_.author.username}'s ${identifier} gambling game`,_.author.displayAvatarURL({ dynamic: true }))
+      .setAuthor(
+        `${_.author.username}'s ${identifier} gambling game`,
+        _.author.displayAvatarURL({ dynamic: true })
+      )
       .setFooter(false, `Multiplier: ${multi}%`, this.client.user.avatarURL())
       .addField(this.client.user.username, `Rolled a \`${botD}\``, true)
       .addField(_.author.username, `Rolled a \`${userD}\``, true)

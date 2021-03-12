@@ -43,10 +43,19 @@ export default class Utility extends Command {
     return [
       (m: Message) => m.guild.name,
       (m: Message) => m.client.user.username,
-      'NICE SPAM', 'NICE LOGO', 'NICE',
-      'MEOW', 'OKURR', 'Z', 'LOL',
-      'PROBBER', 'TAKEN', 'CHIPS',
-      'DRIP', 'SWAG', 'HELICOPTER'
+      'NICE SPAM',
+      'NICE LOGO',
+      'NICE',
+      'MEOW',
+      'OKURR',
+      'Z',
+      'LOL',
+      'PROBBER',
+      'TAKEN',
+      'CHIPS',
+      'DRIP',
+      'SWAG',
+      'HELICOPTER',
     ];
   }
 
@@ -59,11 +68,14 @@ export default class Utility extends Command {
       : entries.set(this.author.id, this.member);
   }
 
-  async exec(_: Message, args: {
-    amount: number,
-    lock: boolean,
-    hits: number
-  }): Promise<MessageOptions> {
+  async exec(
+    _: Message,
+    args: {
+      amount: number;
+      lock: boolean;
+      hits: number;
+    }
+  ): Promise<MessageOptions> {
     await _.delete().catch(() => {});
     const { amount, lock, hits } = args;
     const { util } = this.client;
@@ -77,11 +89,12 @@ export default class Utility extends Command {
     if (lock) await lockChan(true);
 
     let string = util.randomInArray(this.strings);
-    string = typeof string === 'function' ? (
-      util.isPromise(string) 
-        ? (await string(_))
-        : string(_)
-    ) : string;
+    string =
+      typeof string === 'function'
+        ? util.isPromise(string)
+          ? await string(_)
+          : string(_)
+        : string;
     await channel.send(
       `**<:memerGold:753138901169995797> \`JEVENT NICE\`**\n
       **Spam Spam Spam**\nSplit **${amount.toLocaleString()}**, now.`
@@ -93,28 +106,44 @@ export default class Utility extends Command {
       m.content.toLowerCase() === string.toLowerCase();
 
     const collector = channel.createMessageCollector(filter, options);
-    collector.on('collect', (m: Message) => this.handleCollect.call(m, entries));
+    collector.on('collect', (m: Message) =>
+      this.handleCollect.call(m, entries)
+    );
     collector.on('end', async (col: Collection<string, Message>) => {
       let success: GuildMember[] = [];
       events.delete(guild.id);
 
-      if (lock) 
-        await lockChan(false);
-      if (col.size <= 1) 
-        return _.reply('**:skull: RIP! No one joined.**');
-      
-      await channel.send(`**${entries.size} people** landed **${col.size}** hits altogether and are teaming up to split __${amount.toLocaleString()}__ coins...`);
+      if (lock) await lockChan(false);
+      if (col.size <= 1) return _.reply('**:skull: RIP! No one joined.**');
+
+      await channel.send(
+        `**${entries.size} people** landed **${
+          col.size
+        }** hits altogether and are teaming up to split __${amount.toLocaleString()}__ coins...`
+      );
       await util.sleep(util.randomNumber(5, 10) * 1000);
       entries
         .array()
         .sort(() => Math.random() - 0.5)
-        .forEach((c) => Math.random() > 0.5 && success.length <= 15 ? success.push(c) : {});
+        .forEach((c) =>
+          Math.random() > 0.5 && success.length <= 15 ? success.push(c) : {}
+        );
       const coins = Math.round(amount / success.length);
       const order = success.length
-        ? success.map((s) =>`+ ${s.nickname === null ? s.user.username : s.nickname} got ${coins.toLocaleString()}`)
+        ? success.map(
+            (s) =>
+              `+ ${
+                s.nickname === null ? s.user.username : s.nickname
+              } got ${coins.toLocaleString()}`
+          )
         : ['- Everybody died LOL'];
-      await channel.send(`**Good job everybody, we split up \`${(coins > 1 ? coins : 1).toLocaleString()}\` each!**`);
-      
+      await channel.send(
+        `**Good job everybody, we split up \`${(coins > 1
+          ? coins
+          : 1
+        ).toLocaleString()}\` each!**`
+      );
+
       return {
         code: 'diff',
         content: order.join('\n'),

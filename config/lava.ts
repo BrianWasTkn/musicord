@@ -1,13 +1,13 @@
-import { ConnectOptions } from 'mongoose'
+import { ConnectOptions } from 'mongoose';
 
 export interface ConfigInterface {
   dev?: boolean;
   prefix: string | string[];
   token: string;
   mongo: {
-  	uri: string,
-  	options?: ConnectOptions
-  }
+    uri: string;
+    options?: ConnectOptions;
+  };
 }
 
 export const lavaConfig = {
@@ -15,10 +15,10 @@ export const lavaConfig = {
   prefix: ['lava', ';;', '>'],
   token: process.env.TOKEN,
   mongo: {
-  	uri: process.env.MONGO,
-  	options: {
-  		useUnifiedTopology: true,
-  		useNewUrlParser: true
-  	}
-  }
+    uri: process.env.MONGO,
+    options: {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    },
+  },
 };

@@ -1,9 +1,9 @@
 import { ColorResolvable, Message, MessageOptions } from 'discord.js';
-import { CurrencyProfile } from '@lib/interface/mongo/currency'
+import { CurrencyProfile } from '@lib/interface/mongo/currency';
 import { Argument } from 'discord-akairo';
 import { Document } from 'mongoose';
-import { Command } from '@lib/handlers/command'
-import { Embed } from '@lib/utility/embed'
+import { Command } from '@lib/handlers/command';
+import { Embed } from '@lib/utility/embed';
 
 export default class Currency extends Command {
   constructor() {
@@ -41,9 +41,12 @@ export default class Currency extends Command {
    * @param _ a discord message obj
    * @param args the passed arguments
    */
-  private async checkArgs(_: Message, args: {
-    amount: string | number;
-  }): Promise<string | number> {
+  private async checkArgs(
+    _: Message,
+    args: {
+      amount: string | number;
+    }
+  ): Promise<string | number> {
     const { minBet, maxBet, maxPocket } = this.client.config.currency;
     const { pocket } = await this.client.db.currency.fetch(_.author.id);
     let bet = Number(args.amount);
@@ -139,7 +142,7 @@ export default class Currency extends Command {
       .setAuthor(title, _.author.avatarURL({ dynamic: true }))
       .addField('Outcome', outcome, true)
       .setDescription(description)
-      .setColor(color)
+      .setColor(color);
 
     return { embed };
   }

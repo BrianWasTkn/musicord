@@ -69,15 +69,16 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
   }
 
   handleMessageCollect<T extends Message>(args: {
-    collector: MessageCollector,
-    spawner: SpawnModule,
-    msg: T,
+    collector: MessageCollector;
+    spawner: SpawnModule;
+    msg: T;
   }): boolean {
     const { msg, collector, spawner } = args;
     const { collected } = collector;
 
     if (spawner.config.type === 'spam') {
-      const filter: CollectorFilter = ({ author }: T) => author.id === msg.author.id;
+      const filter: CollectorFilter = ({ author }: T) =>
+        author.id === msg.author.id;
       const authorEntries = collected.array().filter(filter);
       if (authorEntries.length > 1) collected.delete(msg.id);
     }
@@ -86,29 +87,33 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
       msg,
       spawner,
       handler: this,
-      isFirst: collected.first().id === msg.id
+      isFirst: collected.first().id === msg.id,
     });
   }
 
-  handleMessageEnd<T extends Message>(args: { 
-    collected: Collection<string, T>,
-    spawner: SpawnModule,
-    msg: T,
+  handleMessageEnd<T extends Message>(args: {
+    collected: Collection<string, T>;
+    spawner: SpawnModule;
+    msg: T;
   }): boolean {
-    const { collected, spawner, msg } = args;   
+    const { collected, spawner, msg } = args;
     return this.emit('messageResults', {
       msg,
       spawner,
       collected,
       handler: this,
-      isEmpty: Boolean(collected.size)
+      isEmpty: Boolean(collected.size),
     });
   }
 
   handleReactionCollect(
     reaction: MessageReaction,
     user: User,
-    ctx: { collector: ReactionCollector, spawner: SpawnModule, message: Message }
+    ctx: {
+      collector: ReactionCollector;
+      spawner: SpawnModule;
+      message: Message;
+    }
   ): boolean {
     const { collector, spawner, message } = ctx;
     const isFirst =
@@ -127,7 +132,11 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
   handleReactionRemove(
     reaction: MessageReaction,
     user: User,
-    ctx: { collector: ReactionCollector, spawner: SpawnModule, message: Message }
+    ctx: {
+      collector: ReactionCollector;
+      spawner: SpawnModule;
+      message: Message;
+    }
   ): boolean {
     const { collector, spawner, message } = ctx;
     return this.emit('reactionCollect', this, spawner, message, reaction, user);
@@ -135,7 +144,7 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
 
   handleReactionEnd(
     collected: Collection<string, MessageReaction>,
-    ctx: { message: Message, spawner: SpawnModule }
+    ctx: { message: Message; spawner: SpawnModule }
   ): boolean {
     return this.emit(
       'reactionResults',
@@ -158,13 +167,15 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
       const options: MessageCollectorOptions = {
         max: spawner.config.entries,
         time: spawner.config.timeout,
-        idle: 3000
+        idle: 3000,
       };
 
-      const filter: CollectorFilter = async (msg: Message): Promise<boolean> => {
+      const filter: CollectorFilter = async (
+        msg: Message
+      ): Promise<boolean> => {
         const { author, content } = msg;
         const { fetch } = this.client.db.spawns;
-        const { cap } = this.client.config.spawn
+        const { cap } = this.client.config.spawn;
         const isSpam = spawner.config.type === 'spam';
 
         return (
@@ -187,7 +198,7 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
           this.handleMessageCollect<Message>({ msg, collector, spawner });
         })
         .on('end', (collected: Collection<string, Message>) => {
-          this.handleMessageEnd<Message>({ collected, spawner, msg: message })
+          this.handleMessageEnd<Message>({ collected, spawner, msg: message });
         });
     } else if (spawner.config.type === 'react') {
       const options: ReactionCollectorOptions = {
@@ -214,13 +225,21 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
       const collector = message.createReactionCollector(filter, options);
       collector
         .on('collect', (reaction: MessageReaction, user: User) => {
-          this.handleReactionCollect(reaction, user, { collector, message, spawner })
+          this.handleReactionCollect(reaction, user, {
+            collector,
+            message,
+            spawner,
+          });
         })
         .on('remove', (reaction: MessageReaction, user: User) => {
-          this.handleReactionRemove(reaction, user, { collector, message, spawner })
+          this.handleReactionRemove(reaction, user, {
+            collector,
+            message,
+            spawner,
+          });
         })
         .on('end', (collected: Collection<string, MessageReaction>) => {
-          this.handleReactionEnd(collected, { message, spawner })
+          this.handleReactionEnd(collected, { message, spawner });
         });
     } else {
       throw new AkairoError(

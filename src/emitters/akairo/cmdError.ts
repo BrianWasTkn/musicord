@@ -12,9 +12,14 @@ export default class CommandListener extends Listener {
     });
   }
 
-  async exec(msg: Message, cmd: Command, args: any[], error: Error): Promise<void | Message> {
+  async exec(
+    msg: Message,
+    cmd: Command,
+    args: any[],
+    error: Error
+  ): Promise<void | Message> {
     const channel = await this.client.channels.fetch('789692296094285825');
-    (await channel as TextChannel).send(error.message);
+    ((await channel) as TextChannel).send(error.message);
     return msg.channel.send(error.message);
   }
 }

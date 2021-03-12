@@ -5,10 +5,10 @@ import { config } from '@config/index';
 import { Lava } from '@lib/Lava';
 
 (async function (config) {
-	const bot = new Lava(config);
-	try { 
-		await bot.build(); 
-	}	catch(error) {
-		throw error;
-	}
+  const bot = new Lava(config);
+  try {
+    await bot.build();
+  } catch (error) {
+    throw error;
+  }
 })(config);

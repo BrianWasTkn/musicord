@@ -1,6 +1,6 @@
 import { Message, MessageOptions } from 'discord.js';
 import { Command } from '@lib/handlers/command';
-import { Embed } from '@lib/utility/embed'
+import { Embed } from '@lib/utility/embed';
 
 export default class Spawn extends Command {
   constructor() {
@@ -25,17 +25,18 @@ export default class Spawn extends Command {
     });
   }
 
-  async exec(_: Message, args: {
-    amount: number,
-    member: Message['member']
-  }): Promise<string | MessageOptions> {
+  async exec(
+    _: Message,
+    args: {
+      amount: number;
+      member: Message['member'];
+    }
+  ): Promise<string | MessageOptions> {
     const { fetch, remove } = this.client.db.spawns;
     const { amount, member } = args;
-    if (!amount) 
-      return 'You need an amount'
-    else if (!member) 
-      return 'You need a user'
-    
+    if (!amount) return 'You need an amount';
+    else if (!member) return 'You need a user';
+
     const bot = this.client.user;
     const old = await fetch(member.user.id);
     const d = await remove(member.user.id, 'unpaid', amount);

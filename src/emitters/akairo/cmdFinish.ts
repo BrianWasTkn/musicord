@@ -37,7 +37,7 @@ export default class CommandListener extends Listener {
       thing.embed = returned.embed;
       if (!returned.embed.color) {
         thing.embed = Object.assign(thing.embed, {
-          color: this.client.util.randomColor()
+          color: this.client.util.randomColor(),
         });
       }
     }

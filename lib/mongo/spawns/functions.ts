@@ -24,25 +24,34 @@ export default class SpawnEndpoint<BaseDocument extends Document> {
     const { id: userID }: User = await this.bot.users.fetch(id);
     const data = new this.model({ userID });
     await data.save();
-    return (data as Document & BaseDocument);
+    return data as Document & BaseDocument;
   }
 
-  fetch = async(userID: Snowflake): Promise<Document & BaseDocument> => {
+  fetch = async (userID: Snowflake): Promise<Document & BaseDocument> => {
     let data = await this.model.findOne({ userID });
-    return (!data._id ? (await this.create(userID)) : data) as Document & BaseDocument;
-  }
+    return (!data._id ? await this.create(userID) : data) as Document &
+      BaseDocument;
+  };
 
-  add = async(userID: Snowflake, key: keyof BaseDocument, amount: number): Promise<Document & BaseDocument> => {
+  add = async (
+    userID: Snowflake,
+    key: keyof BaseDocument,
+    amount: number
+  ): Promise<Document & BaseDocument> => {
     const data = await this.fetch(userID);
     data[key as string] += amount;
     await data.save();
     return data;
-  }
+  };
 
-  remove = async(userID: Snowflake, key: keyof BaseDocument, amount: number): Promise<Document & BaseDocument> => {
+  remove = async (
+    userID: Snowflake,
+    key: keyof BaseDocument,
+    amount: number
+  ): Promise<Document & BaseDocument> => {
     const data = await this.fetch(userID);
     data[key as string] -= amount;
     await data.save();
     return data;
-  }
+  };
 }

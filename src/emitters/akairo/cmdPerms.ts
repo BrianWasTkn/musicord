@@ -20,7 +20,9 @@ export default class CommandListener extends Listener {
   ): Promise<Message> {
     type = type === 'client' ? 'I' : 'You';
     const d: string[] = [];
-    d.push(`${type} don\'t have enough permissions to run the \`${command.id}\` command.`);
+    d.push(
+      `${type} don\'t have enough permissions to run the \`${command.id}\` command.`
+    );
     d.push(`Ensure ${type} have the following permissions:`);
 
     const embed = new MessageEmbed()

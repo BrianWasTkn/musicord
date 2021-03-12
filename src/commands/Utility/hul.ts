@@ -41,8 +41,8 @@ export default class Util extends Command {
     const { channel }: any = _;
 
     let num = 60;
-    let msg = await _.channel.send({ 
-      embed: this.embed(num, role, 'RED') 
+    let msg = await _.channel.send({
+      embed: this.embed(num, role, 'RED'),
     });
 
     const run = async (int: number) => {
@@ -50,7 +50,7 @@ export default class Util extends Command {
       if (num === 10) {
         await this.client.util.sleep(7e3);
         num -= num === 10 ? 7 : 1;
-        msg = await msg.edit({ embed: this.embed(num, role, 'RED') })
+        msg = await msg.edit({ embed: this.embed(num, role, 'RED') });
         return await run(num);
       }
 
@@ -58,7 +58,7 @@ export default class Util extends Command {
       msg = await msg.edit({ embed: this.embed(num, role) });
       num -= 10;
       return await run(int);
-    }
+    };
 
     await run(interval);
     const perms = { SEND_MESSAGES: true };

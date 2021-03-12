@@ -36,9 +36,7 @@ export default class Dev extends Command {
 
     before = Date.now();
     try {
-      evaled = await eval(asynchronous 
-        ? `(async()=>{${code}})()` 
-        : code);
+      evaled = await eval(asynchronous ? `(async()=>{${code}})()` : code);
     } catch (error) {
       evaled = error.message;
     }
@@ -54,7 +52,10 @@ export default class Dev extends Command {
     return {
       embed: {
         color: 'ORANGE',
-        description: this.codeBlock('js', evaled.length > 1900 ? 'Too many to print' : evaled),
+        description: this.codeBlock(
+          'js',
+          evaled.length > 1900 ? 'Too many to print' : evaled
+        ),
         fields: [
           { name: 'Type', value: this.codeBlock('js', type) },
           { name: 'Latency', value: this.codeBlock('js', `${evalTime}ms`) },

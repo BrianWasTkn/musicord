@@ -10,21 +10,15 @@ import {
   DMChannel,
   Message,
 } from 'discord.js';
-import type { 
-  Lava 
-} from '@lib/Lava';
+import type { Lava } from '@lib/Lava';
 
 type MessageChannel = DMChannel | TextChannel | NewsChannel;
 
 class LavaMessage extends Message {
   client: Lava;
-  db: Lava["db"]
+  db: Lava['db'];
 
-  constructor(
-    client: Lava,
-    data: object,
-    channel: MessageChannel
-  ) {
+  constructor(client: Lava, data: object, channel: MessageChannel) {
     super(client, data, channel);
     this.db = client.db;
   }
@@ -59,7 +53,8 @@ class LavaMessage extends Message {
         })
         .then(async (m: object) => {
           // @ts-ignore
-          let msg: Message = this.client.actions.MessageCreate.handle(m).message;
+          let msg: Message = this.client.actions.MessageCreate.handle(m)
+            .message;
           if (delTout) msg = await msg.delete({ timeout: delTout });
           return msg;
         })

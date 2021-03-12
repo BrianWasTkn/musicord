@@ -31,7 +31,10 @@ export const utils: CurrencyUtil = {
       unlocked.push(`${msg.guild.name} - \`10%\``);
       total += 10;
     }
-    if (msg.member.nickname && msg.member.nickname.toLowerCase().includes('taken')) {
+    if (
+      msg.member.nickname &&
+      msg.member.nickname.toLowerCase().includes('taken')
+    ) {
       unlocked.push(`Taken Cult - \`5%\``);
       total += 5;
     }
@@ -54,7 +57,7 @@ export const utils: CurrencyUtil = {
     }
 
     // Currency-based (10%)
-    const trophy = db.items.find(i => i.id === 'trophy');
+    const trophy = db.items.find((i) => i.id === 'trophy');
     if (trophy.amount >= 1) {
       total += 10;
       unlocked.push(`Trophy — \`10%\``);

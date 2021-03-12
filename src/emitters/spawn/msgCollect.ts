@@ -20,6 +20,8 @@ export default class SpawnListener extends Listener {
     isFirst: boolean
   ): Promise<MessageReaction> {
     spawner.answered.set(msg.author.id, true);
-    return msg.react(isFirst ? '<:memerGold:753138901169995797>' : spawner.spawn.emoji);
+    return msg.react(
+      isFirst ? '<:memerGold:753138901169995797>' : spawner.spawn.emoji
+    );
   }
 }

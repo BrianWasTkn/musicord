@@ -67,26 +67,23 @@ export class Util extends ClientUtil {
   }
 
   isPromise(something: any): boolean {
-    return (
-      something &&
-      typeof something.then === 'function'
-    );
+    return something && typeof something.then === 'function';
   }
 
-  console(args: {
-    klass: string,
-    type?: 'def' | 'err',
-    msg: string,
-  }): void {
+  console(args: { klass: string; type?: 'def' | 'err'; msg: string }): void {
     const stamp = moment().format('HH:mm:ss');
     const log = (...args) => console.log(...args); // kek
-    const { 
-      klass = this.client.constructor.name, 
-      type = 'def', 
-      msg = null, 
+    const {
+      klass = this.client.constructor.name,
+      type = 'def',
+      msg = null,
     } = args;
 
-    return log(chalk`{cyanBright [${stamp} => ${klass}]} {${type == 'err' ? 'red' : 'cyan'}Bright ${msg}}`);
+    return log(
+      chalk`{cyanBright [${stamp} => ${klass}]} {${
+        type == 'err' ? 'red' : 'cyan'
+      }Bright ${msg}}`
+    );
   }
 
   /**

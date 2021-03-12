@@ -12,11 +12,7 @@ export default class CommandListener extends Listener {
     });
   }
 
-  async exec(
-    msg: Message, 
-    cmd: Command, 
-    r: string
-  ): Promise<void | Message> {
+  async exec(msg: Message, cmd: Command, r: string): Promise<void | Message> {
     if (r === 'owner') {
       return msg.channel.send("You're not my owner, bro");
     } else if (['guild', 'dm'].includes(r)) {

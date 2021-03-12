@@ -21,9 +21,12 @@ export default class Spawn extends Command {
     });
   }
 
-  async exec(_: Message, args: {
-    member: GuildMember
-  }): Promise<MessageOptions> {
+  async exec(
+    _: Message,
+    args: {
+      member: GuildMember;
+    }
+  ): Promise<MessageOptions> {
     const { fetch } = this.client.db.spawns;
     const user = args.member;
     const data = await fetch(user.id);

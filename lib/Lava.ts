@@ -1,10 +1,7 @@
 import mongoose from 'mongoose';
 import chalk from 'chalk';
 import { join } from 'path';
-import {
-  Collection,
-  UserManager
-} from 'discord.js'
+import { Collection, UserManager } from 'discord.js';
 import {
   CommandHandlerOptions,
   AkairoHandlerOptions,
@@ -14,22 +11,22 @@ import {
   AkairoModule,
 } from 'discord-akairo';
 
-import { LavaUser, LavaUserManager } from './extensions/user'
+import { LavaUser, LavaUserManager } from './extensions/user';
 import { SpawnHandler, Spawn } from './handlers/spawn';
 import { ItemHandler, Item } from './handlers/item';
 import { Config, config } from '../config';
-import { argTypes } from './utility/types'
+import { argTypes } from './utility/types';
 import { Util } from './utility/util';
 
-import { CurrencyProfile } from './interface/mongo/currency'
-import { SpawnDocument } from './interface/mongo/spawns'
+import { CurrencyProfile } from './interface/mongo/currency';
+import { SpawnDocument } from './interface/mongo/spawns';
 
 // def imports
 import CurrencyFunc from './mongo/currency/functions';
 import SpawnerFunc from './mongo/spawns/functions';
 
 // ext structures
-import './extensions/user'
+import './extensions/user';
 
 interface DB {
   currency: CurrencyFunc<CurrencyProfile>;
@@ -50,8 +47,8 @@ export class Lava extends AkairoClient {
   util: Util;
   db: DB = {
     currency: new CurrencyFunc<CurrencyProfile>(this),
-    spawns: new SpawnerFunc<SpawnDocument>(this)
-  }
+    spawns: new SpawnerFunc<SpawnDocument>(this),
+  };
 
   constructor(cfg: Config) {
     super({ ...cfg.discord, ...cfg.akairo });
@@ -60,13 +57,17 @@ export class Lava extends AkairoClient {
 
     this.handlers = {
       emitter: new ListenerHandler(this, {
-        directory: join(__dirname, '..', 'src', 'emitters')}),
+        directory: join(__dirname, '..', 'src', 'emitters'),
+      }),
       command: new CommandHandler(this, {
-        directory: join(__dirname, '..', 'src', 'commands')}),
+        directory: join(__dirname, '..', 'src', 'commands'),
+      }),
       spawn: new SpawnHandler<Spawn>(this, {
-        directory: join(__dirname, '..', 'src', 'spawns')}),
+        directory: join(__dirname, '..', 'src', 'spawns'),
+      }),
       item: new ItemHandler<Item>(this, {
-        directory: join(__dirname, '..', 'src', 'items')}),
+        directory: join(__dirname, '..', 'src', 'items'),
+      }),
     };
   }
 
@@ -77,23 +78,25 @@ export class Lava extends AkairoClient {
     command.resolver.addTypes(argTypes(this));
 
     const handlers = {
-      'Emitter': emitter,
-      'Command': command,
-      'Spawner': spawn,
-      'Item': item
-    }
+      Emitter: emitter,
+      Command: command,
+      Spawner: spawn,
+      Item: item,
+    };
 
     for (const [e, emitter] of Object.entries(handlers)) {
-      emitter.on('load', (module: AkairoModule) => {
-        this.util.console({
-          msg: chalk`{whiteBright ${e} {cyanBright ${module.id}} loaded.}`,
-          type: 'def',
-          klass: 'Lava',
-        });
-      }).loadAll();
+      emitter
+        .on('load', (module: AkairoModule) => {
+          this.util.console({
+            msg: chalk`{whiteBright ${e} {cyanBright ${module.id}} loaded.}`,
+            type: 'def',
+            klass: 'Lava',
+          });
+        })
+        .loadAll();
     }
   }
-  
+
   private async _connectDB(): Promise<never | typeof import('mongoose')> {
     try {
       const { options, uri } = this.config.bot.mongo;
@@ -101,15 +104,15 @@ export class Lava extends AkairoClient {
       this.util.console({
         msg: `Mongoose v${db.version}`,
         type: 'def',
-        klass: 'Lava'
+        klass: 'Lava',
       });
-      
+
       return db;
-    } catch(err) {
+    } catch (err) {
       this.util.console({
         msg: err.message,
         type: 'err',
-        klass: 'Lava'
+        klass: 'Lava',
       });
 
       throw err;

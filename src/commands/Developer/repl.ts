@@ -68,7 +68,7 @@ export default class Dev extends Command {
       t = typeof r;
       if (t !== 'string') {
         r = inspect(r, {
-          depth: +!((inspect(r, { depth: 1, showHidden: true })).length > 1900),
+          depth: +!(inspect(r, { depth: 1, showHidden: true }).length > 1900),
           showHidden: true,
         });
       }

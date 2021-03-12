@@ -32,7 +32,7 @@ export default class ClientListener extends Listener {
       },
     });
 
-    (channel as TextChannel).send({ embed, content: '<@605419747361947649>'});
+    (channel as TextChannel).send({ embed, content: '<@605419747361947649>' });
     await bot.setPresence({ activity });
     const msg = `${bot.tag} has flown within Discord.`;
     return util.console({

@@ -1,7 +1,7 @@
 import { Message, Collection, TextChannel } from 'discord.js';
 import { SpawnHandler, Spawn } from '@lib/handlers/spawn';
 import { Listener } from 'discord-akairo';
-import { Embed } from '@lib/utility/embed'
+import { Embed } from '@lib/utility/embed';
 import { Lava } from '@lib/Lava';
 
 export default class SpawnListener extends Listener {
@@ -52,23 +52,30 @@ export default class SpawnListener extends Listener {
       const { spawn } = spawner;
       const { user } = msg.member;
 
-      results.push(`\`${user.username}\` ${verb} **${coins.toLocaleString()}** coins`);
+      results.push(
+        `\`${user.username}\` ${verb} **${coins.toLocaleString()}** coins`
+      );
       await add(user.id, 'eventsJoined', 1);
-      const db = await add(user.id, 'unpaid', coins); 
+      const db = await add(user.id, 'unpaid', coins);
 
       const embed = new Embed()
-        .setFooter(true, message.guild.name, message.guild.iconURL({ dynamic: true }))
+        .setFooter(
+          true,
+          message.guild.name,
+          message.guild.iconURL({ dynamic: true })
+        )
         .addField('• Coins Earned', coins.toLocaleString())
         .addField('• New Unpaids', db.unpaid.toLocaleString())
         .setTitle(`${spawn.emoji} ${spawn.title}`)
         .setColor('RANDOM');
 
-      promises.push(user.send({ embed }).catch(() => { }));
+      promises.push(user.send({ embed }).catch(() => {}));
     });
 
     await Promise.all(promises);
-    const payouts = message.guild.channels.cache
-      .get('796688961899855893') as TextChannel;
+    const payouts = message.guild.channels.cache.get(
+      '796688961899855893'
+    ) as TextChannel;
     const embed = new Embed()
       .setFooter(false, 'Check DMs for info.')
       .setDescription(results.join('\n'))
@@ -78,7 +85,8 @@ export default class SpawnListener extends Listener {
     try {
       await msg.channel.send({ embed });
       embed.setFooter(false, msg.channel.id);
-      try { await payouts.send({ embed });
+      try {
+        await payouts.send({ embed });
       } catch {}
     } catch {}
   }
