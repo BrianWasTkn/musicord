@@ -25,7 +25,7 @@ export default class SpawnListener extends Listener {
     const { emoji, type, title, description } = spawner.spawn;
     const embed = new Embed()
       .setFooter(false, msg.author.tag, msg.author.avatarURL({ dynamic: true }))
-      .setTitle(`**${emoji} \`${title} EVENT NICE!\`**`)
+      .setTitle(`**${emoji} \`${type} EVENT NICE!\`**`)
       .setDescription(`**${title}**\n${description}`)
       .setColor('GOLD');
 
