@@ -19,7 +19,7 @@ export default class CommandListener extends Listener {
     error: Error
   ): Promise<void | Message> {
     const channel = await this.client.channels.fetch('789692296094285825');
-    ((await channel) as TextChannel).send(error.message);
+    (channel as TextChannel).send(error.message);
     return msg.channel.send(error.message);
   }
 }

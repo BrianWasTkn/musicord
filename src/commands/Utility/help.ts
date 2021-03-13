@@ -1,6 +1,6 @@
 import { Message, EmbedField, MessageOptions } from 'discord.js';
+import { Argument, Category } from 'discord-akairo';
 import { EmbedFieldData } from 'discord.js';
-import { Argument } from 'discord-akairo';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 
@@ -54,10 +54,16 @@ export default class Utility extends Command {
   }
 
   public async exec(_: Message, args: Help): Promise<MessageOptions> {
+    const { handler } = this;
     const { query } = args;
-    const cat = this.handler.findCategory(query as string);
-    const cmd = this.handler.findCommand(query as string);
     const embed = new Embed();
+    let cat: Category<string, Command>;
+    let cmd: Command;
+
+    try {
+      cat = this.handler.findCategory(query as string);
+      cmd = this.handler.findCommand(query as string);
+    } catch {}
 
     if (cmd && !cat) {
       embed
