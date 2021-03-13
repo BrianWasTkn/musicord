@@ -40,10 +40,25 @@ export default class Currency extends Command {
     const { fetch } = this.client.db.currency;
     const send = msg.channel.send.bind(msg.channel);
     const data = await fetch(msg.author.id);
-    const inv = data.items.find((i) => i.id === item.id);
+    let inv = data.items.find((i) => i.id === item.id);
 
-    if (!item) return 'You need something to buy';
-    else if (!amount || amount < 1) return 'Imagine buying none.';
+    if (!item) {
+      return 'You need something to buy';
+    }
+
+    if (!inv) {
+      data.items.push({
+        active: false,
+        id: item.id,
+        amount: 0,
+        expire: 0
+      });
+
+      await data.save();
+      inv = data.items.find((i) => i.id === item.id);
+    }
+
+    if (!amount || amount < 1) return 'Imagine buying none.';
     else if (!item.buyable) return "You can't buy this item what?";
     else if (data.pocket < item.cost)
       return "You're too broke to buy this item!";
