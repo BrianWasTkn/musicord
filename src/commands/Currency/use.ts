@@ -36,6 +36,6 @@ export default class Currency extends Command {
 
 		const use = item.use.bind(item);
 		const ret = isPromise(use) ? (await use(msg)) : use(msg);
-    return ret;
+		return { content: ret, reply: msg.author.id };
   }
 }
