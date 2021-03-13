@@ -11,7 +11,7 @@ export default class Currency extends Command {
       cooldown: 1000,
 			args: [
 				{
-					id: 'user',
+					id: 'member',
 					type: 'member',
 					default(msg: Message) {
 						return msg.member;
