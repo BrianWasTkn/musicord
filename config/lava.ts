@@ -12,7 +12,7 @@ export interface ConfigInterface {
 
 export const lavaConfig = {
   dev: Boolean(process.env.DEV),
-  prefix: ['lava', ';;', '>'],
+  prefix: ['lava'],
   token: process.env.TOKEN,
   mongo: {
     uri: process.env.MONGO,
