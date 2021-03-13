@@ -14,13 +14,14 @@ export default class SpawnListener extends Listener {
     });
   }
 
-  async exec(
-    handler: SpawnHandler<Spawn>,
+  async exec(args: {
+    msg: Message,
     spawner: Spawn,
-    message: Message,
     collected: Collection<string, Message>,
-    isEmpty: boolean
-  ): Promise<Message> {
+    handler: SpawnHandler<Spawn>,
+    isEmpty: boolean,
+  }): Promise<Message> {
+    const { msg: message, spawner, collected, handler, isEmpty } = args;
     const queue = handler.queue.get(message.channel.id);
     const msg = await message.channel.messages.fetch(queue.msg);
     const emoji = '<:memerRed:729863510716317776>';

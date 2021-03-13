@@ -15,12 +15,13 @@ export default class SpawnListener extends Listener {
     });
   }
 
-  async exec(
-    handler: SpawnHandler<Spawn>,
-    spawner: Spawn,
+  async exec(args: {
+    str: string,
     msg: Message,
-    str: string
-  ): Promise<Collection<string, SpawnQueue>> {
+    spawner: Spawn,
+    handler: SpawnHandler<Spawn>
+  }): Promise<Collection<string, SpawnQueue>> {
+    const { str, msg, spawner, handler } = args;
     const { emoji, type, title, description } = spawner.spawn;
     const embed = new Embed()
       .setFooter(

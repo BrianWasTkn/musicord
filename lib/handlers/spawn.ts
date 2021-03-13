@@ -186,7 +186,13 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
         );
       };
 
-      this.emit('messageStart', this, spawner, message, str);
+      this.emit('messageStart', {
+        str,
+        spawner,
+        msg: message,
+        handler: this,
+      });
+      
       const cooldown = spawner.config.cooldown(message.member);
       this.cooldowns.set(message.author.id, spawner);
       const deleteCD = () => this.cooldowns.delete(message.author.id);
