@@ -42,7 +42,7 @@ export default class Currency extends Command {
     let extrawngs: number = 0;
     const thiccdat = await DB.fetch(_.author.id);
     const thicc = thiccdat.items.find(i => i.id === 'thicc');
-    if (thicc.expire < Date.now()) {
+    if (thicc.expire < Date.now() && thicc.active) {
       extrawngs += 0.5;
     } else {
       thiccdat.items.find(i => i.id === 'thicc').active = false;
@@ -99,7 +99,7 @@ export default class Currency extends Command {
       db = await DB.add(_.author.id, 'pocket', w);
 
       identifier = Boolean(extrawngs) ? 'thicc' : 'winning';
-      color = Boolean(extrawngs) ? 'ORANGE' : 'GREEN'
+      color = Boolean(extrawngs) ? 'GOLD' : 'GREEN'
       description = [
         `**Winner! You won __${perwn}%__ of your bet.**`,
         `You won **${w.toLocaleString()}** coins.\n`,
