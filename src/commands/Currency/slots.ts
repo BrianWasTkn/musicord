@@ -79,7 +79,7 @@ export default class Currency extends Command {
       const jackpot = length === 1;
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
-      description.push(`\nYou won **${percentWon}%** of your bet.**`);
+      description.push(`\nYou won **${percentWon}%** of your bet.`);
       description.push(`You won **${winnings.toLocaleString()}** coins.`);
     } else {
       db = await DB.remove(_.author.id, 'pocket', bet);
