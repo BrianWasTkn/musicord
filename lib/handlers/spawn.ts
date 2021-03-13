@@ -167,7 +167,6 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
       const options: MessageCollectorOptions = {
         max: spawner.config.entries,
         time: spawner.config.timeout,
-        idle: 3000,
       };
 
       const filter: CollectorFilter = async (

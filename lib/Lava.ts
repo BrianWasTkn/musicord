@@ -74,7 +74,7 @@ export class Lava extends AkairoClient {
   private _patch(): void {
     const { command, emitter, item, spawn } = this.handlers;
     command.useListenerHandler(this.handlers.emitter);
-    emitter.setEmitters({ spawn, command, emitter });
+    emitter.setEmitters({ spawn, command, emitter, item });
     command.resolver.addTypes(argTypes(this));
 
     const handlers = {
