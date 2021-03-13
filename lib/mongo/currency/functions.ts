@@ -58,20 +58,4 @@ export default class CurrencyEndpoint<BaseDocument extends Document> {
     await data.save();
     return data;
   }
-
-  newItem = async (
-    userID: Snowflake,
-    id: string
-  ): Promise<Document & BaseDocument> => {
-    const data = await this.fetch(userID) as Document & CurrencyProfile;
-    data.items.push({ 
-      active: false, 
-      amount: 0, 
-      end: 0, 
-      id 
-    });
-
-    await data.save();
-    return data as Document & BaseDocument;
-  }
 }
