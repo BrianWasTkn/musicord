@@ -42,7 +42,7 @@ export default class Currency extends Command {
     let extrawngs: number = 0;
     const thiccdat = await DB.fetch(_.author.id);
     const thicc = thiccdat.items.find(i => i.id === 'thicc');
-    if (thicc.expire < Date.now() && thicc.active) {
+    if (thicc.expire > Date.now() && thicc.active) {
       extrawngs += 0.5;
     } else {
       thiccdat.items.find(i => i.id === 'thicc').active = false;
