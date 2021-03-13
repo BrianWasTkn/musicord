@@ -37,41 +37,13 @@ export default class Currency extends Command {
   }
 
   /**
-   * Checks command arguments and caps
-   * @param _ a discord message obj
-   * @param args the passed arguments
-   */
-  private async checkArgs(
-    _: Message,
-    args: {
-      amount: string | number;
-    }
-  ): Promise<string | number> {
-    const { minBet, maxBet, maxPocket } = this.client.config.currency;
-    const { pocket } = await this.client.db.currency.fetch(_.author.id);
-    let bet = Number(args.amount);
-
-    // check limits
-    if (pocket <= 0) return 'You have no coins :skull:';
-    if (bet > maxBet)
-      return `You can't gamble higher than **${maxBet.toLocaleString()}** coins >:(`;
-    if (bet < minBet)
-      return `C'mon, you're not gambling lower than **${minBet.toLocaleString()}** yeah?`;
-    if (bet > pocket)
-      return `You only have **${pocket.toLocaleString()}** lol don't try me`;
-    if (pocket > maxPocket) return `You're too rich to machine the slot`;
-    if (bet < 1) return 'It should be a positive number yeah?';
-
-    // else return something
-    return bet;
-  }
-
-  /**
    * Basically the whole thang
    * @param _ a discord message object
    * @param args the passed command arguments
    */
-  async exec(_: Message, args: any): Promise<string | MessageOptions> {
+  async exec(_: Message, args: {
+    amount?: number
+  }): Promise<string | MessageOptions> {
     const {
       util,
       db: { currency: DB },
@@ -79,8 +51,8 @@ export default class Currency extends Command {
     } = this.client;
 
     // Check Args
-    const bet = await this.checkArgs(_, args);
-    if (typeof bet === 'string') return bet;
+    const { amount: bet } = args;
+    if (!bet) return;
 
     // Slot Emojis
     const [a, b, c] = Array(3)

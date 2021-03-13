@@ -101,12 +101,14 @@ export class CommandHandler<
   _ignoreCooldownPredicate(msg: Message, cmd: CommandModule): boolean {
     const guild = this.client.guilds.cache.get('691416705917779999');
     const staff = guild.roles.cache.get('692941106475958363');
+    if (msg.author.id === this.client.ownerID) return true;
     return msg.guild.id === guild.id && msg.member.roles.cache.has(staff.id);
   }
 
   _ignorePermissionPredicate(msg: Message, cmd: CommandModule): boolean {
     const guild = this.client.guilds.cache.get('691416705917779999');
     const staff = guild.roles.cache.get('692941106475958363');
+    if (msg.author.id === this.client.ownerID) return true;
     return msg.guild.id === guild.id && msg.member.roles.cache.has(staff.id);
   }
 

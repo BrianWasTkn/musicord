@@ -22,32 +22,9 @@ export default class Currency extends Command {
     });
   }
 
-  private async checkArgs(
-    _: Message,
-    args: {
-      amount: number | string;
-    }
-  ): Promise<string | number> {
-    const { minBet, maxBet, maxPocket } = this.client.config.currency;
-    const { pocket } = await this.client.db.currency.fetch(_.author.id);
-    let bet = args.amount;
-
-    // check limits
-    if (pocket <= 0) return 'You have no coins :skull:';
-    if (bet > maxBet)
-      return `You can't gamble higher than **${maxBet.toLocaleString()}** coins >:(`;
-    if (bet < minBet)
-      return `C'mon, you're not gambling lower than **${minBet.toLocaleString()}** yeah?`;
-    if (bet > pocket)
-      return `You only have **${pocket.toLocaleString()}** lol don't try me`;
-    if (pocket > maxPocket) return `You're too rich to dice the gamble`;
-    if (bet < 1) return 'It should be a positive number yeah?';
-
-    // else return something
-    return bet;
-  }
-
-  public async exec(_: Message, args: any): Promise<string | MessageOptions> {
+  public async exec(_: Message, args: {
+    amount?: number
+  }): Promise<string | MessageOptions> {
     const {
       util,
       db: { currency: DB },
@@ -57,8 +34,8 @@ export default class Currency extends Command {
     const { maxWin, maxMulti, maxBet } = currency;
     let { total: multi } = await DB.utils.calcMulti(this.client, _);
     if (multi >= maxMulti) multi = maxMulti as number;
-    const bet = await this.checkArgs(_, args);
-    if (typeof bet === 'string') return bet;
+    const { amount: bet } = args;
+    if (!bet) return;
 
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);
