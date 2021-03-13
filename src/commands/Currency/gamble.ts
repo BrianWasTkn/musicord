@@ -31,11 +31,26 @@ export default class Currency extends Command {
       config: { currency },
     } = this.client;
 
+    // Core
     const { maxWin, maxMulti, maxBet } = currency;
     let { total: multi } = await DB.utils.calcMulti(this.client, _);
     if (multi >= maxMulti) multi = maxMulti as number;
     const { amount: bet } = args;
     if (!bet) return;
+
+    // Item Effects
+    let extrawngs: number = 0;
+    const thiccdat = await DB.fetch(_.author.id);
+    const thicc = thiccdat.items.find(i => i.id === 'trophy');
+    if (thicc.amount >= 1) {
+      if (Date.now() > thicc.expire) {
+        thicc.expire = 0;
+        thicc.active = false;
+        await thiccdat.save();
+      } else {
+        extrawngs += 0.5
+      }
+    }
 
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);
@@ -76,8 +91,9 @@ export default class Currency extends Command {
             `You now have **${db.pocket.toLocaleString()}** coins.`,
           ];
     } else if (userD > botD) {
-      let wngs = Math.random() * (<number>maxWin / <number>maxBet);
+      let wngs = Math.random();
       if (wngs < 0.3) wngs += 0.3;
+      wngs += extrawngs;
       w = Math.round(bet * wngs);
       w = w + Math.round(w * (multi / 100));
       if (w > maxWin) w = maxWin as number;
@@ -85,7 +101,7 @@ export default class Currency extends Command {
       db = await DB.add(_.author.id, 'pocket', w);
 
       identifier = 'winning';
-      color = 'GREEN';
+      color = Boolean(extrawngs) ? 'ORANGE' : 'GREEN'
       description = [
         `**Winner! You won __${perwn}%__ of your bet.**`,
         `You won **${w.toLocaleString()}** coins.\n`,

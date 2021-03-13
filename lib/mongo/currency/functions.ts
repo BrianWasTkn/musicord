@@ -6,6 +6,7 @@
 import type { Snowflake, User } from 'discord.js';
 import type { Model, Document } from 'mongoose';
 import type { CurrencyProfile } from '@lib/interface/mongo/currency';
+import type { InventorySlot } from '@lib/interface/handlers/item';
 import type { CurrencyUtil } from '@lib/interface/mongo/currency';
 import type { Lava } from '@lib/Lava';
 import { utils } from './util';
@@ -34,7 +35,7 @@ export default class CurrencyEndpoint<BaseDocument extends Document> {
     let data = await this.model.findOne({ userID });
     return (!data ? await this.create(userID) : data) as Document &
       BaseDocument;
-  };
+  }
 
   add = async (
     userID: Snowflake,
@@ -45,7 +46,7 @@ export default class CurrencyEndpoint<BaseDocument extends Document> {
     data[key as string] += amount;
     await data.save();
     return data;
-  };
+  }
 
   remove = async (
     userID: Snowflake,
@@ -56,5 +57,21 @@ export default class CurrencyEndpoint<BaseDocument extends Document> {
     data[key as string] -= amount;
     await data.save();
     return data;
-  };
+  }
+
+  newItem = async (
+    userID: Snowflake,
+    id: string
+  ): Promise<Document & BaseDocument> => {
+    const data = await this.fetch(userID) as Document & CurrencyProfile;
+    data.items.push({ 
+      active: false, 
+      amount: 0, 
+      end: 0, 
+      id 
+    });
+
+    await data.save();
+    return data as Document & BaseDocument;
+  }
 }

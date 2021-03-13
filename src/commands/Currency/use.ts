@@ -35,7 +35,8 @@ export default class Currency extends Command {
     const { item } = args;
 
     const inv = data.items.find(i => i.id === item.id);
-    if (!inv || inv.amount < 1) return 'You don\'t have this item'
+    if (!inv || inv.amount < 1) return 'You don\'t have this item';
+    if (inv.active) return 'This item is currently active right now.';
 
 		const ret = await item.use(msg);
 		return { content: ret, reply: msg.author.id };

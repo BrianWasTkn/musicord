@@ -4,9 +4,24 @@
  */
 
 import type { Message, GuildChannel } from 'discord.js';
-export type { CurrencyUtil } from '@lib/interface/mongo/currency';
+import type { CurrencyProfile } from '@lib/interface/mongo/currency';
+import type { InventorySlot } from '@lib/interface/handlers/item';
 import type { CurrencyUtil } from '@lib/interface/mongo/currency';
 import type { Lava } from '@lib/Lava';
+import { Document } from 'mongoose'
+
+async function newItem(bot: Lava, userID: string, itemID: string) {
+  const dat = await bot.db.currency.fetch(userID);
+  dat.items.push({
+    active: false, 
+    amount: 0, 
+    expire: 0, 
+    id: itemID
+  });
+
+  await dat.save();
+  return dat;
+}
 
 export const utils: CurrencyUtil = {
   /**
@@ -57,20 +72,17 @@ export const utils: CurrencyUtil = {
     }
 
     // Currency-based (10%)
-    const trophy = db.items.find((i) => i.id === 'trophy');
-    if (!trophy) {
-      db.items.push({
-        active: false,
-        id: bot.handlers.item.modules
-          .find(i => i.name.toLocaleLowerCase().includes('trophy')).id,
-        amount: 0,
-        expire: 0
-      });
+    const items = bot.handlers.item.modules;
+    const trophyItem = items.get('trophy');
+    let trophy = db.items.find(i => i.id === trophyItem.id);
 
-      await db.save();
+    if (!trophy) {
+      const userd = await newItem(bot, msg.author.id, trophy.id);
+      trophy = userd.items.find(i => i.id === trophyItem.id);
     }
+
     if (trophy.amount >= 1) {
-      let multi = 1.25 * trophy.amount;
+      let multi = 1.75 * trophy.amount;
       total += multi;
       unlocked.push(`Trophy — \`${multi}%\``);
     }
