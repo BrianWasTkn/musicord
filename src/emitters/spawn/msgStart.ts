@@ -24,14 +24,9 @@ export default class SpawnListener extends Listener {
     const { str, msg, spawner, handler } = args;
     const { emoji, type, title, description } = spawner.spawn;
     const embed = new Embed()
-      .setFooter(
-        false,
-        `Spawned by: ${msg.author.tag}`,
-        msg.author.avatarURL({ dynamic: true })
-      )
-      .setDescription(
-        `**${emoji} \`${type} EVENT NICE!\`**\n**${title}**\n${description}`
-      )
+      .setFooter(false, msg.author.tag, msg.author.avatarURL({ dynamic: true }))
+      .setTitle(`**${emoji} \`${title} EVENT NICE!\`**`)
+      .setDescription(`**${title}**\n${description}`)
       .setColor('GOLD');
 
     const eventMessage = await msg.channel.send({ embed });
