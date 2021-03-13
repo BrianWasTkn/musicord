@@ -58,6 +58,17 @@ export const utils: CurrencyUtil = {
 
     // Currency-based (10%)
     const trophy = db.items.find((i) => i.id === 'trophy');
+    if (!trophy) {
+      db.items.push({
+        active: false,
+        id: bot.handlers.item.modules
+          .find(i => i.name.toLocaleLowerCase().includes('trophy')).id,
+        amount: 0,
+        expire: 0
+      });
+
+      await db.save();
+    }
     if (trophy.amount >= 1) {
       total += 10;
       unlocked.push(`Trophy — \`10%\``);
