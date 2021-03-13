@@ -131,7 +131,7 @@ export class CommandHandler<
         const returned = util.isPromise(command.exec)
           ? (await command.exec(message, args))
           : command.exec(message, args); // expect all commands to return strings or embed objects
-        console.log(util.isPromise(returned) ? (await returned) : returned);
+        console.log(returned);
         // this.emit(Events.COMMAND_FINISHED, message, command, args, returned);
       } catch (error) {
         this.emit('commandError', message, command, args, error);
