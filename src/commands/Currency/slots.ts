@@ -67,7 +67,7 @@ export default class Currency extends Command {
 
     // Visuals
     let color: ColorResolvable = 'RED';
-    let description: string;
+    let description: string[] = [];
     let db: Document & CurrencyProfile;
     let state: string = 'losing';
 
@@ -80,34 +80,28 @@ export default class Currency extends Command {
       const jackpot = length === 1;
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
-      description = jackpot
-        ? [
-            `**JACKPOT! You won __${percentWon}%__ of your bet.**`,
-            `You won **${winnings.toLocaleString()}** coins.`,
-          ].join('\n')
-        : [
-            `**Winner! You won __${percentWon}%__ of your bet.**`,
-            `You won **${winnings.toLocaleString()}** coins.`,
-          ].join('\n');
+      description.push(jackpot
+        ? `**JACKPOT! You won __${percentWon}%__ of your bet.**`
+        : `** Winner! You won __${percentWon} % __ of your bet.**`
+      );
+
+      description.push(`You won **${winnings.toLocaleString()}** coins.`);
     } else {
       db = await DB.remove(_.author.id, 'pocket', bet);
       color = 'RED';
       state = 'losing';
-      description = [
-        `**RIP! You lost this round.**`,
-        `You lost **${bet.toLocaleString()}** coins.`,
-      ].join('\n');
+      description.push(...[`**RIP! You lost this round.**`, `You lost **${bet.toLocaleString()}** coins.`]);
     }
 
     // Final Message
-    description += `\n\nYou now have **${db.pocket.toLocaleString()}** coins.`;
+    description.push(`\n\nYou now have **${db.pocket.toLocaleString()}** coins.`);
     await this.client.util.sleep(1000);
     const title = `${_.author.username}'s ${state} slot machine`;
     const embed = new Embed()
       .setFooter(false, `Multiplier: ${multi}%`, this.client.user.avatarURL())
       .setAuthor(title, _.author.avatarURL({ dynamic: true }))
       .addField('Outcome', outcome, true)
-      .setDescription(description)
+      .setDescription(description.join('\n'))
       .setColor(color);
 
     return { embed };
