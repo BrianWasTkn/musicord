@@ -11,20 +11,18 @@ export default class Currency extends Command {
       category: 'Currency',
       cooldown: 1000,
 			args: [
+        {
+          id: 'page',
+          type: 'number',
+          default: 1
+        },
 				{
 					id: 'member',
 					type: 'member',
-          unordered: true,
 					default(msg: Message) {
 						return msg.member;
 					}
         },
-        {
-          id: 'page',
-          type: 'number',
-          unordered: true,
-          default: 1
-        }
       ],
     });
   }
