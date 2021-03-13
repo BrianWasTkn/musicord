@@ -26,12 +26,14 @@ export default class SpawnListener extends Listener {
     const content = `**${emoji} \`${type} EVENT NICE!\`**`;
     const embed = new Embed()
       .setFooter(false, msg.author.tag, msg.author.avatarURL({ dynamic: true }))
-      .setTitle(`**${title}**\n${description}`)
+      .setDescription(description)
+      .setTitle(title)
       .setColor('GOLD');
 
     const eventMessage = await msg.channel.send({ content, embed });
     await msg.channel.send({ embed: { 
-      title: `Type \`${str.split('').join('\u200b')}\``
+      title: `Type \`${str.split('').join('\u200b')}\``,
+      color: 'GOLD',
     }});
 
     return handler.queue.set(msg.channel.id, {
