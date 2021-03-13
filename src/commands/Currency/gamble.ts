@@ -46,11 +46,9 @@ export default class Currency extends Command {
       if (Date.now() <= thicc.expire && thicc.active) {
         extrawngs += 0.5
       } else {
-        if (Date.now() > thicc.expire) {
-          thicc.expire = 0;
-          thicc.active = false;
-          await thiccdat.save();
-        }
+        thicc.expire = 0;
+        thicc.active = false;
+        await thiccdat.save();
       }
     }
 
