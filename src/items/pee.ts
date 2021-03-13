@@ -3,7 +3,7 @@ import { Item } from '@lib/handlers/item';
 
 export default class PowerUp extends Item {
   constructor() {
-    super('trophy', {
+    super('pee', {
       category: 'Power-Up',
       sellable: false,
       buyable: true,
