@@ -100,7 +100,7 @@ export default class Currency extends Command {
       perwn = Math.round((w / bet) * 100);
       db = await DB.add(_.author.id, 'pocket', w);
 
-      identifier = 'winning';
+      identifier = Boolean(extrawngs) ? 'thicc' : 'winning';
       color = Boolean(extrawngs) ? 'ORANGE' : 'GREEN'
       description = [
         `**Winner! You won __${perwn}%__ of your bet.**`,
