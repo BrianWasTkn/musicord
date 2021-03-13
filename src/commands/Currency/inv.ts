@@ -32,7 +32,9 @@ export default class Currency extends Command {
     const { fetch } = this.client.db.currency;
     const data = await fetch(member.user.id);
 		
-		const inv = data.items.map(item => {
+		const inv = data.items
+    .filter(item => item.amount >= 1)
+    .map(item => {
 			const i = Items.modules.get(item.id);
 			return `**${i.emoji} ${i.name}** — [${item.amount.toLocaleString()}](https://discord.gg/memer)`
 		});
