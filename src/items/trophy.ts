@@ -13,7 +13,7 @@ export default class Collectible extends Item {
       emoji: '🏆',
       name: 'Trophy',
       info: 'Grants you another trophy if you use it.',
-      cost: 25000000,
+      cost: 2500000,
     });
   }
 
