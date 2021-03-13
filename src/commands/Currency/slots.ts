@@ -85,7 +85,7 @@ export default class Currency extends Command {
       db = await DB.remove(_.author.id, 'pocket', bet);
       color = 'RED';
       state = 'losing';
-      description.push(`You lost **${bet.toLocaleString()}** coins.`)
+      description.push(`\nYou lost **${bet.toLocaleString()}** coins.`)
     }
 
     // Final Message
@@ -95,7 +95,6 @@ export default class Currency extends Command {
     const embed = new Embed()
       .setFooter(false, `Multiplier: ${multi}%`, this.client.user.avatarURL())
       .setAuthor(title, _.author.avatarURL({ dynamic: true }))
-      .addField('Outcome', outcome, true)
       .setDescription(description.join('\n'))
       .setColor(color);
 
