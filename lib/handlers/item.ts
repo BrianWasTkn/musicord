@@ -78,7 +78,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
   }> {
     const { maxInventory: maxInv } = this.client.config.currency;
     const { fetch, remove } = this.client.db.currency;
-    const item = this.modules.get(iID);
+    const item = this.modules.get(iID) || this.modules.find(i => i.name.toLowerCase().includes(iID));
     const paid = amount * item.cost;
 
     let data = await fetch(uID);
