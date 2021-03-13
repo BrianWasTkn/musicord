@@ -34,7 +34,7 @@ export default class Currency extends Command {
       item: Item;
     }
   ): Promise<string | MessageOptions> {
-    const { amount, item } = args;
+    const { amount = 1, item } = args;
     const { item: Items } = this.client.handlers;
     const { maxInv } = this.client.config.currency;
     const { fetch } = this.client.db.currency;
