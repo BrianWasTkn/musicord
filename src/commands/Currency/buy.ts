@@ -38,7 +38,6 @@ export default class Currency extends Command {
     const { item: Items } = this.client.handlers;
     const { maxInv } = this.client.config.currency;
     const { fetch } = this.client.db.currency;
-    const send = msg.channel.send.bind(msg.channel);
     const data = await fetch(msg.author.id);
     let inv = data.items.find((i) => i.id === item.id);
 

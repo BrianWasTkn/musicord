@@ -15,7 +15,7 @@ export default class PowerUp extends Item {
     });
   }
 
-  async use(msg: Message): Promise<Message> {
-		return msg.channel.send('You\'ve been granted a great amount of luck from a bag of pees!');
+  use(msg: Message): string {
+		return 'You\'ve been granted a great amount of luck from a bag of jenni\'s pees!';
   }
 }

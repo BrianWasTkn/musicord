@@ -17,10 +17,12 @@ export default class Collectible extends Item {
     });
   }
 
-  async use(msg: Message): Promise<Document & CurrencyProfile> {
+  async use(msg: Message): Promise<string> {
     const data = await this.client.db.currency.fetch(msg.author.id);
     data.items.find((i) => i.id === this.id).amount++;
     await data.save();
-    return data;
+
+    const inv = data.items.find((i) => i.id === this.id);
+    return `You have been granted **1** trophy! You now have a total of **${inv.amount.toLocaleString()}** trophies.`;
   }
 }
