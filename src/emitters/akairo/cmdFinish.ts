@@ -25,7 +25,7 @@ export default class CommandListener extends Listener {
       return await msg.channel.send(returned);
     }
 
-    if (!returned.embed.color) {
+    if (!('color' in returned.embed)) {
       returned.embed = {
         ...returned.embed,
         color: this.client.util.randomColor()
