@@ -58,7 +58,7 @@ export const argTypes = (bot: Lava) => ({
       msg.channel.send(`You only have **${pocket.toLocaleString()}** lol don't try me`);
       return null;
     } else if (pocket > maxPocket) {
-      msg.channel.send(`You're too rich to machine the slot`);
+      msg.channel.send(`You're too rich to gamble`);
       return null;
     } else if (bet < 1) {
       msg.channel.send('It should be a positive number yeah?');
