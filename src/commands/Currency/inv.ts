@@ -1,4 +1,5 @@
 import { Message, MessageOptions, GuildMember } from 'discord.js';
+import { InventorySlot } from '@lib/interface/handlers/item'
 import { Command } from '@lib/handlers/command';
 
 export default class Currency extends Command {
@@ -13,9 +14,15 @@ export default class Currency extends Command {
 				{
 					id: 'member',
 					type: 'member',
+          unordered: true,
 					default(msg: Message) {
 						return msg.member;
 					}
+        },
+        {
+          id: 'page',
+          type: 'number',
+          default: 1
         }
       ],
     });
@@ -25,25 +32,42 @@ export default class Currency extends Command {
     msg: Message,
     args: {
       member: GuildMember;
+      page: number
     }
   ): Promise<string | MessageOptions> {
+    const { handlers, db, util } = this.client;
+    const { member, page } = args;
     const { item: Items } = this.client.handlers;
-    const { member } = args;
     const { fetch } = this.client.db.currency;
     const data = await fetch(member.user.id);
-		
-		const inv = data.items
-    .filter(item => item.amount >= 1)
-    .map(item => {
+    let inv: string[] | string[][] | InventorySlot[];
+
+    inv = data.items.filter(i => i.amount >= 1);
+    if (inv.length < 1) 
+      return 'Imagine not having any items, buy something weirdo';
+
+		inv = util.paginateArray(inv.map(item => {
 			const i = Items.modules.get(item.id);
-			return `**${i.emoji} ${i.name}** — [${item.amount.toLocaleString()}](https://discord.gg/memer)`
-		});
+			return `**${i.emoji} ${i.name}** — ${item.amount.toLocaleString()}\n*ID* \`${i.id}\` — ${i.category}`;
+		}), 3);
+
+    if (page > (inv.length + 1))
+      return 'That page doesn\'t even exist wtf are you high or what?'
 
 		return {
 			embed: {
-				title: `${member.user.username}'s inventory`,
-				description: inv.length > 0 ? inv.join('\n') : 'No items found.',
-				color: 'GOLD'
+				color: 'GOLD',
+				author: {
+          name: `${member.user.username}'s inventory`,
+          iconURL: member.user.avatarURL({ dynamic: true })
+        },
+        fields: [{
+          name: 'Owned Items',
+          value: inv[page].join('\n')
+        }],
+        footer: {
+          text: `Owned Shits — Page ${page} of ${inv.length + 1}`
+        }
 			}
 		}
   }
