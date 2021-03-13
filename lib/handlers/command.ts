@@ -120,7 +120,6 @@ export class CommandHandler<
     args: any[]
   ): Promise<void> {
     const { util } = this.client;
-    const isPromise = util.isPromise.bind(util);
 
     if (this.commandTyping || command.typing) {
       await message.channel.startTyping();
@@ -129,8 +128,8 @@ export class CommandHandler<
     try {
       this.emit(Events.COMMAND_STARTED, message, command, args);
       try {
-        const returned = isPromise(command.exec)
-          ? await command.exec(message, args)
+        const returned = util.isPromise(command.exec)
+          ? (await command.exec(message, args))
           : command.exec(message, args); // expect all commands to return strings or embed objects
 
         this.emit(Events.COMMAND_FINISHED, message, command, args, returned);
