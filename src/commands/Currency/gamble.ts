@@ -41,7 +41,7 @@ export default class Currency extends Command {
     // Item Effects
     let extrawngs: number = 0;
     const thiccdat = await DB.fetch(_.author.id);
-    const thicc = thiccdat.items.find(i => i.id === 'trophy');
+    const thicc = thiccdat.items.find(i => i.id === 'thicc');
     if (thicc.amount >= 1) {
       if (Date.now() <= thicc.expire && thicc.active) {
         extrawngs += 0.5
