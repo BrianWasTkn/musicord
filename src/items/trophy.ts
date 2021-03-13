@@ -25,7 +25,7 @@ export default class Collectible extends Item {
     const hahausuck = util.randomNumber(1, trophies.amount);
     let fail: boolean;
 
-    if (Math.random() > 0.6) {
+    if (Math.random() >= 0.25) {
       trophies.amount++;
       fail = false;
     } else {
