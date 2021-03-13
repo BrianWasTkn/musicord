@@ -22,6 +22,7 @@ export default class Currency extends Command {
         {
           id: 'page',
           type: 'number',
+          unordered: true,
           default: 1
         }
       ],
