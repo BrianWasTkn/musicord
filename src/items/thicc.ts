@@ -23,6 +23,6 @@ export default class PowerUp extends Item {
 		thicc.expire = Date.now() + (60 * 1000); // client.setTimeout just breaks this
     await data.save();
 
-		return 'You\'ve been granted a great amount of luck from a drinking jenni\'s pees!';
+		return 'You have been granted an additional **50%** to your gamble winnings for **60 seconds** only.';
   }
 }
