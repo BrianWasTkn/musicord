@@ -71,30 +71,25 @@ export default class Currency extends Command {
     let db: Document & CurrencyProfile;
     let state: string = 'losing';
 
+    description.push(outcome);
     if (length === 1 || length === 2) {
       if (winnings > maxWin) winnings = maxWin as number;
       let percentWon: number = Math.round((winnings / bet) * 100);
       db = await DB.add(_.author.id, 'pocket', winnings);
-
-      // Embed
       const jackpot = length === 1;
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
-      description.push(jackpot
-        ? `**JACKPOT! You won __${percentWon}%__ of your bet.**`
-        : `** Winner! You won __${percentWon}% __ of your bet.**`
-      );
-
+      description.push(`\nYou won **${percentWon}%** of your bet.**`);
       description.push(`You won **${winnings.toLocaleString()}** coins.`);
     } else {
       db = await DB.remove(_.author.id, 'pocket', bet);
       color = 'RED';
       state = 'losing';
-      description.push(...[`**RIP! You lost this round.**`, `You lost **${bet.toLocaleString()}** coins.`]);
+      description.push(`You lost **${bet.toLocaleString()}** coins.`)
     }
 
     // Final Message
-    description.push(`\nYou now have **${db.pocket.toLocaleString()}** coins.`);
+    description.push(`You now have **${db.pocket.toLocaleString()}** coins.`);
     await this.client.util.sleep(1000);
     const title = `${_.author.username}'s ${state} slot machine`;
     const embed = new Embed()
