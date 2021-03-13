@@ -16,7 +16,6 @@ export default class Currency extends Command {
   async exec(msg: Message): Promise<string | MessageOptions> {
     const { item: Handler } = this.client.handlers;
     const items = Handler.modules.array();
-    const shop = new Embed();
 
     const itemMap = items.map(
       (i) =>
@@ -25,7 +24,10 @@ export default class Currency extends Command {
         }** ${i.info}`
     );
     const fields = this.client.util.paginateArray(itemMap, 5);
-    shop.setDescription(fields[0].join('\n\n')).setTitle('Test Shop');
+    const shop = new Embed()
+      .setDescription(fields[0].join('\n\n'))
+      .setTitle('Lava Shop')
+      .setColor('RANDOM');
     return { embed: shop };
   }
 }
