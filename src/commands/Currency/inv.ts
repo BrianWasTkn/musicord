@@ -50,8 +50,9 @@ export default class Currency extends Command {
 			return `**${i.emoji} ${i.name}** — ${item.amount.toLocaleString()}\n*ID* \`${i.id}\` — ${i.category}`;
 		}), 3);
 
-    if (page > (inv.length + 1))
-      return 'That page doesn\'t even exist wtf are you high or what?'
+    if (page > inv.length) {
+      return 'That page doesn\'t even exist wtf are you high or what?';
+    }
 
 		return {
 			embed: {
