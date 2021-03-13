@@ -22,7 +22,7 @@ export default class Collectible extends Item {
     const data = await db.currency.fetch(msg.author.id);
     const trophies = data.items.find((i) => i.id === this.id);
 
-    const hahausuck = util.randomNumber(1, trophies.amount);
+    const hahausuck = util.randomNumber(1, Math.floor(trophies.amount / 2));
     let fail: boolean;
 
     if (Math.random() >= 0.25) {
