@@ -82,7 +82,7 @@ export default class Currency extends Command {
       state = jackpot ? 'jackpot' : 'winning';
       description.push(jackpot
         ? `**JACKPOT! You won __${percentWon}%__ of your bet.**`
-        : `** Winner! You won __${percentWon} % __ of your bet.**`
+        : `** Winner! You won __${percentWon}% __ of your bet.**`
       );
 
       description.push(`You won **${winnings.toLocaleString()}** coins.`);
@@ -94,7 +94,7 @@ export default class Currency extends Command {
     }
 
     // Final Message
-    description.push(`\n\nYou now have **${db.pocket.toLocaleString()}** coins.`);
+    description.push(`\nYou now have **${db.pocket.toLocaleString()}** coins.`);
     await this.client.util.sleep(1000);
     const title = `${_.author.username}'s ${state} slot machine`;
     const embed = new Embed()
