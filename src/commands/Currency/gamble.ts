@@ -43,7 +43,7 @@ export default class Currency extends Command {
     const thiccdat = await DB.fetch(_.author.id);
     const thicc = thiccdat.items.find(i => i.id === 'trophy');
     if (thicc.amount >= 1) {
-      if (Date.now() > thicc.expire) {
+      if (Date.now() > thicc.expire && thicc.active) {
         thicc.expire = 0;
         thicc.active = false;
         await thiccdat.save();
