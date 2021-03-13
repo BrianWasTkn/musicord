@@ -59,7 +59,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
   }
 
   async use(item: ItemModule, msg: Message): Promise<any> {
-    const fn = item.use;
+    const fn = item.use.bind(item);
     if (!item.usable) {
       return false;
     }
