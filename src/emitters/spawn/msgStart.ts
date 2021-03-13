@@ -23,14 +23,16 @@ export default class SpawnListener extends Listener {
   }): Promise<Collection<string, SpawnQueue>> {
     const { str, msg, spawner, handler } = args;
     const { emoji, type, title, description } = spawner.spawn;
+    const content = `**${emoji} \`${type} EVENT NICE!\`**`;
     const embed = new Embed()
       .setFooter(false, msg.author.tag, msg.author.avatarURL({ dynamic: true }))
-      .setTitle(`**${emoji} \`${type} EVENT NICE!\`**`)
-      .setDescription(`**${title}**\n${description}`)
+      .setTitle(`**${title}**\n${description}`)
       .setColor('GOLD');
 
-    const eventMessage = await msg.channel.send({ embed });
-    await msg.channel.send(`Type \`${str.split('').join('\u200b')}\``);
+    const eventMessage = await msg.channel.send({ content, embed });
+    await msg.channel.send({ embed: { 
+      title: `Type \`${str.split('').join('\u200b')}\``
+    }});
 
     return handler.queue.set(msg.channel.id, {
       msg: eventMessage.id,
