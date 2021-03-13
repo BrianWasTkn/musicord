@@ -3,10 +3,7 @@ import chalk from 'chalk';
 import { join } from 'path';
 import { Collection, UserManager } from 'discord.js';
 import {
-  CommandHandlerOptions,
-  AkairoHandlerOptions,
   ListenerHandler,
-  CommandHandler,
   AkairoClient,
   AkairoModule,
 } from 'discord-akairo';
@@ -17,6 +14,8 @@ import { ItemHandler, Item } from './handlers/item';
 import { Config, config } from '../config';
 import { argTypes } from './utility/types';
 import { Util } from './utility/util';
+
+import { CommandHandler } from './handlers/command'
 
 import { CurrencyProfile } from './interface/mongo/currency';
 import { SpawnDocument } from './interface/mongo/spawns';
