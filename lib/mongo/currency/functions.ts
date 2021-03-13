@@ -32,7 +32,7 @@ export default class CurrencyEndpoint<BaseDocument extends Document> {
 
   fetch = async (userID: Snowflake): Promise<Document & BaseDocument> => {
     let data = await this.model.findOne({ userID });
-    return (!data._id ? await this.create(userID) : data) as Document &
+    return (!data ? await this.create(userID) : data) as Document &
       BaseDocument;
   };
 
