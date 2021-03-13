@@ -67,12 +67,12 @@ export default class Currency extends Command {
       description = ties
         ? [
             `**We Tied! Our dice are on same side.**`,
-            `You lost **${bet.toLocaleString()}** coins.\n`,
+            `You lost **${lost.toLocaleString()}** coins.\n`,
             `You now have **${db.pocket.toLocaleString()}** coins.`,
           ]
         : [
             `**You lost! My dice is higher than yours.**`,
-            `You lost **${bet.toLocaleString()}** coins.\n`,
+            `You lost **${lost.toLocaleString()}** coins.\n`,
             `You now have **${db.pocket.toLocaleString()}** coins.`,
           ];
     } else if (userD > botD) {
