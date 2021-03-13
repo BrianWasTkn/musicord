@@ -1,28 +1,21 @@
-import mongoose from 'mongoose';
-import chalk from 'chalk';
-import { join } from 'path';
-import { Collection, UserManager } from 'discord.js';
-import {
-  ListenerHandler,
-  AkairoClient,
-  AkairoModule,
-} from 'discord-akairo';
-
+import { ListenerHandler, AkairoClient, AkairoModule } from 'discord-akairo';
 import { LavaUser, LavaUserManager } from './extensions/user';
+import { Command, CommandHandler } from './handlers/command'
+import { Collection, UserManager } from 'discord.js';
 import { SpawnHandler, Spawn } from './handlers/spawn';
 import { ItemHandler, Item } from './handlers/item';
+import { CurrencyProfile } from './interface/mongo/currency';
 import { Config, config } from '../config';
+import { SpawnDocument } from './interface/mongo/spawns';
 import { argTypes } from './utility/types';
 import { Util } from './utility/util';
-
-import { CommandHandler } from './handlers/command'
-
-import { CurrencyProfile } from './interface/mongo/currency';
-import { SpawnDocument } from './interface/mongo/spawns';
+import { join } from 'path';
 
 // def imports
 import CurrencyFunc from './mongo/currency/functions';
 import SpawnerFunc from './mongo/spawns/functions';
+import mongoose from 'mongoose';
+import chalk from 'chalk';
 
 // ext structures
 import './extensions/user';
@@ -34,7 +27,7 @@ interface DB {
 
 interface Handlers {
   emitter: ListenerHandler;
-  command: CommandHandler;
+  command: CommandHandler<Command>;
   spawn: SpawnHandler<Spawn>;
   item: ItemHandler<Item>;
 }
