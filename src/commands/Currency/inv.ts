@@ -66,7 +66,7 @@ export default class Currency extends Command {
           value: inv[page - 1].join('\n\n')
         }],
         footer: {
-          text: `Owned Shits — Page ${page} of ${inv.length + 1}`
+          text: `Owned Shits — Page ${page} of ${inv.length}`
         }
 			}
 		}
