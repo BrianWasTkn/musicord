@@ -68,7 +68,7 @@ export default class Utility extends Command {
     if (cmd && !cat) {
       embed
         .setFooter(false, _.author.tag, _.author.avatarURL({ dynamic: true }))
-        .setTitle(`${this.handler.prefix[0]} ${cmd.id} info`)
+        .setTitle(`${(this.handler.prefix as (m: Message) => string | string[])(_)[0]} ${cmd.id} info`)
         .addFields(this.fieldifyCmd(cmd))
         .setColor('ORANGE');
     } else if (cat) {

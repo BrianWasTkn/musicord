@@ -87,12 +87,6 @@ export default class Currency extends Command {
       .fill(null)
       .map(() => util.randomInArray(Object.keys(this.slotMachine)));
     const outcome = `**>** :${[a, b, c].join(':    :')}: **<**`;
-    const msg = await _.channel.send({
-      embed: new Embed()
-        .setAuthor(`${_.author.username}'s slot machine`)
-        .setDescription(outcome),
-    });
-
     // Calc amount
     const { maxWin, maxMulti } = currency;
     let { total: multi } = await DB.utils.calcMulti(this.client, _);
