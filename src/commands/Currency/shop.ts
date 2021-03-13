@@ -20,9 +20,9 @@ export default class Currency extends Command {
 
     const itemMap = items.map(
       (i) =>
-        `**${i.emoji} ${i.name}** — __${i.cost.toLocaleString()}__\n**${
+        `**${i.emoji} ${i.name}** — [${i.cost.toLocaleString()}](https://discord.gg/memer)\n**${
           i.categoryID
-        }** — __${i.info}__`
+        }** ${i.info}`
     );
     const fields = this.client.util.paginateArray(itemMap, 5);
     shop.setDescription(fields[0].join('\n\n')).setTitle('Test Shop');
