@@ -15,7 +15,10 @@ export default class PowerUp extends Item {
     });
   }
 
-  use(msg: Message): string {
-		return 'You\'ve been granted a great amount of luck from a bag of jenni\'s pees!';
+  async use(msg: Message): Promise<string> {
+    const data = await this.client.db.currency.fetch(msg.author.id);
+    data.items.find(i => i.id === this.id).amount -= 1;
+    await data.save();
+		return 'You\'ve been granted a great amount of luck from a drinking jenni\'s pees!';
   }
 }
