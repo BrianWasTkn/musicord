@@ -21,6 +21,7 @@ export default class Collectible extends Item {
     const { db, util } = this.client;
     const data = await db.currency.fetch(msg.author.id);
     const trophies = data.items.find((i) => i.id === this.id);
+
     const hahausuck = util.randomNumber(1, trophies.amount);
     let fail: boolean;
 
