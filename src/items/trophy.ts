@@ -35,7 +35,7 @@ export default class Collectible extends Item {
     await data.save();
     const inv = data.items.find((i) => i.id === this.id);
     return fail
-      ? `LOL You broke **${hahausuck.toLocaleString()}** trophies sucks to be you then I guess**`
+      ? `LOL You broke **${hahausuck.toLocaleString()}** trophies sucks to be you then I guess`
       : `You have been granted **1** trophy! You now have a total of **${trophies.amount.toLocaleString()}** trophies.`;
   }
 }
