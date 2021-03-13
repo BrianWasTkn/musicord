@@ -59,12 +59,11 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
   }
 
   async use(item: ItemModule, msg: Message): Promise<any> {
-    const fn = item.use.bind(item);
     if (!item.usable) {
       return false;
     }
     
-    return this.client.util.isPromise(fn) ? (await fn(msg)) : fn(msg);
+    return this.client.util.isPromise(item.use) ? (await item.use(msg)) : item.use(msg);
   }
 
   async buy(
