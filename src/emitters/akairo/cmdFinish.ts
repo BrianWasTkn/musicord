@@ -16,13 +16,11 @@ export default class CommandListener extends Listener {
     msg: Message,
     command: Command,
     args: any[],
-    returned: MessageOptions
-  ): Promise<void | Message | Message[]> {
-    const thing = this.client.util.isPromise(returned)
-      ? (await returned)
-      : returned;
+    returned: MessageOptions | Promise<MessageOptions>
+  ): Promise<Message | Message[]> {
+    if (!returned) return;
 
-    if (!thing) return;
-    return await msg.channel.send(returned);
+    const thing = this.client.util.isPromise(returned) ? (await returned) : returned;
+    return await msg.channel.send(thing as MessageOptions);
   }
 }
