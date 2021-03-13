@@ -70,8 +70,9 @@ export const utils: CurrencyUtil = {
       await db.save();
     }
     if (trophy.amount >= 1) {
-      total += 10;
-      unlocked.push(`Trophy — \`10%\``);
+      let multi = 1.25 * trophy.amount;
+      total += multi;
+      unlocked.push(`Trophy — \`${multi}%\``);
     }
 
     return { total, unlocked };

@@ -8,10 +8,10 @@ export const argTypes = (bot: Lava) => ({
     const item =
       items.get(phrase.toLowerCase()) ||
       items.find((i) => {
-        return i.id.toLowerCase().includes(phrase.toLowerCase());
+        return i.name.toLowerCase().includes(phrase.toLowerCase());
       });
 
-    return item.id ? item : null;
+    return item || null;
   },
 
   gambleAmount: async (
