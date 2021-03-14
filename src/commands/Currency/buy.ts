@@ -73,9 +73,9 @@ export default class Currency extends Command {
     );
     const embed = new Embed()
       .setDescription(
-        `Succesfully purchased \`${amt.toLocaleString()}\` **${i.name}**${
+        `Succesfully purchased **${amt.toLocaleString()} ${i.name}**${
           amt > 1 ? 's' : ''
-        } and paid \`${paid.toLocaleString()}\` coins.`
+        } and paid \`${paid.toLocaleString()}\`.`
       )
       .setAuthor('Successful purchase', msg.author.avatarURL({ dynamic: true }))
       .setColor('GREEN');

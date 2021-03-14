@@ -60,9 +60,15 @@ export default class Currency extends Command {
     }
 
     let inv: string[] | string[][] | InventorySlot[];
+    let total: number = 0;
+
     inv = data.items.filter(i => i.amount >= 1);
-    if (inv.length < 1) return 'Imagine not having any items, buy something weirdo';
-		inv = util.paginateArray(inv.map(item => {
+    inv.forEach(i => total += i.amount);
+    if (inv.length < 1) {
+      return 'Imagine not having any items, buy something weirdo';
+    }
+		
+    inv = util.paginateArray(inv.map(item => {
 			const i = Items.modules.get(item.id);
 			return `**${i.emoji} ${i.name}** — ${item.amount.toLocaleString()}\n*ID* \`${i.id}\` — ${i.category}`;
 		}), 3);
@@ -79,7 +85,7 @@ export default class Currency extends Command {
           iconURL: memb.user.avatarURL({ dynamic: true })
         },
         fields: [{
-          name: 'Owned Items',
+          name: `Owned Items — ${total.toLocaleString()}`,
           value: inv[pg - 1].join('\n\n')
         }],
         footer: {

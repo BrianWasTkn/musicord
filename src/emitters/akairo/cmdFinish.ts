@@ -24,7 +24,7 @@ export default class CommandListener extends Listener {
     await msg.channel.send(thing as MessageOptions);
 
     // Bank Space
-    if (!['bal', 'buy', 'dep', 'with', 'shop', 'inv']
+    if (!['bal', 'buy', 'dep', 'with', 'shop', 'inv', 'multi']
       .some(c => (command.id === c) || command.aliases.includes(c)
     ) && command.category.id === 'Currency') {
       const gain = Math.round(55 * (util.randomNumber(1, 100) / 2) + 55);

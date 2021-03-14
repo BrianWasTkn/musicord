@@ -40,6 +40,6 @@ export default class Currency extends Command {
       return 'Imagine burning money higher than your pocket';
 
     await remove(_.author.id, 'pocket', amount);
-    return `Successfully burned **${amount.toLocaleString()}** coins from your pocket.`;
+    return `Burned **${amount.toLocaleString()}** coins from your pocket.`;
   }
 }
