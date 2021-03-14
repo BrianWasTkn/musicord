@@ -9,7 +9,7 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: false,
       emoji: ':joy:',
-      info: 'Gives you +50% winnings on gambling. Runs out after 60 seconds. Also what the fuck are you looking at?',
+      info: 'Gives you +50% winnings on gambling. Runs out after 60 seconds.',
       name: 'Thicco\'s Thiccness',
       cost: 1500000,
     });
