@@ -24,12 +24,18 @@ export default class Currency extends Command {
   }
 
   private async getEffects(_: Message) {
-    const { fetch } = this.client.db.currency;
+    const { fetch, updateItems } = this.client.db.currency;
     const data = await fetch(_.author.id);
     const effects = new Effects();
 
     // ItemEffects
     const thicc = data.items.find(i => i.id === 'thicc');
+    if (!thicc) {
+      await updateItems(_.author.id);
+      return await this.getEffects(_);
+    }
+
+    // Thicco
     if (thicc.expire > Date.now() && thicc.active) {
       effects.setWinnings(0.5);
     } else {
@@ -99,7 +105,7 @@ export default class Currency extends Command {
             `You now have **${db.pocket.toLocaleString()}**.`,
           ];
     } else if (userD > botD) {
-      let wngs = Math.random();
+      let wngs = Math.random() * (<number>maxWin / <number>maxBet);
       if (wngs < 0.3) wngs += 0.3;
       wngs += extraWngs;
       w = Math.round(bet * wngs);

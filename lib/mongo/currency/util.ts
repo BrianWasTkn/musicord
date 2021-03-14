@@ -30,7 +30,7 @@ export const utils: CurrencyUtil = {
    * @param msg a discord msg obj
    * @returns {Promise<number>}
    */
-  async calcMulti(
+  calcMulti: async function CalcMulti(
     bot: Lava,
     msg: Message
   ): Promise<{ unlocked: string[]; total: number }> {
@@ -74,12 +74,12 @@ export const utils: CurrencyUtil = {
     // Currency-based (10%)
     const items = bot.handlers.item.modules;
     const trophyItem = items.get('trophy');
-    let trophy = db.items.find(i => i.id === trophyItem.id);
-    if (!trophy) {
-      const userd = await newItem(bot, msg.author.id, trophy.id);
-      trophy = userd.items.find(i => i.id === trophyItem.id);
+    if (db.items.length < 1) {
+      const db = await bot.db.currency.updateItems(msg.author.id);
+      return await CalcMulti(bot, msg);
     }
-    
+
+    let trophy = db.items.find(i => i.id === trophyItem.id);
     if (trophy.amount >= 1) {
       let multi = 1.75 * trophy.amount;
       total += multi;

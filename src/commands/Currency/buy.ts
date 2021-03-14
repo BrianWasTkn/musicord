@@ -36,7 +36,7 @@ export default class Currency extends Command {
   ): Promise<string | MessageOptions> {
     const { amount = 1, item } = args;
     const { item: Items } = this.client.handlers;
-    const { maxInv } = this.client.config.currency;
+    const { maxInventory } = this.client.config.currency;
     const { fetch } = this.client.db.currency;
     const data = await fetch(msg.author.id);
     let inv = data.items.find((i) => i.id === item.id);
@@ -63,8 +63,8 @@ export default class Currency extends Command {
       return "You're too broke to buy this item!";
     else if (data.pocket < amount * item.cost)
       return "You don't have enough to bulk this item on bulk!";
-    else if (inv.amount >= maxInv)
-      return `You already have enough of this item (${maxInv.toLocaleString()})!`;
+    else if (inv.amount >= maxInventory)
+      return `You already have enough of this item (${maxInventory.toLocaleString()})!`;
 
     const { paid, amount: amt, data: dat, item: i } = await Items.buy(
       amount,
