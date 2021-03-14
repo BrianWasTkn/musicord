@@ -68,7 +68,7 @@ export default class Currency extends Command {
 
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);
-    if (Math.random() > 0.7) {
+    if (Math.random() > 0.55) {
       if (botD > userD) {
         userD = [botD, (botD = userD)][0];
       }
