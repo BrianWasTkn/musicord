@@ -41,11 +41,15 @@ export default class Currency extends Command {
     const { item: Items } = this.client.handlers;
     const { fetch } = this.client.db.currency;
 
+    let member: GuildMember;
     let data: Document & CurrencyProfile;
-    if (typeof pom === 'number')
-      data = await fetch(msg.member.user.id)
-    else
+    if (typeof pom === 'number') {
+      data = await fetch(msg.member.user.id);
+      member = msg.member;
+    } else {
       data = await fetch(pom.user.id);
+      member = pom;
+    }
 
 
     let inv: string[] | string[][] | InventorySlot[];
