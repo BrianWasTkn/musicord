@@ -16,12 +16,12 @@ export default class Currency extends Command {
 					type: async (msg: Message, phrase: number | string) => {
 						const data = await this.client.db.currency.fetch(msg.author.id);
 						if (!phrase) {
-							await msg.channel.send('You need something to deposit')
+							await msg.reply('You need something to withdraw')
 							return null;
 						}
 
 						if (data.vault < 1) {
-							await msg.channel.send('You have nothing to withdraw');
+							await msg.reply('You have nothing to withdraw');
 							return null;
 						}
 
@@ -54,6 +54,7 @@ export default class Currency extends Command {
 		const { fetch, add, remove } = this.client.db.currency;
 		const { pocket, vault, space } = await fetch(_.author.id);
 		const embed: Embed = new Embed();
+		if (!amount) return;
 
 		if (amount > vault) {
 			return `Bro, you only have ${vault.toLocaleString()} coins in your vault what're you up to?`

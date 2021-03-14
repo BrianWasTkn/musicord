@@ -15,15 +15,19 @@ export default class Currency extends Command {
       cooldown: 1000,
 			args: [
         {
-          id: 'pageOrMember',
-          type: Argument.union('number', 'member'),
-          index: 1,
+          id: 'member',
           default: 1,
+          type: (msg: Message, phrase: string) => {
+            if (!phrase) return 1; // inventory page
+            const { resolver } = this.handler;
+            return resolver.type('number')(msg, phrase) 
+              || resolver.type('memberMention')(msg, phrase);
+          }
         },
         {
           id: 'page',
           type: 'number',
-          default: 1
+          default: 1,
         }
       ],
     });
@@ -32,36 +36,38 @@ export default class Currency extends Command {
   async exec(
     msg: Message,
     args: {
-      pageOrMember: number | GuildMember;
+      member: number | GuildMember;
       page: number
     }
   ): Promise<string | MessageOptions> {
     const { handlers, db, util } = this.client;
-    const { pageOrMember: pom, page } = args;
+    const { member, page } = args;
     const { item: Items } = this.client.handlers;
     const { fetch } = this.client.db.currency;
 
-    let member: GuildMember;
     let data: Document & CurrencyProfile;
-    if (typeof pom !== 'number') {
-      data = await fetch(pom.user.id);
-      member = pom;
+    let memb: GuildMember;
+    let pg: number;
+
+    if (typeof member === 'number') {
+      memb = msg.member; 
+      data = await fetch(memb.user.id);
+      pg = member;
     } else {
-      data = await fetch(msg.member.user.id);
-      member = msg.member;
+      memb = member;
+      data = await fetch(memb.user.id);
+      pg = page;
     }
 
     let inv: string[] | string[][] | InventorySlot[];
     inv = data.items.filter(i => i.amount >= 1);
-    if (inv.length < 1) 
-      return 'Imagine not having any items, buy something weirdo';
-
+    if (inv.length < 1) return 'Imagine not having any items, buy something weirdo';
 		inv = util.paginateArray(inv.map(item => {
 			const i = Items.modules.get(item.id);
 			return `**${i.emoji} ${i.name}** — ${item.amount.toLocaleString()}\n*ID* \`${i.id}\` — ${i.category}`;
 		}), 3);
 
-    if ((typeof pom === 'number' ? pom : page) > inv.length) {
+    if (pg > inv.length) {
       return 'That page doesn\'t even exist wtf are you high or what?';
     }
 
@@ -69,15 +75,15 @@ export default class Currency extends Command {
 			embed: {
 				color: 'GOLD',
 				author: {
-          name: `${member.user.username}'s inventory`,
-          iconURL: member.user.avatarURL({ dynamic: true })
+          name: `${memb.user.username}'s inventory`,
+          iconURL: memb.user.avatarURL({ dynamic: true })
         },
         fields: [{
           name: 'Owned Items',
-          value: inv[(typeof pom === 'number' ? pom : page) - 1].join('\n\n')
+          value: inv[pg - 1].join('\n\n')
         }],
         footer: {
-          text: `Owned Shits — Page ${(typeof pom === 'number' ? pom : page)} of ${inv.length}`
+          text: `Owned Shits — Page ${pg} of ${inv.length}`
         }
 			}
 		}

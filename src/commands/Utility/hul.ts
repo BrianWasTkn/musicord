@@ -13,6 +13,7 @@ export default class Util extends Command {
         {
           id: 'role',
           type: 'role',
+          default: (m: Message) => m.guild.id
         },
         {
           id: 'interval',
@@ -42,7 +43,7 @@ export default class Util extends Command {
 
     let num = 60;
     let msg = await _.channel.send({
-      embed: this.embed(num, role, 'RED'),
+      embed: this.embed(num, role, 'ORANGE'),
     });
 
     const run = async (int: number) => {
@@ -54,11 +55,12 @@ export default class Util extends Command {
         await this.client.util.sleep(1e3);
         await msg.edit({ embed: this.embed(1, role, 'RED') });
         await this.client.util.sleep(1e3);
-        return;
+        await msg.edit({ embed: this.embed(0, role, 'RED') });
+        return num;
       }
 
       await this.client.util.sleep(int * 1e3);
-      msg = await msg.edit({ embed: this.embed(num, role) });
+      msg = await msg.edit({ embed: this.embed(num, role, 'ORANGE') });
       num -= 10;
       return await run(int);
     };
