@@ -59,7 +59,7 @@ export default class Currency extends Command {
     const jOdds = Math.random() > 0.85;
     const [a, b, c] = Array(3).fill(null)
       .map(() => util.randomInArray(emojis))
-      .map((e, i, a) => jOdds ? a[0][i] : {});
+      .map((e, i, a) => jOdds ? a[0][1] : {});
 
     const outcome = `**>** :${[a, b, c].join(':    :')}: **<**`;
     // Calc amount
