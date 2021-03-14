@@ -19,7 +19,7 @@ export default class Currency extends Command {
 							await msg.channel.send('Lol you don\'t have coins to deposit rip')
 						}
 
-						if (data.vault > data.space) {
+						if (data.vault >= data.space) {
 							await msg.channel.send('You already have full vault');
 							return null;
 						}
@@ -30,14 +30,15 @@ export default class Currency extends Command {
 						}
 
 						let dep: number;
-						if (Boolean(Number(phrase))) {
-							dep = Number(phrase);
-						} else {
+						if (!Boolean(Number(phrase))) {
+							phrase = (phrase as string).toLowerCase();
 							if (phrase === 'all' || phrase === 'max') {
 								dep = data.pocket;
 							} else if (phrase === 'half') {
 								dep = Math.round(data.pocket / 2);
 							}
+						} else {
+							dep = Number(phrase);
 						}
 
 						return dep;
@@ -65,7 +66,7 @@ export default class Currency extends Command {
 
 		let input: number = amount;
 		input = input > (vault - space) 
-			? (vault - space) 
+			? (space - vault) 
 			: pocket;
 
 		await add(_.author.id, 'vault', input);
