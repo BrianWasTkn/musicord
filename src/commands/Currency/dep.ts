@@ -65,7 +65,7 @@ export default class Currency extends Command {
 		}
 
 		let input: number = amount;
-		input = input > (vault - space) 
+		input = input > (space - vault) 
 			? (space - vault) 
 			: pocket;
 
