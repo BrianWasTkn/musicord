@@ -56,7 +56,7 @@ export default class Currency extends Command {
 		const embed: Embed = new Embed();
 
 		if (amount > vault) {
-			return `Bro, you only have ${pocket.toLocaleString()} coins in your vault what're you up to?`
+			return `Bro, you only have ${vault.toLocaleString()} coins in your vault what're you up to?`
 		}
 
 		await add(_.author.id, 'pocket', amount);
