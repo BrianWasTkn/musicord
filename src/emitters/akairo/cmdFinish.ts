@@ -17,9 +17,20 @@ export default class CommandListener extends Listener {
     command: Command,
     args: any[],
     returned: MessageOptions | Promise<MessageOptions>
-  ): Promise<Message | Message[]> {
-    const thing = this.client.util.isPromise(returned) ? (await returned) : returned;
+  ): Promise<void | Message | Message[]> {
+    const { util, db } = this.client;
+    const thing = util.isPromise(returned) ? (await returned) : returned;
     if (!thing) return;
-    return await msg.channel.send(thing as MessageOptions);
+    await msg.channel.send(thing as MessageOptions);
+
+    // Bank Space
+    if (['bal', 'buy', 'shop', 'inv']
+      .some(c => command.aliases.includes(c)
+    )) return;
+    if (command.category.id === 'Currency') {
+      const gain = Math.round(55 * (util.randomNumber(1, 100) / 2) + 55);
+      await db.currency.add(msg.author.id, 'space', gain);
+      return;
+    } 
   }
 }
