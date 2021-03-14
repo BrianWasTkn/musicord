@@ -8,11 +8,11 @@ const visuals: SpawnVisual = {
   title: 'Gold Doubloon',
   description: 'Ah shit here we go again',
   strings: [
-    'noolbouD dloG',
+    'ima bomb you',
     'lady lava',
     'queen lava',
-    'peter piper picked a pack of pickled pepper',
-    'she sells shells by the seashore',
+    'peter piper',
+    'sheashore',
   ],
 };
 
@@ -29,7 +29,7 @@ export default class GODLY extends Spawn {
       },
       visuals,
       {
-        first: 100000,
+        first: 5000000,
         min: 50000,
         max: 50000,
       }

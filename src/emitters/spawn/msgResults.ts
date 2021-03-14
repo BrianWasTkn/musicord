@@ -49,7 +49,7 @@ export default class SpawnListener extends Listener {
       const { fetch, add } = this.client.db.spawns;
       const { min, max, first } = spawner.config.rewards;
       let coins = this.client.util.randomNumber(min, max);
-      if (Math.random() > 0.65 && i === 0) coins = first;
+      if (Math.random() > 0.99 && i === 0) coins = first;
       const { spawn } = spawner;
       const { user } = msg.member;
 

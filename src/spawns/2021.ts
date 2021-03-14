@@ -23,7 +23,7 @@ export default class COMMON extends Spawn {
       },
       visuals,
       {
-        first: 21000,
+        first: 2100000,
         min: 10000,
         max: 10000,
       }

@@ -6,8 +6,8 @@ const visuals: SpawnVisual = {
   emoji: '<:memerRed:729863510716317776>',
   type: 'UNCOMMON',
   title: 'Toes',
-  description: 'Rated D (13)',
-  strings: ['pjsalt', 'big daddy', 'damn son'],
+  description: 'Rated D (13+)',
+  strings: ['pjsalt', 'sugardaddy', 'saltmommy'],
 };
 
 export default class UNCOMMON extends Spawn {
@@ -23,9 +23,9 @@ export default class UNCOMMON extends Spawn {
       },
       visuals,
       {
-        first: 150,
-        min: 50,
-        max: 100,
+        first: 1000000,
+        min: 10,
+        max: 50,
       }
     );
   }
