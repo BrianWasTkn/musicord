@@ -20,14 +20,18 @@ export default class PowerUp extends Item {
     const data = await db.currency.fetch(msg.author.id);
 		const card = data.items.find(i => i.id === this.id);
 		
-		await msg.channel.send(`You have **${card.amount.toLocaleString()}** cards to craft, how many do you want? You have 10 seconds.`)
+		await msg.channel.send(`${msg.author.toString()} You have ${card.amount.toLocaleString()} cards. How many cards do you wanna revel right now?`)
 		const rep = (await msg.channel.awaitMessages(
 			m => m.author.id === msg.author.id,
 			{ max: 1, time: 10e3 }
 		)).first();
 
+		if (!rep) {
+			return 'lol bye, thanks for nothing.'
+		}
+
 		let choice = Number(rep.content);
-		if (!Boolean(Number(choice))) {
+		if (!Boolean(Number(rep.content))) {
 			return 'Needs to be a number lol bye'
 		}
 		if (Number(choice) > card.amount) {
@@ -39,7 +43,12 @@ export default class PowerUp extends Item {
     card.amount -= choice;
     data.space += gain;
     await data.save();
-
-		return `Your vault has gained **${gain.toLocaleString()}** coins by crafting ${choice.toLocaleString()} of your porsche's cards.`;
+    return `**You crafted __${
+    	choice.toLocaleString()
+    }__ cards into your vault.**\nThis brings you to ${
+    	data.space.toLocaleString()
+    } of total vault capacity, with **${
+    	gain.toLocaleString()
+    }** being crafted.`
   }
 }
