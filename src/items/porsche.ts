@@ -20,7 +20,7 @@ export default class PowerUp extends Item {
     const data = await db.currency.fetch(msg.author.id);
 		const card = data.items.find(i => i.id === this.id);
 		
-		await msg.channel.send(`${msg.author.toString()} You have ${card.amount.toLocaleString()} cards. How many cards do you wanna revel right now?`)
+		await msg.channel.send(`${msg.author.toString()} You have ${card.amount.toLocaleString()} cards. How many cards do you wanna reveal right now?`)
 		const rep = (await msg.channel.awaitMessages(
 			m => m.author.id === msg.author.id,
 			{ max: 1, time: 10e3 }
@@ -45,9 +45,9 @@ export default class PowerUp extends Item {
     await data.save();
     return `**You crafted __${
     	choice.toLocaleString()
-    }__ cards into your vault.**\nThis brings you to ${
+    }__ cards into your vault.**\nThis brings you to **${
     	data.space.toLocaleString()
-    } of total vault capacity, with **${
+    }** of total vault capacity, with **${
     	gain.toLocaleString()
     }** being crafted.`
   }
