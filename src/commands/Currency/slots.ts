@@ -24,15 +24,15 @@ export default class Currency extends Command {
 
   private get slotMachine() {
     return {
-      middle_finger: 1,
-      clown: 1,
-      eyes: 1,
-      eggplant: 1,
-      peach: 2,
-      alien: 2,
-      star2: 2,
-      flushed: 3,
-      fire: 5
+      middle_finger: [1, 2],
+      clown: [1, 2],
+      eyes: [2, 3],
+      eggplant: [2, 3],
+      peach: [2, 4],
+      alien: [2, 6],
+      star2: [3, 10],
+      flushed: [5, 25],
+      fire: [10, 100]
     };
   }
 
@@ -61,7 +61,7 @@ export default class Currency extends Command {
     const outcome = `**>** :${[a, b, c].join(':    :')}: **<**`;
     // Calc amount
     const { maxMulti } = currency;
-    let { length, winnings, map = 0 } = this.calcWinnings(bet, [a, b, c]);
+    let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, [a, b, c]);
 
     // Visuals
     let color: ColorResolvable = 'RED';
@@ -77,7 +77,7 @@ export default class Currency extends Command {
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
       description.push(`\nYou won **${winnings.toLocaleString()}**.`);
-      description.push(`**Multiplier** \`x${map}\`.`);
+      description.push(`**Multiplier** \`x${multiplier}\`.`);
     } else {
       db = await DB.remove(_.author.id, 'pocket', bet);
       color = 'RED';
@@ -102,30 +102,29 @@ export default class Currency extends Command {
     slots: string[]
   ): { [k: string]: number } {
     const { slotMachine } = this;
-    const rate: number[] = Object.values(slotMachine);
+    const rate: number[][] = Object.values(slotMachine);
     const emojis: string[] = Object.keys(slotMachine);
     // ty daunt
     const length = slots.filter(
       (thing: string, i: number, ar: string[]) => ar.indexOf(thing) === i
     ).length;
-    const won: number[] = rate
+    const won: number[][] = rate
       .map((_, i, ar) => ar[emojis.indexOf(slots[i])])
       .filter(Boolean); // mapped to their index
-    const [emojRate] = won.filter(
-      (ew: number, i: number, a: number[]) => a.indexOf(ew) !== i
+    const [multi] = won.filter(
+      (ew: number[], i: number, a: number[][]) => a.indexOf(ew) !== i
     );
 
     if (length === 1 || length === 2) {
-      let winnings: any = Array(length === 1 ? 3 : length).fill(emojRate); // emoji's base winnings as items
-      let map = [...winnings].reduce((p, c) => p + c);
-      winnings = winnings
-        .map((w: number) => w * bet)
-        .reduce((p: number, c: number) => p + c);
+      let index: number; // index of [number, number];
+      let m: number; // the emoji multi
+      index = length === 1 ? 1 : 0;
+      m = multi[index];
 
       return { 
-        map,
         length, 
-        winnings: Math.round(winnings) 
+        winnings: Math.round(bet * m),
+        multiplier: m,
       };
     } else {
       return { 
