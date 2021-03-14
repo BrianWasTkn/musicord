@@ -43,7 +43,7 @@ export default class Currency extends Command {
 
     let member: GuildMember;
     let data: Document & CurrencyProfile;
-    if (pom instanceof GuildMember) {
+    if (typeof pom !== 'number') {
       data = await fetch(pom.user.id);
       member = pom;
     } else {
