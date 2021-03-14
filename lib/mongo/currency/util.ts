@@ -81,7 +81,7 @@ export const utils: CurrencyUtil = {
 
     let trophy = db.items.find(i => i.id === trophyItem.id);
     if (trophy.amount >= 1) {
-      let multi = 1.75 * trophy.amount;
+      let multi = 15 * trophy.amount;
       total += multi;
       unlocked.push(`Trophy — \`${multi}%\``);
     }
