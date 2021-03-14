@@ -28,11 +28,11 @@ export default class Currency extends Command {
       clown: [1, 2],
       eyes: [2, 3],
       eggplant: [2, 3],
-      peach: [2, 4],
-      alien: [2, 6],
-      star2: [3, 10],
-      flushed: [5, 25],
-      fire: [10, 100]
+      peach: [3, 5],
+      alien: [5, 10],
+      star2: [8, 25],
+      flushed: [10, 50],
+      fire: [25, 100]
     };
   }
 
