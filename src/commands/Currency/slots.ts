@@ -60,7 +60,7 @@ export default class Currency extends Command {
       .map(() => util.randomInArray(Object.keys(this.slotMachine)));
     const outcome = `**>** :${[a, b, c].join(':    :')}: **<**`;
     // Calc amount
-    const { maxWin, maxMulti } = currency;
+    const { maxMulti } = currency;
     let { length, winnings, map = 0 } = this.calcWinnings(bet, [a, b, c]);
 
     // Visuals
@@ -71,7 +71,6 @@ export default class Currency extends Command {
 
     description.push(outcome);
     if (length === 1 || length === 2) {
-      if (winnings > maxWin) winnings = maxWin as number;
       let percentWon: number = Math.round((winnings / bet) * 100);
       db = await DB.add(_.author.id, 'pocket', winnings);
       const jackpot = length === 1;
