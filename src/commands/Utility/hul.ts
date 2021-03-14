@@ -46,12 +46,15 @@ export default class Util extends Command {
     });
 
     const run = async (int: number) => {
-      if (num === 0) return;
       if (num === 10) {
         await this.client.util.sleep(7e3);
-        num -= num === 10 ? 7 : 1;
-        msg = await msg.edit({ embed: this.embed(num, role, 'RED') });
-        return await run(num);
+        await msg.edit({ embed: this.embed(3, role, 'RED') });
+        await this.client.util.sleep(1e3);
+        await msg.edit({ embed: this.embed(2, role, 'RED') });
+        await this.client.util.sleep(1e3);
+        await msg.edit({ embed: this.embed(1, role, 'RED') });
+        await this.client.util.sleep(1e3);
+        return;
       }
 
       await this.client.util.sleep(int * 1e3);
