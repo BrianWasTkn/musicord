@@ -9,7 +9,7 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: false,
       emoji: ':credit_card:',
-      info: 'Increases your vault space from 500K up to 2M coins.',
+      info: 'Increases your vault capacity from 500K up to 2M coins.',
       name: 'Porsche\'s Card',
       cost: 250000,
     });
