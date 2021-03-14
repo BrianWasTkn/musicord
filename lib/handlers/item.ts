@@ -82,8 +82,9 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
     const paid = amount * item.cost;
 
     let data = await fetch(uID);
-    data = await remove(uID, 'pocket', paid);
-    data.items.find((i) => i.id === item.id).amount += amount;
+    let inv = data.items.find((i) => i.id === item.id);
+    data.pocket -= paid;
+    inv.amount += amount;
     await data.save();
 
     return { data, amount, item, paid };
@@ -93,15 +94,12 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
     amount: number,
     u: string,
     i: string
-  ): Promise<
-    | string
-    | {
-        amount: number;
-        data: Document<any> & CurrencyProfile;
-        item: ItemModule;
-        sold: number;
-      }
-  > {
+  ): Promise<{
+    amount: number;
+    data: Document<any> & CurrencyProfile;
+    item: ItemModule;
+    sold: number;
+  }> {
     const { add } = this.client.db.currency;
     const item = this.modules.get(i);
     const sold = amount * (item.cost / 4);

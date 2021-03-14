@@ -17,14 +17,6 @@ export default class CommandListener extends Listener {
     command: Command,
     remaining: number
   ): Promise<Message> {
-    const description: string[] = [];
-    description.push(
-      `You're currently on cooldown for the \`${command.id}\` command.`
-    );
-    description.push(
-      `Please wait **${(remaining / 1000).toFixed(2)}** seconds and try again.`
-    );
-
     return _.channel.send({
       embed: {
         title: 'Calm down buddy',
