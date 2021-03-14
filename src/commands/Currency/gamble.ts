@@ -68,14 +68,10 @@ export default class Currency extends Command {
 
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);
-    if (Math.random() > 0.55) {
-      if (botD > userD) {
-        userD = [botD, (botD = userD)][0];
-      }
+    if (Math.random() > 0.69) {
+      userD = (botD > userD ? [botD, (botD = userD)] : [userD])[0]
     } else {
-      if (userD > botD) {
-        botD = [userD, (userD = botD)][0];
-      }
+      botD = (userD > botD ? [userD, (userD = botD)] : [botD])[0]
     }
 
     // vis and db
