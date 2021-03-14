@@ -31,7 +31,7 @@ export default class ClientListener extends Listener {
 
     const { unpaid } = await db.spawns.fetch(message.author.id);
     if (Math.round(Math.random() * 100) < 100 - spawner.config.odds) return;
-    if (unpaid >= 10000000) return;
+    if (unpaid >= this.client.config.spawn.cap) return;
 
     const { cats, bl } = config.spawn;
     if (handler.cooldowns.has(message.author.id)) return;

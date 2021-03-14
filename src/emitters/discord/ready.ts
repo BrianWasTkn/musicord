@@ -13,9 +13,9 @@ export default class ClientListener extends Listener {
   }
 
   async exec(): Promise<void> {
-    const { channels, util, user: bot } = this.client;
+    const { channels, handlers, util, users, user: bot } = this.client;
     const activity: PresenceData['activity'] = {
-      name: 'discord.gg/memer',
+      name: 'lava help',
       type: 'STREAMING',
       url: 'https://twitch.tv/badboyhaloislive',
     };
