@@ -91,7 +91,7 @@ export default class Currency extends Command {
       color = ties ? 'YELLOW' : 'RED';
       description = [
         `You lost **${lost.toLocaleString()}**\n`,
-        `**New Pocket:** *${db.pocket.toLocaleString()}*`,
+        `**New Pocket:** ${db.pocket.toLocaleString()}`,
       ];
     } else if (userD > botD) {
       let wngs = Math.random() * 1.5;
@@ -107,8 +107,8 @@ export default class Currency extends Command {
       color = Boolean(extraWngs) ? 'GOLD' : 'GREEN'
       description = [
         `You won **${w.toLocaleString()}**\n`,
-        `**New Pocket:** *${db.pocket.toLocaleString()}*`,
-        `**Percent Won:** *\`${perwn.toLocaleString()}%\`*`
+        `**New Pocket:** ${db.pocket.toLocaleString()}`,
+        `**Percent Won:** \`${perwn.toLocaleString()}%\``
       ];
     }
 
