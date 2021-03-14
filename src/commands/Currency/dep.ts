@@ -59,13 +59,14 @@ export default class Currency extends Command {
 		const { fetch, add, remove } = this.client.db.currency;
 		const { pocket, vault, space } = await fetch(_.author.id);
 		const embed: Embed = new Embed();
+		if (!amount) return;
 
 		if (amount > pocket) {
 			return `Bro, you only have ${pocket.toLocaleString()} coins what're you doing?`
 		}
 
 		let input: number = amount;
-		input = input > (space - vault) 
+		input = input >= (space - vault) 
 			? (space - vault) 
 			: pocket;
 
