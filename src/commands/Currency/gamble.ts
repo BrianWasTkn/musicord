@@ -3,6 +3,7 @@ import { CurrencyProfile } from '@lib/interface/mongo/currency';
 import { Document } from 'mongoose';
 import { Argument } from 'discord-akairo';
 import { Command } from '@lib/handlers/command';
+import { Effects } from '@lib/utility/effects'
 import { Embed } from '@lib/utility/embed';
 
 export default class Currency extends Command {
@@ -10,9 +11,9 @@ export default class Currency extends Command {
     super('bet', {
       aliases: ['gamble', 'roll', 'bet'],
       channel: 'guild',
-      description: 'A very rigged gambling game for lava grinders.',
+      description: 'Totally not rigged gambling game for grinders.',
       category: 'Currency',
-      cooldown: 1000,
+      cooldown: 3000,
       args: [
         {
           id: 'amount',
@@ -20,6 +21,24 @@ export default class Currency extends Command {
         },
       ],
     });
+  }
+
+  private async getEffects(_: Message) {
+    const { fetch } = this.client.db.currency;
+    const data = await fetch(_.author.id);
+    const effects = new Effects();
+
+    // ItemEffects
+    const thicc = data.items.find(i => i.id === 'thicc');
+    if (thicc.expire > Date.now() && thicc.active) {
+      effects.setWinnings(0.5);
+    } else {
+      thicc.active = false;
+      thicc.expire = 0;
+      await data.save();
+    }
+
+    return effects;
   }
 
   public async exec(_: Message, args: {
@@ -39,16 +58,7 @@ export default class Currency extends Command {
     if (!bet) return;
 
     // Item Effects
-    let extrawngs: number = 0;
-    const thiccdat = await DB.fetch(_.author.id);
-    const thicc = thiccdat.items.find(i => i.id === 'thicc');
-    if (thicc.expire > Date.now() && thicc.active) {
-      extrawngs += 0.5;
-    } else {
-      thiccdat.items.find(i => i.id === 'thicc').active = false;
-      thiccdat.items.find(i => i.id === 'thicc').expire = 0;
-      await thiccdat.save();
-    }
+    const { winnings: extraWngs } = await this.getEffects(_);
 
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);
@@ -80,30 +90,30 @@ export default class Currency extends Command {
       description = ties
         ? [
             `**We Tied! Our dice are on same side.**`,
-            `You lost **${lost.toLocaleString()}** coins.\n`,
-            `You now have **${db.pocket.toLocaleString()}** coins.`,
+            `You lost **${lost.toLocaleString()}**.\n`,
+            `You now have **${db.pocket.toLocaleString()}**.`,
           ]
         : [
             `**You lost! My dice is higher than yours.**`,
-            `You lost **${lost.toLocaleString()}** coins.\n`,
-            `You now have **${db.pocket.toLocaleString()}** coins.`,
+            `You lost **${lost.toLocaleString()}**.\n`,
+            `You now have **${db.pocket.toLocaleString()}**.`,
           ];
     } else if (userD > botD) {
       let wngs = Math.random();
       if (wngs < 0.3) wngs += 0.3;
-      wngs += extrawngs;
+      wngs += extraWngs;
       w = Math.round(bet * wngs);
       w = w + Math.round(w * (multi / 100));
       if (w > maxWin) w = maxWin as number;
       perwn = Math.round((w / bet) * 100);
       db = await DB.add(_.author.id, 'pocket', w);
 
-      identifier = Boolean(extrawngs) ? 'thicc' : 'winning';
-      color = Boolean(extrawngs) ? 'GOLD' : 'GREEN'
+      identifier = Boolean(extraWngs) ? 'thicc' : 'winning';
+      color = Boolean(extraWngs) ? 'GOLD' : 'GREEN'
       description = [
         `**Winner! You won __${perwn}%__ of your bet.**`,
-        `You won **${w.toLocaleString()}** coins.\n`,
-        `You now have **${db.pocket.toLocaleString()}** coins.`,
+        `You won **${w.toLocaleString()}**.\n`,
+        `You now have **${db.pocket.toLocaleString()}**.`,
       ];
     }
 

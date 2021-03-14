@@ -31,12 +31,11 @@ export default class Currency extends Command {
     }
   ): Promise<MessageOptions> {
     const { fetch } = this.client.db.currency;
-    const { pocket, vault } = await fetch(member.user.id);
+    const { pocket, vault, space } = await fetch(member.user.id);
     const dpn: string[] = [];
 
-    [
-      `**Pocket:** ${pocket.toLocaleString()}`,
-      `**Vault:** ${vault.toLocaleString()}`,
+    [ `**Pocket:** ${pocket.toLocaleString()}`,
+      `**Vault:** ${vault.toLocaleString()}/${space.toLocaleString()}`,
       `**Total:** ${(pocket + vault).toLocaleString()}`,
     ].forEach((i) => dpn.push(i));
 

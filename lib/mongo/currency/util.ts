@@ -75,12 +75,11 @@ export const utils: CurrencyUtil = {
     const items = bot.handlers.item.modules;
     const trophyItem = items.get('trophy');
     let trophy = db.items.find(i => i.id === trophyItem.id);
-
     if (!trophy) {
       const userd = await newItem(bot, msg.author.id, trophy.id);
       trophy = userd.items.find(i => i.id === trophyItem.id);
     }
-
+    
     if (trophy.amount >= 1) {
       let multi = 1.75 * trophy.amount;
       total += multi;

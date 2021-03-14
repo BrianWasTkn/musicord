@@ -31,9 +31,9 @@ export default class Spawn extends Command {
       .slice(0, amount)
       .map(async (m: mongoose.Document & T, i: number) => {
         const user = await this.client.users.fetch(m.userID);
-        return `**#${i + 1}** *${m[key].toLocaleString()}* — ${
+        return `**#${i + 1}** *${m[key].toLocaleString()}* — **${
           user.tag
-        }` as string;
+        }**` as string;
       });
 
     return await Promise.all(all);

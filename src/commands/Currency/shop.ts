@@ -17,7 +17,9 @@ export default class Currency extends Command {
     const { item: Handler } = this.client.handlers;
     const items = Handler.modules.array();
 
-    const itemMap = items.map(
+    const itemMap = items
+    .sort((a, b) => b.cost - a.cost)
+    .map(
       (i) =>
         `**${i.emoji} ${i.name}** — [${i.cost.toLocaleString()}](https://discord.gg/memer)\n**${
           i.categoryID

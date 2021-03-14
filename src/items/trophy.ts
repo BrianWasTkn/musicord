@@ -11,9 +11,9 @@ export default class Collectible extends Item {
       buyable: true,
       usable: true,
       emoji: '🏆',
-      name: 'Trophy',
       info: 'Grants you another trophy if you use it, or not.',
-      cost: 2500000,
+      name: 'Trophy',
+      cost: 500000,
     });
   }
 
@@ -36,7 +36,7 @@ export default class Collectible extends Item {
     await data.save();
     const inv = data.items.find((i) => i.id === this.id);
     return fail
-      ? `LOL You broke **${hahausuck.toLocaleString()}** trophies sucks to be you then I guess`
+      ? `**LOL you broke __${hahausuck.toLocaleString()}__ trophies sucks to be you**`
       : `You have been granted **1** trophy! You now have a total of **${trophies.amount.toLocaleString()}** trophies.`;
   }
 }
