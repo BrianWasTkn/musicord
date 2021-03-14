@@ -13,11 +13,21 @@ export class Effects {
 		dice: Effects["dice"],
 	}) {
 
-		this.winnings = data.winnings;
-		this.discount = data.discount;
-		this.pockCap = data.pockCap;
-		this.slots = data.slots;
-		this.dice = data.dice;
+		if ('winnings' in data) {
+			this.winnings = data.winnings;
+		}
+		if ('discount' in data) {
+			this.discount = data.discount;
+		}
+		if ('pockCap' in data) {
+			this.pockCap = data.pockCap;
+		}
+		if ('slots' in data) {
+			this.slots = data.slots;
+		}
+		if ('dice' in data) {
+			this.dice = data.dice;
+		}
 	}
 
 	setWinnings(winnings: number): this {
