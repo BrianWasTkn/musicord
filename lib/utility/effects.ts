@@ -5,29 +5,19 @@ export class Effects {
 	slots: number;
 	dice: number;
 
-	constructor(data?: {
+	constructor(data: Partial<{
 		winnings: Effects["winnings"],
 		discount: Effects["discount"],
 		pockCap: Effects["pockCap"],
 		slots: Effects["slots"],
 		dice: Effects["dice"],
-	}) {
+	}> = {}) {
 
-		if ('winnings' in data) {
-			this.winnings = data.winnings;
-		}
-		if ('discount' in data) {
-			this.discount = data.discount;
-		}
-		if ('pockCap' in data) {
-			this.pockCap = data.pockCap;
-		}
-		if ('slots' in data) {
-			this.slots = data.slots;
-		}
-		if ('dice' in data) {
-			this.dice = data.dice;
-		}
+		this.winnings = data.winnings || 0;
+		this.discount = data.discount || 0;
+		this.pockCap = data.pockCap || 0;
+		this.slots = data.slots || 0;
+		this.dice = data.dice || 0;
 	}
 
 	setWinnings(winnings: number): this {

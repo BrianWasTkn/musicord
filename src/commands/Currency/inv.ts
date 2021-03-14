@@ -43,14 +43,13 @@ export default class Currency extends Command {
 
     let member: GuildMember;
     let data: Document & CurrencyProfile;
-    if (typeof pom === 'number') {
-      data = await fetch(msg.member.user.id);
-      member = msg.member;
-    } else {
+    if (pom instanceof GuildMember) {
       data = await fetch(pom.user.id);
       member = pom;
+    } else {
+      data = await fetch(msg.member.user.id);
+      member = msg.member;
     }
-
 
     let inv: string[] | string[][] | InventorySlot[];
     inv = data.items.filter(i => i.amount >= 1);
@@ -70,8 +69,8 @@ export default class Currency extends Command {
 			embed: {
 				color: 'GOLD',
 				author: {
-          name: `${(pom as GuildMember).user.username}'s inventory`,
-          iconURL: (pom as GuildMember).user.avatarURL({ dynamic: true })
+          name: `${member.user.username}'s inventory`,
+          iconURL: member.user.avatarURL({ dynamic: true })
         },
         fields: [{
           name: 'Owned Items',
