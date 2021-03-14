@@ -24,15 +24,15 @@ export default class Currency extends Command {
 
   private get slotMachine() {
     return {
-      middle_finger: 0.403,
-      clown: 0.409,
-      eyes: 0.505,
-      eggplant: 0.601,
-      peach: 0.607,
-      alien: 0.702,
-      star2: 0.708,
-      flushed: 0.804,
-      fire: 0.901, // +0.001
+      middle_finger: 1,
+      clown: 1,
+      eyes: 1,
+      eggplant: 1,
+      peach: 2,
+      alien: 2,
+      star2: 2,
+      flushed: 3,
+      fire: 5
     };
   }
 
@@ -61,9 +61,7 @@ export default class Currency extends Command {
     const outcome = `**>** :${[a, b, c].join(':    :')}: **<**`;
     // Calc amount
     const { maxWin, maxMulti } = currency;
-    let { total: multi } = await DB.utils.calcMulti(this.client, _);
-    if (multi >= maxMulti) multi = maxMulti as number;
-    let { length, winnings } = this.calcWinnings(bet, [a, b, c], multi);
+    let { length, winnings, map = 0 } = this.calcWinnings(bet, [a, b, c]);
 
     // Visuals
     let color: ColorResolvable = 'RED';
@@ -80,7 +78,7 @@ export default class Currency extends Command {
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
       description.push(`\nYou won **${winnings.toLocaleString()}**.`);
-      description.push(`**Percent Won** \`${percentWon}%\`.`);
+      description.push(`**Multiplier** \`x${map}\`.`);
     } else {
       db = await DB.remove(_.author.id, 'pocket', bet);
       color = 'RED';
@@ -93,7 +91,6 @@ export default class Currency extends Command {
     await this.client.util.sleep(1000);
     const title = `${_.author.username}'s ${state} slot machine`;
     const embed = new Embed()
-      .setFooter(false, `Multiplier: ${multi}%`, this.client.user.avatarURL())
       .setAuthor(title, _.author.avatarURL({ dynamic: true }))
       .setDescription(description.join('\n'))
       .setColor(color);
@@ -103,11 +100,11 @@ export default class Currency extends Command {
 
   private calcWinnings(
     bet: number,
-    slots: string[],
-    multi: number
+    slots: string[]
   ): { [k: string]: number } {
-    const rate: number[] = Object.values(this.slotMachine);
-    const emojis: string[] = Object.keys(this.slotMachine);
+    const { slotMachine } = this;
+    const rate: number[] = Object.values(slotMachine);
+    const emojis: string[] = Object.keys(slotMachine);
     // ty daunt
     const length = slots.filter(
       (thing: string, i: number, ar: string[]) => ar.indexOf(thing) === i
@@ -121,14 +118,21 @@ export default class Currency extends Command {
 
     if (length === 1 || length === 2) {
       let winnings: any = Array(length === 1 ? 3 : length).fill(emojRate); // emoji's base winnings as items
+      let map = [...winnings].reduce((p, c) => p + c);
       winnings = winnings
         .map((w: number) => w * bet)
-        .map((w: number) => w + w * (multi / 100))
         .reduce((p: number, c: number) => p + c);
 
-      return { length, winnings: Math.round(winnings) };
+      return { 
+        map,
+        length, 
+        winnings: Math.round(winnings) 
+      };
     } else {
-      return { length, winnings: 0 };
+      return { 
+        length, 
+        winnings: 0 
+      };
     }
   }
 }
