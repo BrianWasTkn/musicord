@@ -18,7 +18,7 @@ import mongoose from 'mongoose';
 import chalk from 'chalk';
 
 // ext structures
-import './extensions/user';
+// import './extensions/user';
 
 interface DB {
   currency: CurrencyFunc<CurrencyProfile>;

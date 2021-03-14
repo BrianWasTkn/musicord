@@ -53,7 +53,7 @@ export default class Currency extends Command {
     // Check Args
     const { amount: bet } = args;
     if (!bet) return;
-
+    
     // Slot Emojis
     const [a, b, c] = Array(3)
       .fill(null)
