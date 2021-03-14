@@ -9,7 +9,7 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: false,
       emoji: ':credit_card:',
-      info: 'Increases your vault capacity from 500K up to 2M coins.',
+      info: 'Increases your vault capacity from 20K up to 100K coins.',
       name: 'Porsche\'s Card',
       cost: 650000,
     });
@@ -34,7 +34,7 @@ export default class PowerUp extends Item {
 			return `Don't try and break me bish, you only have ${card.amount.toLocaleString()} of these.`
 		}
 
-		let gain: number[] | number = Array(choice).fill(null).map(() => util.randomNumber(5e5, 2e6));
+		let gain: number[] | number = Array(choice).fill(null).map(() => util.randomNumber(2e4, 1e5));
 		gain = gain.reduce((p, c) => p + c);
     card.amount -= choice;
     data.space += gain;
