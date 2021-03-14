@@ -28,6 +28,7 @@ export default class Currency extends Command {
       page: number;
     }
   ): Promise<string | MessageOptions> {
+    const { maxMulti } = this.client.config.currency;
 		const { utils } = this.client.db.currency;
 		const { util } = this.client;
 		const multi = await utils.calcMulti(this.client, _);
@@ -37,9 +38,9 @@ export default class Currency extends Command {
 			return 'That page doesn\'t exist.';
 
 		const embed: Embed = new Embed()
+			.addField(`Total Multi — ${multi.total >= maxMulti ? maxMulti : multi.total}%`, multis[page - 1].join('\n'))
 			.setAuthor(`${_.member.user.username}'s multipliers`, _.author.avatarURL({ dynamic: true }))
 			.setFooter(false, `${multi.unlocked.length} active — Page ${page} of ${multis.length}`)
-			.addField(`Total Multi — ${multi.total}%`, multis[page - 1].join('\n'))
 			.setColor(util.randomInArray(['GOLD', 'GREEN', 'RED', 'ORANGE']));
 
     return { embed };

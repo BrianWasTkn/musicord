@@ -43,31 +43,31 @@ export const utils: CurrencyUtil = {
 
     // Discord-based (26%)
     if (msg.guild.id === '691416705917779999') {
-      unlocked.push(`${msg.guild.name} - \`10%\``);
+      unlocked.push(`${msg.guild.name} — \`10%\``);
       total += 10;
     }
     if (
       msg.member.nickname &&
       msg.member.nickname.toLowerCase().includes('taken')
     ) {
-      unlocked.push(`Taken Cult - \`5%\``);
+      unlocked.push(`Taken Cult — \`5%\``);
       total += 5;
     }
     if (channel.name.includes('lava')) {
-      unlocked.push(`#lava - \`2.5%\``);
+      unlocked.push(`#lava — \`2.5%\``);
       total += 2.5;
     }
     if (msg.guild.id === '691416705917779999') {
       const g = await bot.guilds.fetch('691416705917779999');
-      unlocked.push(`${g.id} — \`5%\``);
+      unlocked.push(`${g.name} — \`5%\``);
       total += 5;
     }
     if (msg.guild.emojis.cache.size >= 100) {
       total += 1;
-      unlocked.push(`100 Emojis - \`1%\``);
+      unlocked.push(`100 Server Emojis — \`1%\``);
       if (msg.guild.emojis.cache.size >= 250) {
         total += 2.5;
-        unlocked.push(`250 Emojis - \`2.5%\``);
+        unlocked.push(`250 Server Emojis — \`2.5%\``);
       }
     }
 
@@ -83,7 +83,7 @@ export const utils: CurrencyUtil = {
     if (trophy.amount >= 1) {
       let multi = 15 * trophy.amount;
       total += multi;
-      unlocked.push(`Trophy — \`${multi}%\``);
+      unlocked.push(`Trophy Effects — \`${multi}%\``);
     }
 
     return { total, unlocked };
