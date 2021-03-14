@@ -57,11 +57,6 @@ export const utils: CurrencyUtil = {
       unlocked.push(`#lava — \`2.5%\``);
       total += 2.5;
     }
-    if (msg.guild.id === '691416705917779999') {
-      const g = await bot.guilds.fetch('691416705917779999');
-      unlocked.push(`${g.name} — \`5%\``);
-      total += 5;
-    }
     if (msg.guild.emojis.cache.size >= 100) {
       total += 1;
       unlocked.push(`100 Server Emojis — \`1%\``);
