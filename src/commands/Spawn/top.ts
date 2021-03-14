@@ -61,7 +61,7 @@ export default class Spawn extends Command {
       case 'spawn':
         docs = await mongoose.models['spawn-profile'].find({});
         mapped = await this.map<SpawnDocument>(docs, amount, 'unpaid');
-        embed.setTitle('Top ${amount} Unpaids');
+        embed.setTitle(`Top ${amount} Unpaids`);
         break;
 
       case 'pockets':
@@ -71,7 +71,7 @@ export default class Spawn extends Command {
       default:
         docs = await mongoose.models['currency'].find({});
         mapped = await this.map<CurrencyProfile>(docs, amount, 'pocket');
-        embed.setTitle('Top ${amount} Pockets');
+        embed.setTitle(`Top ${amount} Pockets`);
         break;
     }
 
