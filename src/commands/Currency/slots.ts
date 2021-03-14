@@ -79,17 +79,17 @@ export default class Currency extends Command {
       const jackpot = length === 1;
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
-      description.push(`\nYou won **${winnings.toLocaleString()}**.`);
-      description.push(`**Multiplier** \`x${multiplier}\`.`);
+      description.push(`\nYou won **${winnings.toLocaleString()}**`);
+      description.push(`**Multiplier** \`x${multiplier}\``);
     } else {
       db = await DB.remove(_.author.id, 'pocket', bet);
       color = 'RED';
       state = 'losing';
-      description.push(`\nYou lost **${bet.toLocaleString()}**.`)
+      description.push(`\nYou lost **${bet.toLocaleString()}**`)
     }
 
     // Final Message
-    description.push(`You now have **${db.pocket.toLocaleString()}**.`);
+    description.push(`You now have **${db.pocket.toLocaleString()}**`);
     await this.client.util.sleep(1000);
     const title = `${_.author.username}'s ${state} slot machine`;
     const embed = new Embed()

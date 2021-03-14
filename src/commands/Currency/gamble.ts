@@ -89,17 +89,10 @@ export default class Currency extends Command {
 
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';
-      description = ties
-        ? [
-            `**We Tied! Our dice are on same side.**`,
-            `You lost **${lost.toLocaleString()}**.\n`,
-            `You now have **${db.pocket.toLocaleString()}**.`,
-          ]
-        : [
-            `**You lost! My dice is higher than yours.**`,
-            `You lost **${lost.toLocaleString()}**.\n`,
-            `You now have **${db.pocket.toLocaleString()}**.`,
-          ];
+      description = [
+        `You lost **${lost.toLocaleString()}**.\n`,
+        `You now have **${db.pocket.toLocaleString()}**.`,
+      ];
     } else if (userD > botD) {
       let wngs = Math.random() * 1.5;
       if (wngs < 0.3) wngs += 0.3;
@@ -113,7 +106,6 @@ export default class Currency extends Command {
       identifier = Boolean(extraWngs) ? 'thicc' : 'winning';
       color = Boolean(extraWngs) ? 'GOLD' : 'GREEN'
       description = [
-        `**Winner! You won __${perwn}%__ of your bet.**`,
         `You won **${w.toLocaleString()}**.\n`,
         `You now have **${db.pocket.toLocaleString()}**.`,
       ];
