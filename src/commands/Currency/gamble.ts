@@ -90,8 +90,8 @@ export default class Currency extends Command {
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';
       description = [
-        `You lost **${lost.toLocaleString()}**.\n`,
-        `You now have **${db.pocket.toLocaleString()}**.`,
+        `You lost **${lost.toLocaleString()}**\n`,
+        `**New Pocket:** *${db.pocket.toLocaleString()}*`,
       ];
     } else if (userD > botD) {
       let wngs = Math.random() * 1.5;
@@ -106,8 +106,9 @@ export default class Currency extends Command {
       identifier = Boolean(extraWngs) ? 'thicc' : 'winning';
       color = Boolean(extraWngs) ? 'GOLD' : 'GREEN'
       description = [
-        `You won **${w.toLocaleString()}**.\n`,
-        `You now have **${db.pocket.toLocaleString()}**.`,
+        `You won **${w.toLocaleString()}**\n`,
+        `**New Pocket:** *${db.pocket.toLocaleString()}*`,
+        `**Percent Won:** *\`${perwn.toLocaleString()}%\`*`
       ];
     }
 
@@ -117,8 +118,8 @@ export default class Currency extends Command {
         _.author.displayAvatarURL({ dynamic: true })
       )
       .setFooter(false, `Multiplier: ${multi}%`, this.client.user.avatarURL())
-      .addField(this.client.user.username, `Rolled a \`${botD}\``, true)
       .addField(_.author.username, `Rolled a \`${userD}\``, true)
+      .addField(this.client.user.username, `Rolled a \`${botD}\``, true)
       .setDescription(description.join('\n'))
       .setColor(color);
 
