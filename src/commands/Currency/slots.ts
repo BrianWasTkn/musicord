@@ -3,6 +3,7 @@ import { CurrencyProfile } from '@lib/interface/mongo/currency';
 import { Argument } from 'discord-akairo';
 import { Document } from 'mongoose';
 import { Command } from '@lib/handlers/command';
+import { Effects } from '@lib/utility/effects';
 import { Embed } from '@lib/utility/embed';
 
 export default class Currency extends Command {
@@ -24,16 +25,38 @@ export default class Currency extends Command {
 
   private get slotMachine() {
     return {
-      middle_finger: [1, 2],
-      clown: [1, 2],
+      middle_finger: [1, 3],
+      clown: [1, 3],
       eyes: [1, 3],
-      eggplant: [2, 3],
+      eggplant: [2, 4],
       peach: [2, 4],
-      alien: [3, 4],
+      alien: [3, 5],
       star2: [5, 8],
       flushed: [8, 15],
       fire: [25, 100],
     };
+  }
+
+  private async getEffects(_: Message): Effects {
+    const { fetch, updateItems } = this.client.db.currency;
+    const data = await fetch(_.author.id);
+    const effects = new Effects();
+
+    const crazy = data.items.find((i) => i.id === 'crazy');
+    if (!crazy) {
+      await updateItems(_.author.id);
+      return await this.getEffects(_);
+    }
+
+    if (crazy.expire > Date.now() && crazy.active) {
+      effects.setSlotOdds(0.5);
+    } else {
+      crazy.active = false;
+      crazy.expire = 0;
+      await data.save();
+    }
+
+    return effects;
   }
 
   /**
@@ -58,8 +81,9 @@ export default class Currency extends Command {
     if (!bet) return;
 
     // Slot Emojis
+    const { slots = 0 } = await this.getEffects(_);
     const emojis = Object.keys(this.slotMachine);
-    const jOdds = Math.random() > 0.95;
+    const jOdds = Math.random() > (0.95 - slots);
     const jEmoji = util.randomInArray(emojis);
     const [a, b, c] = Array(3)
       .fill(null)

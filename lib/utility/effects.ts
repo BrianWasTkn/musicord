@@ -1,9 +1,9 @@
 export class Effects {
-  winnings: number;
-  discount: number;
-  pockCap: number;
-  slots: number;
-  dice: number;
+  winnings: number; // gamble winnigns
+  discount: number; // understandable
+  pockCap: number; // understandable
+  slots: number; // jackpot odds
+  dice: number; // dice roll
 
   constructor(
     data: Partial<{
@@ -36,8 +36,8 @@ export class Effects {
     return this;
   }
 
-  setSlotLength(emojis: string[], length: number): this {
-    this.slots = emojis.length = length;
+  setSlotOdds(amount: number): this {
+    this.slots = amount;
     return this;
   }
 

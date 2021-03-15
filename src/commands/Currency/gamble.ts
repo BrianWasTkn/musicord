@@ -30,7 +30,8 @@ export default class Currency extends Command {
 
     // ItemEffects
     const thicc = data.items.find((i) => i.id === 'thicc');
-    if (!thicc) {
+    const coffee = data.items.find((i) => i.id === 'coffee')
+    if (!thicc || !coffee) {
       await updateItems(_.author.id);
       return await this.getEffects(_);
     }
@@ -41,6 +42,15 @@ export default class Currency extends Command {
     } else {
       thicc.active = false;
       thicc.expire = 0;
+      await data.save();
+    }
+
+    // Coffee
+    if (coffee.expire > Date.now() && coffee.active) {
+      effects.setWinnings(0.5);
+    } else {
+      coffee.active = false;
+      coffee.expire = 0;
       await data.save();
     }
 

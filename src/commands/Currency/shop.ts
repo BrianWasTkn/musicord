@@ -10,28 +10,35 @@ export default class Currency extends Command {
       description: 'View or buy something from the shop.',
       category: 'Currency',
       cooldown: 1000,
+      args: [{
+        id: 'page',
+        type: 'number',
+        default: 1
+      }]
     });
   }
 
-  async exec(msg: Message): Promise<string | MessageOptions> {
+  async exec(msg: Message, { page }: { page: number }): Promise<string | MessageOptions> {
     const { item: Handler } = this.client.handlers;
     const items = Handler.modules.array();
 
-    const itemMap = items
+    const shop = this.client.util
+    .paginateArray(items
       .sort((a, b) => b.cost - a.cost)
-      .map(
-        (i) =>
-          `**${i.emoji} ${
-            i.name
-          }** — [${i.cost.toLocaleString()}](https://discord.gg/memer)\n**${
-            i.categoryID
-          }** ${i.info}`
-      );
-    const fields = this.client.util.paginateArray(itemMap, 5);
-    const shop = new Embed()
-      .setDescription(fields[0].join('\n\n'))
+      .map(i => {
+        const { emoji, cost, categoryID, info } = i;
+        return `**${emoji} ${i.name}**\n**Use:** ${info}\n**Cost:** ${cost.toLocaleString()}\n**Type:** ${categoryID}`
+    }), 3);
+
+    if (page > shop.length)
+      return 'That page doesn\'t even exist lol';
+
+    const embed = new Embed()
+      .setDescription(shop[page - 1].join('\n\n'))
+      .setFooter(false, `Lava Shop — Page ${page} of ${shop.length}`)
       .setTitle('Lava Shop')
       .setColor('RANDOM');
-    return { embed: shop };
+
+    return { embed };
   }
 }

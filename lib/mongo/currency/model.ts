@@ -11,7 +11,7 @@ export default model<Document<CurrencyProfile>>(
   new Schema({
     userID: { type: String, required: true },
     pocket: { type: Number, required: false, default: 5000000 },
-    items: [{ amount: Number, id: String, expire: Number, active: Boolean }],
+    items: [{ amount: Number, id: String, expire: Number, active: Boolean, multi: Number }],
     multi: { type: Number, required: false, default: 100 },
     vault: { type: Number, required: false, default: 0 },
     space: { type: Number, required: false, default: 0 },

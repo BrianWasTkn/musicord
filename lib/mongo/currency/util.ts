@@ -69,16 +69,22 @@ export const utils: CurrencyUtil = {
     // Currency-based (10%)
     const items = bot.handlers.item.modules;
     const trophyItem = items.get('trophy');
+    const coffeeItem = items.get('coffee');
     if (db.items.length < 1) {
       const db = await bot.db.currency.updateItems(msg.author.id);
       return await CalcMulti(bot, msg);
     }
 
     let trophy = db.items.find((i) => i.id === trophyItem.id);
+    let coffee = db.items.find((i) => i.id === trophyItem.id);
     if (trophy.amount >= 1) {
-      let multi = 15 * trophy.amount;
+      let multi = 5 * trophy.amount;
       total += multi;
       unlocked.push(`Trophy Effects — \`${multi}%\``);
+    }
+    if (coffee.amount >= 1) {
+      total += coffee.multi;
+      unlocked.push(`Baddd's Coffee — \`${coffee.multi}%\``);
     }
 
     return { total, unlocked };

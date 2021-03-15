@@ -3,6 +3,7 @@ import { AkairoModuleOptions } from 'discord-akairo';
 export interface InventorySlot {
   active?: boolean;
   expire?: number;
+  multi?: number;
   amount: number;
   id: string;
 }
