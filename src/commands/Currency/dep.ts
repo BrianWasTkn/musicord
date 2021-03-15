@@ -14,18 +14,17 @@ export default class Currency extends Command {
         {
           id: 'amount',
           type: async (msg: Message, phrase: number | string) => {
+            if (!phrase) {
+              await msg.channel.send('You need something to deposit');
+              return null;
+            }
+
             const data = await this.client.db.currency.fetch(msg.author.id);
             if (data.pocket < 1) {
               await msg.channel.send("Lol you don't have coins to deposit rip");
             }
-
             if (data.vault >= data.space) {
               await msg.channel.send('You already have full vault');
-              return null;
-            }
-
-            if (!phrase) {
-              await msg.channel.send('You need something to deposit');
               return null;
             }
 
@@ -60,6 +59,7 @@ export default class Currency extends Command {
     const { pocket, vault, space } = await fetch(_.author.id);
     const embed: Embed = new Embed();
     if (!amount) return;
+    if (amount < 1) return 'You thought you can fool me?'
 
     if (amount > pocket) {
       return `Bro, you only have ${pocket.toLocaleString()} coins what're you doing?`;

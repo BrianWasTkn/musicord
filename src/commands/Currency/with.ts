@@ -14,12 +14,12 @@ export default class Currency extends Command {
         {
           id: 'amount',
           type: async (msg: Message, phrase: number | string) => {
-            const data = await this.client.db.currency.fetch(msg.author.id);
             if (!phrase) {
               await msg.reply('You need something to withdraw');
               return null;
             }
 
+            const data = await this.client.db.currency.fetch(msg.author.id);
             if (data.vault < 1) {
               await msg.reply('You have nothing to withdraw');
               return null;
@@ -55,6 +55,7 @@ export default class Currency extends Command {
     const { pocket, vault, space } = await fetch(_.author.id);
     const embed: Embed = new Embed();
     if (!amount) return;
+    if (amount < 1) return 'Thought you can fool me?'
 
     if (amount > vault) {
       return `Bro, you only have ${vault.toLocaleString()} coins in your vault what're you up to?`;
