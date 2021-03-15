@@ -37,7 +37,7 @@ export default class Currency extends Command {
     };
   }
 
-  private async getEffects(_: Message): Effects {
+  private async getEffects(_: Message): Promise<Effects> {
     const { fetch, updateItems } = this.client.db.currency;
     const data = await fetch(_.author.id);
     const effects = new Effects();
