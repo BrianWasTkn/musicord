@@ -25,18 +25,20 @@ export default class Currency extends Command {
               return null;
             }
 
-            let withd: number;
-            if (Boolean(Number(phrase))) {
-              withd = Number(phrase);
-            } else {
-              if (phrase === 'all' || phrase === 'max') {
+            let withd: string | number = phrase;
+            if (!Boolean(Number(withd))) {
+              withd = (withd as string).toLowerCase();
+              if (['all', 'max'].some(p => p.toLowerCase() === withd)) {
                 withd = data.vault;
               } else if (phrase === 'half') {
                 withd = Math.round(data.vault / 2);
+              } else {
+                await msg.channel.send('You need a number to deposit.');
+                return null;
               }
             }
 
-            return withd;
+            return Number(withd);
           },
         },
       ],

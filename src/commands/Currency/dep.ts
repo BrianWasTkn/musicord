@@ -29,16 +29,17 @@ export default class Currency extends Command {
               return null;
             }
 
-            let dep: number;
-            if (!Boolean(Number(phrase))) {
-              phrase = (phrase as string).toLowerCase();
-              if (phrase === 'all' || phrase === 'max') {
+            let dep: string | number = phrase;
+            if (!Boolean(Number(dep))) {
+              dep = (<string>dep).toLowerCase();
+              if (['all', 'max'].some(p => p.toLowerCase() === dep)) {
                 dep = data.pocket;
               } else if (phrase === 'half') {
                 dep = Math.round(data.pocket / 2);
+              } else {
+                await msg.channel.send('You actually need a number to deposit...');
+                return null;
               }
-            } else {
-              dep = Number(phrase);
             }
 
             return Number(dep);
@@ -67,7 +68,7 @@ export default class Currency extends Command {
     }
 
     let input: number = amount;
-    input = input >= space - vault ? space - vault : pocket;
+    input = input > space - vault ? space - vault : pocket;
 
     await add(_.author.id, 'vault', input);
     await remove(_.author.id, 'pocket', input);
