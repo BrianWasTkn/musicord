@@ -41,7 +41,7 @@ export default class Currency extends Command {
               dep = Number(phrase);
             }
 
-            return dep;
+            return Number(dep);
           },
         },
       ],
