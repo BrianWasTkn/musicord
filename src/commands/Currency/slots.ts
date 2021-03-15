@@ -49,7 +49,7 @@ export default class Currency extends Command {
     }
 
     if (crazy.expire > Date.now() && crazy.active) {
-      effects.setSlotOdds(0.5);
+      effects.setSlotOdds(0.05);
     } else {
       crazy.active = false;
       crazy.expire = 0;
