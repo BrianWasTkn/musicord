@@ -68,8 +68,7 @@ export default class Currency extends Command {
     else if (amount + vault > space)
       return `You can only hold ${space.toLocaleString()} coins right now.`;
 
-    let input: number = amount;
-    input = amount + vault > space ? space - vault : amount;
+    const input = amount >= space - vault ? space - vault : amount;
     await add(_.author.id, 'vault', input);
     await remove(_.author.id, 'pocket', input);
     return `**${input.toLocaleString()}** coins deposited.`;
