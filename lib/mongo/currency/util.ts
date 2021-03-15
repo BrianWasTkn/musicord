@@ -82,7 +82,7 @@ export const utils: CurrencyUtil = {
       total += multi;
       unlocked.push(`Trophy Effects — \`${multi}%\``);
     }
-    if (coffee.amount >= 1) {
+    if (coffee.active && (coffee.expire > Date.now())) {
       total += coffee.multi;
       unlocked.push(`Baddd's Coffee — \`${coffee.multi}%\``);
     }
