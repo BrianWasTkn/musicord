@@ -76,12 +76,14 @@ export const utils: CurrencyUtil = {
     }
 
     let trophy = db.items.find((i) => i.id === trophyItem.id);
-    let coffee = db.items.find((i) => i.id === trophyItem.id);
+    let coffee = db.items.find((i) => i.id === coffee.id);
+
     if (trophy.amount >= 1) {
       let multi = 2.5 * trophy.amount;
       total += multi;
       unlocked.push(`Trophy Effects — \`${multi}%\``);
     }
+
     if (coffee.active && (coffee.expire > Date.now())) {
       total += coffee.multi;
       unlocked.push(`Baddd's Coffee — \`${coffee.multi}%\``);
