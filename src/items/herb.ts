@@ -8,7 +8,7 @@ export default class PowerUp extends Item {
       sellable: false,
       buyable: true,
       usable: false,
-      emoji: ':desktop:',
+      emoji: ':herb:',
       info: "A flex from the man himself",
       name: "Ken's Herbal Supplement",
       cost: 420420420,
