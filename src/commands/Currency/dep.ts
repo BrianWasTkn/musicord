@@ -42,6 +42,7 @@ export default class Currency extends Command {
               }
             }
 
+            console.log(dep);
             return Number(dep);
           },
         },
