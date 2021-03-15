@@ -27,7 +27,7 @@ export default class Collectible extends Item {
     let fine: number;
 
     if (Math.random() <= 0.4) {
-      if (Math.random() <= 0.15) {
+      if (Math.random() <= 0.2) {
         const hahausuck = util.randomNumber(1, 10);
         trophies.amount -= hahausuck;
         return `LOL you broke **${hahausuck}** trophies :skull:`
