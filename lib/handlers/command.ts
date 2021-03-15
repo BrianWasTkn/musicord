@@ -70,7 +70,7 @@ export class CommandHandler<
       commandUtil = true,
       allowMention = true,
       classToHandle = Command,
-      commandTyping = false,
+      commandTyping = true,
       defaultCooldown = 1500,
       aliasReplacement = /(-|\.)/gi,
       automateCategories = true,
