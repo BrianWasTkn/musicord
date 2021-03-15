@@ -36,7 +36,7 @@ export class Util extends ClientUtil {
    * @param array An array with usually many items
    * @param size The number of items per array in return
    */
-  paginateArray(array: any[], size: number): Array<any[]> {
+  paginateArray<T>(array: T[], size: number): T[][] {
     let result = [];
     let j = 0;
     for (let i = 0; i < Math.ceil(array.length / (size || 5)); i++) {
@@ -50,7 +50,7 @@ export class Util extends ClientUtil {
    * Returns a random item from an array
    * @param array An array of anything
    */
-  randomInArray(array: any[]): any {
+  randomInArray<T>(array: T[]): T {
     return array[Math.floor(Math.random() * array.length)];
   }
 
@@ -59,7 +59,7 @@ export class Util extends ClientUtil {
    * @param min The minimum number possible
    * @param max The maximum number possible
    */
-  randomNumber(min: number, max: number): any {
+  randomNumber(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 

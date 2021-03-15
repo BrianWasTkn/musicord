@@ -22,6 +22,7 @@ export default class PowerUp extends Item {
 
     if (Math.random() < 0.4) {
       comp.amount -= 1;
+      await data.save();
       return `You broke your **${this.emoji} ${this.name}** lmao sucks to be you.`
     }
 

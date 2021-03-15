@@ -103,7 +103,7 @@ export default class Utility extends Command {
     const entries: Collection<string, GuildMember> = new Collection();
     const options: MessageCollectorOptions = { max: hits, time: 120000 };
     const filter: CollectorFilter = (m: Message) =>
-      m.content.toLowerCase() === string.toLowerCase();
+      m.content.toLowerCase() === (string as string).toLowerCase();
 
     const collector = channel.createMessageCollector(filter, options);
     collector.on('collect', (m: Message) =>

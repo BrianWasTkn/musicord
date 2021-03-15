@@ -19,12 +19,9 @@ export default class CommandListener extends Listener {
   ): Promise<Message> {
     return _.channel.send({
       embed: {
-        title: 'Calm down buddy',
+        title: 'Calm the frick down',
         color: 'RED',
-        description: `You're currently on cooldown for the \`${
-          command.id
-        }\` command.
-      Please wait **${(remaining / 100).toFixed(2)}** seconds and try again.`,
+        description: `You're currently on cooldown for the \`${command.id}\` command.\nPlease wait **${(remaining / 100).toFixed(2)}** seconds and try again.\nThe default cooldown for this command is \`${command.cooldown / 1000}\` seconds!`,
         footer: {
           text: this.client.user.username,
           icon_url: this.client.user.avatarURL(),
