@@ -46,12 +46,26 @@ export const utils: CurrencyUtil = {
       unlocked.push(`${msg.guild.name} — \`10%\``);
       total += 10;
     }
-    if (
-      msg.member.nickname &&
-      msg.member.nickname.toLowerCase().includes('taken')
-    ) {
-      unlocked.push(`Taken Cult — \`5%\``);
-      total += 5;
+    if (msg.member.nickname) {
+      const includes = name => msg.member.nickname
+        .toLowerCase()
+        .includes(name);
+
+      if (includes('taken')) {
+        let m = 10;
+        total += 5;
+        unlocked.push(`Taken Cult — \`${m}%\``)
+      }
+      if (includes('probber')) {
+        let m = 3.5;
+        total += 5;
+        unlocked.push(`Probber Cult — \`${m}%\``)
+      }
+      if (includes('chips')) {
+        let m = 3.5;
+        total += 5;
+        unlocked.push(`Chips Cult — \`${m}%\``)
+      }
     }
     if (channel.name.includes('・')) {
       unlocked.push(`Dotted Channel — \`2.5%\``);
