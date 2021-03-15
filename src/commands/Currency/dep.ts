@@ -41,7 +41,7 @@ export default class Currency extends Command {
               }
             }
 
-            return Number(dep);
+            return Math.trunc(Number(dep));
           },
         },
       ],
