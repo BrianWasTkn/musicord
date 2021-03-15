@@ -22,6 +22,7 @@ export default class Currency extends Command {
             const data = await this.client.db.currency.fetch(msg.author.id);
             if (data.pocket < 1) {
               await msg.channel.send("Lol you don't have coins to deposit rip");
+              return null;
             }
             if (data.vault >= data.space) {
               await msg.channel.send('You already have full vault');
