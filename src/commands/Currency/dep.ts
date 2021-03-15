@@ -65,8 +65,6 @@ export default class Currency extends Command {
       return 'You thought you can fool me?';
     else if (amount > pocket)
       return `Bro, you only have ${pocket.toLocaleString()} coins what're you doing?`;
-    else if (amount + vault > space)
-      return `You can only hold ${space.toLocaleString()} coins right now.`;
 
     const input = amount >= space - vault ? space - vault : amount;
     await add(_.author.id, 'vault', input);
