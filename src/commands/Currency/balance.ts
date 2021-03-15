@@ -34,7 +34,8 @@ export default class Currency extends Command {
     const { pocket, vault, space } = await fetch(member.user.id);
     const dpn: string[] = [];
 
-    [ `**Pocket:** ${pocket.toLocaleString()}`,
+    [
+      `**Pocket:** ${pocket.toLocaleString()}`,
       `**Vault:** ${vault.toLocaleString()}/${space.toLocaleString()}`,
       `**Total:** ${(pocket + vault).toLocaleString()}`,
     ].forEach((i) => dpn.push(i));

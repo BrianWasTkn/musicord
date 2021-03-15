@@ -14,10 +14,10 @@ export default class SpawnListener extends Listener {
   }
 
   async exec(args: {
-    msg: Message,
-    spawner: Spawn,
-    isFirst: boolean,
-    handler: SpawnHandler<Spawn>,
+    msg: Message;
+    spawner: Spawn;
+    isFirst: boolean;
+    handler: SpawnHandler<Spawn>;
   }): Promise<MessageReaction> {
     const { msg, spawner, isFirst, handler } = args;
     spawner.answered.set(msg.author.id, true);

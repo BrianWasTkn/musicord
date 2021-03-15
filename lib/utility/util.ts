@@ -67,9 +67,11 @@ export class Util extends ClientUtil {
   }
 
   isPromise(something: any): boolean {
-    return something 
-      && typeof something.then === 'function'
-      && typeof something.catch === 'function';
+    return (
+      something &&
+      typeof something.then === 'function' &&
+      typeof something.catch === 'function'
+    );
   }
 
   console(args: { klass: string; type?: 'def' | 'err'; msg: string }): void {

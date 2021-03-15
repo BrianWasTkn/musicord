@@ -23,7 +23,7 @@ Although the full code is visible and is available here to self-host on any comp
 ## Acknowledgements
 
 - **Dauntless#0711** - _core of slot machine_ - [discord](https://discord.com/invite/Ha7pRB4)
-- **Dank Memer v5** - _general concept for currency_ [source](https://dankmemer.lol/source)
+- **Dank Memer v5** - _general concept for currency_ - [source](https://dankmemer.lol/source)
 
 ## Author
 

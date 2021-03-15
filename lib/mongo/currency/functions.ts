@@ -33,9 +33,8 @@ export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
 
   fetch = async (userID: Snowflake): Promise<Document & Profile> => {
     let data = await this.model.findOne({ userID });
-    return (!data ? await this.create(userID) : data) as Document &
-      Profile;
-  }
+    return (!data ? await this.create(userID) : data) as Document & Profile;
+  };
 
   add = async (
     userID: Snowflake,
@@ -46,7 +45,7 @@ export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
     data[key as string] += amount;
     await data.save();
     return data;
-  }
+  };
 
   remove = async (
     userID: Snowflake,
@@ -57,25 +56,25 @@ export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
     data[key as string] -= amount;
     await data.save();
     return data;
-  }
+  };
 
   updateItems = async (userID: Snowflake): Promise<Document & Profile> => {
     const items = this.bot.handlers.item.modules.array();
     const data = await this.fetch(userID);
-    items.forEach(i => {
-      const filter = it => it.id === i.id;
+    items.forEach((i) => {
+      const filter = (it) => it.id === i.id;
       const isHere = data.items.find(filter);
       if (!isHere) {
         data.items.push({
           active: false,
           expire: 0,
           amount: 0,
-          id: i.id
+          id: i.id,
         });
       }
     });
 
     await data.save();
     return data;
-  }
+  };
 }

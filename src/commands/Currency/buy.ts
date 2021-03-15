@@ -50,7 +50,7 @@ export default class Currency extends Command {
         active: false,
         id: item.id,
         amount: 0,
-        expire: 0
+        expire: 0,
       });
 
       await data.save();

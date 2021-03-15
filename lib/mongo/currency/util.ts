@@ -8,15 +8,15 @@ import type { CurrencyProfile } from '@lib/interface/mongo/currency';
 import type { InventorySlot } from '@lib/interface/handlers/item';
 import type { CurrencyUtil } from '@lib/interface/mongo/currency';
 import type { Lava } from '@lib/Lava';
-import { Document } from 'mongoose'
+import { Document } from 'mongoose';
 
 async function newItem(bot: Lava, userID: string, itemID: string) {
   const dat = await bot.db.currency.fetch(userID);
   dat.items.push({
-    active: false, 
-    amount: 0, 
-    expire: 0, 
-    id: itemID
+    active: false,
+    amount: 0,
+    expire: 0,
+    id: itemID,
   });
 
   await dat.save();
@@ -74,7 +74,7 @@ export const utils: CurrencyUtil = {
       return await CalcMulti(bot, msg);
     }
 
-    let trophy = db.items.find(i => i.id === trophyItem.id);
+    let trophy = db.items.find((i) => i.id === trophyItem.id);
     if (trophy.amount >= 1) {
       let multi = 15 * trophy.amount;
       total += multi;

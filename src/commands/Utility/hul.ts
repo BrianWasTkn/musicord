@@ -13,7 +13,7 @@ export default class Util extends Command {
         {
           id: 'role',
           type: 'role',
-          default: (m: Message) => m.guild.id
+          default: (m: Message) => m.guild.id,
         },
         {
           id: 'interval',

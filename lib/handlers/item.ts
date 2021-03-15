@@ -61,9 +61,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
   async use(item: ItemModule, msg: Message): Promise<any> {
     if (!item.usable) return false;
     const fn = item.use.bind(item);
-    return this.client.util.isPromise(fn) 
-      ? (await fn(msg)) 
-      : fn(msg);
+    return this.client.util.isPromise(fn) ? await fn(msg) : fn(msg);
   }
 
   async buy(
@@ -78,7 +76,9 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
   }> {
     const { maxInventory: maxInv } = this.client.config.currency;
     const { fetch, remove } = this.client.db.currency;
-    const item = this.modules.get(iID) || this.modules.find(i => i.name.toLowerCase().includes(iID));
+    const item =
+      this.modules.get(iID) ||
+      this.modules.find((i) => i.name.toLowerCase().includes(iID));
     const paid = amount * item.cost;
 
     let data = await fetch(uID);

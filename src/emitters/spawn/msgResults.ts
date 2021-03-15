@@ -15,11 +15,11 @@ export default class SpawnListener extends Listener {
   }
 
   async exec(args: {
-    msg: Message,
-    spawner: Spawn,
-    collected: Collection<string, Message>,
-    handler: SpawnHandler<Spawn>,
-    isEmpty: boolean,
+    msg: Message;
+    spawner: Spawn;
+    collected: Collection<string, Message>;
+    handler: SpawnHandler<Spawn>;
+    isEmpty: boolean;
   }): Promise<Message> {
     const { msg: message, spawner, collected, handler, isEmpty } = args;
     const queue = handler.queue.get(message.channel.id);

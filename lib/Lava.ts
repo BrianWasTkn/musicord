@@ -1,6 +1,6 @@
 import { ListenerHandler, AkairoClient, AkairoModule } from 'discord-akairo';
 import { LavaUser, LavaUserManager } from './extensions/user';
-import { Command, CommandHandler } from './handlers/command'
+import { Command, CommandHandler } from './handlers/command';
 import { Collection, UserManager } from 'discord.js';
 import { SpawnHandler, Spawn } from './handlers/spawn';
 import { ItemHandler, Item } from './handlers/item';

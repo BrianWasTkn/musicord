@@ -32,7 +32,7 @@ export default class Currency extends Command {
       alien: [8, 25],
       star2: [10, 50],
       flushed: [25, 75],
-      fire: [50, 250]
+      fire: [50, 250],
     };
   }
 
@@ -41,9 +41,12 @@ export default class Currency extends Command {
    * @param _ a discord message object
    * @param args the passed command arguments
    */
-  async exec(_: Message, args: {
-    amount?: number
-  }): Promise<string | MessageOptions> {
+  async exec(
+    _: Message,
+    args: {
+      amount?: number;
+    }
+  ): Promise<string | MessageOptions> {
     const {
       util,
       db: { currency: DB },
@@ -53,18 +56,23 @@ export default class Currency extends Command {
     // Check Args
     const { amount: bet } = args;
     if (!bet) return;
-    
+
     // Slot Emojis
     const emojis = Object.keys(this.slotMachine);
     const jOdds = Math.random() > 0.95;
     const jEmoji = util.randomInArray(emojis);
-    const [a, b, c] = Array(3).fill(null)
-      .map(() => jOdds ? jEmoji : util.randomInArray(emojis))
+    const [a, b, c] = Array(3)
+      .fill(null)
+      .map(() => (jOdds ? jEmoji : util.randomInArray(emojis)));
 
     const outcome = `**>** :${[a, b, c].join(':    :')}: **<**`;
     // Calc amount
     const { maxMulti } = currency;
-    let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, [a, b, c]);
+    let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, [
+      a,
+      b,
+      c,
+    ]);
 
     // Visuals
     let color: ColorResolvable = 'RED';
@@ -85,7 +93,7 @@ export default class Currency extends Command {
       db = await DB.remove(_.author.id, 'pocket', bet);
       color = 'RED';
       state = 'losing';
-      description.push(`\nYou lost **${bet.toLocaleString()}**`)
+      description.push(`\nYou lost **${bet.toLocaleString()}**`);
     }
 
     // Final Message
@@ -100,10 +108,7 @@ export default class Currency extends Command {
     return { embed };
   }
 
-  private calcWinnings(
-    bet: number,
-    slots: string[]
-  ): { [k: string]: number } {
+  private calcWinnings(bet: number, slots: string[]): { [k: string]: number } {
     const { slotMachine } = this;
     const rate: number[][] = Object.values(slotMachine);
     const emojis: string[] = Object.keys(slotMachine);
@@ -124,15 +129,15 @@ export default class Currency extends Command {
       index = length === 1 ? 1 : 0;
       m = multi[index];
 
-      return { 
-        length, 
+      return {
+        length,
         winnings: Math.round(bet * m),
         multiplier: m,
       };
     } else {
-      return { 
-        length, 
-        winnings: 0 
+      return {
+        length,
+        winnings: 0,
       };
     }
   }

@@ -61,14 +61,21 @@ export default class Utility extends Command {
     let cmd: Command;
 
     try {
-      cat = this.handler.findCategory(query as string) as Category<string, Command>;
+      cat = this.handler.findCategory(query as string) as Category<
+        string,
+        Command
+      >;
       cmd = this.handler.findCommand(query as string);
     } catch {}
 
     if (cmd && !cat) {
       embed
         .setFooter(false, _.author.tag, _.author.avatarURL({ dynamic: true }))
-        .setTitle(`${(this.handler.prefix as (m: Message) => string | string[])(_)[0]} ${cmd.id} info`)
+        .setTitle(
+          `${
+            (this.handler.prefix as (m: Message) => string | string[])(_)[0]
+          } ${cmd.id} info`
+        )
         .addFields(this.fieldifyCmd(cmd))
         .setColor('ORANGE');
     } else if (cat) {

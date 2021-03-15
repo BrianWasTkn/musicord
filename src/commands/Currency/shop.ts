@@ -18,13 +18,15 @@ export default class Currency extends Command {
     const items = Handler.modules.array();
 
     const itemMap = items
-    .sort((a, b) => b.cost - a.cost)
-    .map(
-      (i) =>
-        `**${i.emoji} ${i.name}** — [${i.cost.toLocaleString()}](https://discord.gg/memer)\n**${
-          i.categoryID
-        }** ${i.info}`
-    );
+      .sort((a, b) => b.cost - a.cost)
+      .map(
+        (i) =>
+          `**${i.emoji} ${
+            i.name
+          }** — [${i.cost.toLocaleString()}](https://discord.gg/memer)\n**${
+            i.categoryID
+          }** ${i.info}`
+      );
     const fields = this.client.util.paginateArray(itemMap, 5);
     const shop = new Embed()
       .setDescription(fields[0].join('\n\n'))

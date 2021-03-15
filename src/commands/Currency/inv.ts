@@ -1,8 +1,8 @@
 import { Message, MessageOptions, GuildMember } from 'discord.js';
-import { CurrencyProfile } from '@lib/interface/mongo/currency'
-import { InventorySlot } from '@lib/interface/handlers/item'
-import { Argument } from 'discord-akairo'
-import { Document } from 'mongoose'
+import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { InventorySlot } from '@lib/interface/handlers/item';
+import { Argument } from 'discord-akairo';
+import { Document } from 'mongoose';
 import { Command } from '@lib/handlers/command';
 
 export default class Currency extends Command {
@@ -13,22 +13,24 @@ export default class Currency extends Command {
       description: 'Check your inventory.',
       category: 'Currency',
       cooldown: 1000,
-			args: [
+      args: [
         {
           id: 'member',
           default: 1,
           type: (msg: Message, phrase: string) => {
             if (!phrase) return 1; // inventory page
             const { resolver } = this.handler;
-            return resolver.type('number')(msg, phrase) 
-              || resolver.type('memberMention')(msg, phrase);
-          }
+            return (
+              resolver.type('number')(msg, phrase) ||
+              resolver.type('memberMention')(msg, phrase)
+            );
+          },
         },
         {
           id: 'page',
           type: 'number',
           default: 1,
-        }
+        },
       ],
     });
   }
@@ -37,7 +39,7 @@ export default class Currency extends Command {
     msg: Message,
     args: {
       member: number | GuildMember;
-      page: number
+      page: number;
     }
   ): Promise<string | MessageOptions> {
     const { handlers, db, util } = this.client;
@@ -50,7 +52,7 @@ export default class Currency extends Command {
     let pg: number;
 
     if (typeof member === 'number') {
-      memb = msg.member; 
+      memb = msg.member;
       data = await fetch(memb.user.id);
       pg = member;
     } else {
@@ -62,36 +64,45 @@ export default class Currency extends Command {
     let inv: string[] | string[][] | InventorySlot[];
     let total: number = 0;
 
-    inv = data.items.filter(i => i.amount >= 1);
-    inv.forEach(i => total += i.amount);
+    inv = data.items.filter((i) => i.amount >= 1);
+    inv.forEach((i) => (total += i.amount));
     if (inv.length < 1) {
       return 'Imagine not having any items, buy something weirdo';
     }
-		
-    inv = util.paginateArray(inv.map(item => {
-			const i = Items.modules.get(item.id);
-			return `**${i.emoji} ${i.name}** — ${item.amount.toLocaleString()}\n*ID* \`${i.id}\` — ${i.category}`;
-		}), 3);
+
+    inv = util.paginateArray(
+      inv.map((item) => {
+        const i = Items.modules.get(item.id);
+        return `**${i.emoji} ${
+          i.name
+        }** — ${item.amount.toLocaleString()}\n*ID* \`${i.id}\` — ${
+          i.category
+        }`;
+      }),
+      3
+    );
 
     if (pg > inv.length) {
-      return 'That page doesn\'t even exist wtf are you high or what?';
+      return "That page doesn't even exist wtf are you high or what?";
     }
 
-		return {
-			embed: {
-				color: 'GOLD',
-				author: {
+    return {
+      embed: {
+        color: 'GOLD',
+        author: {
           name: `${memb.user.username}'s inventory`,
-          iconURL: memb.user.avatarURL({ dynamic: true })
+          iconURL: memb.user.avatarURL({ dynamic: true }),
         },
-        fields: [{
-          name: `Owned Items — ${total.toLocaleString()}`,
-          value: inv[pg - 1].join('\n\n')
-        }],
+        fields: [
+          {
+            name: `Owned Items — ${total.toLocaleString()}`,
+            value: inv[pg - 1].join('\n\n'),
+          },
+        ],
         footer: {
-          text: `Owned Shits — Page ${pg} of ${inv.length}`
-        }
-			}
-		}
+          text: `Owned Shits — Page ${pg} of ${inv.length}`,
+        },
+      },
+    };
   }
 }

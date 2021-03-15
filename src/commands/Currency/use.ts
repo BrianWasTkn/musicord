@@ -15,7 +15,7 @@ export default class Currency extends Command {
         {
           id: 'item',
           type: 'shopItem',
-        }
+        },
       ],
     });
   }
@@ -28,17 +28,17 @@ export default class Currency extends Command {
   ): Promise<string | MessageOptions> {
     const { item: Items } = this.client.handlers;
     const { fetch } = this.client.db.currency;
-    if (!args.item) return 'This item doesn\'t exist :thinking:';
+    if (!args.item) return "This item doesn't exist :thinking:";
 
-		const isPromise = this.client.util.isPromise.bind(this.client.util);
+    const isPromise = this.client.util.isPromise.bind(this.client.util);
     const data = await fetch(msg.author.id);
     const { item } = args;
 
-    const inv = data.items.find(i => i.id === item.id);
-    if (!inv || inv.amount < 1) return 'You don\'t have this item';
+    const inv = data.items.find((i) => i.id === item.id);
+    if (!inv || inv.amount < 1) return "You don't have this item";
     if (inv.active) return 'This item is currently active right now.';
 
-		const ret = await item.use(msg);
-		return { content: ret, reply: msg.author.id };
+    const ret = await item.use(msg);
+    return { content: ret, reply: msg.author.id };
   }
 }

@@ -3,7 +3,7 @@ import { CurrencyProfile } from '@lib/interface/mongo/currency';
 import { Document } from 'mongoose';
 import { Argument } from 'discord-akairo';
 import { Command } from '@lib/handlers/command';
-import { Effects } from '@lib/utility/effects'
+import { Effects } from '@lib/utility/effects';
 import { Embed } from '@lib/utility/embed';
 
 export default class Currency extends Command {
@@ -29,7 +29,7 @@ export default class Currency extends Command {
     const effects = new Effects();
 
     // ItemEffects
-    const thicc = data.items.find(i => i.id === 'thicc');
+    const thicc = data.items.find((i) => i.id === 'thicc');
     if (!thicc) {
       await updateItems(_.author.id);
       return await this.getEffects(_);
@@ -47,9 +47,12 @@ export default class Currency extends Command {
     return effects;
   }
 
-  public async exec(_: Message, args: {
-    amount?: number
-  }): Promise<string | MessageOptions> {
+  public async exec(
+    _: Message,
+    args: {
+      amount?: number;
+    }
+  ): Promise<string | MessageOptions> {
     const {
       util,
       db: { currency: DB },
@@ -69,9 +72,9 @@ export default class Currency extends Command {
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);
     if (Math.random() > 0.69) {
-      userD = (botD > userD ? [botD, (botD = userD)] : [userD])[0]
+      userD = (botD > userD ? [botD, (botD = userD)] : [userD])[0];
     } else {
-      botD = (userD > botD ? [userD, (userD = botD)] : [botD])[0]
+      botD = (userD > botD ? [userD, (userD = botD)] : [botD])[0];
     }
 
     // vis and db
@@ -104,11 +107,11 @@ export default class Currency extends Command {
       db = await DB.add(_.author.id, 'pocket', w);
 
       identifier = Boolean(extraWngs) ? 'thicc' : 'winning';
-      color = Boolean(extraWngs) ? 'GOLD' : 'GREEN'
+      color = Boolean(extraWngs) ? 'GOLD' : 'GREEN';
       description = [
         `You won **${w.toLocaleString()}**\n`,
         `**New Pocket:** ${db.pocket.toLocaleString()}`,
-        `**Percent Won:** \`${perwn.toLocaleString()}%\``
+        `**Percent Won:** \`${perwn.toLocaleString()}%\``,
       ];
     }
 

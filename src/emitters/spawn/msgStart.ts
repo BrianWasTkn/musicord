@@ -16,10 +16,10 @@ export default class SpawnListener extends Listener {
   }
 
   async exec(args: {
-    str: string,
-    msg: Message,
-    spawner: Spawn,
-    handler: SpawnHandler<Spawn>
+    str: string;
+    msg: Message;
+    spawner: Spawn;
+    handler: SpawnHandler<Spawn>;
   }): Promise<Collection<string, SpawnQueue>> {
     const { str, msg, spawner, handler } = args;
     const { emoji, type, title, description } = spawner.spawn;
@@ -31,10 +31,12 @@ export default class SpawnListener extends Listener {
       .setColor('GOLD');
 
     const eventMessage = await msg.channel.send({ content, embed });
-    await msg.channel.send({ embed: { 
-      title: `Type \`${str.split('').join('\u200b')}\``,
-      color: 'GOLD',
-    }});
+    await msg.channel.send({
+      embed: {
+        title: `Type \`${str.split('').join('\u200b')}\``,
+        color: 'GOLD',
+      },
+    });
 
     return handler.queue.set(msg.channel.id, {
       msg: eventMessage.id,
