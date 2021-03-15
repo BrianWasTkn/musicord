@@ -11,7 +11,7 @@ export default class Collectible extends Item {
       buyable: true,
       usable: true,
       emoji: '🏆',
-      info: 'Grants you 2.5% multi per trophy and another trophy if you use it.',
+      info: 'Grants you 2.5% multi per trophy you own.',
       name: 'Trophy',
       cost: 25000000,
     });
@@ -42,7 +42,7 @@ export default class Collectible extends Item {
     }
 
     const nice = util.randomNumber(1, 10);
-    trophies.amount++;
+    trophies.amount += nice;
     await data.save();
     return `You've been granted **${nice} ${this.emoji} ${this.name}**${nice > 1 ? 's' : ''}! You now have ${trophies.amount} trophies.`
   }

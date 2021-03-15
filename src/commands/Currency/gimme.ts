@@ -14,8 +14,8 @@ export default class Currency extends Command {
 
   async exec({ author, channel }: Message): Promise<string> {
     const { db, config, util } = this.client;
-    const { fetch, add } = db.currency;
     const { maxPocket, maxBet } = config.currency;
+    const { fetch, add } = db.currency;
     const { pocket } = await fetch(author.id);
 
     if (pocket >= maxPocket) return "You're already rich wtf??";
