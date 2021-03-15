@@ -95,7 +95,7 @@ export default class Currency extends Command {
         },
         fields: [
           {
-            name: `Owned Items — ${total.toLocaleString()}`,
+            name: `Owned Items — ${total.toLocaleString()} total`,
             value: inv[pg - 1].join('\n\n'),
           },
         ],

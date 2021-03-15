@@ -31,13 +31,24 @@ export default class Currency extends Command {
     }
   ): Promise<MessageOptions> {
     const { fetch } = this.client.db.currency;
-    const { pocket, vault, space } = await fetch(member.user.id);
+    const { pocket, vault, space, items } = await fetch(member.user.id);
+    const handler = this.client.handlers.item;
+    const net = items
+      .map(i => {
+        const it = handler.modules.get(i.id);
+        return it.cost * i.amount;
+      })
+      .reduce((a, b) => {
+        return a + b;
+      });
+
     const dpn: string[] = [];
 
     [
       `**Pocket:** ${pocket.toLocaleString()}`,
       `**Vault:** ${vault.toLocaleString()}/${space.toLocaleString()}`,
       `**Total:** ${(pocket + vault).toLocaleString()}`,
+      `**Net:** ${(pocket + vault + net).toLocaleString()}`
     ].forEach((i) => dpn.push(i));
 
     const embed: Embed = new Embed()
