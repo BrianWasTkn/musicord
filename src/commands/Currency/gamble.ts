@@ -30,8 +30,8 @@ export default class Currency extends Command {
 
     // ItemEffects
     const thicc = data.items.find((i) => i.id === 'thicc');
-    const coffee = data.items.find((i) => i.id === 'coffee')
-    if (!thicc || !coffee) {
+    const crazy = data.items.find((i) => i.id === 'crazy')
+    if (!thicc || !crazy) {
       await updateItems(_.author.id);
       return await this.getEffects(_);
     }

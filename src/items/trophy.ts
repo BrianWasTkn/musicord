@@ -22,21 +22,27 @@ export default class Collectible extends Item {
     const data = await db.currency.fetch(msg.author.id);
     const trophies = data.items.find((i) => i.id === this.id);
 
-    const hahausuck = util.randomNumber(1, Math.floor(trophies.amount / 2));
+    let fined: boolean;
     let fail: boolean;
+    let fine: number;
 
-    if (Math.random() >= 0.1) {
-      trophies.amount++;
-      fail = false;
-    } else {
-      fail = true;
-      trophies.amount -= hahausuck;
+    if (Math.random() <= 0.4) {
+      if (Math.random() <= 0.15) {
+        const hahausuck = util.randomNumber(1, 10);
+        trophies.amount -= hahausuck;
+        return `LOL you broke **${hahausuck}** trophies :skull:`
+      }
+
+      const fine = util.randomNumber(1, data.pocket / 3);
+      await db.currency.remove(msg.author.id, 'pocket', fine);
+      return `You got fined instead, lemme take away **${
+        fine.toLocaleString()
+      }** coins away from your pocket thank you`;
     }
 
+    const nice = util.randomNumber(1, 10);
+    trophies.amount++;
     await data.save();
-    const inv = data.items.find((i) => i.id === this.id);
-    return fail
-      ? `**LOL you broke __${hahausuck.toLocaleString()}__ trophies sucks to be you**`
-      : `You have been granted **1** trophy! You now have a total of **${trophies.amount.toLocaleString()}** trophies.`;
+    return `You've been granted **${nice} ${this.emoji} ${this.name}**${nice > 1 ? 's' : ''}! You now have ${trophies.amount} trophies.`
   }
 }
