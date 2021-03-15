@@ -14,12 +14,11 @@ export default class Currency extends Command {
         {
           id: 'amount',
           type: async (msg: Message, phrase: number | string) => {
+            const data = await this.client.db.currency.fetch(msg.author.id);
             if (!phrase) {
               await msg.channel.send('You need something to deposit');
               return null;
             }
-
-            const data = await this.client.db.currency.fetch(msg.author.id);
             if (data.pocket < 1) {
               await msg.channel.send("Lol you don't have coins to deposit rip");
               return null;
@@ -42,7 +41,6 @@ export default class Currency extends Command {
               }
             }
 
-            console.log(dep);
             return Number(dep);
           },
         },
@@ -61,16 +59,17 @@ export default class Currency extends Command {
     const { fetch, add, remove } = this.client.db.currency;
     const { pocket, vault, space } = await fetch(_.author.id);
     const embed: Embed = new Embed();
-    if (!amount) return;
-    if (amount < 1) return 'You thought you can fool me?'
-
-    if (amount > pocket) {
+    if (!amount)
+      return;
+    else if (amount < 1)
+      return 'You thought you can fool me?';
+    else if (amount > pocket)
       return `Bro, you only have ${pocket.toLocaleString()} coins what're you doing?`;
-    }
+    else if (amount + vault > space)
+      return `You can only hold ${space.toLocaleString()} coins right now.`;
 
     let input: number = amount;
-    input = input > space - vault ? space - vault : pocket;
-
+    input = amount + vault > space ? space - vault : amount;
     await add(_.author.id, 'vault', input);
     await remove(_.author.id, 'pocket', input);
     return `**${input.toLocaleString()}** coins deposited.`;
