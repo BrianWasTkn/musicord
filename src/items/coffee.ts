@@ -7,7 +7,7 @@ export default class PowerUp extends Item {
       category: 'Power-Up',
       sellable: false,
       buyable: true,
-      usable: false,
+      usable: true,
       emoji: ':hot_face:',
       info: "Gives 1-50% multiplier for 5 minutes.",
       name: "Badddie's Coffee",

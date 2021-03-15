@@ -7,7 +7,7 @@ export default class PowerUp extends Item {
       category: 'Power-Up',
       sellable: false,
       buyable: true,
-      usable: false,
+      usable: true,
       emoji: ':baby_bottle:',
       info: "Having jenni's pee grants you good luck!",
       name: "Jenni's Piss",

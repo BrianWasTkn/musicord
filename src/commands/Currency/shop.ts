@@ -27,7 +27,7 @@ export default class Currency extends Command {
       .sort((a, b) => b.cost - a.cost)
       .map(i => {
         const { emoji, cost, categoryID, info } = i;
-        return `**${emoji} ${i.name}**\n**Use:** ${info}\n**Cost:** ${cost.toLocaleString()}\n**Type:** ${categoryID}`
+        return `**${emoji} ${i.name}**\n**Use:** __${info}__\n**Cost:** \`${cost.toLocaleString()}\`\n**Type:** \`${categoryID}\``
     }), 3);
 
     if (page > shop.length)

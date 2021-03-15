@@ -7,7 +7,7 @@ export default class PowerUp extends Item {
       category: 'Power-Up',
       sellable: false,
       buyable: true,
-      usable: false,
+      usable: true,
       emoji: ':beers:',
       info: "Gives a 5% chance of getting jackpot on slots for 10 minutes!",
       name: "Crazy's Alcohol",

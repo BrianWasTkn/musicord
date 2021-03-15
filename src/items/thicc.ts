@@ -7,7 +7,7 @@ export default class PowerUp extends Item {
       category: 'Power-Up',
       sellable: false,
       buyable: true,
-      usable: false,
+      usable: true,
       emoji: ':joy:',
       info: 'Gives you +50% winnings on gambling. Runs out after 60 seconds.',
       name: "Thicco's Thiccness",
