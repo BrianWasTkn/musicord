@@ -38,7 +38,7 @@ export default class ClientListener extends Listener {
     return util.console({
       msg,
       type: 'def',
-      klass: 'Dcod',
+      klass: 'Lava',
     });
   }
 }

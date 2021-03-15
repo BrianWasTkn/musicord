@@ -13,9 +13,9 @@ export default class CommandListener extends Listener {
   }
 
   async exec(msg: Message, cmd: Command, r: string): Promise<void | Message> {
-    if (r === 'owner') {
+    if (r.toLowerCase() === 'owner') {
       return msg.channel.send("You're not my owner, bro");
-    } else if (['guild', 'dm'].includes(r)) {
+    } else if (['guild', 'dm'].includes(r.toLowerCase())) {
       return msg.channel.send(`This isn't available in ${r}s, my dear.`);
     }
   }

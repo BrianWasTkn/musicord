@@ -34,7 +34,7 @@ export class Command extends AkairoCommand {
   exec(
     message: Message,
     args: any
-  ): string | MessageOptions | Promise<string | MessageOptions> {
+  ): void | string | MessageOptions | Promise<string | MessageOptions> {
     return {
       embed: {
         title: 'What ya doing?',
