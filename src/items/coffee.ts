@@ -27,6 +27,6 @@ export default class PowerUp extends Item {
     cof.expire = Date.now() + (5 * 60 * 1e3);
     await data.save();
 
-    return `You have been granted a **${multi}%** multiplier in 5 minutes.`;
+    return `You have been granted a **${multi}% multiplier** in 5 minutes.`;
   }
 }
