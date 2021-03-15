@@ -9,7 +9,7 @@ import {
   Role,
 } from 'discord.js';
 import { AkairoHandler, ClientUtil } from 'discord-akairo';
-import { Colors } from '../interface/utility';
+import { COLORS } from '../utility/constants';
 import { Lava } from '../Lava';
 
 import chalk from 'chalk';
@@ -25,6 +25,10 @@ export class Util extends ClientUtil {
 
     this.heists = new Collection();
     this.events = new Collection();
+
+    for (const color of Object.keys(COLORS)) {
+      require('discord.js').Constants.Colors[color.toUpperCase()] = COLORS[color];
+    }
   }
 
   /**

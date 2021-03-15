@@ -45,10 +45,6 @@ export const ERROR_MESSAGES: Constants['ERROR_MESSAGES'] = {
   },
 };
 
-for (const color of Object.keys(COLORS)) {
-  require('discord.js').Constants.Colors[color.toUpperCase()] = COLORS[color];
-}
-
 export default {
   COLORS,
   ERROR_MESSAGES,
