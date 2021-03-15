@@ -71,12 +71,12 @@ export const utils: CurrencyUtil = {
     const trophyItem = items.get('trophy');
     const coffeeItem = items.get('coffee');
     if (db.items.length < 1) {
-      const db = await bot.db.currency.updateItems(msg.author.id);
+      await bot.db.currency.updateItems(msg.author.id);
       return await CalcMulti(bot, msg);
     }
 
-    let trophy = db.items.find((i) => i.id === trophyItem.id);
-    let coffee = db.items.find((i) => i.id === coffeeItem.id);
+    const trophy = db.items.find((i) => i.id === trophyItem.id);
+    const coffee = db.items.find((i) => i.id === coffeeItem.id);
 
     if (trophy.amount >= 1) {
       let multi = 2.5 * trophy.amount;
