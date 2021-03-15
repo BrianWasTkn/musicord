@@ -25,15 +25,15 @@ export default class Currency extends Command {
 
   private get slotMachine() {
     return {
-      middle_finger: [1, 3],
-      clown: [1, 3],
+      middle_finger: [1, 2],
+      clown: [1, 2],
       eyes: [1, 3],
-      eggplant: [2, 4],
+      eggplant: [2, 3],
       peach: [2, 4],
-      alien: [3, 5],
-      star2: [5, 8],
-      flushed: [8, 15],
-      fire: [25, 100],
+      alien: [2, 5],
+      star2: [3, 8],
+      flushed: [8, 10],
+      fire: [20, 500],
     };
   }
 
@@ -83,7 +83,7 @@ export default class Currency extends Command {
     // Slot Emojis
     const { slots = 0 } = await this.getEffects(_);
     const emojis = Object.keys(this.slotMachine);
-    const jOdds = Math.random() > (0.95 - slots);
+    const jOdds = Math.random() > (0.98 - slots);
     const jEmoji = util.randomInArray(emojis);
     const [a, b, c] = Array(3)
       .fill(null)
