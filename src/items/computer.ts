@@ -33,6 +33,6 @@ export default class PowerUp extends Item {
     data.pocket += gain;
     await data.save();
 
-    return `You got **__${gain.toLocaleString()}__** (${karma} karmas) from posting a${['a', 'e', 'i', 'o', 'u'].some(vow => type.startsWith(vow))} ${type} meme on reddit.`
+    return `You got **__${gain.toLocaleString()}__** (${karma} karmas) from posting a${['a', 'e', 'i', 'o', 'u'].some(vow => type.startsWith(vow) ? 'n' : '')} ${type} meme on reddit.`
   }
 }
