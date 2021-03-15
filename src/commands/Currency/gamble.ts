@@ -45,15 +45,6 @@ export default class Currency extends Command {
       await data.save();
     }
 
-    // Coffee
-    if (coffee.expire > Date.now() && coffee.active) {
-      effects.setWinnings(0.5);
-    } else {
-      coffee.active = false;
-      coffee.expire = 0;
-      await data.save();
-    }
-
     return effects;
   }
 
