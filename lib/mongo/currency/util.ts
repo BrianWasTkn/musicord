@@ -53,8 +53,8 @@ export const utils: CurrencyUtil = {
       unlocked.push(`Taken Cult — \`5%\``);
       total += 5;
     }
-    if (channel.name.includes('lava')) {
-      unlocked.push(`#lava — \`2.5%\``);
+    if (channel.name.includes('・')) {
+      unlocked.push(`Dotted Channel — \`2.5%\``);
       total += 2.5;
     }
     if (msg.guild.emojis.cache.size >= 100) {
