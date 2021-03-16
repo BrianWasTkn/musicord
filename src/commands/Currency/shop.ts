@@ -14,8 +14,15 @@ export default class Currency extends Command {
       cooldown: 1000,
       args: [{
         id: 'page',
-        type: Argument.union('number', 'shopItem'),
-        default: 1
+        default: 1,
+        type: (msg: Message, phrase: string) => {
+          if (!phrase) return 1; // shop page
+          const { resolver } = this.handler;
+          return (
+            resolver.type('number')(msg, phrase) ||
+            resolver.type('shopItem')(msg, phrase)
+          );
+        },
       }]
     });
   }
