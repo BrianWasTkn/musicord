@@ -47,7 +47,12 @@ export default class Currency extends Command {
       t.set(thicc.id, eff);
       effects.set(msg.author.id, t);
     } else {
-      effects.get(msg.author.id).delete(thicc.id);
+      const useref = effects.get(msg.author.id);
+      if (!useref) {
+        const meh = new Collection<string, Effects>();
+        effects.set(msg.author.id, meh.set(thicc.id, new Effects()));
+      }
+
       thicc.active = false;
       await data.save();
     }    
