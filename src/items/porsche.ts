@@ -21,9 +21,9 @@ export default class PowerUp extends Item {
     const card = data.items.find((i) => i.id === this.id);
 
     const m = `${msg.author.toString()} You have ${card.amount.toLocaleString()} cards. How many cards do you wanna reveal right now?`;
+    await msg.channel.send(m);
     const f = (m) => m.author.id === msg.author.id;
     const rep = (await msg.channel.awaitMessages(f, { max: 1, time: 15000 })).first();
-    await msg.channel.send(m);
 
     if (!rep) return 'lol bye, thanks for nothing.';
     let choice = Number(rep.content);
