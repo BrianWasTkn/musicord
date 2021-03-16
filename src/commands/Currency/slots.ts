@@ -43,15 +43,15 @@ export default class Currency extends Command {
   async before(msg: Message) {
     const { fetch, updateItems } = this.client.db.currency;
     const { effects } = this.client.util;
-    const data = await fetch(msg.author.id);
+    let data = await fetch(msg.author.id);
     const eff = new Effects();
 
     // Item Effects
     const find = (itm: string) => (i: InventorySlot) => i.id === itm;
-    const crazy = data.items.find(find('crazy'));
+    let crazy = data.items.find(find('crazy'));
     if (!crazy) {
-      await updateItems(msg.author.id);
-      return await this.before(msg);
+      data = await updateItems(msg.author.id);
+      crazy = data.items.find(find('crazy'));
     }
 
     // Thicco
@@ -68,8 +68,10 @@ export default class Currency extends Command {
       }
 
       effects.get(msg.author.id).delete(crazy.id);
-      crazy.active = false;
-      await data.save();
+      if (crazy.active) {
+        crazy.active = false;
+        await data.save();
+      }
     }
   }
 
