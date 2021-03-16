@@ -14,7 +14,6 @@ export default class Currency extends Command {
       cooldown: 1000,
       args: [{
         id: 'page',
-        default: 1,
         type: (msg: Message, phrase: string) => {
           if (!phrase) return 1; // shop page
           const { resolver } = this.handler;
