@@ -22,10 +22,6 @@ export default class Currency extends Command {
     const type = util.randomInArray(['pocket', 'item']);
     const odds = Math.random();
 
-    if (odds <= 0.3) {
-      return 'You got nothing lmao.'
-    }
-
     let gimme: number | Item;
     if (odds >= 0.9) {
       const item = items.filter(i => i.cost < 30e6).random();
@@ -43,8 +39,8 @@ export default class Currency extends Command {
       const won = util.randomNumber(100, 500) * 1e3;
       await add(author.id, 'pocket', won);
       return `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`
+    } else {
+      return 'Nah, won\'t give anything to \'ya.'
     }
-
-    return 'Nah, won\'t give anything to \'ya.'
   }
 }
