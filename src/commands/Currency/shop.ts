@@ -31,7 +31,8 @@ export default class Currency extends Command {
     const { item: Handler } = this.client.handlers;
     const items = Handler.modules.array();
     const embed = new Embed();
-    const data = await this.client.db.currency.fetch(msg.author.id);
+    console.log(query);
+    console.log(typeof query);
 
     if (typeof query === 'number') {
       const shop = this.client.util
@@ -50,6 +51,7 @@ export default class Currency extends Command {
       if (query > shop.length) return 'That page doesn\'t even exist lol';
     } else {
       if (!query) return 'That item doesn\'t even exist in the shop what\'re you doing?'
+      const data = await this.client.db.currency.fetch(msg.author.id);
       const inv = data.items.find(i => i.id === query.id);
       if (!inv) await this.client.db.currency.updateItems(msg.author.id);
       
