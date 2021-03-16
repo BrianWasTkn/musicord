@@ -13,7 +13,7 @@ export default class Currency extends Command {
       category: 'Currency',
       cooldown: 1000,
       args: [{
-        id: 'page',
+        id: 'query',
         type: (msg: Message, phrase: string) => {
           if (!phrase) return 1; // shop page
           const { resolver } = this.handler;
