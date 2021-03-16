@@ -47,8 +47,8 @@ export default class Currency extends Command {
     [
       `**Pocket:** ${pocket.toLocaleString()}`,
       `**Vault:** ${vault.toLocaleString()}/${space.toLocaleString()}`,
-      `**Inventory:** ${net.toLocaleString()}\n`,
-      `**Total:** ${(pocket + vault).toLocaleString()}`,
+      `**Total:** ${(pocket + vault).toLocaleString()}\n`,
+      `**Inventory:** ${net.toLocaleString()}`,
       `**Net:** ${(pocket + vault + net).toLocaleString()}`
     ].forEach((i) => dpn.push(i));
 
