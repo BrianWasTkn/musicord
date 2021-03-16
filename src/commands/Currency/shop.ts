@@ -54,7 +54,7 @@ export default class Currency extends Command {
       const inv = data.items.find(i => i.id === query.id);
       if (!inv) await this.client.db.currency.updateItems(msg.author.id);
       
-      let info: string[];
+      let info: string[] = [];
       info.push(`**Item Price** — ${query.buyable ? query.cost.toLocaleString() : '**cannot be purchased**'}`);
       info.push(`**Sell Price** — ${(query.cost / 4).toLocaleString()}`);
 
