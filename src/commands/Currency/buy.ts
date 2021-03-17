@@ -37,11 +37,11 @@ export default class Currency extends Command {
     const { maxInventory } = this.client.config.currency;
     const { updateItems } = this.client.db.currency;
     const data = await updateItems(msg.author.id);
-    let inv = data.items.find((i) => i.id === item.id);
 
-    if (!item) 
-      return 'You need something to buy';
-    else if (amount < 1) 
+    if (!item) return 'You need something to buy';
+    
+    let inv = data.items.find((i) => i.id === item.id);
+    if (amount < 1) 
       return 'Imagine buying none.';
     else if (!item.buyable) 
       return "You can't buy this item what?";
