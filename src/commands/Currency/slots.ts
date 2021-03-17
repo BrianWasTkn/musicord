@@ -41,18 +41,14 @@ export default class Currency extends Command {
   }
 
   async before(msg: Message) {
-    const { fetch, updateItems } = this.client.db.currency;
+    const { updateItems } = this.client.db.currency;
     const { effects } = this.client.util;
-    let data = await fetch(msg.author.id);
+    const data = await updateItems(msg.author.id);
     const eff = new Effects();
 
     // Item Effects
     const find = (itm: string) => (i: InventorySlot) => i.id === itm;
-    let crazy = data.items.find(find('crazy'));
-    if (!crazy) {
-      data = await updateItems(msg.author.id);
-      crazy = data.items.find(find('crazy'));
-    }
+    const crazy = data.items.find(find('crazy'));
 
     // Thicco
     if (crazy.expire > Date.now() && crazy.active) {

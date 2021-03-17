@@ -66,8 +66,8 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
 
   async buy(
     amount: number,
-    uID: string,
-    iID: string
+    u: string,
+    i: string
   ): Promise<{
     amount: number;
     data: Document<any> & CurrencyProfile;
@@ -77,11 +77,11 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
     const { maxInventory: maxInv } = this.client.config.currency;
     const { fetch, remove } = this.client.db.currency;
     const item =
-      this.modules.get(iID) ||
-      this.modules.find((i) => i.name.toLowerCase().includes(iID));
+      this.modules.get(u) ||
+      this.modules.find((i) => i.name.toLowerCase().includes(i));
     const paid = amount * item.cost;
 
-    let data = await fetch(uID);
+    let data = await fetch(u);
     let inv = data.items.find((i) => i.id === item.id);
     data.pocket -= paid;
     inv.amount += amount;

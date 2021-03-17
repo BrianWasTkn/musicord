@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
 import { Item } from '@lib/handlers/item';
 
-export default class PowerUp extends Item {
+export default class Flex extends Item {
   constructor() {
     super('herb', {
       category: 'Flex',

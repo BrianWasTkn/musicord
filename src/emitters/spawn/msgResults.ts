@@ -1,6 +1,6 @@
 import { Message, Collection, TextChannel } from 'discord.js';
 import { SpawnHandler, Spawn } from '@lib/handlers/spawn';
-import { Listener } from 'discord-akairo';
+import { Listener } from '@lib/handlers';
 import { Embed } from '@lib/utility/embed';
 import { Lava } from '@lib/Lava';
 

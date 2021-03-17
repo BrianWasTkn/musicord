@@ -1,10 +1,9 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { Listener, Command } from 'discord-akairo';
+import { Listener } from '@lib/handlers';
+import { Command } from 'discord-akairo';
 import { Lava } from '@lib/Lava';
 
 export default class CommandListener extends Listener {
-  client: Lava;
-
   constructor() {
     super('cooldown', {
       emitter: 'command',

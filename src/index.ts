@@ -4,7 +4,7 @@ import 'dotenv/config';
 import { config } from '@config/index';
 import { Lava } from '@lib/Lava';
 
-(async function (config) {
+(async (config) => {
   const bot = new Lava(config);
   try {
     await bot.build();

@@ -13,5 +13,5 @@ Just a list of planned features basically for event and currency commands. Check
 
 ## Back-End
 * [ ] **Item Checks**
-* [ ] **Fix Bot Latency**
+* [x] **Fix Bot Latency**
 * [ ] **Global En/Disabled Commands**

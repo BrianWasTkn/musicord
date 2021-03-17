@@ -1,12 +1,10 @@
-import type { Message } from 'discord.js';
-import type { Spawn } from '@lib/handlers/spawn';
-import type { Lava } from '@lib/Lava';
-import { Listener } from 'discord-akairo';
+import { Listener } from '@lib/handlers';
+import { Message } from 'discord.js';
+import { Spawn } from '@lib/handlers/spawn';
+import { Lava } from '@lib/Lava';
 
 export default class ClientListener extends Listener {
-  client: Lava;
-
-  public constructor() {
+  constructor() {
     super('spawner', {
       emitter: 'client',
       event: 'message',

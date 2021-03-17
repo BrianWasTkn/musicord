@@ -1,10 +1,10 @@
 import { Message } from 'discord.js';
 import { Item } from '@lib/handlers/item';
 
-export default class PowerUp extends Item {
+export default class Flex extends Item {
   constructor() {
     super('pee', {
-      category: 'Power-Up',
+      category: 'Flex',
       sellable: false,
       buyable: true,
       usable: true,

@@ -1,20 +1,29 @@
-import { ListenerHandler, AkairoClient, AkairoModule } from 'discord-akairo';
+import { AkairoClient, AkairoModule } from 'discord-akairo';
 import { LavaUser, LavaUserManager } from './extensions/user';
-import { Command, CommandHandler } from './handlers/command';
 import { Collection, UserManager } from 'discord.js';
-import { SpawnHandler, Spawn } from './handlers/spawn';
-import { ItemHandler, Item } from './handlers/item';
 import { CurrencyProfile } from './interface/mongo/currency';
 import { Config, config } from '../config';
 import { SpawnDocument } from './interface/mongo/spawns';
 import { argTypes } from './utility/types';
 import { Util } from './utility/util';
 import { join } from 'path';
+import {
+  ListenerHandler,
+  CommandHandler,
+  SpawnHandler,
+  ItemHandler,
+  Listener,
+  Command,
+  Spawn,
+  Item
+} from './handlers'
+
 
 // def imports
 import CurrencyFunc from './mongo/currency/functions';
 import SpawnerFunc from './mongo/spawns/functions';
 import mongoose from 'mongoose';
+import Distube from 'distube'
 import chalk from 'chalk';
 
 // ext structures
@@ -34,6 +43,7 @@ interface Handlers {
 
 export class Lava extends AkairoClient {
   handlers: Handlers;
+  player: Distube;
   config: Config;
   users: LavaUserManager;
   util: Util;
@@ -46,12 +56,12 @@ export class Lava extends AkairoClient {
     super({ ...cfg.discord, ...cfg.akairo });
     this.util = new Util(this);
     this.config = cfg;
-
+    this.player = new Distube(this);
     this.handlers = {
       emitter: new ListenerHandler(this, {
         directory: join(__dirname, '..', 'src', 'emitters'),
       }),
-      command: new CommandHandler(this, {
+      command: new CommandHandler<Command>(this, {
         directory: join(__dirname, '..', 'src', 'commands'),
       }),
       spawn: new SpawnHandler<Spawn>(this, {
@@ -64,9 +74,9 @@ export class Lava extends AkairoClient {
   }
 
   private _patch(): void {
-    const { command, emitter, item, spawn } = this.handlers;
-    command.useListenerHandler(this.handlers.emitter);
-    emitter.setEmitters({ spawn, command, emitter, item });
+    const { player, handlers: { command, emitter, item, spawn } } = this;
+    command.useListenerHandler(emitter);
+    emitter.setEmitters({ spawn, command, emitter, item, player });
     command.resolver.addTypes(argTypes(this));
 
     const handlers = {
@@ -89,7 +99,7 @@ export class Lava extends AkairoClient {
     }
   }
 
-  private async _connectDB(): Promise<never | typeof import('mongoose')> {
+  async connectDB(): Promise<never | typeof import('mongoose')> {
     try {
       const { options, uri } = this.config.bot.mongo;
       const db = await mongoose.connect(uri, options);
@@ -114,7 +124,7 @@ export class Lava extends AkairoClient {
 
   async build(token: string = this.config.bot.token): Promise<string> {
     this._patch();
-    await this._connectDB();
+    await this.connectDB();
     return this.login(token);
   }
 }

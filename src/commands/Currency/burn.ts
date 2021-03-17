@@ -37,7 +37,7 @@ export default class Currency extends Command {
     if (!amount) return 'You need something to burn, bruh';
     else if (amount < 1) return 'Not allowed, sorry not sorry';
     else if (amount >= pocket)
-      return 'Imagine burning money higher than your pocket';
+      return 'Imagine burning money higher than your pocket lmao';
 
     await remove(_.author.id, 'pocket', amount);
     return `Burned **${amount.toLocaleString()}** coins from your pocket.`;

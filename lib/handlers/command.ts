@@ -7,7 +7,7 @@ import {
   Constants,
   Category,
 } from 'discord-akairo';
-import { MessageOptions, Collection, Message } from 'discord.js';
+import { MessageOptions, Collection, Message, MessageEmbed } from 'discord.js';
 import { Util } from '@lib/utility/util';
 import { Lava } from '@lib/Lava';
 const { CommandHandlerEvents: Events } = Constants;
@@ -34,7 +34,7 @@ export class Command extends AkairoCommand {
   exec(
     message: Message,
     args: any
-  ): void | string | MessageOptions | Promise<string | MessageOptions> {
+  ): void | string | MessageEmbed | MessageOptions | Promise<string | MessageOptions | MessageEmbed> {
     return {
       embed: {
         title: 'What ya doing?',
@@ -70,7 +70,7 @@ export class CommandHandler<
       commandUtil = true,
       allowMention = true,
       classToHandle = Command,
-      commandTyping = false,
+      commandTyping = true,
       defaultCooldown = 1500,
       aliasReplacement = /(-|\.)/gi,
       automateCategories = true,
@@ -85,34 +85,33 @@ export class CommandHandler<
       defaultCooldown,
       aliasReplacement,
       automateCategories,
-      prefix: (msg: Message) => this._prefixPredicate(msg),
-      ignoreCooldown: (msg: Message, cmd: CommandModule) =>
-        this._ignoreCooldownPredicate(msg, cmd),
-      ignorePermissions: (msg: Message, cmd: CommandModule) =>
-        this._ignorePermissionPredicate(msg, cmd),
+      prefix: (msg: Message) => this.prefPred(msg),
+      ignoreCooldown: (msg: Message, cmd: CommandModule) => this.inorCdPred(msg, cmd),
+      ignorePermissions: (msg: Message, cmd: CommandModule) => this.inorPermsPred(msg, cmd),
     });
+
     this.commandTyping = commandTyping;
   }
 
-  _prefixPredicate(msg: Message): string | string[] {
+  basePredicate(msg: Message, cmd: CommandModule): boolean {
+    const g = this.client.guilds.cache.get('691416705917779999');
+    const byp = g.roles.cache.get('692941106475958363')
+    return msg.member.roles.cache.has(byp.id) || this.client.isOwner(msg.author.id);
+  }
+
+  prefPred(msg: Message): string | string[] {
     return this.client.config.bot.prefix;
   }
 
-  _ignoreCooldownPredicate(msg: Message, cmd: CommandModule): boolean {
-    const guild = this.client.guilds.cache.get('691416705917779999');
-    const staff = guild.roles.cache.get('692941106475958363');
-    if (msg.author.id === this.client.ownerID) return true;
-    return msg.guild.id === guild.id && msg.member.roles.cache.has(staff.id);
+  inorCdPred(msg: Message, cmd: CommandModule): boolean {
+    return this.basePredicate.call(this, msg, cmd);
   }
 
-  _ignorePermissionPredicate(msg: Message, cmd: CommandModule): boolean {
-    const guild = this.client.guilds.cache.get('691416705917779999');
-    const staff = guild.roles.cache.get('692941106475958363');
-    if (msg.author.id === this.client.ownerID) return true;
-    return msg.guild.id === guild.id && msg.member.roles.cache.has(staff.id);
+  inorPermsPred(msg: Message, cmd: CommandModule): boolean {
+    return this.basePredicate.call(this, msg, cmd);
   }
 
-  findCommand(name: string): Command {
+  findCommand(name: string): CommandModule {
     return this.modules.get(this.aliases.get(name.toLowerCase()));
   }
 

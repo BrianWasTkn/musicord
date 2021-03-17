@@ -14,9 +14,7 @@ export default class Currency extends Command {
         {
           id: 'member',
           type: 'member',
-          default: (message: Message) => {
-            return message.member;
-          },
+          default: (m: Message) => m.member
         },
       ],
     });
@@ -30,8 +28,8 @@ export default class Currency extends Command {
       member: GuildMember;
     }
   ): Promise<MessageOptions> {
-    const { fetch } = this.client.db.currency;
-    const { pocket, vault, space, items } = await fetch(member.user.id);
+    const { updateItems } = this.client.db.currency;
+    const { pocket, vault, space, items } = await updateItems(member.user.id);
     const handler = this.client.handlers.item;
     const net = items
       .map(i => {
@@ -47,17 +45,17 @@ export default class Currency extends Command {
     [
       `**Pocket:** ${pocket.toLocaleString()}`,
       `**Vault:** ${vault.toLocaleString()}/${space.toLocaleString()}`,
-      `**Total:** ${(pocket + vault).toLocaleString()}\n`,
       `**Inventory:** ${net.toLocaleString()}`,
-      `**Net:** ${(pocket + vault + net).toLocaleString()}`
+      `**Net Worth:** ${(pocket + vault + net).toLocaleString()}`
     ].forEach((i) => dpn.push(i));
 
-    const embed: Embed = new Embed()
-      .setTitle(`${member.user.username}'s balance`)
-      .setDescription(dpn.join('\n'))
-      .setFooter(false, 'discord.gg/memer')
-      .setColor('RANDOM');
-
-    return { embed };
+    return {
+      embed: {
+        title: `${member.user.username}'s balance`,
+        footer: { text: 'discord.gg/memer'},
+        description: dpn.join('\n'),
+        color: 'RANDOM',
+      }
+    }
   }
 }

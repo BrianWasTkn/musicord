@@ -15,12 +15,10 @@ export default class Currency extends Command {
         {
           id: 'item',
           type: 'shopItem',
-          unordered: true,
         },
         {
           id: 'amount',
           type: 'number',
-          unordered: true,
           default: 1,
         },
       ],
@@ -37,28 +35,16 @@ export default class Currency extends Command {
     const { amount = 1, item } = args;
     const { item: Items } = this.client.handlers;
     const { maxInventory } = this.client.config.currency;
-    const { fetch } = this.client.db.currency;
-    const data = await fetch(msg.author.id);
+    const { updateItems } = this.client.db.currency;
+    const data = await updateItems(msg.author.id);
     let inv = data.items.find((i) => i.id === item.id);
 
-    if (!item) {
+    if (!item) 
       return 'You need something to buy';
-    }
-
-    if (!inv) {
-      data.items.push({
-        active: false,
-        id: item.id,
-        amount: 0,
-        expire: 0,
-      });
-
-      await data.save();
-      inv = data.items.find((i) => i.id === item.id);
-    }
-
-    if (!amount || amount < 1) return 'Imagine buying none.';
-    else if (!item.buyable) return "You can't buy this item what?";
+    else if (amount < 1) 
+      return 'Imagine buying none.';
+    else if (!item.buyable) 
+      return "You can't buy this item what?";
     else if (data.pocket < item.cost)
       return "You're too broke to buy this item!";
     else if (data.pocket < amount * item.cost)
@@ -66,11 +52,13 @@ export default class Currency extends Command {
     else if (inv.amount >= maxInventory)
       return `You already have enough of this item (${maxInventory.toLocaleString()})!`;
 
-    const { paid, amount: amt, data: dat, item: i } = await Items.buy(
-      amount,
-      msg.author.id,
-      item.id
-    );
+    const { 
+      paid, 
+      amount: amt, 
+      data: dat, 
+      item: i 
+    } = await Items.buy(amount, msg.author.id, item.id);
+
     const embed = new Embed()
       .setDescription(
         `Succesfully purchased **${amt.toLocaleString()} ${i.name}**${
