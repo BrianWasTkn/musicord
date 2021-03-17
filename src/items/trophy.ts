@@ -27,8 +27,8 @@ export default class Collectible extends Item {
     let fail: boolean;
     let fine: number;
 
-    if (odds <= 0.6) {
-      if (odds <= 0.3) {
+    if (odds <= 0.5) {
+      if (odds <= 0.25) {
         const hahausuck = util.randomNumber(trophies.amount / 2, trophies.amount);
         trophies.amount -= hahausuck;
         await data.save()
@@ -42,7 +42,7 @@ export default class Collectible extends Item {
       }** coins away from your pocket thank you`;
     }
 
-    const nice = util.randomNumber(1, 10);
+    const nice = util.randomNumber(1, 25);
     trophies.amount += nice;
     await data.save();
     return `You've been granted **${nice} ${this.emoji} ${this.name}**${nice > 1 ? 's' : ''}! You now have ${trophies.amount} trophies.`
