@@ -5,7 +5,7 @@ export default class PowerUp extends Item {
   constructor() {
     super('coffee', {
       category: 'Power-Up',
-      sellable: false,
+      sellable: true,
       buyable: true,
       usable: true,
       emoji: ':hot_face:',

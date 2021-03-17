@@ -5,7 +5,7 @@ export default class PowerUp extends Item {
   constructor() {
     super('computer', {
       category: 'Power-Up',
-      sellable: false,
+      sellable: true,
       buyable: true,
       usable: true,
       emoji: ':desktop:',
