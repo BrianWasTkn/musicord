@@ -54,6 +54,7 @@ export default class Currency extends Command {
     if (crazy.expire > Date.now() && crazy.active) {
       const t = new Collection<string, Effects>();
       eff.setSlotOdds(0.05);
+      const userEf = effects.get(msg.author.id);
       if (!userEf) effects.set(msg.author.id, new Collection());
       effects.get(msg.author.id).set(crazy.id, eff);
     } else {
