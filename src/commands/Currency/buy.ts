@@ -39,7 +39,7 @@ export default class Currency extends Command {
     const data = await updateItems(msg.author.id);
 
     if (!item) return 'You need something to buy';
-    
+
     let inv = data.items.find((i) => i.id === item.id);
     if (amount < 1) 
       return 'Imagine buying none.';
@@ -48,7 +48,7 @@ export default class Currency extends Command {
     else if (data.pocket < item.cost)
       return "You're too broke to buy this item!";
     else if (data.pocket < amount * item.cost)
-      return "You don't have enough to bulk this item on bulk!";
+      return "You don't have enough to buy this item on bulk!";
     else if (inv.amount >= maxInventory)
       return `You already have enough of this item (${maxInventory.toLocaleString()})!`;
 
