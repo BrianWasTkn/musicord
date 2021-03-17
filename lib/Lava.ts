@@ -35,7 +35,7 @@ interface DB {
 }
 
 interface Handlers {
-  emitter: ListenerHandler;
+  emitter: ListenerHandler<Listener>;
   command: CommandHandler<Command>;
   spawn: SpawnHandler<Spawn>;
   item: ItemHandler<Item>;
@@ -58,7 +58,7 @@ export class Lava extends AkairoClient {
     this.config = cfg;
     this.player = new Distube(this);
     this.handlers = {
-      emitter: new ListenerHandler(this, {
+      emitter: new ListenerHandler<Listener>(this, {
         directory: join(__dirname, '..', 'src', 'emitters'),
       }),
       command: new CommandHandler<Command>(this, {

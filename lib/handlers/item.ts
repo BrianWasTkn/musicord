@@ -67,7 +67,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
   async buy(
     amount: number,
     u: string,
-    i: string
+    iid: string
   ): Promise<{
     amount: number;
     data: Document<any> & CurrencyProfile;
@@ -78,7 +78,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
     const { fetch, remove } = this.client.db.currency;
     const item =
       this.modules.get(u) ||
-      this.modules.find((i) => i.name.toLowerCase().includes(i));
+      this.modules.find((i) => i.name.toLowerCase().includes(iid));
     const paid = amount * item.cost;
 
     let data = await fetch(u);
