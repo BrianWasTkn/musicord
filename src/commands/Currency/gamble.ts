@@ -115,21 +115,21 @@ export default class Currency extends Command {
         `**New Pocket:** ${db.pocket.toLocaleString()}`,
       ];
     } else if (userD > botD) {
-      let wngs = Math.random() * 1.5;
+      let wngs = Math.random() * 2;
       if (wngs < 0.3) wngs += 0.3;
       wngs += extraWngs;
       w = Math.round(bet * wngs);
       w = w + Math.round(w * (multi / 100));
       if (w > maxWin) w = maxWin as number;
-      perwn = Math.round((w / bet) * 100);
+      perwn = Number((w / bet).toFixed(2));
       db = await DB.add(_.author.id, 'pocket', w);
 
       identifier = Boolean(extraWngs) ? 'thicc' : 'winning';
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
       description = [
         `You won **${w.toLocaleString()}**\n`,
-        `**New Pocket:** ${db.pocket.toLocaleString()}`,
-        `**Percent Won:** \`${perwn.toLocaleString()}%\``,
+        `**Multiplier** \`x${perwn.toLocaleString()}\``,
+        `You now have **${db.pocket.toLocaleString()}**`,
       ];
     }
 
