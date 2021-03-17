@@ -42,7 +42,7 @@ export default class Collectible extends Item {
       }** coins away from your pocket thank you`;
     }
 
-    const nice = util.randomNumber(1, 25);
+    const nice = util.randomNumber(1, 50);
     trophies.amount += nice;
     await data.save();
     return `You've been granted **${nice} ${this.emoji} ${this.name}**${nice > 1 ? 's' : ''}! You now have ${trophies.amount} trophies.`
