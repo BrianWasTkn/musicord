@@ -112,7 +112,7 @@ export default class Currency extends Command {
       color = ties ? 'YELLOW' : 'RED';
       description = [
         `You lost **${lost.toLocaleString()}**\n`,
-        `**New Pocket:** ${db.pocket.toLocaleString()}`,
+        `You now have **${db.pocket.toLocaleString()}**`,
       ];
     } else if (userD > botD) {
       let wngs = Math.random() * 2;
