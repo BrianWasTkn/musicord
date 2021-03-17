@@ -4,6 +4,7 @@ import type { Lava } from '@lib/Lava';
 
 export const argTypes = (bot: Lava) => ({
   shopItem: (msg: Message, phrase: string): Item | null => {
+    if (!phrase) return null;
     const items = bot.handlers.item.modules;
     const item =
       items.get(phrase.toLowerCase()) ||
