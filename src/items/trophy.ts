@@ -25,7 +25,6 @@ export default class Collectible extends Item {
     let odds = Math.random();
     let fined: boolean;
     let fail: boolean;
-    let fine: number;
 
     if (odds <= 0.1) {
       if (odds <= 0.05) {
@@ -45,6 +44,6 @@ export default class Collectible extends Item {
     const nice = util.randomNumber(1, 100);
     trophies.amount += nice;
     await data.save();
-    return `You've been granted **${nice} ${this.emoji} ${this.name}**${nice > 1 ? 's' : ''}! You now have ${trophies.amount} trophies.`
+    return `You've been granted **${nice} ${this.emoji} ${this.name}**${nice > 1 ? 's' : ''}! You now have **${trophies.amount.toLocaleString()} ${this.name}**s.`
   }
 }
