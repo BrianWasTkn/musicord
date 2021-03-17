@@ -79,7 +79,7 @@ export default class Currency extends Command {
     // Item Effects
     let extraWngs: number;
     const userEf = effects.get(_.author.id);
-    if (!userEf.get('thicco').winnings)
+    if (!userEf.get('thicco'))
       extraWngs = 0;
     else
       extraWngs = userEf.get('thicco').winnings;
