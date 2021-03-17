@@ -20,7 +20,7 @@ export default class PowerUp extends Item {
     const comp = data.items.find((i) => i.id === this.id);
     const { util } = this.client;
 
-    if (Math.random() < 0.4) {
+    if (Math.random() < 0.25) {
       comp.amount -= 1;
       await data.save();
       return `You broke your **${this.emoji} ${this.name}** lmao sucks to be you.`

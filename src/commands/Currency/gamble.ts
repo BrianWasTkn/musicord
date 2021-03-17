@@ -26,38 +26,6 @@ export default class Currency extends Command {
     });
   }
 
-  async before(msg: Message) {
-    const { updateItems } = this.client.db.currency;
-    const { effects } = this.client.util;
-    const eff = new Effects();
-    const data = await updateItems(msg.author.id);
-
-    // Item Effects
-    const find = (itm: string) => (i: InventorySlot) => i.id === itm;
-    const thicc = data.items.find(find('thicc'));
-
-    // Thicco
-    if (thicc.expire > Date.now() && thicc.active) {
-      const t = new Collection<string, Effects>();
-      eff.setWinnings(0.5);
-      const userEf = effects.get(msg.author.id);
-      if (!userEf) effects.set(msg.author.id, new Collection());
-      effects.get(msg.author.id).set(thicc.id, eff);
-    } else {
-      const useref = effects.get(msg.author.id);
-      if (!useref) {
-        const meh = new Collection<string, Effects>();
-        meh.set(thicc.id, new Effects())
-        effects.set(msg.author.id, meh);
-      }
-
-      if (thicc.active) {
-        thicc.active = false;
-        await data.save();
-      }
-    }    
-  }
-
   public async exec(
     _: Message,
     args: {
@@ -73,18 +41,19 @@ export default class Currency extends Command {
 
     // Core
     const { maxWin, maxMulti, maxBet } = currency;
+    const data = await DB.updateItems(_.author.id);
     let { total: multi } = await DB.utils.calcMulti(this.client, _);
-    if (multi >= maxMulti) multi = maxMulti as number;
     const { amount: bet } = args;
+    if (multi >= maxMulti) multi = maxMulti as number;
     if (!bet) return;
 
     // Item Effects
-    let extraWngs: number;
+    let extraWngs: number = 0;
     const userEf = effects.get(_.author.id);
-    if (!userEf.get('thicc'))
-      extraWngs = 0;
-    else
-      extraWngs = userEf.get('thicc').winnings;
+    if (!userEf.get('thicc')) extraWngs += 0;
+    else extraWngs += userEf.get('thicc').winnings;
+    if (!userEf.get('heart')) extraWngs += 0;
+    else extraWngs += userEf.get('heart').winnings;
 
     // Dice
     let userD = util.randomNumber(1, 12);
@@ -100,19 +69,18 @@ export default class Currency extends Command {
       perwn: number,
       description: string[],
       identifier: string,
-      db: Document & CurrencyProfile,
       color: string;
 
     if (botD === userD || botD > userD) {
       const ties = botD === userD;
       let lost = ties ? Math.round(bet / 4) : bet;
-      db = await DB.remove(_.author.id, 'pocket', lost);
+      data.pocket -= lost;
 
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';
       description = [
         `You lost **${lost.toLocaleString()}**\n`,
-        `You now have **${db.pocket.toLocaleString()}**`,
+        `You now have **${data.pocket.toLocaleString()}**`,
       ];
     } else if (userD > botD) {
       let wngs = Math.random() * 2;
@@ -122,14 +90,14 @@ export default class Currency extends Command {
       w = w + Math.round(w * (multi / 100));
       if (w > maxWin) w = maxWin as number;
       perwn = Number((w / bet).toFixed(2));
-      db = await DB.add(_.author.id, 'pocket', w);
+      data.pocket += w;
 
       identifier = Boolean(extraWngs) ? 'thicc' : 'winning';
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
       description = [
         `You won **${w.toLocaleString()}**\n`,
         `**Multiplier** \`x${perwn.toLocaleString()}\``,
-        `You now have **${db.pocket.toLocaleString()}**`,
+        `You now have **${data.pocket.toLocaleString()}**`,
       ];
     }
 
@@ -144,6 +112,7 @@ export default class Currency extends Command {
       .setDescription(description.join('\n'))
       .setColor(color);
 
+    await data.save()
     return { embed };
   }
 }

@@ -58,6 +58,10 @@ export const utils: CurrencyUtil = {
       unlocked.push(`Dotted Channel — \`2.5%\``);
       total += 2.5;
     }
+    if (channel.name.includes('lava')) {
+      unlocked.push(`${channel.name} — \`5%\``);
+      total += 5;
+    }
     if (msg.guild.emojis.cache.size >= 420) {
       total += 4.5;
       unlocked.push(`420 Server Emojis — \`2.5%\``);
@@ -67,9 +71,11 @@ export const utils: CurrencyUtil = {
     const items = bot.handlers.item.modules;
     const trophyItem = items.get('trophy');
     const coffeeItem = items.get('coffee');
+    const heartItem = items.get('heart');
     const filter = item => i => i.id === item.id;
     const trophy = db.items.find(filter(trophyItem));
     const coffee = db.items.find(filter(coffeeItem));
+    const heart = db.items.find(filter(heartItem));
 
     if (trophy.amount >= 1) {
       let multi = 10 * trophy.amount;
@@ -83,6 +89,16 @@ export const utils: CurrencyUtil = {
     } else {
       if (coffee.active) {
         coffee.active = false;
+        await db.save();
+      }
+    }
+
+    if (heart.active && (heart.expire > Date.now())) {
+      total += heart.multi;
+      unlocked.push(`${heartItem.name} — \`${heart.multi}%\``);
+    } else {
+      if (heart.active) {
+        heart.active = false;
         await db.save();
       }
     }

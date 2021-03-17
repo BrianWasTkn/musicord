@@ -33,43 +33,11 @@ export default class Currency extends Command {
       eyes: [1, 3],
       eggplant: [2, 3],
       peach: [2, 4],
-      alien: [2, 5],
-      star2: [3, 8],
-      flushed: [8, 10],
-      fire: [20, 500],
+      alien: [3, 5],
+      star2: [8, 10],
+      flushed: [10, 15],
+      fire: [25, 500],
     };
-  }
-
-  async before(msg: Message) {
-    const { updateItems } = this.client.db.currency;
-    const { effects } = this.client.util;
-    const data = await updateItems(msg.author.id);
-    const eff = new Effects();
-
-    // Item Effects
-    const find = (itm: string) => (i: InventorySlot) => i.id === itm;
-    const crazy = data.items.find(find('crazy'));
-
-    // Thicco
-    if (crazy.expire > Date.now() && crazy.active) {
-      const t = new Collection<string, Effects>();
-      eff.setSlotOdds(0.1);
-      const userEf = effects.get(msg.author.id);
-      if (!userEf) effects.set(msg.author.id, new Collection());
-      effects.get(msg.author.id).set(crazy.id, eff);
-    } else {
-      const useref = effects.get(msg.author.id);
-      if (!useref) {
-        const meh = new Collection<string, Effects>();
-        meh.set(crazy.id, new Effects())
-        effects.set(msg.author.id, meh);
-      }
-
-      if (crazy.active) {
-        crazy.active = false;
-        await data.save();
-      }
-    }
   }
 
   /**
@@ -95,12 +63,13 @@ export default class Currency extends Command {
     if (!bet) return;
 
     // Item Effects
-    let slots: number;
+    const data = await DB.updateItems(_.author.id);
+    let slots: number = 0;
     const userEf = effects.get(_.author.id);
-    if (!userEf.get('crazy'))
-      slots = 0;
-    else
-      slots = userEf.get('crazy').slots;
+    if (!userEf.get('crazy')) slots += 0;
+    else slots += userEf.get('crazy').slots;
+    if (!userEf.get('heart')) slots += 0;
+    else slots += userEf.get('heart').slots;
 
     // Slot Emojis
     const emojis = Object.keys(this.slotMachine);
@@ -114,27 +83,26 @@ export default class Currency extends Command {
     // Visuals
     let color: ColorResolvable = 'RED';
     let description: string[] = [];
-    let db: Document & CurrencyProfile;
     let state: string = 'losing';
 
     description.push(outcome);
     if (length === 1 || length === 2) {
       let percentWon: number = Math.round((winnings / bet) * 100);
-      db = await DB.add(_.author.id, 'pocket', winnings);
+      data.pocket += winnings;
       const jackpot = length === 1;
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
       description.push(`\nYou won **${winnings.toLocaleString()}**`);
       description.push(`**Multiplier** \`x${multiplier}\``);
     } else {
-      db = await DB.remove(_.author.id, 'pocket', bet);
+      data.pocket -= bet;
       color = 'RED';
       state = 'losing';
       description.push(`\nYou lost **${bet.toLocaleString()}**`);
     }
 
     // Final Message
-    description.push(`You now have **${db.pocket.toLocaleString()}**`);
+    description.push(`You now have **${data.pocket.toLocaleString()}**`);
     await this.client.util.sleep(1000);
     const title = `${_.author.username}'s ${state} slot machine`;
     const embed = new Embed()

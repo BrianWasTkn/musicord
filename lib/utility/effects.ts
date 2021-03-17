@@ -22,27 +22,27 @@ export class Effects {
   }
 
   setWinnings(winnings: number): this {
-    this.winnings = winnings;
+    this.winnings += winnings;
     return this;
   }
 
   setDiscount(discount: number): this {
-    this.discount = discount;
+    this.discount += discount;
     return this;
   }
 
   setPockCap(cap: number): this {
-    this.pockCap = cap;
+    this.pockCap += cap;
     return this;
   }
 
   setSlotOdds(amount: number): this {
-    this.slots = amount;
+    this.slots += amount;
     return this;
   }
 
   setAddDice(amount: number): this {
-    this.dice = amount;
+    this.dice += amount;
     return this;
   }
 }
