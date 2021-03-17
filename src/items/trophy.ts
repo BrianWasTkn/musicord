@@ -27,7 +27,7 @@ export default class Collectible extends Item {
     let fail: boolean;
     let fine: number;
 
-    if (odds <= 0.2) {
+    if (odds <= 0.15) {
       if (odds <= 0.1) {
         const hahausuck = util.randomNumber(trophies.amount / 2, trophies.amount);
         trophies.amount -= hahausuck;
