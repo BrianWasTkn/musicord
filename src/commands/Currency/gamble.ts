@@ -46,7 +46,8 @@ export default class Currency extends Command {
       const useref = effects.get(msg.author.id);
       if (!useref) {
         const meh = new Collection<string, Effects>();
-        effects.set(msg.author.id, meh.set(thicc.id, new Effects()));
+        meh.set(thicc.id, new Effects())
+        effects.set(msg.author.id, meh);
       }
 
       if (thicc.active) {
@@ -79,11 +80,12 @@ export default class Currency extends Command {
     // Item Effects
     let extraWngs: number;
     const userEf = effects.get(_.author.id);
-    if (!userEf.get('thicco'))
+    if (!userEf.get('thicco').winnings)
       extraWngs = 0;
     else
       extraWngs = userEf.get('thicco').winnings;
 
+    console.log(extraWngs);
     // Dice
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);

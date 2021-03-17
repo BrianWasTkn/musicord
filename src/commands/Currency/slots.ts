@@ -60,7 +60,8 @@ export default class Currency extends Command {
       const useref = effects.get(msg.author.id);
       if (!useref) {
         const meh = new Collection<string, Effects>();
-        effects.set(msg.author.id, meh.set(crazy.id, new Effects()));
+        meh.set(crazy.id, new Effects())
+        effects.set(msg.author.id, meh);
       }
 
       if (crazy.active) {
@@ -99,6 +100,8 @@ export default class Currency extends Command {
       slots = 0;
     else
       slots = userEf.get('crazy').slots;
+
+    console.log(slots);
 
     // Slot Emojis
     const emojis = Object.keys(this.slotMachine);
