@@ -40,6 +40,8 @@ export default class Currency extends Command {
     if (thicc.expire > Date.now() && thicc.active) {
       const t = new Collection<string, Effects>();
       eff.setWinnings(0.5);
+      const userEf = effects.get(msg.author.id);
+      if (!userEf) effects.set(msg.author.id, new Collection());
       effects.get(msg.author.id).set(thicc.id, eff);
     } else {
       const useref = effects.get(msg.author.id);
