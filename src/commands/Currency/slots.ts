@@ -63,7 +63,6 @@ export default class Currency extends Command {
         effects.set(msg.author.id, meh.set(crazy.id, new Effects()));
       }
 
-      effects.get(msg.author.id).delete(crazy.id);
       if (crazy.active) {
         crazy.active = false;
         await data.save();
