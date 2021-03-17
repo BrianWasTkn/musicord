@@ -56,6 +56,13 @@ export default class Currency extends Command {
       eff.setSlotOdds(0.05);
       effects.get(msg.author.id).set(crazy.id, eff);
     } else {
+      const useref = effects.get(msg.author.id);
+      if (!useref) {
+        const meh = new Collection<string, Effects>();
+        meh.set(crazy.id, new Effects())
+        effects.set(msg.author.id, meh);
+      }
+
       if (crazy.active) {
         crazy.active = false;
         await data.save();
