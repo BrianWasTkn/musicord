@@ -56,7 +56,7 @@ export default class Currency extends Command {
       
       let info: string[] = [];
       info.push(`**Item Price** — ${query.buyable ? query.cost.toLocaleString() : '**cannot be purchased**'}`);
-      info.push(`**Sell Price** — ${(query.cost / 4).toLocaleString()}`);
+      info.push(`**Sell Price** — ${(query.sellable ? query.cost / 4 : '**cannot be sold**').toLocaleString()}`);
 
       embed.setTitle(`${query.name} — ${inv.amount} Owned`)
         .addField('Description', query.info)
