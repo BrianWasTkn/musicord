@@ -86,7 +86,6 @@ export default class Currency extends Command {
     else
       extraWngs = userEf.get('thicc').winnings;
 
-    console.log(extraWngs);
     // Dice
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);
