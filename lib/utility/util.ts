@@ -9,6 +9,9 @@ import {
   Role,
 } from 'discord.js';
 import { AkairoHandler, ClientUtil } from 'discord-akairo';
+import { CurrencyProfile } from '@lib/interface/mongo/currency'
+import { InventorySlot } from '@lib/interface/handlers/item'
+import { Document } from 'mongoose'
 import { Effects } from './effects';
 import { COLORS } from '../utility/constants';
 import { Lava } from '../Lava';
@@ -53,7 +56,7 @@ export class Util extends ClientUtil {
    * Returns a random item from an array
    * @param array An array of anything
    */
-  randomInArray<T>(array: T[]): T {
+  randomInArray = <T>(array: T[]): T => {
     return array[Math.floor(Math.random() * array.length)];
   }
 
@@ -62,18 +65,18 @@ export class Util extends ClientUtil {
    * @param min The minimum number possible
    * @param max The maximum number possible
    */
-  randomNumber(min: number, max: number): number {
+  randomNumber = (min: number, max: number): number => {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
   /**
    * Generates a random decimal color resolvable
    */
-  randomColor(): number {
+  randomColor = (): number => {
     return Math.random() * 0xffffff;
   }
 
-  isPromise(something: any): boolean {
+  isPromise = (something: any): boolean => {
     return (
       something &&
       typeof something.then === 'function' &&
@@ -81,7 +84,7 @@ export class Util extends ClientUtil {
     );
   }
 
-  console(args: { klass: string; type?: 'def' | 'err'; msg: string }): void {
+  console = (args: { klass: string; type?: 'def' | 'err'; msg: string }): void => {
     const stamp = moment().format('HH:mm:ss');
     const log = (...args) => console.log(...args); // kek
     const {
@@ -101,9 +104,40 @@ export class Util extends ClientUtil {
    * Delay for a specified amount of time
    * @param ms number in milliseconds
    */
-  sleep(ms: number): Promise<number> {
+  sleep = (ms: number): Promise<number> => {
     return new Promise((resolve: Function) =>
-      setTimeout(() => resolve(ms), ms)
+      this.client.setTimeout(() => resolve(ms), ms)
     );
+  }
+
+  updateEffects = async (args: {
+    userID: string, 
+    data: Document & CurrencyProfile,
+    slot: InventorySlot, 
+    key: keyof Effects,
+    val: number, 
+  }) => {
+    const { userID, data, slot, key, val } = args;
+    const eff = new Effects();
+
+    if (slot.expire > Date.now() && slot.active) {
+      (eff[key] as (v: number) => Effects)(val);
+      const userEf = this.effects.get(userID);
+      const t = new Collection<string, Effects>();
+      if (!userEf) this.effects.set(userID, t);
+      return this.effects.get(userID).set(slot.id, eff);
+    } else {
+      const useref = this.effects.get(userID);
+      if (!useref) {
+        const meh = new Collection<string, Effects>();
+        meh.set(slot.id, new Effects())
+        return this.effects.set(userID, meh);
+      }
+
+      if (slot.active) {
+        slot.active = false;
+        return await data.save();
+      }
+    }
   }
 }

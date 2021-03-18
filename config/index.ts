@@ -1,8 +1,9 @@
+import type { AkairoOptions } from 'discord-akairo';
+import type { ClientOptions } from 'discord.js';
+
 import { CurrencyType, currencyConfig } from './currency';
 import { ConfigInterface, lavaConfig } from './lava';
 import { SpawnConfig, spawnConfig } from './spawn';
-import type { AkairoOptions } from 'discord-akairo';
-import type { ClientOptions } from 'discord.js';
 import { discordOptions } from './discord';
 import { akairoConfig } from './akairo';
 

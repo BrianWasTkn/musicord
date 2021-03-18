@@ -45,6 +45,8 @@ export default class Currency extends Command {
 			return 'Imagine selling none.';
 		else if (!item.sellable)
 			return "You can't sell this item rip";
+		else if (amount > inv.amount)
+			return 'You can\'t fool me'
 
 		const {
 			sold,

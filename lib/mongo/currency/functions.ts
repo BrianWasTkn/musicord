@@ -24,8 +24,7 @@ export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
     this.bot = client;
   }
 
-  async create(id: Snowflake): Promise<Document & Profile> {
-    const { id: userID }: User = await this.bot.users.fetch(id);
+  async create(userID: Snowflake): Promise<Document & Profile> {
     const data = new this.model({ userID });
     await data.save();
     return data as Document & Profile;
@@ -69,6 +68,7 @@ export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
           active: false,
           expire: 0,
           amount: 0,
+          multi: 0,
           id: i.id,
         });
       }

@@ -7,27 +7,17 @@ import type { Colors } from '@lib/interface/utility';
 
 const { maxBet, minBet } = currencyConfig;
 
-export interface Constants {
-  COLORS: {
-    [c: string]: number;
-  };
-  ERROR_MESSAGES: {
-    [em: string]: string | ((...args: any[]) => string | Promise<string>);
-  };
-}
-
-export const COLORS: Constants['COLORS'] = {
-  red: 0xf44336,
-  orange: 0xff9800,
-  yellow: 0xffeb3b,
-  green: 0x4caf50,
-  blue: 0x2196f3,
-  indigo: 0x3f51b5,
-  violet: 0x9c27b0,
+export const COLORS = {
+  RED: 0xf44336,
+  ORANGE: 0xff9800,
+  YELLOW: 0xffeb3b,
+  GREEN: 0x4caf50,
+  BLUE: 0x2196f3,
+  INDIGO: 0x3f51b5,
+  VIOLET: 0x9c27b0,
 };
 
-export const ERROR_MESSAGES: Constants['ERROR_MESSAGES'] = {
-  // Gambling
+export const ERROR_MESSAGES = {
   BET_IS_NAN: 'It should be a positive number yeah?',
   BET_IS_LOW: `Your bet shouldn't be lower than ${minBet} coins bruh`,
   USER_IS_POOR: 'You have no coins to gamble rip :skull:',
@@ -46,6 +36,6 @@ export const ERROR_MESSAGES: Constants['ERROR_MESSAGES'] = {
 };
 
 export default {
-  COLORS,
   ERROR_MESSAGES,
-} as Constants;
+  COLORS,
+};
