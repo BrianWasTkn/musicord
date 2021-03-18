@@ -45,10 +45,9 @@ export default class Currency extends Command {
         effects.get(msg.author.id).set(item.id, appliedEff)
       } else {
         const useref = effects.get(msg.author.id);
-        if (!useref) {
+        if (!useref || useref.has(item.id)) {
           const meh = new Collection<string, Effects>();
-          meh.set(item.id, new Effects())
-          return effects.set(msg.author.id, meh);
+          return effects.get(msg.author.id).set(item.id, new Effects());;
         }
 
         if (item.active) {
