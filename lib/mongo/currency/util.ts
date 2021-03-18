@@ -7,6 +7,7 @@ import type { Message, GuildChannel } from 'discord.js';
 import type { CurrencyProfile } from '@lib/interface/mongo/currency';
 import type { InventorySlot } from '@lib/interface/handlers/item';
 import type { CurrencyUtil } from '@lib/interface/mongo/currency';
+import type { Item } from '@lib/handlers/item'
 import type { Lava } from '@lib/Lava';
 import { Document } from 'mongoose';
 
@@ -72,10 +73,9 @@ export const utils: CurrencyUtil = {
     const trophyItem = items.get('trophy');
     const coffeeItem = items.get('coffee');
     const heartItem = items.get('heart');
-    const filter = item => i => i.id === item.id;
-    const trophy = db.items.find(filter(trophyItem));
-    const coffee = db.items.find(filter(coffeeItem));
-    const heart = db.items.find(filter(heartItem));
+    const trophy = db.items.find(i => i.id === trophyItem.id);
+    const coffee = db.items.find(i => i.id === coffeeItem.id);
+    const heart = db.items.find(i => i.id === heartItem.id);
 
     if (trophy.amount >= 1) {
       let multi = 10 * trophy.amount;
