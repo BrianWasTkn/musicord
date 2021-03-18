@@ -42,9 +42,10 @@ export default class Currency extends Command {
       if (item.expire > Date.now() && item.active) {
         eff.setSlotOdds(e[item.id]);
         const userEf = effects.get(msg.author.id);
+        if (!userEf) effects.set(msg.author.id, new Collection<string, Effects>());
         const t = new Collection<string, Effects>();
-        if (!userEf) effects.set(msg.author.id, t);
-        return effects.get(msg.author.id).set(item.id, eff);
+        t.set(item.id, eff)
+        effects.get(msg.author.id).set(item.id, eff);
       } else {
         const useref = effects.get(msg.author.id);
         if (!useref) {

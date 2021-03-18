@@ -42,9 +42,10 @@ export default class Currency extends Command {
       if (item.expire > Date.now() && item.active) {
         eff.setWinnings(e[item.id]);
         const userEf = effects.get(msg.author.id);
+        if (!userEf) effects.set(msg.author.id, new Collection<string, Effects>());
         const t = new Collection<string, Effects>();
-        if (!userEf) effects.set(msg.author.id, t);
-        return effects.get(msg.author.id).set(item.id, eff);
+        t.set(item.id, eff)
+        effects.get(msg.author.id).set(item.id, eff);
       } else {
         const useref = effects.get(msg.author.id);
         if (!useref) {
@@ -87,7 +88,7 @@ export default class Currency extends Command {
     const userEf = effects.get(_.author.id);
     if (!userEf.get('thicc')) extraWngs += 0;
     else extraWngs += userEf.get('thicc').winnings;
-    if (!userEf.get('heart')) extraWngs += 0;
+    if (!userEf.get('brian')) extraWngs += 0;
     else extraWngs += userEf.get('heart').winnings;
 
     // Dice
