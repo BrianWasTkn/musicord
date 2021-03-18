@@ -27,17 +27,36 @@ export default class Currency extends Command {
   }
 
   async before(msg: Message) {
-    const data = await this.client.db.currency.fetch(msg.author.id);
-    const items = this.client.handlers.item.modules;
-    const itemEf: { [k: string]: [keyof Effects, number, string] } = {
-      'heart': ['setSlotOdds', 0.1, 'heart'],
-      'crazy': ['setSlotOdds', 0.1, 'crazy']
+    const { effects } = this.client.util;
+    const data = await this.client.db.currency.updateItems(msg.author.id);
+    const eff = new Effects();
+
+    const crazy = data.items.find(i => i.id === 'crazy');
+    const heart = data.items.find(i => i.id === 'brian');
+    const e = {
+      'crazy': 0.1,
+      'heart': 0.1
     }
 
-    for (const item of [...items.values()]) {
-      for (const [it, val] of Object.entries(itemEf)) {
-        const im = itemEf[it];
-        await this.client.util.updateEffects(msg.author.id, im[0], im[1], im[2])
+    for (const item of [crazy, heart]) {
+      if (item.expire > Date.now() && item.active) {
+        eff.setSlotOdds(e[item.id]);
+        const userEf = effects.get(msg.author.id);
+        const t = new Collection<string, Effects>();
+        if (!userEf) effects.set(msg.author.id, t);
+        return effects.get(msg.author.id).set(item.id, eff);
+      } else {
+        const useref = effects.get(msg.author.id);
+        if (!useref) {
+          const meh = new Collection<string, Effects>();
+          meh.set(item.id, new Effects())
+          return effects.set(msg.author.id, meh);
+        }
+
+        if (item.active) {
+          item.active = false;
+          return await data.save();
+        }
       }
     }
   }

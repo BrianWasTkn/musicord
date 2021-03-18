@@ -109,30 +109,4 @@ export class Util extends ClientUtil {
       this.client.setTimeout(() => resolve(ms), ms)
     );
   }
-
-  updateEffects = async (userID: string, key: keyof Effects, val: number, it: string) => {
-    const data = await this.client.db.currency.updateItems(userID);
-    const slot = data.items.find(i => i.id === it);
-    const eff = new Effects();
-
-    if (slot.expire > Date.now() && slot.active) {
-      (eff[key] as (v: number) => Effects)(val);
-      const userEf = this.effects.get(userID);
-      const t = new Collection<string, Effects>();
-      if (!userEf) this.effects.set(userID, t);
-      return this.effects.get(userID).set(slot.id, eff);
-    } else {
-      const useref = this.effects.get(userID);
-      if (!useref) {
-        const meh = new Collection<string, Effects>();
-        meh.set(slot.id, new Effects())
-        return this.effects.set(userID, meh);
-      }
-
-      if (slot.active) {
-        slot.active = false;
-        return await data.save();
-      }
-    }
-  }
 }
