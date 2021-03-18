@@ -35,7 +35,7 @@ export default class Currency extends Command {
       itinv.amount += amount;
       await data.save();
       return `WTF you got **${amount} ${item.emoji} ${item.name}**${amount > 1 ? 's' : ''} that was lucky asf`
-    } else if (odds >= 0.6) {
+    } else if (odds >= 0.3) {
       const won = util.randomNumber(100, 500) * 1e3;
       await add(author.id, 'pocket', won);
       return `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`
