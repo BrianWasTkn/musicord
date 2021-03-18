@@ -138,6 +138,7 @@ export default class Currency extends Command {
     }
 
     // Final Message
+    await data.save();
     description.push(`You now have **${data.pocket.toLocaleString()}**`);
     await this.client.util.sleep(1000);
     const title = `${_.author.username}'s ${state} slot machine`;
