@@ -33,7 +33,7 @@ export default class PowerUp extends Item {
       return `Don't try and break me bish, you only have ${card.amount.toLocaleString()} of these.`;
 
     let gain: number[] | number;
-    gain = Array(choice).fill(null).map(() => util.randomNumber(2e4, 1e5)).reduce((p, c) => p + c);
+    gain = Array(choice).fill(null).map(() => util.randomNumber(2e4, 5e4)).reduce((p, c) => p + c);
     card.amount -= choice;
     data.space += gain;
     await data.save();
