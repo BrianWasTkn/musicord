@@ -72,7 +72,7 @@ export const utils: CurrencyUtil = {
     const items = bot.handlers.item.modules;
     const trophyItem = items.get('trophy');
     const coffeeItem = items.get('coffee');
-    const heartItem = items.get('heart');
+    const heartItem = items.get('brian');
     const trophy = db.items.find(i => i.id === trophyItem.id);
     const coffee = db.items.find(i => i.id === coffeeItem.id);
     const heart = db.items.find(i => i.id === heartItem.id);
