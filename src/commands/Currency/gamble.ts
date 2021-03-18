@@ -35,7 +35,7 @@ export default class Currency extends Command {
     const heart = data.items.find(i => i.id === 'brian');
     const e = {
       'thicc': 0.5,
-      'heart': 0.5
+      'brian': 0.25
     }
 
     for (const item of [thicco, heart]) {
