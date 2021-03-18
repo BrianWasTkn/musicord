@@ -27,7 +27,7 @@ export default class Currency extends Command {
   }
 
   async before(msg: Message) {
-    const data = await this.client.db.currency.fetch(msg.author.id);
+    const data = await this.client.db.currency.updateItems(msg.author.id);
     const items = this.client.handlers.item.modules;
     const itemEf: { [k: string]: [keyof Effects, number] } = {
       'heart': ['setWinnings', 0.5],
