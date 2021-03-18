@@ -45,7 +45,7 @@ export default class Currency extends Command {
         if (!userEf) effects.set(msg.author.id, new Collection<string, Effects>());
         const t = new Collection<string, Effects>();
         t.set(item.id, eff)
-        effects.get(msg.author.id).set(item.id, eff);
+        effects.set(msg.author.id, t);
       } else {
         const useref = effects.get(msg.author.id);
         if (!useref) {
@@ -102,10 +102,11 @@ export default class Currency extends Command {
     const data = await DB.updateItems(_.author.id);
     let slots: number = 0;
     const userEf = effects.get(_.author.id);
-    if (!userEf.get('crazy')) slots += 0;
-    else slots += userEf.get('crazy').slots;
-    if (!userEf.get('heart')) slots += 0;
-    else slots += userEf.get('heart').slots;
+    for (const it of ['crazy', 'brian']) {
+      if (userEf.get(it)) {
+        slots += userEf.get(it).slots
+      }
+    }
 
     // Slot Emojis
     const emojis = Object.keys(this.slotMachine);

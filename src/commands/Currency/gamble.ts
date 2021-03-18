@@ -45,7 +45,7 @@ export default class Currency extends Command {
         if (!userEf) effects.set(msg.author.id, new Collection<string, Effects>());
         const t = new Collection<string, Effects>();
         t.set(item.id, eff)
-        effects.get(msg.author.id).set(item.id, eff);
+        effects.set(msg.author.id, t);
       } else {
         const useref = effects.get(msg.author.id);
         if (!useref) {
@@ -84,12 +84,13 @@ export default class Currency extends Command {
     if (!bet) return;
 
     // Item Effects
-    let extraWngs: number = 0;
     const userEf = effects.get(_.author.id);
-    if (!userEf.get('thicc')) extraWngs += 0;
-    else extraWngs += userEf.get('thicc').winnings;
-    if (!userEf.get('brian')) extraWngs += 0;
-    else extraWngs += userEf.get('heart').winnings;
+    let extraWngs: number = 0;
+    for (const it of ['thicc', 'brian']) {
+      if (userEf.get(it)) {
+        extraWngs += userEf.get(it).winnings
+      }
+    }
 
     // Dice
     let userD = util.randomNumber(1, 12);
