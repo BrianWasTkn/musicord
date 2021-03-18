@@ -29,20 +29,15 @@ export default class Currency extends Command {
   async before(msg: Message) {
     const data = await this.client.db.currency.fetch(msg.author.id);
     const items = this.client.handlers.item.modules;
-    const itemEf: { [k: string]: [keyof Effects, number] } = {
-      'heart': ['setSlotOdds', 0.1],
-      'crazy': ['setSlotOdds', 0.1]
+    const itemEf: { [k: string]: [keyof Effects, number, string] } = {
+      'heart': ['setSlotOdds', 0.1, 'heart'],
+      'crazy': ['setSlotOdds', 0.1, 'crazy']
     }
 
     for (const item of [...items.values()]) {
       for (const [it, val] of Object.entries(itemEf)) {
-        await this.client.util.updateEffects({
-          data,
-          slot: data.items.find(i => i.id === item.id),
-          userID: msg.author.id,
-          key: itemEf[it][0],
-          val: itemEf[it][1]
-        });
+        const im = itemEf[it];
+        await this.client.util.updateEffects(msg.author.id, im[0], im[1], im[2])
       }
     }
   }

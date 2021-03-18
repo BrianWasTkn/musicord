@@ -110,14 +110,9 @@ export class Util extends ClientUtil {
     );
   }
 
-  updateEffects = async (args: {
-    userID: string, 
-    data: Document & CurrencyProfile,
-    slot: InventorySlot, 
-    key: keyof Effects,
-    val: number, 
-  }) => {
-    const { userID, data, slot, key, val } = args;
+  updateEffects = async (userID: string, key: keyof Effects, val: number, it: string) => {
+    const data = await this.client.db.currency.updateItems(userID);
+    const slot = data.items.find(i => i.id === it);
     const eff = new Effects();
 
     if (slot.expire > Date.now() && slot.active) {
