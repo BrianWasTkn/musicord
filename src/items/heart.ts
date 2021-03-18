@@ -11,7 +11,7 @@ export default class Powerflex extends Item {
       emoji: ':brown_heart:',
       info: "Gives 50% multi, +25% winnings in gamble, +10% jackpot chance in slots ALL in 5 minutes.",
       name: "Brian's Heart",
-      cost: 750000,
+      cost: 1250000,
     });
   }
 
