@@ -28,15 +28,15 @@ export default class Currency extends Command {
   ): Promise<string | MessageOptions> {
     const { item: Items } = this.client.handlers;
     const { fetch } = this.client.db.currency;
-    if (!args.item) return "This item doesn't exist :thinking:";
+    const { item } = args;
+    if (!item) return "This item doesn't exist :thinking:";
 
     const isPromise = this.client.util.isPromise.bind(this.client.util);
     const data = await fetch(msg.author.id);
-    const { item } = args;
 
     const inv = data.items.find((i) => i.id === item.id);
     if (!inv || inv.amount < 1) return "You don't own this item";
-    if (inv.active) return 'This item is currently active right now.';
+    if (inv.expire > Date.now()) return 'This item is currently active right now.';
     if (!item.usable) return 'LOL you can\'t use this item :thinking:'
 
     const ret = await item.use(msg);

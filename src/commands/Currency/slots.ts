@@ -39,22 +39,19 @@ export default class Currency extends Command {
     }
 
     for (const item of [crazy, heart]) {
-      if (item.expire > Date.now() && item.active) {
-        const appliedEff = eff.setSlotOdds(e[item.id]);
+      if (item.expire > Date.now()) {
+        const appliedEff = eff.setWinnings(e[item.id]);
         const userEf = effects.get(msg.author.id) || effects.set(msg.author.id, new Collection<string, Effects>().set(item.id, appliedEff));
         effects.get(msg.author.id).set(item.id, appliedEff)
       } else {
-        const useref = effects.get(msg.author.id);
+        const useref = effects.get(msg.author.id) ;
         if (!useref || useref.has(item.id)) {
           const meh = new Collection<string, Effects>();
           meh.set(item.id, new Effects());
           return effects.set(msg.author.id, meh)
         }
 
-        if (item.active) {
-          item.active = false;
-          return await data.save();
-        }
+        continue;
       }
     }
   }
@@ -109,7 +106,8 @@ export default class Currency extends Command {
     const emojis = Object.keys(this.slotMachine);
     const jOdds = Math.random() > (0.98 - slots);
     const jEmoji = util.randomInArray(emojis);
-    const [a, b, c] = Array(3).fill(null).map(() => (jOdds ? jEmoji : util.randomInArray(emojis)));
+    const temp = Array(3).fill(null).map(() => util.randomInArray(emojis))
+    const [a, b, c] = Array(3).fill(null).map((_, i) => (jOdds ? jEmoji : emojis.filter(e => e !== temp[i])[i]));
     const order = [a, b, c];
     const outcome = `**>** :${[...order].join(':    :')}: **<**`;
     let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, order);

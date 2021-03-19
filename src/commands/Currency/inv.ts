@@ -100,7 +100,7 @@ export default class Currency extends Command {
           },
         ],
         footer: {
-          text: `Owned Shits — Page ${pg} of ${inv.length}`,
+          text: `Owned Items — Page ${pg} of ${inv.length}`,
         },
       },
     };

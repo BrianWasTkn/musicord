@@ -39,7 +39,7 @@ export default class Currency extends Command {
     }
 
     for (const item of [thicco, heart]) {
-      if (item.expire > Date.now() && item.active) {
+      if (item.expire > Date.now()) {
         const appliedEff = eff.setWinnings(e[item.id]);
         const userEf = effects.get(msg.author.id) || effects.set(msg.author.id, new Collection<string, Effects>().set(item.id, appliedEff));
         effects.get(msg.author.id).set(item.id, appliedEff)
@@ -51,10 +51,7 @@ export default class Currency extends Command {
           return effects.set(msg.author.id, meh)
         }
 
-        if (item.active) {
-          item.active = false;
-          return await data.save();
-        }
+        continue;
       }
     }
   }
