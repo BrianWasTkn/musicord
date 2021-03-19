@@ -106,8 +106,8 @@ export default class Currency extends Command {
     const emojis = Object.keys(this.slotMachine);
     const jOdds = Math.random() > (0.98 - slots);
     const jEmoji = util.randomInArray(emojis);
-    const temp = Array<string>(3).fill(util.randomInArray(emojis)).map(e => util.randomInArray(emojis.filter(r => r !== e)));
-    const [a, b, c] = Array(3).fill(null).map((_, i) => (jOdds ? jEmoji : util.randomInArray(emojis)));
+    const temp: string[] = Array(3).fill([emojis]).map((e, i) => (e.filter(xe => xe[i] !== e[i][i])[i]));
+    const [a, b, c] = Array(3).fill(null).map((_, i) => (jOdds ? jEmoji : temp[i]));
     const order = [a, b, c];
     const outcome = `**>** :${[...order].join(':    :')}: **<**`;
     let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, order);
