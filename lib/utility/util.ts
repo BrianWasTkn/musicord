@@ -42,7 +42,7 @@ export class Util extends ClientUtil {
    * @param array An array with usually many items
    * @param size The number of items per array in return
    */
-  paginateArray<T>(array: T[], size: number): T[][] {
+  paginateArray = <T>(array: T[], size: number): T[][] => {
     let result = [];
     let j = 0;
     for (let i = 0; i < Math.ceil(array.length / (size || 5)); i++) {
