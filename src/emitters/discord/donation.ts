@@ -19,13 +19,13 @@ async function handleDonation(this: ClientListener, msg: Message) {
 				await dm.send(questions[qArr[index]]);
 				const col = await dm.awaitMessages(filter, { max: 1, time: 30000 });
 				const m = col.first();
-				res.set(qArr[index], questions[index]);
+				res.set(qArr[index], m.content);
 				return index++;
 			}
 
 			const col = await collect();
 			let results: string[] = [];
-			for (const [type, response] of [...res.keyArray(), ...res.array()]) {
+			for (const [type, response] of res) {
 				results.push(`${type}: ${response}`);
 			}
 
