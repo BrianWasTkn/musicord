@@ -25,6 +25,7 @@ export default class ClientListener extends Listener {
   }
 
   public async exec(msg: Message): Promise<void | Message> {
+  	if (msg.channel.id !== '818667160918425630') return;
     if (!this.client.isOwner(msg.author.id)) await msg.delete();
     const query = haha[Number(msg.content)];
     if (!query) return;
