@@ -66,7 +66,7 @@ export default class Currency extends Command {
       peach: [2, 25],
       flushed: [3, 50],
       star2: [15, 75],
-      fire: [25, 500],
+      fire: [25, 750],
     };
   }
 
@@ -118,7 +118,6 @@ export default class Currency extends Command {
 
     description.push(outcome);
     if (length === 1 || length === 2) {
-      let percentWon: number = Math.round((winnings / bet) * 100);
       data.pocket += winnings;
       const jackpot = length === 1;
       color = jackpot ? 'GOLD' : 'GREEN';
