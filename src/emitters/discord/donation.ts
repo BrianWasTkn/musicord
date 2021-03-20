@@ -58,6 +58,7 @@ async function handleDonation(this: ClientListener, msg: Message) {
 			});
 
 			const accChan = msg.guild.channels.cache.get('691596367776186379');
+			await msg.member.roles.add('715507078860505091');
 			return await dm.send(`Thanks for your donation! You now have access to ${accChan.toString()} to give your donation to our staffs.`);
 		} catch {
 			await dm.send('Something wrong occured :c')
@@ -121,6 +122,7 @@ async function handleHeistDonation(this: ClientListener, msg: Message) {
 			});
 
 			const accChan = msg.guild.channels.cache.get('691596367776186379');
+			await msg.member.roles.add('715507078860505091');
 			return await dm.send(`Thanks for your donation! You now have access to ${accChan.toString()} to give your donation to our staffs.`);
 		} catch {
 			await dm.send('Something wrong occured :c')
