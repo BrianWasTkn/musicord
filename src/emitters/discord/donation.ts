@@ -25,7 +25,7 @@ async function handleDonation(this: ClientListener, msg: Message) {
 
 			const col = await collect();
 			let results: string[] = [];
-			for (const [type, response] of [res.keyArray(), res.array()]) {
+			for (const [type, response] of [...res.keyArray(), ...res.array()]) {
 				results.push(`${type}: ${response}`);
 			}
 
