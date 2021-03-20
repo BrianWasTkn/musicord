@@ -24,8 +24,12 @@ async function handleDonation(this: ClientListener, msg: Message) {
 			}
 
 			const col = await collect();
-			const [type, resp] = res;
-			return await dm.send(`${type}: ${res}`);
+			let results: string[] = [];
+			for (const [type, response] of res) {
+				results.push(`${type}: ${response}`);
+			}
+
+			return await dm.send(results.join('\n'));
 		} catch {
 			await dm.send('Something wrong occured :c')
 		}
