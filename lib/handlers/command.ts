@@ -121,6 +121,9 @@ export class CommandHandler<
     args: any[]
   ): Promise<void> {
     const { util } = this.client;
+    
+    if (util.cmdQueue.has(message.author.id)) return;
+    else util.cmdQueue.set(message.author.id, command.id);
 
     if (this.commandTyping || command.typing) {
       message.channel.startTyping();

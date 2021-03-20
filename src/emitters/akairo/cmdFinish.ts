@@ -23,6 +23,8 @@ export default class CommandListener extends Listener {
   ): Promise<void | Message | Message[]> {
     const { util, db } = this.client;
     if (!returned) return;
+
+    util.cmdQueue.delete(msg.author.id);
     await msg.channel.send(returned as MessageOptions);
 
     // Currency

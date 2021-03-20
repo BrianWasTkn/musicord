@@ -20,6 +20,7 @@ import chalk from 'chalk';
 import moment from 'moment';
 
 export class Util extends ClientUtil {
+  cmdQueue: Collection<string, string>;
   effects: Collection<string, Collection<string, Effects>>;
   events: Collection<string, string>;
   heists: Collection<string, Role>;
@@ -31,6 +32,7 @@ export class Util extends ClientUtil {
     this.heists = new Collection();
     this.events = new Collection();
     this.effects = new Collection();
+    this.cmdQueue = new Collection();
 
     for (const color of Object.keys(COLORS)) {
       require('discord.js').Constants.Colors[color.toUpperCase()] = COLORS[color];
