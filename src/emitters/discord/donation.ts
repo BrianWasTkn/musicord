@@ -21,7 +21,8 @@ async function handleDonation(this: ClientListener, msg: Message) {
 				const col = await dm.awaitMessages(filter, { max: 1, time: 30000 });
 				const m = col.first();
 				res.set(qArr[index], m.content);
-				const q = questions[qArr[index++]];
+				index++;
+				const q = questions[qArr[index]];
 				return !q ? true : await collect(q);
 			}
 
