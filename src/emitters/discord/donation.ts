@@ -14,15 +14,16 @@ async function handleDonation(this: ClientListener, msg: Message) {
 
 			let qArr: string[] = Object.keys(questions);
 			let index: number = 0;
-			async function collect(filter: CollectorFilter) {
-				await msg.channel.send(questions[qArr[index]]);
+			async function collect() {
+				const filter: CollectorFilter = (m: Message) => m.author.id === msg.author.id;
+				await dm.send(questions[qArr[index]]);
 				const col = await dm.awaitMessages(filter, { max: 1, time: 30000 });
 				const m = col.first();
 				res.set(qArr[index], questions[index]);
 				return index++;
 			}
 
-			const col = await collect((m: Message) => m.author.id === msg.author.id);
+			const col = await collect();
 			const [type, resp] = res;
 			return await dm.send(`${type}: ${res}`);
 		} catch {
