@@ -118,21 +118,20 @@ export default class Currency extends Command {
 
     description.push(outcome);
     if (length === 1 || length === 2) {
-      data.pocket += winnings;
+      await DB.add(_.author.id, 'pocket', winnings);
       const jackpot = length === 1;
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
       description.push(`\nYou won **${winnings.toLocaleString()}**`);
       description.push(`**Multiplier** \`x${multiplier}\``);
     } else {
-      data.pocket -= bet;
+      await DB.remove(_.author.id, 'pocket', bet);
       color = 'RED';
       state = 'losing';
       description.push(`\nYou lost **${bet.toLocaleString()}**`);
     }
 
     // Final Message
-    await data.save();
     description.push(`You now have **${data.pocket.toLocaleString()}**`);
     await this.client.util.sleep(1000);
     const title = `${_.author.username}'s ${state} slot machine`;
