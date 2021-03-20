@@ -112,28 +112,28 @@ export default class Currency extends Command {
     let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, order);
 
     // Visuals
+    let db: Document & CurrencyProfile;
     let color: ColorResolvable = 'RED';
     let description: string[] = [];
     let state: string = 'losing';
 
     description.push(outcome);
     if (length === 1 || length === 2) {
-      await DB.add(_.author.id, 'pocket', winnings);
+      db = await DB.add(_.author.id, 'pocket', winnings);
       const jackpot = length === 1;
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
       description.push(`\nYou won **${winnings.toLocaleString()}**`);
       description.push(`**Multiplier** \`x${multiplier}\``);
     } else {
-      await DB.remove(_.author.id, 'pocket', bet);
+      db = await DB.remove(_.author.id, 'pocket', bet);
       color = 'RED';
       state = 'losing';
       description.push(`\nYou lost **${bet.toLocaleString()}**`);
     }
 
     // Final Message
-    description.push(`You now have **${data.pocket.toLocaleString()}**`);
-    await this.client.util.sleep(1000);
+    description.push(`You now have **${db.pocket.toLocaleString()}**`);
     const title = `${_.author.username}'s ${state} slot machine`;
     const embed = new Embed()
       .setAuthor(title, _.author.avatarURL({ dynamic: true }))
