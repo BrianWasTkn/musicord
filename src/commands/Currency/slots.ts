@@ -112,21 +112,20 @@ export default class Currency extends Command {
     let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, order);
 
     // Visuals
-    let db: Document & CurrencyProfile;
     let color: ColorResolvable = 'RED';
     let description: string[] = [];
     let state: string = 'losing';
 
     description.push(outcome);
     if (length === 1 || length === 2) {
-      db = await DB.add(_.author.id, 'pocket', winnings);
+      data.pocket += winnings;
       const jackpot = length === 1;
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
       description.push(`\nYou won **${winnings.toLocaleString()}**`);
       description.push(`**Multiplier** \`x${multiplier}\``);
     } else {
-      db = await DB.remove(_.author.id, 'pocket', bet);
+      data.pocket -= bet;
       color = 'RED';
       state = 'losing';
       description.push(`\nYou lost **${bet.toLocaleString()}**`);
