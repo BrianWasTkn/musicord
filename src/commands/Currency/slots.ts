@@ -60,12 +60,12 @@ export default class Currency extends Command {
     return {
       middle_finger: [1, 2],
       clown: [1, 2],
-      eyes: [1, 3],
-      eggplant: [2, 3],
-      peach: [2, 4],
-      alien: [3, 5],
-      star2: [8, 10],
-      flushed: [10, 15],
+      eyes: [1, 2],
+      eggplant: [2, 15],
+      alien: [2, 20],
+      peach: [2, 25],
+      flushed: [3, 50],
+      star2: [15, 75],
       fire: [25, 500],
     };
   }
