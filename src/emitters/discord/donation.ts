@@ -7,19 +7,23 @@ async function handleDonation(this: ClientListener, msg: Message) {
 		const dm = await msg.author.createDM();
 		const res = new Collection<string, string>();
 		try {
-
 			const questions = {
 				'Giveaway': 'What do you wanna giveaway?',
 				'Duration': 'What is the duration for this giveaway?'
 			}
 
+			await dm.send('**Welcome to our interactive giveaway donation menu**\n**I will ask you series of questions to finalize your giveaway donation. You have **30 seconds** for each question. You can type `cancel` anytime.*')
+			const filter: CollectorFilter = (m: Message) => m.author.id === msg.author.id;
+			const fcol = (await dm.awaitMessages(filter, { max: 1, time: 30000 })).first();
+			if (fcol.content.toLowerCase() === 'cancel') return await dm.send('The request is cancelled.');
+
 			let qArr: string[] = Object.keys(questions);
 			let index: number = 0;
 			async function collect(question: string) {
-				const filter: CollectorFilter = (m: Message) => m.author.id === msg.author.id;
 				await dm.send(question);
 				const col = await dm.awaitMessages(filter, { max: 1, time: 30000 });
 				const m = col.first();
+				if (m.content.toLowerCase() === 'cancel') return false;
 				res.set(qArr[index], m.content);
 				index++;
 				const q = questions[qArr[index]];
@@ -27,11 +31,11 @@ async function handleDonation(this: ClientListener, msg: Message) {
 			}
 
 			const col = await collect(questions[qArr[index]]);
+			if (!col) return await dm.send('The request is cancelled.');
 			let results: string[] = [];
 			for (const [type, response] of res) {
 				results.push(`**${type}:** ${response}`);
 			}
-
 			return await dm.send(results.join('\n'));
 		} catch {
 			await dm.send('Something wrong occured :c')
