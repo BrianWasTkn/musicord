@@ -13,6 +13,7 @@ async function handleDonation(this: ClientListener, msg: Message) {
 				'Winners': 'Please specify a number of winners',
 				'Duration': 'What is the duration for this giveaway?',
 				'Requirement': 'What should be the requirement for this giveaway?',
+				'Message': 'Any extra message for your giveaway?'
 			}
 
 			await dm.send('**Welcome to our interactive giveaway donation menu**\n*I will ask you series of questions for your giveaway donation. You have **30 seconds** for each question. You can type `cancel` anytime. Type anything to continue.*')
@@ -41,15 +42,16 @@ async function handleDonation(this: ClientListener, msg: Message) {
 			}
 
 			const chan = msg.guild.channels.cache.get('691596367776186379') as TextChannel;
+			const role = chan.guild.roles.cache.get('692892567787929691');
 			const r = results.join('\n');
 			await chan.send({ 
-				content: msg.author.toString(),
+				content: `${role.toString()} ${msg.author.toString()}`,
 				embed: {
 					description: r,
 					title: 'Giveaway Donation',
 					color: 'RANDOM',
 					footer: {
-						text: `${msg.author.id} (${msg.author.id})`,
+						text: `${msg.author.tag} (${msg.author.id})`,
 						icon_url: msg.author.avatarURL({ dynamic: true })
 					}
 				}
