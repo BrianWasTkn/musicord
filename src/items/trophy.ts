@@ -26,12 +26,12 @@ export default class Collectible extends Item {
     let fined: boolean;
     let fail: boolean;
 
-    if (odds <= 0.1) {
+    if (odds <= 0.15) {
       if (odds <= 0.05) {
         const hahausuck = util.randomNumber(trophies.amount / 2, trophies.amount);
         trophies.amount -= hahausuck;
         await data.save()
-        return `LOL you broke **${hahausuck} ${this.emoji} ${this.name}**${hahausuck > 1 ? 's' : ''} :skull:`
+        return `LOL you broke **${hahausuck} ${this.emoji} ${this.name}**${hahausuck > 1 ? 's' : ''}, ${trophies.amount.toLocaleString()} left :skull:`
       }
 
       const fine = util.randomNumber(data.pocket / 2, data.pocket);
