@@ -112,13 +112,15 @@ export default class Currency extends Command {
     let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, order);
 
     // Visuals
-    let color: ColorResolvable = 'RED';
     let description: string[] = [];
+    let color: ColorResolvable = 'RED';
     let state: string = 'losing';
+    let db: Document & CurrencyProfile;
 
     description.push(outcome);
     if (length === 1 || length === 2) {
       data.pocket += winnings;
+      db = await data.save();
       const jackpot = length === 1;
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
@@ -126,13 +128,14 @@ export default class Currency extends Command {
       description.push(`**Multiplier** \`x${multiplier}\``);
     } else {
       data.pocket -= bet;
+      db = await data.save();
       color = 'RED';
       state = 'losing';
       description.push(`\nYou lost **${bet.toLocaleString()}**`);
     }
 
     // Final Message
-    description.push(`You now have **${data.pocket.toLocaleString()}**`);
+    description.push(`You now have **${db.pocket.toLocaleString()}**`);
     const title = `${_.author.username}'s ${state} slot machine`;
     const embed = new Embed()
       .setAuthor(title, _.author.avatarURL({ dynamic: true }))
