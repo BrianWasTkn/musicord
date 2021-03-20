@@ -20,15 +20,9 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(
-    _: Message,
-    {
-      member,
-    }: {
-      member: GuildMember;
-    }
-  ): Promise<MessageOptions> {
+  public async exec(_: Message, args: { member: GuildMember }): Promise<MessageOptions> {
     const { updateItems } = this.client.db.currency;
+    const { member } = args;
     const { pocket, vault, space, items } = await updateItems(member.user.id);
     const handler = this.client.handlers.item;
     const net = items
@@ -42,8 +36,7 @@ export default class Currency extends Command {
 
     const dpn: string[] = [];
 
-    [
-      `**Pocket:** ${pocket.toLocaleString()}`,
+    [ `**Pocket:** ${pocket.toLocaleString()}`,
       `**Vault:** ${vault.toLocaleString()}/${space.toLocaleString()}`,
       `**Inventory:** ${net.toLocaleString()}`,
       `**Net Worth:** ${(pocket + vault + net).toLocaleString()}`

@@ -23,19 +23,15 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(
-    _: Message,
-    {
-      amount,
-    }: {
-      amount: number | undefined;
-    }
-  ): Promise<string> {
+  async exec(_: Message, args: { amount: number }): Promise<string> {
     const { remove, fetch } = this.client.db.currency;
     const { pocket } = await fetch(_.author.id);
+    const { amount } = args;
 
-    if (!amount) return 'You need something to burn, bruh';
-    else if (amount < 1) return 'Not allowed, sorry not sorry';
+    if (!amount) 
+      return 'You need something to burn, bruh';
+    else if (amount < 1) 
+      return 'Not allowed, sorry not sorry';
     else if (amount >= pocket)
       return 'Imagine burning money higher than your pocket lmao';
 
