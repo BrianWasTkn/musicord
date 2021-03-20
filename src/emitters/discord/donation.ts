@@ -12,7 +12,7 @@ async function handleDonation(this: ClientListener, msg: Message) {
 				'Duration': 'What is the duration for this giveaway?'
 			}
 
-			await dm.send('**Welcome to our interactive giveaway donation menu**\n**I will ask you series of questions to finalize your giveaway donation. You have **30 seconds** for each question. You can type `cancel` anytime.*')
+			await dm.send('**Welcome to our interactive giveaway donation menu**\n*I will ask you series of questions to finalize your giveaway donation. You have **30 seconds** for each question. You can type `cancel` anytime. Type anything to continue.*')
 			const filter: CollectorFilter = (m: Message) => m.author.id === msg.author.id;
 			const fcol = (await dm.awaitMessages(filter, { max: 1, time: 30000 })).first();
 			if (fcol.content.toLowerCase() === 'cancel') return await dm.send('The request is cancelled.');
