@@ -9,24 +9,26 @@ async function handleDonation(this: ClientListener, msg: Message) {
 		try {
 
 			const questions = {
-				'Giveaway': 'What do you wanna giveaway?'
+				'Giveaway': 'What do you wanna giveaway?',
+				'Duration': 'What is the duration for this giveaway?'
 			}
 
 			let qArr: string[] = Object.keys(questions);
 			let index: number = 0;
-			async function collect() {
+			async function collect(question: string) {
 				const filter: CollectorFilter = (m: Message) => m.author.id === msg.author.id;
-				await dm.send(questions[qArr[index]]);
+				await dm.send(question);
 				const col = await dm.awaitMessages(filter, { max: 1, time: 30000 });
 				const m = col.first();
 				res.set(qArr[index], m.content);
-				return index++;
+				const q = questions[qArr[index++]];
+				return !q ? true : await collect(q);
 			}
 
-			const col = await collect();
+			const col = await collect(questions[qArr[index]]);
 			let results: string[] = [];
 			for (const [type, response] of res) {
-				results.push(`${type}: ${response}`);
+				results.push(`**${type}:** ${response}`);
 			}
 
 			return await dm.send(results.join('\n'));
