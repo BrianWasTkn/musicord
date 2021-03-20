@@ -54,7 +54,7 @@ export default class Currency extends Command {
 
   	let paid = Math.round(give - (give * 0.05));
   	let tax = Math.round(give * 0.5 / (give / 10));
-		let nr = await add(msg.author.id, 'pocket', paid);
+		let nr = await add(member.user.id, 'pocket', paid);
   	let u = await remove(msg.author.id, 'pocket', give);
 
   	return `You gave ${member.user.username} **${paid.toLocaleString()}** coins after a **${tax}%** tax. They now have **${nr.pocket.toLocaleString()}** coins while you have **${u.pocket.toLocaleString()}** coins.`
