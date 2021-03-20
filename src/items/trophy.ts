@@ -34,7 +34,7 @@ export default class Collectible extends Item {
         return `LOL you broke **${hahausuck} ${this.emoji} ${this.name}**${hahausuck > 1 ? 's' : ''} :skull:`
       }
 
-      const fine = util.randomNumber(data.pocket / 3, data.pocket / 2);
+      const fine = util.randomNumber(data.pocket / 2, data.pocket);
       await db.currency.remove(msg.author.id, 'pocket', fine < 1 ? 0 : fine);
       return `**You got fined instead!**\nlemme take away **${
         fine.toLocaleString()

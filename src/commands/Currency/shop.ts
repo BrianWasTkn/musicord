@@ -30,8 +30,6 @@ export default class Currency extends Command {
     const { item: Handler } = this.client.handlers;
     const items = Handler.modules.array();
     const embed = new Embed();
-    console.log(query);
-    console.log(typeof query);
 
     if (typeof query === 'number') {
       const shop = this.client.util
