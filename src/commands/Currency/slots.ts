@@ -132,7 +132,8 @@ export default class Currency extends Command {
     }
 
     // Final Message
-    description.push(`You now have **${db.pocket.toLocaleString()}**`);
+    await data.save();
+    description.push(`You now have **${data.pocket.toLocaleString()}**`);
     const title = `${_.author.username}'s ${state} slot machine`;
     const embed = new Embed()
       .setAuthor(title, _.author.avatarURL({ dynamic: true }))
