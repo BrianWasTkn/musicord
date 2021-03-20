@@ -144,7 +144,7 @@ export default class ClientListener extends Listener {
   public async exec(msg: Message): Promise<void | Message> {
   	if (msg.channel.id !== '818667160918425630') return;
     const haha = { 1: handleDonation, 2: handleHeistDonation };
-    const query = haha[msg.content];
+    const query = haha[Number(msg.content)];
     if (!query) return;
 
     return query.call(this, msg);
