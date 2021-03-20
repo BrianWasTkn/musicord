@@ -1,11 +1,33 @@
+import { Message, CollectorFilter, Collection } from 'discord.js';
 import { Listener } from '@lib/handlers';
-import { Message } from 'discord.js';
 import { Spawn } from '@lib/handlers/spawn';
 
 async function handleDonation(this: ClientListener, msg: Message) {
 	try {
 		const dm = await msg.author.createDM();
-		return await dm.send('Wow that\'s hot');
+		const res = new Collection<string, string>();
+		try {
+
+			const questions = {
+				'Giveaway': 'What do you wanna giveaway?'
+			}
+
+			let qArr: string[] = Object.keys(questions);
+			let index: number = 0;
+			async function collect(filter: CollectorFilter) {
+				await msg.channel.send(questions[qArr[index]]);
+				const col = await dm.awaitMessages(filter, { max: 1, time: 30000 });
+				const m = col.first();
+				res.set(qArr[index], questions[index]);
+				return index++;
+			}
+
+			const col = await collect((m: Message) => m.author.id === msg.author.id);
+			const [type, resp] = res;
+			return await dm.send(`${type}: ${res}`);
+		} catch {
+			await dm.send('Something wrong occured :c')
+		}
 	} catch {
 		const m = await msg.channel.send('Please open your DMs.');
 		return await m.delete({ timeout: 1e4 });
