@@ -47,23 +47,16 @@ export default class Currency extends Command {
     const { item: Items } = this.client.handlers;
     const { fetch } = this.client.db.currency;
 
+    const isNum = typeof member === 'number';
+    let inv: string[] | string[][] | InventorySlot[];
+    let total: number = 0;
     let data: Document & CurrencyProfile;
     let memb: GuildMember;
     let pg: number;
 
-    if (typeof member === 'number') {
-      memb = msg.member;
-      data = await fetch(memb.user.id);
-      pg = member;
-    } else {
-      memb = member;
-      data = await fetch(memb.user.id);
-      pg = page;
-    }
-
-    let inv: string[] | string[][] | InventorySlot[];
-    let total: number = 0;
-
+    memb = (isNum ? msg.member : member) as GuildMember;
+    pg = (isNum ? member : page) as number;
+    data = await fetch(memb.user.id);
     inv = data.items.filter((i) => i.amount >= 1);
     inv.forEach((i) => (total += i.amount));
     if (inv.length < 1) {
@@ -71,7 +64,7 @@ export default class Currency extends Command {
     }
 
     inv = util.paginateArray(
-      inv.map((item) => {
+      inv.sort((a, b) => b.amount - a.amount).map((item) => {
         const i = Items.modules.get(item.id);
         return `**${i.emoji} ${
           i.name

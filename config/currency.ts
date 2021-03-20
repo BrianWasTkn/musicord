@@ -5,9 +5,9 @@ export type CurrencyType = {
 export const currencyConfig: CurrencyType = {
 	maxSafePocket: 1000000000,
   maxInventory: 100000,
-  maxPocket: 50000000,
+  maxPocket: 75000000,
   maxMulti: 250,
   minBet: 100,
-  maxBet: 500000,
-  maxWin: 5000001,
+  maxBet: 750000,
+  maxWin: 6500001,
 };
