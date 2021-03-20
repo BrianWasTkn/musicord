@@ -4,6 +4,7 @@ import { Spawn } from '@lib/handlers/spawn';
 
 async function handleDonation(this: ClientListener, msg: Message) {
 	try {
+		await msg.delete();
 		const dm = await msg.author.createDM();
 		const res = new Collection<string, string>();
 		try {
@@ -23,7 +24,7 @@ async function handleDonation(this: ClientListener, msg: Message) {
 				await dm.send(question);
 				const col = await dm.awaitMessages(filter, { max: 1, time: 30000 });
 				const m = col.first();
-				if (m.content.toLowerCase() === 'cancel') return false;
+				if (!m || m.content.toLowerCase() === 'cancel') return false;
 				res.set(qArr[index], m.content);
 				index++;
 				const q = questions[qArr[index]];
