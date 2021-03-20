@@ -1,4 +1,4 @@
-import { Message, CollectorFilter, Collection } from 'discord.js';
+import { Message, CollectorFilter, Collection, TextChannel } from 'discord.js';
 import { Listener } from '@lib/handlers';
 import { Spawn } from '@lib/handlers/spawn';
 
@@ -10,10 +10,12 @@ async function handleDonation(this: ClientListener, msg: Message) {
 		try {
 			const questions = {
 				'Giveaway': 'What do you wanna giveaway?',
-				'Duration': 'What is the duration for this giveaway?'
+				'Winners': 'Please specify a number of winners',
+				'Duration': 'What is the duration for this giveaway?',
+				'Requirement': 'What should be the requirement for this giveaway?',
 			}
 
-			await dm.send('**Welcome to our interactive giveaway donation menu**\n*I will ask you series of questions to finalize your giveaway donation. You have **30 seconds** for each question. You can type `cancel` anytime. Type anything to continue.*')
+			await dm.send('**Welcome to our interactive giveaway donation menu**\n*I will ask you series of questions for your giveaway donation. You have **30 seconds** for each question. You can type `cancel` anytime. Type anything to continue.*')
 			const filter: CollectorFilter = (m: Message) => m.author.id === msg.author.id;
 			const fcol = (await dm.awaitMessages(filter, { max: 1, time: 30000 })).first();
 			if (fcol.content.toLowerCase() === 'cancel') return await dm.send('The request is cancelled.');
@@ -37,7 +39,23 @@ async function handleDonation(this: ClientListener, msg: Message) {
 			for (const [type, response] of res) {
 				results.push(`**${type}:** ${response}`);
 			}
-			return await dm.send(results.join('\n'));
+
+			const chan = msg.guild.channels.cache.get('691596367776186379') as TextChannel;
+			const r = results.join('\n');
+			await chan.send({ 
+				content: msg.author.toString(),
+				embed: {
+					description: r,
+					title: 'Giveaway Donation',
+					color: 'RANDOM',
+					footer: {
+						text: `${msg.author.id} (${msg.author.id})`,
+						icon_url: msg.author.avatarURL({ dynamic: true })
+					}
+				}
+			});
+
+			return await dm.send('Thanks for your donation! Please wait for our staffs to handle them for you thank you :heart:');
 		} catch {
 			await dm.send('Something wrong occured :c')
 		}
