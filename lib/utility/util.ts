@@ -20,7 +20,7 @@ import chalk from 'chalk';
 import moment from 'moment';
 
 export class Util extends ClientUtil {
-  cmdQueue: Collection<string, string>;
+  cmdQueue: Collection<string, boolean>;
   effects: Collection<string, Collection<string, Effects>>;
   events: Collection<string, string>;
   heists: Collection<string, Role>;

@@ -24,7 +24,7 @@ export default class CommandListener extends Listener {
     const { util, db } = this.client;
     if (!returned) return;
 
-    util.cmdQueue.delete(msg.author.id);
+    util.cmdQueue.set(msg.author.id, false);
     await msg.channel.send(returned as MessageOptions);
 
     // Currency
