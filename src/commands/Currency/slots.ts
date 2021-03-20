@@ -104,7 +104,7 @@ export default class Currency extends Command {
 
     // Slot Emojis
     const emojis = Object.keys(this.slotMachine);
-    const jOdds = Math.random() > (0.98 - slots);
+    const jOdds = Math.random() > (0.95 - slots);
     const jEmoji = util.randomInArray(emojis);
     const [a, b, c] = Array(3).fill(null).map((_, i) => (jOdds ? jEmoji : util.randomInArray(emojis)));
     const order = [a, b, c];
