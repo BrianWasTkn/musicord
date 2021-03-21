@@ -13,15 +13,13 @@ export default class Currency extends Command {
       cooldown: 10000,
       args: [
         {
-          id: 'member',
-          type: 'member',
-          unordered: true
-        },
-        {
         	id: 'amount',
         	type: Argument.union('number', 'string'),
-        	unordered: true
-        }
+        },
+        {
+          id: 'member',
+          type: 'member',
+        },
       ],
     });
   }

@@ -6,7 +6,7 @@
   "author": {
     "name": "Brian",
     "discord": "BrianWasTaken#9793",
-    "github": "https://github.com/BrianWasTkn"
+    "github": "https://github.com/BrianWasTaken"
   },
   "scripts": {
     "build": "rimraf ./build && tsc --project tsconfig.json",
