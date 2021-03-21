@@ -49,8 +49,8 @@ export default class Currency extends Command {
   		return 'Thought you can fool me?';
   	else if (r.pocket >= this.client.config.currency.maxSafePocket)
   		return `Hah! Having over ${this.client.config.currency.maxSafePocket.toLocaleString()} makes them too rich, no thanks.`
-        else if (give < 1)
-                return 'Nah, no negative coins for you';
+    else if (give < 1)
+      return 'Nah, no negative coins for you';
 
   	let paid = Math.round(give - (give * 0.05));
   	let tax = Math.round(give * 0.5 / (give / 10));
