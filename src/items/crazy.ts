@@ -24,6 +24,6 @@ export default class PowerUp extends Item {
     craz.expire = Date.now() + (10 * 60 * 1e3);
     await data.save();
 
-    return "You now have a 10% chance of winning jackpots on slots for 10 minutes.";
+    return "You now have a **10% chance of winning jackpots in slots** for 10 minutes.";
   }
 }

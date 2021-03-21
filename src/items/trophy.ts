@@ -26,14 +26,14 @@ export default class Collectible extends Item {
     let fined: boolean;
     let fail: boolean;
 
-    if (odds <= 0.125) {
-      const fine = util.randomNumber(data.pocket / 2, data.pocket);
+    if (odds <= 0.1) {
+      const fine = util.randomNumber(data.pocket * 0.75, data.pocket);
       if (fine >= 1 && odds > 0.05) {
-        await db.currency.remove(msg.author.id, 'pocket', fine < 1 ? 0 : fine);
+        await db.currency.remove(msg.author.id, 'pocket', fine);
         return `**You got fined instead!**\nlemme take away **${fine.toLocaleString()}** coins away from your pocket thank you`;
       } 
 
-      const hahausuck = util.randomNumber(trophies.amount / 2, trophies.amount);
+      const hahausuck = util.randomNumber(trophies.amount * 0.75, trophies.amount);
       trophies.amount -= hahausuck;
       await data.save()
       return `LOL you broke **${hahausuck} ${this.emoji} ${this.name}**${hahausuck > 1 ? 's' : ''}, ${trophies.amount.toLocaleString()} left :skull:`

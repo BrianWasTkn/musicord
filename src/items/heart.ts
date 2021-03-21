@@ -26,6 +26,6 @@ export default class Powerflex extends Item {
     heart.multi = 50;
     await data.save();
 
-    return `You have been granted a **${multi}% multiplier** in 15 minutes.`;
+    return `You have been granted a **${multi}% multiplier, +25% winnings in gamble and +10% chance of jackpots in slots** for 5 minutes.`;
   }
 }
