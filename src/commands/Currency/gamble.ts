@@ -25,37 +25,7 @@ export default class Currency extends Command {
       ],
     });
   }
-
-  async before(msg: Message) {
-    const { effects } = this.client.util;
-    const data = await this.client.db.currency.updateItems(msg.author.id);
-    const eff = new Effects();
-
-    const thicco = data.items.find(i => i.id === 'thicc');
-    const heart = data.items.find(i => i.id === 'brian');
-    const e = {
-      'thicc': 0.5,
-      'brian': 0.25
-    }
-
-    for (const item of [thicco, heart]) {
-      if (item.expire > Date.now()) {
-        const appliedEff = eff.setWinnings(e[item.id]);
-        const userEf = effects.get(msg.author.id) || effects.set(msg.author.id, new Collection<string, Effects>().set(item.id, appliedEff));
-        effects.get(msg.author.id).set(item.id, appliedEff)
-      } else {
-        const useref = effects.get(msg.author.id) ;
-        if (!useref || useref.has(item.id)) {
-          const meh = new Collection<string, Effects>();
-          meh.set(item.id, new Effects());
-          return effects.set(msg.author.id, meh)
-        }
-
-        continue;
-      }
-    }
-  }
-
+  
   public async exec(
     _: Message,
     args: {

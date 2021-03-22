@@ -5,3 +5,6 @@ build
 # Dotfiles
 .env
 .vscode
+
+# Tests
+index.js

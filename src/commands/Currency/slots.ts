@@ -26,36 +26,6 @@ export default class Currency extends Command {
     });
   }
 
-  async before(msg: Message) {
-    const { effects } = this.client.util;
-    const data = await this.client.db.currency.updateItems(msg.author.id);
-    const eff = new Effects();
-
-    const crazy = data.items.find(i => i.id === 'crazy');
-    const heart = data.items.find(i => i.id === 'brian');
-    const e = {
-      'crazy': 0.1,
-      'brian': 0.1
-    }
-
-    for (const item of [crazy, heart]) {
-      if (item.expire > Date.now()) {
-        const appliedEff = eff.setWinnings(e[item.id]);
-        const userEf = effects.get(msg.author.id) || effects.set(msg.author.id, new Collection<string, Effects>().set(item.id, appliedEff));
-        effects.get(msg.author.id).set(item.id, appliedEff)
-      } else {
-        const useref = effects.get(msg.author.id) ;
-        if (!useref || useref.has(item.id)) {
-          const meh = new Collection<string, Effects>();
-          meh.set(item.id, new Effects());
-          return effects.set(msg.author.id, meh)
-        }
-
-        continue;
-      }
-    }
-  }
-
   private get slotMachine() {
     return {
       middle_finger: [1, 2],
@@ -102,12 +72,26 @@ export default class Currency extends Command {
       }
     }
 
-    // Slot Emojis
+    // Slot Emojis 78
     const emojis = Object.keys(this.slotMachine);
-    const jOdds = Math.random() > (0.95 - slots);
     const jEmoji = util.randomInArray(emojis);
-    const [a, b, c] = Array(3).fill(null).map((_, i) => (jOdds ? jEmoji : util.randomInArray(emojis)));
-    const order = [a, b, c];
+    const jOdds = Math.random() > (0.95 - slots);
+    const wOdds = Math.random() > 0.7;
+    let order: string[] = Array(3);
+    if (jOdds) {
+      order = order.fill(jEmoji);
+    } else if (wOdds) {
+      let index = util.randomNumber(0, emojis.length - 1);
+      order = Array(3).fill(jEmoji);
+      order[index] = util.randomInArray(emojis.filter(s => s !== jEmoji));
+    } else {
+      let a = util.randomInArray(emojis);
+      let b = util.randomInArray(emojis.filter(e => ![a].some(aa => aa === e)))
+      let c = util.randomInArray(emojis.filter(e => ![a, b].some(aa => aa === e)));
+      order = order.fill(null);
+      [a, b, c].forEach((slot, i, a) => order[i] = slot);
+    }
+
     const outcome = `**>** :${[...order].join(':    :')}: **<**`;
     let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, order);
 
@@ -161,7 +145,7 @@ export default class Currency extends Command {
     );
 
     if (length === 1 || length === 2) {
-      let index: number; // index of [number, number];
+      let index: number; // prop of [number, number];
       let m: number; // the emoji multi
       index = length === 1 ? 1 : 0;
       m = multi[index];
