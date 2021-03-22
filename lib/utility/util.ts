@@ -78,7 +78,8 @@ export class Util extends ClientUtil {
     return Math.random() * 0xffffff;
   }
 
-  parseTime = (time: number): string => {
+  // dankmemer.lol/source
+  parseTime = (time: number): string[] => {
     const methods = [
       { name: 'd', count: 86400 },
       { name: 'h', count: 3600 },
@@ -92,7 +93,7 @@ export class Util extends ClientUtil {
       timeStr.push(calced.toString() + methods[i + 1].name);
     }
 
-    return timeStr.filter(g => !g.startsWith('0')).join(', ');
+    return timeStr.filter(g => !g.startsWith('0'));
   }
 
   isPromise = (something: any): boolean => {

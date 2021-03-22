@@ -10,7 +10,7 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'Buy something from the shop.',
       category: 'Currency',
-      cooldown: 1000,
+      cooldown: 5e3,
       args: [
         {
           id: 'item',

@@ -9,7 +9,7 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'Gives you a random amount of coins from 100k to 1m coins',
       category: 'Currency',
-      cooldown: 1000,
+      cooldown: 2e4,
     });
   }
 

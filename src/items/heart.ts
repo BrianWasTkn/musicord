@@ -21,6 +21,7 @@ export default class Powerflex extends Item {
     const heart = data.items.find(i => i.id === this.id);
     const multi = 50;
 
+    heart.amount--;
     heart.expire = Date.now() + (5 * 60 * 1e3);
     heart.multi = 50;
     await data.save();
