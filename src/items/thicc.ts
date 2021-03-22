@@ -19,11 +19,10 @@ export default class PowerUp extends Item {
     const data = await this.client.db.currency.fetch(msg.author.id);
     const thicc = data.items.find((i) => i.id === this.id);
 
-    thicc.amount--;
-    thicc.active = true;
     thicc.expire = Date.now() + 5 * 60 * 1000; // client.setTimeout just breaks this
+    thicc.amount--;
     await data.save();
 
-    return 'You have been granted an additional **50%** to your gamble winnings for **5 minutes** only.';
+    return 'You have been granted an additional **50% to your gamble winnings** for **5 minutes** only.';
   }
 }

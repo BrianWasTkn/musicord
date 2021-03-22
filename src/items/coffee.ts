@@ -21,12 +21,11 @@ export default class PowerUp extends Item {
     const cof = data.items.find(i => i.id === this.id);
     const multi = util.randomNumber(5, 50);
 
-    cof.amount -= 1;
-    cof.active = true;
+    cof.amount--;
     cof.multi = multi;
     cof.expire = Date.now() + (5 * 60 * 1e3);
     await data.save();
 
-    return `You have been granted a **${multi}% multiplier** in 5 minutes.`;
+    return `You have been granted a **${multi}% multiplier** for 5 minutes.`;
   }
 }

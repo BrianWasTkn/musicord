@@ -21,7 +21,7 @@ export default class PowerUp extends Item {
     const { util } = this.client;
 
     if (Math.random() < 0.25) {
-      comp.amount -= 1;
+      comp.amount--;
       await data.save();
       return `You broke your **${this.emoji} ${this.name}** lmao sucks to be you.`
     }

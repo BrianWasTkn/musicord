@@ -22,7 +22,6 @@ export default class Powerflex extends Item {
     const multi = 50;
 
     heart.expire = Date.now() + (5 * 60 * 1e3);
-    heart.active = true;
     heart.multi = 50;
     await data.save();
 

@@ -19,8 +19,7 @@ export default class PowerUp extends Item {
     const data = await this.client.db.currency.fetch(msg.author.id);
     const craz = data.items.find((i) => i.id === this.id);
 
-    craz.amount -= 1;
-    craz.active = true;
+    craz.amount--;
     craz.expire = Date.now() + (10 * 60 * 1e3);
     await data.save();
 

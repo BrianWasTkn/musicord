@@ -64,13 +64,12 @@ export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
       const filter = (it) => it.id === i.id;
       const isHere = data.items.find(filter);
       if (!isHere) {
-        data.items.push({
-          active: false,
-          expire: 0,
-          amount: 0,
-          multi: 0,
-          id: i.id,
-        });
+        const expire = 0,
+          amount = 0,
+          multi = 0,
+          id = i.id;
+
+        data.items.push({ expire, amount, multi, id });
       }
     });
 

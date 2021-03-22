@@ -10,13 +10,18 @@ const qObj = {
 		'Requirement': 'What should be the requirement for this giveaway? Type none if none.',
 		'Message': 'Any extra message for your giveaway?'
 	},
+	'event': {
+		'Event Type': 'What type of event do you wanna sponsor?\nlast to leave, fish/hunt event, race event, or other assorted events.',
+		'Winners': 'If your type of event requires a giveaway bot, please tell us the number of winners. Type none if it isn\'t.',
+		'Donation': 'What do you want the winners to recieve? Any items or coin amount.',
+	},
 	'heist': {
 		'Amount': 'How much coins you wanna sponsor?',
 		'Requirement': 'What should be the requiement? Type none if none.',
 	},
 }
 
-async function handleDonation(msg: Message, type: 'giveaway' | 'heist') {
+async function handleDonation(msg: Message, type: 'giveaway' | 'event' | 'heist') {
 	try {
 		await msg.delete();
 		const dm = await msg.author.createDM();
@@ -26,14 +31,16 @@ async function handleDonation(msg: Message, type: 'giveaway' | 'heist') {
 			const questions = qObj[type];
 			await dm.send(`**Welcome to our interactive ${type} donation menu**\n*I will ask you series of questions for your ${type} donation. You have **30 seconds** for each question. You can type \`cancel\` anytime. Type anything to continue.*`)
 			const filter: CollectorFilter = (m: Message) => m.author.id === msg.author.id;
-			const fcol = (await dm.awaitMessages(filter, { max: 1, time: 30000 })).first();
-			if (fcol.content.toLowerCase() === 'cancel') return await dm.send('The donation has been cancelled.');
+			const fcol = (await dm.awaitMessages(filter, { max: 1, time: 60000 })).first();
+			if (!fcol || fcol.content.toLowerCase() === 'cancel') {
+				return await dm.send('The donation has been cancelled.');
+			}
 
 			let qArr: string[] = Object.keys(questions);
 			let index: number = 0;
 			async function collect(question: string) {
 				await dm.send(question);
-				const col = await dm.awaitMessages(filter, { max: 1, time: 30000 });
+				const col = await dm.awaitMessages(filter, { max: 1, time: 60000 });
 				const m = col.first();
 				if (!m || m.content.toLowerCase() === 'cancel') return false;
 				res.set(qArr[index], m.content);
@@ -86,7 +93,8 @@ export default class ClientListener extends Listener {
 
   public async exec(msg: Message): Promise<void | Message> {
   	if (msg.channel.id !== '818667160918425630') return;
-    const haha = { 1: 'giveaway', 2: 'heist' };
+
+    const haha = { 1: 'giveaway', 2: 'heist', 3: 'event' };
     const query = haha[Number(msg.content)];
     if (!query) return msg.delete();
 
