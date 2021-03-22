@@ -75,7 +75,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
 
     let data = await fetch(u);
     let inv = data.items.find((i) => i.id === item.id);
-    await remove(u, 'pocket', paid)
+    await remove(u, 'pocket', paid);
     inv.amount += amount;
     await data.save();
 

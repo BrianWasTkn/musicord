@@ -71,7 +71,7 @@ export default class Currency extends Command {
   roll(emojis: string[], oddRdce: number) {
     const { randomInArray, randomNumber } = this.client.util;
     const emoji = randomInArray(emojis);
-    const odds = randomNumber(1, 120);
+    const odds = randomNumber(1, 150);
 
     function filter<A>(x: A[], comp: A): boolean {
       return !x.some((y: A) => y === comp);
@@ -81,9 +81,9 @@ export default class Currency extends Command {
       return srcArr.filter((src: A) => filter(filtArr, src));
     }
 
-    if (odds > (117 - oddRdce)) {
+    if (odds > (145 - oddRdce)) {
       return Array(3).fill(emoji);
-    } else if (odds > 85) {
+    } else if (odds > 130) {
       const emjis = Array(3).fill(emoji);
       const ind = randomNumber(1, emjis.length) - 1;
       emjis[ind] = randomInArray(emojis.filter(e => e !== emoji));
