@@ -53,7 +53,7 @@ export default class Currency extends Command {
       const userEf = effects.get(_.author.id);
       if (!userEf) effects.set(_.author.id, new Collection<string, Effects>().set(it, new Effects()));
       if (userEf.has(it)) {
-        slots += userEf.get(it).slots
+        extraWngs += userEf.get(it).winnings
       }
     }
 
