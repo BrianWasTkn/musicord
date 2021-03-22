@@ -21,6 +21,12 @@ const qObj = {
 	},
 }
 
+const roles = {
+	'giveaway': '793834113354301460',
+	'heist': '697007407011725312',
+	'event': '697007407011725312'
+}
+
 async function handleDonation(msg: Message, type: 'giveaway' | 'event' | 'heist') {
 	try {
 		await msg.delete();
@@ -57,6 +63,7 @@ async function handleDonation(msg: Message, type: 'giveaway' | 'event' | 'heist'
 			}
 
 			const chan = msg.guild.channels.cache.get('691596367776186379') as TextChannel;
+			const role = msg.guild.roles.cache.get(roles[type]);
 			const r = results.join('\n');
 			await chan.send({ 
 				content: msg.author.toString(),
