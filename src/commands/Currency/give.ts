@@ -31,7 +31,7 @@ export default class Currency extends Command {
   	const { fetch, add, remove } = this.client.db.currency;
   	const { member, amount } = args;
   	if (!member || !amount) 
-  		return `**Wrong Syntax bro**\n**Usage:** \`lava ${this.id} <@user> <amount>\``;
+  		return `**Wrong Syntax bro**\n**Usage:** \`lava ${this.id} <amount> <@user>\``;
 
     const data = await fetch(msg.author.id);
     const r = await fetch(member.user.id);
