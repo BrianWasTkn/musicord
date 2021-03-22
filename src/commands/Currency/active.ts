@@ -15,15 +15,16 @@ export default class Currency extends Command {
 
   public async exec(msg: Message): Promise<string | MessageOptions> {
     const data = await this.client.db.currency.fetch(msg.author.id);
+    const stamp = msg.createdTimestamp;
     const actives = data.items
-      .filter(i => i.expire > msg.createdTimestamp)
+      .filter(i => i.expire > stamp)
       .map(i => {
         const item = this.client.handlers.item.modules.get(i.id);
-        const expire = this.client.util.parseTime(Math.floor((i.expire - Date.now()) / 1e3));
+        const expire = this.client.util.parseTime(Math.floor((stamp - Date.now()) / 1e3));
         return `**${item.emoji} ${item.name}** — **Expires** in **${expire.join('**, **')}**`
       });
 
-    if (!actives) return 'You don\'t have any active items!';
+    if (actives.length < 1) return 'You don\'t have any active items!';
 
     return { embed: {
       title: `${actives.length} active items`,
