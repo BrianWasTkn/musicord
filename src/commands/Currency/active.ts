@@ -27,7 +27,7 @@ export default class Currency extends Command {
     if (actives.length < 1) return 'You don\'t have any active items!';
 
     return { embed: {
-      title: `${actives.length} active items`,
+      title: `${msg.author.username}'s active items`,
       description: actives.join('\n'),
       color: 'RANDOM',
     }};
