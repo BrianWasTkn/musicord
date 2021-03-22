@@ -3,7 +3,7 @@ node_modules
 build
 .vscode
 
-# Files
+# Config
 tsconfig.json
 package-lock.json
 package.json

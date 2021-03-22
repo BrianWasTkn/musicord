@@ -67,6 +67,36 @@ export default class Currency extends Command {
     }
   }
 
+  // this too fricking time istg 
+  roll(emojis: string[]) {
+    const { randomInArray, randomNumber } = this.client.util;
+    const odds = randomNumber(1, 100);
+    const emoji = randomInArray(emojis);
+
+    function filter<A>(x: A[], comp: A): boolean {
+      return !x.some((y: A) => y === comp);
+    }
+
+    function deepFilter<A>(srcArr: A[], filtArr: A[]): A[] {
+      return srcArr.filter((src: A) => filter(filtArr, src));
+    }
+
+    if (odds > 90) {
+      return Array(3).fill(emoji);
+    } else if (odds > 80) {
+      const emjis = Array(3).fill(emoji);
+      const ind = randomNumber(1, emjis.length) - 1;
+      emjis[ind] = randomInArray(emojis.filter(e => e !== emoji));
+      return emjis;
+    }
+
+    let secondSlot: string;
+    return [emoji, ...Array(2).fill(emoji).map((_, i) => {
+      if (i === 0) return secondSlot = randomInArray(deepFilter(emojis, [emoji]));
+      return randomInArray(deepFilter(emojis, [emoji, secondSlot]));
+    })];
+  }
+
   /**
    * Basically the whole thang
    * @param _ a discord message object
@@ -100,26 +130,9 @@ export default class Currency extends Command {
       }
     }
 
-    // Slot Emojis 78
+    // Slot Emojis
     const emojis = Object.keys(this.slotMachine);
-    const jEmoji = util.randomInArray(emojis);
-    const jOdds = Math.random() > (0.95 - slots);
-    const wOdds = Math.random() > 0.7;
-    let order: string[] = Array(3);
-    if (jOdds) {
-      order = order.fill(jEmoji);
-    } else if (wOdds) {
-      order = Array(3).fill(jEmoji);
-      let index = util.randomNumber(0, order.length - 1);
-      order[index] = util.randomInArray(emojis.filter(s => s !== jEmoji));
-    } else {
-      let a = util.randomInArray(emojis);
-      let b = util.randomInArray(emojis.filter(e => ![a].some(aa => aa === e)))
-      let c = util.randomInArray(emojis.filter(e => ![a, b].some(aa => aa === e)));
-      order = order.fill(null);
-      [a, b, c].forEach((slot, i, a) => order[i] = slot);
-    }
-
+    const order = this.roll(emojis);
     const outcome = `**>** :${[...order].join(':    :')}: **<**`;
     let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, order);
 
@@ -131,9 +144,9 @@ export default class Currency extends Command {
 
     description.push(outcome);
     if (length === 1 || length === 2) {
+      const jackpot = length === 1;
       data.pocket += winnings;
       db = await data.save();
-      const jackpot = length === 1;
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
       description.push(`\nYou won **${winnings.toLocaleString()}**`);
@@ -161,33 +174,19 @@ export default class Currency extends Command {
     const { slotMachine } = this;
     const rate: number[][] = Object.values(slotMachine);
     const emojis: string[] = Object.keys(slotMachine);
+
     // ty daunt
-    const length = slots.filter(
-      (thing: string, i: number, ar: string[]) => ar.indexOf(thing) === i
-    ).length;
-    const won: number[][] = rate
-      .map((_, i, ar) => ar[emojis.indexOf(slots[i])])
-      .filter(Boolean); // mapped to their index
-    const [multi] = won.filter(
-      (ew: number[], i: number, a: number[][]) => a.indexOf(ew) !== i
-    );
+    const length = slots.filter((thing, i, ar) => ar.indexOf(thing) === i).length;
+    const won: number[][] = rate.map((_, i, ar) => ar[emojis.indexOf(slots[i])]).filter(Boolean); // mapped to their index
+    const [multi] = won.filter((ew, i, a) => a.indexOf(ew) !== i);
 
     if (length === 1 || length === 2) {
-      let index: number; // prop of [number, number];
-      let m: number; // the emoji multi
-      index = length === 1 ? 1 : 0;
-      m = multi[index];
-
-      return {
-        length,
-        winnings: Math.round(bet * m),
-        multiplier: m,
-      };
-    } else {
-      return {
-        length,
-        winnings: 0,
-      };
+      let index = length === 1 ? 1 : 0; // [prop: string]: [number, number]
+      let m = multi[index]; // [number, number][0]
+      let w = Math.round(bet * m);
+      return { length, winnings: w, multiplier: m };
     }
+
+    return { length, winnings: 0 };
   }
 }
