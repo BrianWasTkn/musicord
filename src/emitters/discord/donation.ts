@@ -66,7 +66,7 @@ async function handleDonation(msg: Message, type: 'giveaway' | 'event' | 'heist'
 			const role = msg.guild.roles.cache.get(roles[type]);
 			const r = results.join('\n');
 			await chan.send({ 
-				content: msg.author.toString(),
+				content: role.toString() + msg.author.toString(),
 				embed: {
 					description: r,
 					title: `${type.charAt(0).toUpperCase() + type.slice(1)} Donation`,
