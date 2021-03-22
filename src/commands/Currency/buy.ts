@@ -57,7 +57,7 @@ export default class Currency extends Command {
       amount: amt, 
       data: dat, 
       item: i 
-    } = await Items.buy(amount, msg.author.id, item.id);
+    } = await Items.buy(Math.trunc(amount), msg.author.id, item.id);
 
     const embed = new Embed()
       .setDescription(
