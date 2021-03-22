@@ -49,9 +49,9 @@ export default class Currency extends Command {
     for (const item of items) {
       const inv = data.items.find(i => i.id === item.id);
       if (inv.expire > Date.now()) {
-        if (item.id === 'brian') eff.setWinnings(0.5).setSlotOdds(0.5);
+        if (item.id === 'brian') eff.setWinnings(0.5).setSlotOdds(10);
         if (item.id === 'thicc') eff.setWinnings(0.5);
-        if (item.id === 'crazy') eff.setSlotOdds(0.1);
+        if (item.id === 'crazy') eff.setSlotOdds(10);
         const temp = new Collection<string, Effects>();
         temp.set(item.id, new Effects());
         if (!effects.has(msg.author.id)) effects.set(msg.author.id, temp);
@@ -71,7 +71,7 @@ export default class Currency extends Command {
   roll(emojis: string[], oddRdce: number) {
     const { randomInArray, randomNumber } = this.client.util;
     const emoji = randomInArray(emojis);
-    const odds = randomNumber(1, 100);
+    const odds = randomNumber(1, 120);
 
     function filter<A>(x: A[], comp: A): boolean {
       return !x.some((y: A) => y === comp);
@@ -81,7 +81,7 @@ export default class Currency extends Command {
       return srcArr.filter((src: A) => filter(filtArr, src));
     }
 
-    if (odds > (97 - (oddRdce * 100))) {
+    if (odds > (117 - oddRdce)) {
       return Array(3).fill(emoji);
     } else if (odds > 75) {
       const emjis = Array(3).fill(emoji);
