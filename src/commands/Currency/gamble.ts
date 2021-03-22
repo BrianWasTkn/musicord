@@ -31,7 +31,7 @@ export default class Currency extends Command {
     const data = await this.client.db.currency.fetch(msg.author.id);
     const items = this.client.handlers.item.modules.array();
     const eff = new Effects();
-    
+
     for (const item of items) {
       const inv = data.items.find(i => i.id === item.id);
       if (inv.expire > Date.now()) {
@@ -76,9 +76,8 @@ export default class Currency extends Command {
 
     // Item Effects
     let extraWngs: number = 0;
-    for (const it of ['crazy', 'brian']) {
-      const userEf = effects.get(_.author.id);
-      if (!userEf) effects.set(_.author.id, new Collection<string, Effects>().set(it, new Effects()));
+    for (const it of ['thicc', 'brian']) {
+      if (!effects.has(_.author.id)) effects.set(_.author.id, new Collection<string, Effects>().set(it, new Effects()));
       if (effects.get(_.author.id).has(it)) {
         extraWngs += effects.get(_.author.id).get(it).winnings
       }
