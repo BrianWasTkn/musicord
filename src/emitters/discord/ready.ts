@@ -15,7 +15,7 @@ export default class ClientListener extends Listener {
     const activity: PresenceData['activity'] = {
       name: 'lava help',
       type: 'STREAMING',
-      url: 'https://twitch.tv/badboyhaloislive',
+      url: 'https://twitch.tv/quackityhq',
     };
 
     const channel = await channels.fetch('789692296094285825');
@@ -33,10 +33,6 @@ export default class ClientListener extends Listener {
     (channel as TextChannel).send({ embed, content: '<@605419747361947649>' });
     await bot.setPresence({ activity });
     const msg = `${bot.tag} has flown within Discord.`;
-    return util.console({
-      msg,
-      type: 'def',
-      klass: 'Lava',
-    });
+    return util.console({ msg, type: 'def', klass: 'Lava' });
   }
 }
