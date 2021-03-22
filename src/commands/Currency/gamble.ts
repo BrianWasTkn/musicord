@@ -52,8 +52,8 @@ export default class Currency extends Command {
     for (const it of ['crazy', 'brian']) {
       const userEf = effects.get(_.author.id);
       if (!userEf) effects.set(_.author.id, new Collection<string, Effects>().set(it, new Effects()));
-      if (userEf.has(it)) {
-        extraWngs += userEf.get(it).winnings
+      if (effects.get(_.author.id).has(it)) {
+        extraWngs += effects.get(_.author.id).get(it).winnings
       }
     }
 
