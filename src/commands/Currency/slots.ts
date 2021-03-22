@@ -65,8 +65,9 @@ export default class Currency extends Command {
     // Item Effects
     const data = await DB.updateItems(_.author.id);
     let slots: number = 0;
-    const userEf = effects.get(_.author.id);
     for (const it of ['crazy', 'brian']) {
+      const userEf = effects.get(_.author.id);
+      if (!userEf) effects.set(_.author.id, new Collection<string, Effects>().set(it, new Effects()));
       if (userEf.has(it)) {
         slots += userEf.get(it).slots
       }

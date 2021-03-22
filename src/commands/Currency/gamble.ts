@@ -48,11 +48,12 @@ export default class Currency extends Command {
     if (!bet) return;
 
     // Item Effects
-    const userEf = effects.get(_.author.id);
     let extraWngs: number = 0;
-    for (const it of ['thicc', 'brian']) {
+    for (const it of ['crazy', 'brian']) {
+      const userEf = effects.get(_.author.id);
+      if (!userEf) effects.set(_.author.id, new Collection<string, Effects>().set(it, new Effects()));
       if (userEf.has(it)) {
-        extraWngs += userEf.get(it).winnings
+        slots += userEf.get(it).slots
       }
     }
 
