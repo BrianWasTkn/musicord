@@ -24,15 +24,17 @@ export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
     this.bot = client;
   }
 
-  async create(userID: Snowflake): Promise<Document & Profile> {
-    const data = new this.model({ userID });
-    await data.save();
-    return data as Document & Profile;
-  }
-
   fetch = async (userID: Snowflake): Promise<Document & Profile> => {
-    let data = await this.model.findOne({ userID });
-    return (!data ? await this.create(userID) : data) as Document & Profile;
+    const data = ((await this.model.findOne({ userID })) || new this.model({ userID })) as Document & Profile;
+    for (const item of this.bot.handlers.item.modules.array()) {
+      const inv = data.items.find(i => i.id === item.id);
+      if (!inv) {
+        const expire = 0, amount = 0, multi = 0, id = item.id;
+        data.items.push({ expire, amount, multi, id });
+      }
+    }
+
+    return (await data.save()) as Document & Profile;
   };
 
   add = async (
@@ -53,26 +55,6 @@ export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
   ): Promise<Document & Profile> => {
     const data = await this.fetch(userID);
     data[key as string] -= amount;
-    await data.save();
-    return data;
-  };
-
-  updateItems = async (userID: Snowflake): Promise<Document & Profile> => {
-    const items = this.bot.handlers.item.modules.array();
-    const data = await this.fetch(userID);
-    items.forEach((i) => {
-      const filter = (it) => it.id === i.id;
-      const isHere = data.items.find(filter);
-      if (!isHere) {
-        const expire = 0,
-          amount = 0,
-          multi = 0,
-          id = i.id;
-
-        data.items.push({ expire, amount, multi, id });
-      }
-    });
-
     await data.save();
     return data;
   };

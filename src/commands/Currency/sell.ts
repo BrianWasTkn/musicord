@@ -35,8 +35,8 @@ export default class Currency extends Command {
 		const { amount = 1, item } = args;
 		const { item: Items } = this.client.handlers;
 		const { maxInventory } = this.client.config.currency;
-		const { updateItems } = this.client.db.currency;
-		const data = await updateItems(msg.author.id);
+		const { fetch } = this.client.db.currency;
+		const data = await fetch(msg.author.id);
 
 		if (!item) return 'You need something to sell';
 		

@@ -31,13 +31,13 @@ export default class Currency extends Command {
     const { item } = args;
     if (!item) return "This item doesn't exist :thinking:";
 
-    const isPromise = this.client.util.isPromise.bind(this.client.util);
+    const { isPromise } = this.client.util;
     const data = await fetch(msg.author.id);
 
     const inv = data.items.find((i) => i.id === item.id);
-    if (!inv || inv.amount < 1) return "You don't own this item";
+    if (!inv || inv.amount < 1) return "LOL you don't own this item";
     if (inv.expire > Date.now()) return 'This item is currently active right now.';
-    if (!item.usable) return 'LOL you can\'t use this item :thinking:'
+    if (!item.usable) return 'You can\'t use this item :thinking:'
 
     const ret = await item.use(msg);
     return { content: ret, reply: msg.author.id };

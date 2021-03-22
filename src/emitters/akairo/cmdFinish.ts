@@ -27,7 +27,7 @@ export default class CommandListener extends Listener {
 
     // Currency
     if (command.category.id === 'Currency') {
-      const { add, updateItems } = this.client.db.currency;
+      const { add } = this.client.db.currency;
       // Bank Space
       const blI = ['bal', 'buy', 'dep', 'with', 'shop', 'inv', 'multi'];
       const isWl = blI.some(c => command.id === c || command.aliases.includes(c));

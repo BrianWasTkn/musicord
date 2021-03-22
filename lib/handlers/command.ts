@@ -140,4 +140,13 @@ export class CommandHandler<
       }
     }
   }
+
+  runCooldowns(msg: Message, cmd: CommandModule) {
+    const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
+    if (!time) return false;
+
+    // TODO: Database Cooldowns
+    if (time < 30000) return super.runCooldowns(msg, cmd);
+    return true;
+  }
 }

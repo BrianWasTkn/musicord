@@ -44,7 +44,7 @@ export class Util extends ClientUtil {
    * @param array An array with usually many items
    * @param size The number of items per array in return
    */
-  paginateArray = <T>(array: T[], size: number): T[][] => {
+  paginateArray = <T>(array: T[], size?: number): T[][] => {
     let result = [];
     let j = 0;
     for (let i = 0; i < Math.ceil(array.length / (size || 5)); i++) {
@@ -76,6 +76,23 @@ export class Util extends ClientUtil {
    */
   randomColor = (): number => {
     return Math.random() * 0xffffff;
+  }
+
+  parseTime = (time: number): string => {
+    const methods = [
+      { name: 'd', count: 86400 },
+      { name: 'h', count: 3600 },
+      { name: 'm', count: 60 },
+      { name: 's', count: 1 }
+    ];
+
+    const timeStr = [ Math.floor(time / methods[0].count).toString() + methods[0].name ];
+    for (let i = 0; i < 3; i++) {
+      const calced = Math.floor(time % methods[i].count / methods[i + 1].count);
+      timeStr.push(calced.toString() + methods[i + 1].name);
+    }
+
+    return timeStr.filter(g => !g.startsWith('0')).join(', ');
   }
 
   isPromise = (something: any): boolean => {

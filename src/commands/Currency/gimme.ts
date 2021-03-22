@@ -15,7 +15,7 @@ export default class Currency extends Command {
 
   async exec({ author, channel }: Message): Promise<string> {
     const { db, config, util, handlers } = this.client;
-    const { fetch, add, updateItems } = db.currency;
+    const { fetch, add } = db.currency;
     const data = await fetch(author.id);
     const items = handlers.item.modules;
 
@@ -27,15 +27,10 @@ export default class Currency extends Command {
       const item = items.filter(i => i.cost < 30e6).random();
       const amount = util.randomNumber(1, 5);
       let itinv = data.items.find(i => i.id === item.id);
-      if (!itinv) {
-        await updateItems(author.id);
-        itinv = data.items.find(i => i.id === item.id);
-      }
-
       itinv.amount += amount;
       await data.save();
       return `WTF you got **${amount} ${item.emoji} ${item.name}**${amount > 1 ? 's' : ''} that was lucky asf`
-    } else if (odds >= 0.3) {
+    } else if (odds >= 0.5) {
       const won = util.randomNumber(100, 500) * 1e3;
       await add(author.id, 'pocket', won);
       return `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`

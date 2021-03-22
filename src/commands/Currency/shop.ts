@@ -50,7 +50,7 @@ export default class Currency extends Command {
       if (!query) return 'That item doesn\'t even exist in the shop what\'re you doing?'
       const data = await this.client.db.currency.fetch(msg.author.id);
       const inv = data.items.find(i => i.id === query.id);
-      if (!inv) await this.client.db.currency.updateItems(msg.author.id);
+      if (!inv) await this.client.db.currency.fetch(msg.author.id);
       
       let info: string[] = [];
       info.push(`**Item Price** — ${query.buyable ? query.cost.toLocaleString() : '**cannot be purchased**'}`);

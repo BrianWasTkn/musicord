@@ -68,10 +68,10 @@ export default class Currency extends Command {
   }
 
   // this too fricking time istg 
-  roll(emojis: string[]) {
+  roll(emojis: string[], oddRdce: number) {
     const { randomInArray, randomNumber } = this.client.util;
-    const odds = randomNumber(1, 100);
     const emoji = randomInArray(emojis);
+    const odds = randomNumber(1, 100);
 
     function filter<A>(x: A[], comp: A): boolean {
       return !x.some((y: A) => y === comp);
@@ -81,9 +81,9 @@ export default class Currency extends Command {
       return srcArr.filter((src: A) => filter(filtArr, src));
     }
 
-    if (odds > 90) {
+    if (odds > (97 - oddRdce)) {
       return Array(3).fill(emoji);
-    } else if (odds > 80) {
+    } else if (odds > 75) {
       const emjis = Array(3).fill(emoji);
       const ind = randomNumber(1, emjis.length) - 1;
       emjis[ind] = randomInArray(emojis.filter(e => e !== emoji));
@@ -100,7 +100,7 @@ export default class Currency extends Command {
   /**
    * Basically the whole thang
    * @param _ a discord message object
-   * @param args the passed command arguments
+   * @param args the passed arguments
    */
   async exec(
     _: Message,
@@ -120,7 +120,7 @@ export default class Currency extends Command {
     if (!bet) return;
 
     // Item Effects
-    const data = await DB.updateItems(_.author.id);
+    const data = await DB.fetch(_.author.id);
     let slots: number = 0;
     for (const it of ['crazy', 'brian']) {
       const userEf = effects.get(_.author.id);
@@ -132,11 +132,11 @@ export default class Currency extends Command {
 
     // Slot Emojis
     const emojis = Object.keys(this.slotMachine);
-    const order = this.roll(emojis);
+    const order = this.roll(emojis, slots);
     const outcome = `**>** :${[...order].join(':    :')}: **<**`;
     let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, order);
 
-    // Visuals
+    // Shit
     let description: string[] = [];
     let color: ColorResolvable = 'RED';
     let state: string = 'losing';
@@ -170,7 +170,7 @@ export default class Currency extends Command {
     return { embed };
   }
 
-  private calcWinnings(bet: number, slots: string[]): { [k: string]: number } {
+  calcWinnings(bet: number, slots: string[]): { [k: string]: number } {
     const { slotMachine } = this;
     const rate: number[][] = Object.values(slotMachine);
     const emojis: string[] = Object.keys(slotMachine);
@@ -182,9 +182,9 @@ export default class Currency extends Command {
 
     if (length === 1 || length === 2) {
       let index = length === 1 ? 1 : 0; // [prop: string]: [number, number]
-      let m = multi[index]; // [number, number][0]
-      let w = Math.round(bet * m);
-      return { length, winnings: w, multiplier: m };
+      let multiplier = multi[index]; // [number, number][0]
+      let winnings = Math.round(bet * multiplier);
+      return { length, winnings , multiplier };
     }
 
     return { length, winnings: 0 };

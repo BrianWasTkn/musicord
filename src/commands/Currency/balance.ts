@@ -21,9 +21,9 @@ export default class Currency extends Command {
   }
 
   public async exec(_: Message, args: { member: GuildMember }): Promise<MessageOptions> {
-    const { updateItems } = this.client.db.currency;
+    const { fetch } = this.client.db.currency;
     const { member } = args;
-    const { pocket, vault, space, items } = await updateItems(member.user.id);
+    const { pocket, vault, space, items } = await fetch(member.user.id);
     const handler = this.client.handlers.item;
     const net = items
       .map(i => {

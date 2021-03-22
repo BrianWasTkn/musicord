@@ -22,9 +22,9 @@ export const utils: CurrencyUtil = {
     bot: Lava,
     msg: Message
   ): Promise<{ unlocked: string[]; total: number }> {
-    const { updateItems } = bot.db.currency;
+    const { fetch } = bot.db.currency;
     const channel = msg.channel as GuildChannel;
-    const db = await updateItems(msg.author.id);
+    const db = await fetch(msg.author.id);
     let total = 0;
     total += db.multi;
     let unlocked = [];
@@ -67,40 +67,43 @@ export const utils: CurrencyUtil = {
       total += 4.5;
       unlocked.push(`420 Server Emojis — \`2.5%\``);
     }
+    if (msg.guild.members.cache.size >= 1000) {
+      total += 1;
+      unlocked.push(`1000+ Members — \`1%\``);
+      const size = msg.guild.members.cache.size;
+
+      if (size >= 2000) {
+        total += 2;
+        unlocked.push(`2000+ Members — \`2%\``);
+      }
+      else if (size >= 3000) {
+        total += 3;
+        unlocked.push(`3000+ Members — \`3%\``);
+      }
+      else if (size >= 4200) {
+        total += 4;
+        unlocked.push(`4200+ Members — \`4%\``);
+      }
+    }
 
     // Currency-based (10%)
     const items = bot.handlers.item.modules;
+    for (const item of ['coffee', 'brian']) {
+      const mod = items.get(item);
+      const inv = db.items.find(i => i.id === mod.id);
+      if (inv.expire > Date.now()) {
+        total += inv.multi;
+        unlocked.push(`${mod.name} — \`${inv.multi}%\``);
+      }
+    }
+
     const trophyItem = items.get('trophy');
-    const coffeeItem = items.get('coffee');
-    const heartItem = items.get('brian');
     const trophy = db.items.find(i => i.id === trophyItem.id);
-    const coffee = db.items.find(i => i.id === coffeeItem.id);
-    const heart = db.items.find(i => i.id === heartItem.id);
 
     if (trophy.amount >= 1) {
       let multi = 10 * trophy.amount;
       total += multi;
       unlocked.push(`${trophyItem.name} — \`${multi}%\``);
-    }
-
-    if (coffee.active && (coffee.expire > Date.now())) {
-      total += coffee.multi;
-      unlocked.push(`${coffeeItem.name} — \`${coffee.multi}%\``);
-    } else {
-      if (coffee.active) {
-        coffee.active = false;
-        await db.save();
-      }
-    }
-
-    if (heart.active && (heart.expire > Date.now())) {
-      total += heart.multi;
-      unlocked.push(`${heartItem.name} — \`${heart.multi}%\``);
-    } else {
-      if (heart.active) {
-        heart.active = false;
-        await db.save();
-      }
     }
 
     return { total, unlocked };
