@@ -9,7 +9,7 @@ export default class Powerflex extends Item {
       buyable: true,
       usable: true,
       emoji: ':brown_heart:',
-      info: "Gives 50% multi, +25% winnings in gamble, +10% jackpot chance in slots ALL in 5 minutes.",
+      info: "Gives 50% multi, +25% winnings in gamble, +5% jackpot chance in slots ALL in 5 minutes.",
       name: "Brian's Heart",
       cost: 1250000,
     });
@@ -25,6 +25,6 @@ export default class Powerflex extends Item {
     heart.multi = 50;
     await data.save();
 
-    return `You have been granted a **${multi}% multiplier, +25% winnings in gamble and +10% chance of jackpots in slots** for 5 minutes.`;
+    return `You have been granted a **${multi}% multiplier, +25% winnings in gamble and +5% chance of jackpots in slots** for 5 minutes.`;
   }
 }

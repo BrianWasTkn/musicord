@@ -35,9 +35,9 @@ export default class Currency extends Command {
     for (const item of items) {
       const inv = data.items.find(i => i.id === item.id);
       if (inv.expire > Date.now()) {
-        if (item.id === 'brian') eff.setWinnings(0.5).setSlotOdds(0.5);
+        if (item.id === 'brian') eff.setWinnings(0.5).setSlotOdds(5);
         if (item.id === 'thicc') eff.setWinnings(0.5);
-        if (item.id === 'crazy') eff.setSlotOdds(0.1);
+        if (item.id === 'crazy') eff.setSlotOdds(5);
         const temp = new Collection<string, Effects>();
         temp.set(item.id, new Effects());
         if (!effects.has(msg.author.id)) effects.set(msg.author.id, temp);
