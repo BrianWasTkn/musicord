@@ -81,7 +81,7 @@ export default class Currency extends Command {
       return srcArr.filter((src: A) => filter(filtArr, src));
     }
 
-    if (odds > (97 - oddRdce)) {
+    if (odds > (97 - (oddRdce * 100))) {
       return Array(3).fill(emoji);
     } else if (odds > 75) {
       const emjis = Array(3).fill(emoji);
