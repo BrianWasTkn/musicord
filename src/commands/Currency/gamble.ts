@@ -51,7 +51,7 @@ export default class Currency extends Command {
     const userEf = effects.get(_.author.id);
     let extraWngs: number = 0;
     for (const it of ['thicc', 'brian']) {
-      if (userEf.get(it)) {
+      if (userEf.has(it)) {
         extraWngs += userEf.get(it).winnings
       }
     }
@@ -59,11 +59,11 @@ export default class Currency extends Command {
     // Dice
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);
-    // if (Math.random() > 0.6) {
-    //   userD = (botD > userD ? [botD, (botD = userD)] : [userD])[0];
-    // } else {
-    //   botD = (userD > botD ? [userD, (userD = botD)] : [botD])[0];
-    // }
+    if (Math.random() > 0.65) {
+      userD = (botD > userD ? [botD, (botD = userD)] : [userD])[0];
+    } else {
+      botD = (userD > botD ? [userD, (userD = botD)] : [botD])[0];
+    }
 
     // vis and db
     let w: number,

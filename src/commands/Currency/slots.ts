@@ -67,7 +67,7 @@ export default class Currency extends Command {
     let slots: number = 0;
     const userEf = effects.get(_.author.id);
     for (const it of ['crazy', 'brian']) {
-      if (userEf.get(it)) {
+      if (userEf.has(it)) {
         slots += userEf.get(it).slots
       }
     }
