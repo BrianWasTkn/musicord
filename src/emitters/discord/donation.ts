@@ -45,8 +45,8 @@ async function handleDonation(msg: Message, type: 'giveaway' | 'heist') {
 			const col = await collect(questions[qArr[index]]);
 			if (!col) return await dm.send('The donation has been cancelled.');
 			let results: string[] = [];
-			for (const [type, response] of res) {
-				results.push(`**${type}:** ${response}`);
+			for (const [label, response] of res) {
+				results.push(`**${label}:** ${response}`);
 			}
 
 			const chan = msg.guild.channels.cache.get('691596367776186379') as TextChannel;
