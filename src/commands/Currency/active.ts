@@ -19,7 +19,7 @@ export default class Currency extends Command {
       .filter(i => i.expire > msg.createdTimestamp)
       .map(i => {
         const item = this.client.handlers.item.modules.get(i.id);
-        const expire = this.client.util.parseTime(Math.floor(i.expire / 1e3));
+        const expire = this.client.util.parseTime(Math.floor((i.expire - Date.now()) / 1e3));
         return `**${item.emoji} ${item.name}** — **Expires** in **${expire.join('**, **')}**`
       });
 
