@@ -1,6 +1,6 @@
 # Lava
 
-> Provide utilities for your [Dank Memer](https://dankmemer.lol 'Visit Site')-based discord server.
+> A simple discord bot with database support.
 
 <div align="center">
   
@@ -13,8 +13,8 @@
 
 ## Features
 
-- **Spawner** - Spawn events on a channel to earn $$$ (not real ones, ok?).
-- **Games** - Gambling games, fight or spam games, on the go.
+- **Currency** - A currency system (based on [Dank Memer](https://dankmemer.lol))
+- **Spawner** - On-the-spot events to join to get some credits.
 
 ## Self-Hosting
 
@@ -24,6 +24,7 @@ Although the full code is visible and is available here to self-host on any comp
 
 - **Dauntless#0711** - _core of slot machine_ - [discord](https://discord.com/invite/Ha7pRB4)
 - **Dank Memer v5** - _general concept for currency_ - [source](https://dankmemer.lol/source)
+- **Melmsie#0001** - _blackjack command_ [source](https://blackjack.dankmemer.lol)
 
 ## Author
 

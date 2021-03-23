@@ -8,7 +8,7 @@ Just a list of planned features basically for event and currency commands. Check
 
 ## Crib
 * [ ] **Event Commands**
-* [ ] **Donation System**
+* [x] **Donation System**
 * [ ] **Timed Events**
 
 ## Back-End
