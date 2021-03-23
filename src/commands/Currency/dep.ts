@@ -1,4 +1,5 @@
-import { Message, GuildMember, MessageOptions } from 'discord.js';
+import { GuildMember, MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 
@@ -13,12 +14,12 @@ export default class Currency extends Command {
       args: [
         {
           id: 'amount',
-          type: async (msg: Message, phrase: number | string) => {
+          type: async (msg: MessagePlus, phrase: number | string) => {
             if (!phrase) {
               await msg.channel.send('You need something to deposit');
               return null;
             }
-            const data = await this.client.db.currency.fetch(msg.author.id);
+            const data = await msg.author.fetchDB();
             if (data.pocket < 1) {
               await msg.channel.send("Lol you don't have coins to deposit rip");
               return null;
@@ -49,15 +50,14 @@ export default class Currency extends Command {
   }
 
   public async exec(
-    _: Message,
+    msg: MessagePlus,
     {
       amount,
     }: {
       amount: number;
     }
   ): Promise<string | MessageOptions> {
-    const { fetch, add, remove } = this.client.db.currency;
-    const { pocket, vault, space } = await fetch(_.author.id);
+    const { pocket, vault, space } = await msg.author.fetchDB();
     const embed: Embed = new Embed();
     
     if (!amount)
@@ -68,8 +68,8 @@ export default class Currency extends Command {
       return `Bro, you only have ${pocket.toLocaleString()} coins what're you doing?`;
 
     const input = amount >= space - vault ? space - vault : amount;
-    await add(_.author.id, 'vault', input);
-    await remove(_.author.id, 'pocket', input);
+    await msg.author.dbAdd('vault', input);
+    await msg.author.dbRemove('pocket', input);
     return `**${input.toLocaleString()}** coins deposited.`;
   }
 }

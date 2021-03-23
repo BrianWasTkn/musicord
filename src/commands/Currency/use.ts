@@ -1,4 +1,5 @@
-import { Message, MessageOptions } from 'discord.js';
+import { MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 import { Item } from '@lib/handlers/item';
@@ -21,18 +22,17 @@ export default class Currency extends Command {
   }
 
   async exec(
-    msg: Message,
+    msg: MessagePlus,
     args: {
       item: Item;
     }
   ): Promise<string | MessageOptions> {
     const { item: Items } = this.client.handlers;
-    const { fetch } = this.client.db.currency;
     const { item } = args;
     if (!item) return "This item doesn't exist :thinking:";
 
     const { isPromise } = this.client.util;
-    const data = await fetch(msg.author.id);
+    const data = await msg.author.fetchDB();
 
     const inv = data.items.find((i) => i.id === item.id);
     if (!inv || inv.amount < 1) return "LOL you don't own this item";

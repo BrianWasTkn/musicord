@@ -1,4 +1,5 @@
-import { Message, MessageOptions } from 'discord.js';
+import { MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 import { Item } from '@lib/handlers/item';
@@ -26,7 +27,7 @@ export default class Currency extends Command {
   }
 
   async exec(
-    msg: Message,
+    msg: MessagePlus,
     args: {
       amount: number;
       item: Item;
@@ -36,7 +37,7 @@ export default class Currency extends Command {
     const { item: Items } = this.client.handlers;
     const { maxInventory } = this.client.config.currency;
     const { fetch } = this.client.db.currency;
-    const data = await fetch(msg.author.id);
+    const data = await msg.author.fetchDB();
 
     if (!item) return 'You need something to buy';
 

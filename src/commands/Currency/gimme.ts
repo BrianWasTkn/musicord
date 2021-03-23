@@ -1,5 +1,5 @@
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
-import { Message } from 'discord.js';
 import { Item } from '@lib/handlers/item'
 
 export default class Currency extends Command {
@@ -13,10 +13,10 @@ export default class Currency extends Command {
     });
   }
 
-  async exec({ author, channel }: Message): Promise<string> {
+  async exec(msg: MessagePlus): Promise<string> {
     const { db, config, util, handlers } = this.client;
     const { fetch, add } = db.currency;
-    const data = await fetch(author.id);
+    const data = await msg.author.fetchDB();
     const items = handlers.item.modules;
 
     const type = util.randomInArray(['pocket', 'item']);
@@ -32,10 +32,10 @@ export default class Currency extends Command {
       return `WTF you got **${amount} ${item.emoji} ${item.name}**${amount > 1 ? 's' : ''} that was lucky asf`
     } else if (odds >= 0.5) {
       const won = util.randomNumber(100, 500) * 1e3;
-      await add(author.id, 'pocket', won);
+      await msg.author.dbAdd('pocket', won);
       return `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`
     } else {
-      return 'Nah, won\'t give anything to \'ya.'
+      return 'LOL nope.'
     }
   }
 }

@@ -1,5 +1,6 @@
-import { Message, EmbedField, MessageOptions } from 'discord.js';
+import { EmbedField, MessageOptions } from 'discord.js';
 import { Argument, Category } from 'discord-akairo';
+import { MessagePlus } from '@lib/extensions/message';
 import { EmbedFieldData } from 'discord.js';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
@@ -53,7 +54,7 @@ export default class Utility extends Command {
       .addField('CD Ratelimit', c.ratelimit || 1, true).fields;
   }
 
-  public async exec(_: Message, args: Help): Promise<MessageOptions> {
+  public async exec(msg: MessagePlus, args: Help): Promise<MessageOptions> {
     const { handler } = this;
     const { query } = args;
     const embed = new Embed();
@@ -70,10 +71,10 @@ export default class Utility extends Command {
 
     if (cmd && !cat) {
       embed
-        .setFooter(false, _.author.tag, _.author.avatarURL({ dynamic: true }))
+        .setFooter(false, msg.author.tag, msg.author.avatarURL({ dynamic: true }))
         .setTitle(
           `${
-            (this.handler.prefix as (m: Message) => string | string[])(_)[0]
+            (this.handler.prefix as (m: MessagePlus) => string | string[])(msg)[0]
           } ${cmd.id} info`
         )
         .addFields(this.fieldifyCmd(cmd))
@@ -92,7 +93,7 @@ export default class Utility extends Command {
         .setColor('ORANGE');
     } else {
       embed
-        .setDescription("Lava will flow in your server's utility needs.")
+        .setDescription("Lava.")
         .setFooter(false, `${this.handler.modules.size} total commands`)
         .setTitle(`${this.client.user.username} Commands`)
         .setThumbnail(this.client.user.avatarURL())

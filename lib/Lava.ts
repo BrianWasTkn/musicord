@@ -1,9 +1,9 @@
 import { AkairoClient, AkairoModule } from 'discord-akairo';
-import { LavaUser, LavaUserManager } from './extensions/user';
-import { Collection, UserManager } from 'discord.js';
 import { CurrencyProfile } from './interface/mongo/currency';
 import { Config, config } from '../config';
 import { SpawnDocument } from './interface/mongo/spawns';
+import { MessagePlus } from './extensions/message';
+import { Collection } from 'discord.js';
 import { argTypes } from './utility/types';
 import { Util } from './utility/util';
 import { join } from 'path';
@@ -18,16 +18,14 @@ import {
   Item
 } from './handlers'
 
-
 // def imports
 import CurrencyFunc from './mongo/currency/functions';
 import SpawnerFunc from './mongo/spawns/functions';
 import mongoose from 'mongoose';
-import Distube from 'distube'
 import chalk from 'chalk';
 
 // ext structures
-// import './extensions/user';
+import './extensions/message';
 
 interface DB {
   currency: CurrencyFunc<CurrencyProfile>;
@@ -43,9 +41,7 @@ interface Handlers {
 
 export class Lava extends AkairoClient {
   handlers: Handlers;
-  player: Distube;
   config: Config;
-  users: LavaUserManager;
   util: Util;
   db: DB = {
     currency: new CurrencyFunc<CurrencyProfile>(this),
@@ -56,7 +52,6 @@ export class Lava extends AkairoClient {
     super({ ...cfg.discord, ...cfg.akairo });
     this.util = new Util(this);
     this.config = cfg;
-    this.player = new Distube(this);
     this.handlers = {
       emitter: new ListenerHandler<Listener>(this, {
         directory: join(__dirname, '..', 'src', 'emitters'),
@@ -74,9 +69,9 @@ export class Lava extends AkairoClient {
   }
 
   private _patch(): void {
-    const { player, handlers: { command, emitter, item, spawn } } = this;
+    const { handlers: { command, emitter, item, spawn } } = this;
     command.useListenerHandler(emitter);
-    emitter.setEmitters({ spawn, command, emitter, item, player });
+    emitter.setEmitters({ spawn, command, emitter, item });
     command.resolver.addTypes(argTypes(this));
 
     const handlers = {

@@ -1,4 +1,5 @@
-import { Message, MessageOptions } from 'discord.js';
+import { MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 
 // blackjack.dankmemer.lol
@@ -16,7 +17,7 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(msg: Message, args: { amount: number }): Promise<string | MessageOptions> {
+  async exec(msg: MessagePlus, args: { amount: number }): Promise<string | MessageOptions> {
      const {
       util,
       util: { effects },
@@ -26,7 +27,7 @@ export default class Currency extends Command {
 
     // Core
     const { maxWin, maxMulti, maxBet, maxPocket } = currency;
-    const data = await DB.fetch(msg.author.id);
+    const data = await msg.author.fetchDB();
     let { total: multi } = await DB.utils.calcMulti(this.client, msg);
     const { amount: bet } = args;
     if (multi >= maxMulti) multi = maxMulti as number;
@@ -124,7 +125,7 @@ export default class Currency extends Command {
           winnings = Math.ceil(bet * (Math.random() + 0.4)); // "Base Multi"
           winnings = Math.min(maxPocket as number, winnings + Math.ceil(winnings * (multi / 100))); // This brings in the user's secret multi (pls multi)
           finalMsg += `\nYou won **${winnings.toLocaleString()}**. You now have ${(data.pocket + winnings).toLocaleString()}.`;
-          await DB.add(msg.author.id, 'pocket', winnings);
+          await msg.author.dbAdd('pocket', winnings);
         } else {
           // Tie
           if (status.result === null) {
@@ -132,7 +133,7 @@ export default class Currency extends Command {
           } else {
             // Loss
             finalMsg += `\nYou lost **⏣ ${Number(bet).toLocaleString()}**. You now have ${(data.pocket - bet).toLocaleString()}.`;
-            await DB.remove(msg.author.id, 'pocket', bet);
+            await msg.author.dbRemove('pocket', bet);
           }
         }
         final = true;

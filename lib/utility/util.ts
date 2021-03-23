@@ -1,3 +1,10 @@
+import { AkairoHandler, ClientUtil } from 'discord-akairo';
+import { CurrencyProfile } from '@lib/interface/mongo/currency'
+import { InventorySlot } from '@lib/interface/handlers/item'
+import { Document } from 'mongoose'
+import { Effects } from './effects';
+import { COLORS } from '../utility/constants';
+import { Lava } from '../Lava';
 import {
   MessageCollectorOptions,
   MessageCollector,
@@ -8,13 +15,6 @@ import {
   Message,
   Role,
 } from 'discord.js';
-import { AkairoHandler, ClientUtil } from 'discord-akairo';
-import { CurrencyProfile } from '@lib/interface/mongo/currency'
-import { InventorySlot } from '@lib/interface/handlers/item'
-import { Document } from 'mongoose'
-import { Effects } from './effects';
-import { COLORS } from '../utility/constants';
-import { Lava } from '../Lava';
 
 import chalk from 'chalk';
 import moment from 'moment';
@@ -76,6 +76,10 @@ export class Util extends ClientUtil {
    */
   randomColor = (): number => {
     return Math.random() * 0xffffff;
+  }
+
+  codeBlock = (lang: string = 'js', content: string): string => {
+    return `${'```'}${lang}\n${content}\n${'```'}`;
   }
 
   // dankmemer.lol/source

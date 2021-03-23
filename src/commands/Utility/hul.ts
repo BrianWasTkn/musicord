@@ -1,4 +1,5 @@
-import { Message, Role, GuildChannel, MessageOptions } from 'discord.js';
+import { Role, GuildChannel, MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 
 export default class Util extends Command {
@@ -13,7 +14,7 @@ export default class Util extends Command {
         {
           id: 'role',
           type: 'role',
-          default: (m: Message) => m.guild.id,
+          default: (m: MessagePlus) => m.guild.id,
         },
         {
           id: 'interval',
@@ -35,7 +36,7 @@ export default class Util extends Command {
     };
   }
 
-  async exec(_: Message, args: any): Promise<MessageOptions> {
+  async exec(_: MessagePlus, args: any): Promise<MessageOptions> {
     await _.delete();
     const { role, interval } = args;
     if (!role) return;
@@ -60,8 +61,8 @@ export default class Util extends Command {
       }
 
       await this.client.util.sleep(int * 1e3);
-      msg = await msg.edit({ embed: this.embed(num, role, 'ORANGE') });
       num -= 10;
+      msg = await msg.edit({ embed: this.embed(num, role, 'ORANGE') });
       return await run(int);
     };
 

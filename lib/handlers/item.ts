@@ -1,6 +1,7 @@
-import type { Collection, Message } from 'discord.js';
 import type { CurrencyProfile } from '@lib/interface/mongo/currency';
 import type { ItemOptions } from '@lib/interface/handlers/item';
+import type { MessagePlus } from '@lib/extensions/message'
+import type { Collection } from 'discord.js';
 import type { Document } from 'mongoose';
 import type { Lava } from '../Lava';
 import {
@@ -34,7 +35,7 @@ export class Item extends AkairoModule {
     this.name = opt.name;
   }
 
-  use(msg: Message): any | Promise<any> {}
+  use(msg: MessagePlus): any | Promise<any> {}
 }
 
 export class ItemHandler<ItemModule extends Item> extends AkairoHandler {

@@ -1,4 +1,5 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
+import { MessageEmbed } from 'discord.js';
 import { Listener } from '@lib/handlers';
 import { Command } from 'discord-akairo';
 import { Lava } from '@lib/Lava';
@@ -12,11 +13,11 @@ export default class CommandListener extends Listener {
   }
 
   async exec(
-    _: Message,
+    msg: MessagePlus,
     command: Command,
     type: string,
     missing: any
-  ): Promise<Message> {
+  ): Promise<MessagePlus> {
     type = type === 'client' ? 'I' : 'You';
     const d: string[] = [];
     d.push(
@@ -34,6 +35,6 @@ export default class CommandListener extends Listener {
       .setFooter(this.client.user.username, this.client.user.avatarURL())
       .setTitle('Well rip, no perms.');
 
-    return _.channel.send({ embed });
+    return msg.channel.send({ embed }) as Promise<MessagePlus>;
   }
 }

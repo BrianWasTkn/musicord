@@ -1,4 +1,5 @@
-import { Message, GuildMember, MessageOptions } from 'discord.js';
+import { GuildMember, MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 
@@ -21,7 +22,7 @@ export default class Currency extends Command {
   }
 
   public async exec(
-    _: Message,
+    msg: MessagePlus,
     {
       page,
     }: {
@@ -31,7 +32,7 @@ export default class Currency extends Command {
     const { maxMulti } = this.client.config.currency;
     const { utils } = this.client.db.currency;
     const { util } = this.client;
-    const multi = await utils.calcMulti(this.client, _);
+    const multi = await utils.calcMulti(this.client, msg);
 
     const multis = util.paginateArray(multi.unlocked, 5);
     if (page > multis.length) return "That page doesn't exist.";
@@ -42,8 +43,8 @@ export default class Currency extends Command {
         multis[page - 1].join('\n')
       )
       .setAuthor(
-        `${_.member.user.username}'s multipliers`,
-        _.author.avatarURL({ dynamic: true })
+        `${msg.member.user.username}'s multipliers`,
+        msg.author.avatarURL({ dynamic: true })
       )
       .setFooter(
         false,

@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 
 export default class Currency extends Command {
@@ -13,9 +13,8 @@ export default class Currency extends Command {
         {
           id: 'amount',
           type: 'number',
-          default: async (msg: Message) => {
-            const { fetch } = this.client.db.currency;
-            const { pocket } = await fetch(msg.author.id);
+          default: async (msg: MessagePlus) => {
+            const { pocket } = await msg.author.fetchDB();
             return Math.round(pocket / 2);
           },
         },
@@ -23,9 +22,8 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(_: Message, args: { amount: number }): Promise<string> {
-    const { remove, fetch } = this.client.db.currency;
-    const { pocket } = await fetch(_.author.id);
+  async exec(msg: MessagePlus, args: { amount: number }): Promise<string> {
+    const { pocket } = await msg.author.fetchDB();
     const { amount } = args;
 
     if (!amount) 
@@ -35,7 +33,7 @@ export default class Currency extends Command {
     else if (amount >= pocket)
       return 'Imagine burning money higher than your pocket lmao';
 
-    await remove(_.author.id, 'pocket', amount);
+    await msg.author.dbRemove('pocket', amount);
     return `Burned **${amount.toLocaleString()}** coins from your pocket.`;
   }
 }

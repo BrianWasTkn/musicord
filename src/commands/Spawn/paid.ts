@@ -1,4 +1,5 @@
 import { Message, MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 
@@ -19,14 +20,14 @@ export default class Spawn extends Command {
           id: 'member',
           type: 'member',
           unordered: true,
-          default: (message: Message) => message.member,
+          default: (message: MessagePlus) => message.member,
         },
       ],
     });
   }
 
   async exec(
-    _: Message,
+    msg: MessagePlus,
     args: {
       amount: number;
       member: Message['member'];

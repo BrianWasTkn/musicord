@@ -3,10 +3,11 @@
  * Author: brian
  */
 
-import type { Message, GuildChannel } from 'discord.js';
 import type { CurrencyProfile } from '@lib/interface/mongo/currency';
 import type { InventorySlot } from '@lib/interface/handlers/item';
 import type { CurrencyUtil } from '@lib/interface/mongo/currency';
+import type { GuildChannel } from 'discord.js';
+import type { MessagePlus } from '@lib/extensions/message';
 import type { Item } from '@lib/handlers/item'
 import type { Lava } from '@lib/Lava';
 import { Document } from 'mongoose';
@@ -20,7 +21,7 @@ export const utils: CurrencyUtil = {
    */
   calcMulti: async function CalcMulti(
     bot: Lava,
-    msg: Message
+    msg: MessagePlus
   ): Promise<{ unlocked: string[]; total: number }> {
     const { fetch } = bot.db.currency;
     const channel = msg.channel as GuildChannel;
@@ -72,17 +73,17 @@ export const utils: CurrencyUtil = {
       unlocked.push(`1000+ Members — \`1%\``);
       const size = msg.guild.members.cache.size;
 
-      if (size >= 2000) {
-        total += 2;
-        unlocked.push(`2000+ Members — \`2%\``);
+      if (size >= 4200) {
+        total += 4;
+        unlocked.push(`4200+ Members — \`4%\``);
       }
-      else if (size >= 3000) {
+      if (size >= 3000) {
         total += 3;
         unlocked.push(`3000+ Members — \`3%\``);
       }
-      else if (size >= 4200) {
-        total += 4;
-        unlocked.push(`4200+ Members — \`4%\``);
+      if (size >= 2000) {
+        total += 2;
+        unlocked.push(`2000+ Members — \`2%\``);
       }
     }
 

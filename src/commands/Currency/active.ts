@@ -1,4 +1,5 @@
-import { Message, GuildMember, MessageOptions } from 'discord.js';
+import { GuildMember, MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 
@@ -13,8 +14,8 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(msg: Message): Promise<string | MessageOptions> {
-    const data = await this.client.db.currency.fetch(msg.author.id);
+  public async exec(msg: MessagePlus): Promise<string | MessageOptions> {
+    const data = await msg.author.fetchDB();
     const stamp = msg.createdTimestamp;
     const actives = data.items
       .filter(i => i.expire > stamp)

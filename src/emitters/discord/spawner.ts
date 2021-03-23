@@ -1,5 +1,5 @@
+import { MessagePlus } from '@lib/extensions/message';
 import { Listener } from '@lib/handlers';
-import { Message } from 'discord.js';
 import { Spawn } from '@lib/handlers/spawn';
 import { Lava } from '@lib/Lava';
 
@@ -11,7 +11,7 @@ export default class ClientListener extends Listener {
     });
   }
 
-  public async exec(message: Message): Promise<void | Message> {
+  public async exec(message: MessagePlus): Promise<void | MessagePlus> {
     const { config, handlers, ownerID, db } = this.client;
 
     if (!config.spawn.enabled) return;

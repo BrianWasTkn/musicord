@@ -1,4 +1,5 @@
-import { Message, Role, MessageOptions } from 'discord.js';
+import { Role, MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 
 export default class Util extends Command {
@@ -12,19 +13,19 @@ export default class Util extends Command {
     });
   }
 
-  async exec(_: Message): Promise<MessageOptions> {
-    await _.delete();
-    const role: Role = this.client.util.heists.get(_.channel.id);
+  async exec(msg: MessagePlus): Promise<MessageOptions> {
+    await msg.delete();
+    const role: Role = this.client.util.heists.get(msg.channel.id);
     if (!role) return;
-    const { channel }: any = _;
+    const { channel }: any = msg;
     await channel.updateOverwrite(role.id, { SEND_MESSAGES: null });
     return {
       embed: {
         title: `**LOCKED FOR \`${role.name}\`**`,
         color: 'GREEN',
         footer: {
-          text: _.guild.name,
-          iconURL: _.guild.iconURL({ dynamic: true }),
+          text: msg.guild.name,
+          iconURL: msg.guild.iconURL({ dynamic: true }),
         },
       },
     };

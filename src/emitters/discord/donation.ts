@@ -1,4 +1,5 @@
-import { Message, CollectorFilter, Collection, TextChannel } from 'discord.js';
+import { CollectorFilter, Collection, TextChannel } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Listener } from '@lib/handlers';
 import { Spawn } from '@lib/handlers/spawn';
 
@@ -27,7 +28,7 @@ const roles = {
 	'event': '697007407011725312'
 }
 
-async function handleDonation(msg: Message, type: 'giveaway' | 'event' | 'heist') {
+async function handleDonation(msg: MessagePlus, type: 'giveaway' | 'event' | 'heist') {
 	try {
 		await msg.delete();
 		const dm = await msg.author.createDM();
@@ -35,8 +36,8 @@ async function handleDonation(msg: Message, type: 'giveaway' | 'event' | 'heist'
 		try {
 
 			const questions = qObj[type];
-			await dm.send(`**Welcome to our interactive ${type} donation menu**\n*I will ask you series of questions for your ${type} donation. You have **30 seconds** for each question. You can type \`cancel\` anytime. Type anything to continue.*`)
-			const filter: CollectorFilter = (m: Message) => m.author.id === msg.author.id;
+			await dm.send(`**Welcome to our interactive ${type} donation menu**\n*I will ask you series of questions for your ${type} donation. You have **60 seconds** for each question. You can type \`cancel\` anytime. Type anything to continue.*`)
+			const filter: CollectorFilter = (m: MessagePlus) => m.author.id === msg.author.id;
 			const fcol = (await dm.awaitMessages(filter, { max: 1, time: 60000 })).first();
 			if (!fcol || fcol.content.toLowerCase() === 'cancel') {
 				return await dm.send('The donation has been cancelled.');
@@ -98,13 +99,13 @@ export default class ClientListener extends Listener {
     });
   }
 
-  public async exec(msg: Message): Promise<void | Message> {
+  public async exec(msg: MessagePlus): Promise<void | MessagePlus> {
   	if (msg.channel.id !== '818667160918425630') return;
 
     const haha = { 1: 'giveaway', 2: 'heist', 3: 'event' };
     const query = haha[Number(msg.content)];
-    if (!query) return msg.delete();
+    if (!query) return msg.delete() as Promise<MessagePlus>;
 
-    return await handleDonation(msg, query);
+    return await handleDonation(msg, query) as MessagePlus;
   }
 }

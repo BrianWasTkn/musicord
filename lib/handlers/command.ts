@@ -1,3 +1,6 @@
+import { MessagePlus } from '@lib/extensions/message'
+import { Util } from '@lib/utility/util';
+import { Lava } from '@lib/Lava';
 import {
   CommandHandlerOptions as HandlerOptions,
   CommandHandler as AkairoCommandHandler,
@@ -7,34 +10,40 @@ import {
   Constants,
   Category,
 } from 'discord-akairo';
-import { MessageOptions, Collection, Message, MessageEmbed } from 'discord.js';
-import { Util } from '@lib/utility/util';
-import { Lava } from '@lib/Lava';
+import { 
+  MessageOptions, 
+  MessageEmbed,
+  Collection, 
+  Message, 
+} from 'discord.js';
+
 const { CommandHandlerEvents: Events } = Constants;
 
-// Custom Types
-export type ExamplePredicate = (msg: Message) => string;
 export interface CommandHandlerOptions extends HandlerOptions {
   commandTyping?: boolean;
 }
 export interface CommandOptions extends AkairoCommandOptions {
-  examples?: string | ExamplePredicate | (string | ExamplePredicate)[];
+  examples?: string | string[];
 }
 
+export type CommandReturn = void 
+  | string 
+  | MessageEmbed 
+  | MessageOptions 
+  | Promise<string 
+    | MessageOptions 
+    | MessageEmbed
+  >;
+
 export class Command extends AkairoCommand {
-  examples: CommandOptions['examples'];
   handler: CommandHandler<Command>;
   client: Lava;
 
   constructor(id: string, opts: CommandOptions) {
     super(id, opts);
-    this.examples = opts.examples;
   }
 
-  exec(
-    message: Message,
-    args: any
-  ): void | string | MessageEmbed | MessageOptions | Promise<string | MessageOptions | MessageEmbed> {
+  exec(message: MessagePlus, args: any): CommandReturn {
     return {
       embed: {
         title: 'What ya doing?',
@@ -42,15 +51,6 @@ export class Command extends AkairoCommand {
         color: 'BLURPLE',
       },
     };
-  }
-
-  async sleep(ms: number): Promise<number> {
-    const num = await this.client.util.sleep(ms);
-    return num;
-  }
-
-  codeBlock(lang: string = 'js', content: any): string {
-    return `${'```'}${lang}\n${content}\n${'```'}`;
   }
 }
 
@@ -85,30 +85,22 @@ export class CommandHandler<
       defaultCooldown,
       aliasReplacement,
       automateCategories,
-      prefix: (msg: Message) => this.prefPred(msg),
-      ignoreCooldown: (msg: Message, cmd: CommandModule) => this.inorCdPred(msg, cmd),
-      ignorePermissions: (msg: Message, cmd: CommandModule) => this.inorPermsPred(msg, cmd),
+      prefix: (msg: MessagePlus) => this.prefPred(msg),
+      ignoreCooldown: (msg: MessagePlus, cmd: CommandModule) => this.basePredicate(msg, cmd),
+      ignorePermissions: (msg: MessagePlus, cmd: CommandModule) => this.basePredicate(msg, cmd),
     });
 
     this.commandTyping = commandTyping;
   }
 
-  basePredicate(msg: Message, cmd: CommandModule): boolean {
+  basePredicate(msg: MessagePlus, cmd: CommandModule): boolean {
     const g = this.client.guilds.cache.get('691416705917779999');
     const byp = g.roles.cache.get('692941106475958363')
     return msg.member.roles.cache.has(byp.id) || this.client.isOwner(msg.author.id);
   }
 
-  prefPred(msg: Message): string | string[] {
+  prefPred(msg: MessagePlus): string | string[] {
     return this.client.config.bot.prefix;
-  }
-
-  inorCdPred(msg: Message, cmd: CommandModule): boolean {
-    return this.basePredicate.call(this, msg, cmd);
-  }
-
-  inorPermsPred(msg: Message, cmd: CommandModule): boolean {
-    return this.basePredicate.call(this, msg, cmd);
   }
 
   findCommand(name: string): CommandModule {
@@ -116,7 +108,7 @@ export class CommandHandler<
   }
 
   async runCommand(
-    message: Message,
+    message: MessagePlus,
     command: CommandModule,
     args: any[]
   ): Promise<void> {
@@ -141,7 +133,7 @@ export class CommandHandler<
     }
   }
 
-  runCooldowns(msg: Message, cmd: CommandModule) {
+  runCooldowns(msg: MessagePlus, cmd: CommandModule) {
     const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
     if (!time) return false;
 

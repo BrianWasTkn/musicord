@@ -1,4 +1,5 @@
-import { ColorResolvable, Message, MessageOptions, Collection } from 'discord.js';
+import { ColorResolvable, MessageOptions, Collection } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Argument } from 'discord-akairo';
 import { Document } from 'mongoose';
 
@@ -40,33 +41,6 @@ export default class Currency extends Command {
     };
   }
 
-  async before(msg: Message) {
-    const { effects } = this.client.util;
-    const data = await this.client.db.currency.fetch(msg.author.id);
-    const items = this.client.handlers.item.modules.array();
-    const eff = new Effects();
-    
-    for (const item of items) {
-      const inv = data.items.find(i => i.id === item.id);
-      if (inv.expire > Date.now()) {
-        if (item.id === 'brian') eff.setWinnings(0.5).setSlotOdds(5);
-        if (item.id === 'thicc') eff.setWinnings(0.5);
-        if (item.id === 'crazy') eff.setSlotOdds(5);
-        const temp = new Collection<string, Effects>();
-        temp.set(item.id, new Effects());
-        if (!effects.has(msg.author.id)) effects.set(msg.author.id, temp);
-        effects.get(msg.author.id).set(item.id, eff);
-      } else {
-        const useref = effects.get(msg.author.id) ;
-        if (!useref || useref.has(item.id)) {
-          const meh = new Collection<string, Effects>();
-          meh.set(item.id, new Effects());
-          effects.set(msg.author.id, meh)
-        }
-      }
-    }
-  }
-
   // this too fricking time istg 
   roll(emojis: string[], oddRdce: number) {
     const { randomInArray, randomNumber } = this.client.util;
@@ -103,7 +77,7 @@ export default class Currency extends Command {
    * @param args the passed arguments
    */
   async exec(
-    _: Message,
+    msg: MessagePlus,
     args: {
       amount?: number;
     }
@@ -120,13 +94,13 @@ export default class Currency extends Command {
     if (!bet) return;
 
     // Item Effects
-    const data = await DB.fetch(_.author.id);
+    const data = await msg.author.fetchDB();
     let slots: number = 0;
     for (const it of ['crazy', 'brian']) {
-      const userEf = effects.get(_.author.id);
-      if (!userEf) effects.set(_.author.id, new Collection<string, Effects>().set(it, new Effects()));
-      if (effects.get(_.author.id).has(it)) {
-        slots += effects.get(_.author.id).get(it).slots
+      const userEf = effects.get(msg.author.id);
+      if (!userEf) effects.set(msg.author.id, new Collection<string, Effects>().set(it, new Effects()));
+      if (effects.get(msg.author.id).has(it)) {
+        slots += effects.get(msg.author.id).get(it).slots
       }
     }
 
@@ -161,9 +135,9 @@ export default class Currency extends Command {
 
     // Final Message
     description.push(`You now have **${db.pocket.toLocaleString()}**`);
-    const title = `${_.author.username}'s ${state} slot machine`;
+    const title = `${msg.author.username}'s ${state} slot machine`;
     const embed = new Embed()
-      .setAuthor(title, _.author.avatarURL({ dynamic: true }))
+      .setAuthor(title, msg.author.avatarURL({ dynamic: true }))
       .setDescription(description.join('\n'))
       .setColor(color);
 

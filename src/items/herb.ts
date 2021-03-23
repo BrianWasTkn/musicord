@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Item } from '@lib/handlers/item';
 
 export default class Flex extends Item {

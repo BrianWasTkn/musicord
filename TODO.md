@@ -4,7 +4,7 @@ Just a list of planned features basically for event and currency commands. Check
 ## Currency
 * [ ] **Sale Item**
 * [ ] **Hourly Lottery**
-* [ ] **Give, Gift Commands**
+* [x] **Give, Gift Commands**
 
 ## Crib
 * [ ] **Event Commands**

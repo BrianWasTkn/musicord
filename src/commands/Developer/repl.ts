@@ -1,4 +1,5 @@
-import { Message, CollectorFilter, AwaitMessagesOptions } from 'discord.js';
+import { CollectorFilter, AwaitMessagesOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { inspect } from 'util';
 import repl from 'programmatic-repl';
@@ -13,16 +14,16 @@ export default class Dev extends Command {
     });
   }
 
-  private async _collect(_: Message): Promise<Message> {
+  private async _collect(_: MessagePlus): Promise<MessagePlus> {
     const options: AwaitMessagesOptions = { max: 1, time: 600000 };
-    const filter: CollectorFilter = ({ author }: Message) =>
+    const filter: CollectorFilter = ({ author }: MessagePlus) =>
       author.id === _.author.id;
 
     const collected = await _.channel.awaitMessages(filter, options);
-    return [...collected.values()][0];
+    return [...collected.values()][0] as MessagePlus;
   }
 
-  async exec(_: Message): Promise<any> {
+  async exec(_: MessagePlus): Promise<any> {
     const REPL = new repl(
       {
         name: 'lava.repl',
@@ -42,7 +43,7 @@ export default class Dev extends Command {
     // from https://dankmemer.lol/source and modified.
     const run = async (retry: boolean) => {
       if (!retry) await _.channel.send('Started a REPL session');
-      const msg: Message = await this._collect(_);
+      const msg: MessagePlus = await this._collect(_);
       if (msg.content.toLowerCase().includes('.exit') || !msg.content) {
         return _.channel.send('Exiting REPL...');
       }
@@ -83,10 +84,10 @@ export default class Dev extends Command {
       await msg.channel.send({
         embed: {
           color: 'ORANGE',
-          description: this.codeBlock('js', r),
+          description: this.client.util.codeBlock('js', r),
           fields: [
-            { name: 'Type', value: this.codeBlock('js', t) },
-            { name: 'Latency', value: this.codeBlock('js', a) },
+            { name: 'Type', value: this.client.util.codeBlock('js', t) },
+            { name: 'Latency', value: this.client.util.codeBlock('js', a) },
           ],
         },
       });

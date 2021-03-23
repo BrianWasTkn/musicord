@@ -1,6 +1,7 @@
-import { Message, MessageOptions } from 'discord.js';
-import { inspect } from 'util';
+import { MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
+import { inspect } from 'util';
 import { Embed } from '@lib/utility/embed';
 
 export default class Dev extends Command {
@@ -23,8 +24,8 @@ export default class Dev extends Command {
     return inspect(obj, options);
   }
 
-  public async exec(_: Message, args: any): Promise<string | MessageOptions> {
-    const { channel } = _;
+  public async exec(msg: MessagePlus, args: any): Promise<string | MessageOptions> {
+    const { channel } = msg;
     const code: string = args.code;
     const asynchronous: boolean =
       code.includes('await') || code.includes('return');
@@ -52,13 +53,13 @@ export default class Dev extends Command {
     return {
       embed: {
         color: 'ORANGE',
-        description: this.codeBlock(
+        description: this.client.util.codeBlock(
           'js',
           evaled.length > 1900 ? 'Too many to print' : evaled
         ),
         fields: [
-          { name: 'Type', value: this.codeBlock('js', type) },
-          { name: 'Latency', value: this.codeBlock('js', `${evalTime}ms`) },
+          { name: 'Type', value: this.client.util.codeBlock('js', type) },
+          { name: 'Latency', value: this.client.util.codeBlock('js', `${evalTime}ms`) },
         ],
       },
     };

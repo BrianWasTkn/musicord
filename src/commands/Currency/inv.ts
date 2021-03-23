@@ -1,6 +1,7 @@
-import { Message, MessageOptions, GuildMember } from 'discord.js';
+import { MessageOptions, GuildMember } from 'discord.js';
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
 import { InventorySlot } from '@lib/interface/handlers/item';
+import { MessagePlus } from '@lib/extensions/message';
 import { Argument } from 'discord-akairo';
 import { Document } from 'mongoose';
 import { Command } from '@lib/handlers/command';
@@ -17,7 +18,7 @@ export default class Currency extends Command {
         {
           id: 'member',
           default: 1,
-          type: (msg: Message, phrase: string) => {
+          type: (msg: MessagePlus, phrase: string) => {
             if (!phrase) return 1; // inventory page
             const { resolver } = this.handler;
             return (
@@ -36,7 +37,7 @@ export default class Currency extends Command {
   }
 
   async exec(
-    msg: Message,
+    msg: MessagePlus,
     args: {
       member: number | GuildMember;
       page: number;
@@ -56,7 +57,7 @@ export default class Currency extends Command {
 
     memb = (isNum ? msg.member : member) as GuildMember;
     pg = (isNum ? member : page) as number;
-    data = await fetch(memb.user.id);
+    data = await msg.fetchDB(memb.user.id);
     inv = data.items.filter((i) => i.amount >= 1);
     inv.forEach((i) => (total += i.amount));
     if (inv.length < 1) {

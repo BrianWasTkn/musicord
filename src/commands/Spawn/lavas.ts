@@ -1,4 +1,5 @@
-import { Message, GuildMember, MessageOptions } from 'discord.js';
+import { GuildMember, MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 import { Lava } from '@lib/Lava';
@@ -15,14 +16,14 @@ export default class Spawn extends Command {
         {
           id: 'member',
           type: 'member',
-          default: (message: Message) => message.member,
+          default: (message: MessagePlus) => message.member,
         },
       ],
     });
   }
 
   async exec(
-    _: Message,
+    msg: MessagePlus,
     args: {
       member: GuildMember;
     }

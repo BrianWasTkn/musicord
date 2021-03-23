@@ -1,5 +1,5 @@
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
-import { Message } from 'discord.js';
 
 export default class Util extends Command {
   constructor() {
@@ -11,8 +11,8 @@ export default class Util extends Command {
     });
   }
 
-  async exec(_: Message): Promise<string> {
-    const { channel, guild } = _;
+  async exec(msg: MessagePlus): Promise<string> {
+    const { channel, guild } = msg;
     const { ping } = guild.shard;
 
     return `**Ponge:** ${ping}ms`;

@@ -1,4 +1,5 @@
-import { Message, GuildMember, MessageOptions } from 'discord.js';
+import { GuildMember, MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 
@@ -14,16 +15,14 @@ export default class Currency extends Command {
         {
           id: 'member',
           type: 'member',
-          default: (m: Message) => m.member
+          default: (m: MessagePlus) => m.member
         },
       ],
     });
   }
 
-  public async exec(_: Message, args: { member: GuildMember }): Promise<MessageOptions> {
-    const { fetch } = this.client.db.currency;
-    const { member } = args;
-    const { pocket, vault, space, items } = await fetch(member.user.id);
+  public async exec(msg: MessagePlus, args: { member: GuildMember }): Promise<MessageOptions> {
+    const { pocket, vault, space, items } = await msg.fetchDB(args.member.user.id);
     const handler = this.client.handlers.item;
     const net = items
       .map(i => {
@@ -44,7 +43,7 @@ export default class Currency extends Command {
 
     return {
       embed: {
-        title: `${member.user.username}'s balance`,
+        title: `${args.member.user.username}'s balance`,
         footer: { text: 'discord.gg/memer'},
         description: dpn.join('\n'),
         color: 'RANDOM',

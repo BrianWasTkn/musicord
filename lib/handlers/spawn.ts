@@ -1,3 +1,5 @@
+import { MessagePlus } from '@lib/extensions/message';
+import { Lava } from '@lib/Lava';
 import {
   ReactionCollectorOptions,
   MessageCollectorOptions,
@@ -10,7 +12,6 @@ import {
   TextChannel,
   Collection,
   Snowflake,
-  Message,
   User,
 } from 'discord.js';
 import type {
@@ -29,7 +30,6 @@ import {
   AkairoError,
   Category,
 } from 'discord-akairo';
-import { Lava } from '@lib/Lava';
 
 export class Spawn extends AkairoModule {
   answered: Collection<string, boolean>;
@@ -56,7 +56,7 @@ export class Spawn extends AkairoModule {
 export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
   cooldowns: Collection<Snowflake, SpawnModule>;
   categories: Collection<string, Category<string, SpawnModule>>;
-  messages: Collection<Snowflake, Message>;
+  messages: Collection<Snowflake, MessagePlus>;
   modules: Collection<string, SpawnModule>;
   client: Lava;
   queue: Collection<Snowflake, SpawnQueue>;
@@ -68,7 +68,7 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
     this.queue = new Collection();
   }
 
-  handleMessageCollect<T extends Message>(args: {
+  handleMessageCollect<T extends MessagePlus>(args: {
     collector: MessageCollector;
     spawner: SpawnModule;
     msg: T;
@@ -91,7 +91,7 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
     });
   }
 
-  handleMessageEnd<T extends Message>(args: {
+  handleMessageEnd<T extends MessagePlus>(args: {
     collected: Collection<string, T>;
     spawner: SpawnModule;
     msg: T;
@@ -112,7 +112,7 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
     ctx: {
       collector: ReactionCollector;
       spawner: SpawnModule;
-      message: Message;
+      message: MessagePlus;
     }
   ): boolean {
     const { collector, spawner, message } = ctx;
@@ -135,7 +135,7 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
     ctx: {
       collector: ReactionCollector;
       spawner: SpawnModule;
-      message: Message;
+      message: MessagePlus;
     }
   ): boolean {
     const { collector, spawner, message } = ctx;
@@ -144,7 +144,7 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
 
   handleReactionEnd(
     collected: Collection<string, MessageReaction>,
-    ctx: { message: Message; spawner: SpawnModule }
+    ctx: { message: MessagePlus; spawner: SpawnModule }
   ): boolean {
     return this.emit(
       'reactionResults',
@@ -161,7 +161,7 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
    * @param {Spawn} spawner the spawn module to run
    * @param {Message} message a discord message obj
    */
-  public async spawn(spawner: SpawnModule, message: Message): Promise<void> {
+  public async spawn(spawner: SpawnModule, message: MessagePlus): Promise<void> {
     if (['spam', 'message'].includes(spawner.config.type)) {
       const str = this.client.util.randomInArray(spawner.spawn.strings);
       const options: MessageCollectorOptions = {
@@ -170,7 +170,7 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
       };
 
       const filter: CollectorFilter = async (
-        msg: Message
+        msg: MessagePlus
       ): Promise<boolean> => {
         const { author, content } = msg;
         const { fetch } = this.client.db.spawns;
@@ -199,11 +199,11 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
       const collector = message.channel.createMessageCollector(filter, options);
 
       collector
-        .on('collect', (msg: Message) => {
-          this.handleMessageCollect<Message>({ msg, collector, spawner });
+        .on('collect', (msg: MessagePlus) => {
+          this.handleMessageCollect<MessagePlus>({ msg, collector, spawner });
         })
-        .on('end', (collected: Collection<string, Message>) => {
-          this.handleMessageEnd<Message>({ collected, spawner, msg: message });
+        .on('end', (collected: Collection<string, MessagePlus>) => {
+          this.handleMessageEnd<MessagePlus>({ collected, spawner, msg: message });
         });
     } else if (spawner.config.type === 'react') {
       const options: ReactionCollectorOptions = {

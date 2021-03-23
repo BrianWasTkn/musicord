@@ -1,9 +1,9 @@
-import type { Message } from 'discord.js';
+import type { MessagePlus } from '@lib/extensions/message'
 import type { Item } from '@lib/handlers/item';
 import type { Lava } from '@lib/Lava';
 
 export const argTypes = (bot: Lava) => ({
-  shopItem: (msg: Message, phrase: string): Item | null => {
+  shopItem: (msg: MessagePlus, phrase: string): Item | null => {
     if (!phrase) return null;
     const items = [...bot.handlers.item.modules.values()];
     return items.find(i => {
@@ -15,7 +15,7 @@ export const argTypes = (bot: Lava) => ({
   },
 
   gambleAmount: async (
-    msg: Message,
+    msg: MessagePlus,
     phrase: string | number
   ): Promise<number | null> => {
     const { minBet, maxBet, maxPocket } = bot.config.currency;

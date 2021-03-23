@@ -1,6 +1,6 @@
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
 import { Document } from 'mongoose';
-import { Message } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Item } from '@lib/handlers/item';
 
 export default class Collectible extends Item {
@@ -17,7 +17,7 @@ export default class Collectible extends Item {
     });
   }
 
-  async use(msg: Message): Promise<string> {
+  async use(msg: MessagePlus): Promise<string> {
     const { db, util } = this.client;
     const data = await db.currency.fetch(msg.author.id);
     const trophies = data.items.find((i) => i.id === this.id);

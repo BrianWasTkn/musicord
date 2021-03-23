@@ -1,3 +1,5 @@
+import { MessagePlus } from '@lib/extensions/message';
+import { Command } from '@lib/handlers/command';
 import {
   PermissionOverwriteOption,
   MessageCollectorOptions,
@@ -9,7 +11,6 @@ import {
   Collection,
   Message,
 } from 'discord.js';
-import { Command } from '@lib/handlers/command';
 
 export default class Utility extends Command {
   constructor() {
@@ -39,7 +40,7 @@ export default class Utility extends Command {
     });
   }
 
-  private get strings(): (((m?: Message) => string) | string)[] {
+  private get strings(): (((m?: MessagePlus) => string) | string)[] {
     return [
       (m: Message) => m.guild.name,
       (m: Message) => m.client.user.username,
@@ -60,7 +61,7 @@ export default class Utility extends Command {
   }
 
   private handleCollect(
-    this: Message,
+    this: MessagePlus,
     entries: Collection<string, GuildMember>
   ): Promise<MessageReaction> | Collection<string, GuildMember> {
     return !entries.has(this.author.id)
@@ -69,20 +70,20 @@ export default class Utility extends Command {
   }
 
   async exec(
-    _: Message,
+    msg: MessagePlus,
     args: {
       amount: number;
       lock: boolean;
       hits: number;
     }
   ): Promise<MessageOptions> {
-    await _.delete().catch(() => {});
+    await msg.delete().catch(() => {});
     const { amount, lock, hits } = args;
     const { util } = this.client;
     const { events } = util;
-    const { guild } = _;
-    const channel = _.channel as TextChannel;
-    const lockChan = this.lockChan.bind(_);
+    const { guild } = msg;
+    const channel = msg.channel as TextChannel;
+    const lockChan = this.lockChan.bind(msg);
 
     if (events.has(guild.id)) return;
     else events.set(guild.id, channel.id);
@@ -92,8 +93,8 @@ export default class Utility extends Command {
     string =
       typeof string === 'function'
         ? util.isPromise(string)
-          ? await string(_)
-          : string(_)
+          ? await string(msg)
+          : string(msg)
         : string;
     await channel.send(
       `**<:memerGold:753138901169995797> \`JEVENT NICE\`**\n
@@ -114,12 +115,12 @@ export default class Utility extends Command {
       events.delete(guild.id);
 
       if (lock) await lockChan(false);
-      if (col.size <= 1) return _.reply('**:skull: RIP! No one joined.**');
+      if (col.size <= 1) return msg.reply('**:skull: RIP! No one joined.**');
 
       await channel.send(
         `**${entries.size} people** landed **${
           col.size
-        }** hits altogether and are teaming up to split __${amount.toLocaleString()}__ coins...`
+        }** hits altogether and are teaming up to split msgmsg${amount.toLocaleString()}msgmsg coins...`
       );
       await util.sleep(util.randomNumber(5, 10) * 1000);
       entries

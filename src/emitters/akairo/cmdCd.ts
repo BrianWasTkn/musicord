@@ -1,4 +1,5 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Listener } from '@lib/handlers';
 import { Command } from 'discord-akairo';
 import { Lava } from '@lib/Lava';
@@ -12,11 +13,11 @@ export default class CommandListener extends Listener {
   }
 
   async exec(
-    _: Message,
+    msg: MessagePlus,
     command: Command,
     remaining: number
-  ): Promise<Message> {
-    return _.channel.send({
+  ): Promise<MessagePlus> {
+    return msg.channel.send({
       embed: {
         title: 'Calm the frick down',
         color: 'RED',
@@ -26,6 +27,6 @@ export default class CommandListener extends Listener {
           icon_url: this.client.user.avatarURL(),
         },
       },
-    });
+    }) as Promise<MessagePlus>;
   }
 }

@@ -1,4 +1,5 @@
-import { Message, GuildMember, MessageOptions } from 'discord.js';
+import { GuildMember, MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Argument } from 'discord-akairo';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
@@ -24,7 +25,7 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(msg: Message, args: { 
+  public async exec(msg: MessagePlus, args: { 
   	member: GuildMember, 
   	amount: number | string
   }): Promise<string | MessageOptions> {
@@ -33,8 +34,8 @@ export default class Currency extends Command {
   	if (!member || !amount) 
   		return `**Wrong Syntax bro**\n**Usage:** \`lava ${this.id} <amount> <@user>\``;
 
-    const data = await fetch(msg.author.id);
-    const r = await fetch(member.user.id);
+    const data = await msg.author.fetchDB();
+    const r = await msg.fetchDB(member.user.id);
   	let give: number;
   	if (isNaN(amount as number)) {
   		let tAmt = (amount as string).toLowerCase();
@@ -54,8 +55,8 @@ export default class Currency extends Command {
 
   	let paid = Math.round(give - (give * 0.05));
   	let tax = Math.round(give * 0.5 / (give / 10));
-		let nr = await add(member.user.id, 'pocket', paid);
-  	let u = await remove(msg.author.id, 'pocket', give);
+		let nr = await msg.dbAdd(member.user.id, 'pocket', paid);
+  	let u = await msg.author.dbRemove('pocket', give);
 
   	return `You gave ${member.user.username} **${paid.toLocaleString()}** coins after a **${tax}%** tax. They now have **${nr.pocket.toLocaleString()}** coins while you have **${u.pocket.toLocaleString()}** coins.`
   }

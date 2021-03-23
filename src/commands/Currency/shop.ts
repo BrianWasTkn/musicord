@@ -1,4 +1,5 @@
 import { Message, MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Argument } from 'discord-akairo'
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
@@ -14,7 +15,7 @@ export default class Currency extends Command {
       cooldown: 1000,
       args: [{
         id: 'query',
-        type: (msg: Message, phrase: string) => {
+        type: (msg: MessagePlus, phrase: string) => {
           if (!phrase) return 1; // shop page
           const { resolver } = this.handler;
           return (
@@ -26,7 +27,7 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(msg: Message, { query }: { query: number | Item }): Promise<string | MessageOptions> {
+  async exec(msg: MessagePlus, { query }: { query: number | Item }): Promise<string | MessageOptions> {
     const { item: Handler } = this.client.handlers;
     const items = Handler.modules.array();
     const embed = new Embed();
@@ -48,9 +49,8 @@ export default class Currency extends Command {
       if (query > shop.length) return 'That page doesn\'t even exist lol';
     } else {
       if (!query) return 'That item doesn\'t even exist in the shop what\'re you doing?'
-      const data = await this.client.db.currency.fetch(msg.author.id);
+      const data = await msg.author.fetchDB();
       const inv = data.items.find(i => i.id === query.id);
-      if (!inv) await this.client.db.currency.fetch(msg.author.id);
       
       let info: string[] = [];
       info.push(`**Item Price** — ${query.buyable ? query.cost.toLocaleString() : '**cannot be purchased**'}`);

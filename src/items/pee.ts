@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
 import { Item } from '@lib/handlers/item';
 
 export default class Flex extends Item {
@@ -15,7 +15,7 @@ export default class Flex extends Item {
     });
   }
 
-  async use(msg: Message): Promise<string> {
+  async use(msg: MessagePlus): Promise<string> {
     const data = await this.client.db.currency.fetch(msg.author.id);
     data.items.find((i) => i.id === this.id).amount -= 1;
     await data.save();

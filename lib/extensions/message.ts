@@ -1,4 +1,8 @@
+import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { UserPlus } from './user';
+import { Lava } from '@lib/Lava';
 import {
+  APIMessageContentResolvable,
   StringResolvable,
   MessageAdditions,
   MessageOptions,
@@ -10,59 +14,49 @@ import {
   DMChannel,
   Message,
 } from 'discord.js';
-import type { Lava } from '@lib/Lava';
 
 type MessageChannel = DMChannel | TextChannel | NewsChannel;
 
-class LavaMessage extends Message {
+export class MessagePlus extends Message {
+  author: UserPlus;
   client: Lava;
-  db: Lava['db'];
 
   constructor(client: Lava, data: object, channel: MessageChannel) {
     super(client, data, channel);
-    this.db = client.db;
   }
 
-  embed(embed: MessageEmbed): Promise<Message> {
+  async calcSpace() {
+    const { maxSafeSpace } = this.client.config.currency;
+    const { randomNumber } = this.client.util;
+    const { fetch, add } = this.client.db.currency;
+
+    const o = await fetch(this.author.id);
+    if (o.space >= maxSafeSpace) {
+      o.space = maxSafeSpace;
+      return { msg: this, d: await o.save() };
+    }
+
+    const gain = Math.round(55 * (randomNumber(1, 100) / 2) + 55);
+    return { msg: this, d: await add(this.author.id, 'space', gain) };
+  }
+
+  fetchDB(id: string) {
+    return this.client.db.currency.fetch(id);
+  }
+
+  dbAdd(id: string, key: keyof CurrencyProfile, amount: number) {
+    return this.client.db.currency.add(id, key, amount);
+  }
+
+  dbRemove(id: string, key: keyof CurrencyProfile, amount: number) {
+    return this.client.db.currency.remove(id, key, amount);
+  }
+
+  embed(data: MessageEmbed): Promise<Message> {
+    const embed = data instanceof MessageEmbed ? data : new MessageEmbed(data);
     return this.channel.send({ embed });
   }
 
-  msgReply(
-    content: StringResolvable | APIMessage,
-    options: MessageOptions | MessageAdditions,
-    mention: boolean = true,
-    delTout?: number
-  ): Promise<this> {
-    // @ts-ignore
-    return (
-      // @ts-ignore
-      this.client.api
-        // @ts-ignore
-        .channels(this.channel.id)
-        .messages.post({
-          data: {
-            content,
-            message_reference: {
-              message_id: this.id,
-            },
-            allowed_mentions: {
-              ...this.client.options.allowedMentions,
-              replied_user: mention,
-            },
-          },
-        })
-        .then(async (m: object) => {
-          // @ts-ignore
-          let msg: Message = this.client.actions.MessageCreate.handle(m)
-            .message;
-          if (delTout) msg = await msg.delete({ timeout: delTout });
-          return msg;
-        })
-        .catch(() => {
-          return this.channel.send(content);
-        })
-    );
-  }
 }
 
-Structures.extend<'Message', typeof LavaMessage>('Message', () => LavaMessage);
+Structures.extend('Message', () => MessagePlus);

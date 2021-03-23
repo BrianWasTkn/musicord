@@ -1,6 +1,7 @@
-import { Message, MessageOptions } from 'discord.js';
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { MessageOptions } from 'discord.js';
 import { SpawnDocument } from '@lib/interface/mongo/spawns';
+import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 import mongoose from 'mongoose';
@@ -40,7 +41,7 @@ export default class Spawn extends Command {
   }
 
   async exec(
-    _: Message,
+    msg: MessagePlus,
     args: {
       amount: number;
       type: string;
