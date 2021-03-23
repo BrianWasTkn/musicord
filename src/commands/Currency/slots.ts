@@ -83,7 +83,7 @@ export default class Currency extends Command {
 
     if (odds > (145 - oddRdce)) {
       return Array(3).fill(emoji);
-    } else if (odds > 130) {
+    } else if (odds > 100) {
       const emjis = Array(3).fill(emoji);
       const ind = randomNumber(1, emjis.length) - 1;
       emjis[ind] = randomInArray(emojis.filter(e => e !== emoji));
