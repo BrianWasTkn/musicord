@@ -206,6 +206,6 @@ export default class Currency extends Command {
       return gambed();
     }
 
-    return {};
+    return gambed();
   }
 }
