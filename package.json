@@ -1,6 +1,6 @@
 {
   "name": "lava",
-  "version": "2.12.0",
+  "version": "2.13.0",
   "description": "Provide utilities in your Dank Memer-based discord server.",
   "main": "build/src/index",
   "author": {
