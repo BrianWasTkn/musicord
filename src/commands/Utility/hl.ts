@@ -1,13 +1,18 @@
-import { Role, MessageOptions } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
+import { 
+  PermissionOverwriteOption, 
+  MessageOptions, 
+  TextChannel, 
+  Role, 
+} from 'discord.js';
 
 export default class Util extends Command {
   constructor() {
     super('hlock', {
       aliases: ['hlock', 'hl'],
       channel: 'guild',
-      description: 'Locks the heist channel if you have proper permissions',
+      description: 'Locks the heist channel if you have proper permissions.',
       category: 'Utility',
       userPermissions: ['MANAGE_MESSAGES'],
     });
@@ -15,14 +20,19 @@ export default class Util extends Command {
 
   async exec(msg: MessagePlus): Promise<MessageOptions> {
     await msg.delete();
+
     const role: Role = this.client.util.heists.get(msg.channel.id);
     if (!role) return;
-    const { channel }: any = msg;
-    await channel.updateOverwrite(role.id, { SEND_MESSAGES: null });
+
+    const reason = `Heist Lock — ${msg.author.tag}`;
+    const owrite: PermissionOverwriteOption = { SEND_MESSAGES: null };
+    await (msg.channel as TextChannel).updateOverwrite(role.id, owrite, reason);
+
     return {
       embed: {
-        title: `**LOCKED FOR \`${role.name}\`**`,
-        color: 'GREEN',
+        description: `**Locked for ${role.toString()} role.**`,
+        title: `Channel Locked`,
+        color: 'RED',
         footer: {
           text: msg.guild.name,
           iconURL: msg.guild.iconURL({ dynamic: true }),

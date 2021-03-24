@@ -1,6 +1,12 @@
-import { Role, GuildChannel, MessageOptions } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
+import { 
+  PermissionOverwriteOption, 
+  MessageOptions, 
+  GuildChannel,
+  TextChannel, 
+  Role, 
+} from 'discord.js';
 
 export default class Util extends Command {
   constructor() {
@@ -28,7 +34,8 @@ export default class Util extends Command {
   private embed(display: number, role: Role, color?: string): any {
     return {
       color: color || 'ORANGE',
-      title: `**UNLOCKING IN \`${display}\` SECONDS**`,
+      title: `Unlocking In...`,
+      description: `**${display}** seconds.`,
       footer: {
         text: `Requirement: ${role.name}`,
         iconURL: role.guild.iconURL({ dynamic: true }),
@@ -40,10 +47,9 @@ export default class Util extends Command {
     await _.delete();
     const { role, interval } = args;
     if (!role) return;
-    const { channel }: any = _;
 
     let num = 60;
-    let msg = await _.channel.send({
+    let msg = await _.channel.send({ 
       embed: this.embed(num, role, 'ORANGE'),
     });
 
@@ -67,12 +73,16 @@ export default class Util extends Command {
     };
 
     await run(interval);
-    const perms = { SEND_MESSAGES: true };
-    (<GuildChannel>_.channel).updateOverwrite(role.id, perms);
-    this.client.util.heists.set(channel.id, role);
+    
+    const reason = `Heist Unlock — ${msg.author.tag}`;
+    const perms: PermissionOverwriteOption = { SEND_MESSAGES: true };
+    (msg.channel as TextChannel).updateOverwrite(role.id, perms, reason);
+    this.client.util.heists.set(msg.channel.id, role);
+
     return {
       embed: {
-        title: `**UNLOCKED FOR \`${role.name}\`**`,
+        description: `**Unlocked for ${role.toString()} role.**`,
+        title: `Channel Unlocked`,
         color: 'GREEN',
         footer: {
           text: _.guild.name,

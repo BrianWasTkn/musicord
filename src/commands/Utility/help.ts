@@ -58,14 +58,12 @@ export default class Utility extends Command {
     const { handler } = this;
     const { query } = args;
     const embed = new Embed();
+
     let cat: Category<string, Command>;
     let cmd: Command;
 
     try {
-      cat = this.handler.findCategory(query as string) as Category<
-        string,
-        Command
-      >;
+      cat = this.handler.findCategory(query as string) as Category<string,Command>;
       cmd = this.handler.findCommand(query as string);
     } catch {}
 

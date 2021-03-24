@@ -9,7 +9,6 @@ import {
   TextChannel,
   GuildMember,
   Collection,
-  Message,
 } from 'discord.js';
 
 export default class Utility extends Command {
@@ -40,33 +39,8 @@ export default class Utility extends Command {
     });
   }
 
-  private get strings(): (((m?: MessagePlus) => string) | string)[] {
-    return [
-      (m: Message) => m.guild.name,
-      (m: Message) => m.client.user.username,
-      'NICE SPAM',
-      'NICE LOGO',
-      'NICE',
-      'MEOW',
-      'OKURR',
-      'Z',
-      'LOL',
-      'PROBBER',
-      'TAKEN',
-      'CHIPS',
-      'DRIP',
-      'SWAG',
-      'HELICOPTER',
-    ];
-  }
-
-  private handleCollect(
-    this: MessagePlus,
-    entries: Collection<string, GuildMember>
-  ): Promise<MessageReaction> | Collection<string, GuildMember> {
-    return !entries.has(this.author.id)
-      ? this.react('<:memerGold:753138901169995797>')
-      : entries.set(this.author.id, this.member);
+  private get strings(): string[] {
+    return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456'.split('');
   }
 
   async exec(
@@ -90,75 +64,67 @@ export default class Utility extends Command {
     if (lock) await lockChan(true);
 
     let string = util.randomInArray(this.strings);
-    string =
-      typeof string === 'function'
-        ? util.isPromise(string)
-          ? await string(msg)
-          : string(msg)
-        : string;
     await channel.send(
       `**<:memerGold:753138901169995797> \`JEVENT NICE\`**\n
       **Spam Spam Spam**\nSplit **${amount.toLocaleString()}**, now.`
     );
     await channel.send(`Spam \`${string.toUpperCase()}\` **${hits}** times`);
-    const entries: Collection<string, GuildMember> = new Collection();
-    const options: MessageCollectorOptions = { max: hits, time: 120000 };
-    const filter: CollectorFilter = (m: Message) =>
-      m.content.toLowerCase() === (string as string).toLowerCase();
+    const entries = new Collection<string, GuildMember>();
 
+    const options: MessageCollectorOptions = { max: hits, time: 120000 };
+    const filter: CollectorFilter = (m: MessagePlus) =>
+      m.content.toLowerCase() === (string as string).toLowerCase();
     const collector = channel.createMessageCollector(filter, options);
-    collector.on('collect', (m: Message) =>
-      this.handleCollect.call(m, entries)
-    );
-    collector.on('end', async (col: Collection<string, Message>) => {
+
+    collector
+    .on('collect', async (m: MessagePlus) => {
+      if (!entries.has(m.author.id)) return entries.set(m.author.id, m.member);
+      return await m.react('<:memerGold:753138901169995797>');
+    })
+    .on('end', async (col: Collection<string, MessagePlus>) => {
       let success: GuildMember[] = [];
       events.delete(guild.id);
-
       if (lock) await lockChan(false);
-      if (col.size <= 1) return msg.reply('**:skull: RIP! No one joined.**');
+
+      if (col.size <= 1) {
+        return msg.reply('**:skull: RIP! No one joined.**');
+      }
 
       await channel.send(
         `**${entries.size} people** landed **${
           col.size
-        }** hits altogether and are teaming up to split msgmsg${amount.toLocaleString()}msgmsg coins...`
-      );
-      await util.sleep(util.randomNumber(5, 10) * 1000);
-      entries
-        .array()
-        .sort(() => Math.random() - 0.5)
-        .forEach((c) =>
-          Math.random() > 0.5 && success.length <= 15 ? success.push(c) : {}
-        );
-      const coins = Math.round(amount / success.length);
-      const order = success.length
-        ? success.map(
-            (s) =>
-              `+ ${
-                s.nickname === null ? s.user.username : s.nickname
-              } got ${coins.toLocaleString()}`
-          )
-        : ['- Everybody died LOL'];
-      await channel.send(
-        `**Good job everybody, we split up \`${(coins > 1
-          ? coins
-          : 1
-        ).toLocaleString()}\` each!**`
+        }** hits altogether and are teaming up to split __${
+          amount.toLocaleString()
+        }__ coins...`
       );
 
-      return {
+      entries.array().sort(() => Math.random() - 0.5)
+      .forEach((c) => {
+        const ok = Math.random() > 0.5 && success.length <= 15;
+        return ok ? success.push(c) : {}
+      });
+
+      const coins = Math.round(amount / success.length);
+      const order = success.length >= 1
+        ? success.map((s) => {
+            const name = s.nickname === null ? s.user.username : s.nickname;
+            return `+ ${name} got ${coins.toLocaleString()}`;
+          })
+        : ['- Everybody died LOL'];
+
+      const split = (coins > 1 ? coins : 1).toLocaleString();
+      await channel.send(`**Good job everybody, we split up \`${split}\` each!**`);
+      return msg.channel.send({
         code: 'diff',
         content: order.join('\n'),
-      };
+      });
     });
   }
 
-  private async lockChan(this: Message, bool: boolean): Promise<TextChannel> {
+  private lockChan(this: MessagePlus, bool: boolean): Promise<TextChannel> {
     const change: PermissionOverwriteOption = { SEND_MESSAGES: bool };
-    const reason = `JEvent by: ${this.author.tag}} — ${this.author.id}`;
-    return await (<TextChannel>this.channel).updateOverwrite(
-      this.guild.id,
-      change,
-      reason
-    );
+    const reason = `Spam Event — ${this.author.tag}}`;
+    const channel = this.channel as TextChannel
+    return channel.updateOverwrite(this.guild.id, change, reason);
   }
 }
