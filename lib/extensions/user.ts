@@ -54,14 +54,6 @@ export class UserPlus extends User {
   dbRemove(key: keyof CurrencyProfile, amount: number) {
     return this.client.db.currency.remove(this.id, key, amount);
   }
-
-  toPing() {
-    return super.toString();
-  }
-
-  toString() {
-    return `${this.username}#${this.discriminator}`;
-  }
 }
 
 Structures.extend('User', () => UserPlus);
