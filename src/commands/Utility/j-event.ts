@@ -78,8 +78,10 @@ export default class Utility extends Command {
 
     collector
     .on('collect', async (m: MessagePlus) => {
-      if (!entries.has(m.author.id)) return entries.set(m.author.id, m.member);
-      return await m.react('<:memerGold:753138901169995797>');
+      if (!entries.has(m.author.id)) {
+        entries.set(m.author.id, m.member);
+        return await m.react('<:memerGold:753138901169995797>');
+      }
     })
     .on('end', async (col: Collection<string, MessagePlus>) => {
       let success: GuildMember[] = [];
