@@ -1,4 +1,5 @@
 export class Effects {
+  bjWinnings: number; // bj winnings
   winnings: number; // gamble winnigns
   discount: number; // understandable
   pockCap: number; // understandable
@@ -7,6 +8,7 @@ export class Effects {
 
   constructor(
     data: Partial<{
+      bjWinnings: Effects['bjWinnings'];
       winnings: Effects['winnings'];
       discount: Effects['discount'];
       pockCap: Effects['pockCap'];
@@ -14,11 +16,17 @@ export class Effects {
       dice: Effects['dice'];
     }> = {}
   ) {
+    this.bjWinnings = data.bjWinnings || 0;
     this.winnings = data.winnings || 0;
     this.discount = data.discount || 0;
     this.pockCap = data.pockCap || 0;
     this.slots = data.slots || 0;
     this.dice = data.dice || 0;
+  }
+
+  addBjWinnings(amt: number): this {
+    this.bjWinnings += amt;
+    return this;
   }
 
   setWinnings(winnings: number): this {

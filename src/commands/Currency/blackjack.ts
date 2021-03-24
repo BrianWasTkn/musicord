@@ -1,6 +1,7 @@
-import { MessageOptions } from 'discord.js';
+import { MessageOptions, Collection } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
+import { Effects } from '@lib/utility/effects'
 
 // blackjack.dankmemer.lol
 export default class Currency extends Command {
@@ -32,6 +33,15 @@ export default class Currency extends Command {
     const { amount: bet } = args;
     if (multi >= maxMulti) multi = maxMulti as number;
     if (!bet) return;
+
+    // Item Effects
+    let extraWngs: number = 0;
+    for (const it of ['thicm']) {
+      if (!effects.has(msg.author.id)) effects.set(msg.author.id, new Collection<string, Effects>().set(it, new Effects()));
+      if (effects.get(msg.author.id).has(it)) {
+        extraWngs += effects.get(msg.author.id).get(it).bjWinnings
+      }
+    }
 
     const faces = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
     const values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10];
@@ -120,20 +130,24 @@ export default class Currency extends Command {
           return { content: `What the hell man, you don't have the coins to cover this bet anymore??? I'm keeping your bet since you tried to SCAM ME.`, reply: true };
         }
         let finalMsg = '';
+        let state: string;
         // Win
         if (status.result) {
           winnings = Math.ceil(bet * (Math.random() + 0.4)); // "Base Multi"
           winnings = Math.min(maxPocket as number, winnings + Math.ceil(winnings * (multi / 100))); // This brings in the user's secret multi (pls multi)
           finalMsg += `\nYou won **${winnings.toLocaleString()}**. You now have ${(data.pocket + winnings).toLocaleString()}.`;
           await msg.author.dbAdd('pocket', winnings);
+          state = extraWngs ? 'thicc' : 'winning';
         } else {
           // Tie
           if (status.result === null) {
             finalMsg += `\nYour wallet hasn't changed! You have **${data.pocket.toLocaleString()}** still.`;
+            state = 'tie';
           } else {
             // Loss
-            finalMsg += `\nYou lost **⏣ ${Number(bet).toLocaleString()}**. You now have ${(data.pocket - bet).toLocaleString()}.`;
+            finalMsg += `\nYou lost **${Number(bet).toLocaleString()}**. You now have ${(data.pocket - bet).toLocaleString()}.`;
             await msg.author.dbRemove('pocket', bet);
+            state = 'losing';
           }
         }
         final = true;
@@ -147,7 +161,7 @@ export default class Currency extends Command {
               name: `${msg.author.username}'s blackjack game`,
               icon_url: msg.author.avatarURL({ dynamic: true })
             },
-          color: final ? status.result === null ? 16757504 : (winnings ? 5025616 : 15022389) : 2533018,
+          color: final ? status.result === null ? 'YELLOW' : (winnings ? (extraWngs ? 'BLUE' : 'GREEN') : 'RED') : 2533018,
           description: desc,
           fields: [
             {
