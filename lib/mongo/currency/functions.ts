@@ -44,8 +44,7 @@ export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
   ): Promise<Document & Profile> => {
     const data = await this.fetch(userID);
     data[key as string] += amount;
-    await data.save();
-    return data;
+    return data.save();
   };
 
   remove = async (
@@ -55,7 +54,6 @@ export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
   ): Promise<Document & Profile> => {
     const data = await this.fetch(userID);
     data[key as string] -= amount;
-    await data.save();
-    return data;
+    return data.save();
   };
 }

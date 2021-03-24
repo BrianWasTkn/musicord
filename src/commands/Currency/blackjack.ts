@@ -197,10 +197,10 @@ export default class Currency extends Command {
           return dealersTurn(stood);
         case 'e':
           await DB.remove(msg.author.id, 'pocket', bet);
-          return { content: 'You ended the game. The dealer is keeping your money to deal with your bullcrap.', reply: msg.author.id };
+          return { content: 'You ended the game. The dealer is keeping your money to deal with your bullcrap.', replyTo: msg.id };
         default:
           await DB.remove(msg.author.id, 'pocket', bet);
-          return { content: 'Ur an idiot you need to give a valid response. You lost your entire bet.', reply: msg.author.id };
+          return { content: 'Ur an idiot you need to give a valid response. You lost your entire bet.', replyTo: msg.id };
       }
     }
 

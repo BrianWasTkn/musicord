@@ -41,6 +41,6 @@ export default class Currency extends Command {
 
     const ret = await item.use(msg);
     await msg.calcSpace();
-    return { content: ret, reply: msg.author.id };
+    return { content: ret, replyTo: msg.id };
   }
 }
