@@ -122,7 +122,7 @@ export default class Currency extends Command {
 
     const gambed = async (final?) => {
       const status = score() as { result: boolean, emoji: string, message: string };
-      let state: string;
+      let state: string = '';
       let desc = '';
       if (status.constructor === Object) {
         const coinCheck = await DB.fetch(msg.author.id); // ugh don't really know else how to do this thanks to reversal
