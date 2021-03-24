@@ -94,7 +94,6 @@ export default class Currency extends Command {
     if (!bet) return;
 
     // Item Effects
-    const data = await msg.author.fetchDB();
     let slots: number = 0;
     for (const it of ['crazy', 'brian']) {
       const userEf = effects.get(msg.author.id);
@@ -119,22 +118,21 @@ export default class Currency extends Command {
     description.push(outcome);
     if (length === 1 || length === 2) {
       const jackpot = length === 1;
-      data.pocket += winnings;
-      db = await data.save();
+      const d = await msg.author.dbAdd('pocket', winnings);
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
       description.push(`\nYou won **${winnings.toLocaleString()}**`);
       description.push(`**Multiplier** \`x${multiplier}\``);
+      description.push(`You now have **${d.pocket.toLocaleString()}**`);
     } else {
-      data.pocket -= bet;
-      db = await data.save();
+      const d = await msg.author.dbRemove('pocket', bet);
       color = 'RED';
       state = 'losing';
       description.push(`\nYou lost **${bet.toLocaleString()}**`);
+      description.push(`You now have **${d.pocket.toLocaleString()}**`);
     }
 
     // Final Message
-    description.push(`You now have **${db.pocket.toLocaleString()}**`);
     const title = `${msg.author.username}'s ${state} slot machine`;
     const embed = new Embed()
       .setAuthor(title, msg.author.avatarURL({ dynamic: true }))

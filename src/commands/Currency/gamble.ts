@@ -42,7 +42,6 @@ export default class Currency extends Command {
 
     // Core
     const { maxWin, maxMulti, maxBet } = currency;
-    const data = await msg.author.fetchDB();
     let { total: multi } = await DB.utils.calcMulti(this.client, msg);
     const { amount: bet } = args;
     if (multi >= maxMulti) multi = maxMulti as number;
@@ -76,14 +75,13 @@ export default class Currency extends Command {
     if (botD === userD || botD > userD) {
       const ties = botD === userD;
       let lost = ties ? Math.round(bet / 4) : bet;
-      data.pocket -= lost;
-      await data.save();
 
+      const d = await msg.author.dbRemove('pocket', bet);
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';
       description = [
         `You lost **${lost.toLocaleString()}**\n`,
-        `You now have **${(data.pocket - lost).toLocaleString()}**`,
+        `You now have **${(d.pocket).toLocaleString()}**`,
       ];
     } else if (userD > botD) {
       let wngs = Math.random() * 2;
@@ -93,15 +91,14 @@ export default class Currency extends Command {
       w = w + Math.round(w * (multi / 100));
       if (w > maxWin) w = maxWin as number;
       perwn = Number((w / bet).toFixed(2));
-      data.pocket += w;
-      await data.save();
 
+      const d = await msg.author.dbAdd('pocket', w);
       identifier = Boolean(extraWngs) ? 'thicc' : 'winning';
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
       description = [
         `You won **${w.toLocaleString()}**\n`,
         `**Multiplier** \`x${perwn.toLocaleString()}\``,
-        `You now have **${(data.pocket + w).toLocaleString()}**`,
+        `You now have **${(d.pocket).toLocaleString()}**`,
       ];
     }
 
