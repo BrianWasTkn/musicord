@@ -122,6 +122,7 @@ export default class Currency extends Command {
 
     const gambed = async (final?) => {
       const status = score() as { result: boolean, emoji: string, message: string };
+      let state: string;
       let desc = '';
       if (status.constructor === Object) {
         const coinCheck = await DB.fetch(msg.author.id); // ugh don't really know else how to do this thanks to reversal
@@ -130,7 +131,6 @@ export default class Currency extends Command {
           return { content: `What the hell man, you don't have the coins to cover this bet anymore??? I'm keeping your bet since you tried to SCAM ME.`, reply: true };
         }
         let finalMsg = '';
-        let state: string;
         // Win
         if (status.result) {
           winnings = Math.ceil(bet * (Math.random() + (0.4 + extraWngs))); // "Base Multi"
