@@ -73,7 +73,7 @@ export default class Currency extends Command {
           i.category
         }`;
       }),
-      3
+      5
     );
 
     if (pg > inv.length) {

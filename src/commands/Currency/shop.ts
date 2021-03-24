@@ -39,7 +39,7 @@ export default class Currency extends Command {
         .map(i => {
           const { emoji, cost, info } = i;
           return `**${emoji} ${i.name}** — [${cost.toLocaleString()}](https://discord.gg/memer)\n${info}`
-      }), 3);
+      }), 5);
 
       embed.setFooter(false, `Lava Shop — Page ${query} of ${shop.length}`)
       .addField('Shop Items', shop[query as number - 1].join('\n\n'))

@@ -133,7 +133,7 @@ export default class Currency extends Command {
         let state: string;
         // Win
         if (status.result) {
-          winnings = Math.ceil(bet * (Math.random() + 0.4)); // "Base Multi"
+          winnings = Math.ceil(bet * (Math.random() + (0.4 + extraWngs))); // "Base Multi"
           winnings = Math.min(maxPocket as number, winnings + Math.ceil(winnings * (multi / 100))); // This brings in the user's secret multi (pls multi)
           finalMsg += `\nYou won **${winnings.toLocaleString()}**. You now have ${(data.pocket + winnings).toLocaleString()}.`;
           await msg.author.dbAdd('pocket', winnings);
@@ -158,7 +158,7 @@ export default class Currency extends Command {
         embed: {
           author:
             {
-              name: `${msg.author.username}'s blackjack game`,
+              name: `${msg.author.username}'s ${state} blackjack game`,
               icon_url: msg.author.avatarURL({ dynamic: true })
             },
           color: final ? status.result === null ? 'YELLOW' : (winnings ? (extraWngs ? 'BLUE' : 'GREEN') : 'RED') : 2533018,
