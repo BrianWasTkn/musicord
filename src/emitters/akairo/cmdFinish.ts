@@ -22,5 +22,6 @@ export default class CommandListener extends Listener {
     
     await msg.channel.send(returned as MessageOptions) as MessagePlus;
     await msg.author.updateItems();
+    await msg.calcSpace();
   }
 }
