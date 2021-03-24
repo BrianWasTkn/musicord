@@ -82,7 +82,7 @@ export default class Currency extends Command {
 
     return {
       embed: {
-        color: 'GOLD',
+        color: 'ORANGE',
         author: {
           name: `${memb.user.username}'s inventory`,
           iconURL: memb.user.avatarURL({ dynamic: true }),

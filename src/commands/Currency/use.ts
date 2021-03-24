@@ -40,6 +40,7 @@ export default class Currency extends Command {
     if (!item.usable) return 'You can\'t use this item :thinking:'
 
     const ret = await item.use(msg);
+    await msg.calcSpace();
     return { content: ret, reply: msg.author.id };
   }
 }

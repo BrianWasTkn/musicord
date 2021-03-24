@@ -58,6 +58,8 @@ export default class Currency extends Command {
 		let nr = await msg.dbAdd(member.user.id, 'pocket', paid);
   	let u = await msg.author.dbRemove('pocket', give);
 
+    await msg.calcSpace();
+
   	return `You gave ${member.user.username} **${paid.toLocaleString()}** coins after a **${tax}%** tax. They now have **${nr.pocket.toLocaleString()}** coins while you have **${u.pocket.toLocaleString()}** coins.`
   }
 }

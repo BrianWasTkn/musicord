@@ -64,6 +64,7 @@ export default class Currency extends Command {
 			.setAuthor('Item Sold', msg.author.avatarURL({ dynamic: true }))
 			.setColor('GREEN');
 
+		await msg.calcSpace();
 		return { embed };
 	}
 }

@@ -137,6 +137,7 @@ export default class Currency extends Command {
           winnings = Math.min(maxPocket as number, winnings + Math.ceil(winnings * (multi / 100))); // This brings in the user's secret multi (pls multi)
           finalMsg += `\nYou won **${winnings.toLocaleString()}**. You now have ${(data.pocket + winnings).toLocaleString()}.`;
           await msg.author.dbAdd('pocket', winnings);
+          await msg.calcSpace();
           state = extraWngs ? 'thicc' : 'winning';
         } else {
           // Tie
@@ -147,6 +148,7 @@ export default class Currency extends Command {
             // Loss
             finalMsg += `\nYou lost **${Number(bet).toLocaleString()}**. You now have ${(data.pocket - bet).toLocaleString()}.`;
             await msg.author.dbRemove('pocket', bet);
+            await msg.calcSpace();
             state = 'losing';
           }
         }
@@ -195,10 +197,10 @@ export default class Currency extends Command {
           return dealersTurn(stood);
         case 'e':
           await DB.remove(msg.author.id, 'pocket', bet);
-          return { content: 'You ended the game. The dealer is keeping your money to deal with your bullcrap.', reply: true };
+          return { content: 'You ended the game. The dealer is keeping your money to deal with your bullcrap.', reply: msg.author.id };
         default:
           await DB.remove(msg.author.id, 'pocket', bet);
-          return { content: 'Ur an idiot you need to give a valid response. You lost your entire bet.', reply: true };
+          return { content: 'Ur an idiot you need to give a valid response. You lost your entire bet.', reply: msg.author.id };
       }
     }
 

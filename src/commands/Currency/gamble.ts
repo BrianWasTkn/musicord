@@ -77,6 +77,8 @@ export default class Currency extends Command {
       let lost = ties ? Math.round(bet / 4) : bet;
 
       const d = await msg.author.dbRemove('pocket', bet);
+      await msg.calcSpace();
+      
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';
       description = [
@@ -93,6 +95,8 @@ export default class Currency extends Command {
       perwn = Number((w / bet).toFixed(2));
 
       const d = await msg.author.dbAdd('pocket', w);
+      await msg.calcSpace();
+      
       identifier = Boolean(extraWngs) ? 'thicc' : 'winning';
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
       description = [

@@ -119,6 +119,8 @@ export default class Currency extends Command {
     if (length === 1 || length === 2) {
       const jackpot = length === 1;
       const d = await msg.author.dbAdd('pocket', winnings);
+      await msg.calcSpace();
+      
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
       description.push(`\nYou won **${winnings.toLocaleString()}**`);
@@ -126,6 +128,8 @@ export default class Currency extends Command {
       description.push(`You now have **${d.pocket.toLocaleString()}**`);
     } else {
       const d = await msg.author.dbRemove('pocket', bet);
+      await msg.calcSpace();
+      
       color = 'RED';
       state = 'losing';
       description.push(`\nYou lost **${bet.toLocaleString()}**`);
