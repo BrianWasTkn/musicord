@@ -104,10 +104,7 @@ export default class ClientListener extends Listener {
 
     const haha = { 1: 'giveaway', 2: 'heist', 3: 'event' };
     const query = haha[Number(msg.content)];
-    const isBot = msg.author.bot;
-    const isBotOwner = msg.client.isOwner(msg.author.id);
-    if (!query && !isBot && !isBotOwner) 
-    	return msg.delete() as Promise<MessagePlus>;
+    if (!query) return msg.delete() as Promise<MessagePlus>;
 
     return await handleDonation(msg, query) as MessagePlus;
   }
