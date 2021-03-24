@@ -26,6 +26,7 @@ import chalk from 'chalk';
 
 // ext structures
 import './extensions/message';
+import './extensions/user';
 
 interface DB {
   currency: CurrencyFunc<CurrencyProfile>;
