@@ -76,7 +76,8 @@ export default class Currency extends Command {
     if (botD === userD || botD > userD) {
       const ties = botD === userD;
       let lost = ties ? Math.round(bet / 4) : bet;
-      await msg.author.dbRemove('pocket', lost);
+      data.pocket -= lost;
+      await data.save();
 
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';
@@ -92,7 +93,8 @@ export default class Currency extends Command {
       w = w + Math.round(w * (multi / 100));
       if (w > maxWin) w = maxWin as number;
       perwn = Number((w / bet).toFixed(2));
-      await msg.author.dbAdd('pocket', w);
+      data.pocket += w;
+      await data.save();
 
       identifier = Boolean(extraWngs) ? 'thicc' : 'winning';
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
