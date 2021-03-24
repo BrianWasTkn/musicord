@@ -49,7 +49,6 @@ export default class Currency extends Command {
     if (!bet) return;
 
     // Item Effects
-    await msg.author.updateItems();
     let extraWngs: number = 0;
     for (const it of ['thicc', 'brian']) {
       if (!effects.has(msg.author.id)) effects.set(msg.author.id, new Collection<string, Effects>().set(it, new Effects()));
