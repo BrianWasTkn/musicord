@@ -37,14 +37,10 @@ export default class PowerUp extends Item {
       }
 
       const its = items.map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.name}**`);
+      items.forEach(async ({ amt, item }) => data.items.find(i => i.id === item.id).amount += amt);
       xplo.amount--;
-
-      await Promise.all(items.map(async ({ amt, item }) => {
-        data.items.find(i => i.id === item.id).amount += amt;
-        return await data.save();
-      }));
-
       await data.save();
+      
       return `**__${this.emoji} ${msg.author.username}'s bomb__**\n\`${coins.toLocaleString()}\` coins\`\n${its.join('\n')}`;
     }
 
