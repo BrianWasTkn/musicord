@@ -51,7 +51,8 @@ export default class PowerUp extends Item {
     while(e <= data.items.filter(i => i.amount >= 2).length) {
       const mods = this.client.handlers.item.modules.array();
       const item = randomInArray(mods.filter(m => !items.some(it => it.item.id === m.id)))
-      items.push({ item, amt: Math.round(data.items.find(i => i.id === item.id).amount / 2) });
+      const inv = data.items.find(i => i.id === item.id);
+      items.push({ item, amt: Math.round(inv.amount / 2) });
       e++;
     }
 

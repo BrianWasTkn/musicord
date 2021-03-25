@@ -114,9 +114,9 @@ export class CommandHandler<
   ): Promise<void> {
     const { util } = this.client;
 
-    if (util.cmdQueue.has(message.author.id)) {
-      return;
-    }
+    // if (util.cmdQueue.has(message.author.id)) {
+    //   return;
+    // }
 
     if (this.commandTyping || command.typing) {
       message.channel.startTyping();
@@ -125,9 +125,9 @@ export class CommandHandler<
     try {
       this.emit(Events.COMMAND_STARTED, message, command, args);
       try {
-        util.cmdQueue.set(message.author.id, true);
+        // util.cmdQueue.set(message.author.id, true);
         const returned = await command.exec(message, args); // expect all commands to return strings or embed objects
-        util.cmdQueue.delete(message.author.id);
+        // util.cmdQueue.delete(message.author.id);
         this.emit(Events.COMMAND_FINISHED, message, command, args, returned);
       } catch (error) {
         this.emit('commandError', message, command, args, error);
