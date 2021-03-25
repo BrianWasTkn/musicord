@@ -36,12 +36,12 @@ export default class PowerUp extends Item {
         e++;
       }
 
-      const its = items.map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.name}**`);
+      const its = items.map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.emoji} ${item.name}**`);
       items.forEach(async ({ amt, item }) => data.items.find(i => i.id === item.id).amount += amt);
       xplo.amount--;
       await data.save();
 
-      return `**__${this.emoji} ${msg.author.username}'s bomb__**\n**\`${coins.toLocaleString()}\` coins**\n**${its.join('\n')}**`;
+      return `**__${this.emoji} ${msg.author.username}'s bomb__**\n**\`${coins.toLocaleString()}\` coins**\n${its.join('\n')}`;
     }
 
     const randIt = randomInArray(data.items.filter(it => it.amount >= 1));
