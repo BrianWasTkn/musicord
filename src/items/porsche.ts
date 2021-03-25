@@ -38,6 +38,6 @@ export default class PowerUp extends Item {
     data.space += gain;
     await data.save();
 
-    return `**You crafted __${choice.toLocaleString()}__ cards into your vault.**\nThis brings you to **${data.space.toLocaleString()}** of total vault capacity, with **${gain.toLocaleString()} (${Math.round(gain / choice).toLocaleString()}) ** being crafted.`;
+    return `**You crafted __${choice.toLocaleString()}__ cards into your vault.**\nThis brings you to **${data.space.toLocaleString()}** of total vault capacity, with **${gain.toLocaleString()} (${Math.round(gain / choice).toLocaleString()} average) ** being crafted.`;
   }
 }

@@ -37,27 +37,31 @@ export default class PowerUp extends Item {
       }
 
       const its = items.map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.emoji} ${item.name}**`);
-      items.forEach(async ({ amt, item }) => data.items.find(i => i.id === item.id).amount += amt);
+      items.forEach(({ amt, item }) => data.items.find(i => i.id === item.id).amount += amt);
       xplo.amount--;
       await data.save();
 
       return `**__${this.emoji} ${msg.author.username}'s bomb__**\n**\`${coins.toLocaleString()}\` coins**\n${its.join('\n')}`;
     }
 
-    const randIt = randomInArray(data.items.filter(it => it.amount >= 1));
-    const modIt = this.handler.modules.get(randIt.id);
     const fine = randomNumber(data.pocket * 0.75, data.pocket);
+    const candidates = data.items.filter(i => i.amount >= 2);
+    const items: { amt: number, item: Item }[] = [];
 
-    if (!randIt) {
-      await msg.author.dbRemove('pocket', fine);
-      return `**${this.emoji} ${msg.author.username}'s bomb**\nLOL you got fined **${fine.toLocaleString()}** for not defusing the bomb lol sucks to be you.`
+    let e = 0;
+    while(e <= candidates.length) {
+      const item = this.client.handlers.item.modules.get(candidates[e].id);
+      const amt = Math.round(candidates[e].amount / 2);
+      candidates[e].amount -= amt;
+      items.push({ amt, item });
+      e++;
     }
 
-    const itLoss = randomNumber(1, randIt.amount);
-    randIt.amount -= itLoss;
-    data.pocket -= fine;
+    const its = items.map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.emoji} ${item.name} LOST**`);
+    items.forEach(({ amt, item }) => data.items.find(i => i.id === item.id).amount -= amt);
+    await msg.author.dbRemove('pocket', fine);
     await data.save();
 
-    return `**${this.emoji} ${msg.author.username}'s bomb**\nLOL you lost **${itLoss.toLocaleString()} ${modIt.name}**${itLoss > 1 ? 's' : ''} and **${fine.toLocaleString()} coins** bruh :joy:`
+    return `**${this.emoji} ${msg.author.username}'s bomb FAILED :joy:**\n \`${fine.toLocaleString()}\` coins LOST\n${its.join('\n')}`;
   }
 }
