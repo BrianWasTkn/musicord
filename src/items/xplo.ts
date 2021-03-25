@@ -46,18 +46,19 @@ export default class PowerUp extends Item {
 
     const fine = randomNumber(data.pocket * 0.75, data.pocket);
     const items: { amt: number, item: Item }[] = [];
+    const inv = data.items.filter(i => i.amount >= 2);
 
     let e = 0;
-    while(e <= data.items.filter(i => i.amount >= 2).length) {
-      const mods = this.client.handlers.item.modules.array();
-      const item = randomInArray(mods.filter(m => !items.some(it => it.item.id === m.id)))
-      const inv = data.items.find(i => i.id === item.id);
-      items.push({ item, amt: Math.round(inv.amount / 2) });
+    while(e <= inv.length) {
+      const mod = this.client.handlers.item.modules.get(inv[e].id);
+      const it = data.items.find(i => i.id === mod.id);
+      const amt = Math.round(it.amount / 2);
+      items.push({ item: mod, amt });
       e++;
     }
 
     const its = items.map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.emoji} ${item.name} LOST**`);
-    items.forEach(({ amt, item }) => data.items.find(i => i.id === item.id).amount += amt);
+    items.forEach(({ amt, item }) => data.items.find(i => i.id === item.id).amount -= amt);
     xplo.amount--;
     data.pocket -= fine;
     await data.save();
