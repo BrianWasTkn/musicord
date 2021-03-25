@@ -32,7 +32,7 @@ export default class PowerUp extends Item {
       while(e <= randomNumber(3, 10)) {
         const mods = this.client.handlers.item.modules.array();
         const item = randomInArray(mods.filter(m => !items.some(it => it.item.id === m.id)))
-        items.push({ item, amt: randomNumber(10, item.cost <= 50e6 ? 100 : 50) });
+        items.push({ item, amt: randomNumber(1, item.cost <= 50e6 ? 100 : 2) });
         e++;
       }
 
@@ -48,13 +48,11 @@ export default class PowerUp extends Item {
     const items: { amt: number, item: Item }[] = [];
     const inv = data.items.filter(i => i.amount >= 2);
 
-    let e = 0;
-    while(e <= inv.length) {
+    for (let e = 0 ; e < inv.length ; e++) {
       const mod = this.client.handlers.item.modules.get(inv[e].id);
       const it = data.items.find(i => i.id === mod.id);
       const amt = Math.round(it.amount / 2);
       items.push({ item: mod, amt });
-      e++;
     }
 
     const its = items.map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.emoji} ${item.name} LOST**`);
