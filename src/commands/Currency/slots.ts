@@ -29,15 +29,15 @@ export default class Currency extends Command {
 
   private get slotMachine() {
     return {
-      middle_finger: [1, 2],
-      clown: [1, 2],
-      eyes: [1, 2],
-      eggplant: [2, 15],
-      alien: [2, 20],
-      peach: [2, 25],
-      flushed: [3, 50],
-      star2: [15, 75],
-      fire: [25, 750],
+      middle_finger: [1, 3],
+      clown: [1, 3],
+      eyes: [1, 3],
+      eggplant: [2, 10],
+      alien: [2, 15],
+      peach: [3, 20],
+      flushed: [5, 25],
+      star2: [15, 50],
+      fire: [20, 125],
     };
   }
 
@@ -57,7 +57,7 @@ export default class Currency extends Command {
 
     if (odds > (145 - oddRdce)) {
       return Array(3).fill(emoji);
-    } else if (odds > 100) {
+    } else if (odds > 110) {
       const emjis = Array(3).fill(emoji);
       const ind = randomNumber(1, emjis.length) - 1;
       emjis[ind] = randomInArray(emojis.filter(e => e !== emoji));

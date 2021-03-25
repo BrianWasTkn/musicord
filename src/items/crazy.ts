@@ -11,7 +11,7 @@ export default class PowerUp extends Item {
       emoji: ':beers:',
       info: "Gives a 5% chance of getting jackpot on slots for 10 minutes!",
       name: "Crazy's Alcohol",
-      cost: 2500000,
+      cost: 250000,
     });
   }
 

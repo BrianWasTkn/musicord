@@ -11,7 +11,7 @@ export default class Flex extends Item {
       emoji: ':baby_bottle:',
       info: "Having jenni's pee grants you good luck!",
       name: "Jenni's Piss",
-      cost: 10000000,
+      cost: 5000000,
     });
   }
 

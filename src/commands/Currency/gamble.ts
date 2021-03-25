@@ -86,8 +86,7 @@ export default class Currency extends Command {
         `You now have **${(d.pocket).toLocaleString()}**`,
       ];
     } else if (userD > botD) {
-      let wngs = Math.random() * 2;
-      if (wngs < 0.3) wngs += 0.3;
+      let wngs = Math.random() * 1.5;
       wngs += extraWngs;
       w = Math.round(bet * wngs);
       w = w + Math.round(w * (multi / 100));

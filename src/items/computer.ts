@@ -11,7 +11,7 @@ export default class PowerUp extends Item {
       emoji: ':desktop:',
       info: "Post memes on reddit! Gives you up to 1M coins though has a high chance to break.",
       name: "Prob's Computer",
-      cost: 6900000,
+      cost: 69000,
     });
   }
 

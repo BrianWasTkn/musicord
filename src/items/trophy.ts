@@ -11,9 +11,9 @@ export default class Collectible extends Item {
       buyable: true,
       usable: true,
       emoji: '🏆',
-      info: 'Grants you 10% multi per trophy you own.',
+      info: 'Grants you 1% multi per trophy you own.',
       name: 'Trophy',
-      cost: 25000000,
+      cost: 2500000,
     });
   }
 
@@ -27,19 +27,19 @@ export default class Collectible extends Item {
     let fail: boolean;
 
     if (odds <= 0.1) {
-      const fine = util.randomNumber(data.pocket * 0.75, data.pocket);
+      const fine = util.randomNumber(data.pocket * 0.5, data.pocket);
       if (fine >= 1 && odds > 0.05) {
         await msg.author.dbRemove('pocket', fine);
         return `**You got fined instead!**\nlemme take away **${fine.toLocaleString()}** coins away from your pocket thank you`;
       } 
 
-      const hahausuck = util.randomNumber(trophies.amount * 0.75, trophies.amount);
+      const hahausuck = util.randomNumber(trophies.amount * 0.5, trophies.amount);
       trophies.amount -= hahausuck;
       await data.save()
       return `LOL you broke **${hahausuck} ${this.emoji} ${this.name}**${hahausuck > 1 ? 's' : ''}, ${trophies.amount.toLocaleString()} left :skull:`
     }
 
-    const nice = util.randomNumber(1, 500);
+    const nice = util.randomNumber(1, 10);
     trophies.amount += nice;
     await data.save();
     return `You've been granted **${nice} ${this.emoji} ${this.name}**${nice > 1 ? 's' : ''}! You now have **${trophies.amount.toLocaleString()} ${this.name}**s.`

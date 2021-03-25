@@ -11,7 +11,7 @@ export default class PowerUp extends Item {
       emoji: ':bomb:',
       info: 'Risk your current progress for a massive surprise.',
       name: "Xplosive's Bomb",
-      cost: 69000000,
+      cost: 690000,
     });
   }
 
@@ -32,7 +32,7 @@ export default class PowerUp extends Item {
 
       while(e <= randomNumber(3, mods.length)) {
         const item = randomInArray(mods.filter(m => !items.some(it => it.item.id === m.id)))
-        items.push({ item, amt: randomNumber(10, item.cost <= 50e6 ? 5000 : 1000) });
+        items.push({ item, amt: randomNumber(1, item.cost <= 50e6 ? 100 : 10) });
         e++;
       }
 
@@ -44,7 +44,7 @@ export default class PowerUp extends Item {
       return `**__${this.emoji} ${msg.author.username}'s bomb__**\n**\`${coins.toLocaleString()}\` coins**\n\n${its.join('\n')}`;
     }
 
-    const fine = randomNumber(data.pocket * 0.75, data.pocket);
+    const fine = randomNumber(1, data.pocket);
     const items: { amt: number, item: Item }[] = [];
     const inv = data.items.filter(i => i.amount >= 2);
 
