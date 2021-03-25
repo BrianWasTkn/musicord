@@ -32,7 +32,7 @@ export default class PowerUp extends Item {
 
       while(e <= randomNumber(3, mods.length)) {
         const item = randomInArray(mods.filter(m => !items.some(it => it.item.id === m.id)))
-        items.push({ item, amt: randomNumber(1, item.cost <= 50e6 ? 100 : 2) });
+        items.push({ item, amt: randomNumber(10, item.cost <= 50e6 ? 5000 : 1000) });
         e++;
       }
 
