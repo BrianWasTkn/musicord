@@ -13,6 +13,8 @@ import {
 } from 'discord-akairo';
 
 export class Item extends AkairoModule {
+  handler: ItemHandler<Item>;
+
   sellable: boolean;
   buyable: boolean;
   client: Lava;

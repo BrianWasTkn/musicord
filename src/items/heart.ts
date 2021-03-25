@@ -16,8 +16,7 @@ export default class Powerflex extends Item {
   }
 
   async use(msg: MessagePlus): Promise<string> {
-    const { db, util } = this.client;
-    const data = await db.currency.fetch(msg.author.id);
+    const data = await msg.author.fetchDB();
     const heart = data.items.find(i => i.id === this.id);
     const multi = 50;
 

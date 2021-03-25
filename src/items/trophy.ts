@@ -19,7 +19,7 @@ export default class Collectible extends Item {
 
   async use(msg: MessagePlus): Promise<string> {
     const { db, util } = this.client;
-    const data = await db.currency.fetch(msg.author.id);
+    const data = await msg.author.fetchDB();
     const trophies = data.items.find((i) => i.id === this.id);
 
     let odds = Math.random();
@@ -29,7 +29,7 @@ export default class Collectible extends Item {
     if (odds <= 0.1) {
       const fine = util.randomNumber(data.pocket * 0.75, data.pocket);
       if (fine >= 1 && odds > 0.05) {
-        await db.currency.remove(msg.author.id, 'pocket', fine);
+        await msg.author.dbRemove('pocket', fine);
         return `**You got fined instead!**\nlemme take away **${fine.toLocaleString()}** coins away from your pocket thank you`;
       } 
 

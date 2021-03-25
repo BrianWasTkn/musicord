@@ -16,8 +16,8 @@ export default class PowerUp extends Item {
   }
 
   async use(msg: MessagePlus): Promise<string> {
-    const { db, util } = this.client;
-    const data = await db.currency.fetch(msg.author.id);
+    const { util } = this.client;
+    const data = await msg.author.fetchDB();
     const card = data.items.find((i) => i.id === this.id);
 
     const m = `${msg.author.toString()} You have ${card.amount.toLocaleString()} cards. How many cards do you wanna reveal right now?`;
@@ -38,6 +38,6 @@ export default class PowerUp extends Item {
     data.space += gain;
     await data.save();
 
-    return `**You crafted __${choice.toLocaleString()}__ cards into your vault.**\nThis brings you to **${data.space.toLocaleString()}** of total vault capacity, with **${gain.toLocaleString()}** being crafted.`;
+    return `**You crafted __${choice.toLocaleString()}__ cards into your vault.**\nThis brings you to **${data.space.toLocaleString()}** of total vault capacity, with **${gain.toLocaleString()} (${Math.round(gain / choice).toLocaleString()}) ** being crafted.`;
   }
 }

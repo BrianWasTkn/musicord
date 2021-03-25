@@ -16,8 +16,8 @@ export default class PowerUp extends Item {
   }
 
   async use(msg: MessagePlus): Promise<string> {
-    const { db, util } = this.client;
-    const data = await db.currency.fetch(msg.author.id);
+    const { util } = this.client;
+    const data = await msg.author.fetchDB();
     const cof = data.items.find(i => i.id === this.id);
     const multi = util.randomNumber(5, 50);
 

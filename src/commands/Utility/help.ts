@@ -27,7 +27,6 @@ export default class Utility extends Command {
   }
 
   private mapCommands(): EmbedField[] {
-    const commands = this.handler.modules.array();
     const fields: EmbedField[] = [];
 
     for (const [category, catCmds] of this.handler.categories) {

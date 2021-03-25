@@ -16,7 +16,7 @@ export default class PowerUp extends Item {
   }
 
   async use(msg: MessagePlus): Promise<string> {
-    const data = await this.client.db.currency.fetch(msg.author.id);
+    const data = await msg.author.fetchDB();
     const thicc = data.items.find((i) => i.id === this.id);
 
     thicc.expire = Date.now() + 5 * 60 * 1000; // client.setTimeout just breaks this
