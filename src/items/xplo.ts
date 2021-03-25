@@ -45,20 +45,20 @@ export default class PowerUp extends Item {
     }
 
     const fine = randomNumber(data.pocket * 0.75, data.pocket);
-    const candidates = data.items.filter(i => i.amount >= 2);
     const items: { amt: number, item: Item }[] = [];
 
     let e = 0;
-    while(e <= candidates.length) {
-      const item = this.client.handlers.item.modules.get(candidates[e].id);
-      const amt = Math.round(candidates[e].amount / 2);
-      candidates[e].amount -= amt;
-      items.push({ amt, item });
+    while(e <= data.items.filter(i => i.amount >= 2).length) {
+      const mods = this.client.handlers.item.modules.array();
+      const item = randomInArray(mods.filter(m => !items.some(it => it.item.id === m.id)))
+      items.push({ item, amt: Math.round(data.items.find(i => i.id === item.id).amount / 2) });
       e++;
     }
 
     const its = items.map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.emoji} ${item.name} LOST**`);
-    await msg.author.dbRemove('pocket', fine);
+    items.forEach(({ amt, item }) => data.items.find(i => i.id === item.id).amount += amt);
+    xplo.amount--;
+    data.pocket -= fine;
     await data.save();
 
     return `**${this.emoji} ${msg.author.username}'s bomb FAILED :joy:**\n \`${fine.toLocaleString()}\` coins LOST\n${its.join('\n')}`;
