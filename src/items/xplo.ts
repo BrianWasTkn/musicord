@@ -25,18 +25,18 @@ export default class PowerUp extends Item {
     let odds = randomNumber(1, 100);
 
     if (odds >= 60) {
+      const mods = this.client.handlers.item.modules.array();
       const coins = randomNumber(5e4, 5e5);
       let items: { amt: number, item: Item }[] = [];
       let e = 0;
 
-      while(e <= randomNumber(3, 10)) {
-        const mods = this.client.handlers.item.modules.array();
+      while(e <= randomNumber(3, mods.length)) {
         const item = randomInArray(mods.filter(m => !items.some(it => it.item.id === m.id)))
         items.push({ item, amt: randomNumber(1, item.cost <= 50e6 ? 100 : 2) });
         e++;
       }
 
-      const its = items.map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.emoji} ${item.name}**`);
+      const its = items.sort((a, b) => b.amt - a.amt).map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.emoji} ${item.name}**`);
       items.forEach(({ amt, item }) => data.items.find(i => i.id === item.id).amount += amt);
       xplo.amount--;
       await data.save();
@@ -55,12 +55,12 @@ export default class PowerUp extends Item {
       items.push({ item: mod, amt });
     }
 
-    const its = items.map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.emoji} ${item.name} LOST**`);
+    const its = items.sort((a, b) => b.amt - a.amt).map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.emoji} ${item.name} LOST**`);
     items.forEach(({ amt, item }) => data.items.find(i => i.id === item.id).amount -= amt);
     xplo.amount--;
     data.pocket -= fine;
     await data.save();
 
-    return `**${this.emoji} ${msg.author.username}'s bomb FAILED :joy:**\n\`${fine.toLocaleString()}\` coins LOST\n\n${its.join('\n')}`;
+    return `**${this.emoji} ${msg.author.username}'s bomb FAILED :joy:**\n**\`${fine.toLocaleString()}\` coins LOST**\n\n${its.join('\n')}`;
   }
 }
