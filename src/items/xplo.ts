@@ -58,7 +58,6 @@ export default class PowerUp extends Item {
     }
 
     const its = items.map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.emoji} ${item.name} LOST**`);
-    items.forEach(({ amt, item }) => data.items.find(i => i.id === item.id).amount -= amt);
     await msg.author.dbRemove('pocket', fine);
     await data.save();
 
