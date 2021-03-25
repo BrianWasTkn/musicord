@@ -41,7 +41,7 @@ export default class PowerUp extends Item {
       xplo.amount--;
       await data.save();
 
-      return `**__${this.emoji} ${msg.author.username}'s bomb__**\n**\`${coins.toLocaleString()}\` coins**\n${its.join('\n')}`;
+      return `**__${this.emoji} ${msg.author.username}'s bomb__**\n**\`${coins.toLocaleString()}\` coins**\n\n${its.join('\n')}`;
     }
 
     const fine = randomNumber(data.pocket * 0.75, data.pocket);
@@ -61,6 +61,6 @@ export default class PowerUp extends Item {
     data.pocket -= fine;
     await data.save();
 
-    return `**${this.emoji} ${msg.author.username}'s bomb FAILED :joy:**\n \`${fine.toLocaleString()}\` coins LOST\n${its.join('\n')}`;
+    return `**${this.emoji} ${msg.author.username}'s bomb FAILED :joy:**\n\`${fine.toLocaleString()}\` coins LOST\n\n${its.join('\n')}`;
   }
 }
