@@ -1,4 +1,5 @@
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { Document } from 'mongoose';
 import { UserPlus } from './user';
 import { Lava } from '@lib/Lava';
 import {
@@ -26,18 +27,19 @@ export class MessagePlus extends Message {
   }
 
   async calcSpace() {
+    const { fetch, add, set } = this.client.db.currency;
     const { maxSafeSpace } = this.client.config.currency;
     const { randomNumber } = this.client.util;
-    const { fetch, add } = this.client.db.currency;
+    const d = await fetch(this.author.id);
 
-    const o = await fetch(this.author.id);
-    if (o.space >= maxSafeSpace) {
-      o.space = maxSafeSpace;
-      return { msg: this, d: await o.save() };
+    if (d.space >= maxSafeSpace) {
+      const db = await set(this.author.id, 'space', maxSafeSpace);
+      return { ...this, db };
     }
 
     const gain = Math.round(55 * (randomNumber(1, 100) / 2) + 55);
-    return { msg: this, d: await add(this.author.id, 'space', gain) };
+    const db = await add(this.author.id, 'space', gain);
+    return { ...this, db };
   }
 
   fetchDB(id: string) {
@@ -56,7 +58,6 @@ export class MessagePlus extends Message {
     const embed = data instanceof MessageEmbed ? data : new MessageEmbed(data);
     return this.channel.send({ embed });
   }
-
 }
 
 Structures.extend('Message', () => MessagePlus);

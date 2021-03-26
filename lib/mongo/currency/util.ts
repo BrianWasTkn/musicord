@@ -19,16 +19,15 @@ export const utils: CurrencyUtil = {
    * @param msg a discord msg obj
    * @returns {Promise<number>}
    */
-  calcMulti: async function CalcMulti(
+  calcMulti: function CalcMulti(
     bot: Lava,
-    msg: MessagePlus
-  ): Promise<{ unlocked: string[]; total: number }> {
-    const { fetch } = bot.db.currency;
+    msg: MessagePlus,
+    db: Document & CurrencyProfile
+  ): { unlocked: string[]; total: number } {
     const channel = msg.channel as GuildChannel;
-    const db = await fetch(msg.author.id);
+    let unlocked = [];
     let total = 0;
     total += db.multi;
-    let unlocked = [];
 
     // Discord-based
     if (msg.guild.id === '691416705917779999') {

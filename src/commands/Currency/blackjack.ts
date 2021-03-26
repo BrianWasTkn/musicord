@@ -29,7 +29,7 @@ export default class Currency extends Command {
     // Core
     const { maxWin, maxMulti, maxBet, maxPocket } = currency;
     const data = await msg.author.fetchDB();
-    let { total: multi } = await DB.utils.calcMulti(this.client, msg);
+    let { total: multi } = DB.utils.calcMulti(this.client, msg, data);
     const { amount: bet } = args;
     if (multi >= maxMulti) multi = maxMulti as number;
     if (!bet) return;
@@ -127,7 +127,7 @@ export default class Currency extends Command {
       if (status.constructor === Object) {
         const coinCheck = await DB.fetch(msg.author.id); // ugh don't really know else how to do this thanks to reversal
         if (bet > coinCheck.pocket) {
-          await DB.remove(msg.author.id, 'pocket', bet);
+          await msg.author.initDB(data).removePocket(bet).calcSpace().updateItems().db.save();
           return { content: `What the hell man, you don't have the coins to cover this bet anymore??? I'm keeping your bet since you tried to SCAM ME.`, reply: true };
         }
         let finalMsg = '';
@@ -136,8 +136,7 @@ export default class Currency extends Command {
           winnings = Math.ceil(bet * (Math.random() + (0.4 + extraWngs))); // "Base Multi"
           winnings = Math.min(maxPocket as number, winnings + Math.ceil(winnings * (multi / 100))); // This brings in the user's secret multi (pls multi)
           finalMsg += `\nYou won **${winnings.toLocaleString()}**. You now have ${(data.pocket + winnings).toLocaleString()}.`;
-          await msg.author.dbAdd('pocket', winnings);
-          await msg.calcSpace();
+          await msg.author.initDB(data).addPocket(winnings).updateItems().calcSpace().db.save();
           state = extraWngs ? 'thicc' : 'winning';
         } else {
           // Tie
@@ -147,8 +146,7 @@ export default class Currency extends Command {
           } else {
             // Loss
             finalMsg += `\nYou lost **${Number(bet).toLocaleString()}**. You now have ${(data.pocket - bet).toLocaleString()}.`;
-            await msg.author.dbRemove('pocket', bet);
-            await msg.calcSpace();
+            await msg.author.initDB(data).removePocket(bet).updateItems().calcSpace().db.save();
             state = 'losing';
           }
         }
@@ -185,7 +183,8 @@ export default class Currency extends Command {
       if (final) return;
       const choice = (await msg.channel.awaitMessages(m => m.author.id === msg.author.id, { max: 1, time: 3e4 })).first();
       if (!choice) {
-        await DB.remove(msg.author.id, 'pocket', bet)
+        // No bank space for you bitch
+        await msg.author.initDB(data).removePocket(bet).db.save();
         return { content: 'You ended the game since you didn\'t respond. The dealer is keeping your money to deal with your bullcrap.', reply: true };
       }
       switch (choice.content.toLowerCase().slice(0, 1)) {
@@ -196,10 +195,12 @@ export default class Currency extends Command {
           stood = true;
           return dealersTurn(stood);
         case 'e':
-          await DB.remove(msg.author.id, 'pocket', bet);
+          // You too, no space for you :P
+          await msg.author.initDB(data).removePocket(bet).db.save();
           return { content: 'You ended the game. The dealer is keeping your money to deal with your bullcrap.', replyTo: msg.id };
         default:
-          await DB.remove(msg.author.id, 'pocket', bet);
+          // You too, no space for you :P
+          await msg.author.initDB(data).removePocket(bet).db.save();
           return { content: 'Ur an idiot you need to give a valid response. You lost your entire bet.', replyTo: msg.id };
       }
     }

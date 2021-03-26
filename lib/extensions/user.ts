@@ -1,23 +1,29 @@
 import { Structures, User, Collection } from 'discord.js';
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { Document } from 'mongoose';
 import { Effects } from '@lib/utility/effects'
 import { Lava } from '@lib/Lava';
 
 export class UserPlus extends User {
   client: Lava;
+  db: Document & CurrencyProfile;
 
   constructor(client: Lava, data: object) {
     super(client, data);
   }
 
-  async updateItems() {
+  initDB(data: Document & CurrencyProfile) {
+    this.db = data;
+    return this;
+  }
+
+  updateItems() {
     const { effects } = this.client.util;
-    const data = await this.fetchDB();
     const items = this.client.handlers.item.modules.array();
     const eff = new Effects();
 
     for (const item of items) {
-      const inv = data.items.find(i => i.id === item.id);
+      const inv = this.db.items.find(i => i.id === item.id);
       if (inv.expire > Date.now()) {
         if (item.id === 'brian') 
           eff.setWinnings(0.5).setSlotOdds(5);
@@ -41,6 +47,37 @@ export class UserPlus extends User {
         }
       }
     }
+
+    return this;
+  }
+
+  calcSpace() {
+    const { maxSafeSpace } = this.client.config.currency;
+    const { randomNumber } = this.client.util;
+
+    if (this.db.space >= maxSafeSpace) {
+      this.db.space = maxSafeSpace;
+      return this;
+    }
+
+    const gain = Math.round(55 * (randomNumber(1, 100) / 2) + 55);
+    this.db.space += gain;
+    return this;
+  }
+
+  addPocket(amount: number) {
+    this.db.pocket += amount;
+    return this;
+  }
+
+  removePocket(amount: number) {
+    this.db.pocket -= amount;
+    return this;
+  }
+
+  setPocket(amount: number) {
+    this.db.pocket = amount;
+    return this;
   }
 
   fetchDB() {

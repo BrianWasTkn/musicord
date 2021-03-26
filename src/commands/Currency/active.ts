@@ -6,7 +6,7 @@ import { Embed } from '@lib/utility/embed';
 export default class Currency extends Command {
   constructor() {
     super('active', {
-      aliases: ['active', 'a'],
+      aliases: ['active', 'ac'],
       channel: 'guild',
       description: 'View your active items.',
       category: 'Currency',

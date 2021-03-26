@@ -5,7 +5,7 @@ export default class Flex extends Item {
     super('herb', {
       category: 'Flex',
       sellable: false,
-      buyable: false,
+      buyable: true,
       usable: false,
       emoji: ':herb:',
       info: "A flex from the man himself.",
