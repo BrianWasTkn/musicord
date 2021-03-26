@@ -80,6 +80,18 @@ export class UserPlus extends User {
     return this;
   }
 
+  deposit(amount: number) {
+    this.db.vault += amount;
+    this.db.pocket -= amount;
+    return this;
+  }
+
+  withdraw(amount: number) {
+    this.db.vault -= amount;
+    this.db.pocket += amount;
+    return this;
+  }
+
   fetchDB() {
     return this.client.db.currency.fetch(this.id);
   }

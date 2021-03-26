@@ -184,7 +184,7 @@ export default class Currency extends Command {
       const choice = (await msg.channel.awaitMessages(m => m.author.id === msg.author.id, { max: 1, time: 3e4 })).first();
       if (!choice) {
         // No bank space for you bitch
-        await msg.author.initDB(data).removePocket(bet).db.save();
+        await msg.author.initDB(data).updateItems().removePocket(bet).db.save();
         return { content: 'You ended the game since you didn\'t respond. The dealer is keeping your money to deal with your bullcrap.', reply: true };
       }
       switch (choice.content.toLowerCase().slice(0, 1)) {
@@ -196,11 +196,11 @@ export default class Currency extends Command {
           return dealersTurn(stood);
         case 'e':
           // You too, no space for you :P
-          await msg.author.initDB(data).removePocket(bet).db.save();
+          await msg.author.initDB(data).updateItems().removePocket(bet).db.save();
           return { content: 'You ended the game. The dealer is keeping your money to deal with your bullcrap.', replyTo: msg.id };
         default:
           // You too, no space for you :P
-          await msg.author.initDB(data).removePocket(bet).db.save();
+          await msg.author.initDB(data).updateItems().removePocket(bet).db.save();
           return { content: 'Ur an idiot you need to give a valid response. You lost your entire bet.', replyTo: msg.id };
       }
     }

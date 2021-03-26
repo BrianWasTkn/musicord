@@ -63,45 +63,31 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
 
   async buy(
     amount: number,
-    u: string,
+    data: Document & CurrencyProfile,
     iid: string
-  ): Promise<{
-    amount: number;
-    data: Document<any> & CurrencyProfile;
-    item: ItemModule;
-    paid: number;
-  }> {
-    const { maxInventory: maxInv } = this.client.config.currency;
-    const { fetch, remove } = this.client.db.currency;
+  ) {
     const item = this.modules.get(iid);
     const paid = amount * item.cost;
 
-    let data = await fetch(u);
     let inv = data.items.find((i) => i.id === item.id);
-    await remove(u, 'pocket', paid);
+    data.pocket -= paid;
     inv.amount += amount;
-    await data.save();
 
-    return { data, amount, item, paid };
+    return data.save();
   }
 
   async sell(
     amount: number,
-    u: string,
-    i: string
-  ): Promise<{
-    amount: number;
-    data: Document<any> & CurrencyProfile;
-    item: ItemModule;
-    sold: number;
-  }> {
-    const { add } = this.client.db.currency;
-    const item = this.modules.get(i);
-    const sold = amount * (item.cost / 4);
-    const data = await add(u, 'pocket', sold);
+    data: Document & CurrencyProfile,
+    iid: string
+  ) {
+    const item = this.modules.get(iid);
+    const sold = Math.round(amount * (item.cost / 4));
 
-    data.items.find((i) => i.id === item.id).amount -= amount;
-    await data.save();
-    return { data, amount, item, sold };
+    let inv = data.items.find((i) => i.id === item.id);
+    data.pocket += sold;
+    inv.amount -= amount;
+
+    return data.save();
   }
 }

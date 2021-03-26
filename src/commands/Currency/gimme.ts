@@ -32,7 +32,7 @@ export default class Currency extends Command {
       return `WTF you got **${amount} ${item.emoji} ${item.name}**${amount > 1 ? 's' : ''} that was lucky asf`
     } else if (odds >= 0.5) {
       const won = util.randomNumber(100, 500) * 1e3;
-      await msg.author.dbAdd('pocket', won);
+      await msg.author.initDB(data).addPocket(won).calcSpace().db.save();
       return `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`
     } else {
       return 'LOL nope.'

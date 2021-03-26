@@ -54,18 +54,17 @@ export default class Currency extends Command {
       amount: number;
     }
   ): Promise<string | MessageOptions> {
-    const { pocket, vault, space } = await msg.author.fetchDB();
+    const d = await msg.author.fetchDB();
     const embed: Embed = new Embed();
 
     if (!amount)
       return;
     else if (amount < 1)
       return 'Thought you can fool me?';
-    else if (amount > vault)
-      return `Bro, you only have ${vault.toLocaleString()} coins in your vault what're you up to?`;
+    else if (amount > d.vault)
+      return `Bro, you only have ${d.vault.toLocaleString()} coins in your vault what're you up to?`;
 
-    await msg.author.dbRemove('vault', amount);
-    await msg.author.dbAdd('pocket', amount);
+    await msg.author.initDB(d).withdraw(amount).db.save();
     return `**${amount.toLocaleString()}** coins withdrawn.`;
   }
 }

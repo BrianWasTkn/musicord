@@ -53,23 +53,16 @@ export default class Currency extends Command {
     else if (inv.amount >= maxInventory)
       return `You already have enough of this item (${maxInventory.toLocaleString()})!`;
 
-    const { 
-      paid, 
-      amount: amt, 
-      data: dat, 
-      item: i 
-    } = await Items.buy(Math.trunc(amount), msg.author.id, item.id);
-
+    await Items.buy(Math.trunc(amount), data, item.id);
     const embed = new Embed()
       .setDescription(
-        `Succesfully purchased **${amt.toLocaleString()} ${i.name}**${
-          amt > 1 ? 's' : ''
-        } and paid \`${paid.toLocaleString()}\`.`
+        `Succesfully purchased **${amount.toLocaleString()} ${item.name}**${
+          amount > 1 ? 's' : ''
+        } and paid \`${(item.cost * amount).toLocaleString()}\`.`
       )
       .setAuthor('Successful purchase', msg.author.avatarURL({ dynamic: true }))
       .setColor('GREEN');
 
-    await msg.calcSpace();
     return { embed };
   }
 }

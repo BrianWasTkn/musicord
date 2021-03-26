@@ -1,5 +1,6 @@
 import { GuildMember, MessageOptions } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
+import { UserPlus } from '@lib/extensions/user';
 import { Argument } from 'discord-akairo';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
@@ -55,11 +56,10 @@ export default class Currency extends Command {
 
   	let paid = Math.round(give - (give * 0.05));
   	let tax = Math.round(give * 0.5 / (give / 10));
-		let nr = await msg.dbAdd(member.user.id, 'pocket', paid);
-  	let u = await msg.author.dbRemove('pocket', give);
 
-    await msg.calcSpace();
+    const recib = await (member.user as UserPlus).initDB(r).addPocket(paid).db.save();
+  	const giver = await msg.author.initDB(data).removePocket(give).calcSpace().db.save();
 
-  	return `You gave ${member.user.username} **${paid.toLocaleString()}** coins after a **${tax}%** tax. They now have **${nr.pocket.toLocaleString()}** coins while you have **${u.pocket.toLocaleString()}** coins.`
+  	return `You gave ${member.user.username} **${paid.toLocaleString()}** coins after a **${tax}%** tax. They now have **${recib.pocket.toLocaleString()}** coins while you have **${giver.pocket.toLocaleString()}** coins.`
   }
 }

@@ -94,6 +94,7 @@ export default class Currency extends Command {
     if (!bet) return;
 
     // Item Effects
+    const data = await msg.author.fetchDB();
     let slots: number = 0;
     for (const it of ['crazy', 'brian']) {
       const userEf = effects.get(msg.author.id);
@@ -118,8 +119,7 @@ export default class Currency extends Command {
     description.push(outcome);
     if (length === 1 || length === 2) {
       const jackpot = length === 1;
-      const d = await msg.author.dbAdd('pocket', winnings);
-      await msg.calcSpace();
+      const d = await msg.author.initDB(data).addPocket(winnings).calcSpace().db.save();
       
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
@@ -127,9 +127,8 @@ export default class Currency extends Command {
       description.push(`**Multiplier** \`x${multiplier}\``);
       description.push(`You now have **${d.pocket.toLocaleString()}**`);
     } else {
-      const d = await msg.author.dbRemove('pocket', bet);
-      await msg.calcSpace();
-      
+      const d = await msg.author.initDB(data).removePocket(bet).calcSpace().db.save();
+
       color = 'RED';
       state = 'losing';
       description.push(`\nYou lost **${bet.toLocaleString()}**`);

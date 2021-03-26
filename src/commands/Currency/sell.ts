@@ -47,24 +47,17 @@ export default class Currency extends Command {
 		else if (!item.sellable)
 			return "You can't sell this item rip";
 		else if (amount > inv.amount)
-			return 'You can\'t fool me'
+			return 'You can\'t fool me';
 
-		const {
-			sold,
-			amount: amt,
-			data: dat,
-			item: i
-		} = await Items.sell(Math.trunc(amount), msg.author.id, item.id);
-
+		await Items.sell(Math.trunc(amount), data, item.id);
 		const embed = new Embed()
 			.setDescription(
-				`Succesfully sold **${amt.toLocaleString()} ${i.name}**${amt > 1 ? 's' : ''
-				} and got \`${sold.toLocaleString()}\`.`
+				`Succesfully sold **${amount.toLocaleString()} ${item.name}**${amount > 1 ? 's' : ''
+				} and got \`${Math.round(amount * (item.cost / 4)).toLocaleString()}\`.`
 			)
 			.setAuthor('Item Sold', msg.author.avatarURL({ dynamic: true }))
 			.setColor('GREEN');
 
-		await msg.calcSpace();
 		return { embed };
 	}
 }
