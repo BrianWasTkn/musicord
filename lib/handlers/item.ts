@@ -37,7 +37,9 @@ export class Item extends AkairoModule {
     this.name = opt.name;
   }
 
-  use(msg: MessagePlus): any | Promise<any> {}
+  use(msg: MessagePlus): any | Promise<any> {
+    return 'This item perhaps, is a work in progress :)';
+  }
 }
 
 export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
@@ -61,7 +63,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
     });
   }
 
-  async buy(
+  buy(
     amount: number,
     data: Document & CurrencyProfile,
     iid: string
@@ -76,7 +78,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
     return data.save();
   }
 
-  async sell(
+  sell(
     amount: number,
     data: Document & CurrencyProfile,
     iid: string

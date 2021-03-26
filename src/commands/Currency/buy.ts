@@ -56,7 +56,7 @@ export default class Currency extends Command {
     await Items.buy(Math.trunc(amount), data, item.id);
     const embed = new Embed()
       .setDescription(
-        `Succesfully purchased **${amount.toLocaleString()} ${item.name}**${
+        `Succesfully purchased **${amount.toLocaleString()} ${item.emoji} ${item.name}**${
           amount > 1 ? 's' : ''
         } and paid \`${(item.cost * amount).toLocaleString()}\`.`
       )

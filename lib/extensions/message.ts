@@ -16,13 +16,13 @@ import {
   Message,
 } from 'discord.js';
 
-type MessageChannel = DMChannel | TextChannel | NewsChannel;
+type TextableChannel = DMChannel | TextChannel | NewsChannel;
 
 export class MessagePlus extends Message {
   author: UserPlus;
   client: Lava;
 
-  constructor(client: Lava, data: object, channel: MessageChannel) {
+  constructor(client: Lava, data: object, channel: TextableChannel) {
     super(client, data, channel);
   }
 
