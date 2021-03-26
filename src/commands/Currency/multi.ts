@@ -32,7 +32,7 @@ export default class Currency extends Command {
     const { maxMulti } = this.client.config.currency;
     const { utils } = this.client.db.currency;
     const { util } = this.client;
-    const multi = await utils.calcMulti(this.client, msg);
+    const multi = await utils.calcMulti(this.client, msg, await msg.author.fetchDB());
 
     const multis = util.paginateArray(multi.unlocked, 5);
     if (page > multis.length) return "That page doesn't exist.";
