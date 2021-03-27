@@ -11,7 +11,7 @@ export default class Collectible extends Item {
       buyable: true,
       usable: true,
       emoji: '🏆',
-      info: 'Grants you 1% multi per trophy you own.',
+      info: 'Grants you 2% multi per trophy you own.',
       name: 'Trophy',
       cost: 2500000,
     });
