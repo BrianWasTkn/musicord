@@ -13,7 +13,7 @@ export const currencyConfig: CurrencyType = {
 	maxSafePocket: 1000000000,
 	maxSafeSpace: 5000000000,
   maxInventory: 100000,
-  maxPocket: 50000000,
+  maxPocket: 100000000,
   maxMulti: 250,
   minBet: 100,
   maxBet: 500000,
