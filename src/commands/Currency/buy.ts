@@ -51,7 +51,7 @@ export default class Currency extends Command {
     else if (data.pocket < amount * item.cost)
       return "You don't have enough to buy this item on bulk!";
     else if (inv.amount >= maxInventory)
-      return `You already have enough of this item (${maxInventory.toLocaleString()})!`;
+      return `You already have enough of this item (${maxInventory.toLocaleString()} limit)!`;
 
     await Items.buy(Math.trunc(amount), data, item.id);
     const embed = new Embed()

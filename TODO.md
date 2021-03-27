@@ -6,10 +6,11 @@ Just a list of planned features basically for event and currency commands. Check
 * [ ] **Hourly Lottery**
 * [x] **Give, Gift Commands**
 
-## Crib
+## Memers Crib
 * [ ] **Event Commands**
 * [x] **Donation System**
 * [ ] **Timed Events**
+* [ ] **Giveaways**
 
 ## Back-End
 * [x] **Item Checks**

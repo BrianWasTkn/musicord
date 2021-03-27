@@ -35,13 +35,15 @@ export default class Collectible extends Item {
 
       const hahausuck = util.randomNumber(trophies.amount * 0.5, trophies.amount);
       trophies.amount -= hahausuck;
-      await data.save()
+      await msg.author.initDB(data).updateItems().db.save();
+      
       return `LOL you broke **${hahausuck} ${this.emoji} ${this.name}**${hahausuck > 1 ? 's' : ''}, ${trophies.amount.toLocaleString()} left :skull:`
     }
 
     const nice = util.randomNumber(1, 10);
     trophies.amount += nice;
-    await data.save();
+    await msg.author.initDB(data).updateItems().db.save();
+    
     return `You've been granted **${nice} ${this.emoji} ${this.name}**${nice > 1 ? 's' : ''}! You now have **${trophies.amount.toLocaleString()} ${this.name}**s.`
   }
 }

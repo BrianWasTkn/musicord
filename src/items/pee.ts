@@ -18,7 +18,8 @@ export default class Flex extends Item {
   async use(msg: MessagePlus): Promise<string> {
     const data = await msg.author.fetchDB();
     data.items.find((i) => i.id === this.id).amount -= 1;
-    await data.save();
+    await msg.author.initDB(data).updateItems().db.save();
+    
     return "You drank jenni's urinary substance, now what?";
   }
 }

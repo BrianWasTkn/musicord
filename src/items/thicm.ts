@@ -21,7 +21,7 @@ export default class PowerUp extends Item {
 
     thicc.expire = Date.now() + 5 * 60 * 1000; // client.setTimeout just breaks this
     thicc.amount--;
-    await data.save();
+    await msg.author.initDB(data).updateItems().db.save();
 
     return `**You activated ${this.emoji} ${this.name}!**\nYou've been granted **+50% winnings power** for blackjack.`
   }

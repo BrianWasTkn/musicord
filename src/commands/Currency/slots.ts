@@ -119,7 +119,7 @@ export default class Currency extends Command {
     description.push(outcome);
     if (length === 1 || length === 2) {
       const jackpot = length === 1;
-      const d = await msg.author.initDB(data).addPocket(winnings).calcSpace().db.save();
+      const d = await msg.author.initDB(data).addPocket(winnings).updateItems().calcSpace().db.save();
       
       color = jackpot ? 'GOLD' : 'GREEN';
       state = jackpot ? 'jackpot' : 'winning';
@@ -127,7 +127,7 @@ export default class Currency extends Command {
       description.push(`**Multiplier** \`x${multiplier}\``);
       description.push(`You now have **${d.pocket.toLocaleString()}**`);
     } else {
-      const d = await msg.author.initDB(data).removePocket(bet).calcSpace().db.save();
+      const d = await msg.author.initDB(data).removePocket(bet).updateItems().calcSpace().db.save();
 
       color = 'RED';
       state = 'losing';

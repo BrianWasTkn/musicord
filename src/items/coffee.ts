@@ -24,7 +24,7 @@ export default class PowerUp extends Item {
     cof.amount--;
     cof.multi = multi;
     cof.expire = Date.now() + (5 * 60 * 1e3);
-    await data.save();
+    await msg.author.initDB(data).updateItems().db.save();
 
     return `You've been granted a **${multi}% multiplier** for 5 minutes.`;
   }

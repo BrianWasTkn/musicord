@@ -17,10 +17,7 @@ export default class CommandListener extends Listener {
     args: any[],
     returned: MessageOptions | Promise<MessageOptions>
   ): Promise<void | MessagePlus | MessagePlus[]> {
-    const { util, db } = this.client;
     if (!returned) return;
-    
     await msg.channel.send(returned as MessageOptions) as MessagePlus;
-    await msg.author.updateItems();
   }
 }

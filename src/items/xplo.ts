@@ -32,14 +32,14 @@ export default class PowerUp extends Item {
 
       while(e <= randomNumber(3, mods.length)) {
         const item = randomInArray(mods.filter(m => !items.some(it => it.item.id === m.id)))
-        items.push({ item, amt: randomNumber(1, item.cost <= 5e6 ? 50 : 5) });
+        items.push({ item, amt: randomNumber(1, item.cost <= 5e6 ? 50 : 3) });
         e++;
       }
 
-      const its = items.sort((a, b) => b.amt - a.amt).map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.emoji} ${item.name}**`);
+      const its = items.sort((a, b) => b.amt - a.amt).map(({ amt, item }) => `**__${amt.toLocaleString()}__ ${item.emoji} ${item.name}**`);
       items.forEach(({ amt, item }) => data.items.find(i => i.id === item.id).amount += amt);
       xplo.amount--;
-      await data.save();
+      await msg.author.initDB(data).updateItems().db.save();
 
       return `**__${this.emoji} ${msg.author.username}'s bomb__**\n**\`${coins.toLocaleString()}\` coins**\n\n${its.join('\n')}`;
     }
@@ -55,12 +55,12 @@ export default class PowerUp extends Item {
       items.push({ item: mod, amt });
     }
 
-    const its = items.sort((a, b) => b.amt - a.amt).map(({ amt, item }) => `**\`${amt.toLocaleString()}\` ${item.emoji} ${item.name} LOST**`);
+    const its = items.sort((a, b) => b.amt - a.amt).map(({ amt, item }) => `**__${amt.toLocaleString()}__ ${item.emoji} ${item.name}**${amt > 1 ? 's' : ''} lost :skull:`);
     items.forEach(({ amt, item }) => data.items.find(i => i.id === item.id).amount -= amt);
     xplo.amount--;
     data.pocket -= fine;
-    await data.save();
+    await msg.author.initDB(data).updateItems().db.save();
 
-    return `**${this.emoji} ${msg.author.username}'s bomb FAILED :joy:**\n**\`${fine.toLocaleString()}\` coins LOST**\n\n${its.join('\n')}`;
+    return `**${this.emoji} ${msg.author.username}'s bomb FAILED :skull:**\n**\`${fine.toLocaleString()}\` coins fined**\n\n${its.join('\n')}`;
   }
 }

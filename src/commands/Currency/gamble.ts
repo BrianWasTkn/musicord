@@ -77,7 +77,7 @@ export default class Currency extends Command {
       const ties = botD === userD;
       let lost = ties ? Math.round(bet / 4) : bet;
 
-      const d = await msg.author.initDB(data).removePocket(bet).calcSpace().db.save();
+      const d = await msg.author.initDB(data).updateItems().removePocket(bet).calcSpace().db.save();
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';
       description = [
@@ -87,12 +87,12 @@ export default class Currency extends Command {
     } else if (userD > botD) {
       let wngs = Math.random() * 1.5;
       wngs += extraWngs;
-      w = Math.round(bet * wngs);
+      w = Math.ceil(bet * wngs);
       w = w + Math.round(w * (multi / 100));
       if (w > maxWin) w = maxWin as number;
       perwn = Number((w / bet).toFixed(2));
 
-      const d = await msg.author.initDB(data).addPocket(w).calcSpace().db.save();
+      const d = await msg.author.initDB(data).updateItems().addPocket(w).calcSpace().db.save();
       
       identifier = Boolean(extraWngs) ? 'thicc' : 'winning';
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';

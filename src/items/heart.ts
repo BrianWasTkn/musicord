@@ -23,7 +23,7 @@ export default class Powerflex extends Item {
     heart.amount--;
     heart.expire = Date.now() + (5 * 60 * 1e3);
     heart.multi = 50;
-    await data.save();
+    await msg.author.initDB(data).updateItems().db.save();
 
     return `You have been granted a **${multi}% multiplier, +25% winnings in gamble and +5% chance of jackpots in slots** for 5 minutes.`;
   }
