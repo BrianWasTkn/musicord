@@ -31,9 +31,10 @@ export default class Currency extends Command {
   	const rich = (await model.find({}) as (Document & CurrencyProfile)[]);
   	const nice = rich
   	.filter(doc => args.isGlobal ? true : msg.guild.members.cache.has(doc.userID))
+  	.sort((a, b) => b.pocket - a.pocket)
   	.map(async (doc, i) => {
 			const u = await this.client.users.fetch(doc.userID);
-			const isTop = i <= 2;
+			const isTop = i <= 3;
 
 			return `${isTop ? ':fire:' : ':white_small_square:'} **${doc.pocket.toLocaleString()}** — ${u.tag}`;
 		});
@@ -41,7 +42,7 @@ export default class Currency extends Command {
 		return { embed: {
 			title: `Richest Players — ${args.isGlobal ? 'Global' : msg.guild.name}`,
 			color: 'GOLD',
-			description: (await Promise.all(nice)).slice(1, 10).join('\n')
+			description: (await Promise.all(nice.slice(1, 10))).join('\n')
 		}};
   }
 }
