@@ -17,7 +17,7 @@ export default class Currency extends Command {
           id: 'isGlobal',
           type: 'boolean',
           flag: ['--global', '--top'],
-          default: true
+          default: false
         },
       ],
     });
@@ -32,6 +32,7 @@ export default class Currency extends Command {
   	const nice = rich
   	.filter(doc => args.isGlobal ? true : msg.guild.members.cache.has(doc.userID))
   	.sort((a, b) => b.pocket - a.pocket)
+  	.slice(0, 10)
   	.map(async (doc, i) => {
 			const u = await this.client.users.fetch(doc.userID);
 			const isTop = i <= 3;
@@ -42,7 +43,7 @@ export default class Currency extends Command {
 		return { embed: {
 			title: `Richest Players — ${args.isGlobal ? 'Global' : msg.guild.name}`,
 			color: 'GOLD',
-			description: (await Promise.all(nice.slice(1, 10))).join('\n')
+			description: (await Promise.all(nice)).join('\n')
 		}};
   }
 }
