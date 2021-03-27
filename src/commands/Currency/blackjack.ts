@@ -218,7 +218,7 @@ export default class Currency extends Command {
           thoughts.push('Standing.');
         }
         if (end) {
-          return dealersTurn();
+          return dealersTurn(cards.bot.length < 5 && addCards('bot') < 17);
         }
       }
       return gambed();
