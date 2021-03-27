@@ -36,7 +36,7 @@ export default class PowerUp extends Item {
     gain = Array(choice).fill(null).map(() => util.randomNumber(5e3, 3e4)).reduce((p, c) => p + c);
     card.amount -= choice;
     data.space += gain;
-    await msg.author.initDB(data).updateItems().db.save();
+    await data.save();
 
     return `**You crafted __${choice.toLocaleString()}__ cards into your vault.**\nThis brings you to **${data.space.toLocaleString()}** of total vault capacity, with **${gain.toLocaleString()} (${Math.round(gain / choice).toLocaleString()} average) ** being crafted.`;
   }
