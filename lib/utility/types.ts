@@ -19,7 +19,7 @@ export const argTypes = (bot: Lava) => ({
     phrase: string | number
   ): Promise<number | null> => {
     const { minBet, maxBet, maxPocket } = bot.config.currency;
-    const { pocket } = await bot.db.currency.fetch(msg.author.id);
+    const { pocket } = await msg.author.fetchDB();
     let bet: string | number = phrase;
 
     if (!bet) {

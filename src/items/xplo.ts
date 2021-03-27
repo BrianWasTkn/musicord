@@ -20,7 +20,7 @@ export default class PowerUp extends Item {
     const data = await msg.author.fetchDB();
     const xplo = data.items.find((i) => i.id === this.id);
 
-    await msg.channel.send(`**${this.emoji} Fusing your bomb...**`);
+    await msg.channel.send({ content: `**${this.emoji} Fusing your bomb...**`, replyTo: msg.id });
     await sleep(randomNumber(5, 10) * 1e3);
     let odds = randomNumber(1, 100);
 
@@ -32,7 +32,7 @@ export default class PowerUp extends Item {
 
       while(e <= randomNumber(3, mods.length)) {
         const item = randomInArray(mods.filter(m => !items.some(it => it.item.id === m.id)))
-        items.push({ item, amt: randomNumber(2, item.cost <= 5e6 ? 500 : 30) });
+        items.push({ item, amt: randomNumber(2, item.cost <= 5e6 ? 500 : 10) });
         e++;
       }
 

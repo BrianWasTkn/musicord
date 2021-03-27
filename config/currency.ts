@@ -17,5 +17,5 @@ export const currencyConfig: CurrencyType = {
   maxMulti: 250,
   minBet: 100,
   maxBet: 500000,
-  maxWin: 5555555,
+  maxWin: 6666666,
 };

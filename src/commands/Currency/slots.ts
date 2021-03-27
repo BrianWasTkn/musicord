@@ -107,7 +107,7 @@ export default class Currency extends Command {
     // Slot Emojis
     const emojis = Object.keys(this.slotMachine);
     const order = this.roll(emojis, slots);
-    const outcome = `**>** :${[...order].join(':    :')}: **<**`;
+    const outcome = `**>** :${order.join(':    :')}: **<**`;
     let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, order);
 
     // Shit
@@ -121,8 +121,8 @@ export default class Currency extends Command {
       const jackpot = length === 1;
       const d = await msg.author.initDB(data).addPocket(winnings).updateItems().calcSpace().db.save();
       
-      color = jackpot ? 'GOLD' : 'GREEN';
-      state = jackpot ? 'jackpot' : 'winning';
+      color = jackpot ? 'GOLD' : (slots ? 'BLUE' : 'GREEN');
+      state = jackpot ? 'jackpot' : (slots ? 'crazy' : 'winning');
       description.push(`\nYou won **${winnings.toLocaleString()}**`);
       description.push(`**Multiplier** \`x${multiplier}\``);
       description.push(`You now have **${d.pocket.toLocaleString()}**`);
@@ -145,7 +145,7 @@ export default class Currency extends Command {
     return { embed };
   }
 
-  calcWinnings(bet: number, slots: string[]): { [k: string]: number } {
+  calcWinnings(bet: number, slots: string[]) {
     const { slotMachine } = this;
     const rate: number[][] = Object.values(slotMachine);
     const emojis: string[] = Object.keys(slotMachine);
