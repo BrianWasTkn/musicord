@@ -34,10 +34,10 @@ export default class Currency extends Command {
       eyes: [1, 3],
       eggplant: [2, 10],
       alien: [2, 15],
-      peach: [3, 20],
-      flushed: [5, 25],
-      star2: [15, 50],
-      fire: [20, 125],
+      peach: [25, 20],
+      flushed: [30, 200],
+      star2: [50, 500],
+      fire: [75, 750],
     };
   }
 
