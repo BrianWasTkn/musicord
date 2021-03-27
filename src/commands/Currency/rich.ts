@@ -32,10 +32,10 @@ export default class Currency extends Command {
   	const nice = rich
   	.filter(doc => args.isGlobal ? true : msg.guild.members.cache.has(doc.userID))
   	.map(async (doc, i) => {
-			const u = await this.client.users.fetch(doc.userID, true);
+			const u = await this.client.users.fetch(doc.userID);
 			const isTop = i <= 2;
 
-			return `${isTop ? ':fire:' : ':white_small:square:'} **${doc.pocket.toLocaleString()}** — ${u.id}`;
+			return `${isTop ? ':fire:' : ':white_small_square:'} **${doc.pocket.toLocaleString()}** — ${u.id}`;
 		});
 
 		return { embed: {
