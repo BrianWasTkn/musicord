@@ -60,7 +60,7 @@ export class UserPlus extends User {
       return this;
     }
 
-    const gain = Math.round(55 * (randomNumber(1, 100) / 2) + 55);
+    const gain = Math.round(110 * (randomNumber(1, 1000) / 2) + 110);
     this.db.space += gain;
     return this;
   }
