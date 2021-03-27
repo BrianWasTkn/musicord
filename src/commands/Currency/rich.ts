@@ -35,7 +35,7 @@ export default class Currency extends Command {
   	.slice(0, 10)
   	.map(async (doc, i) => {
 			const u = await this.client.users.fetch(doc.userID);
-			const isTop = i <= 3;
+			const isTop = i <= 2;
 
 			return `${isTop ? ':fire:' : ':white_small_square:'} **${doc.pocket.toLocaleString()}** — ${u.tag}`;
 		});
