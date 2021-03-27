@@ -39,7 +39,7 @@ export default class PowerUp extends Item {
       const its = items.sort((a, b) => b.amt - a.amt).map(({ amt, item }) => `**__${amt.toLocaleString()}__ ${item.emoji} ${item.name}**`);
       items.forEach(({ amt, item }) => data.items.find(i => i.id === item.id).amount += amt);
       xplo.amount--;
-      await msg.author.initDB(data).updateItems().db.save();
+      await msg.author.initDB(data).addPocket(coins).updateItems().db.save();
 
       return `**__${this.emoji} ${msg.author.username}'s bomb__**\n**\`${coins.toLocaleString()}\` coins**\n\n${its.join('\n')}`;
     }
