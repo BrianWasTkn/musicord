@@ -16,15 +16,22 @@ export default class Currency extends Command {
         {
           id: 'isGlobal',
           type: 'boolean',
-          flag: ['--global', '--top'],
+          flag: ['--global', '-g'],
           default: false
         },
+        {
+        	id: 'type',
+        	type: 'string',
+        	flag: ['--type', '-t'],
+        	default: 'pocket'
+        }
       ],
     });
   }
 
-  async exec(msg: MessagePlus, args: { 
-  	isGlobal: boolean 
+  async exec(msg: MessagePlus, args: {
+  	isGlobal: boolean,
+  	type: keyof CurrencyProfile
   }): Promise<MessageOptions> {
 
   	const model = Mongo.models['currency'];
@@ -43,7 +50,10 @@ export default class Currency extends Command {
 		return { embed: {
 			title: `Richest Players — ${args.isGlobal ? 'Global' : msg.guild.name}`,
 			color: 'GOLD',
-			description: (await Promise.all(nice)).join('\n')
+			description: (await Promise.all(nice)).join('\n'),
+			footer: {
+				text: `Showing — Pockets`
+			}
 		}};
   }
 }
