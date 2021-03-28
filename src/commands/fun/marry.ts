@@ -80,12 +80,11 @@ export default class Fun extends Command {
 		inv.amount--;
 		me.marriage.id = someone.id;
 		me.marriage.since = Date.now();
+		await me.save();
 
 		inv2.amount--;
 		s.marriage.id = msg.author.id;
 		s.marriage.since = Date.now();
-
-		await me.save();
 		await s.save();
 
 		return { replyTo: msg.id, content: `You're now married to ${someone.toString()} GGs! Type \`lava ${this.aliases[0]}\` to see your marriage profile!` };
