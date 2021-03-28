@@ -28,7 +28,7 @@ export default class Fun extends Command {
 			return { content: 'I guess not then.' };
 		}
 
-		const div = await husOrWif.fetchDB())
+		const div = await husOrWif.fetchDB();
 
 		delete me.marriage.id;
 		me.marriage.since = 0;
