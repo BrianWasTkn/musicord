@@ -136,8 +136,8 @@ export default class Currency extends Command {
         .calcSpace()
         .db.save();
 
-      color = jackpot ? 'GOLD' : slots ? 'BLUE' : 'GREEN';
-      state = jackpot ? 'jackpot' : slots ? 'crazy' : 'winning';
+      color = jackpot ? (slots ? 'BLUE' : 'GOLD') : 'GREEN';
+      state = jackpot ? (slots ? 'crazy' : 'jackpot') : 'winning';
       description.push(`\nYou won **${winnings.toLocaleString()}**`);
       description.push(`**Multiplier** \`x${multiplier}\``);
       description.push(`You now have **${d.pocket.toLocaleString()}**`);
