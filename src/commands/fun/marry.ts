@@ -66,10 +66,25 @@ export default class Fun extends Command {
 			return { replyTo: msg.id, content: 'Lol imagine marrying yourself, couldn\'t be me honestly.' };
 		}
 
+		await msg.channel.send(`${someone.toString()} do you accept this marriage? Type \`y\` or \`n\` in 30 seconds.`);
+		const ido = (await msg.channel
+			.awaitMessages(m => m.author.id === someone.id, {
+				max: 1, time: 3e4
+			})
+		).first();
+
+		if (!ido || !['yes', 'y'].includes(ido.content.toLowerCase())) {
+			return { content: 'I guess not then.' };
+		}
+
 		inv.amount--;
-		inv2.amount--;
 		me.marriage.id = someone.id;
+		me.marriage.since = Date.now();
+
+		inv2.amount--;
 		s.marriage.id = msg.author.id;
+		s.marriage.since = Date.now();
+
 		await me.save();
 		await s.save();
 
