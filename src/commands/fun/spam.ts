@@ -11,13 +11,13 @@ import {
   Collection,
 } from 'discord.js';
 
-export default class Utility extends Command {
+export default class Fun extends Command {
   constructor() {
     super('jEvent', {
       aliases: ['event', 'je'],
       channel: 'guild',
       description: "Start an join event like 'le old days.",
-      category: 'Utility',
+      category: 'Fun',
       userPermissions: ['MANAGE_MESSAGES'],
       args: [
         {
@@ -63,7 +63,7 @@ export default class Utility extends Command {
     else events.set(guild.id, channel.id);
     if (lock) await lockChan(true);
 
-    let string = util.randomInArray(this.strings);
+    const string = util.randomInArray(this.strings);
     await channel.send(
       `**<:memerGold:753138901169995797> \`SPAM EVENT NICE\`**\n
       **Spam Spam Spam**\nSplit **${amount.toLocaleString()}** under 2 minutes.`
