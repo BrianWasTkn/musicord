@@ -7,6 +7,7 @@ import { Document, Schema, model } from 'mongoose';
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
 
 const CurrencySchema = new Schema({
+  /* Basic Info */
   userID: {
     type: String,
     required: true,
@@ -31,6 +32,8 @@ const CurrencySchema = new Schema({
     required: false,
     default: 0,
   },
+
+  /* Inventory */
   items: [
     {
       amount: Number,
@@ -40,6 +43,28 @@ const CurrencySchema = new Schema({
       cd: Number,
     },
   ],
+
+  /* Marriage */
+  marriage: {
+    since: { 
+      required: true, 
+      default: 0,
+      type: Number, 
+    },
+    id: { 
+      required: true, 
+      type: String, 
+    }
+  },
+
+  /* Quests */
+  quests: [
+    {
+      count: Number,
+      done: Boolean,
+      id: String,
+    }
+  ]
 });
 
 export default model<Document<CurrencyProfile>>('currency', CurrencySchema);

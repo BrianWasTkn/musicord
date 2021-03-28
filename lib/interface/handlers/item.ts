@@ -4,8 +4,9 @@ export interface InventorySlot {
   active?: boolean;
   expire?: number;
   multi?: number;
-  amount: number;
-  id: string;
+  amount?: number;
+  id?: string;
+  cd?: number;
 }
 
 export interface ItemOptions extends AkairoModuleOptions {
