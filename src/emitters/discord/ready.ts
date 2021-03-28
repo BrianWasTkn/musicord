@@ -13,9 +13,8 @@ export default class ClientListener extends Listener {
   async exec(): Promise<void> {
     const { channels, handlers, util, users, user: bot } = this.client;
     const activity: PresenceData['activity'] = {
-      name: 'lava help',
-      type: 'STREAMING',
-      url: 'https://twitch.tv/quackityhq',
+      name: 'Memers Crib',
+      type: 'COMPETING',
     };
 
     const channel = await channels.fetch('789692296094285825');
