@@ -28,7 +28,7 @@ export default class Fun extends Command {
 		const me = await msg.author.fetchDB();
 
 		if (!someone) {
-			if (!me.marriage.id || Date.now() > me.marriage.since) {
+			if (!me.marriage.id) {
 				return { replyTo: msg.id, content: 'You\'re not married to anyone right now.' };
 			}
 
