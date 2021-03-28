@@ -183,7 +183,10 @@ export default class Currency extends Command {
       let multiplier = multi[index] as number; // [number, number][0]
 
       // Blacklisted Doubles
-      if (!multi[2]) return { length: 3, winnings: 0 };
+      if (!multi[2] && length === 2) {
+      	return { length: 3, winnings: 0 };
+      }
+      
       let winnings = Math.round(bet * multiplier);
       return { length, winnings, multiplier };
     }
