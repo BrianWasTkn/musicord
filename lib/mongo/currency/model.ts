@@ -47,12 +47,12 @@ const CurrencySchema = new Schema({
   /* Marriage */
   marriage: {
     since: { 
-      required: true, 
+      required: false, 
       default: 0,
       type: Number, 
     },
     id: { 
-      required: true, 
+      required: false, 
       type: String, 
     }
   },
