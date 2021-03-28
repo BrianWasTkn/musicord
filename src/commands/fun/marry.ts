@@ -59,6 +59,9 @@ export default class Fun extends Command {
 			const marriedTo = (await this.client.users.fetch(s.marriage.id)) as UserPlus;
 			return { replyTo: msg.id, content: `Sad to say but they're already married to **${marriedTo.tag}** bro :(`};
 		}
+		if (someone.bot) {
+			return { replyTo: msg.id, content: 'Imagine marrying a bot' };
+		}
 		if (msg.author.id === someone.id) {
 			return { replyTo: msg.id, content: 'Lol imagine marrying yourself, couldn\'t be me honestly.' };
 		}
