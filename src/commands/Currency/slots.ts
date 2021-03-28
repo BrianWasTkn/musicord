@@ -29,15 +29,15 @@ export default class Currency extends Command {
 
   private get slotMachine() {
     return {
-      middle_finger: [1, 3],
-      clown: [1, 3],
-      eyes: [1, 3],
-      eggplant: [2, 10],
-      alien: [2, 15],
-      peach: [25, 20],
-      flushed: [30, 200],
-      star2: [50, 500],
-      fire: [75, 750],
+      middle_finger: [1, 3, false],
+      clown: [1, 3, false],
+      eyes: [1, 3, false],
+      eggplant: [2, 10, true],
+      alien: [2, 15, true],
+      peach: [25, 20, true],
+      flushed: [30, 200, true],
+      star2: [50, 500, true],
+      fire: [75, 750, true],
     };
   }
 
@@ -55,9 +55,9 @@ export default class Currency extends Command {
       return srcArr.filter((src: A) => filter(filtArr, src));
     }
 
-    if (odds > 130 - oddRdce) {
+    if (odds > 140 - oddRdce) {
       return Array(3).fill(emoji);
-    } else if (odds > 75) {
+    } else if (odds > 90) {
       const emjis = Array(3).fill(emoji);
       const ind = randomNumber(1, emjis.length) - 1;
       emjis[ind] = randomInArray(emojis.filter((e) => e !== emoji));
@@ -181,6 +181,9 @@ export default class Currency extends Command {
     if (length === 1 || length === 2) {
       let index = length === 1 ? 1 : 0; // [prop: string]: [number, number]
       let multiplier = multi[index]; // [number, number][0]
+
+      // Blacklisted Doubles
+      if (!multi[2]) return { length: 3, winnings: 0 };
       let winnings = Math.round(bet * multiplier);
       return { length, winnings, multiplier };
     }
