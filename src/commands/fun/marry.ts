@@ -23,32 +23,34 @@ export default class Fun extends Command {
 	async exec(msg: MessagePlus, args: {
 		someone: UserPlus
 	}): Promise<MessageOptions> {
+		const Ring = this.client.handlers.item.modules.get('donut');
 		const { someone } = args;
 		const me = await msg.author.fetchDB();
-		const s = await someone.fetchDB();
-
-		const Ring = this.client.handlers.item.modules.get('donut');
-		const inv = me.items.find(i => i.id === Ring.id);
-		const inv2 = me.items.find(i => i.id === Ring.id);
 
 		if (!someone) {
 			if (!me.marriage.id || Date.now() > me.marriage.since) {
 				return { replyTo: msg.id, content: 'You\'re not married to anyone right now.' };
 			}
 
+			const some1 = await this.client.users.fetch(me.marriage.id);
 			const since = new Date(me.marriage.since);
+
 			return { embed: {
 				author: {
 					name: `${msg.author.username}'s marriage`,
 					icon_url: msg.author.avatarURL({ dynamic: true })
 				},
 				color: 'PINK',
-				description: `**Married to:** ${someone.toString()}\n**Since:** ${since.toDateString()}\n**Ring:** ${Ring.emoji} ${Ring.name}`,
+				description: `**Married to:** ${some1.toString()}\n**Since:** ${since.toDateString()}\n**Ring:** ${Ring.emoji} ${Ring.name}`,
 				thumbnail: {
-					url: someone.avatarURL({ dynamic: true })
+					url: some1.avatarURL({ dynamic: true })
 				}
 			}};
 		}
+
+		const s = await someone.fetchDB();
+		const inv = me.items.find(i => i.id === Ring.id);
+		const inv2 = s.items.find(i => i.id === Ring.id);
 
 		if (inv.amount < 1 || inv2.amount < 1) {
 			return { replyTo: msg.id, content: `Both of you must have at least **1 ${Ring.emoji} ${Ring.name}** in your inventories!` };
