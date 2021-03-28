@@ -167,13 +167,13 @@ export default class Currency extends Command {
 
   calcWinnings(bet: number, slots: string[]) {
     const { slotMachine } = this;
-    const rate: number[][] = Object.values(slotMachine);
+    const rate: [number, number, boolean][] = Object.values(slotMachine);
     const emojis: string[] = Object.keys(slotMachine);
 
     // ty daunt
     const length = slots.filter((thing, i, ar) => ar.indexOf(thing) === i)
       .length;
-    const won: number[][] = rate
+    const won: [number, number, boolean][] = rate
       .map((_, i, ar) => ar[emojis.indexOf(slots[i])])
       .filter(Boolean); // mapped to their index
     const [multi] = won.filter((ew, i, a) => a.indexOf(ew) !== i);

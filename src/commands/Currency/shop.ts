@@ -50,13 +50,13 @@ export default class Currency extends Command {
         5
       );
 
+      if (query > shop.length) return "That page doesn't even exist lol";
+      
       embed
         .setFooter(false, `Lava Shop — Page ${query} of ${shop.length}`)
         .addField('Shop Items', shop[(query as number) - 1].join('\n\n'))
         .setTitle('Lava Shop')
         .setColor('RANDOM');
-
-      if (query > shop.length) return "That page doesn't even exist lol";
     } else {
       if (!query)
         return "That item doesn't even exist in the shop what're you doing?";
