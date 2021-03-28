@@ -1,7 +1,7 @@
 import { AkairoHandler, ClientUtil } from 'discord-akairo';
-import { CurrencyProfile } from '@lib/interface/mongo/currency'
-import { InventorySlot } from '@lib/interface/handlers/item'
-import { Document } from 'mongoose'
+import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { InventorySlot } from '@lib/interface/handlers/item';
+import { Document } from 'mongoose';
 import { Effects } from './effects';
 import { COLORS } from '../utility/constants';
 import { Lava } from '../Lava';
@@ -35,7 +35,8 @@ export class Util extends ClientUtil {
     this.cmdQueue = new Collection();
 
     for (const color of Object.keys(COLORS)) {
-      require('discord.js').Constants.Colors[color.toUpperCase()] = COLORS[color];
+      require('discord.js').Constants.Colors[color.toUpperCase()] =
+        COLORS[color];
     }
   }
 
@@ -52,7 +53,7 @@ export class Util extends ClientUtil {
       j = j + (size || 5);
     }
     return result;
-  }
+  };
 
   /**
    * Returns a random item from an array
@@ -60,7 +61,7 @@ export class Util extends ClientUtil {
    */
   randomInArray = <T>(array: T[]): T => {
     return array[Math.floor(Math.random() * array.length)];
-  }
+  };
 
   /**
    * Generates a random number
@@ -69,18 +70,18 @@ export class Util extends ClientUtil {
    */
   randomNumber = (min: number, max: number): number => {
     return Math.floor(Math.random() * (max - min + 1) + min);
-  }
+  };
 
   /**
    * Generates a random decimal color resolvable
    */
   randomColor = (): number => {
     return Math.random() * 0xffffff;
-  }
+  };
 
   codeBlock = (lang: string = 'js', content: string): string => {
     return `${'```'}${lang}\n${content}\n${'```'}`;
-  }
+  };
 
   // dankmemer.lol/source
   parseTime = (time: number): string[] => {
@@ -88,17 +89,21 @@ export class Util extends ClientUtil {
       { name: 'days', count: 86400 },
       { name: 'hours', count: 3600 },
       { name: 'minutes', count: 60 },
-      { name: 'seconds', count: 1 }
+      { name: 'seconds', count: 1 },
     ];
 
-    const timeStr = [ Math.floor(time / methods[0].count).toString() + ' ' + methods[0].name ];
+    const timeStr = [
+      Math.floor(time / methods[0].count).toString() + ' ' + methods[0].name,
+    ];
     for (let i = 0; i < 3; i++) {
-      const calced = Math.floor(time % methods[i].count / methods[i + 1].count);
+      const calced = Math.floor(
+        (time % methods[i].count) / methods[i + 1].count
+      );
       timeStr.push(calced.toString() + ' ' + methods[i + 1].name);
     }
 
-    return timeStr.filter(g => !g.startsWith('0'));
-  }
+    return timeStr.filter((g) => !g.startsWith('0'));
+  };
 
   isPromise = (something: any): boolean => {
     return (
@@ -106,9 +111,13 @@ export class Util extends ClientUtil {
       typeof something.then === 'function' &&
       typeof something.catch === 'function'
     );
-  }
+  };
 
-  console = (args: { klass: string; type?: 'def' | 'err'; msg: string }): void => {
+  console = (args: {
+    klass: string;
+    type?: 'def' | 'err';
+    msg: string;
+  }): void => {
     const stamp = moment().format('HH:mm:ss');
     const log = (...args) => console.log(...args); // kek
     const {
@@ -122,7 +131,7 @@ export class Util extends ClientUtil {
         type == 'err' ? 'red' : 'cyan'
       }Bright ${msg}}`
     );
-  }
+  };
 
   /**
    * Delay for a specified amount of time
@@ -132,5 +141,5 @@ export class Util extends ClientUtil {
     return new Promise((resolve: Function) =>
       this.client.setTimeout(() => resolve(ms), ms)
     );
-  }
+  };
 }

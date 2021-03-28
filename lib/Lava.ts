@@ -15,8 +15,8 @@ import {
   Listener,
   Command,
   Spawn,
-  Item
-} from './handlers'
+  Item,
+} from './handlers';
 
 // def imports
 import CurrencyFunc from './mongo/currency/functions';
@@ -70,7 +70,9 @@ export class Lava extends AkairoClient {
   }
 
   private _patch(): void {
-    const { handlers: { command, emitter, item, spawn } } = this;
+    const {
+      handlers: { command, emitter, item, spawn },
+    } = this;
     command.useListenerHandler(emitter);
     emitter.setEmitters({ spawn, command, emitter, item });
     command.resolver.addTypes(argTypes(this));

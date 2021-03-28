@@ -62,16 +62,25 @@ export default class Utility extends Command {
     let cmd: Command;
 
     try {
-      cat = this.handler.findCategory(query as string) as Category<string,Command>;
+      cat = this.handler.findCategory(query as string) as Category<
+        string,
+        Command
+      >;
       cmd = this.handler.findCommand(query as string);
     } catch {}
 
     if (cmd && !cat) {
       embed
-        .setFooter(false, msg.author.tag, msg.author.avatarURL({ dynamic: true }))
+        .setFooter(
+          false,
+          msg.author.tag,
+          msg.author.avatarURL({ dynamic: true })
+        )
         .setTitle(
           `${
-            (this.handler.prefix as (m: MessagePlus) => string | string[])(msg)[0]
+            (this.handler.prefix as (m: MessagePlus) => string | string[])(
+              msg
+            )[0]
           } ${cmd.id} info`
         )
         .addFields(this.fieldifyCmd(cmd))
@@ -90,7 +99,7 @@ export default class Utility extends Command {
         .setColor('ORANGE');
     } else {
       embed
-        .setDescription("Lava.")
+        .setDescription('Lava.')
         .setFooter(false, `${this.handler.modules.size} total commands`)
         .setTitle(`${this.client.user.username} Commands`)
         .setThumbnail(this.client.user.avatarURL())

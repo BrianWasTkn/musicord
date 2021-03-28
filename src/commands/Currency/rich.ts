@@ -2,6 +2,8 @@ import { CurrencyProfile } from '@lib/interface/mongo/currency';
 import { MessageOptions } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
+import Model from '@lib/mongo/currency/model';
+
 import Mongo, { Document } from 'mongoose';
 
 export default class Currency extends Command {
@@ -9,7 +11,7 @@ export default class Currency extends Command {
     super('rich', {
       aliases: ['rich', 'r'],
       channel: 'guild',
-      description: "View top users locally or globally.",
+      description: 'View top users locally or globally.',
       category: 'Currency',
       cooldown: 1e3,
       args: [
@@ -17,43 +19,44 @@ export default class Currency extends Command {
           id: 'isGlobal',
           type: 'boolean',
           flag: ['--global', '-g'],
-          default: false
+          default: false,
         },
-        {
-        	id: 'type',
-        	type: 'string',
-        	flag: ['--type', '-t'],
-        	default: 'pocket'
-        }
       ],
     });
   }
 
-  async exec(msg: MessagePlus, args: {
-  	isGlobal: boolean,
-  	type: keyof CurrencyProfile
-  }): Promise<MessageOptions> {
+  async exec(
+    msg: MessagePlus,
+    args: {
+      isGlobal: boolean;
+      type: keyof CurrencyProfile;
+    }
+  ): Promise<MessageOptions> {
+    const rich = (await Model.find({})) as (Document & CurrencyProfile)[];
+    const nice = rich
+      .filter((doc) =>
+        args.isGlobal ? true : msg.guild.members.cache.has(doc.userID)
+      )
+      .slice(0, 10)
+      .sort((a, b) => b.pocket - a.pocket)
+      .map(async (doc, i) => {
+        const u = await this.client.users.fetch(doc.userID);
+        const isTop = i <= 2;
 
-  	const model = Mongo.models['currency'];
-  	const rich = (await model.find({}) as (Document & CurrencyProfile)[]);
-  	const nice = rich
-  	.filter(doc => args.isGlobal ? true : msg.guild.members.cache.has(doc.userID))
-  	.sort((a, b) => b.pocket - a.pocket)
-  	.slice(0, 10)
-  	.map(async (doc, i) => {
-			const u = await this.client.users.fetch(doc.userID);
-			const isTop = i <= 2;
+        return `${
+          isTop ? ':fire:' : ':white_small_square:'
+        } **${doc.pocket.toLocaleString()}** — ${u.tag}`;
+      });
 
-			return `${isTop ? ':fire:' : ':white_small_square:'} **${doc.pocket.toLocaleString()}** — ${u.tag}`;
-		});
-
-		return { embed: {
-			title: `Richest Players — ${args.isGlobal ? 'Global' : msg.guild.name}`,
-			color: 'GOLD',
-			description: (await Promise.all(nice)).join('\n'),
-			footer: {
-				text: `Showing — Pockets`
-			}
-		}};
+    return {
+      embed: {
+        title: `Richest Players — ${args.isGlobal ? 'Global' : msg.guild.name}`,
+        color: 'GOLD',
+        description: (await Promise.all(nice)).join('\n'),
+        footer: {
+          text: `Showing — Pockets`,
+        },
+      },
+    };
   }
 }

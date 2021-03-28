@@ -1,6 +1,7 @@
+import { MessageOptions } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
-import { Item } from '@lib/handlers/item'
+import { Item } from '@lib/handlers/item';
 
 export default class Currency extends Command {
   constructor() {
@@ -13,7 +14,7 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(msg: MessagePlus): Promise<string> {
+  async exec(msg: MessagePlus): Promise<string | MessageOptions> {
     const { db, config, util, handlers } = this.client;
     const { fetch, add } = db.currency;
     const data = await msg.author.fetchDB();
@@ -24,18 +25,20 @@ export default class Currency extends Command {
 
     let gimme: number | Item;
     if (odds >= 0.9) {
-      const item = items.filter(i => i.cost < 30e6).random();
+      const item = items.filter((i) => i.cost < 30e6).random();
       const amount = util.randomNumber(1, 5);
-      let itinv = data.items.find(i => i.id === item.id);
+      let itinv = data.items.find((i) => i.id === item.id);
       itinv.amount += amount;
       await data.save();
-      return `WTF you got **${amount} ${item.emoji} ${item.name}**${amount > 1 ? 's' : ''} that was lucky asf`
+      return `WTF you got **${amount} ${item.emoji} ${item.name}**${
+        amount > 1 ? 's' : ''
+      } that was lucky asf`;
     } else if (odds >= 0.5) {
       const won = util.randomNumber(100, 500) * 1e3;
       await msg.author.initDB(data).addPocket(won).calcSpace().db.save();
-      return `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`
-    } else {
-      return 'LOL nope.'
+      return `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`;
     }
+
+    return { replyTo: msg.author.id, content: 'LOL no thanks' };
   }
 }

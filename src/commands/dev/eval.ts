@@ -24,7 +24,10 @@ export default class Dev extends Command {
     return inspect(obj, options);
   }
 
-  public async exec(msg: MessagePlus, args: any): Promise<string | MessageOptions> {
+  public async exec(
+    msg: MessagePlus,
+    args: any
+  ): Promise<string | MessageOptions> {
     const { channel } = msg;
     const code: string = args.code;
     const asynchronous: boolean =
@@ -59,7 +62,10 @@ export default class Dev extends Command {
         ),
         fields: [
           { name: 'Type', value: this.client.util.codeBlock('js', type) },
-          { name: 'Latency', value: this.client.util.codeBlock('js', `${evalTime}ms`) },
+          {
+            name: 'Latency',
+            value: this.client.util.codeBlock('js', `${evalTime}ms`),
+          },
         ],
       },
     };

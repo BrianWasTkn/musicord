@@ -22,7 +22,7 @@ export default class PowerUp extends Item {
     thicc.expire = Date.now() + 5 * 60 * 1000; // client.setTimeout just breaks this
     thicc.amount--;
     await msg.author.initDB(data).updateItems().db.save();
-    
+
     return 'You have been granted an additional **50% to your gamble winnings** for **5 minutes** only.';
   }
 }

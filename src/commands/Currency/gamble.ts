@@ -51,9 +51,13 @@ export default class Currency extends Command {
     // Item Effects
     let extraWngs: number = 0;
     for (const it of ['thicc', 'brian']) {
-      if (!effects.has(msg.author.id)) effects.set(msg.author.id, new Collection<string, Effects>().set(it, new Effects()));
+      if (!effects.has(msg.author.id))
+        effects.set(
+          msg.author.id,
+          new Collection<string, Effects>().set(it, new Effects())
+        );
       if (effects.get(msg.author.id).has(it)) {
-        extraWngs += effects.get(msg.author.id).get(it).winnings
+        extraWngs += effects.get(msg.author.id).get(it).winnings;
       }
     }
 
@@ -77,12 +81,17 @@ export default class Currency extends Command {
       const ties = botD === userD;
       let lost = ties ? Math.round(bet / 4) : bet;
 
-      const d = await msg.author.initDB(data).updateItems().removePocket(bet).calcSpace().db.save();
+      const d = await msg.author
+        .initDB(data)
+        .updateItems()
+        .removePocket(bet)
+        .calcSpace()
+        .db.save();
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';
       description = [
         `You lost **${lost.toLocaleString()}**\n`,
-        `You now have **${(d.pocket).toLocaleString()}**`,
+        `You now have **${d.pocket.toLocaleString()}**`,
       ];
     } else if (userD > botD) {
       let wngs = Math.random() * 1.5;
@@ -92,14 +101,19 @@ export default class Currency extends Command {
       if (w > maxWin) w = maxWin as number;
       perwn = Number((w / bet).toFixed(2));
 
-      const d = await msg.author.initDB(data).updateItems().addPocket(w).calcSpace().db.save();
-      
+      const d = await msg.author
+        .initDB(data)
+        .updateItems()
+        .addPocket(w)
+        .calcSpace()
+        .db.save();
+
       identifier = Boolean(extraWngs) ? 'thicc' : 'winning';
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
       description = [
         `You won **${w.toLocaleString()}**\n`,
         `**Multiplier** \`x${perwn.toLocaleString()}\``,
-        `You now have **${(d.pocket).toLocaleString()}**`,
+        `You now have **${d.pocket.toLocaleString()}**`,
       ];
     }
 

@@ -9,7 +9,8 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: true,
       emoji: ':desktop:',
-      info: "Post memes on reddit! Gives you up to 1M coins though has a high chance to break.",
+      info:
+        'Post memes on reddit! Gives you up to 1M coins though has a high chance to break.',
       name: "Prob's Computer",
       cost: 69000,
     });
@@ -23,7 +24,7 @@ export default class PowerUp extends Item {
     if (Math.random() < 0.25) {
       comp.amount--;
       await data.save();
-      return `You broke your **${this.emoji} ${this.name}** lmao sucks to be you.`
+      return `You broke your **${this.emoji} ${this.name}** lmao sucks to be you.`;
     }
 
     const type = util.randomInArray(['reposted', 'nerdy', 'original', 'funny']);
@@ -33,6 +34,8 @@ export default class PowerUp extends Item {
     data.pocket += gain;
     await data.save();
 
-    return `You got **__${gain.toLocaleString()} coins__** (${karma} karmas) from posting a${['a', 'e', 'i', 'o', 'u'].some(vow => type.startsWith(vow)) ? 'n' : ''} ${type} meme on reddit.`
+    return `You got **__${gain.toLocaleString()} coins__** (${karma} karmas) from posting a${
+      ['a', 'e', 'i', 'o', 'u'].some((vow) => type.startsWith(vow)) ? 'n' : ''
+    } ${type} meme on reddit.`;
   }
 }

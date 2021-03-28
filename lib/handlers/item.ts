@@ -1,6 +1,6 @@
 import type { CurrencyProfile } from '@lib/interface/mongo/currency';
 import type { ItemOptions } from '@lib/interface/handlers/item';
-import type { MessagePlus } from '@lib/extensions/message'
+import type { MessagePlus } from '@lib/extensions/message';
 import type { Collection } from 'discord.js';
 import type { Document } from 'mongoose';
 import type { Lava } from '../Lava';
@@ -63,11 +63,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
     });
   }
 
-  buy(
-    amount: number,
-    data: Document & CurrencyProfile,
-    iid: string
-  ) {
+  buy(amount: number, data: Document & CurrencyProfile, iid: string) {
     const item = this.modules.get(iid);
     const paid = amount * item.cost;
 
@@ -78,11 +74,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
     return data.save();
   }
 
-  sell(
-    amount: number,
-    data: Document & CurrencyProfile,
-    iid: string
-  ) {
+  sell(amount: number, data: Document & CurrencyProfile, iid: string) {
     const item = this.modules.get(iid);
     const sold = Math.round(amount * (item.cost / 4));
 

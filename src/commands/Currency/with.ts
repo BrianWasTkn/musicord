@@ -29,7 +29,7 @@ export default class Currency extends Command {
             let withd: string | number = phrase;
             if (!Boolean(Number(withd))) {
               withd = (withd as string).toLowerCase();
-              if (['all', 'max'].some(p => p.toLowerCase() === withd)) {
+              if (['all', 'max'].some((p) => p.toLowerCase() === withd)) {
                 withd = data.vault;
               } else if (phrase === 'half') {
                 withd = Math.round(data.vault / 2);
@@ -57,10 +57,8 @@ export default class Currency extends Command {
     const d = await msg.author.fetchDB();
     const embed: Embed = new Embed();
 
-    if (!amount)
-      return;
-    else if (amount < 1)
-      return 'Thought you can fool me?';
+    if (!amount) return;
+    else if (amount < 1) return 'Thought you can fool me?';
     else if (amount > d.vault)
       return `Bro, you only have ${d.vault.toLocaleString()} coins in your vault what're you up to?`;
 

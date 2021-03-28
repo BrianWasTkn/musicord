@@ -9,7 +9,7 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: true,
       emoji: ':beers:',
-      info: "Gives a 10% chance of getting jackpot on slots for 5 minutes!",
+      info: 'Gives a 10% chance of getting jackpot on slots for 5 minutes!',
       name: "Crazy's Alcohol",
       cost: 250000,
     });
@@ -20,9 +20,9 @@ export default class PowerUp extends Item {
     const craz = data.items.find((i) => i.id === this.id);
 
     craz.amount--;
-    craz.expire = Date.now() + (5 * 60 * 1e3);
+    craz.expire = Date.now() + 5 * 60 * 1e3;
     await msg.author.initDB(data).updateItems().db.save();
 
-    return "You now have a **10% chance of winning jackpots in slots** for 5 minutes.";
+    return 'You now have a **10% chance of winning jackpots in slots** for 5 minutes.';
   }
 }

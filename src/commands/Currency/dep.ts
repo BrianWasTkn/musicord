@@ -32,12 +32,14 @@ export default class Currency extends Command {
             let dep: string | number = phrase;
             if (!Boolean(Number(dep))) {
               dep = (<string>dep).toLowerCase();
-              if (['all', 'max'].some(p => p.toLowerCase() === dep)) {
+              if (['all', 'max'].some((p) => p.toLowerCase() === dep)) {
                 dep = data.pocket;
               } else if (phrase === 'half') {
                 dep = Math.round(data.pocket / 2);
               } else {
-                await msg.channel.send('You actually need a number to deposit...');
+                await msg.channel.send(
+                  'You actually need a number to deposit...'
+                );
                 return null;
               }
             }
@@ -59,11 +61,9 @@ export default class Currency extends Command {
   ): Promise<string | MessageOptions> {
     const d = await msg.author.fetchDB();
     const embed: Embed = new Embed();
-    
-    if (!amount)
-      return;
-    else if (amount < 1)
-      return 'You thought you can fool me?';
+
+    if (!amount) return;
+    else if (amount < 1) return 'You thought you can fool me?';
     else if (amount > d.pocket)
       return `Bro, you only have ${d.pocket.toLocaleString()} coins what're you doing?`;
 

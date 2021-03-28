@@ -1,4 +1,4 @@
-import type { MessagePlus } from '@lib/extensions/message'
+import type { MessagePlus } from '@lib/extensions/message';
 import type { Item } from '@lib/handlers/item';
 import type { Lava } from '@lib/Lava';
 
@@ -6,11 +6,13 @@ export const argTypes = (bot: Lava) => ({
   shopItem: (msg: MessagePlus, phrase: string): Item | null => {
     if (!phrase) return null;
     const items = [...bot.handlers.item.modules.values()];
-    return items.find(i => {
-      return i.id.toLowerCase() === phrase.toLowerCase()
-        || i.name.toLowerCase() === phrase.toLowerCase()
-        || i.name.toLowerCase().includes(phrase.toLowerCase())
-        || i.id.toLowerCase().includes(phrase.toLowerCase());
+    return items.find((i) => {
+      return (
+        i.id.toLowerCase() === phrase.toLowerCase() ||
+        i.name.toLowerCase() === phrase.toLowerCase() ||
+        i.name.toLowerCase().includes(phrase.toLowerCase()) ||
+        i.id.toLowerCase().includes(phrase.toLowerCase())
+      );
     });
   },
 
@@ -61,7 +63,9 @@ export const argTypes = (bot: Lava) => ({
       );
       return null;
     } else if (pocket > maxPocket) {
-      msg.channel.send(`You're too rich (${maxPocket.toLocaleString()}) to gamble!`);
+      msg.channel.send(
+        `You're too rich (${maxPocket.toLocaleString()}) to gamble!`
+      );
       return null;
     } else if (bet < 1) {
       msg.channel.send('It should be a positive number yeah?');

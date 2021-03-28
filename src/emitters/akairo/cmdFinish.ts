@@ -18,6 +18,6 @@ export default class CommandListener extends Listener {
     returned: MessageOptions | Promise<MessageOptions>
   ): Promise<void | MessagePlus | MessagePlus[]> {
     if (!returned) return;
-    await msg.channel.send(returned as MessageOptions) as MessagePlus;
+    (await msg.channel.send(returned as MessageOptions)) as MessagePlus;
   }
 }

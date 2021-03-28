@@ -9,7 +9,8 @@ export default class Powerflex extends Item {
       buyable: true,
       usable: true,
       emoji: ':brown_heart:',
-      info: "Gives 50% multi, +25% winnings in gamble, +5% jackpot chance in slots ALL in 5 minutes.",
+      info:
+        'Gives 50% multi, +25% winnings in gamble, +5% jackpot chance in slots ALL in 5 minutes.',
       name: "Brian's Heart",
       cost: 125000,
     });
@@ -17,11 +18,11 @@ export default class Powerflex extends Item {
 
   async use(msg: MessagePlus): Promise<string> {
     const data = await msg.author.fetchDB();
-    const heart = data.items.find(i => i.id === this.id);
+    const heart = data.items.find((i) => i.id === this.id);
     const multi = 50;
 
     heart.amount--;
-    heart.expire = Date.now() + (5 * 60 * 1e3);
+    heart.expire = Date.now() + 5 * 60 * 1e3;
     heart.multi = 50;
     await msg.author.initDB(data).updateItems().db.save();
 

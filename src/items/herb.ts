@@ -8,7 +8,7 @@ export default class Flex extends Item {
       buyable: true,
       usable: false,
       emoji: ':herb:',
-      info: "A flex from the man himself.",
+      info: 'A flex from the man himself.',
       name: "Ken's Herbal Supplement",
       cost: 42000000,
     });

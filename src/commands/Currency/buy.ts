@@ -42,10 +42,8 @@ export default class Currency extends Command {
     if (!item) return 'You need something to buy';
 
     let inv = data.items.find((i) => i.id === item.id);
-    if (amount < 1) 
-      return 'Imagine buying none.';
-    else if (!item.buyable) 
-      return "You can't buy this item what?";
+    if (amount < 1) return 'Imagine buying none.';
+    else if (!item.buyable) return "You can't buy this item what?";
     else if (data.pocket < item.cost)
       return "You're too broke to buy this item!";
     else if (data.pocket < amount * item.cost)
@@ -56,9 +54,11 @@ export default class Currency extends Command {
     await Items.buy(Math.trunc(amount), data, item.id);
     const embed = new Embed()
       .setDescription(
-        `Succesfully purchased **${amount.toLocaleString()} ${item.emoji} ${item.name}**${
-          amount > 1 ? 's' : ''
-        } and paid \`${(item.cost * amount).toLocaleString()}\`.`
+        `Succesfully purchased **${amount.toLocaleString()} ${item.emoji} ${
+          item.name
+        }**${amount > 1 ? 's' : ''} and paid \`${(
+          item.cost * amount
+        ).toLocaleString()}\`.`
       )
       .setAuthor('Successful purchase', msg.author.avatarURL({ dynamic: true }))
       .setColor('GREEN');

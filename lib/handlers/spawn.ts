@@ -161,7 +161,10 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
    * @param {Spawn} spawner the spawn module to run
    * @param {Message} message a discord message obj
    */
-  public async spawn(spawner: SpawnModule, message: MessagePlus): Promise<void> {
+  public async spawn(
+    spawner: SpawnModule,
+    message: MessagePlus
+  ): Promise<void> {
     if (['spam', 'message'].includes(spawner.config.type)) {
       const str = this.client.util.randomInArray(spawner.spawn.strings);
       const options: MessageCollectorOptions = {
@@ -203,7 +206,11 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
           this.handleMessageCollect<MessagePlus>({ msg, collector, spawner });
         })
         .on('end', (collected: Collection<string, MessagePlus>) => {
-          this.handleMessageEnd<MessagePlus>({ collected, spawner, msg: message });
+          this.handleMessageEnd<MessagePlus>({
+            collected,
+            spawner,
+            msg: message,
+          });
         });
     } else if (spawner.config.type === 'react') {
       const options: ReactionCollectorOptions = {

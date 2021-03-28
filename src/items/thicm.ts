@@ -10,7 +10,7 @@ export default class PowerUp extends Item {
       usable: true,
       emoji: ':ok_hand:',
       info: 'Gives you +50% winnings on blackjack for 5 minutes.',
-      name: "Thicco Mode",
+      name: 'Thicco Mode',
       cost: 2750000,
     });
   }
@@ -23,6 +23,6 @@ export default class PowerUp extends Item {
     thicc.amount--;
     await msg.author.initDB(data).updateItems().db.save();
 
-    return `**You activated ${this.emoji} ${this.name}!**\nYou've been granted **+50% winnings power** for blackjack.`
+    return `**You activated ${this.emoji} ${this.name}!**\nYou've been granted **+50% winnings power** for blackjack.`;
   }
 }

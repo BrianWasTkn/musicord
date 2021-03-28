@@ -15,17 +15,22 @@ export default class Currency extends Command {
         {
           id: 'member',
           type: 'member',
-          default: (m: MessagePlus) => m.member
+          default: (m: MessagePlus) => m.member,
         },
       ],
     });
   }
 
-  public async exec(msg: MessagePlus, args: { member: GuildMember }): Promise<MessageOptions> {
-    const { pocket, vault, space, items } = await msg.fetchDB(args.member.user.id);
+  public async exec(
+    msg: MessagePlus,
+    args: { member: GuildMember }
+  ): Promise<MessageOptions> {
+    const { pocket, vault, space, items } = await msg.fetchDB(
+      args.member.user.id
+    );
     const handler = this.client.handlers.item;
     const net = items
-      .map(i => {
+      .map((i) => {
         const it = handler.modules.get(i.id);
         return it.cost * i.amount;
       })
@@ -35,19 +40,20 @@ export default class Currency extends Command {
 
     const dpn: string[] = [];
 
-    [ `**Pocket:** ${pocket.toLocaleString()}`,
+    [
+      `**Pocket:** ${pocket.toLocaleString()}`,
       `**Vault:** ${vault.toLocaleString()}/${space.toLocaleString()}`,
       `**Inventory:** ${net.toLocaleString()}`,
-      `**Net Worth:** ${(pocket + vault + net).toLocaleString()}`
+      `**Net Worth:** ${(pocket + vault + net).toLocaleString()}`,
     ].forEach((i) => dpn.push(i));
 
     return {
       embed: {
         title: `${args.member.user.username}'s balance`,
-        footer: { text: 'discord.gg/memer'},
+        footer: { text: 'discord.gg/memer' },
         description: dpn.join('\n'),
         color: 'RANDOM',
-      }
-    }
+      },
+    };
   }
 }

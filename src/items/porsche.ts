@@ -23,21 +23,27 @@ export default class PowerUp extends Item {
     const m = `${msg.author.toString()} You have ${card.amount.toLocaleString()} cards. How many cards do you wanna reveal right now?`;
     await msg.channel.send(m);
     const f = (m) => m.author.id === msg.author.id;
-    const rep = (await msg.channel.awaitMessages(f, { max: 1, time: 15000 })).first();
+    const rep = (
+      await msg.channel.awaitMessages(f, { max: 1, time: 15000 })
+    ).first();
 
     if (!rep) return 'lol bye, thanks for nothing.';
     let choice = Number(rep.content);
-    if (!Boolean(Number(rep.content)))
-      return 'Needs to be a number bruh';
+    if (!Boolean(Number(rep.content))) return 'Needs to be a number bruh';
     if (choice > card.amount)
       return `Don't try and break me bish, you only have ${card.amount.toLocaleString()} of these.`;
 
     let gain: number[] | number;
-    gain = Array(choice).fill(null).map(() => util.randomNumber(1e4, 5e4)).reduce((p, c) => p + c);
+    gain = Array(choice)
+      .fill(null)
+      .map(() => util.randomNumber(1e4, 5e4))
+      .reduce((p, c) => p + c);
     card.amount -= choice;
     data.space += gain;
     await data.save();
 
-    return `**You crafted __${choice.toLocaleString()}__ cards into your vault.**\nThis brings you to **${data.space.toLocaleString()}** of total vault capacity, with **${gain.toLocaleString()} (${Math.round(gain / choice).toLocaleString()} average) ** being crafted.`;
+    return `**You crafted __${choice.toLocaleString()}__ cards into your vault.**\nThis brings you to **${data.space.toLocaleString()}** of total vault capacity, with **${gain.toLocaleString()} (${Math.round(
+      gain / choice
+    ).toLocaleString()} average) ** being crafted.`;
   }
 }

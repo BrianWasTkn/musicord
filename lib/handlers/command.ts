@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message'
+import { MessagePlus } from '@lib/extensions/message';
 import { Util } from '@lib/utility/util';
 import { Lava } from '@lib/Lava';
 import {
@@ -10,12 +10,7 @@ import {
   Constants,
   Category,
 } from 'discord-akairo';
-import { 
-  MessageOptions, 
-  MessageEmbed,
-  Collection, 
-  Message, 
-} from 'discord.js';
+import { MessageOptions, MessageEmbed, Collection, Message } from 'discord.js';
 
 const { CommandHandlerEvents: Events } = Constants;
 
@@ -26,14 +21,12 @@ export interface CommandOptions extends AkairoCommandOptions {
   examples?: string | string[];
 }
 
-export type CommandReturn = void 
-  | string 
-  | MessageEmbed 
-  | MessageOptions 
-  | Promise<string 
-    | MessageOptions 
-    | MessageEmbed
-  >;
+export type CommandReturn =
+  | void
+  | string
+  | MessageEmbed
+  | MessageOptions
+  | Promise<string | MessageOptions | MessageEmbed>;
 
 export class Command extends AkairoCommand {
   handler: CommandHandler<Command>;
@@ -86,8 +79,10 @@ export class CommandHandler<
       aliasReplacement,
       automateCategories,
       prefix: (msg: MessagePlus) => this.prefPred(msg),
-      ignoreCooldown: (msg: MessagePlus, cmd: CommandModule) => this.basePredicate(msg, cmd),
-      ignorePermissions: (msg: MessagePlus, cmd: CommandModule) => this.basePredicate(msg, cmd),
+      ignoreCooldown: (msg: MessagePlus, cmd: CommandModule) =>
+        this.basePredicate(msg, cmd),
+      ignorePermissions: (msg: MessagePlus, cmd: CommandModule) =>
+        this.basePredicate(msg, cmd),
     });
 
     this.commandTyping = commandTyping;
@@ -95,8 +90,10 @@ export class CommandHandler<
 
   basePredicate(msg: MessagePlus, cmd: CommandModule): boolean {
     const g = this.client.guilds.cache.get('691416705917779999');
-    const byp = g.roles.cache.get('692941106475958363')
-    return msg.member.roles.cache.has(byp.id) || this.client.isOwner(msg.author.id);
+    const byp = g.roles.cache.get('692941106475958363');
+    return (
+      msg.member.roles.cache.has(byp.id) || this.client.isOwner(msg.author.id)
+    );
   }
 
   prefPred(msg: MessagePlus): string | string[] {

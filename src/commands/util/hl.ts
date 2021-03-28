@@ -1,10 +1,10 @@
 import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
-import { 
-  PermissionOverwriteOption, 
-  MessageOptions, 
-  TextChannel, 
-  Role, 
+import {
+  PermissionOverwriteOption,
+  MessageOptions,
+  TextChannel,
+  Role,
 } from 'discord.js';
 
 export default class Util extends Command {

@@ -65,14 +65,16 @@ export default class Currency extends Command {
     }
 
     inv = util.paginateArray(
-      inv.sort((a, b) => b.amount - a.amount).map((item) => {
-        const i = Items.modules.get(item.id);
-        return `**${i.emoji} ${
-          i.name
-        }** — ${item.amount.toLocaleString()}\n*ID* \`${i.id}\` — ${
-          i.category
-        }`;
-      }),
+      inv
+        .sort((a, b) => b.amount - a.amount)
+        .map((item) => {
+          const i = Items.modules.get(item.id);
+          return `**${i.emoji} ${
+            i.name
+          }** — ${item.amount.toLocaleString()}\n*ID* \`${i.id}\` — ${
+            i.category
+          }`;
+        }),
       5
     );
 

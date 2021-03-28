@@ -41,7 +41,7 @@ export default class Currency extends Command {
     };
   }
 
-  // this too fricking time istg 
+  // this too fricking time istg
   roll(emojis: string[], oddRdce: number) {
     const { randomInArray, randomNumber } = this.client.util;
     const emoji = randomInArray(emojis);
@@ -55,20 +55,26 @@ export default class Currency extends Command {
       return srcArr.filter((src: A) => filter(filtArr, src));
     }
 
-    if (odds > (130 - oddRdce)) {
+    if (odds > 130 - oddRdce) {
       return Array(3).fill(emoji);
     } else if (odds > 75) {
       const emjis = Array(3).fill(emoji);
       const ind = randomNumber(1, emjis.length) - 1;
-      emjis[ind] = randomInArray(emojis.filter(e => e !== emoji));
+      emjis[ind] = randomInArray(emojis.filter((e) => e !== emoji));
       return emjis;
     }
 
     let secondSlot: string;
-    return [emoji, ...Array(2).fill(emoji).map((_, i) => {
-      if (i === 0) return secondSlot = randomInArray(deepFilter(emojis, [emoji]));
-      return randomInArray(deepFilter(emojis, [emoji, secondSlot]));
-    })];
+    return [
+      emoji,
+      ...Array(2)
+        .fill(emoji)
+        .map((_, i) => {
+          if (i === 0)
+            return (secondSlot = randomInArray(deepFilter(emojis, [emoji])));
+          return randomInArray(deepFilter(emojis, [emoji, secondSlot]));
+        }),
+    ];
   }
 
   /**
@@ -98,9 +104,13 @@ export default class Currency extends Command {
     let slots: number = 0;
     for (const it of ['crazy', 'brian']) {
       const userEf = effects.get(msg.author.id);
-      if (!userEf) effects.set(msg.author.id, new Collection<string, Effects>().set(it, new Effects()));
+      if (!userEf)
+        effects.set(
+          msg.author.id,
+          new Collection<string, Effects>().set(it, new Effects())
+        );
       if (effects.get(msg.author.id).has(it)) {
-        slots += effects.get(msg.author.id).get(it).slots
+        slots += effects.get(msg.author.id).get(it).slots;
       }
     }
 
@@ -119,15 +129,25 @@ export default class Currency extends Command {
     description.push(outcome);
     if (length === 1 || length === 2) {
       const jackpot = length === 1;
-      const d = await msg.author.initDB(data).addPocket(winnings).updateItems().calcSpace().db.save();
-      
-      color = jackpot ? 'GOLD' : (slots ? 'BLUE' : 'GREEN');
-      state = jackpot ? 'jackpot' : (slots ? 'crazy' : 'winning');
+      const d = await msg.author
+        .initDB(data)
+        .addPocket(winnings)
+        .updateItems()
+        .calcSpace()
+        .db.save();
+
+      color = jackpot ? 'GOLD' : slots ? 'BLUE' : 'GREEN';
+      state = jackpot ? 'jackpot' : slots ? 'crazy' : 'winning';
       description.push(`\nYou won **${winnings.toLocaleString()}**`);
       description.push(`**Multiplier** \`x${multiplier}\``);
       description.push(`You now have **${d.pocket.toLocaleString()}**`);
     } else {
-      const d = await msg.author.initDB(data).removePocket(bet).updateItems().calcSpace().db.save();
+      const d = await msg.author
+        .initDB(data)
+        .removePocket(bet)
+        .updateItems()
+        .calcSpace()
+        .db.save();
 
       color = 'RED';
       state = 'losing';
@@ -151,15 +171,18 @@ export default class Currency extends Command {
     const emojis: string[] = Object.keys(slotMachine);
 
     // ty daunt
-    const length = slots.filter((thing, i, ar) => ar.indexOf(thing) === i).length;
-    const won: number[][] = rate.map((_, i, ar) => ar[emojis.indexOf(slots[i])]).filter(Boolean); // mapped to their index
+    const length = slots.filter((thing, i, ar) => ar.indexOf(thing) === i)
+      .length;
+    const won: number[][] = rate
+      .map((_, i, ar) => ar[emojis.indexOf(slots[i])])
+      .filter(Boolean); // mapped to their index
     const [multi] = won.filter((ew, i, a) => a.indexOf(ew) !== i);
 
     if (length === 1 || length === 2) {
       let index = length === 1 ? 1 : 0; // [prop: string]: [number, number]
       let multiplier = multi[index]; // [number, number][0]
       let winnings = Math.round(bet * multiplier);
-      return { length, winnings , multiplier };
+      return { length, winnings, multiplier };
     }
 
     return { length, winnings: 0 };

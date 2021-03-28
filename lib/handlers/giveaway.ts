@@ -1,4 +1,4 @@
-import type { MessagePlus } from '@lib/extensions/message'
+import type { MessagePlus } from '@lib/extensions/message';
 import type { Collection } from 'discord.js';
 import type { Lava } from '../Lava';
 import {
@@ -18,7 +18,9 @@ export class Giveaway extends AkairoModule {
   }
 }
 
-export class GiveawayHandler<GiveawayModule extends Giveaway> extends AkairoHandler {
+export class GiveawayHandler<
+  GiveawayModule extends Giveaway
+> extends AkairoHandler {
   categories: Collection<string, Category<string, GiveawayModule>>;
   modules: Collection<string, GiveawayModule>;
   client: Lava;

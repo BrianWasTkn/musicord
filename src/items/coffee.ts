@@ -9,7 +9,7 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: true,
       emoji: ':hot_face:',
-      info: "Gives 5-50% multiplier for 5 minutes.",
+      info: 'Gives 5-50% multiplier for 5 minutes.',
       name: "Badddie's Coffee",
       cost: 350000,
     });
@@ -18,12 +18,12 @@ export default class PowerUp extends Item {
   async use(msg: MessagePlus): Promise<string> {
     const { util } = this.client;
     const data = await msg.author.fetchDB();
-    const cof = data.items.find(i => i.id === this.id);
+    const cof = data.items.find((i) => i.id === this.id);
     const multi = util.randomNumber(5, 50);
 
     cof.amount--;
     cof.multi = multi;
-    cof.expire = Date.now() + (5 * 60 * 1e3);
+    cof.expire = Date.now() + 5 * 60 * 1e3;
     await msg.author.initDB(data).updateItems().db.save();
 
     return `You've been granted a **${multi}% multiplier** for 5 minutes.`;

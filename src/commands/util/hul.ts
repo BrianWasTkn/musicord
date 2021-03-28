@@ -1,11 +1,11 @@
 import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
-import { 
-  PermissionOverwriteOption, 
-  MessageOptions, 
+import {
+  PermissionOverwriteOption,
+  MessageOptions,
   GuildChannel,
-  TextChannel, 
-  Role, 
+  TextChannel,
+  Role,
 } from 'discord.js';
 
 export default class Util extends Command {
@@ -20,7 +20,7 @@ export default class Util extends Command {
         {
           id: 'role',
           type: 'role',
-          default: (m: MessagePlus) => m.guild.roles.cache.get(m.guild.id)
+          default: (m: MessagePlus) => m.guild.roles.cache.get(m.guild.id),
         },
         {
           id: 'interval',
@@ -43,37 +43,44 @@ export default class Util extends Command {
     };
   }
 
-  async exec(_: MessagePlus, args: any): Promise<MessageOptions> {
+  async exec(
+    _: MessagePlus,
+    args: {
+      interval?: number;
+      role?: Role;
+    }
+  ): Promise<MessageOptions> {
     await _.delete();
     const { role, interval } = args;
+    const { sleep } = this.client.util;
     if (!role) return;
 
     let num = 60;
-    let msg = await _.channel.send({ 
+    let msg = await _.channel.send({
       embed: this.embed(num, role, 'ORANGE'),
     });
 
     const run = async (int: number) => {
       if (num === 10) {
-        await this.client.util.sleep(7e3);
+        await sleep(7e3);
         await msg.edit({ embed: this.embed(3, role, 'RED') });
-        await this.client.util.sleep(1e3);
+        await sleep(1e3);
         await msg.edit({ embed: this.embed(2, role, 'RED') });
-        await this.client.util.sleep(1e3);
+        await sleep(1e3);
         await msg.edit({ embed: this.embed(1, role, 'RED') });
-        await this.client.util.sleep(1e3);
+        await sleep(1e3);
         await msg.edit({ embed: this.embed(0, role, 'RED') });
         return num;
       }
 
-      await this.client.util.sleep(int * 1e3);
+      await sleep(int * 1e3);
       num -= 10;
       msg = await msg.edit({ embed: this.embed(num, role, 'ORANGE') });
       return await run(int);
     };
 
     await run(interval);
-    
+
     const reason = `Heist Unlock — ${msg.author.tag}`;
     const perms: PermissionOverwriteOption = { SEND_MESSAGES: true };
     (msg.channel as TextChannel).updateOverwrite(role.id, perms, reason);
