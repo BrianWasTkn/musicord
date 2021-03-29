@@ -34,14 +34,14 @@ export default class Currency extends Command {
       eyes: [1, 3, false],
       eggplant: [2, 10, true],
       alien: [2, 15, true],
-      peach: [25, 20, true],
-      flushed: [30, 200, true],
-      star2: [50, 500, true],
+      peach: [5, 25, true],
+      flushed: [10, 100, true],
+      star2: [25, 150, true],
       fire: [75, 750, true],
     };
   }
 
-  // this too fricking time istg
+  // this took fricking time istg
   roll(emojis: string[], oddRdce: number) {
     const { randomInArray, randomNumber } = this.client.util;
     const emoji = randomInArray(emojis);
