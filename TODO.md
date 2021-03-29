@@ -1,22 +1,21 @@
 # To Do's
 
-Just a list of planned features basically for event and currency commands. Checked or striked through items are marked as done.
+Just a list of planned features basically for event and currency commands. 
 
 ## Currency
 
 - [ ] **Sale Item**
-- [ ] **Hourly Lottery**
 - [x] **Give, Gift Commands**
+- [ ] **Prestige**
+- [ ] **Quests**
 
 ## Memers Crib
 
 - [ ] **Event Commands**
 - [x] **Donation System**
-- [ ] **Timed Events**
-- [ ] **Giveaways**
+- [ ] **Giveaway Commands**
 
 ## Back-End
 
 - [x] **Item Checks**
 - [x] **Fix Bot Latency**
-- [ ] **Global En/Disabled Commands**

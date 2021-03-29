@@ -40,7 +40,10 @@ export default class Currency extends Command {
       return 'This item is currently active right now.';
     if (!item.usable) return "You can't use this item :thinking:";
 
+    this.client.util.cmdQueue.set(msg.author.id, true); // exploit protection
     const ret = await item.use(msg);
+    this.client.util.cmdQueue.delete(msg.author.id);
+
     return { content: ret, replyTo: msg.id };
   }
 }
