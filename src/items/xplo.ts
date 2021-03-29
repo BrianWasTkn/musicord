@@ -52,7 +52,7 @@ export default class PowerUp extends Item {
         .sort((a, b) => b.amt - a.amt)
         .map(({ amt, item }) => {
           const total = data.items.find(i => i.id === item.id).amount + amt;
-          return `**${item.emoji} ${item.name}** — ${total.toLocaleString()} total`
+          return `${item.emoji} ${item.name} — ${total.toLocaleString()} total`
         });
 
       items.forEach(({ amt, item }) => {
