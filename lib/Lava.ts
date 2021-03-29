@@ -1,9 +1,10 @@
-import { AkairoClient, AkairoModule } from 'discord-akairo';
+import { AkairoClient, AkairoModule, AkairoHandler } from 'discord-akairo';
 import { CurrencyProfile } from './interface/mongo/currency';
 import { Config, config } from '../config';
 import { SpawnDocument } from './interface/mongo/spawns';
 import { MessagePlus } from './extensions/message';
 import { Collection } from 'discord.js';
+import { promisify } from 'util';
 import { argTypes } from './utility/types';
 import { Util } from './utility/util';
 import { join } from 'path';
@@ -11,10 +12,12 @@ import {
   ListenerHandler,
   CommandHandler,
   SpawnHandler,
+  QuestHandler,
   ItemHandler,
   Listener,
   Command,
   Spawn,
+  Quest,
   Item,
 } from './handlers';
 
@@ -37,6 +40,7 @@ interface Handlers {
   emitter: ListenerHandler<Listener>;
   command: CommandHandler<Command>;
   spawn: SpawnHandler<Spawn>;
+  quest: QuestHandler<Quest>;
   item: ItemHandler<Item>;
 }
 
@@ -53,6 +57,7 @@ export class Lava extends AkairoClient {
     super({ ...cfg.discord, ...cfg.akairo });
     this.util = new Util(this);
     this.config = cfg;
+
     this.handlers = {
       emitter: new ListenerHandler<Listener>(this, {
         directory: join(__dirname, '..', 'src', 'emitters'),
@@ -63,37 +68,39 @@ export class Lava extends AkairoClient {
       spawn: new SpawnHandler<Spawn>(this, {
         directory: join(__dirname, '..', 'src', 'spawns'),
       }),
+      quest: new QuestHandler<Quest>(this, {
+        directory: join(__dirname, '..', 'src', 'quests'),
+      }),
       item: new ItemHandler<Item>(this, {
         directory: join(__dirname, '..', 'src', 'items'),
       }),
     };
   }
 
-  private _patch(): void {
-    const {
-      handlers: { command, emitter, item, spawn },
-    } = this;
+  patch() {
+    const { command, emitter, spawn, quest, item } = this.handlers;
     command.useListenerHandler(emitter);
-    emitter.setEmitters({ spawn, command, emitter, item });
+    emitter.setEmitters({ command, emitter, spawn, quest, item });
     command.resolver.addTypes(argTypes(this));
 
     const handlers = {
       Emitter: emitter,
       Command: command,
-      Spawner: spawn,
-      Item: item,
+      Spawn: spawn,
+      Quest: quest,
+      Item: item
     };
 
-    for (const [e, emitter] of Object.entries(handlers)) {
-      emitter
-        .on('load', (module: AkairoModule) => {
-          this.util.console({
-            msg: chalk`{whiteBright ${e} {cyanBright ${module.id}} loaded.}`,
-            type: 'def',
-            klass: 'Lava',
-          });
-        })
-        .loadAll();
+    for (const [e, handler] of Object.entries(handlers)) {
+      handler
+      .on('load', (mod: AkairoModule) => {
+        this.util.console({
+          klass: this.constructor.name,
+          type: 'def',
+          msg: `${e} ${mod.id} loaded.`
+        });
+      })
+      .loadAll();
     }
   }
 
@@ -121,8 +128,8 @@ export class Lava extends AkairoClient {
   }
 
   async build(token: string = this.config.bot.token): Promise<string> {
-    this._patch();
+    this.patch();
     await this.connectDB();
-    return this.login(token);
+    return super.login(token);
   }
 }

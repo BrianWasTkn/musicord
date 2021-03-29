@@ -114,7 +114,7 @@ export class Util extends ClientUtil {
   };
 
   console = (args: {
-    klass: string;
+    klass?: string;
     type?: 'def' | 'err';
     msg: string;
   }): void => {

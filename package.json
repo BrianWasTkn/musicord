@@ -1,7 +1,7 @@
 {
   "name": "lava",
-  "version": "2.13.0",
-  "description": "Provide utilities in your Dank Memer-based discord server.",
+  "version": "2.14.0",
+  "description": "A simple currency bot with database support.",
   "main": "build/src/index",
   "author": {
     "name": "Brian",
