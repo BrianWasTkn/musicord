@@ -49,7 +49,7 @@ export default class Currency extends Command {
     await Items.sell(Math.trunc(amount), data, item.id);
     const embed = new Embed()
       .setDescription(
-        `Succesfully sold **${amount.toLocaleString()} ${item.name}**${
+        `Succesfully sold **${amount.toLocaleString()} ${item.emoji} ${item.name}**${
           amount > 1 ? 's' : ''
         } and got \`${Math.round(amount * (item.cost / 4)).toLocaleString()}\`.`
       )
