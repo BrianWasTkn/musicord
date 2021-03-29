@@ -50,7 +50,11 @@ export default class PowerUp extends Item {
 
       const its = items
         .sort((a, b) => b.amt - a.amt)
-        .map(({ amt, item }) => `**${item.emoji} ${item.name}**`);
+        .map(({ amt, item }) => {
+          const total = data.items.find(i => i.id === item.id).amount + amt;
+          return `**${item.emoji} ${item.name}** — ${total.toLocaleString()} total`
+        });
+
       items.forEach(({ amt, item }) => {
         data.items.find((i) => i.id === item.id).amount += amt
       });
@@ -75,7 +79,11 @@ export default class PowerUp extends Item {
 
     const its = items
       .sort((a, b) => b.amt - a.amt)
-      .map(({ amt, item }) => `${item.emoji} ${item.name}`);
+      .map(({ amt, item }) => {
+        const left = data.items.find(i => i.id === item.id).amount - amt;
+        return `${item.emoji} ${item.name} — ${left.toLocaleString()} left`;
+      });
+
     items.forEach(({ amt, item }) => {
       data.items.find((i) => i.id === item.id).amount -= amt;
     });
