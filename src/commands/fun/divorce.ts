@@ -30,12 +30,10 @@ export default class Fun extends Command {
 
 		const div = await this.client.db.currency.fetch(husOrWif.id);
 
-		delete me.marriage.id;
-		me.marriage.since = 0;
+		me.marriage.id = '';
 		await me.save();
 
-		delete div.marriage.id;
-		div.marriage.since = 0;
+		div.marriage.id = '';
 		await div.save();
 
 		return { replyTo: msg.id, content: `Divorce successfull.` };
