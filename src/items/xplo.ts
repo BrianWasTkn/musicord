@@ -58,7 +58,7 @@ export default class PowerUp extends Item {
       xplo.amount--;
       await msg.author.initDB(data).addPocket(coins).updateItems().db.save();
 
-      return `**__${this.emoji} ${msg.author.username}'s bomb__**\n**You got \`${coins.toLocaleString()}\` coins and \`+${rate}%\` of these items in your inventory:**\n\n${its.join('\n')}`;
+      return `**__${this.emoji} ${msg.author.username}'s bomb__**\n**You got \`${coins.toLocaleString()}\` coins and got \`+${rate}%\` of these items into your inventory:**\n\n**${its.join('**\n**')}**`;
     }
 
     const fine = randomNumber(1, data.pocket);
@@ -84,6 +84,6 @@ export default class PowerUp extends Item {
     data.pocket -= fine;
     await msg.author.initDB(data).updateItems().db.save();
 
-    return `**${this.emoji} ${msg.author.username}'s bomb FAILED :skull:**\n**You got fined \`${fine.toLocaleString()}\` coins and \`${rate}%\` of these items from your inventory**\n\n${its.join('\n')}`;
+    return `**${this.emoji} ${msg.author.username}'s bomb FAILED :skull:**\n**You got fined \`${fine.toLocaleString()}\` coins and lost \`${rate}%\` of these items from your inventory**\n\n**${its.join('**\n**')}**`;
   }
 }
