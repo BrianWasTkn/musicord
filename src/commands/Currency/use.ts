@@ -35,9 +35,8 @@ export default class Currency extends Command {
     const data = await msg.author.fetchDB();
 
     const inv = data.items.find((i) => i.id === item.id);
-    if (!inv || inv.amount < 1) return "LOL you don't own this item";
-    if (inv.expire > Date.now())
-      return 'This item is currently active right now.';
+    if (!inv || inv.amount < 1) return "LOL you don't own this item :skull:";
+    if (inv.expire > Date.now()) return 'This item is currently active right now.';
     if (!item.usable) return "You can't use this item :thinking:";
 
     this.client.util.cmdQueue.set(msg.author.id, true); // exploit protection

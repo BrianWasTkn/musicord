@@ -34,8 +34,9 @@ export default class Currency extends Command {
     }
   ): Promise<string | MessageOptions> {
     const { member, amount } = args;
-    if (!member || !amount)
+    if (!member || !amount) {
       return `**Wrong Syntax bro**\n**Usage:** \`lava ${this.id} <amount> <@user>\``;
+    }
 
     const data = await msg.author.fetchDB();
     const r = await msg.fetchDB(member.user.id);
