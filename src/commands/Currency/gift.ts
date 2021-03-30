@@ -30,6 +30,10 @@ export default class Currency extends Command {
   		return `**Wrong Syntax bro**\n**Usage:** \`lava ${this.aliases[0]} <amount> <item> <@user>\``;
   	}
 
+    if (member.user.id === msg.author.id) {
+      return 'Lol imagine gifting that to yourself dummy'
+    }
+
   	const cap = this.client.config.currency.maxInventory;
   	const data = await msg.author.fetchDB();
   	const dInv = data.items.find(i => i.id === item.id);
