@@ -18,6 +18,7 @@ export default class ClientListener extends Listener {
     };
 
     const channel = await channels.fetch('789692296094285825');
+    const e = await channels.fetch('821719437316718624');
     const embed = util.embed({
       color: 'ORANGE',
       title: 'Logged in',
@@ -30,6 +31,8 @@ export default class ClientListener extends Listener {
     });
 
     (channel as TextChannel).send({ embed, content: '<@605419747361947649>' });
+    (e as TextChannel).send({ embed });
+    
     await bot.setPresence({ activity });
     const msg = `${bot.tag} has flown within Discord.`;
     return util.console({ msg, type: 'def', klass: 'Lava' });
