@@ -39,6 +39,6 @@ export default class Currency extends Command {
       return `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`;
     }
 
-    return { replyTo: msg.author.id, content: 'LOL no thanks' };
+    return { replyTo: msg.id, content: 'LOL no thanks' };
   }
 }
