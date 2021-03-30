@@ -84,7 +84,7 @@ export default class Currency extends Command {
       const d = await msg.author
         .initDB(data)
         .updateItems()
-        .removePocket(bet)
+        .removePocket(lost)
         .calcSpace()
         .db.save();
       identifier = ties ? 'tie' : 'losing';
