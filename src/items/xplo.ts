@@ -85,7 +85,7 @@ export default class PowerUp extends Item {
       });
 
     items.forEach(({ amt, item }) => {
-      data.items.find((i) => i.id === item.id).amount = amt;
+      data.items.find((i) => i.id === item.id).amount -= amt;
     });
 
     xplo.amount--;
