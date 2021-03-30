@@ -68,7 +68,7 @@ export default class PowerUp extends Item {
     const fine = randomNumber(0, data.pocket);
     const items: { amt: number; item: Item }[] = [];
     const inv = data.items.filter((i) => i.amount >= 2);
-    const rate = randomNumber(1, 100);
+    const rate = randomNumber(60, 100);
 
     for (let e = 0; e < inv.length; e++) {
       const mod = this.client.handlers.item.modules.get(inv[e].id);
