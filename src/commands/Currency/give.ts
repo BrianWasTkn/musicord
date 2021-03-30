@@ -50,10 +50,14 @@ export default class Currency extends Command {
       give = amount as number;
     }
 
-    if (amount > data.pocket) return 'Thought you can fool me?';
-    else if (r.pocket >= this.client.config.currency.maxSafePocket)
+    if (member.user.id === msg.author.id) 
+      return 'Lol imagine giving yourself coins';
+    if (amount > data.pocket) 
+      return 'Thought you can fool me?';
+    if (r.pocket >= this.client.config.currency.maxSafePocket)
       return `Hah! Having over ${this.client.config.currency.maxSafePocket.toLocaleString()} makes them too rich, no thanks.`;
-    else if (give < 1) return 'Nah, no negative coins for you';
+    if (give < 1) 
+      return 'Nah, no negative coins for you';
 
     let paid = Math.round(give - give * 0.08);
     let tax = Math.round((give * 0.8) / (give / 10));
