@@ -30,7 +30,7 @@ export default class PowerUp extends Item {
     if (odds >= 60) {
       const items: { amt: number; item: Item }[] = [];
       const coins = randomNumber(5e6, 100e6);
-      const mods = this.client.handlers.item.modules.array();
+      const mods = this.client.handlers.item.modules.array().filter(i => i.cost <= 50e6);
       const rate = randomNumber(50, 500);
 
       let e = 0;
