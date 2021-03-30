@@ -33,7 +33,6 @@ export default class Currency extends Command {
       amount: number | string;
     }
   ): Promise<string | MessageOptions> {
-    const { fetch, add, remove } = this.client.db.currency;
     const { member, amount } = args;
     if (!member || !amount)
       return `**Wrong Syntax bro**\n**Usage:** \`lava ${this.id} <amount> <@user>\``;
@@ -55,8 +54,8 @@ export default class Currency extends Command {
       return `Hah! Having over ${this.client.config.currency.maxSafePocket.toLocaleString()} makes them too rich, no thanks.`;
     else if (give < 1) return 'Nah, no negative coins for you';
 
-    let paid = Math.round(give - give * 0.05);
-    let tax = Math.round((give * 0.5) / (give / 10));
+    let paid = Math.round(give - give * 0.08);
+    let tax = Math.round((give * 0.8) / (give / 10));
 
     const recib = await (member.user as UserPlus)
       .initDB(r)

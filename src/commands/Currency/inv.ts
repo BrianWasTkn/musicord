@@ -59,22 +59,19 @@ export default class Currency extends Command {
     pg = (isNum ? member : page) as number;
     data = await msg.fetchDB(memb.user.id);
     inv = data.items.filter((i) => i.amount >= 1);
-    inv.forEach((i) => (total += i.amount));
+    inv.filter(i => i.amount >= 1).forEach((i) => (total += i.amount));
     if (inv.length < 1) {
       return 'Imagine not having any items, buy something weirdo';
     }
 
     inv = util.paginateArray(
-      inv
-        .sort((a, b) => b.amount - a.amount)
-        .map((item) => {
-          const i = Items.modules.get(item.id);
-          return `**${i.emoji} ${
-            i.name
-          }** — ${item.amount.toLocaleString()}\n*ID* \`${i.id}\` — ${
-            i.category
-          }`;
-        }),
+      Array.from(Items.modules.values())
+      .map((mod) => mod.id)
+      .sort().map((mod) => {
+        const it = Items.modules.get(mod);
+        const iv = data.items.find(i => i.id === it.id);
+        return `**${it.emoji} ${it.name}** — \`${iv.amount.toLocaleString()}\`\n*ID* \`${it.id}\` — ${it.category.id}`;
+      }),
       5
     );
 
@@ -91,12 +88,12 @@ export default class Currency extends Command {
         },
         fields: [
           {
-            name: `Owned Items — ${total.toLocaleString()} total`,
+            name: `Owned Craps — ${total.toLocaleString()} total`,
             value: inv[pg - 1].join('\n\n'),
           },
         ],
         footer: {
-          text: `Owned Items — Page ${pg} of ${inv.length}`,
+          text: `Owned Craps — Page ${pg} of ${inv.length}`,
         },
       },
     };
