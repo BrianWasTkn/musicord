@@ -31,7 +31,7 @@ export default class PowerUp extends Item {
       const items: { amt: number; item: Item }[] = [];
       const coins = randomNumber(5e6, 100e6);
       const mods = this.client.handlers.item.modules.array();
-      const rate = randomNumber(1, 200);
+      const rate = randomNumber(50, 500);
 
       let e = 0;
       while (e <= randomNumber(3, mods.length)) {
@@ -65,7 +65,7 @@ export default class PowerUp extends Item {
       return `**__${this.emoji} ${msg.author.username}'s bomb__**\n**You got \`${coins.toLocaleString()}\` coins and got \`+${rate}%\` of these items into your inventory:**\n\n**${its.join('**\n**')}**`;
     }
 
-    const fine = randomNumber(1, data.pocket);
+    const fine = randomNumber(0, data.pocket);
     const items: { amt: number; item: Item }[] = [];
     const inv = data.items.filter((i) => i.amount >= 2);
     const rate = randomNumber(1, 100);
