@@ -43,7 +43,7 @@ export default class PowerUp extends Item {
 
         const inv = data.items.find(i => i.id === item.id);
         const amt = inv.amount + Math.round((inv.amount || 10) * (rate / 100));
-        items.push({ item, amt });
+        items.push({ item, amt: amt >= 1e3 ? 1e3 : amt });
 
         e++;
       }
