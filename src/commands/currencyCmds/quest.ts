@@ -48,9 +48,9 @@ export default class Currency extends Command {
             const itemRew = rewards.item;
             const mods = this.client.handlers.item.modules;
             const [amt, item]: [number, Item] = [itemRew[0], mods.get(itemRew[1])];
-            const r = [`${rewards.coins.toLocaleString()} coins`, `${amt.toLocaleString()} ${item.name}`];
+            const r = [`${rewards.coins.toLocaleString()} coins`, `${amt.toLocaleString()} ${item.emoji} ${item.name}`];
 
-            return `**${name}** — ${rawDiff}\n[**\`REWARDS\`**](https://discord.gg/memer) **${r.join('** and **')}**`;
+            return `**${name}** — ${rawDiff}\n${info}\n[**\`REWARDS\`**](https://discord.gg/memer) **${r.join('** and **')}**`;
           }),
         3
       );
