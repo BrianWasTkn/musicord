@@ -20,6 +20,8 @@ export default class QuestListener extends Listener {
 		const quests = q.modules;
 		const items = i.modules;
 
+		if (!this.client.isOwner(msg.author)) return;
+
 		const data = await msg.author.fetchDB();
 		const { quest } = data;
 
