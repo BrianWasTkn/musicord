@@ -8,7 +8,7 @@ export default class Easy extends Quest {
 			name: 'Fish It',
 		}, {
 			coins: 5e4,
-			item: [42e3, 'herb']
+			item: [50, 'computer']
 		});
 	}
 }

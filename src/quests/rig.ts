@@ -8,7 +8,7 @@ export default class Medium extends Quest {
 			name: 'Rig It',
 		}, {
 			coins: 100e3,
-			item: [50, 'herb']
+			item: [100, 'xplo']
 		});
 	}
 }
