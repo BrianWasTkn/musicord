@@ -70,10 +70,11 @@ export default class Currency extends Command {
       const data = await msg.author.fetchDB();
       const inv = data.items.find((i) => i.id === query.id);
       const items = this.client.handlers.item.modules;
+      const item = items.get(query.rewards.item[1]);
 
       let info: string[] = [];
       info.push(`**Coins:** ${query.rewards.coins.toLocaleString()}`);
-      info.push(`**Item:** ${query.rewards.item[0]} ${items.get(query.rewards.item[1])}`);
+      info.push(`**Item:** ${query.rewards.item[0]} ${item.emoji} ${item.name}`);
 
       embed
         .setTitle(`${query.name} — ${query.rawDiff}`)
