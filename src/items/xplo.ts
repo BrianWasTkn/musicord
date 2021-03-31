@@ -24,7 +24,7 @@ export default class PowerUp extends Item {
       content: `**${this.emoji} Fusing your bomb...**`,
       replyTo: msg.id,
     });
-    await sleep(randomNumber(5, 10) * 1e3);
+    await sleep(randomNumber(1, 5) * 1e3);
     let odds = randomNumber(1, 100);
 
     if (odds >= 60) {

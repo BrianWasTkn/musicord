@@ -20,9 +20,9 @@ export default class PowerUp extends Item {
     const data = await msg.author.fetchDB();
     const card = data.items.find((i) => i.id === this.id);
 
-    if (data.space >= config.currency.maxSafeSpace) {
-      return 'You already have max vault space bruh'
-    }
+    // if (data.space >= config.currency.maxSafeSpace) {
+    //   return 'You already have max vault space bruh'
+    // }
 
     const m = `${msg.author.toString()} You have ${card.amount.toLocaleString()} cards. How many cards do you wanna reveal right now?`;
     await msg.channel.send(m);
