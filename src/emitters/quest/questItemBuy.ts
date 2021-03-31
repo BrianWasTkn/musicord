@@ -34,6 +34,11 @@ export default class QuestListener extends Listener {
 			const item = items.get(aq.rewards.item[1]);
 			const itemR = `${aq.rewards.item[0]} ${item.emoji} ${item.name}`;
 
+			quest.id = '';
+			quest.count = 0;
+			quest.target = 0;
+			await data.save();
+
 			return await msg.channel.send({
 				replyTo: msg.id,
 				content: `**Quest Finished!**\nYou successfully finished the **${aq.name}** quest.\nYou got **${coinR}** coins and **${itemR}** as a reward.`
