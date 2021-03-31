@@ -15,29 +15,36 @@ import {
 export class Quest extends AkairoModule {
   handler: QuestHandler<Quest>;
 
-  cRew: QuestReward['coins'];
-  iRew: QuestReward['items'];
-  diff: QuestOptions['diff'];
+  rawDiff: QuestOptions['diff'];
+  rewards: QuestReward;
+  diff: number;
   info: string;
   name: string
 
   constructor(
 		id: string, 
 		opt: QuestOptions, 
-		cRew: QuestReward['coins'],
-		iRew: QuestReward['items']
+		rew: QuestReward
   ) {
     const { category } = opt;
     super(id, { category });
 
-    this.diff = opt.diff;
+    const priority = {
+      Extreme: 1,
+      Difficult: 2,
+      Hard: 3,
+      Medium: 4,
+      Easy: 5,
+    }
+
+    this.rawDiff = opt.diff;
+    this.diff = priority[opt.diff];
     this.info = opt.info;
     this.name = opt.name;
-    this.cRew = cRew;
-    this.iRew = iRew;
+    this.rewards = rew;
   }
 
-  exec(msg: MessagePlus): any | Promise<any> {}
+  check(msg: MessagePlus): any | Promise<any> {}
 }
 
 export class QuestHandler<QuestModule extends Quest> extends AkairoHandler {

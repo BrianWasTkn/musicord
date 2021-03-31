@@ -32,10 +32,10 @@ export default class Currency extends Command {
       type: keyof CurrencyProfile;
     }
   ): Promise<MessageOptions> {
-    const rich = (await Model.find({})) as (Document & CurrencyProfile)[];
+    const rich = (await Mongo.models['currency'].find({})) as (Document & CurrencyProfile)[];
     const nice = rich
       .filter((doc) =>
-        args.isGlobal ? true : msg.guild.members.cache.has(doc.userID)
+        args.isGlobal ? doc : msg.guild.members.cache.has(doc.userID)
       )
       .slice(0, 10)
       .sort((a, b) => b.pocket - a.pocket)

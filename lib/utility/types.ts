@@ -1,4 +1,5 @@
 import type { MessagePlus } from '@lib/extensions/message';
+import type { Quest } from '@lib/handlers/quest';
 import type { Item } from '@lib/handlers/item';
 import type { Lava } from '@lib/Lava';
 
@@ -6,6 +7,19 @@ export const argTypes = (bot: Lava) => ({
   shopItem: (msg: MessagePlus, phrase: string): Item | null => {
     if (!phrase) return null;
     const items = [...bot.handlers.item.modules.values()];
+    return items.find((i) => {
+      return (
+        i.id.toLowerCase() === phrase.toLowerCase() ||
+        i.name.toLowerCase() === phrase.toLowerCase() ||
+        i.name.toLowerCase().includes(phrase.toLowerCase()) ||
+        i.id.toLowerCase().includes(phrase.toLowerCase())
+      );
+    });
+  },
+
+  questQuery: (msg: MessagePlus, phrase: string): Quest | null => {
+    if (!phrase) return null;
+    const items = [...bot.handlers.quest.modules.values()];
     return items.find((i) => {
       return (
         i.id.toLowerCase() === phrase.toLowerCase() ||

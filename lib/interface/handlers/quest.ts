@@ -1,7 +1,7 @@
 import { AkairoModuleOptions } from 'discord-akairo';
 import { Item } from '@lib/handlers/item'
 
-export type QuestDifficulty = 'Easy' | 'Medium' | 'Difficult' | 'Expert';
+export type QuestDifficulty = 'Easy' | 'Medium' | 'Hard' | 'Difficult' | 'Extreme';
 
 export interface QuestOptions extends AkairoModuleOptions {
   diff: QuestDifficulty;
@@ -10,11 +10,6 @@ export interface QuestOptions extends AkairoModuleOptions {
 }
 
 export interface QuestReward {
-	coins: {
-		amount: number;
-		multi?: number;
-	};
-	items: {
-		[k: string]: number
-	};
+	coins: number;
+	item: [number, Item['id']];
 }

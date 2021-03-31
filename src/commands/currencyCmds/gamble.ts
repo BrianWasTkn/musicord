@@ -94,8 +94,7 @@ export default class Currency extends Command {
         `You now have **${d.pocket.toLocaleString()}**`,
       ];
     } else if (userD > botD) {
-      let wngs = Math.random() + 0.4;
-      wngs += extraWngs;
+      let wngs = Math.random() + 0.4 + extraWngs;
       w = Math.ceil(bet * wngs);
       w = w + Math.round(w * (multi / 100));
       if (w > maxWin) w = maxWin as number;
