@@ -22,7 +22,7 @@ export default class CommandListener extends Listener {
       ) as Promise<MessagePlus>;
     } else if (['guild', 'dm'].includes(r.toLowerCase())) {
       return msg.channel.send(
-        `This isn't available in ${r}s, my dear.`
+        `This isn't available in ${r === 'dm' ? 'guild' : 'dm'}s, my dear.`
       ) as Promise<MessagePlus>;
     }
   }
