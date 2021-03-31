@@ -59,7 +59,7 @@ export default class Currency extends Command {
 
     return { replyTo: msg.id, embed: {
       color: 'GREEN',
-      description: Constants.ITEM_MESSAGES.SELL
+      description: Constants.ITEM_MESSAGES.BUY
         .replace(/{paid}/gi, (amount * item.cost).toLocaleString())
         .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
         .replace(/{emoji}/gi, item.emoji)
