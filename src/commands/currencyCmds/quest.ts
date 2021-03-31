@@ -8,7 +8,7 @@ import { Item } from '@lib/handlers/item';
 
 export default class Currency extends Command {
   constructor() {
-    super('shop', {
+    super('quest', {
       aliases: ['quest', 'q'],
       channel: 'guild',
       ownerOnly: true,
