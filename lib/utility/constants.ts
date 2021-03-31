@@ -3,9 +3,7 @@
  */
 
 import { currencyConfig } from '@config/currency';
-import type { Colors } from '@lib/interface/utility';
-
-const { maxBet, minBet } = currencyConfig;
+const { maxBet, minBet, maxPocket } = currencyConfig;
 
 export const COLORS = {
   RED: 0xf44336,
@@ -27,25 +25,26 @@ export const COLORS = {
   DEEP_ORANGE: 0xff5722,
 };
 
-export const ERROR_MESSAGES = {
+export const GAMBLE_MESSAGES = {
+  NO_COINS: 'You have no coins to gamble :skull:',
   BET_IS_NAN: 'It should be a positive number yeah?',
-  BET_IS_LOW: `Your bet shouldn't be lower than ${minBet} coins bruh`,
   USER_IS_POOR: 'You have no coins to gamble rip :skull:',
-  BET_IS_HIGHER: `You're not allowed to gamble higher than ${maxBet} coins lmao`,
-  INVALID_AMOUNT(type: 'slots' | 'gamble') {
-    const meth = type === 'slots' ? 'slot' : 'gamble';
-    return `You actually need a number to ${meth} yeah?`;
-  },
-  TOO_RICH_TO_GAMBLE(type: 'slots' | 'gamble') {
-    const meth = type === 'slots' ? 'use the slot machine' : 'gamble';
-    return `You are too rich to ${meth}!`;
-  },
-  BET_HIGHER_THAN_POCKET(pocket: number) {
-    return `You only have **${pocket.toLocaleString()}** coins don't lie to me hoe.`;
-  },
+  BET_IS_LOWER: `C'mon, you're not gambling lower than **${minBet.toLocaleString()}** yeah?`,
+  BET_IS_HIGHER: `You can't gamble higher than **${maxBet.toLocaleString()}** coins >:(`,
+  NEED_SOMETHING: 'You need something to gamble!',
+  INVALID_AMOUNT: 'You actually need a number to gamble yeah?',
+  TOO_RICH_TO_GAMBLE: 'You are too rich to {do}!',
+  BET_HIGHER_THAN_POCKET: `You only have **{pocket}** lol don't try me`,
+  POCKET_HIGHER_THAN_CAP: `You're too rich (${maxPocket.toLocaleString()}) to gamble!`,
 };
 
+export const ITEM_MESSAGES = {
+  BUY: `Successfully purchased **{amount} {emoji} {item}** and paid \`{paid}\` coins.`,
+  SELL: `Successfully sold **{amount} {emoji} {item}** and got \`{got}\` coins.`,
+}
+
 export default {
-  ERROR_MESSAGES,
+  GAMBLE_MESSAGES,
+  ITEM_MESSAGES,
   COLORS,
 };

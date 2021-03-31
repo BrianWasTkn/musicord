@@ -58,11 +58,34 @@ const CurrencySchema = new Schema({
   },
 
   /* Quests */
-  quests: [
+  quest: {
+    target: {
+      required: false,
+      default: 0,
+      type: Number
+    },
+    count: {
+      required: false,
+      default: 0,
+      type: Number,
+    },
+    id: {
+      required: false,
+      type: String
+    }
+  },
+
+  /* Cooldowns */
+  cooldowns: [
     {
-      count: Number,
-      done: Boolean,
-      id: String,
+      id: {
+        type: String,
+        required: false,
+      },
+      expire: {
+        type: Number,
+        required: false,
+      }
     }
   ]
 });

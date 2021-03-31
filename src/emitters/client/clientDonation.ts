@@ -101,7 +101,7 @@ async function handleDonation(
       return await dm.send('Something wrong occured :c');
     }
   } catch {
-    const m = await msg.channel.send('Please open your DMs.');
+    const m = await msg.channel.send(`${msg.author.toString()} Please open your DMs.`);
     return await m.delete({ timeout: 1e4 });
   }
 }
@@ -119,6 +119,7 @@ export default class ClientListener extends Listener {
 
     const haha = { 1: 'giveaway', 2: 'heist', 3: 'event' };
     const query = haha[Number(msg.content)];
+    if (msg.author.bot) return;
     if (!query) return msg.delete() as Promise<MessagePlus>;
 
     return (await handleDonation(msg, query)) as MessagePlus;

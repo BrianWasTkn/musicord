@@ -74,7 +74,7 @@ export default class Currency extends Command {
 
       let info: string[] = [];
       info.push(`**Coins:** ${query.rewards.coins.toLocaleString()}`);
-      info.push(`**Item:** ${query.rewards.item[0]} ${item.emoji} ${item.name}`);
+      info.push(`**Items:** ${query.rewards.item[0]} ${item.emoji} ${item.name}`);
 
       embed
         .setTitle(`${query.name} — ${query.rawDiff}`)

@@ -2,6 +2,7 @@ import type { MessagePlus } from '@lib/extensions/message';
 import type { Quest } from '@lib/handlers/quest';
 import type { Item } from '@lib/handlers/item';
 import type { Lava } from '@lib/Lava';
+import Constants from './constants'
 
 export const argTypes = (bot: Lava) => ({
   shopItem: (msg: MessagePlus, phrase: string): Item | null => {
@@ -34,55 +35,53 @@ export const argTypes = (bot: Lava) => ({
     msg: MessagePlus,
     phrase: string | number
   ): Promise<number | null> => {
-    const { minBet, maxBet, maxPocket } = bot.config.currency;
+    const { minBet, maxBet, maxPocket, maxSafePocket } = bot.config.currency;
+    const { GAMBLE_MESSAGES: MESSAGES } = Constants;
     const { pocket } = await msg.author.fetchDB();
+
     let bet: string | number = phrase;
 
     if (!bet) {
-      msg.channel.send('You need something to gamble!');
+      msg.channel.send(MESSAGES.NEED_SOMETHING);
       return null;
     }
 
     if (!Boolean(Number(bet as number))) {
       bet = (bet as string).toLowerCase();
-      if (bet === 'all') bet = pocket;
-      else if (bet === 'half') bet = Math.round(pocket / 2);
+
+      if (bet === 'all') 
+        bet = pocket;
+      else if (bet === 'half') 
+        bet = Math.round(pocket / 2);
       else if (bet === 'max')
         bet = pocket > (maxBet as number) ? (maxBet as number) : pocket;
-      else if (bet === 'min') bet = minBet as number;
+      else if (bet === 'min') 
+        bet = minBet as number;
       else if (bet.toLowerCase().endsWith('k'))
         bet = Number(bet.toLowerCase().replace('k', '000'));
       else {
-        msg.channel.send('You actually need a number to bet...');
+        msg.channel.send(MESSAGES.INVALID_AMOUNT);
         return null;
       }
     }
 
     if (pocket <= 0) {
-      msg.channel.send('You have no coins :skull:');
+      msg.channel.send(MESSAGES.NO_COINS);
       return null;
     } else if (bet > maxBet) {
-      msg.channel.send(
-        `You can't gamble higher than **${maxBet.toLocaleString()}** coins >:(`
-      );
+      msg.channel.send(MESSAGES.BET_IS_HIGHER);
       return null;
     } else if (bet < minBet) {
-      msg.channel.send(
-        `C'mon, you're not gambling lower than **${minBet.toLocaleString()}** yeah?`
-      );
+      msg.channel.send(MESSAGES.BET_IS_LOWER);
       return null;
     } else if (bet > pocket) {
-      msg.channel.send(
-        `You only have **${pocket.toLocaleString()}** lol don't try me`
-      );
+      msg.channel.send(MESSAGES.BET_HIGHER_THAN_POCKET.replace(/{pocket}/gi, pocket.toLocaleString()));
       return null;
     } else if (pocket > maxPocket) {
-      msg.channel.send(
-        `You're too rich (${maxPocket.toLocaleString()}) to gamble!`
-      );
+      msg.channel.send(MESSAGES.POCKET_HIGHER_THAN_CAP);
       return null;
     } else if (bet < 1) {
-      msg.channel.send('It should be a positive number yeah?');
+      msg.channel.send(MESSAGES.BET_IS_NAN);
       return null;
     }
 

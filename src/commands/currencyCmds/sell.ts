@@ -3,6 +3,7 @@ import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 import { Item } from '@lib/handlers/item';
+import Constants from '@lib/utility/constants';
 
 export default class Currency extends Command {
   constructor() {
@@ -34,28 +35,35 @@ export default class Currency extends Command {
     }
   ): Promise<string | MessageOptions> {
     const { amount = 1, item } = args;
-    const { item: Items } = this.client.handlers;
     const { maxInventory } = this.client.config.currency;
+    const { item: Items } = this.client.handlers;
     const { fetch } = this.client.db.currency;
     const data = await msg.author.fetchDB();
 
     if (!item) return 'You need something to sell';
 
     let inv = data.items.find((i) => i.id === item.id);
-    if (amount < 1) return 'Imagine selling none.';
-    else if (!item.sellable) return "You can't sell this item rip";
-    else if (amount > inv.amount) return "You can't fool me";
+    if (amount < 1) 
+      return 'Imagine selling none.';
+    if (!item.sellable) 
+      return "You can't sell this item rip";
+    if (amount > inv.amount) 
+      return "You can't fool me";
 
     await Items.sell(Math.trunc(amount), data, item.id);
-    const embed = new Embed()
-      .setDescription(
-        `Succesfully sold **${amount.toLocaleString()} ${item.emoji} ${item.name}**${
-          amount > 1 ? 's' : ''
-        } and got \`${Math.round(amount * (item.cost / 4)).toLocaleString()}\`.`
-      )
-      .setAuthor('Item Sold', msg.author.avatarURL({ dynamic: true }))
-      .setColor('GREEN');
+    this.client.handlers.quest.emit('itemSell', { msg, item, amount });
 
-    return { embed };
+    return { replyTo: msg.id, embed: {
+      color: 'GREEN',
+      description: Constants.ITEM_MESSAGES.SELL
+        .replace(/{got}/gi, (amount * (item.cost / 4)).toLocaleString())
+        .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
+        .replace(/{emoji}/gi, item.emoji)
+        .replace(/{item}/gi, item.name),
+      author: {
+        name: 'Item Sold',
+        iconURL: msg.author.avatarURL({ dynamic: true })
+      },
+    }};
   }
 }
