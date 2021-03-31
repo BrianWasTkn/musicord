@@ -11,6 +11,7 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'Play a game of cards.',
       cooldown: 5e3,
+      category: 'Currency',
       args: [
         {
           id: 'amount',
