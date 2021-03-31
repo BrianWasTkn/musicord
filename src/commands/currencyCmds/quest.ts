@@ -42,7 +42,7 @@ export default class Currency extends Command {
     if (typeof query === 'number') {
       const quest = this.client.util.paginateArray(
         quests
-          .sort((a, b) => b.diff - a.diff)
+          .sort((a, b) => a.diff - b.diff)
           .map((q) => {
             const { name, info, rawDiff, rewards } = q;
             const itemRew = rewards.item;
@@ -50,7 +50,7 @@ export default class Currency extends Command {
             const [amt, item]: [number, Item] = [itemRew[0], mods.get(itemRew[1])];
             const r = [`${rewards.coins.toLocaleString()} coins`, `${amt.toLocaleString()} ${item.emoji} ${item.name}`];
 
-            return `**${name}** — ${rawDiff}\n${info}\n[**\`REWARDS\`**](https://discord.gg/memer) **${r.join('** and **')}**`;
+            return `**${name}** — ${rawDiff}\n${info}\n[\`REWARDS\`](https://discord.gg/memer) **${r.join('** and **')}**`;
           }),
         3
       );
