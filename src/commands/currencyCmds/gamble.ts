@@ -128,11 +128,13 @@ export default class Currency extends Command {
       fields: [
         {
           name: `${msg.author.username}`,
-          value: `Rolled a \`${userD}\``
+          value: `Rolled a \`${userD}\``,
+          inline: true
         },
         {
           name: `${this.client.user.username}`,
-          value: `Rolled a \`${botD}\``
+          value: `Rolled a \`${botD}\``,
+          inline: true
         }
       ]
     }};
