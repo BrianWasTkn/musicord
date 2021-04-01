@@ -87,7 +87,7 @@ export default class Currency extends Command {
         .removePocket(lost)
         .calcSpace()
         .db.save();
-        
+
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';
       description = [
@@ -102,7 +102,7 @@ export default class Currency extends Command {
       const d = await msg.author
         .initDB(data)
         .updateItems()
-        .addPocket(w)
+        .addPocket(wngs)
         .calcSpace()
         .db.save();
 
