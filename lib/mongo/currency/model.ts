@@ -85,6 +85,11 @@ const CurrencySchema = new Schema({
       expire: {
         type: Number,
         required: false,
+      },
+      uses: {
+        type: Number,
+        required: false,
+        default: 0
       }
     }
   ]

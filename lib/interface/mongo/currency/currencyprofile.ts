@@ -3,6 +3,7 @@ import { Document } from 'mongoose';
 import { InventorySlot } from '@lib/interface/handlers/item';
 
 export interface CurrencyProfile extends Document {
+  cooldowns: CooldownData[];
   marriage: MarriageData;
   userID: Snowflake;
   pocket: number;
@@ -22,4 +23,10 @@ export interface QuestSlot {
 export interface MarriageData {
 	since: number;
 	id: string;
+}
+
+export interface CooldownData {
+  expire: number;
+  uses: number;
+  id: string;
 }

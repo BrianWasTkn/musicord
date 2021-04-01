@@ -62,13 +62,19 @@ export default class Currency extends Command {
     const d = await msg.author.fetchDB();
     const embed: Embed = new Embed();
 
-    if (!amount) return;
-    else if (amount < 1) return 'You thought you can fool me?';
-    else if (amount > d.pocket)
+    if (!amount) 
+      return 'You need something to deposit, bro.';
+    if (amount < 1) 
+      return 'You thought you can fool me?';
+    if (amount > d.pocket)
       return `Bro, you only have ${d.pocket.toLocaleString()} coins what're you doing?`;
 
     const input = amount >= d.space - d.vault ? d.space - d.vault : amount;
-    await msg.author.initDB(d).deposit(input).db.save();
-    return `**${input.toLocaleString()}** coins deposited.`;
+    const { vault } = await msg.author.initDB(d).deposit(input).db.save();
+
+    return {
+      content: `**${input.toLocaleString()}** coins deposited. You now have **${vault.toLocaleString()}** in your vault.`,
+      replyTo: msg.id,
+    };
   }
 }

@@ -1,56 +1,56 @@
 export class Effects {
-  bjWinnings: number; // bj winnings
-  winnings: number; // gamble winnigns
-  discount: number; // understandable
-  pockCap: number; // understandable
-  slots: number; // jackpot odds
-  dice: number; // dice roll
+  blackjackWinnings: number; // bj winnings
+  slotJackpotOdds: number; // jackpot odds
+  gambleWinnings: number; // gamble winnigns
+  shopDiscount: number; // understandable
+  gambleDice: number; // dice roll
+  pocketCap: number; // understandable
 
   constructor(
     data: Partial<{
-      bjWinnings: Effects['bjWinnings'];
-      winnings: Effects['winnings'];
-      discount: Effects['discount'];
-      pockCap: Effects['pockCap'];
-      slots: Effects['slots'];
-      dice: Effects['dice'];
+      bjWngs: Effects['blackjackWinnings'];
+      gWngs: Effects['gambleWinnings'];
+      sOdds: Effects['slotJackpotOdds'];
+      dcnt: Effects['shopDiscount'];
+      pCap: Effects['pocketCap'];
+      dice: Effects['gambleDice'];
     }> = {}
   ) {
-    this.bjWinnings = data.bjWinnings || 0;
-    this.winnings = data.winnings || 0;
-    this.discount = data.discount || 0;
-    this.pockCap = data.pockCap || 0;
-    this.slots = data.slots || 0;
-    this.dice = data.dice || 0;
+    this.blackjackWinnings = data.bjWngs || 0;
+    this.slotJackpotOdds = data.sOdds || 0;
+    this.gambleWinnings = data.gWngs || 0;
+    this.shopDiscount = data.dcnt || 0;
+    this.gambleDice = data.dice || 0;
+    this.pocketCap = data.pCap || 0;
   }
 
-  addBjWinnings(amt: number): this {
-    this.bjWinnings += amt;
+  addBlackjackWinnings(amt: number): this {
+    this.blackjackWinnings += amt;
     return this;
   }
 
-  setWinnings(winnings: number): this {
-    this.winnings += winnings;
+  addGambleWinnings(winnings: number): this {
+    this.gambleWinnings += winnings;
     return this;
   }
 
-  setDiscount(discount: number): this {
-    this.discount += discount;
+  addShopDiscount(discount: number): this {
+    this.shopDiscount += discount;
     return this;
   }
 
-  setPockCap(cap: number): this {
-    this.pockCap += cap;
+  addPocketCap(cap: number): this {
+    this.pocketCap += cap;
     return this;
   }
 
-  setSlotOdds(amount: number): this {
-    this.slots += amount;
+  addSlotJackpotOdd(amount: number): this {
+    this.slotJackpotOdds += amount;
     return this;
   }
 
-  setAddDice(amount: number): this {
-    this.dice += amount;
+  addDiceRoll(amount: number): this {
+    this.gambleDice += amount;
     return this;
   }
 }

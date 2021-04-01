@@ -51,13 +51,13 @@ export default class Currency extends Command {
     // Item Effects
     let extraWngs: number = 0;
     for (const it of ['thicc', 'brian']) {
-      if (!effects.has(msg.author.id))
-        effects.set(
-          msg.author.id,
-          new Collection<string, Effects>().set(it, new Effects())
-        );
+      const userEf = effects.get(msg.author.id);
+      if (!userEf) {
+        const col = new Collection<string, Effects>().set(it, new Effects());
+        effects.set(msg.author.id, col);
+      }
       if (effects.get(msg.author.id).has(it)) {
-        extraWngs += effects.get(msg.author.id).get(it).winnings;
+        extraWngs += effects.get(msg.author.id).get(it).gambleWinnings;
       }
     }
 
@@ -87,6 +87,7 @@ export default class Currency extends Command {
         .removePocket(lost)
         .calcSpace()
         .db.save();
+        
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';
       description = [
@@ -94,11 +95,9 @@ export default class Currency extends Command {
         `You now have **${d.pocket.toLocaleString()}**`,
       ];
     } else if (userD > botD) {
-      let wngs = Math.random() + 0.4 + extraWngs;
-      w = Math.ceil(bet * wngs);
-      w = w + Math.round(w * (multi / 100));
-      if (w > maxWin) w = maxWin as number;
-      perwn = Number((w / bet).toFixed(2));
+      let wngs = Math.ceil(bet * (Math.random() + (0.4 + extraWngs)));
+      wngs = Math.min(maxWin, wngs + Math.ceil(wngs * (multi / 100)));
+      perwn = Number((wngs / bet).toFixed(2));
 
       const d = await msg.author
         .initDB(data)
@@ -116,17 +115,26 @@ export default class Currency extends Command {
       ];
     }
 
-    const embed = new Embed()
-      .setAuthor(
-        `${msg.author.username}'s ${identifier} gambling game`,
-        msg.author.displayAvatarURL({ dynamic: true })
-      )
-      .setFooter(false, `Multiplier: ${multi}%`, this.client.user.avatarURL())
-      .addField(msg.author.username, `Rolled a \`${userD}\``, true)
-      .addField(this.client.user.username, `Rolled a \`${botD}\``, true)
-      .setDescription(description.join('\n'))
-      .setColor(color);
-
-    return { embed };
+    return { embed: {
+      color, description: description.join('\n'),
+      footer: {
+        text: `Multiplier: ${multi}%`,
+        iconURL: this.client.user.avatarURL()
+      },
+      author: {
+        name: `${msg.author.username}'s ${identifier} gambling game`,
+        iconURL: msg.author.displayAvatarURL({ dynamic: true })
+      },
+      fields: [
+        {
+          name: `${msg.author.username}`,
+          value: `Rolled a \`${userD}\``
+        },
+        {
+          name: `${this.client.user.username}`,
+          value: `Rolled a \`${botD}\``
+        }
+      ]
+    }};
   }
 }

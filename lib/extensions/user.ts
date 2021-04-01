@@ -25,10 +25,14 @@ export class UserPlus extends User {
     for (const item of items) {
       const inv = this.db.items.find((i) => i.id === item.id);
       if (inv.expire > Date.now()) {
-        if (item.id === 'brian') eff.setWinnings(0.5).setSlotOdds(5);
-        if (item.id === 'thicc') eff.setWinnings(0.5);
-        if (item.id === 'thicm') eff.addBjWinnings(0.5);
-        if (item.id === 'crazy') eff.setSlotOdds(5);
+        if (item.id === 'brian') 
+          eff.addGambleWinnings(0.5).addSlotJackpotOdd(5);
+        if (item.id === 'thicc') 
+          eff.addGambleWinnings(0.5);
+        if (item.id === 'thicm') 
+          eff.addBlackjackWinnings(0.5);
+        if (item.id === 'crazy') 
+          eff.addSlotJackpotOdd(5);
 
         const temp = new Collection<string, Effects>();
         temp.set(item.id, new Effects());
@@ -90,14 +94,6 @@ export class UserPlus extends User {
 
   fetchDB() {
     return this.client.db.currency.fetch(this.id);
-  }
-
-  dbAdd(key: keyof CurrencyProfile, amount: number) {
-    return this.client.db.currency.add(this.id, key, amount);
-  }
-
-  dbRemove(key: keyof CurrencyProfile, amount: number) {
-    return this.client.db.currency.remove(this.id, key, amount);
   }
 }
 

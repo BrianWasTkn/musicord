@@ -35,6 +35,7 @@ export default class Currency extends Command {
     }
 
   	const cap = this.client.config.currency.maxInventory;
+    
   	const data = await msg.author.fetchDB();
   	const dInv = data.items.find(i => i.id === item.id);
   	const r = await msg.fetchDB(member.user.id);

@@ -43,9 +43,16 @@ export default class Currency extends Command {
     let give: number;
     if (isNaN(amount as number)) {
       let tAmt = (amount as string).toLowerCase();
-      if (tAmt === 'all') give = data.pocket;
-      if (tAmt === 'half') give = Math.round(data.pocket / 2);
-      else return 'Needs to be a whole number yeah?';
+
+      if (tAmt === 'all') {
+        give = data.pocket;
+      }
+      else if (tAmt === 'half') {
+        give = Math.round(data.pocket / 2);
+      }
+      else {
+        return 'Needs to be a whole number yeah?';
+      }
     } else {
       give = amount as number;
     }

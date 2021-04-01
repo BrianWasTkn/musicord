@@ -26,9 +26,11 @@ export default class Currency extends Command {
     const { pocket } = await msg.author.fetchDB();
     const { amount } = args;
 
-    if (!amount) return 'You need something to burn, bruh';
-    else if (amount < 1) return 'Not allowed, sorry not sorry';
-    else if (amount >= pocket)
+    if (!amount) 
+      return 'You need something to burn, bruh';
+    if (amount < 1) 
+      return 'Not allowed, sorry not sorry';
+    if (amount >= pocket)
       return 'Imagine burning money higher than your pocket lmao';
 
     await msg.author.dbRemove('pocket', amount);

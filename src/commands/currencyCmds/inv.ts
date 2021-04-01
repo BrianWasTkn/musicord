@@ -85,23 +85,21 @@ export default class Currency extends Command {
       return "That page doesn't even exist wtf are you high or what?";
     }
 
-    return {
-      embed: {
-        color: 'ORANGE',
-        author: {
-          name: `${memb.user.username}'s inventory`,
-          iconURL: memb.user.avatarURL({ dynamic: true }),
-        },
-        fields: [
-          {
-            name: `Owned Craps — ${total.toLocaleString()} total`,
-            value: inv[pg - 1].join('\n\n'),
-          },
-        ],
-        footer: {
-          text: `Owned Craps — Page ${pg} of ${inv.length}`,
-        },
+    return { embed: {
+      color: 'ORANGE',
+      author: {
+        name: `${memb.user.username}'s inventory`,
+        iconURL: memb.user.avatarURL({ dynamic: true }),
       },
-    };
+      fields: [
+        {
+          name: `Owned Items — ${total.toLocaleString()} total`,
+          value: inv[pg - 1].join('\n\n'),
+        },
+      ],
+      footer: {
+        text: `Owned Items — Page ${pg} of ${inv.length}`,
+      },
+    }};
   }
 }

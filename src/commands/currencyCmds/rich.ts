@@ -35,7 +35,7 @@ export default class Currency extends Command {
     const rich = (await Mongo.models['currency'].find({})) as (Document & CurrencyProfile)[];
     const nice = rich
       .filter((doc) =>
-        args.isGlobal ? doc : msg.guild.members.cache.has(doc.userID)
+        args.isGlobal ? doc : msg.guild.members.cache.get(doc.userID)
       )
       .slice(0, 10)
       .sort((a, b) => b.pocket - a.pocket)
@@ -48,15 +48,13 @@ export default class Currency extends Command {
         } **${doc.pocket.toLocaleString()}** — ${u.tag}`;
       });
 
-    return {
-      embed: {
+    return { embed: {
         title: `Richest Players — ${args.isGlobal ? 'Global' : msg.guild.name}`,
         color: 'GOLD',
         description: (await Promise.all(nice)).join('\n'),
         footer: {
           text: `Showing — Pockets`,
         },
-      },
-    };
+    }};
   }
 }

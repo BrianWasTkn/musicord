@@ -47,13 +47,11 @@ export default class Currency extends Command {
       `**Net Worth:** ${(pocket + vault + net).toLocaleString()}`,
     ].forEach((i) => dpn.push(i));
 
-    return {
-      embed: {
-        title: `${args.member.user.username}'s balance`,
-        footer: { text: 'discord.gg/memer' },
-        description: dpn.join('\n'),
-        color: 'RANDOM',
-      },
-    };
+    return { embed: {
+      title: `${args.member.user.username}'s balance`,
+      footer: { text: 'discord.gg/memer' },
+      description: dpn.join('\n'),
+      color: 'RANDOM',
+    }};
   }
 }

@@ -58,30 +58,38 @@ export default class Currency extends Command {
       if (query > quest.length) {
       	return "That page doesn't even exist lol";
       }
-      
-      embed
-        .setFooter(false, `Lava Quests — Page ${query} of ${quest.length}`)
-        .addField('Quest List', quest[(query as number) - 1].join('\n\n'))
-        .setTitle('Lava Quests')
-        .setColor('RANDOM');
-    } else {
-      if (!query)
-        return "That quest isn't even in the list what're you doing?";
-      const data = await msg.author.fetchDB();
-      const inv = data.items.find((i) => i.id === query.id);
-      const items = this.client.handlers.item.modules;
-      const item = items.get(query.rewards.item[1]);
 
-      let info: string[] = [];
-      info.push(`**Coins:** ${query.rewards.coins.toLocaleString()}`);
-      info.push(`**Items:** ${query.rewards.item[0]} ${item.emoji} ${item.name}`);
-
-      embed
-        .setTitle(`${query.name} — ${query.rawDiff}`)
-        .addField('Description', query.info)
-        .addField('Rewards', info.join('\n'))
-        .setColor('RANDOM');
+      return { embed: {
+        footer: { text: `Lava Quests — Page ${query} of ${quest.length}` },
+        title: 'Lava Quests',
+        color: 'RANDOM',
+        fields: [
+          {
+            name: 'Quest List',
+            value: quest[(query as number) - 1].join('\n\n')
+          }
+        ]
+      }};
     }
+
+    if (!query) {
+      return "That quest isn't even in the list what're you doing?";
+    }
+    
+    const data = await msg.author.fetchDB();
+    const inv = data.items.find((i) => i.id === query.id);
+    const items = this.client.handlers.item.modules;
+    const item = items.get(query.rewards.item[1]);
+
+    let info: string[] = [];
+    info.push(`**Coins:** ${query.rewards.coins.toLocaleString()}`);
+    info.push(`**Items:** ${query.rewards.item[0]} ${item.emoji} ${item.name}`);
+
+    embed
+      .setTitle(`${query.name} — ${query.rawDiff}`)
+      .addField('Description', query.info)
+      .addField('Rewards', info.join('\n'))
+      .setColor('RANDOM');
 
     return { embed };
   }

@@ -33,6 +33,7 @@ import {
 
 export class Spawn extends AkairoModule {
   answered: Collection<string, boolean>;
+  handler: SpawnHandler<Spawn>;
   config: Partial<SpawnConfig>;
   client: Lava;
   spawn: SpawnVisual;

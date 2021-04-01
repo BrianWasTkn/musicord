@@ -78,25 +78,27 @@ export class CommandHandler<
       defaultCooldown,
       aliasReplacement,
       automateCategories,
-      prefix: (msg: MessagePlus) => this.prefPred(msg),
+      prefix: (msg: MessagePlus) => 
+        this.prefixPredicate(msg),
       ignoreCooldown: (msg: MessagePlus, cmd: CommandModule) =>
         this.basePredicate(msg, cmd),
       ignorePermissions: (msg: MessagePlus, cmd: CommandModule) =>
         this.basePredicate(msg, cmd),
     });
 
-    this.commandTyping = commandTyping;
+    this.commandTyping = Boolean(commandTyping);
   }
 
   basePredicate(msg: MessagePlus, cmd: CommandModule): boolean {
     const g = this.client.guilds.cache.get('691416705917779999');
     const byp = g.roles.cache.get('692941106475958363');
     return (
-      msg.member.roles.cache.has(byp.id) || this.client.isOwner(msg.author.id)
+      msg.member.roles.cache.has(byp.id) 
+      || this.client.isOwner(msg.author.id)
     );
   }
 
-  prefPred(msg: MessagePlus): string | string[] {
+  prefixPredicate(msg: MessagePlus): string | string[] {
     return this.client.config.bot.prefix;
   }
 
@@ -138,8 +140,50 @@ export class CommandHandler<
     const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
     if (!time) return false;
 
-    // TODO: Database Cooldowns
-    if (time < 30000) return super.runCooldowns(msg, cmd);
-    return true;
+    if (time <= 30000) {
+      return super.runCooldowns(msg, cmd);
+    }
+
+    return this.runDatabaseCooldowns.call(this, msg, cmd);
+  }
+
+  async runDatabaseCooldowns(msg: MessagePlus, cmd: CommandModule) {
+    const ignorer = cmd.ignoreCooldown || this.ignoreCooldown;
+    const isIgnored = Array.isArray(ignorer)
+      ? ignorer.includes(msg.author.id)
+      : typeof ignorer === 'function'
+        ? ignorer(msg, cmd)
+        : msg.author.id === ignorer;
+
+    if (isIgnored) return false;
+
+    const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
+    if (!time) return false;
+
+    const endTime = msg.createdTimestamp + time;
+    const data = await msg.author.fetchDB();
+
+    if (!data.cooldowns.find(c => c.id === cmd.id)) {
+      data.cooldowns.push({
+        expire: endTime,
+        uses: 0,
+        id: cmd.id
+      });
+
+      await data.save();
+    }
+
+    const entry = data.cooldowns.find(c => c.id === cmd.id);
+
+    if (entry.uses >= cmd.ratelimit) {
+      const diff = entry.expire - msg.createdTimestamp;
+
+      this.emit('commandCooldown', msg, cmd, diff);
+      return true;
+    }
+
+    entry.uses++;
+    await data.save();
+    return false;
   }
 }

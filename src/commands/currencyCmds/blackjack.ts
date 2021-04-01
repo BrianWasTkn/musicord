@@ -43,13 +43,13 @@ export default class Currency extends Command {
     // Item Effects
     let extraWngs: number = 0;
     for (const it of ['thicm']) {
-      if (!effects.has(msg.author.id))
-        effects.set(
-          msg.author.id,
-          new Collection<string, Effects>().set(it, new Effects())
-        );
+      const userEf = effects.get(msg.author.id);
+      if (!userEf) {
+        const col = new Collection<string, Effects>().set(it, new Effects());
+        effects.set(msg.author.id, col);
+      }
       if (effects.get(msg.author.id).has(it)) {
-        extraWngs += effects.get(msg.author.id).get(it).bjWinnings;
+        extraWngs += effects.get(msg.author.id).get(it).blackjackWinnings;
       }
     }
 
@@ -325,7 +325,7 @@ export default class Currency extends Command {
         return {
           content:
             "You ended the game since you didn't respond. The dealer is keeping your money to deal with your bullcrap.",
-          reply: true,
+          replyTo: msg.id,
         };
       }
       switch (choice.content.toLowerCase().slice(0, 1)) {

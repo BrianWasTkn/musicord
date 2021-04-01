@@ -54,7 +54,7 @@ export default class Currency extends Command {
         false,
         `${multi.unlocked.length} active — Page ${page} of ${multis.length}`
       )
-      .setColor(util.randomInArray(['GOLD', 'GREEN', 'RED', 'ORANGE']));
+      .setColor('BLURPLE');
 
     return { embed };
   }

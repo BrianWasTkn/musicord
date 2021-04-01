@@ -6,7 +6,7 @@ import { Item } from '@lib/handlers/item';
 export default class Currency extends Command {
   constructor() {
     super('gimme', {
-      aliases: ['gimme'],
+      aliases: ['beg', 'gimme'],
       channel: 'guild',
       description: 'Gives you a random amount of coins from 100k to 1m coins',
       category: 'Currency',
@@ -20,7 +20,6 @@ export default class Currency extends Command {
     const data = await msg.author.fetchDB();
     const items = handlers.item.modules;
 
-    const type = util.randomInArray(['pocket', 'item']);
     const odds = Math.random();
 
     let gimme: number | Item;
@@ -34,7 +33,7 @@ export default class Currency extends Command {
         amount > 1 ? 's' : ''
       } that was lucky asf`;
     } else if (odds >= 0.5) {
-      const won = util.randomNumber(100, 500) * 1e3;
+      const won = util.randomNumber(100, 1000) * 1e3;
       await msg.author.initDB(data).addPocket(won).calcSpace().db.save();
       return `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`;
     }

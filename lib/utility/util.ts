@@ -73,7 +73,7 @@ export class Util extends ClientUtil {
   };
 
   /**
-   * Generates a random decimal color resolvable
+   * Generates a random decimal color resolvable (what?)
    */
   randomColor = (): number => {
     return Math.random() * 0xffffff;
@@ -81,6 +81,10 @@ export class Util extends ClientUtil {
 
   codeBlock = (lang: string = 'js', content: string): string => {
     return `${'```'}${lang}\n${content}\n${'```'}`;
+  };
+
+  tableSlots = (emojis: { [slot: string]: [number, number, boolean] }) => {
+    return 'haha u suck at coding';
   };
 
   // dankmemer.lol/source

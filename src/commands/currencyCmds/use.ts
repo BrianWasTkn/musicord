@@ -28,20 +28,22 @@ export default class Currency extends Command {
     }
   ): Promise<string | MessageOptions> {
     const { item: Items } = this.client.handlers;
+    const data = await msg.author.fetchDB();
+
     const { item } = args;
     if (!item) return "This item doesn't exist :thinking:";
-
-    const { isPromise } = this.client.util;
-    const data = await msg.author.fetchDB();
 
     const inv = data.items.find((i) => i.id === item.id);
     if (!inv || inv.amount < 1) return "LOL you don't own this item :skull:";
     if (inv.expire > Date.now()) return 'This item is currently active right now.';
     if (!item.usable) return "You can't use this item :thinking:";
 
-    this.client.util.cmdQueue.set(msg.author.id, true); // exploit protection
+    const queue = this.client.util.cmdQueue;
+    const id = msg.author.id;
+
+    queue.set(id, true); // exploit protection
     const ret = await item.use(msg);
-    this.client.util.cmdQueue.delete(msg.author.id);
+    if (queue.has(id)) queue.delete(id);
 
     return { content: ret, replyTo: msg.id };
   }

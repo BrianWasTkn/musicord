@@ -29,10 +29,10 @@ export default class Currency extends Command {
 
   private get slotMachine() {
     return {
-      middle_finger: [1, 3, false],
-      clown: [1, 5, false],
-      eyes: [1, 10, false],
-      alien: [1, 15, false],
+      broken_heart: [1, 3, false],
+      middle_finger: [1, 5, false],
+      clown: [1, 10, false],
+      pizza: [1, 15, false],
       eggplant: [1, 20, false],
       peach: [1, 25, false],
       flushed: [2, 50, true],
@@ -57,7 +57,7 @@ export default class Currency extends Command {
 
     if (odds > 145 - oddRdce) {
       return Array(3).fill(emoji);
-    } else if (odds > 95) {
+    } else if (odds > (95 - Math.floor(oddRdce / 2))) {
       const emjis = Array(3).fill(emoji);
       const ind = randomNumber(1, emjis.length) - 1;
       emjis[ind] = randomInArray(emojis.filter((e) => e !== emoji));
@@ -104,13 +104,12 @@ export default class Currency extends Command {
     let slots: number = 0;
     for (const it of ['crazy', 'brian']) {
       const userEf = effects.get(msg.author.id);
-      if (!userEf)
-        effects.set(
-          msg.author.id,
-          new Collection<string, Effects>().set(it, new Effects())
-        );
+      if (!userEf) {
+        const col = new Collection<string, Effects>().set(it, new Effects());
+        effects.set(msg.author.id, col);
+      }
       if (effects.get(msg.author.id).has(it)) {
-        slots += effects.get(msg.author.id).get(it).slots;
+        slots += effects.get(msg.author.id).get(it).slotJackpotOdds;
       }
     }
 
@@ -178,6 +177,7 @@ export default class Currency extends Command {
       .filter(Boolean); // mapped to their index
     const [multi] = won.filter((ew, i, a) => a.indexOf(ew) !== i);
 
+    // Win or Jackpot
     if (length === 1 || length === 2) {
       let index = length === 1 ? 1 : 0; // [prop: string]: [number, number]
       let multiplier = multi[index] as number; // [number, number][0]
@@ -191,6 +191,12 @@ export default class Currency extends Command {
       return { length, winnings, multiplier };
     }
 
+    // includes one fire
+    if (slots.includes[emojis[emojis.length - 1]]) {
+      return { length: 2, winnings: bet };
+    }
+
+    // Lost
     return { length, winnings: 0 };
   }
 }

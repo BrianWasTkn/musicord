@@ -43,6 +43,7 @@ export default class Currency extends Command {
     if (!item) return 'You need something to buy';
 
     let inv = data.items.find((i) => i.id === item.id);
+    
     if (amount < 1) 
       return 'Imagine buying none.';
     if (!item.buyable) 
