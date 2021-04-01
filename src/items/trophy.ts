@@ -29,7 +29,7 @@ export default class Collectible extends Item {
     if (odds <= 0.1) {
       const fine = util.randomNumber(data.pocket * 0.5, data.pocket);
       if (fine >= 1 && odds > 0.05) {
-        await msg.author.dbRemove('pocket', fine);
+        await msg.author.initDB(data).removePocket(fine).db.save();
         return `**You got fined instead!**\nlemme take away **${fine.toLocaleString()}** coins away from your pocket thank you`;
       }
 

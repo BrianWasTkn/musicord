@@ -10,6 +10,6 @@ export default class ClientListener extends Listener {
   }
 
   async exec(): Promise<void> {
-    
+    return true;
   }
 }

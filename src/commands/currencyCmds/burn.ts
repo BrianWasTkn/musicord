@@ -23,17 +23,17 @@ export default class Currency extends Command {
   }
 
   async exec(msg: MessagePlus, args: { amount: number }): Promise<string> {
-    const { pocket } = await msg.author.fetchDB();
+    const data = await msg.author.fetchDB();
     const { amount } = args;
 
     if (!amount) 
       return 'You need something to burn, bruh';
     if (amount < 1) 
       return 'Not allowed, sorry not sorry';
-    if (amount >= pocket)
+    if (amount >= data.pocket)
       return 'Imagine burning money higher than your pocket lmao';
 
-    await msg.author.dbRemove('pocket', amount);
+    await msg.author.initDB(data).removePocket(amount).db.save();
     return `Burned **${amount.toLocaleString()}** coins from your pocket.`;
   }
 }
