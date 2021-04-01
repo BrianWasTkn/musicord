@@ -14,7 +14,7 @@ export default class Currency extends Command {
       ownerOnly: true,
       description: 'View or enter a quest you want.',
       category: 'Currency',
-      cooldown: 1000,
+      cooldown: 35e3,
       args: [
         {
           id: 'query',
