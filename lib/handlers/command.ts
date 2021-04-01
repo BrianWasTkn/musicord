@@ -144,46 +144,52 @@ export class CommandHandler<
       return super.runCooldowns(msg, cmd);
     }
 
-    return this.runDatabaseCooldowns(msg, cmd).then(bool => bool) as unknown as boolean;
+    return this.runDatabaseCooldowns(msg, cmd);
   }
 
-  async runDatabaseCooldowns(msg: MessagePlus, cmd: CommandModule) {
-    const ignorer = cmd.ignoreCooldown || this.ignoreCooldown;
-    const isIgnored = Array.isArray(ignorer)
-      ? ignorer.includes(msg.author.id)
-      : typeof ignorer === 'function'
-        ? ignorer(msg, cmd)
-        : msg.author.id === ignorer;
+  runDatabaseCooldowns(msg: MessagePlus, cmd: CommandModule) {
+    let state: boolean;
 
-    if (isIgnored) return false;
+    (async () => {
+      const ignorer = cmd.ignoreCooldown || this.ignoreCooldown;
+      const isIgnored = Array.isArray(ignorer)
+        ? ignorer.includes(msg.author.id)
+        : typeof ignorer === 'function'
+          ? ignorer(msg, cmd)
+          : msg.author.id === ignorer;
 
-    const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
-    if (!time) return false;
+      if (isIgnored) return state = false;
 
-    const endTime = msg.createdTimestamp + time;
-    const data = await msg.author.fetchDB();
+      const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
+      if (!time) return state = false;
 
-    if (!data.cooldowns.find(c => c.id === cmd.id)) {
-      data.cooldowns.push({
-        expire: endTime,
-        uses: 0,
-        id: cmd.id
-      });
+      const endTime = msg.createdTimestamp + time;
+      const data = await msg.author.fetchDB();
 
+      if (!data.cooldowns.find(c => c.id === cmd.id)) {
+        data.cooldowns.push({
+          expire: endTime,
+          uses: 0,
+          id: cmd.id
+        });
+
+        await data.save();
+      }
+
+      const entry = data.cooldowns.find(c => c.id === cmd.id);
+
+      if (entry.uses >= cmd.ratelimit) {
+        const diff = entry.expire - msg.createdTimestamp;
+
+        this.emit('commandCooldown', msg, cmd, diff);
+        return state = true;
+      }
+
+      entry.uses++;
       await data.save();
-    }
+      return state = false;
+    })();
 
-    const entry = data.cooldowns.find(c => c.id === cmd.id);
-
-    if (entry.uses >= cmd.ratelimit) {
-      const diff = entry.expire - msg.createdTimestamp;
-
-      this.emit('commandCooldown', msg, cmd, diff);
-      return true;
-    }
-
-    entry.uses++;
-    await data.save();
-    return false;
+    return state;
   }
 }
