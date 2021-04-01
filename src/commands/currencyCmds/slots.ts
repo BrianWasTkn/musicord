@@ -117,7 +117,7 @@ export default class Currency extends Command {
     const emojis = Object.keys(this.slotMachine);
     const order = this.roll(emojis, slots);
     const outcome = `**>** :${order.join(':    :')}: **<**`;
-    let { length, winnings, multiplier = 0 } = this.calcWinnings(bet, order);
+    let { length, winnings } = this.calcWinnings(bet, order);
 
     // Shit
     let description: string[] = [];
@@ -138,7 +138,7 @@ export default class Currency extends Command {
       color = jackpot ? (slots ? 'BLUE' : 'GOLD') : 'GREEN';
       state = jackpot ? (slots ? 'crazy' : 'jackpot') : 'winning';
       description.push(`\nYou won **${winnings.toLocaleString()}**`);
-      description.push(`**Multiplier** \`x${multiplier}\``);
+      description.push(`**Multiplier** \`x${winnings / bet}\``);
       description.push(`You now have **${d.pocket.toLocaleString()}**`);
     } else {
       const d = await msg.author
@@ -188,7 +188,7 @@ export default class Currency extends Command {
       }
       
       let winnings = Math.round(bet * multiplier);
-      return { length, winnings, multiplier };
+      return { length, winnings };
     }
 
     // includes one fire
@@ -197,6 +197,6 @@ export default class Currency extends Command {
     }
 
     // Lost
-    return { length, multiplier: 1, winnings: 0 };
+    return { length, winnings: 0 };
   }
 }
