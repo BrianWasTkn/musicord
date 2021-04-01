@@ -192,7 +192,7 @@ export default class Currency extends Command {
     }
 
     // includes one fire
-    if (slots.includes(emojis[emojis.length - 1])) {
+    if (slots.some(s => s === emojis[emojis.length - 1])) {
       return { length: 2, winnings: bet };
     }
 
