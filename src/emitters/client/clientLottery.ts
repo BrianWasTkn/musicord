@@ -3,7 +3,7 @@ import { Lava } from '@lib/Lava';
 
 export default class ClientListener extends Listener {
   constructor() {
-    super('ready', {
+    super('lotto', {
       emitter: 'client',
       event: 'ready',
     });
