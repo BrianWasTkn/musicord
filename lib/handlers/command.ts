@@ -148,9 +148,7 @@ export class CommandHandler<
   }
 
   runDatabaseCooldowns(msg: MessagePlus, cmd: CommandModule) {
-    let state: boolean;
-
-    (async () => {
+    const state = (async () => {
       const ignorer = cmd.ignoreCooldown || this.ignoreCooldown;
       const isIgnored = Array.isArray(ignorer)
         ? ignorer.includes(msg.author.id)
@@ -158,10 +156,10 @@ export class CommandHandler<
           ? ignorer(msg, cmd)
           : msg.author.id === ignorer;
 
-      if (isIgnored) return state = false;
+      if (isIgnored) return false;
 
       const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
-      if (!time) return state = false;
+      if (!time) return false;
 
       const endTime = msg.createdTimestamp + time;
       const data = await msg.author.fetchDB();
@@ -182,12 +180,12 @@ export class CommandHandler<
         const diff = entry.expire - msg.createdTimestamp;
 
         this.emit('commandCooldown', msg, cmd, diff);
-        return state = true;
+        return true;
       }
 
       entry.uses++;
       await data.save();
-      return state = false;
+      return false;
     })();
 
     return state;
