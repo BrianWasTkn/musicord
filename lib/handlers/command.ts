@@ -144,7 +144,7 @@ export class CommandHandler<
       return super.runCooldowns(msg, cmd);
     }
 
-    return this.runDatabaseCooldowns.call(this, msg, cmd);
+    return this.runDatabaseCooldowns(msg, cmd).then(bool => bool) as unknown as boolean;
   }
 
   async runDatabaseCooldowns(msg: MessagePlus, cmd: CommandModule) {
