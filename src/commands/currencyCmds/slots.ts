@@ -197,6 +197,6 @@ export default class Currency extends Command {
     }
 
     // Lost
-    return { length, winnings: 0 };
+    return { length, multiplier: 1, winnings: 0 };
   }
 }
