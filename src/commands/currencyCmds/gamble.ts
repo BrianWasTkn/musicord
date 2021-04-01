@@ -110,7 +110,7 @@ export default class Currency extends Command {
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
       description = [
         `You won **${w.toLocaleString()}**\n`,
-        `**Multiplier** \`x${perwn.toLocaleString()}\``,
+        `**Multiplier** \`x${perwn}\``,
         `You now have **${d.pocket.toLocaleString()}**`,
       ];
     }
