@@ -201,64 +201,28 @@ export class CommandHandler<
 
     const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
     if (!time) return false;
-
-    /*
-      - fetch cooldown array from data
-      - set this.cooldowns to specific values
-      - check if this.cooldowns(id).expire AND entry.uses >= cmd.rateLimit is true
-        - if true: emit cooldown event
-        - else: increment uses
-    */
-
-    // db region
+    
     const expire = msg.createdTimestamp + time;
     const data = await msg.author.fetchDB();
 
-    const id = msg.author.id;
-    if (!this.cooldowns.has(id)) this.cooldowns.set(id, {});
-
-    let userCD = data.cooldowns.find(c => c.id === cmd.id);
-    if (!userCD) {
+    const cd = data.cooldowns.find(c => c.id === cmd.id);
+    if (!cd) {
       data.cooldowns.push({ expire, uses: 0, id: cmd.id });
-      userCD = data.cooldowns.find(c => c.id === cmd.id);
+      await data.save();
+      return await this.runCooldowns(msg, cmd);
     }
 
-    userCD.expire = expire;
-    await data.save();
-
-    if (!this.cooldowns.get(id)[cmd.id]) {
-      this.cooldowns.get(id)[cmd.id] = {
-        timer: this.client.setTimeout(async () => {
-          if (this.cooldowns.get(id)[cmd.id]) {
-            this.client.clearTimeout(this.cooldowns.get(id)[cmd.id].timer);
-          }
-          this.cooldowns.get(id)[cmd.id] = null;
-
-          const data = await msg.author.fetchDB();
-          const cd = data.cooldowns.find(c => c.id === cmd.id);
-          cd.uses = 0;
-          cd.expire = 0;
-          await data.save();
-
-          if (!Object.keys(this.cooldowns.get(id)).length) {
-            this.cooldowns.delete(id);
-          }
-        }, expire),
-        end: expire,
-        uses: 0
-      };
-    }
-
-    const entry = this.cooldowns.get(id)[cmd.id];
-    const diff = userCD.expire - msg.createdTimestamp;
-    if (userCD.uses >= cmd.ratelimit && diff >= 1) {
+    cd.expire = expire;
+    if (cd.uses >= cmd.ratelimit) {
+      const diff = cd.expire - msg.createdTimestamp;
+      await data.save();
 
       this.emit(Events.COOLDOWN, msg, cmd, diff);
       return true;
     }
 
-    entry.uses++;
-    userCD.uses++;
+    // increment for ratelimit
+    cd.uses++;
     await data.save();
     return false;
   }
