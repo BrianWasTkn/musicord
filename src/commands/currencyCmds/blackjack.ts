@@ -212,7 +212,7 @@ export default class Currency extends Command {
         let finalMsg = '';
         // Win
         if (status.result) {
-          winnings = Math.ceil(bet * (Math.random() + (0.4 + extraWngs))); // "Base Multi"
+          winnings = Math.ceil(bet * (Math.random() + (0.6 + extraWngs))); // "Base Multi"
           winnings = Math.min(
             maxPocket as number,
             winnings + Math.ceil(winnings * (multi / 100))
