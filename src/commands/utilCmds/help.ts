@@ -62,10 +62,8 @@ export default class Utility extends Command {
     let cmd: Command;
 
     try {
-      cat = this.handler.findCategory(query as string) as Category<
-        string,
-        Command
-      >;
+      // @ts-ignore
+      cat = this.handler.findCategory(query as string) as Category<string, Command>;
       cmd = this.handler.findCommand(query as string);
     } catch {}
 
