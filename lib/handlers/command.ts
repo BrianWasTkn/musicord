@@ -216,12 +216,6 @@ export class CommandHandler<
       return await this.runCooldowns(msg, cmd);
     }
 
-    if (cd.expire < msg.createdTimestamp && cd.uses >= cmd.ratelimit) {
-      cd.expire = cd.uses = 0;
-      await data.save();
-      return false;
-    }
-
     if (cd.uses >= cmd.ratelimit) {
       const diff = cd.expire - msg.createdTimestamp;
       cd.expire = msg.createdTimestamp - diff;
