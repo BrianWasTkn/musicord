@@ -220,19 +220,25 @@ export class CommandHandler<
     let userCD = data.cooldowns.find(c => c.id === cmd.id);
     if (!userCD) {
       data.cooldowns.push({ expire, uses: 0, id: cmd.id });
-      await data.save();
       userCD = data.cooldowns.find(c => c.id === cmd.id);
     }
 
     userCD.expire = expire;
-    
+    await data.save();
+
     if (!this.cooldowns.get(id)[cmd.id]) {
       this.cooldowns.get(id)[cmd.id] = {
-        timer: this.client.setTimeout(() => {
+        timer: this.client.setTimeout(async () => {
           if (this.cooldowns.get(id)[cmd.id]) {
             this.client.clearTimeout(this.cooldowns.get(id)[cmd.id].timer);
           }
           this.cooldowns.get(id)[cmd.id] = null;
+
+          const data = await msg.author.fetchDB();
+          const cd = data.cooldowns.find(c => c.id === cmd.id);
+          cd.uses = 0;
+          cd.expire = 0;
+          await data.save();
 
           if (!Object.keys(this.cooldowns.get(id)).length) {
             this.cooldowns.delete(id);
@@ -244,8 +250,8 @@ export class CommandHandler<
     }
 
     const entry = this.cooldowns.get(id)[cmd.id];
-    if (entry.uses >= cmd.ratelimit) {
-      const diff = userCD.expire - msg.createdTimestamp;
+    const diff = userCD.expire - msg.createdTimestamp;
+    if (entry.uses >= cmd.ratelimit && diff >= 1) {
 
       this.emit(Events.COOLDOWN, msg, cmd, diff);
       return true;
