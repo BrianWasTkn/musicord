@@ -216,9 +216,9 @@ export class CommandHandler<
     const id = msg.author.id;
     if (!this.cooldowns.has(id)) this.cooldowns.set(id, {});
 
-    const userCD = data.cooldowns.find(c => c.id === cmd.id);
+    let userCD = data.cooldowns.find(c => c.id === cmd.id);
     if (!userCD) {
-      data.cooldowns.push({ expire, uses: 0, id: cmd.id });
+      userCD = data.cooldowns.push({ expire, uses: 0, id: cmd.id });
       await data.save();
     }
 
@@ -239,8 +239,7 @@ export class CommandHandler<
       };
     }
 
-    const end = userCD.expire;
-    const diff = end - msg.createdTimestamp;
+    const diff = userCD.expire - msg.createdTimestamp;
     if (userCD.uses >= cmd.ratelimit && diff >= 1) {
 
       this.emit(Events.COOLDOWN, msg, cmd, diff);
