@@ -189,17 +189,6 @@ export class CommandHandler<
 
   // @ts-ignore
   async runCooldowns(msg: MessagePlus, cmd: CommandModule): Promise<boolean> {
-    const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
-    if (!time) return false;
-
-    if (time <= 30000) {
-      return super.runCooldowns(msg, cmd as unknown as AkairoCommand);
-    }
-
-    return await this.runDatabaseCooldowns(msg, cmd);
-  }
-
-  async runDatabaseCooldowns(msg: MessagePlus, cmd: CommandModule) {
     const ignorer = cmd.ignoreCooldown || this.ignoreCooldown;
     const isIgnored = Array.isArray(ignorer)
       ? ignorer.includes(msg.author.id)
@@ -212,29 +201,53 @@ export class CommandHandler<
     const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
     if (!time) return false;
 
-    const endTime = msg.createdTimestamp + time;
+    /*
+      - fetch cooldown array from data
+      - set this.cooldowns to specific values
+      - check if this.cooldowns(id).expire AND entry.uses >= cmd.rateLimit is true
+        - if true: emit cooldown event
+        - else: increment uses
+    */
+
+    // db region
+    const expire = msg.createdTimestamp + time;
     const data = await msg.author.fetchDB();
 
-    if (!data.cooldowns.find(c => c.id === cmd.id)) {
-      data.cooldowns.push({
-        expire: endTime,
-        uses: 0,
-        id: cmd.id
-      });
+    const id = msg.author.id;
+    if (!this.cooldowns.has(id)) this.cooldowns.set(id, {});
 
+    const userCD = data.cooldowns.find(c => c.id === cmd.id);
+    if (!userCD) {
+      data.cooldowns.push({ expire, uses: 0, id: cmd.id });
       await data.save();
     }
 
-    const entry = data.cooldowns.find(c => c.id === cmd.id);
+    if (!this.cooldowns.get(id)[cmd.id]) {
+      this.cooldowns.get(id)[cmd.id] = {
+        timer: this.client.setTimeout(() => {
+          if (this.cooldowns.get(id)[cmd.id]) {
+              this.client.clearTimeout(this.cooldowns.get(id)[cmd.id].timer);
+          }
+          this.cooldowns.get(id)[cmd.id] = null;
 
-    const diff = entry.expire - msg.createdTimestamp;
-    if (entry.uses >= cmd.ratelimit && diff >= 1) {
+          if (!Object.keys(this.cooldowns.get(id)).length) {
+              this.cooldowns.delete(id);
+          }
+        }, userCD.expire - msg.createdTimestamp),
+        end: expire,
+        uses: 0
+      };
+    }
+
+    if (userCD.uses >= cmd.ratelimit) {
+      const end = userCD.expire;
+      const diff = end - msg.createdTimestamp;
 
       this.emit(Events.COOLDOWN, msg, cmd, diff);
       return true;
     }
 
-    entry.uses++;
+    userCD.uses++;
     await data.save();
     return false;
   }
