@@ -211,18 +211,15 @@ export class CommandHandler<
       cd = (await data.save()).cooldowns.find(c => c.id === cmd.id);
     }
 
-    if (cd.uses >= cmd.ratelimit) {
-      const diff = cd.expire - msg.createdTimestamp;
-
-      if (diff < -1) {
-        cd.uses = 0;
-        cd.expire = expire;
-        await data.save();
-        return false;
-      }
-
+    const diff = cd.expire - msg.createdTimestamp;
+    if (cd.uses >= cmd.ratelimit && diff > 0) {
       this.emit(Events.COOLDOWN, msg, cmd, diff);
       return true;
+    } else if (diff < 0) {
+      cd.uses++;
+      cd.expire = expire;
+      await data.save();
+      return false;
     }
 
     // increment for ratelimit
