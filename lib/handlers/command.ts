@@ -201,7 +201,7 @@ export class CommandHandler<
 
     const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
     if (!time) return false;
-    
+
     const expire = msg.createdTimestamp + time;
     const data = await msg.author.fetchDB();
 
@@ -215,6 +215,7 @@ export class CommandHandler<
     cd.expire = expire;
     if (cd.uses >= cmd.ratelimit) {
       const diff = cd.expire - msg.createdTimestamp;
+      cd.expire = msg.createdTimestamp - diff;
       await data.save();
 
       this.emit(Events.COOLDOWN, msg, cmd, diff);
