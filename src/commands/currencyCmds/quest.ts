@@ -11,7 +11,6 @@ export default class Currency extends Command {
     super('quest', {
       aliases: ['quest', 'q'],
       channel: 'guild',
-      ownerOnly: true,
       description: 'View or enter a quest you want.',
       category: 'Currency',
       cooldown: 35e3,
