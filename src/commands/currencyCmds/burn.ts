@@ -30,7 +30,7 @@ export default class Currency extends Command {
       return 'You need something to burn, bruh';
     if (amount < 1) 
       return 'Not allowed, sorry not sorry';
-    if (amount >= data.pocket)
+    if (amount > data.pocket)
       return 'Imagine burning money higher than your pocket lmao';
 
     await msg.author.initDB(data).removePocket(amount).db.save();
