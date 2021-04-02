@@ -235,7 +235,7 @@ export class CommandHandler<
           if (!Object.keys(this.cooldowns.get(id)).length) {
               this.cooldowns.delete(id);
           }
-        }, expire - msg.createdTimestamp),
+        }, expire),
         end: expire,
         uses: 0
       };
