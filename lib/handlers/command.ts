@@ -239,9 +239,9 @@ export class CommandHandler<
       };
     }
 
-    if (userCD.uses >= cmd.ratelimit) {
-      const end = userCD.expire;
-      const diff = end - msg.createdTimestamp;
+    const end = userCD.expire;
+    const diff = end - msg.createdTimestamp;
+    if (userCD.uses >= cmd.ratelimit && diff >= 1) {
 
       this.emit(Events.COOLDOWN, msg, cmd, diff);
       return true;
