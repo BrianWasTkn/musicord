@@ -28,9 +28,9 @@ export default class PowerUp extends Item {
     };
 
     const [t, type] = [Object.keys(things), Object.values(things)];
-    msg.channel.send(`**${msg.author.toString()} So what type of meme?**\n${
+    msg.channel.send(`**__${msg.author.toString()} So what type of meme?__**\n${
       Array(t.length).fill(null).map((_, i) => {
-        return `**${t[i]} — ${type[i]} Meme`;
+        return `**\`${t[i]}\` ■ ${type[i]} Meme**`;
       }).join('\n')
     }`);
 
@@ -48,13 +48,13 @@ export default class PowerUp extends Item {
     if (Math.random() < 0.25) {
       comp.amount--;
       await data.save();
-      return `Your meme got -${karma.toLocaleString()} karmas and you broke your **${this.emoji} ${this.name}** lmao sucks to be you.`;
+      return `Your meme got **-${karma.toLocaleString()}** karmas and you broke your **${this.emoji} ${this.name}** lmao sucks to be you.`;
     }
 
     const gain = util.randomNumber(100, 1e4);
     data.pocket += gain;
     await data.save();
 
-    return `You got **__${gain.toLocaleString()} coins__** (${karma} karmas) from posting a ${things[rep.content.toLowerCase()]} meme on reddit.`;
+    return `You got **__${gain.toLocaleString()} coins__** (${karma} karmas) from posting a ${things[rep.content.toLowerCase()].toLowerCase()} meme on reddit.`;
   }
 }

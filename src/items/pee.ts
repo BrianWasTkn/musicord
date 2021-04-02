@@ -32,6 +32,7 @@ export default class Flex extends Item {
       return 'Lol imagine having way less than what you actually wanted to give';
     }
 
+    msg.channel.send('Now tell me who the frick you want me to surprise.');
     const rep2 = (await msg.channel.awaitMessages(f, { max: 1, time: 15000 })).first();
     const meb = this.client.util.resolveMember(rep2.content, msg.guild.members.cache, false);
     if (!meb) {
