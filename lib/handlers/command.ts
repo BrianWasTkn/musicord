@@ -205,17 +205,16 @@ export class CommandHandler<
     const expire = msg.createdTimestamp + time;
     const data = await msg.author.fetchDB();
 
-    const cd = data.cooldowns.find(c => c.id === cmd.id);
+    let cd = data.cooldowns.find(c => c.id === cmd.id);
     if (!cd) {
       data.cooldowns.push({ expire, uses: 0, id: cmd.id });
-      await data.save();
-      return await this.runCooldowns(msg, cmd);
+      cd = (await data.save()).cooldowns.find(c => c.id === cmd.id);
     }
 
     if (cd.uses >= cmd.ratelimit) {
       const diff = cd.expire - msg.createdTimestamp;
-      
-      if (diff < 1) {
+
+      if (diff < -1) {
         cd.uses = 0;
         cd.expire = expire;
         await data.save();
