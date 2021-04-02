@@ -212,7 +212,7 @@ export class CommandHandler<
       return await this.runCooldowns(msg, cmd);
     }
 
-    if (cd.expire <= msg.createdTimestamp) {
+    if (cd.expire < msg.createdTimestamp && cd.uses >= cmd.ratelimit) {
       cd.expire = cd.uses = 0;
       await data.save();
       return false;
