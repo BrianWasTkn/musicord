@@ -224,16 +224,18 @@ export class CommandHandler<
       userCD = data.cooldowns.find(c => c.id === cmd.id);
     }
 
+    userCD.expire = expire;
+    
     if (!this.cooldowns.get(id)[cmd.id]) {
       this.cooldowns.get(id)[cmd.id] = {
         timer: this.client.setTimeout(() => {
           if (this.cooldowns.get(id)[cmd.id]) {
-              this.client.clearTimeout(this.cooldowns.get(id)[cmd.id].timer);
+            this.client.clearTimeout(this.cooldowns.get(id)[cmd.id].timer);
           }
           this.cooldowns.get(id)[cmd.id] = null;
 
           if (!Object.keys(this.cooldowns.get(id)).length) {
-              this.cooldowns.delete(id);
+            this.cooldowns.delete(id);
           }
         }, expire),
         end: expire,
@@ -242,15 +244,14 @@ export class CommandHandler<
     }
 
     const entry = this.cooldowns.get(id)[cmd.id];
-    const diff = entry.end - msg.createdTimestamp;
-    if (entry.uses >= cmd.ratelimit && diff >= 1) {
+    if (entry.uses >= cmd.ratelimit) {
+      const diff = userCD.expire - msg.createdTimestamp;
 
       this.emit(Events.COOLDOWN, msg, cmd, diff);
       return true;
     }
 
-    userCD.uses++;
-    await data.save();
+    entry.uses++;
     return false;
   }
 }
