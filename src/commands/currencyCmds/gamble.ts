@@ -67,11 +67,11 @@ export default class Currency extends Command {
     // Dice
     let userD = util.randomNumber(1, 12) + dceRoll;
     let botD = util.randomNumber(1, 12);
-    if (Math.random() > 0.5) {
-      userD = (botD > userD ? [botD, (botD = userD)] : [userD])[0];
-    } else {
-      botD = (userD > botD ? [userD, (userD = botD)] : [botD])[0];
-    }
+    // if (Math.random() > 0.5) {
+    //   userD = (botD > userD ? [botD, (botD = userD)] : [userD])[0];
+    // } else {
+    //   botD = (userD > botD ? [userD, (userD = botD)] : [botD])[0];
+    // }
 
     // Dice (Item Effects)
     const iDiceEffs = ['dragon'].map(i => this.client.handlers.item.modules.get(i));
