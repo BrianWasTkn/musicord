@@ -210,7 +210,7 @@ export class CommandHandler<
       data.cooldowns.push({ expire, uses: 0, id: cmd.id });
       await data.save();
       return await this.runCooldowns(msg, cmd);
-    } else if (cd.expire < 1) {
+    } else if (cd.expire < msg.createdTimestamp) {
       cd.expire = expire;
       await data.save();
       return await this.runCooldowns(msg, cmd);
