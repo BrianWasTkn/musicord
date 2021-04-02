@@ -21,6 +21,7 @@ export default class PowerUp extends Item {
     const cof = data.items.find((i) => i.id === this.id);
     const multi = randomNumber(5, 50);
 
+    await msg.channel.send('Making your coffee...');
     cof.expire = Date.now() + (10 * 60 * 1e3);
     cof.multi = multi;
     cof.amount--;
