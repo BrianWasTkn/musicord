@@ -218,7 +218,6 @@ export class CommandHandler<
       return false;
     }
 
-    cd.expire = expire;
     if (cd.uses >= cmd.ratelimit) {
       const diff = cd.expire - msg.createdTimestamp;
       cd.expire = msg.createdTimestamp - diff;
