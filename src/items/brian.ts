@@ -9,23 +9,27 @@ export default class Powerflex extends Item {
       buyable: true,
       usable: true,
       emoji: ':brown_heart:',
-      info:
-        'Gives 50% multi, +25% winnings in gamble, +5% jackpot chance in slots ALL in 5 minutes.',
+      info: 'Gives up to 50% multiplier and a 5% jackpot chance in slots for 10 minutes.',
       name: "Brian's Heart",
       cost: 125000,
     });
   }
 
   async use(msg: MessagePlus): Promise<string> {
+    const { randomNumber, sleep } = this.client.util;
     const data = await msg.author.fetchDB();
     const heart = data.items.find((i) => i.id === this.id);
-    const multi = 50;
 
+    await msg.channel.send(`Beating your heart...`);
+    const multi = randomNumber(5, 50);
+
+    heart.expire = Date.now() + 10 * 60 * 1e3;
+    heart.multi = multi;
     heart.amount--;
-    heart.expire = Date.now() + 5 * 60 * 1e3;
-    heart.multi = 50;
-    await msg.author.initDB(data).updateItems().db.save();
 
-    return `You have been granted a **${multi}% multiplier, +25% winnings in gamble and +5% chance of jackpots in slots** for 5 minutes.`;
+    await msg.author.initDB(data).updateItems().db.save();
+    await sleep(multi * 1e3);
+
+    return `You now have a **${multi}% multiplier** and **5% jackpot chance** under 10 minutes!`;
   }
 }

@@ -34,16 +34,14 @@ export default class PowerUp extends Item {
       const rate = randomNumber(50, 500);
 
       let e = 0;
-      while (e <= randomNumber(3, mods.length)) {
+      while (e <= randomNumber(1, 3)) {
         const item = randomInArray(
-          mods.filter((m) => ![...items, { 
-            amt: 0, item: mods.find(i => i.id === xplo.id) 
-          }].some((it) => it.item.id === m.id))
+          mods.filter((m) => ![...items].some((it) => it.item.id === m.id))
         );
 
         const inv = data.items.find(i => i.id === item.id);
-        const amt = inv.amount + Math.round((inv.amount || 10) * (rate / 100));
-        items.push({ item, amt: amt >= 1e3 ? 1e3 : amt });
+        const amt = inv.amount + Math.round((inv.amount || 50) * (rate / 100));
+        items.push({ item, amt: amt >= 5e3 ? 5e3 : amt });
 
         e++;
       }
@@ -52,7 +50,7 @@ export default class PowerUp extends Item {
         .sort((a, b) => b.amt - a.amt)
         .map(({ amt, item }) => {
           const total = data.items.find(i => i.id === item.id).amount + amt;
-          return `${item.emoji} ${item.name} — ${total.toLocaleString()} total`
+          return `${item.emoji} ${item.name} — ${total.toLocaleString()} new total`
         });
 
       items.forEach(({ amt, item }) => {
@@ -70,7 +68,7 @@ export default class PowerUp extends Item {
     const inv = data.items.filter((i) => i.amount >= 2);
     const rate = randomNumber(60, 100);
 
-    for (let e = 0; e < inv.length; e++) {
+    for (let e = 0; e < Math.floor(inv.length / 2); e++) {
       const mod = this.client.handlers.item.modules.get(inv[e].id);
       const it = data.items.find((i) => i.id === mod.id);
       const amt = Math.round(it.amount * (rate / 100));

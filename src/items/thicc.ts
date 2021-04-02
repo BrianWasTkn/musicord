@@ -9,7 +9,7 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: true,
       emoji: ':joy:',
-      info: 'Gives you +50% winnings on gambling for 5 minutes.',
+      info: 'Gives you +50% winnings on gambling for 10 minutes.',
       name: "Thicco's Thiccness",
       cost: 3000000,
     });
@@ -21,8 +21,9 @@ export default class PowerUp extends Item {
 
     thicc.expire = Date.now() + 5 * 60 * 1000; // client.setTimeout just breaks this
     thicc.amount--;
+
     await msg.author.initDB(data).updateItems().db.save();
 
-    return 'You have been granted an additional **50% to your gamble winnings** for **5 minutes** only.';
+    return 'You have been granted an additional **50%** winnings in gambling for a lucky 10 minutes!';
   }
 }

@@ -26,13 +26,18 @@ export class UserPlus extends User {
       const inv = this.db.items.find((i) => i.id === item.id);
       if (inv.expire > Date.now()) {
         if (item.id === 'brian') 
-          eff.addGambleWinnings(0.5).addSlotJackpotOdd(5);
+          eff.addSlotJackpotOdd(5);
+        if (item.id === 'crazy') 
+          eff.addSlotJackpotOdd(5);
         if (item.id === 'thicc') 
           eff.addGambleWinnings(0.5);
         if (item.id === 'thicm') 
           eff.addBlackjackWinnings(0.5);
-        if (item.id === 'crazy') 
-          eff.addSlotJackpotOdd(5);
+
+        if (item.id === 'dragon') {
+          if (Math.random() >= 0.25) eff.addDiceRoll(1);
+          else inv.amount--;
+        }
 
         const temp = new Collection<string, Effects>();
         temp.set(item.id, new Effects());

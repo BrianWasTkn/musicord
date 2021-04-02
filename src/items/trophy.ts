@@ -11,7 +11,7 @@ export default class Collectible extends Item {
       buyable: true,
       usable: true,
       emoji: '🏆',
-      info: 'Grants you 1% multi per trophy you own.',
+      info: 'Grants you 25% multiplier for 30 minutes and another trophy (if you hit the odds of getting it) to flex against normies!',
       name: 'Trophy',
       cost: 2500000,
     });
@@ -20,37 +20,19 @@ export default class Collectible extends Item {
   async use(msg: MessagePlus): Promise<string> {
     const { db, util } = this.client;
     const data = await msg.author.fetchDB();
-    const trophies = data.items.find((i) => i.id === this.id);
+    const tr = data.items.find((i) => i.id === this.id);
 
-    let odds = Math.random();
+    let odds = util.randomNumber(1, 100);
+    let hit = odds <= 5;
     let fined: boolean;
     let fail: boolean;
 
-    if (odds <= 0.1) {
-      const fine = util.randomNumber(data.pocket * 0.5, data.pocket);
-      if (fine >= 1 && odds > 0.05) {
-        await msg.author.initDB(data).removePocket(fine).db.save();
-        return `**You got fined instead!**\nlemme take away **${fine.toLocaleString()}** coins away from your pocket thank you`;
-      }
+    tr.amount += hit ? 1 : 0;
+    tr.expire = Date.now() + (30 * 60 * 1e3);
+    tr.multi = 25;
 
-      const hahausuck = util.randomNumber(
-        trophies.amount * 0.5,
-        trophies.amount
-      );
-      trophies.amount -= hahausuck;
-      await msg.author.initDB(data).updateItems().db.save();
-
-      return `LOL you broke **${hahausuck} ${this.emoji} ${this.name}**${
-        hahausuck > 1 ? 's' : ''
-      }, ${trophies.amount.toLocaleString()} left :skull:`;
-    }
-
-    const nice = util.randomNumber(1, 100);
-    trophies.amount += nice;
     await msg.author.initDB(data).updateItems().db.save();
 
-    return `You've been granted **${nice} ${this.emoji} ${this.name}**${
-      nice > 1 ? 's' : ''
-    }! You now have **${trophies.amount.toLocaleString()} ${this.name}**s.`;
+    return `**${this.emoji} ${this.name}**\nYou now have a **25%** multiplier for 30 minutes${!hit ? '!' : `AND another ${this.name} god you're so lucky.`}`;
   }
 }

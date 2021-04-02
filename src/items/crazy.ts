@@ -23,6 +23,6 @@ export default class PowerUp extends Item {
     craz.expire = Date.now() + 5 * 60 * 1e3;
     await msg.author.initDB(data).updateItems().db.save();
 
-    return 'You now have a **10% chance of winning jackpots in slots** for 5 minutes.';
+    return 'You now have a **10%** jackpot chance for 5 minutes!';
   }
 }

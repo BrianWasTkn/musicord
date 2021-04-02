@@ -69,20 +69,6 @@ export const utils: CurrencyUtil = {
     if (msg.guild.members.cache.size >= 1000) {
       total += 1;
       unlocked.push(`1000+ Members — \`1%\``);
-      const size = msg.guild.members.cache.size;
-
-      if (size >= 4200) {
-        total += 4;
-        unlocked.push(`4200+ Members — \`4%\``);
-      }
-      if (size >= 3000) {
-        total += 3;
-        unlocked.push(`3000+ Members — \`3%\``);
-      }
-      if (size >= 2000) {
-        total += 2;
-        unlocked.push(`2000+ Members — \`2%\``);
-      }
     }
 
     // Currency-based (10%)
@@ -98,9 +84,8 @@ export const utils: CurrencyUtil = {
 
     const trophyItem = items.get('trophy');
     const trophy = db.items.find((i) => i.id === trophyItem.id);
-
     if (trophy.amount >= 1) {
-      let multi = 1 * trophy.amount;
+      let multi = trophy.multi;
       total += multi;
       unlocked.push(`${trophyItem.name} — \`${multi}%\``);
     }

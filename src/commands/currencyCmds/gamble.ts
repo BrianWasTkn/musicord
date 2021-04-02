@@ -50,25 +50,31 @@ export default class Currency extends Command {
 
     // Item Effects
     let extraWngs: number = 0;
-    for (const it of ['thicc', 'brian']) {
+    let dceRoll: number = 0;
+    for (const it of ['thicc', 'brian', 'dragon']) {
       const userEf = effects.get(msg.author.id);
       if (!userEf) {
         const col = new Collection<string, Effects>().set(it, new Effects());
         effects.set(msg.author.id, col);
       }
       if (effects.get(msg.author.id).has(it)) {
-        extraWngs += effects.get(msg.author.id).get(it).gambleWinnings;
+        const i = effects.get(msg.author.id).get(it);
+        extraWngs += i.gambleWinnings;
+        dceRoll += i.gambleDice;
       }
     }
 
     // Dice
-    let userD = util.randomNumber(1, 12);
+    let userD = util.randomNumber(1, 12) + dceRoll;
     let botD = util.randomNumber(1, 12);
-    // if (Math.random() > 0.65) {
-    //   userD = (botD > userD ? [botD, (botD = userD)] : [userD])[0];
-    // } else {
-    //   botD = (userD > botD ? [userD, (userD = botD)] : [botD])[0];
-    // }
+    if (Math.random() > 0.5) {
+      userD = (botD > userD ? [botD, (botD = userD)] : [userD])[0];
+    } else {
+      botD = (userD > botD ? [userD, (userD = botD)] : [botD])[0];
+    }
+
+    // Dice (Item Effects)
+    const iDiceEffs = ['dragon'].map(i => this.client.handlers.item.modules.get(i));
 
     // vis and db
     let w: number,
@@ -128,7 +134,7 @@ export default class Currency extends Command {
       fields: [
         {
           name: `${msg.author.username}`,
-          value: `Rolled a \`${userD}\``,
+          value: `Rolled a \`${userD}\` ${iDiceEffs.map(i => i.emoji).join(' ')}`,
           inline: true
         },
         {

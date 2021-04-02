@@ -20,9 +20,9 @@ export default class PowerUp extends Item {
     const data = await msg.author.fetchDB();
     const card = data.items.find((i) => i.id === this.id);
 
-    // if (data.space >= config.currency.maxSafeSpace) {
-    //   return 'You already have max vault space bruh'
-    // }
+    if (data.space >= config.currency.maxSafeSpace) {
+      return 'You already have max vault space bruh'
+    }
 
     const m = `${msg.author.toString()} You have ${card.amount.toLocaleString()} cards. How many cards do you wanna reveal right now?`;
     await msg.channel.send(m);
@@ -46,8 +46,8 @@ export default class PowerUp extends Item {
     data.space += gain;
     await data.save();
 
-    return `**You crafted __${choice.toLocaleString()}__ cards into your vault.**\nThis brings you to **${data.space.toLocaleString()}** of total vault capacity, with **${gain.toLocaleString()} (${Math.round(
+    return `**You revealed __${choice.toLocaleString()}__ cards into your vault.**\nThis brings you to **${data.space.toLocaleString()}** of total vault capacity, with **${gain.toLocaleString()} (${Math.round(
       gain / choice
-    ).toLocaleString()} average) ** being crafted.`;
+    ).toLocaleString()} average) ** being revealed.`;
   }
 }
