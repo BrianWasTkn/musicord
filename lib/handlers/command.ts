@@ -1,3 +1,4 @@
+import { CooldownData } from '@lib/interface/mongo/currency/currencyprofile';
 import { MessagePlus } from '@lib/extensions/message';
 import { Util } from '@lib/utility/util';
 import { Lava } from '@lib/Lava';
@@ -216,7 +217,7 @@ export class CommandHandler<
     const id = msg.author.id;
     if (!this.cooldowns.has(id)) this.cooldowns.set(id, {});
 
-    let userCD = data.cooldowns.find(c => c.id === cmd.id);
+    let userCD: CooldownData | number = data.cooldowns.find(c => c.id === cmd.id);
     if (!userCD) {
       userCD = data.cooldowns.push({ expire, uses: 0, id: cmd.id });
       await data.save();
@@ -233,20 +234,20 @@ export class CommandHandler<
           if (!Object.keys(this.cooldowns.get(id)).length) {
               this.cooldowns.delete(id);
           }
-        }, userCD.expire - msg.createdTimestamp),
+        }, (userCD as CooldownData).expire - msg.createdTimestamp),
         end: expire,
         uses: 0
       };
     }
 
-    const diff = userCD.expire - msg.createdTimestamp;
-    if (userCD.uses >= cmd.ratelimit && diff >= 1) {
+    const diff = (userCD as CooldownData).expire - msg.createdTimestamp;
+    if ((userCD as CooldownData).uses >= cmd.ratelimit && diff >= 1) {
 
       this.emit(Events.COOLDOWN, msg, cmd, diff);
       return true;
     }
 
-    userCD.uses++;
+    (userCD as CooldownData).uses++;
     await data.save();
     return false;
   }
