@@ -18,6 +18,9 @@
     "@config": "build/config",
     "@lib": "build/lib"
   },
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.0",

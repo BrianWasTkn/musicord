@@ -10,9 +10,14 @@ import {
   Constants,
   Category,
 } from 'discord-akairo';
-import { MessageOptions, MessageEmbed, Collection, Message } from 'discord.js';
+import { 
+  MessageOptions, 
+  MessageEmbed, 
+  Collection, 
+  Message,
+} from 'discord.js';
 
-const { CommandHandlerEvents: Events } = Constants;
+const { CommandHandlerEvents: Events, BuiltInReasons } = Constants;
 
 export interface CommandHandlerOptions extends HandlerOptions {
   commandTyping?: boolean;
@@ -29,6 +34,7 @@ export type CommandReturn =
   | Promise<string | MessageOptions | MessageEmbed>;
 
 export class Command extends AkairoCommand {
+  // @ts-ignore
   handler: CommandHandler<Command>;
   client: Lava;
 
@@ -51,7 +57,9 @@ export class CommandHandler<
   CommandModule extends Command
 > extends AkairoCommandHandler {
   commandTyping: boolean;
+// @ts-ignore
   categories: Collection<string, Category<string, CommandModule>>;
+// @ts-ignore
   modules: Collection<string, CommandModule>;
   client: Lava;
 
@@ -80,8 +88,10 @@ export class CommandHandler<
       automateCategories,
       prefix: (msg: MessagePlus) => 
         this.prefixPredicate(msg),
+      // @ts-ignore
       ignoreCooldown: (msg: MessagePlus, cmd: CommandModule) =>
         this.basePredicate(msg, cmd),
+      // @ts-ignore
       ignorePermissions: (msg: MessagePlus, cmd: CommandModule) =>
         this.basePredicate(msg, cmd),
     });
@@ -102,10 +112,12 @@ export class CommandHandler<
     return this.client.config.bot.prefix;
   }
 
+  // @ts-ignore
   findCommand(name: string): CommandModule {
     return this.modules.get(this.aliases.get(name.toLowerCase()));
   }
 
+  // @ts-ignore
   async runCommand(
     message: MessagePlus,
     command: CommandModule,
@@ -136,58 +148,94 @@ export class CommandHandler<
     }
   }
 
-  runCooldowns(msg: MessagePlus, cmd: CommandModule) {
+  async runPostTypeInhibitors(message: MessagePlus, command: AkairoCommand) {
+    if (command.ownerOnly) {
+      const isOwner = this.client.isOwner(message.author);
+      if (!isOwner) {
+        this.emit(Events.COMMAND_BLOCKED, message, command, BuiltInReasons.OWNER);
+        return true;
+      }
+    }
+
+    if (command.channel === 'guild' && !message.guild) {
+        this.emit(Events.COMMAND_BLOCKED, message, command, BuiltInReasons.GUILD);
+        return true;
+    }
+
+    if (command.channel === 'dm' && message.guild) {
+        this.emit(Events.COMMAND_BLOCKED, message, command, BuiltInReasons.DM);
+        return true;
+    }
+
+    if (await this.runPermissionChecks(message, command)) {
+        return true;
+    }
+
+    const reason = this.inhibitorHandler
+      ? await this.inhibitorHandler.test('post', message, command)
+      : null;
+
+    if (reason != null) {
+      this.emit(Events.COMMAND_BLOCKED, message, command, reason);
+      return true;
+    }
+
+    if (await this.runCooldowns(message, command as unknown as CommandModule)) {
+        return true;
+    }
+
+    return false;
+  }
+
+  // @ts-ignore
+  async runCooldowns(msg: MessagePlus, cmd: CommandModule): Promise<boolean> {
     const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
     if (!time) return false;
 
     if (time <= 30000) {
-      return super.runCooldowns(msg, cmd);
+      return super.runCooldowns(msg, cmd as unknown as AkairoCommand);
     }
 
-    return this.runDatabaseCooldowns(msg, cmd);
+    return await this.runDatabaseCooldowns(msg, cmd);
   }
 
-  runDatabaseCooldowns(msg: MessagePlus, cmd: CommandModule) {
-    const state = (async () => {
-      const ignorer = cmd.ignoreCooldown || this.ignoreCooldown;
-      const isIgnored = Array.isArray(ignorer)
-        ? ignorer.includes(msg.author.id)
-        : typeof ignorer === 'function'
-          ? ignorer(msg, cmd)
-          : msg.author.id === ignorer;
+  async runDatabaseCooldowns(msg: MessagePlus, cmd: CommandModule) {
+    const ignorer = cmd.ignoreCooldown || this.ignoreCooldown;
+    const isIgnored = Array.isArray(ignorer)
+      ? ignorer.includes(msg.author.id)
+      : typeof ignorer === 'function'
+        ? ignorer(msg, cmd as unknown as AkairoCommand)
+        : msg.author.id === ignorer;
 
-      if (isIgnored) return false;
+    if (isIgnored) return false;
 
-      const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
-      if (!time) return false;
+    const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
+    if (!time) return false;
 
-      const endTime = msg.createdTimestamp + time;
-      const data = await msg.author.fetchDB();
+    const endTime = msg.createdTimestamp + time;
+    const data = await msg.author.fetchDB();
 
-      if (!data.cooldowns.find(c => c.id === cmd.id)) {
-        data.cooldowns.push({
-          expire: endTime,
-          uses: 0,
-          id: cmd.id
-        });
+    if (!data.cooldowns.find(c => c.id === cmd.id)) {
+      data.cooldowns.push({
+        expire: endTime,
+        uses: 0,
+        id: cmd.id
+      });
 
-        await data.save();
-      }
-
-      const entry = data.cooldowns.find(c => c.id === cmd.id);
-
-      if (entry.uses >= cmd.ratelimit) {
-        const diff = entry.expire - msg.createdTimestamp;
-
-        this.emit('commandCooldown', msg, cmd, diff);
-        return true;
-      }
-
-      entry.uses++;
       await data.save();
-      return false;
-    })();
+    }
 
-    return state;
+    const entry = data.cooldowns.find(c => c.id === cmd.id);
+
+    if (entry.uses >= cmd.ratelimit) {
+      const diff = entry.expire - msg.createdTimestamp;
+
+      this.emit(Events.COOLDOWN, msg, cmd, diff);
+      return true;
+    }
+
+    entry.uses++;
+    await data.save();
+    return false;
   }
 }

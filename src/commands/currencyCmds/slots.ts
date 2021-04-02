@@ -184,6 +184,10 @@ export default class Currency extends Command {
 
       // Blacklisted Doubles
       if (!multi[2] && length === 2) {
+        if (slots.some(s => s === emojis[emojis.length - 1])) {
+          return { length: 2, winnings: bet };
+        }
+        
       	return { length: 3, winnings: 0 };
       }
       
