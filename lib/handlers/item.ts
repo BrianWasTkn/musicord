@@ -1,15 +1,15 @@
-import type { Collection, MessageEmbed } from 'discord.js';
-import type { CurrencyProfile } from '@lib/interface/mongo/currency';
-import type { ItemOptions } from '@lib/interface/handlers/item';
-import type { MessagePlus } from '@lib/extensions/message';
-import type { Document } from 'mongoose';
-import type { Lava } from '../Lava';
-import {
-  AkairoHandlerOptions,
-  AkairoModuleOptions,
-  AkairoHandler,
-  AkairoModule,
-  Category,
+import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { ItemOptions } from '@lib/interface/handlers/item';
+import { MessagePlus } from '@lib/extensions/message';
+import { Collection } from 'discord.js';
+import { Document } from 'mongoose';
+import { Lava } from '@lib/Lava';
+import { 
+  AkairoHandlerOptions, 
+  AkairoModuleOptions, 
+  AkairoHandler, 
+  AkairoModule, 
+  Category 
 } from 'discord-akairo';
 
 export type ItemReturn = string | IReturn;
@@ -38,9 +38,9 @@ export class Item extends AkairoModule {
 
     this.info = String(opt.info);
     this.cost = Number(opt.cost);
-    this.buyable = opt.buyable;
-    this.sellable = opt.sellable;
-    this.usable = opt.usable;
+    this.buyable = Boolean(opt.buyable);
+    this.sellable = Boolean(opt.sellable);
+    this.usable = Boolean(opt.usable);
     this.emoji = opt.emoji;
     this.name = opt.name;
   }

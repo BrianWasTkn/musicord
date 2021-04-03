@@ -29,19 +29,24 @@ export class UserPlus extends User {
     for (const item of items) {
       const inv = this.db.items.find((i) => i.id === item.id);
       if (inv.expire > Date.now()) {
-        if (item.id === 'brian') 
-          eff.addSlotJackpotOdd(5);
-        if (item.id === 'crazy') 
-          eff.addSlotJackpotOdd(5);
-        if (item.id === 'thicc') 
-          eff.addGambleWinnings(0.5);
-        if (item.id === 'thicm') 
-          eff.addBlackjackWinnings(0.5);
-
-        if (item.id === 'dragon') {
-          if (Math.random() >= 0.25) eff.addDiceRoll(1);
-          else inv.amount--;
-        }
+        switch(item.id) {
+          case 'brian':
+            eff.addSlotJackpotOdd(5);
+            break;
+          case 'crazy':
+            eff.addSlotJackpotOdd(5);
+            break;
+          case 'thicc':
+            eff.addGambleWinnings(0.5);
+            break;
+          case 'thicm':
+            eff.addBlackjackWinnings(0.5);
+            break;
+          case 'dragon': 
+            if (Math.random() >= 0.25) eff.addDiceRoll(1);
+            else if (inv.amount >= 1) inv.amount--;
+            break;
+        }        
 
         const temp = new Collection<string, Effects>();
         temp.set(item.id, new Effects());
@@ -61,8 +66,8 @@ export class UserPlus extends User {
   }
 
   calcSpace() {
-    const { util, config } = this.client;
-    const { maxSafeSpace } = config.currency;
+    const { maxSafeSpace } = this.client.config.currency;
+    const { util } = this.client;
 
     if (this.db.space >= maxSafeSpace) {
       this.db.space = maxSafeSpace;
