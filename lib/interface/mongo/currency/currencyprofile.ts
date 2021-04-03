@@ -8,12 +8,14 @@ export interface CurrencyProfile extends Document {
   lastRan: number;
   lastCmd: string;
   userID: Snowflake;
+  banned: boolean;
   pocket: number;
   items: InventorySlot[];
   quest: QuestSlot;
   vault: number;
   space: number;
   multi: number;
+  bled: boolean;
 }
 
 export interface QuestSlot {

@@ -20,7 +20,6 @@ import {
 type TextableChannel = DMChannel | TextChannel | NewsChannel;
 
 export class MessagePlus extends Message {
-  command: Command;
   author: UserPlus;
   client: Lava;
 

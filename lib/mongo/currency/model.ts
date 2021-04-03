@@ -12,9 +12,11 @@ const CurrencySchema = new Schema({
   lastCmd: { type: String, required: true, default: 'command' },
   userID: { type: String, required: true, default: '123456' },
   pocket: { type: Number, required: false, default: 100000 },
+  banned: { type: Boolean, required: false, default: false },
   multi: { type: Number, required: false, default: 5 },
   vault: { type: Number, required: false, default: 0 },
   space: { type: Number, required: false, default: 0 },
+  bled: { type: Boolean, required: false, default: false },
   /* Inventory */
   items: [{ 
     amount: Number, 

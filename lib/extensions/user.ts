@@ -74,6 +74,16 @@ export class UserPlus extends User {
     return this;
   }
 
+  blacklist() {
+    this.db.bled = true;
+    return this;
+  }
+
+  unblacklist() {
+    this.db.bled = false;
+    return this;
+  }
+
   addPocket(amount: number) {
     this.db.pocket += amount;
     return this;

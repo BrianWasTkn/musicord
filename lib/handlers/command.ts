@@ -22,11 +22,13 @@ const { CommandHandlerEvents: Events, BuiltInReasons } = Constants;
 
 // Local Types
 export type ExamplePredicate = (msg: MessagePlus) => string | string[];
+export type CommandReturn = void | string | MessageOptions;
+
 export interface CommandHandlerOptions extends HandlerOptions {
-    commandTyping?: boolean;
+	commandTyping?: boolean;
 }
 export interface CommandOptions extends AkairoCommandOptions {
-    examples?: string | string[] | ExamplePredicate;
+	examples?: string | string[] | ExamplePredicate;
 }
 
 export class Command extends AkairoCommand {
@@ -38,7 +40,7 @@ export class Command extends AkairoCommand {
     super(id, opts);
   }
 
-  exec(msg: MessagePlus, args?: any): MessageOptions | Promise<MessageOptions> {
+  exec(msg: MessagePlus, args?: any): CommandReturn | Promise<CommandReturn> {
     return {
       embed: {
         title: 'What ya doing?',

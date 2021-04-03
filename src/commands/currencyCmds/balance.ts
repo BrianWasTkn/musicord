@@ -49,7 +49,7 @@ export default class Currency extends Command {
 
     return { embed: {
       title: `${args.member.user.username}'s balance`,
-      footer: { text: 'discord.gg/memer' },
+      footer: { text: 'lol hi' },
       description: dpn.join('\n'),
       color: 'RANDOM',
     }};
