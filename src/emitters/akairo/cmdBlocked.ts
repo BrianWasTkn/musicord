@@ -16,14 +16,13 @@ export default class CommandListener extends Listener {
     cmd: Command,
     r: string
   ): Promise<void | MessagePlus> {
-    if (r.toLowerCase() === 'owner') {
-      return msg.channel.send(
-        "You're not my owner, bro"
-      ) as Promise<MessagePlus>;
-    } else if (['guild', 'dm'].includes(r.toLowerCase())) {
-      return msg.channel.send(
-        `This isn't available in ${r === 'dm' ? 'guild' : 'dm'}s, my dear.`
-      ) as Promise<MessagePlus>;
+    r = r.toLowerCase();
+
+    if (r === 'owner') {
+      return await msg.channel.send('you\'re not my owner') as MessagePlus;
+    }
+    if (r === 'dm') {
+      return await msg.channel.send('lol this command ain\'t available in dms') as MessagePlus;
     }
   }
 }

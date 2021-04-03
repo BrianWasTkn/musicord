@@ -12,6 +12,10 @@ export class UserPlus extends User {
     super(client, data);
   }
 
+  get isBotOwner() {
+    return this.client.isOwner(this.id);
+  }
+
   initDB(data: Document & CurrencyProfile) {
     this.db = data;
     return this;
