@@ -34,36 +34,37 @@ export default class Currency extends Command {
       item: Item;
     }
   ): Promise<string | MessageOptions> {
+    const { ITEM_MESSAGES: MESSAGES } = Constants;
     const { amount = 1, item } = args;
     const { maxInventory } = this.client.config.currency;
     const { item: Items } = this.client.handlers;
     const { fetch } = this.client.db.currency;
     const data = await msg.author.fetchDB();
 
-    if (!item) return 'You need something to sell';
+    if (!item) return MESSAGES.NEED_TO_SELL
 
     let inv = data.items.find((i) => i.id === item.id);
     if (amount < 1) 
-      return 'Imagine selling none.';
+      return MESSAGES.SELLING_NONE;
     if (!item.sellable) 
-      return "You can't sell this item rip";
+      return MESSAGES.NOT_SELLABLE;
     if (amount > inv.amount) 
-      return "You can't fool me";
+      return MESSAGES.CANT_FOOL_ME;
 
     await Items.sell(Math.trunc(amount), data, item.id);
     this.client.handlers.quest.emit('itemSell', { msg, item, amount });
 
     return { replyTo: msg.id, embed: {
       color: 'GREEN',
-      description: Constants.ITEM_MESSAGES.SELL
-        .replace(/{got}/gi, (amount * (item.cost / 4)).toLocaleString())
-        .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
-        .replace(/{emoji}/gi, item.emoji)
-        .replace(/{item}/gi, item.name),
       author: {
         name: 'Item Sold',
         iconURL: msg.author.avatarURL({ dynamic: true })
       },
+      description: Constants.ITEM_MESSAGES.SELL_MSG
+        .replace(/{got}/gi, (amount * (item.cost / 4)).toLocaleString())
+        .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
+        .replace(/{emoji}/gi, item.emoji)
+        .replace(/{item}/gi, item.name),
     }};
   }
 }

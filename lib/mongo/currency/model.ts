@@ -8,91 +8,38 @@ import { CurrencyProfile } from '@lib/interface/mongo/currency';
 
 const CurrencySchema = new Schema({
   /* Basic Info */
-  userID: {
-    type: String,
-    required: true,
-  },
-  pocket: {
-    type: Number,
-    required: false,
-    default: 100000,
-  },
-  multi: {
-    type: Number,
-    required: false,
-    default: 5,
-  },
-  vault: {
-    type: Number,
-    required: false,
-    default: 0,
-  },
-  space: {
-    type: Number,
-    required: false,
-    default: 0,
-  },
-
+  lastRan: { type: Number, required: true, default: Date.now() },
+  lastCmd: { type: String, required: true, default: 'command' },
+  userID: { type: String, required: true, default: '123456' },
+  pocket: { type: Number, required: false, default: 100000 },
+  multi: { type: Number, required: false, default: 5 },
+  vault: { type: Number, required: false, default: 0 },
+  space: { type: Number, required: false, default: 0 },
   /* Inventory */
-  items: [
-    {
-      amount: Number,
-      expire: Number,
-      multi: Number,
-      id: String,
-      cd: Number,
-    },
-  ],
-
+  items: [{ 
+    amount: Number, 
+    expire: Number, 
+    multi: Number,
+    id: String,
+    cd: Number,
+  }],
   /* Marriage */
   marriage: {
-    since: { 
-      required: false, 
-      default: 0,
-      type: Number, 
-    },
-    id: { 
-      required: false, 
-      type: String, 
-    }
+    since: { required: false, default: 0, type: Number },
+    id: { required: false, type: String, default: '123'}
   },
-
   /* Quests */
   quest: {
-    target: {
-      required: false,
-      default: 0,
-      type: Number
-    },
-    count: {
-      required: false,
-      default: 0,
-      type: Number,
-    },
-    id: {
-      required: false,
-      type: String
-    }
+    target: { required: false, default: 0, type: Number },
+    count: { required: false, default: 0, type: Number },
+    id: { required: false, type: String }
   },
-
   /* Cooldowns */
-  cooldowns: [
-    {
-      id: {
-        type: String,
-        required: false,
-      },
-      expire: {
-        type: Number,
-        required: false,
-      },
-      uses: {
-        type: Number,
-        required: false,
-        default: 0
-      }
-    }
-  ]
+  cooldowns: [{
+    expire: { type: Number, required: false, default: 0 },
+    uses: { type: Number, required: false, default: 0 },
+    id: { type: String, required: false },
+  }]
 });
 
 export default model<Document<CurrencyProfile>>('currency', CurrencySchema);

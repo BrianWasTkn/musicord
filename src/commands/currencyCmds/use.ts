@@ -1,8 +1,8 @@
 import { MessageOptions } from 'discord.js';
+import { Item, IReturn } from '@lib/handlers/item';
 import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
-import { Item } from '@lib/handlers/item';
 
 export default class Currency extends Command {
   constructor() {
@@ -45,6 +45,14 @@ export default class Currency extends Command {
     const ret = await item.use(msg);
     if (queue.has(id)) queue.delete(id);
 
-    return { content: ret, replyTo: msg.id };
+    if (ret.constructor === String) return ret as string;
+
+    const yes: MessageOptions = {};
+    const r = ret as IReturn;
+    if (r.embed) yes.embed = r.embed;
+    if (r.content) yes.content = r.content;
+    if ('reply' in r) yes.replyTo = msg.id;
+
+    return { ...yes, allowedMentions: { repliedUser: r.reply }};
   }
 }

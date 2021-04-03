@@ -15,7 +15,7 @@ export default class Powerflex extends Item {
     });
   }
 
-  async use(msg: MessagePlus): Promise<string> {
+  async use(msg: MessagePlus) {
     const { randomNumber, sleep } = this.client.util;
     const data = await msg.author.fetchDB();
     const heart = data.items.find((i) => i.id === this.id);

@@ -1,7 +1,7 @@
+import type { Collection, MessageEmbed } from 'discord.js';
 import type { CurrencyProfile } from '@lib/interface/mongo/currency';
 import type { ItemOptions } from '@lib/interface/handlers/item';
 import type { MessagePlus } from '@lib/extensions/message';
-import type { Collection } from 'discord.js';
 import type { Document } from 'mongoose';
 import type { Lava } from '../Lava';
 import {
@@ -11,6 +11,14 @@ import {
   AkairoModule,
   Category,
 } from 'discord-akairo';
+
+export type ItemReturn = string | IReturn;
+
+export interface IReturn {
+  content?: string;
+  embed?: MessageEmbed;
+  reply?: boolean;
+}
 
 export class Item extends AkairoModule {
   handler: ItemHandler<Item>;
@@ -24,7 +32,7 @@ export class Item extends AkairoModule {
   name: string;
   cost: number;
 
-  constructor(id: string, opt: ItemOptions) {
+  constructor(id: string, opt: Partial<ItemOptions>) {
     const { category } = opt;
     super(id, { category });
 
@@ -37,7 +45,7 @@ export class Item extends AkairoModule {
     this.name = opt.name;
   }
 
-  use(msg: MessagePlus): any | Promise<any> {
+  use(msg: MessagePlus): ItemReturn | Promise<ItemReturn> {
     return 'This item perhaps, is a work in progress :)';
   }
 }

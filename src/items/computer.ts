@@ -43,7 +43,7 @@ export default class PowerUp extends Item {
       return 'Invalid option, buddy.';
     }
 
-    const karma = util.randomNumber(1, 2e3);
+    const karma = util.randomNumber(1, 1e4);
 
     if (Math.random() < 0.25) {
       comp.amount--;
@@ -51,7 +51,7 @@ export default class PowerUp extends Item {
       return `Your meme got **-${karma.toLocaleString()}** karmas and you broke your **${this.emoji} ${this.name}** lmao sucks to be you.`;
     }
 
-    const gain = util.randomNumber(100, 1e4);
+    const gain = util.randomNumber(100, 1e5);
     data.pocket += gain;
     await data.save();
 

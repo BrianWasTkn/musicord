@@ -1,6 +1,7 @@
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
 import { Document } from 'mongoose';
 import { UserPlus } from './user';
+import { Command } from '@lib/handlers/command';
 import { Lava } from '@lib/Lava';
 import {
   APIMessageContentResolvable,
@@ -19,11 +20,20 @@ import {
 type TextableChannel = DMChannel | TextChannel | NewsChannel;
 
 export class MessagePlus extends Message {
+  command: Command;
   author: UserPlus;
   client: Lava;
 
   constructor(client: Lava, data: object, channel: TextableChannel) {
     super(client, data, channel);
+  }
+
+  get isGuild(): boolean {
+    return Boolean(this.guild.id);
+  }
+
+  get isTextable(): boolean {
+    return this.channel instanceof TextChannel;
   }
 
   fetchDB(id: string) {

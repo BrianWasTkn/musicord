@@ -20,19 +20,14 @@ import {
 
 const { CommandHandlerEvents: Events, BuiltInReasons } = Constants;
 
+// Local Types
+export type ExamplePredicate = (msg: MessagePlus) => string | string[];
 export interface CommandHandlerOptions extends HandlerOptions {
-  commandTyping?: boolean;
+    commandTyping?: boolean;
 }
 export interface CommandOptions extends AkairoCommandOptions {
-  examples?: string | string[];
+    examples?: string | string[] | ExamplePredicate;
 }
-
-export type CommandReturn =
-  | void
-  | string
-  | MessageEmbed
-  | MessageOptions
-  | Promise<string | MessageOptions | MessageEmbed>;
 
 export class Command extends AkairoCommand {
   // @ts-ignore
@@ -43,7 +38,7 @@ export class Command extends AkairoCommand {
     super(id, opts);
   }
 
-  exec(msg: MessagePlus, args: any): CommandReturn {
+  exec(msg: MessagePlus, args?: any): MessageOptions | Promise<MessageOptions> {
     return {
       embed: {
         title: 'What ya doing?',
@@ -215,15 +210,11 @@ export class CommandHandler<
     if (cd.uses >= cmd.ratelimit && diff > 0) {
       this.emit(Events.COOLDOWN, msg, cmd, diff);
       return true;
-    } else if (diff < 0) {
-      cd.uses++;
-      cd.expire = expire;
-      await data.save();
-      return false;
     }
 
     // increment for ratelimit
     cd.uses++;
+    if (diff < 0) cd.expire = expire;
     await data.save();
     return false;
   }

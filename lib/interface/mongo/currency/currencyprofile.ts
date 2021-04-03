@@ -1,10 +1,12 @@
+import { InventorySlot } from '@lib/interface/handlers/item';
 import { Snowflake } from 'discord.js';
 import { Document } from 'mongoose';
-import { InventorySlot } from '@lib/interface/handlers/item';
 
 export interface CurrencyProfile extends Document {
   cooldowns: CooldownData[];
   marriage: MarriageData;
+  lastRan: number;
+  lastCmd: string;
   userID: Snowflake;
   pocket: number;
   items: InventorySlot[];
