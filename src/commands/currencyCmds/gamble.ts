@@ -59,7 +59,7 @@ export default class Currency extends Command {
         effects.set(msg.author.id, col);
       }
       if (effects.get(msg.author.id).has(it)) {
-        iDiceEffs.push(this.client.handlers.item.modules.get(it));
+      	if (it === 'dragon') iDiceEffs.push(this.client.handlers.item.modules.get(it));
         const i = effects.get(msg.author.id).get(it);
         extraWngs += i.gambleWinnings;
         dceRoll += i.gambleDice;
