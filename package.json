@@ -14,8 +14,8 @@
     "format": "prettier --write ."
   },
   "_moduleAliases": {
-    "@src": "build/src",
     "@config": "build/config",
+    "@src": "build/src",
     "@lib": "build/lib"
   },
   "license": "ISC",

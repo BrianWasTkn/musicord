@@ -97,6 +97,13 @@ export class CommandHandler<
     this.commandTyping = Boolean(commandTyping);
   }
 
+  // @ts-ignore
+  findCategory(thing: string) {
+    return this.categories.get(thing)
+    || this.categories.find(c => c.id.toLowerCase() === thing.toLowerCase())
+    || this.categories.find(c => c.id.toLowerCase().includes(thing.toLowerCase()));
+  }
+
   basePredicate(msg: MessagePlus, cmd: CommandModule): boolean {
     const g = this.client.guilds.cache.get('691416705917779999');
     const byp = g.roles.cache.get('692941106475958363');

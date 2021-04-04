@@ -10,5 +10,6 @@ import { Lava } from '@lib/Lava';
     await bot.build();
   } catch (error) {
     throw error;
+    process.exit(1);
   }
 })(config);

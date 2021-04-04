@@ -8,14 +8,13 @@
     "compilerOptions": {
         "module": "CommonJS",
         "target": "ESNext",
-        "outDir": "build/",
+        "outDir": "build",
         "strict": false,
         "resolveJsonModule": true,
         "moduleResolution": "node",
         "esModuleInterop": true,
         "skipLibCheck": true,
         "sourceMap": true,
-        "typeRoots": ["./lib/types/**/*"],
         "baseUrl": ".",
         "paths": {
             "@src/*": ["src/*"],
