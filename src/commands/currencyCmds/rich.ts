@@ -45,7 +45,7 @@ export default class Currency extends Command {
       return { embed: {
         author: { name: 'richest players across discord' },
         description: rich.join('\n'),
-        color: 'RANDOM', footer: {
+        color: 'ORANGE', footer: {
           iconURL: msg.client.user.avatarURL(),
           text: msg.client.user.username + ' — Showing Pockets',
         }
@@ -63,7 +63,7 @@ export default class Currency extends Command {
     return { embed: {
       author: { name: 'richest players in this server' },
       description: filt.map((n, i) => `:${emojis[i] || 'eggplant'}: **${n.pocket.toLocaleString()}** — ${n.member.user.tag}`).join('\n'),
-      color: 'RANDOM', footer: {
+      color: msg.member.displayHexColor, footer: {
         iconURL: msg.guild.iconURL({ dynamic: true }),
         text: msg.guild.name + ' — Showing Pockets',
       }
