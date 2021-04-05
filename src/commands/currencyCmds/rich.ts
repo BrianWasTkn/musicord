@@ -40,7 +40,7 @@ export default class Currency extends Command {
       const docs = (await Mongo.models['currency'].find({})) as (Document & CurrencyProfile)[];
       const lava = docs.filter(n => n.pocket > 0).sort((a, b) => b.pocket - a.pocket).slice(0, 10);
       const nice = await Promise.all(lava.map((l, i) => msg.client.users.fetch(l.userID, false, true).then(o => ({ o: o as UserPlus, pocket: l.pocket }))));
-      const rich = nice.map((n, i) => `:${emojis[i] || 'eggplant'}: **${n.pocket.toLocaleString()}** — ${n.o.tag}`);
+      const rich = nice.filter(n => !n.o.bot).map((n, i) => `:${emojis[i] || 'eggplant'}: **${n.pocket.toLocaleString()}** — ${n.o.tag}`);
     
       return { embed: {
         author: { name: 'richest players across discord' },
@@ -55,10 +55,10 @@ export default class Currency extends Command {
     const documents = await Mongo.models['currency'].find({}) as (Document & CurrencyProfile)[];
     const mebDocs = (await msg.guild.members.fetch({ force: true })).array().map(({ user }) => documents.find(doc => doc.userID === user.id));
     const abcde = mebDocs.filter(Boolean).filter(m => m.pocket > 0).sort((a, b) => b.pocket - a.pocket).slice(0, 10);
-    const filt = await Promise.all(abcde.map(async d => ({
+    const filt = (await Promise.all(abcde.map(async d => ({
       member: await msg.guild.members.fetch(d.userID),
       pocket: d.pocket
-    })));
+    })))).filter(m => !m.member.user.bot);
 
     return { embed: {
       author: { name: 'richest players in this server' },
