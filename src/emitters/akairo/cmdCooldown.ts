@@ -21,14 +21,14 @@ export default class CommandListener extends Listener {
       ? `${(remaining / 1e3).toFixed(1)} seconds` 
       : this.client.util.parseTime(remaining);
     const defCd = command.cooldown <= 60e3
-      ? `${(command.cooldown / 1e3).toFixed(1)} seconds`
+      ? `${command.cooldown / 1e3} seconds`
       : this.client.util.parseTime(command.cooldown);
     
     return msg.channel.send({
       embed: {
-        title: 'Calm the frick down',
+        title: 'LOL calm down',
         color: 'INDIGO',
-        description: `You're currently on cooldown for the \`${command.id}\` command.\nPlease wait **${time}** and try again.\nDefault cooldown for this command is \`${defCd}\`.`,
+        description: `You're currently on cooldown for the \`${command.id}\` command.\nPlease wait **${time}** and try again.\nDefault cooldown for this command is **${defCd}**!`,
         footer: {
           text: this.client.user.username,
           icon_url: this.client.user.avatarURL(),

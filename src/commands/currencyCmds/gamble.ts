@@ -49,7 +49,7 @@ export default class Currency extends Command {
     if (!bet) return;
 
     // Item Effects
-    let iDiceEffs: Item[] = [];
+    const iDiceEffs: Item[] = [];
     let extraWngs: number = 0;
     let dceRoll: number = 0;
     for (const it of ['thicc', 'brian', 'dragon']) {
