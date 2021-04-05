@@ -47,7 +47,7 @@ export default class Currency extends Command {
         description: rich.join('\n'),
         color: 'RANDOM', footer: {
           iconURL: msg.client.user.avatarURL(),
-          text: msg.client.user.username + ' Showing Pockets',
+          text: msg.client.user.username + ' — Showing Pockets',
         }
       }};
     }
@@ -65,7 +65,7 @@ export default class Currency extends Command {
       description: filt.map((n, i) => `:${emojis[i] || 'eggplant'}: **${n.pocket.toLocaleString()}** — ${n.member.user.tag}`).join('\n'),
       color: 'RANDOM', footer: {
         iconURL: msg.guild.iconURL({ dynamic: true }),
-        text: msg.guild.name,
+        text: msg.guild.name + ' — Showing Pockets',
       }
     }};
   }
