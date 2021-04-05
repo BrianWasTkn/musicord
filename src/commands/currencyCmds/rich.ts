@@ -47,20 +47,22 @@ export default class Currency extends Command {
         description: rich.join('\n'),
         color: 'RANDOM', footer: {
           iconURL: msg.client.user.avatarURL(),
-          text: msg.client.user.username,
+          text: msg.client.user.username + ' Showing Pockets',
         }
       }};
     }
 
-    const members = [...msg.guild.members.cache.values()];
-    const mebDoc = (await Promise.all(members.map(async m => await Mongo.models['currency'].findOne({ userID: m.user.id })))).filter(Boolean) as (Document & CurrencyProfile)[];
-    const abcde = mebDoc.filter(m => m.pocket > 0).sort((a, b) => b.pocket - a.pocket);
-    const filt = await Promise.all(abcde.map(async a => ({ pocket: a, m: await msg.client.users.fetch(a.userID, false, true) })));
-    const rich = filt.map((n, i) => `:${emojis[i] || 'eggplant'}: **${n.pocket.toLocaleString()}** — ${n.m.tag}`);
+    const documents = await Mongo.models['currency'].find({}) as (Document & CurrencyProfile)[];
+    const mebDocs = (await msg.guild.members.fetch({ force: true })).array().map(({ user }) => documents.find(doc => doc.userID === user.id));
+    const abcde = mebDocs.filter(Boolean).filter(m => m.pocket > 0).sort((a, b) => b.pocket - a.pocket).slice(0, 10);
+    const filt = await Promise.all(abcde.map(async d => ({
+      member: await msg.guild.members.fetch(d.userID),
+      pocket: d.pocket
+    })));
 
     return { embed: {
       author: { name: 'richest players in this server' },
-      description: rich.join('\n'),
+      description: filt.map((n, i) => `:${emojis[i] || 'eggplant'}: **${n.pocket.toLocaleString()}** — ${n.member.user.tag}`).join('\n'),
       color: 'RANDOM', footer: {
         iconURL: msg.guild.iconURL({ dynamic: true }),
         text: msg.guild.name,
