@@ -116,7 +116,7 @@ export class LotteryHandler extends EventEmitter {
     const randomNumber = (a: number, b: number) => Math.floor(Math.random() * (max - min + 1) + min);
     
     let odds = Math.random();
-    let coins = randomNumber(min, max);
+    let coins = randomNumber(min, max) * Math.floor(Math.random() + 0.3);
     let raw = coins;
     let multi: number;
 
