@@ -20,6 +20,7 @@ export default class LottoListener extends Listener {
   	const chan = guild.channels.cache.get(handler.channel) as TextChannel;
   	const req = guild.roles.cache.get(handler.requirement);
 
+    coins = Math.round(coins / 1e3) * 1e3;
     await chan.send(`**${winner.user.tag}** (${winner.user.toString()}) walked away with **${coins.toLocaleString()}** coins :fire:`);
   }
 }

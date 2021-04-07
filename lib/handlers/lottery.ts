@@ -52,7 +52,7 @@ export class LotteryHandler extends EventEmitter {
     let catchup = first;
     let now = new Date();
 
-    return setTimeout(async () => {
+    return this.client.setTimeout(async () => {
       // The 60-second tick
       const tick = `${now.getHours()}:${LotteryHandler.pad(now.getMinutes())}`;
       const remaining = 60 - now.getMinutes();
@@ -67,9 +67,7 @@ export class LotteryHandler extends EventEmitter {
       // Tick
       if (now.getSeconds() === 0) {
         const __tick__ = this.emit('tick', this, tick, remaining);
-        if (!this.ticked) {
-          this.ticked = __tick__;
-        }
+        if (!this.ticked) this.ticked = __tick__;
       }
 
       // Roll Interval at HH:00 (0 minutes) for interval
@@ -84,7 +82,7 @@ export class LotteryHandler extends EventEmitter {
   async runInterval() {
     let now = new Date();
 
-    return setTimeout(async () => {
+    return this.client.setTimeout(async () => {
       const { winner, coins, raw } = await this.roll();
       this.emit('roll', this, winner, coins, raw);
       return await this.runInterval();
@@ -115,7 +113,7 @@ export class LotteryHandler extends EventEmitter {
     const randomNumber = (a: number, b: number) => Math.floor(Math.random() * (max - min + 1) + min);
     
     let odds = Math.random();
-    let coins = randomNumber(min / 100, max / 100);
+    let coins = randomNumber(min, max);
     let raw = coins;
     let multi: number;
 
@@ -138,8 +136,7 @@ export class LotteryHandler extends EventEmitter {
 
     multi = getMulti();
     coins += Math.ceil(coins * (multi / 100));
-    coins = (coins > (cap / 1e3)) ? ((cap + 1) / 1e3) : coins;
-    coins *= 1e3; raw *= 1e3;
+    coins = Math.min(cap, coins);
 
     return { coins, raw, multi };
   }
