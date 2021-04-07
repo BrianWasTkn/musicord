@@ -14,9 +14,16 @@ export default class LottoListener extends Listener {
   	const chan = await this.client.channels.fetch(handler.channel) as TextChannel;
   	const req = await guild.roles.fetch(handler.requirement);
 
-  	return this.client.util.console({
-  		klass: 'Lottery', type: 'def',
-  		msg: `Host Guild: ${guild.name}\nChannel: ${chan.name}\nRole: ${req.name}`
-  	});
+    const msgs = [
+      `Host Guild: ${guild.name}`,
+      `Channel: ${chan.name}`,
+      `Role: ${req.name}`,
+    ];
+
+    for (const msg of msgs) {
+      this.client.util.console({ 
+        msg, klass: 'Lottery', type: 'def'
+      });
+    }
   }
 }
