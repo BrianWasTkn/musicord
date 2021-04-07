@@ -20,18 +20,6 @@ export default class LottoListener extends Listener {
   	const chan = guild.channels.cache.get(handler.channel) as TextChannel;
   	const req = guild.roles.cache.get(handler.requirement);
 
-  	await chan.send({ 
-  		content: winner.user.toString(), 
-  		embed: {
-	  		title: 'Lottery Winner',
-	  		color: 'GOLD',
-	  		description: `**${winner.user.tag}** won **${coins.toLocaleString()} (${raw.toLocaleString()} original) coins** from a **\`${multi}%\`** multiplier.`,
-	  		thumbnail: { url: winner.user.avatarURL({ dynamic: true }) },
-	  		footer: { 
-	  			text: `${this.client.user.username} — Draws Occur Hourly.`,
-	  			iconURL: this.client.user.avatarURL()
-	  		}
-	  	}
-	  });
+    await chan.send(`${winner.user.tag} (${winner.user.toString()}) walked away with **${coins.toLocaleString()}** coins :fire:`);
   }
 }
