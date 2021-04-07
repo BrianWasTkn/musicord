@@ -68,6 +68,7 @@ export class LotteryHandler extends EventEmitter {
       if (now.getSeconds() === 0) {
         const __tick__ = this.emit('tick', this, tick, remaining);
         if (!this.ticked) this.ticked = __tick__;
+        if (this.ticked) this.runInterval.call(this);
       }
 
       // Roll Interval at HH:00 (0 minutes) for interval
