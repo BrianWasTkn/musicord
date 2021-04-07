@@ -72,9 +72,9 @@ export class LotteryHandler extends EventEmitter {
       }
 
       // Roll Interval at HH:00 (0 minutes) for interval
-      if (this.ticked && now.getMinutes() === 0) {
-        this.runInterval.call(this);
-      }
+      // if (this.ticked && now.getMinutes() === 0) {
+      //   this.runInterval.call(this);
+      // }
 
       return this.tick(false);
     }, ((60 - now.getSeconds()) * 1e3) - now.getMilliseconds());
