@@ -92,7 +92,7 @@ export class LotteryHandler extends EventEmitter {
 
   async roll() {
     const guild = await this.client.guilds.fetch(this.guild);
-    const members = await guild.members.fetch();
+    const members = guild.members.cache.array();
 
     const { randomNumber, randomInArray } = this.client.util;
     const { cap, min, max } = this.rewards;
