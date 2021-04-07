@@ -16,8 +16,8 @@ export const lottoConfig: LottoConfig = {
 	requirementID: '692517500814098462',
 	interval: 1000 * 60 * 60 * 6,
 	rewards: {
-		min: 1e5,
-		max: 1e6,
+		min: 100000,
+		max: 1000000,
 		cap: 1.5e6
 	}
 }
