@@ -59,15 +59,15 @@ export class LotteryHandler extends EventEmitter {
 
       // Immediate roll if catching up (let's say, bot login)
       if (catchup) {
-        const { winner, coins, raw } = await this.roll();
-        this.emit('roll', this, winner, coins, raw);
+        const { winner, coins, raw, multi } = await this.roll();
+        this.emit('roll', this, winner, coins, raw, multi);
         catchup = false;
       }
 
       // Tick
       if (now.getSeconds() === 0) {
         const __tick__ = this.emit('tick', this, tick, remaining);
-        if (!this.ticked) this.ticked = __tick__;
+        if (!this.ticked) this.ticked = true;
       }
 
       // Roll Interval at HH:00 (0 minutes) for interval
@@ -75,16 +75,16 @@ export class LotteryHandler extends EventEmitter {
         this.runInterval.call(this);
       }
 
-      return await this.tick(false);
+      return this.tick(false);
     }, ((60 - now.getSeconds()) * 1e3) - now.getMilliseconds());
   }
 
-  async runInterval() {
+  runInterval() {
     return setTimeout(async () => {
-      const { winner, coins, raw } = await this.roll();
-      this.emit('roll', this, winner, coins, raw);
+      const { winner, coins, raw, multi } = await this.roll();
+      this.emit('roll', this, winner, coins, raw, multi);
       console.log({ winner, coins, raw }); // debug
-      return await this.runInterval();
+      return this.runInterval();
     }, this.interval);
   }
 
