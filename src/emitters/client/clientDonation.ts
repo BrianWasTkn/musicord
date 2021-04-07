@@ -81,7 +81,7 @@ async function handleDonation(
       const r = results.join('\n');
       await chan.send({
         content: `${role.toString()} ${msg.author.toString()}`,
-        allowedMentions: { roles: [role.id] },
+        allowedMentions: { roles: [role.id], users: [msg.author.id] },
         embed: {
           description: r,
           title: `${type.charAt(0).toUpperCase() + type.slice(1)} Donation`,

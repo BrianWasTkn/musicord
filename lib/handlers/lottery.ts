@@ -52,7 +52,7 @@ export class LotteryHandler extends EventEmitter {
     let catchup = first;
     let now = new Date();
 
-    return this.client.setTimeout(async () => {
+    return setTimeout(async () => {
       // The 60-second tick
       const tick = `${now.getHours()}:${LotteryHandler.pad(now.getMinutes())}`;
       const remaining = 60 - now.getMinutes();
@@ -68,21 +68,19 @@ export class LotteryHandler extends EventEmitter {
       if (now.getSeconds() === 0) {
         const __tick__ = this.emit('tick', this, tick, remaining);
         if (!this.ticked) this.ticked = __tick__;
-        if (this.ticked) this.runInterval.call(this);
-        console.log({ ticked: this.ticked, __tick__ });
       }
 
       // Roll Interval at HH:00 (0 minutes) for interval
-      // if (this.ticked && now.getMinutes() === 0) {
-      //   this.runInterval.call(this);
-      // }
+      if (this.ticked) {
+        this.runInterval.call(this);
+      }
 
-      return this.tick(false);
+      return await this.tick(false);
     }, ((60 - now.getSeconds()) * 1e3) - now.getMilliseconds());
   }
 
   async runInterval() {
-    return this.client.setTimeout(async () => {
+    return setTimeout(async () => {
       const { winner, coins, raw } = await this.roll();
       this.emit('roll', this, winner, coins, raw);
       console.log({ winner, coins, raw }); // debug
