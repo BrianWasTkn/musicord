@@ -3,8 +3,6 @@ import { MessageOptions } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
 import { UserPlus } from '@lib/extensions/user';
 import { Command } from '@lib/handlers/command';
-import Model from '@lib/mongo/currency/model';
-
 import Mongo, { Document } from 'mongoose';
 
 export default class Currency extends Command {
@@ -56,7 +54,7 @@ export default class Currency extends Command {
     const mebDocs = (await msg.guild.members.fetch({ force: true })).array().map(({ user }) => documents.find(doc => doc.userID === user.id));
     const abcde = mebDocs.filter(Boolean).filter(m => m.pocket > 0).sort((a, b) => b.pocket - a.pocket).slice(0, 10);
     const filt = (await Promise.all(abcde.map(async d => ({
-      member: await msg.guild.members.fetch(d.userID),
+      member: await msg.guild.members.fetch({ user: d.userID, force: true }),
       pocket: d.pocket
     })))).filter(m => !m.member.user.bot);
 

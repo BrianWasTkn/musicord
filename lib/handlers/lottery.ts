@@ -1,59 +1,145 @@
-import type { QuestOptions, QuestReward } from '@lib/interface/handlers/quest';
-import type { MessagePlus } from '@lib/extensions/message';
-import type { LottoConfig } from '@config/lottery';
-import type { Collection } from 'discord.js';
-import type { Lava } from '../Lava';
-import {
-  AkairoHandlerOptions,
-  AkairoModuleOptions,
-  AkairoHandler,
-  AkairoModule,
-  Category,
-} from 'discord-akairo';
+import { Collection, GuildMember, TextChannel, Guild, Role } from 'discord.js';
+import { QuestOptions, QuestReward } from '@lib/interface/handlers/quest';
+import { EventEmitter } from 'events';
+import { MessagePlus } from '@lib/extensions/message';
+import { LottoConfig } from '@config/lottery';
+import { Lava } from '../Lava';
 
-export class Lottery extends AkairoModule {
-  handler: LotteryHandler<Lottery>;
-
-  constructor(id: string, opt: AkairoModuleOptions) {
-    const { category } = opt;
-    super(id, { category });
-  }
-}
-
-export class LotteryHandler<LotteryModule extends Lottery> extends AkairoHandler {
-  categories: Collection<string, Category<string, LotteryModule>>;
-  modules: Collection<string, LotteryModule>;
+export class LotteryHandler extends EventEmitter {
   client: Lava;
 
-  requirementID: string;
-  channnelID: string;
+  ticked: boolean;
+
+  requirement: string;
   interval: number;
   rewards: LottoConfig['rewards'];
-  guildID: string;
+  channel: string;
+  guild: string;
 
-  constructor(
-    client: Lava,
-    {
-      directory = './src/items',
-      extensions = ['.js', '.ts'],
-      classToHandle = Lottery,
-      automateCategories = true,
-    }: AkairoHandlerOptions
-  ) {
-    super(client, {
-      directory,
-      classToHandle,
-      automateCategories,
-    });
-
+  constructor(client: Lava) {
+    super();
+    this.client = client;
+    this.ticked = false;
     this.prepare();
   }
 
   prepare() {
-  	this.client.once('ready', async () => {
-  		for (const [k, v] of Object.entries(this.client.config.lottery)) {
-  			this[k] = v;
-  		}
+  	return this.client.once('ready', async () => {
+      const { channelID, guildID, interval, rewards, requirementID } = this.client.config.lottery;
+  		
+      this.requirement = requirementID;
+      this.interval = Number(interval);
+      this.channel = channelID;
+      this.rewards = rewards;
+      this.guild = guildID;
+
+      this.emit('patch', this);
+      await this.startClock(new Date());
   	});
+  }
+
+  startClock(date: Date) {
+    const left = 60 - date.getMinutes();
+    this.client.util.console({ 
+      type: 'def', klass: 'Lottery',
+      msg: `Lotto clock starting in ${left} minutes.` 
+    });
+
+    return this.tick(Boolean(left));
+  }
+
+  async tick(first: boolean) {
+    let catchup = first;
+    let now = new Date();
+
+    return setTimeout(async () => {
+      // The 60-second tick
+      const tick = `${now.getHours()}:${LotteryHandler.pad(now.getMinutes())}`;
+      const remaining = 60 - now.getMinutes();
+
+      // Immediate roll if catching up (let's say, bot login)
+      if (catchup) {
+        const { winner, coins, raw } = await this.roll();
+        this.emit('roll', this, winner, coins, raw);
+        catchup = false;
+      }
+
+      // Tick
+      if (now.getSeconds() === 0) {
+        const __tick__ = this.emit('tick', this, tick, remaining);
+        if (!this.ticked) {
+          this.ticked = __tick__;
+        }
+      }
+
+      // Roll Interval at HH:00 (0 minutes) for interval
+      if (this.ticked && now.getMinutes() === 0) {
+        this.runInterval.call(this);
+      }
+
+      return this.tick(false);
+    }, ((60 - now.getSeconds()) * 1e3) - now.getMilliseconds());
+  }
+
+  async runInterval() {
+    let now = new Date();
+
+    return setTimeout(async () => {
+      const { winner, coins, raw } = await this.roll();
+      this.emit('roll', this, winner, coins, raw);
+      return await this.runInterval();
+    }, this.interval);
+  }
+
+  async roll() {
+    const guild = await this.client.guilds.fetch(this.guild);
+    const members = await guild.members.fetch();
+
+    const { randomNumber, randomInArray } = this.client.util;
+    const { cap, min, max } = this.rewards;
+    const { requirement } = this;
+
+    const { coins, raw, multi } = LotteryHandler.calcCoins(min, max, cap);
+    const hasRole = (m: GuildMember, r: string) => m.roles.cache.has(r) && !m.user.bot;
+    const winner = randomInArray([...members.values()].filter(m => hasRole(m, requirement)));
+
+    return { winner, coins, raw, multi };
+  }
+
+  static pad(int: number): string {
+    if (int < 10) return `0${int}`;
+    else return int.toString();
+  }
+
+  static calcCoins(min: number, max: number, cap: number) {
+    const { randomNumber } = this.prototype.client.util;
+    let odds = Math.random();
+    let coins = randomNumber(min / 100, max / 100);
+    let raw = coins;
+    let multi: number;
+
+    function getMulti() {
+      switch(true) {
+        case odds > 0.9:
+          return randomNumber(91, 100); // 10 (differences for all odds)
+        case odds > 0.8:
+          return randomNumber(76, 90); // 15
+        case odds > 0.6:
+          return randomNumber(51, 75); // 25
+        case odds > 0.5:
+          return randomNumber(26, 50); // 25
+        case odds > 0.3:
+          return randomNumber(11, 25); // 15
+        default:
+          return randomNumber(1, 10); // 10
+      }
+    }
+
+    multi = getMulti();
+    coins += Math.ceil(coins * (multi / 100));
+    coins = (coins * 1e3 > cap) ? ((cap + 1) / 1e3) : coins;
+    coins *= 1e3; raw *= 1e3;
+
+    return { coins, raw, multi };
   }
 }

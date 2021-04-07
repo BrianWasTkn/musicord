@@ -43,8 +43,12 @@ export class UserPlus extends User {
             eff.addBlackjackWinnings(0.5);
             break;
           case 'dragon': 
-            if (Math.random() < 0.1 && inv.amount >= 1) inv.amount--;
-            else eff.addDiceRoll(1);
+            if (inv.amount >= 1) {
+              eff.addDiceRoll(1);
+              if (Math.random() < 1) {
+                inv.amount--;
+              }
+            }
             break;
         }        
 

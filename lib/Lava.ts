@@ -10,6 +10,7 @@ import { Util } from './utility/util';
 import { join } from 'path';
 import {
   ListenerHandler,
+  LotteryHandler,
   CommandHandler,
   SpawnHandler,
   QuestHandler,
@@ -39,6 +40,7 @@ interface DB {
 interface Handlers {
   emitter: ListenerHandler<Listener>;
   command: CommandHandler<Command>;
+  lottery: LotteryHandler;
   spawn: SpawnHandler<Spawn>;
   quest: QuestHandler<Quest>;
   item: ItemHandler<Item>;
@@ -74,13 +76,14 @@ export class Lava extends AkairoClient {
       item: new ItemHandler<Item>(this, {
         directory: join(__dirname, '..', 'src', 'items'),
       }),
+      lottery: new LotteryHandler(this)
     };
   }
 
   patch() {
-    const { command, emitter, spawn, quest, item } = this.handlers;
+    const { command, lottery, emitter, spawn, quest, item } = this.handlers;
     command.useListenerHandler(emitter);
-    emitter.setEmitters({ command, emitter, spawn, quest, item });
+    emitter.setEmitters({ command, lottery, emitter, spawn, quest, item });
     command.resolver.addTypes(argTypes(this));
 
     const handlers = {
