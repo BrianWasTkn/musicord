@@ -112,7 +112,8 @@ export class LotteryHandler extends EventEmitter {
   }
 
   static calcCoins(min: number, max: number, cap: number) {
-    const { randomNumber } = this.prototype.client.util;
+    const randomNumber = (a: number, b: number) => Math.floor(Math.random() * (max - min + 1) + min);
+    
     let odds = Math.random();
     let coins = randomNumber(min / 100, max / 100);
     let raw = coins;
