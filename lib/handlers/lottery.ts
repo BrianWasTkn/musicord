@@ -8,6 +8,8 @@ import { Lava } from '../Lava';
 export class LotteryHandler extends EventEmitter {
   client: Lava;
 
+  lastRoll: number;
+  nextRoll: number;
   ticked: boolean;
 
   requirement: string;
@@ -32,6 +34,8 @@ export class LotteryHandler extends EventEmitter {
       this.channel = channelID;
       this.rewards = rewards;
       this.guild = guildID;
+
+      this.nextRoll = Date.now() + this.interval;
 
       this.emit('patch', this);
       await this.startClock(new Date());
@@ -65,13 +69,12 @@ export class LotteryHandler extends EventEmitter {
       }
 
       // Tick
-      let ticked = false;
       if (now.getSeconds() === 0) {
-        ticked = this.emit('tick', this, tick, remaining);
+        this.ticked = this.emit('tick', this, tick, remaining);
       }
 
       // Roll Interval at HH:00 (0 minutes) for interval
-      if (ticked) {
+      if (this.ticked && Date.now() >= this.nextRoll) {
         this.runInterval.call(this);
       }
 
@@ -83,7 +86,8 @@ export class LotteryHandler extends EventEmitter {
     return setTimeout(async () => {
       const { winner, coins, raw, multi } = await this.roll();
       this.emit('roll', this, winner, coins, raw, multi);
-      console.log({ winner, coins, raw }); // debug
+      this.nextRoll += this.interval;
+      this.lastRoll = Date.now();
       return this.runInterval();
     }, this.interval);
   }
