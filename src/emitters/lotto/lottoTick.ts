@@ -14,10 +14,7 @@ export default class LottoListener extends Listener {
   	minLeft: string, 
   	remain: number
   ) {
-  	const guild = this.client.guilds.cache.get(handler.guild);
-  	const chan = guild.channels.cache.get('789692296094285825') as TextChannel;
-  	const req = guild.roles.cache.get(handler.requirement);
-
+  	const chan = await this.client.channels.fetch('789692296094285825') as TextChannel;
   	await chan.send(`**Tick:** ${minLeft}\n**Mins Left:** ${remain}`);
   }
 }
