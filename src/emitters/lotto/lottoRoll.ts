@@ -16,11 +16,11 @@ export default class LottoListener extends Listener {
   	raw: number,
   	multi: number
   ): Promise<void> {
-  	const guild = this.client.guilds.cache.get(handler.guild);
-  	const chan = guild.channels.cache.get(handler.channel) as TextChannel;
-  	const req = guild.roles.cache.get(handler.requirement);
+  	const guild = await this.client.guilds.fetch(handler.guild);
+  	const chan = await this.client.channels.fetch(handler.channel) as TextChannel;
+  	const req = await guild.roles.fetch(handler.requirement);
 
-    coins = Math.round(coins / 1e3) * 1e3;
-    await chan.send(`**${winner.user.tag}** (${winner.user.toString()}) walked away with **${coins.toLocaleString()}** coins :fire:`);
+    coins = (Math.round(coins / 1e3) * 1e3) + 1;
+    await chan.send(`**${winner.user.tag}** (${winner.user.toString()}) walked away with **${coins.toLocaleString()} (${raw.toLocaleString()} original)** coins :fire:`);
   }
 }

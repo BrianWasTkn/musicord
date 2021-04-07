@@ -19,6 +19,6 @@ export const lottoConfig: LottoConfig = {
 	rewards: {
 		min: 100000,
 		max: 1000000,
-		cap: 1.5e6
+		cap: 25e5
 	}
 }
