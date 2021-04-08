@@ -41,9 +41,9 @@ export default class Currency extends Command {
     const queue = this.client.util.cmdQueue;
     const id = msg.author.id;
 
-    queue.set(id, true); // exploit protection
+    // queue.set(id, true); // exploit protection
     const ret = await item.use(msg);
-    if (queue.has(id)) queue.delete(id);
+    // if (queue.has(id)) queue.delete(id);
 
     if (ret.constructor === String) return ret as string;
 
