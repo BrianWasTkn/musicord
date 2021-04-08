@@ -147,6 +147,7 @@ export class CommandHandler<
       try {
         const returned = await command.exec(message, args); // expect all commands to return strings or embed objects
         this.emit(Events.COMMAND_FINISHED, message, command, args, returned);
+        if (!returned) return;
         await message.channel.send(returned as MessageOptions);
 
         // Command Queue
