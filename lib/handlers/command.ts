@@ -131,12 +131,17 @@ export class CommandHandler<
     const { cmdQueue } = this.client.util;
 
     // Command Queue
-    const inQueue = cmdQueue.find(q => q.user === message.author.id && q.cmd === command.id &&!q.next);
-    if (inQueue) return cmdQueue.push({ 
-      user: message.author.id, 
-      args, next: true,
-      cmd: command.id, 
-    });
+    const inQueue = cmdQueue.find(q => q.user === message.author.id);
+    if (inQueue) {
+      if (inQueue.cmd[0] === command.id) {
+        return inQueue.cmd.push(command.id);
+      }
+
+      return cmdQueue.push({ 
+        user: message.author.id, 
+        args, cmd: [command.id], 
+      });
+    }
 
     if (this.commandTyping || command.typing) {
       message.channel.startTyping();
@@ -153,7 +158,7 @@ export class CommandHandler<
         // Command Queue
         const nextCmd = cmdQueue.shift();
         if (!nextCmd) return;
-        return await this.runCommand(message, this.modules.get(nextCmd.cmd), nextCmd.args);
+        return await this.runCommand(message, this.modules.get(nextCmd.cmd[0]), nextCmd.args);
       } catch (error) {
         this.emit('commandError', message, command, args, error);
       }

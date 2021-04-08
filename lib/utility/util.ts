@@ -20,14 +20,14 @@ import chalk from 'chalk';
 import moment from 'moment';
 
 interface CommandQueueData {
-  next: boolean;
+  ready: boolean;
   user: string;
   args: any;
-  cmd: string;
+  cmd: string[];
 }
 
 export class Util extends ClientUtil {
-  cmdQueue: CommandQueueData[];
+  cmdQueue: Partial<CommandQueueData>[];
   effects: Collection<string, Collection<string, Effects>>;
   events: Collection<string, string>;
   heists: Collection<string, Role>;
