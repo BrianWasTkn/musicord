@@ -128,25 +128,6 @@ export class CommandHandler<
     command: CommandModule,
     args: any[]
   ): Promise<any> {
-    const { cmdQueue } = this.client.util;
-
-    // Command Queue
-    const inQueue = cmdQueue.find(q => q.user === message.author.id);
-    if (inQueue) {
-      if (inQueue.cmd[0] === command.id) {
-        return inQueue.cmd.push(command.id);
-      }
-
-      return cmdQueue.push({ 
-        user: message.author.id, 
-        args, cmd: [command.id], 
-      });
-    }
-
-    if (this.commandTyping || command.typing) {
-      message.channel.startTyping();
-    }
-
     try {
       this.emit(Events.COMMAND_STARTED, message, command, args);
       try {
@@ -154,11 +135,6 @@ export class CommandHandler<
         this.emit(Events.COMMAND_FINISHED, message, command, args, returned);
         if (!returned) return;
         await message.channel.send(returned as MessageOptions);
-
-        // Command Queue
-        const nextCmd = cmdQueue.shift();
-        if (!nextCmd) return;
-        return await this.runCommand(message, this.modules.get(nextCmd.cmd[0]), nextCmd.args);
       } catch (error) {
         this.emit('commandError', message, command, args, error);
       }
