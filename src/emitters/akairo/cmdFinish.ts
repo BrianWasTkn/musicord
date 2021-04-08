@@ -16,7 +16,7 @@ export default class CommandListener extends Listener {
     command: Command,
     args: any[],
     returned: MessageOptions | Promise<MessageOptions>
-  ): Promise<void | MessagePlus | MessagePlus[]> {
+  ) {
     if (!returned) return;
 
     const data = await msg.author.fetchDB();
@@ -24,6 +24,7 @@ export default class CommandListener extends Listener {
     data.lastCmd = command.aliases[0];
     await data.save();
     
-    (await msg.channel.send(returned as MessageOptions)) as MessagePlus;
+    // (await msg.channel.send(returned as MessageOptions)) as MessagePlus;
+    return this.client.handlers.command.commandUtils.delete(msg.id);
   }
 }

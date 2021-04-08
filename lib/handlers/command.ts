@@ -127,12 +127,12 @@ export class CommandHandler<
     message: MessagePlus,
     command: CommandModule,
     args: any[]
-  ): Promise<void> {
-    const { util } = this.client;
+  ): Promise<any> {
+    const { cmdQueue } = this.client.util;
 
-    if (util.cmdQueue.has(message.author.id)) {
-      return;
-    }
+    // Command Queue
+    const inQueue = cmdQueue.find(q => q.user === message.author.id);
+    if (inQueue) return cmdQueue.push({ user: message.author.id, cmd: command.id, args });
 
     if (this.commandTyping || command.typing) {
       message.channel.startTyping();
@@ -143,6 +143,12 @@ export class CommandHandler<
       try {
         const returned = await command.exec(message, args); // expect all commands to return strings or embed objects
         this.emit(Events.COMMAND_FINISHED, message, command, args, returned);
+        await message.channel.send(returned as MessageOptions);
+
+        // Command Queue
+        const nextCmd = cmdQueue.shift();
+        if (!nextCmd) return;
+        return await this.runCommand(message, this.modules.get(nextCmd.cmd), nextCmd.args);
       } catch (error) {
         this.emit('commandError', message, command, args, error);
       }

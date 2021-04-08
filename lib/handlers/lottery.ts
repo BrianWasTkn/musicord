@@ -8,6 +8,7 @@ import { Lava } from '../Lava';
 export class LotteryHandler extends EventEmitter {
   client: Lava;
 
+  intIsRunning: boolean;
   lastRoll: number;
   nextRoll: number;
   ticked: boolean;
@@ -35,7 +36,8 @@ export class LotteryHandler extends EventEmitter {
       this.rewards = rewards;
       this.guild = guildID;
 
-      this.nextRoll = Date.now() + this.interval;
+      this.intIsRunning = false;
+      this.ticked = false;
 
       this.emit('patch', this);
       await this.startClock(new Date());
@@ -52,8 +54,9 @@ export class LotteryHandler extends EventEmitter {
     return this.tick(Boolean(left));
   }
 
-  async tick(first: boolean) {
+  tick(first: boolean) {
     let catchup = first;
+    let ticked = false;
     let now = new Date();
 
     return setTimeout(async () => {
@@ -70,11 +73,12 @@ export class LotteryHandler extends EventEmitter {
 
       // Tick
       if (now.getSeconds() === 0) {
-        this.ticked = this.emit('tick', this, tick, remaining);
+        if (!this.ticked) this.ticked = this.emit('tick', this, tick, remaining);
+        else this.emit('tick', this, tick, remaining);
       }
 
       // Roll Interval at HH:00 (0 minutes) for interval
-      if (this.ticked && Date.now() >= this.nextRoll) {
+      if (!this.intIsRunning && this.ticked) {
         this.runInterval.call(this);
       }
 
@@ -86,21 +90,23 @@ export class LotteryHandler extends EventEmitter {
     return setTimeout(async () => {
       const { winner, coins, raw, multi } = await this.roll();
       this.emit('roll', this, winner, coins, raw, multi);
-      this.nextRoll += this.interval;
-      this.lastRoll = Date.now();
+      const isRunning = this.intIsRunning;
+      if (!isRunning) this.intIsRunning = true;
       return this.runInterval();
     }, this.interval);
   }
 
   async roll() {
-    const guild = await this.client.guilds.fetch(this.guild);
+    const { guilds } = this.client;
+    const guild = !guilds.cache.has(this.guild) 
+      ? await this.client.guilds.fetch(this.guild, true, true)
+      : guilds.cache.get(this.guild);
     const members = guild.members.cache.array();
 
     const { randomNumber, randomInArray } = this.client.util;
-    const { cap, min, max } = this.rewards;
     const { requirement } = this;
 
-    const { coins, raw, multi } = LotteryHandler.calcCoins(min, max, cap);
+    const { coins, raw, multi } = LotteryHandler.calcCoins(this.rewards);
     const hasRole = (m: GuildMember, r: string) => m.roles.cache.has(r) && !m.user.bot;
     const winner = randomInArray([...members.values()].filter(m => hasRole(m, requirement)));
 
@@ -112,11 +118,12 @@ export class LotteryHandler extends EventEmitter {
     else return int.toString();
   }
 
-  static calcCoins(min: number, max: number, cap: number) {
-    const randomNumber = (a: number, b: number) => Math.floor(Math.random() * (max - min + 1) + min);
-    
+  static calcCoins(args: LottoConfig['rewards']) {
+    const randomNumber = (a: number, b: number) => Math.floor(Math.random() * (a - b + 1) + a);
+
+    const { base, cap } = args;
     let odds = Math.random();
-    let coins = randomNumber(min, max) * Math.floor(Math.random() + 0.3);
+    let coins = Math.ceil(args.base * (Math.random() + 0.3));
     let raw = coins;
     let multi: number;
 
@@ -139,7 +146,7 @@ export class LotteryHandler extends EventEmitter {
 
     multi = getMulti();
     coins += Math.ceil(coins * (multi / 100));
-    coins = Math.min(cap, coins);
+    coins = Math.min(cap + 1, coins);
 
     return { coins, raw, multi };
   }
