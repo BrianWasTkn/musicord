@@ -131,8 +131,12 @@ export class CommandHandler<
     const { cmdQueue } = this.client.util;
 
     // Command Queue
-    const inQueue = cmdQueue.find(q => q.user === message.author.id);
-    if (inQueue) return cmdQueue.push({ user: message.author.id, cmd: command.id, args });
+    const inQueue = cmdQueue.find(q => q.user === message.author.id && q.cmd === command.id &&!q.next);
+    if (inQueue) return cmdQueue.push({ 
+      user: message.author.id, 
+      args, next: true,
+      cmd: command.id, 
+    });
 
     if (this.commandTyping || command.typing) {
       message.channel.startTyping();

@@ -20,6 +20,7 @@ import chalk from 'chalk';
 import moment from 'moment';
 
 interface CommandQueueData {
+  next: boolean;
   user: string;
   args: any;
   cmd: string;
@@ -38,6 +39,7 @@ export class Util extends ClientUtil {
     this.heists = new Collection();
     this.events = new Collection();
     this.effects = new Collection();
+    this.cmdQueue = [];
 
     for (const color of Object.keys(COLORS)) {
       require('discord.js').Constants.Colors[color.toUpperCase()] =
