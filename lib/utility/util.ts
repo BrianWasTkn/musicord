@@ -79,7 +79,7 @@ export class Util extends ClientUtil {
   };
 
   // dankmemer.lol/source
-  parseTime = (time: number): string[] => {
+  parseTime = (time: number, formatted?: boolean): string => {
     const methods = [
       { name: 'days', count: 86400 },
       { name: 'hours', count: 3600 },
@@ -97,7 +97,14 @@ export class Util extends ClientUtil {
       timeStr.push(calced.toString() + ' ' + methods[i + 1].name);
     }
 
-    return timeStr.filter((g) => !g.startsWith('0'));
+    if (formatted) {
+      const ret = timeStr.filter((g) => !g.startsWith('0'));
+      const lastInd = ret.pop();
+      const other = [ret.join(', '), lastInd].join(' and ');
+      return other;
+    }
+
+    return timeStr.filter((g) => !g.startsWith('0')).join(', ');
   };
 
   isPromise = (something: any): boolean => {

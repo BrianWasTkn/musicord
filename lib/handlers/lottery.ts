@@ -143,7 +143,7 @@ export class LotteryHandler extends EventEmitter {
 
     multi = getMulti();
     coins += Math.round(coins * (multi / 100));
-    coins = Math.min(cap + 1, Math.round(coins / 1e3) * 1e3);
+    coins = Math.min(cap + 1, coins * 1e3);
 
     return { coins, raw, multi };
   }
