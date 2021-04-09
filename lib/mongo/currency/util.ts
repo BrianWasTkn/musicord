@@ -15,8 +15,8 @@ import { Document } from 'mongoose';
 export const utils: CurrencyUtil = {
   /**
    * calc the multi of user
-   * @param Lava an extended instance of akairo client
-   * @param msg a discord msg obj
+   * @param {Lava} bot an extended instance of akairo client
+   * @param {MessagePlus} msg a discord msg obj
    * @returns {Promise<number>}
    */
   calcMulti: function CalcMulti(
@@ -24,6 +24,7 @@ export const utils: CurrencyUtil = {
     msg: MessagePlus,
     db: Document & CurrencyProfile
   ): { unlocked: string[]; total: number } {
+    const { maxMulti } = bot.config.currency;
     const channel = msg.channel as GuildChannel;
     let unlocked = [];
     let total = 0;
@@ -90,6 +91,7 @@ export const utils: CurrencyUtil = {
       unlocked.push(`${trophyItem.name} — \`${multi}%\``);
     }
 
+    total = Math.min(total, maxMulti);
     return { total, unlocked };
   },
 };

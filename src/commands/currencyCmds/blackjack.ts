@@ -33,11 +33,10 @@ export default class Currency extends Command {
     } = this.client;
 
     // Core
-    const { maxWin, maxMulti, maxBet, maxPocket } = currency;
+    const { maxWin, maxBet, maxPocket } = currency;
     const data = await msg.author.fetchDB();
     let { total: multi } = DB.utils.calcMulti(this.client, msg, data);
     const { amount: bet } = args;
-    if (multi >= maxMulti) multi = maxMulti as number;
     if (!bet) return;
 
     // Item Effects
