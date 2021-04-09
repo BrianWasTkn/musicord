@@ -124,15 +124,15 @@ export default class Currency extends Command {
       const jackpot = length === 1;
       const d = await msg.author
         .initDB(data)
-        .addPocket(winnings * 2)
+        .addPocket(winnings)
         .updateItems()
         .calcSpace()
         .db.save(); 
 
       color = jackpot ? (slots ? 'BLUE' : 'GOLD') : 'GREEN';
       state = jackpot ? (slots ? 'crazy' : 'jackpot') : 'winning';
-      description.push(`\nYou won **${(winnings * 2).toLocaleString()}**`);
-      description.push(`**Multiplier** \`x${(winnings * 2) / bet}\``);
+      description.push(`\nYou won **${winnings.toLocaleString()}**`);
+      description.push(`**Multiplier** \`x${Math.round(winnings / bet)}\``);
       description.push(`You now have **${d.pocket.toLocaleString()}**`);
     } else {
       const d = await msg.author
