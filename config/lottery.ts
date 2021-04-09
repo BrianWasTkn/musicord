@@ -4,8 +4,9 @@ export interface LottoConfig {
 	interval: number;
 	guildID: string;
 	rewards: {
-		base: number;
 		cap: number;
+		max: number;
+		min: number;
 	}
 }
 
@@ -16,7 +17,8 @@ export const lottoConfig: LottoConfig = {
 	requirementID: '692517500814098462',
 	interval: 1000 * 60 * 5,
 	rewards: {
-		base: 5e5,
 		cap: 25e5,
+		max: 1e6,
+		min: 5e5,
 	}
 }

@@ -118,9 +118,9 @@ export class LotteryHandler extends EventEmitter {
   static calcCoins(args: LottoConfig['rewards']) {
     const randomNumber = (a: number, b: number) => Math.floor(Math.random() * (a - b + 1) + a);
 
-    const { base, cap } = args;
+    const { min, max, cap } = args;
     let odds = Math.random();
-    let coins = Math.ceil(args.base * (Math.random() + 0.3));
+    let coins = randomNumber(min / 1e3, max / 1e3);
     let raw = Math.round(coins / 1e3) * 1e3;
     let multi: number;
 
@@ -142,7 +142,7 @@ export class LotteryHandler extends EventEmitter {
     }
 
     multi = getMulti();
-    coins += Math.ceil(coins * (multi / 100));
+    coins += Math.round(coins * (multi / 100));
     coins = Math.min(cap + 1, Math.round(coins / 1e3) * 1e3);
 
     return { coins, raw, multi };
