@@ -23,8 +23,7 @@ export default class Currency extends Command {
             return (
               resolver.type('number')(msg, phrase) ||
               resolver.type('questQuery')(msg, phrase) ||
-              phrase.toLowerCase().slice(0, 3) === 'stop' 
-                ? 'stop' : null
+              phrase.constructor === String ? phrase : null
             );
           },
         },
@@ -39,7 +38,7 @@ export default class Currency extends Command {
     const { quest: Handler } = this.client.handlers;
     const quests = Handler.modules.array();
 
-    if (typeof query === 'number') {
+    if (query.constructor === Number) {
       const quest = this.client.util.paginateArray(
         quests
           .sort((a, b) => a.diff - b.diff)
@@ -72,29 +71,30 @@ export default class Currency extends Command {
       }};
     }
 
+    const mods = this.client.handlers.quest.modules;
     const data = await msg.author.fetchDB();
-    const items = this.client.handlers.item.modules;
-    const q = data.quest;
 
     if (!query) {
-      return "That quest isn't even in the list what're you doing?";
+      return 'That isn\'t even a valid quest or page number bruh';
     }
-    if (data.quest.id && query !== 'stop') {
-      return "You already have an active quest going on!";
+
+    if (query instanceof Quest) {
+      const quest = data.quest;
+      quest.target = (query as Quest).target;
+      quest.count = 0;
+      quest.id = (query as Quest).id;
+      await data.save();
+
+      return { replyTo: msg.id, content: `You're now doing the **${(query as Quest).name}** quest!` };
     }
-    if (query === 'stop') {
-      const active = this.client.handlers.quest.modules.get(q.id);
-      q.target = 0;
-      q.count = 0;
-      q.id = '';
+
+    if (query.constructor === String && query.toLowerCase() === 'stop') {
+      const aq = data.quest;
+      const active = mods.get(aq.id);
+      aq.target = 0;
+      aq.count = 0;
+      aq.id = '';
       return `You now stopped your **${active.name}** quest, thanks for nothing idiot.`;
     }
-
-    q.target = (query as Quest).target;
-    q.count = 0;
-    q.id = (query as Quest).id;
-    await data.save();
-
-    return { replyTo: msg.id, content: `You're now doing the **${(query as Quest).name}** quest!` };
   }
 }
