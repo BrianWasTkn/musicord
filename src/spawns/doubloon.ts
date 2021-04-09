@@ -1,4 +1,4 @@
-import { SpawnConfig, SpawnVisual } from '@lib/interface/handlers/spawn';
+import { SpawnVisual } from '@lib/interface/handlers/spawn';
 import { GuildMember } from 'discord.js';
 import { Spawn } from '@lib/handlers/spawn';
 

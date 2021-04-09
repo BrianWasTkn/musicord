@@ -1,12 +1,8 @@
 import type { QuestOptions, QuestReward } from '@lib/interface/handlers/quest';
-import type { CurrencyProfile } from '@lib/interface/mongo/currency';
-import type { MessagePlus } from '@lib/extensions/message';
 import type { Collection } from 'discord.js';
-import type { Document } from 'mongoose';
 import type { Lava } from '../Lava';
 import {
   AkairoHandlerOptions,
-  AkairoModuleOptions,
   AkairoHandler,
   AkairoModule,
   Category,
@@ -17,9 +13,10 @@ export class Quest extends AkairoModule {
 
   rawDiff: QuestOptions['diff'];
   rewards: QuestReward;
+  target: number;
   diff: number;
   info: string;
-  name: string
+  name: string;
 
   constructor(
 		id: string, 
@@ -38,13 +35,14 @@ export class Quest extends AkairoModule {
     }
 
     this.rawDiff = opt.diff;
+    this.rewards = rew;
+    this.target = opt.target;
     this.diff = priority[opt.diff];
     this.info = opt.info;
     this.name = opt.name;
-    this.rewards = rew;
   }
 
-  check(msg: MessagePlus): any | Promise<any> {}
+  check(): any | Promise<any> {}
 }
 
 export class QuestHandler<QuestModule extends Quest> extends AkairoHandler {
@@ -56,7 +54,6 @@ export class QuestHandler<QuestModule extends Quest> extends AkairoHandler {
     client: Lava,
     {
       directory = './src/items',
-      extensions = ['.js', '.ts'],
       classToHandle = Quest,
       automateCategories = true,
     }: AkairoHandlerOptions

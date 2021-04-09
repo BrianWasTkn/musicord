@@ -10,11 +10,10 @@ export default class LottoListener extends Listener {
   }
 
   async exec(
-  	handler: LotteryHandler, 
+  	_: LotteryHandler, 
   	minLeft: string, 
   	remain: number
   ) {
-  	const chan = await this.client.channels.fetch('789692296094285825') as TextChannel;
-  	await chan.send(`**Tick:** ${minLeft}\n**Mins Left:** ${remain}`);
+    return console.log({ minLeft, remain });
   }
 }

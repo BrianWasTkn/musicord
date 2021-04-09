@@ -1,6 +1,5 @@
-import { Message, MessageOptions } from 'discord.js';
+import { MessageOptions } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
-import { Argument } from 'discord-akairo';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 import { Item } from '@lib/handlers/item';
@@ -68,13 +67,13 @@ export default class Currency extends Command {
         `**Item Price** — ${
           query.buyable
             ? query.cost.toLocaleString()
-            : '**cannot be purchased**'
+            : '**Not Purchaseable**'
         }`
       );
       info.push(
         `**Sell Price** — ${(query.sellable
           ? query.cost / 4
-          : '**cannot be sold**'
+          : '**Not Sellable**'
         ).toLocaleString()}`
       );
 

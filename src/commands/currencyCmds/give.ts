@@ -3,7 +3,6 @@ import { MessagePlus } from '@lib/extensions/message';
 import { UserPlus } from '@lib/extensions/user';
 import { Argument } from 'discord-akairo';
 import { Command } from '@lib/handlers/command';
-import { Embed } from '@lib/utility/embed';
 
 export default class Currency extends Command {
   constructor() {

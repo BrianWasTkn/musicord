@@ -17,7 +17,7 @@ export default class LottoListener extends Listener {
     const msgs = [
       `Host Guild: ${guild.name}`,
       `Channel: ${chan.name}`,
-      `Role: ${req.name}`,
+      `Role: ${req.name}`
     ];
 
     for (const msg of msgs) {

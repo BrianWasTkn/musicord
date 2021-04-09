@@ -1,7 +1,5 @@
 import { MessagePlus } from '@lib/extensions/message';
 import { Listener } from '@lib/handlers';
-import { Spawn } from '@lib/handlers/spawn';
-import { Lava } from '@lib/Lava';
 
 export default class ClientListener extends Listener {
   constructor() {

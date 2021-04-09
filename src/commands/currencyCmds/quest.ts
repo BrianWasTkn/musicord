@@ -1,6 +1,5 @@
-import { Message, MessageOptions } from 'discord.js';
+import { MessageOptions } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
-import { Argument } from 'discord-akairo';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 import { Quest } from '@lib/handlers/quest';
@@ -13,6 +12,7 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'View or enter a quest you want.',
       category: 'Currency',
+      ownerOnly: true,
       cooldown: 35e3,
       args: [
         {
@@ -22,7 +22,9 @@ export default class Currency extends Command {
             const { resolver } = this.handler;
             return (
               resolver.type('number')(msg, phrase) ||
-              resolver.type('questQuery')(msg, phrase)
+              resolver.type('questQuery')(msg, phrase) ||
+              phrase.toLowerCase().slice(0, 3) === 'stop' 
+                ? 'stop' : null
             );
           },
         },
@@ -32,11 +34,10 @@ export default class Currency extends Command {
 
   async exec(
     msg: MessagePlus,
-    { query }: { query: number | Quest }
+    { query }: { query: number | Quest | string }
   ): Promise<string | MessageOptions> {
     const { quest: Handler } = this.client.handlers;
     const quests = Handler.modules.array();
-    const embed = new Embed();
 
     if (typeof query === 'number') {
       const quest = this.client.util.paginateArray(
@@ -71,25 +72,29 @@ export default class Currency extends Command {
       }};
     }
 
+    const data = await msg.author.fetchDB();
+    const items = this.client.handlers.item.modules;
+    const q = data.quest;
+
     if (!query) {
       return "That quest isn't even in the list what're you doing?";
     }
-    
-    const data = await msg.author.fetchDB();
-    const inv = data.items.find((i) => i.id === query.id);
-    const items = this.client.handlers.item.modules;
-    const item = items.get(query.rewards.item[1]);
+    if (data.quest.id && query !== 'stop') {
+      return "You already have an active quest going on!";
+    }
+    if (query === 'stop') {
+      const active = this.client.handlers.quest.modules.get(q.id);
+      q.target = 0;
+      q.count = 0;
+      q.id = '';
+      return `You now stopped your **${active.name}** quest, thanks for nothing idiot.`;
+    }
 
-    let info: string[] = [];
-    info.push(`**Coins:** ${query.rewards.coins.toLocaleString()}`);
-    info.push(`**Items:** ${query.rewards.item[0]} ${item.emoji} ${item.name}`);
+    q.target = (query as Quest).target;
+    q.count = 0;
+    q.id = (query as Quest).id;
+    await data.save();
 
-    embed
-      .setTitle(`${query.name} — ${query.rawDiff}`)
-      .addField('Description', query.info)
-      .addField('Rewards', info.join('\n'))
-      .setColor('RANDOM');
-
-    return { embed };
+    return { replyTo: msg.id, content: `You're now doing the **${(query as Quest).name}** quest!` };
   }
 }

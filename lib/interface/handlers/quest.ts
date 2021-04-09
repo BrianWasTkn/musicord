@@ -4,6 +4,7 @@ import { Item } from '@lib/handlers/item'
 export type QuestDifficulty = 'Easy' | 'Medium' | 'Hard' | 'Difficult' | 'Extreme';
 
 export interface QuestOptions extends AkairoModuleOptions {
+  target: number;
   diff: QuestDifficulty;
   info: string;
   name: string;

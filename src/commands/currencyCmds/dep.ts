@@ -60,7 +60,6 @@ export default class Currency extends Command {
     }
   ): Promise<string | MessageOptions> {
     const d = await msg.author.fetchDB();
-    const embed: Embed = new Embed();
 
     if (!amount) 
       return 'You need something to deposit, bro.';

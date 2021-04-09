@@ -1,14 +1,11 @@
 import { ColorResolvable, MessageOptions, Collection } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
-import { Argument } from 'discord-akairo';
 import { Document } from 'mongoose';
 
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
-import { InventorySlot } from '@lib/interface/handlers/item';
 import { Command } from '@lib/handlers/command';
 import { Effects } from '@lib/utility/effects';
 import { Embed } from '@lib/utility/embed';
-import { Item } from '@lib/handlers/item';
 
 export default class Currency extends Command {
   constructor() {
@@ -35,9 +32,10 @@ export default class Currency extends Command {
       pizza: [1, 15, false],
       eggplant: [1, 20, false],
       peach: [1, 25, false],
-      flushed: [2, 50, true],
+      flushed: [2, 50, false],
       star2: [2, 75, true],
       fire: [3, 250, true],
+      clover: [10, 500, true]
     };
   }
 
@@ -89,10 +87,7 @@ export default class Currency extends Command {
     }
   ): Promise<string | MessageOptions> {
     const {
-      util,
       util: { effects },
-      config: { currency },
-      db: { currency: DB },
     } = this.client;
 
     // Check Args
@@ -123,7 +118,6 @@ export default class Currency extends Command {
     let description: string[] = [];
     let color: ColorResolvable = 'RED';
     let state: string = 'losing';
-    let db: Document & CurrencyProfile;
 
     description.push(outcome);
     if (length === 1 || length === 2) {
@@ -133,7 +127,7 @@ export default class Currency extends Command {
         .addPocket(winnings * 2)
         .updateItems()
         .calcSpace()
-        .db.save();
+        .db.save(); 
 
       color = jackpot ? (slots ? 'BLUE' : 'GOLD') : 'GREEN';
       state = jackpot ? (slots ? 'crazy' : 'jackpot') : 'winning';
@@ -195,7 +189,7 @@ export default class Currency extends Command {
       return { length, winnings };
     }
 
-    // includes one fire
+    // includes one op emoji
     if (slots.some(s => s === emojis[emojis.length - 1])) {
       return { length: 2, winnings: bet };
     }

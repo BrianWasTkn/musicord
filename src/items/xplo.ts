@@ -9,7 +9,7 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: true,
       emoji: ':bomb:',
-      info: 'Risk your current progress for a massive surprise.',
+      info: 'Get sweet treats by risking your coins or items.',
       name: "Xplosive's Bomb",
       cost: 690000,
     });
@@ -24,72 +24,49 @@ export default class PowerUp extends Item {
       content: `**${this.emoji} Fusing your bomb...**`,
       replyTo: msg.id,
     });
+
     await sleep(randomNumber(1, 5) * 1e3);
     let odds = randomNumber(1, 100);
 
     if (odds >= 60) {
+      const mods = this.client.handlers.item.modules.array().filter(i => i.cost >= 5e6);
       const items: { amt: number; item: Item }[] = [];
-      const coins = randomNumber(5e6, 100e6);
-      const mods = this.client.handlers.item.modules.array().filter(i => i.cost <= 50e6);
-      const rate = randomNumber(50, 500);
+      const coins = randomNumber(10, 100) * 1e6;
 
+      xplo.amount--;
       let e = 0;
+
       while (e <= randomNumber(1, 3)) {
-        const item = randomInArray(
-          mods.filter((m) => ![...items].some((it) => it.item.id === m.id))
-        );
-
-        const inv = data.items.find(i => i.id === item.id);
-        const amt = inv.amount + Math.round((inv.amount || 50) * (rate / 100));
-        items.push({ item, amt: amt >= 5e3 ? 5e3 : amt });
-
         e++;
+        items.push({ 
+          amt: randomNumber(1, 15), 
+          item: randomInArray(mods.filter((m) => {
+            return !items.some((it) => it.item.id === m.id);
+          })), 
+        });
       }
 
       const its = items
         .sort((a, b) => b.amt - a.amt)
         .map(({ amt, item }) => {
-          const total = data.items.find(i => i.id === item.id).amount + amt;
-          return `${item.emoji} ${item.name} — ${total.toLocaleString()} new total`
+          data.items.find(i => i.id === item.id).amount += amt;
+          return `\`${amt.toLocaleString()}\` ${item.emoji} ${item.name}`
         });
 
-      items.forEach(({ amt, item }) => {
-        data.items.find((i) => i.id === item.id).amount += amt
-      });
-
-      xplo.amount--;
       await msg.author.initDB(data).addPocket(coins).updateItems().db.save();
-
-      return `**__${this.emoji} ${msg.author.username}'s bomb__**\n**You got \`${coins.toLocaleString()}\` coins and got \`+${rate}%\` of these items into your inventory:**\n\n**${its.join('**\n**')}**`;
+      return `**__:slight_smile: Bomb contents for ${msg.author.toString()}__**\n${[`\`${coins.toLocaleString()} coins\``, ...its].join('\n')}`;
     }
 
-    const fine = randomNumber(0, data.pocket);
-    const items: { amt: number; item: Item }[] = [];
-    const inv = data.items.filter((i) => i.amount >= 2);
-    const rate = randomNumber(60, 100);
+    // Punishment: Clean one item from their inv and their pocket
+    const inv = randomInArray(data.items);
+    const item = this.client.handlers.item.modules.get(inv.id);
+    inv.amount = 0; xplo.amount--;
+    await msg.author
+      .initDB(data)
+      .setPocket(0)
+      .updateItems()
+      .db.save();
 
-    for (let e = 0; e < Math.floor(inv.length / 2); e++) {
-      const mod = this.client.handlers.item.modules.get(inv[e].id);
-      const it = data.items.find((i) => i.id === mod.id);
-      const amt = Math.round(it.amount * (rate / 100));
-      items.push({ item: mod, amt });
-    }
-
-    const its = items
-      .sort((a, b) => b.amt - a.amt)
-      .map(({ amt, item }) => {
-        const left = data.items.find(i => i.id === item.id).amount - amt;
-        return `${item.emoji} ${item.name} — ${left.toLocaleString()} left`;
-      });
-
-    items.forEach(({ amt, item }) => {
-      data.items.find((i) => i.id === item.id).amount -= amt;
-    });
-
-    xplo.amount--;
-    data.pocket -= fine;
-    await msg.author.initDB(data).updateItems().db.save();
-
-    return `**${this.emoji} ${msg.author.username}'s bomb FAILED :skull:**\n**You got fined \`${fine.toLocaleString()}\` coins and lost \`${rate}%\` of these items from your inventory**\n\n**${its.join('**\n**')}**`;
+    return `**LMAO you died from the bomb!**\nYou lost your WHOLE pocket and ALL your ${item.name} from your inventory.`;
   }
 }

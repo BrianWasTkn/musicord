@@ -19,7 +19,7 @@ export default class PowerUp extends Item {
     const data = await msg.author.fetchDB();
     const thicc = data.items.find((i) => i.id === this.id);
 
-    thicc.expire = Date.now() + 5 * 60 * 1000; // client.setTimeout just breaks this
+    thicc.expire = Date.now() + 10 * 60 * 1000; // client.setTimeout just breaks this
     thicc.amount--;
 
     await msg.author.initDB(data).updateItems().db.save();

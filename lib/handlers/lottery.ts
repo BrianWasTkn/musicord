@@ -40,7 +40,7 @@ export class LotteryHandler extends EventEmitter {
       this.ticked = false;
 
       this.emit('patch', this);
-      await this.startClock(new Date());
+      this.startClock(new Date());
   	});
   }
 
@@ -56,17 +56,17 @@ export class LotteryHandler extends EventEmitter {
 
   tick(first: boolean) {
     let catchup = first;
-    let ticked = false;
     let now = new Date();
 
     return setTimeout(async () => {
       // The 60-second tick
+      now = new Date(); // reassign to prevent infinite loops
       const tick = `${now.getHours()}:${LotteryHandler.pad(now.getMinutes())}`;
       const remaining = 60 - now.getMinutes();
 
       // Immediate roll if catching up (let's say, bot login)
       if (catchup) {
-        const { winner, coins, raw, multi } = await this.roll();
+        const { winner, coins, raw, multi } = this.roll();
         this.emit('roll', this, winner, coins, raw, multi);
         catchup = false;
       }
@@ -77,8 +77,9 @@ export class LotteryHandler extends EventEmitter {
         else this.emit('tick', this, tick, remaining);
       }
 
-      // Roll Interval at HH:00 (0 minutes) for interval
+      // Roll Interval (only once)
       if (!this.intIsRunning && this.ticked) {
+        this.intIsRunning = true;
         this.runInterval.call(this);
       }
 
@@ -87,20 +88,16 @@ export class LotteryHandler extends EventEmitter {
   }
 
   runInterval() {
-    return setTimeout(async () => {
-      const { winner, coins, raw, multi } = await this.roll();
+    return this.client.setTimeout(async () => {
+      const { winner, coins, raw, multi } = this.roll();
       this.emit('roll', this, winner, coins, raw, multi);
-      const isRunning = this.intIsRunning;
-      if (!isRunning) this.intIsRunning = true;
       return this.runInterval();
     }, this.interval);
   }
 
-  async roll() {
+  roll() {
     const { guilds } = this.client;
-    const guild = !guilds.cache.has(this.guild) 
-      ? await this.client.guilds.fetch(this.guild, true, true)
-      : guilds.cache.get(this.guild);
+    const guild = guilds.cache.get(this.guild);
     const members = guild.members.cache.array();
 
     const { randomNumber, randomInArray } = this.client.util;
@@ -124,7 +121,7 @@ export class LotteryHandler extends EventEmitter {
     const { base, cap } = args;
     let odds = Math.random();
     let coins = Math.ceil(args.base * (Math.random() + 0.3));
-    let raw = coins;
+    let raw = Math.round(coins / 1e3) * 1e3;
     let multi: number;
 
     function getMulti() {
@@ -146,7 +143,7 @@ export class LotteryHandler extends EventEmitter {
 
     multi = getMulti();
     coins += Math.ceil(coins * (multi / 100));
-    coins = Math.min(cap + 1, coins);
+    coins = Math.min(cap + 1, Math.round(coins / 1e3) * 1e3);
 
     return { coins, raw, multi };
   }

@@ -28,7 +28,6 @@ export default class Powerflex extends Item {
     heart.amount--;
 
     await msg.author.initDB(data).updateItems().db.save();
-    await sleep(multi * 1e3);
 
     return `You now have a **${multi}% multiplier** and **5% jackpot chance** under 10 minutes!`;
   }

@@ -1,17 +1,10 @@
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
-import { Document } from 'mongoose';
 import { UserPlus } from './user';
-import { Command } from '@lib/handlers/command';
 import { Lava } from '@lib/Lava';
 import {
-  APIMessageContentResolvable,
-  StringResolvable,
-  MessageAdditions,
-  MessageOptions,
   MessageEmbed,
   NewsChannel,
   TextChannel,
-  APIMessage,
   Structures,
   DMChannel,
   Message,

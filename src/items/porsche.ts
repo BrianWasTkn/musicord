@@ -26,7 +26,7 @@ export default class PowerUp extends Item {
 
     const m = `${msg.author.toString()} You have ${card.amount.toLocaleString()} cards. How many cards do you wanna reveal right now?`;
     await msg.channel.send(m);
-    const f = (m) => m.author.id === msg.author.id;
+    const f = (m: MessagePlus) => m.author.id === msg.author.id;
     const rep = (
       await msg.channel.awaitMessages(f, { max: 1, time: 15000 })
     ).first();

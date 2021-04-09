@@ -2,7 +2,6 @@ import { MessageOptions } from 'discord.js';
 import { Item, IReturn } from '@lib/handlers/item';
 import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
-import { Embed } from '@lib/utility/embed';
 
 export default class Currency extends Command {
   constructor() {
@@ -27,7 +26,6 @@ export default class Currency extends Command {
       item: Item;
     }
   ): Promise<string | MessageOptions> {
-    const { item: Items } = this.client.handlers;
     const data = await msg.author.fetchDB();
 
     const { item } = args;
@@ -38,8 +36,6 @@ export default class Currency extends Command {
     if (inv.expire > Date.now()) return 'This item is currently active right now.';
     if (!item.usable) return "You can't use this item :thinking:";
 
-    const queue = this.client.util.cmdQueue;
-    const id = msg.author.id;
 
     // queue.set(id, true); // exploit protection
     const ret = await item.use(msg);

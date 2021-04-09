@@ -1,5 +1,3 @@
-import { CurrencyProfile } from '@lib/interface/mongo/currency';
-import { Document } from 'mongoose';
 import { MessagePlus } from '@lib/extensions/message';
 import { Item } from '@lib/handlers/item';
 
@@ -11,28 +9,27 @@ export default class Collectible extends Item {
       buyable: true,
       usable: true,
       emoji: '🏆',
-      info: 'Grants you 25% multiplier for 30 minutes and another trophy (if you hit the odds of getting it) to flex against normies!',
+      info: 'Grants you 50% multiplier for 5 minutes and a random amount of trophies (if you hit the odds of getting it) to flex against normies!',
       name: 'Trophy',
       cost: 2500000,
     });
   }
 
   async use(msg: MessagePlus): Promise<string> {
-    const { db, util } = this.client;
+    const { util } = this.client;
     const data = await msg.author.fetchDB();
     const tr = data.items.find((i) => i.id === this.id);
 
     let odds = util.randomNumber(1, 100);
-    let hit = odds <= 5;
-    let fined: boolean;
-    let fail: boolean;
+    let nice = util.randomNumber(1, 5);
+    let hit = odds <= 10;
 
-    tr.amount += hit ? 1 : 0;
+    tr.amount += hit ? nice : 0;
     tr.expire = Date.now() + (30 * 60 * 1e3);
-    tr.multi = 25;
+    tr.multi = 50;
 
     await msg.author.initDB(data).updateItems().db.save();
 
-    return `**${this.emoji} ${this.name}**\nYou now have a **25%** multiplier for 30 minutes${!hit ? '!' : `AND another ${this.name} god you're so lucky.`}`;
+    return `**${this.emoji} ${this.name}**\nYou now have a **25%** multiplier for 30 minutes${!hit ? '!' : `AND **${nice.toLocaleString()} ${this.name}**${nice > 1 ? 's' : ''} god you're so lucky.`}`;
   }
 }

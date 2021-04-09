@@ -31,8 +31,6 @@ export default class QuestListener extends Listener {
 		quest.count += amount;
 		await data.save();
 
-		// Buy It
-
 		if (quest.count >= quest.target) {
 			const coinR = aq.rewards.coins.toLocaleString();
 			const item = items.get(aq.rewards.item[1]);

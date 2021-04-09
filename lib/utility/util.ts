@@ -1,18 +1,9 @@
-import { AkairoHandler, ClientUtil } from 'discord-akairo';
-import { CurrencyProfile } from '@lib/interface/mongo/currency';
-import { InventorySlot } from '@lib/interface/handlers/item';
-import { Document } from 'mongoose';
+import { ClientUtil } from 'discord-akairo';
 import { Effects } from './effects';
 import { COLORS } from '../utility/constants';
 import { Lava } from '../Lava';
 import {
-  MessageCollectorOptions,
-  MessageCollector,
-  CollectorFilter,
-  GuildChannel,
-  TextChannel,
   Collection,
-  Message,
   Role,
 } from 'discord.js';
 
@@ -83,7 +74,7 @@ export class Util extends ClientUtil {
     return `${'```'}${lang}\n${content}\n${'```'}`;
   };
 
-  tableSlots = (emojis: { [slot: string]: [number, number, boolean] }) => {
+  tableSlots = () => {
     return 'haha u suck at coding';
   };
 

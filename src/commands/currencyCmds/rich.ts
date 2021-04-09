@@ -41,7 +41,7 @@ export default class Currency extends Command {
       const rich = nice.filter(n => !n.o.bot).map((n, i) => `:${emojis[i] || 'eggplant'}: **${n.pocket.toLocaleString()}** — ${n.o.tag}`);
     
       return { embed: {
-        author: { name: 'richest players across discord' },
+        author: { name: 'richest discord players' },
         description: rich.join('\n'),
         color: 'ORANGE', footer: {
           iconURL: msg.client.user.avatarURL(),

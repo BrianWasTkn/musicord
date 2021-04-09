@@ -128,6 +128,10 @@ export class CommandHandler<
     command: CommandModule,
     args: any[]
   ): Promise<any> {
+    if (this.commandTyping || command.typing) {
+      message.channel.startTyping();
+    }
+
     try {
       this.emit(Events.COMMAND_STARTED, message, command, args);
       try {

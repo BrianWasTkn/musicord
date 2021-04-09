@@ -16,6 +16,6 @@ export default class Flex extends Item {
   }
 
   use() {
-    return 'You ate some yummy donuts! nom omm nom';
+    return `${this.emoji} You ate sum yummy donuts! Nom Omm Onm`;
   }
 }

@@ -14,8 +14,9 @@ export default class Currency extends Command {
           id: 'amount',
           type: 'number',
           default: async (msg: MessagePlus) => {
+            const { randomNumber } = this.client.util;
             const { pocket } = await msg.author.fetchDB();
-            return Math.round(pocket / 2);
+            return Math.round(pocket / randomNumber(1, 5));
           },
         },
       ],

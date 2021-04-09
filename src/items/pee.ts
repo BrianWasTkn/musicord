@@ -21,7 +21,7 @@ export default class Flex extends Item {
     const piss = data.items.find(i => i.id === this.id);
 
     msg.channel.send(`You have ${piss.amount.toLocaleString()} baby bottles of jenni's piss, how many do you wanna give to someone?`);
-    const f = (m) => m.author.id === msg.author.id;
+    const f = (m: MessagePlus) => m.author.id === msg.author.id;
     const rep = (await msg.channel.awaitMessages(f, { max: 1, time: 15000 })).first();
     if (!rep.content || !Number.isInteger(Number(rep.content))) {
       return 'It\'s gotta be a real number yeah?';

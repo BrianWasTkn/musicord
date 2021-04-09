@@ -3,6 +3,7 @@ import { Quest } from '@lib/handlers/quest';
 export default class Difficult extends Quest {
 	constructor() {
 		super('taste', {
+			target: 10,
 			diff: 'Difficult',
 			info: 'Buy 10 Donut Rings.',
 			name: 'Taste It',

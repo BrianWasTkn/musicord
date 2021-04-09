@@ -41,15 +41,12 @@ export default class Currency extends Command {
   	const r = await msg.fetchDB(member.user.id);
   	const rInv = r.items.find(i => i.id === item.id);
 
-  	if (amount < 1) {
-  		return `Bro what the heck, you can't gift negative items smh`;
-  	}
-  	if (amount > dInv.amount) {
+  	if (amount < 1) 
+	  return `Bro what the heck, you can't gift negative items smh`;
+  	if (amount > dInv.amount)
   		return `Meh, you only have ${dInv.amount.toLocaleString()} of this item, i guess you're too broke to gift many items then.`;
-  	}
-  	if (rInv > cap) {
+  	if (rInv > cap)
   		return `They already have more than ${cap.toLocaleString()} of this item!`;
-  	}
 
   	dInv.amount -= amount;
   	await data.save();

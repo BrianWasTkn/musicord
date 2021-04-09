@@ -1,7 +1,6 @@
 import { MessagePlus } from '@lib/extensions/message';
 import { Listener } from '@lib/handlers';
 import { Command } from 'discord-akairo';
-import { Lava } from '@lib/Lava';
 
 export default class CommandListener extends Listener {
   constructor() {
@@ -13,7 +12,7 @@ export default class CommandListener extends Listener {
 
   async exec(
     msg: MessagePlus,
-    cmd: Command,
+    _: Command,
     r: string
   ): Promise<void | MessagePlus> {
     r = r.toLowerCase();

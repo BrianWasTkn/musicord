@@ -27,7 +27,6 @@ export default class PowerUp extends Item {
     cof.amount--;
 
     await msg.author.initDB(data).updateItems().db.save();
-    await sleep(multi * 1e3);
 
     return `Your coffee got cold giving you a **${multi}%** multiplier valid for 10 minutes!`;
   }

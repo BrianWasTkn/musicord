@@ -1,7 +1,6 @@
 import { CollectorFilter, Collection, TextChannel } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
 import { Listener } from '@lib/handlers';
-import { Spawn } from '@lib/handlers/spawn';
 
 const qObj = {
   giveaway: {
@@ -68,7 +67,7 @@ async function handleDonation(
       }
 
       const col = await collect(questions[qArr[index]]);
-      if (!col) return await dm.send('The donation has been cancelled.');
+      if (!col) return await dm.send('Your dono has been cancelled.');
       let results: string[] = [];
       for (const [label, response] of res) {
         results.push(`**${label}:** ${response}`);
@@ -102,7 +101,7 @@ async function handleDonation(
       return await dm.send('Something wrong occured :c');
     }
   } catch {
-    const m = await msg.channel.send(`${msg.author.toString()} Please open your DMs.`);
+    const m = await msg.channel.send(`${msg.author.toString()} please open your DMs.`);
     return await m.delete({ timeout: 1e4 });
   }
 }

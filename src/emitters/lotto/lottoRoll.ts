@@ -14,12 +14,9 @@ export default class LottoListener extends Listener {
   	winner: GuildMember,
   	coins: number,
   	raw: number,
-  	multi: number
+  	_: number
   ): Promise<void> {
-  	const guild = await this.client.guilds.fetch(handler.guild);
   	const chan = await this.client.channels.fetch(handler.channel) as TextChannel;
-  	const req = await guild.roles.fetch(handler.requirement);
-
     await chan.send(`**${winner.user.tag}** (${winner.user.toString()}) walked away with **${coins.toLocaleString()} (${raw.toLocaleString()} original)** coins :fire:`);
   }
 }

@@ -1,7 +1,6 @@
-import { GuildMember, MessageOptions } from 'discord.js';
+import { MessageOptions } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
-import { Embed } from '@lib/utility/embed';
 
 export default class Currency extends Command {
   constructor() {
@@ -15,17 +14,16 @@ export default class Currency extends Command {
   }
 
   public async exec(msg: MessagePlus): Promise<string | MessageOptions> {
+    const { handlers: { item }, util: { parseTime } } = this.client;
     const data = await msg.author.fetchDB();
     const stamp = msg.createdTimestamp;
     const actives = data.items
       .filter((i) => i.expire > stamp)
       .map((i) => {
-        const item = this.client.handlers.item.modules.get(i.id);
-        const expire = this.client.util.parseTime(
-          Math.floor((i.expire - stamp) / 1e3)
-        );
+        const it = item.modules.get(i.id);
+        const expire = parseTime(Math.floor((i.expire - stamp) / 1e3));
 
-        return `**${item.emoji} ${item.name}** — **${expire.join('**, **')}** left`;
+        return `**${it.emoji} ${it.name}** — expires in ${expire.join(' ')}`;
       });
 
     if (actives.length < 1) {

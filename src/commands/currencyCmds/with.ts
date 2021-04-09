@@ -62,7 +62,7 @@ export default class Currency extends Command {
     else if (amount > d.vault)
       return `Bro, you only have ${d.vault.toLocaleString()} coins in your vault what're you up to?`;
 
-    await msg.author.initDB(d).withdraw(amount).db.save();
-    return `**${amount.toLocaleString()}** coins withdrawn.`;
+    const { vault } = await msg.author.initDB(d).withdraw(amount).db.save();
+    return { replyTo: msg.id, content: `**${amount.toLocaleString()}** coins withdrawn. You now have **${vault.toLocaleString()}** left in your vault.`};
   }
 }

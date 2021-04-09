@@ -1,6 +1,5 @@
 import { PresenceData, TextChannel } from 'discord.js';
 import { Listener } from '@lib/handlers';
-import { Lava } from '@lib/Lava';
 
 export default class ClientListener extends Listener {
   constructor() {
@@ -11,7 +10,7 @@ export default class ClientListener extends Listener {
   }
 
   async exec(): Promise<void> {
-    const { channels, handlers, util, users, user: bot } = this.client;
+    const { channels, util, user: bot } = this.client;
     const activity: PresenceData['activity'] = {
       name: 'Memers Crib',
       type: 'COMPETING',

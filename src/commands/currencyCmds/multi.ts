@@ -32,7 +32,7 @@ export default class Currency extends Command {
     const { maxMulti } = this.client.config.currency;
     const { utils } = this.client.db.currency;
     const { util } = this.client;
-    const multi = await utils.calcMulti(
+    const multi = utils.calcMulti(
       this.client,
       msg,
       await msg.author.fetchDB()

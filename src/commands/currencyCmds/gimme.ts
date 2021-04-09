@@ -15,14 +15,12 @@ export default class Currency extends Command {
   }
 
   async exec(msg: MessagePlus): Promise<string | MessageOptions> {
-    const { db, config, util, handlers } = this.client;
-    const { fetch, add } = db.currency;
+    const { db, util, handlers } = this.client;
     const data = await msg.author.fetchDB();
     const items = handlers.item.modules;
 
     const odds = Math.random();
 
-    let gimme: number | Item;
     if (odds >= 0.9) {
       const item = items.filter((i) => i.cost < 30e6).random();
       const amount = util.randomNumber(1, 5);

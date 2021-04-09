@@ -173,7 +173,7 @@ export default class Currency extends Command {
       }
     }
 
-    const gambed = async (final?) => {
+    const gambed = async (final?: boolean) => {
       const status = score() as {
         result: boolean;
         emoji: string;
@@ -348,7 +348,7 @@ export default class Currency extends Command {
       }
     };
 
-    const dealersTurn = (end?) => {
+    const dealersTurn = (end?: boolean) => {
       if (addCards('user') > 21) {
         return gambed();
       }

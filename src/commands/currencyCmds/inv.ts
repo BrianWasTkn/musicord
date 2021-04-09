@@ -2,7 +2,6 @@ import { MessageOptions, GuildMember } from 'discord.js';
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
 import { InventorySlot } from '@lib/interface/handlers/item';
 import { MessagePlus } from '@lib/extensions/message';
-import { Argument } from 'discord-akairo';
 import { Document } from 'mongoose';
 import { Command } from '@lib/handlers/command';
 
@@ -43,10 +42,9 @@ export default class Currency extends Command {
       page: number;
     }
   ): Promise<string | MessageOptions> {
-    const { handlers, db, util } = this.client;
+    const { util, handlers } = this.client;
     const { member, page } = args;
-    const { item: Items } = this.client.handlers;
-    const { fetch } = this.client.db.currency;
+    const { item: Items } = handlers;
 
     const isNum = typeof member === 'number';
     let inv: string[] | string[][] | InventorySlot[];

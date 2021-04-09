@@ -24,6 +24,6 @@ export default class PowerUp extends Item {
 
     await msg.author.initDB(data).updateItems().db.save();
 
-    return `**You activated thicco mode**\nYou've been granted a **50% winning power** for blackjack under 10 minutes!`;
+    return `**You activated thicco mode**\nYou've been granted a **50%** winnning power for blackjack for 10 minutes!`;
   }
 }

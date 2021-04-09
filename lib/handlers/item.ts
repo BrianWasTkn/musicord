@@ -6,7 +6,6 @@ import { Document } from 'mongoose';
 import { Lava } from '@lib/Lava';
 import { 
   AkairoHandlerOptions, 
-  AkairoModuleOptions, 
   AkairoHandler, 
   AkairoModule, 
   Category 
@@ -33,7 +32,7 @@ export class Item extends AkairoModule {
   cost: number;
 
   constructor(id: string, opt: Partial<ItemOptions>) {
-    const { category } = opt;
+   const { category } = opt;
     super(id, { category });
 
     this.info = String(opt.info);
@@ -44,7 +43,7 @@ export class Item extends AkairoModule {
     this.emoji = opt.emoji;
     this.name = opt.name;
   }
-
+  
   use(msg: MessagePlus): ItemReturn | Promise<ItemReturn> {
     return 'This item perhaps, is a work in progress :)';
   }
@@ -59,7 +58,6 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
     client: Lava,
     {
       directory = './src/items',
-      extensions = ['.js', '.ts'],
       classToHandle = Item,
       automateCategories = true,
     }: AkairoHandlerOptions

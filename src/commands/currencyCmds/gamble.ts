@@ -76,8 +76,7 @@ export default class Currency extends Command {
     }
     
     // vis and db
-    let w: number,
-      perwn: number,
+    let perwn: number,
       description: string[],
       identifier: string,
       color: string;

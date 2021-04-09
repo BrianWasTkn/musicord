@@ -1,5 +1,6 @@
 /**
- * Color Constant
+ * Lava Constants
+ * Author: brian
  */
 
 import { currencyConfig } from '@config/currency';

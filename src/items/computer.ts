@@ -34,7 +34,7 @@ export default class PowerUp extends Item {
       }).join('\n')
     }`);
 
-    const f = (m) => m.author.id === msg.author.id;
+    const f = (m: MessagePlus) => m.author.id === msg.author.id;
     const rep = (await msg.channel.awaitMessages(f, { max: 1, time: 15000 })).first();
     if (!rep) {
       return 'Imagine wasting 15 seconds of my bottime :rolling_eyes:';
@@ -52,8 +52,7 @@ export default class PowerUp extends Item {
     }
 
     const gain = util.randomNumber(100, 1e5);
-    data.pocket += gain;
-    await data.save();
+    await msg.author.initDB(data).addPocket(gain).db.save();
 
     return `You got **__${gain.toLocaleString()} coins__** (${karma} karmas) from posting a ${things[rep.content.toLowerCase()].toLowerCase()} meme on reddit.`;
   }

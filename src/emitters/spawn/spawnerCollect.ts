@@ -11,7 +11,7 @@ export default class SpawnListener extends Listener {
     });
   }
 
-  async exec(args: {
+  exec(args: {
     msg: Message;
     spawner: Spawn;
     isFirst: boolean;

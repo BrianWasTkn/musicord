@@ -14,7 +14,7 @@ export default class CommandListener extends Listener {
   async exec(
     msg: MessagePlus,
     command: Command,
-    args: any[],
+    _: any[],
     returned: MessageOptions | Promise<MessageOptions>
   ) {
     if (!returned) return;

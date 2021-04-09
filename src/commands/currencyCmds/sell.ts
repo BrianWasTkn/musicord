@@ -1,7 +1,6 @@
 import { MessageOptions } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
-import { Embed } from '@lib/utility/embed';
 import { Item } from '@lib/handlers/item';
 import Constants from '@lib/utility/constants';
 
@@ -36,9 +35,7 @@ export default class Currency extends Command {
   ): Promise<string | MessageOptions> {
     const { ITEM_MESSAGES: MESSAGES } = Constants;
     const { amount = 1, item } = args;
-    const { maxInventory } = this.client.config.currency;
     const { item: Items } = this.client.handlers;
-    const { fetch } = this.client.db.currency;
     const data = await msg.author.fetchDB();
 
     if (!item) return MESSAGES.NEED_TO_SELL
@@ -57,7 +54,7 @@ export default class Currency extends Command {
     return { replyTo: msg.id, embed: {
       color: 'GREEN',
       author: {
-        name: 'Item Sold',
+        name: `${item.name} successfully sold`,
         iconURL: msg.author.avatarURL({ dynamic: true })
       },
       description: Constants.ITEM_MESSAGES.SELL_MSG

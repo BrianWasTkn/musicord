@@ -2,7 +2,6 @@ import { MessagePlus } from '@lib/extensions/message';
 import { TextChannel } from 'discord.js';
 import { Listener } from '@lib/handlers';
 import { Command } from 'discord-akairo';
-import { Lava } from '@lib/Lava';
 
 export default class CommandListener extends Listener {
   constructor() {
@@ -14,8 +13,8 @@ export default class CommandListener extends Listener {
 
   async exec(
     msg: MessagePlus,
-    cmd: Command,
-    args: any[],
+    __: Command,
+    _: any[],
     error: Error
   ): Promise<void | MessagePlus> {
     console.error(error.stack);

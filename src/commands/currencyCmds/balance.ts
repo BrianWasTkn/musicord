@@ -1,7 +1,6 @@
 import { GuildMember, MessageOptions } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
-import { Embed } from '@lib/utility/embed';
 
 export default class Currency extends Command {
   constructor() {
@@ -49,7 +48,7 @@ export default class Currency extends Command {
 
     return { embed: {
       title: `${args.member.user.username}'s balance`,
-      footer: { text: 'lol hi' },
+      footer: { text: msg.guild.name },
       description: dpn.join('\n'),
       color: 'RANDOM',
     }};
