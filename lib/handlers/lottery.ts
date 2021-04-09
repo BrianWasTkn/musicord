@@ -121,7 +121,7 @@ export class LotteryHandler extends EventEmitter {
     const { min, max, cap } = args;
     let odds = Math.random();
     let coins = randomNumber(min / 1e3, max / 1e3);
-    let raw = Math.round(coins / 1e3) * 1e3;
+    let raw = coins * 1e3;
     let multi: number;
 
     function getMulti() {
@@ -143,7 +143,8 @@ export class LotteryHandler extends EventEmitter {
 
     multi = getMulti();
     coins += Math.round(coins * (multi / 100));
-    coins = Math.min(cap + 1, coins * 1e3);
+    coins *= 1e3;
+    coins = coins >= cap ? cap + 1 : coins;
 
     return { coins, raw, multi };
   }
