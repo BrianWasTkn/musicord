@@ -5,7 +5,7 @@ import { Item } from '@lib/handlers/item';
 
 export default class Currency extends Command {
   constructor() {
-    super('gimme', {
+    super('beg', {
       aliases: ['beg', 'gimme'],
       channel: 'guild',
       description: 'Gives you a random amount of coins from 100k to 1m coins',
@@ -15,7 +15,7 @@ export default class Currency extends Command {
   }
 
   async exec(msg: MessagePlus): Promise<string | MessageOptions> {
-    const { db, util, handlers } = this.client;
+    const { db, util, handlers, config } = this.client;
     const data = await msg.author.fetchDB();
     const items = handlers.item.modules;
 
@@ -31,6 +31,10 @@ export default class Currency extends Command {
         amount > 1 ? 's' : ''
       } that was lucky asf`;
     } else if (odds >= 0.5) {
+      if (data.pocket >= config.currency.maxPocket) {
+        return 'You\'re already rich stop begging already';
+      }
+      
       const won = util.randomNumber(100, 1000) * 1e3;
       await msg.author.initDB(data).addPocket(won).calcSpace().db.save();
       return `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`;
