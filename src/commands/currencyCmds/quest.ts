@@ -38,7 +38,7 @@ export default class Currency extends Command {
     const { quest: Handler } = this.client.handlers;
     const quests = Handler.modules.array();
 
-    if (query.constructor === Number) {
+    if (typeof query === 'number') {
       const quest = this.client.util.paginateArray(
         quests
           .sort((a, b) => a.diff - b.diff)
@@ -88,7 +88,7 @@ export default class Currency extends Command {
       return { replyTo: msg.id, content: `You're now doing the **${(query as Quest).name}** quest!` };
     }
 
-    if (query.constructor === String && query.toLowerCase() === 'stop') {
+    if (query.toLowerCase() === 'stop') {
       const aq = data.quest;
       const active = mods.get(aq.id);
       aq.target = 0;
