@@ -77,7 +77,7 @@ export default class Currency extends Command {
       return 'That isn\'t even a valid quest or page number bruh';
     }
 
-    if (query.constructor instanceof Quest) {
+    if (query instanceof Quest) {
       const quest = data.quest;
       if (quest.id || quest.target >= 1) {
         return { replyTo: msg.id, content: 'you can\'t enter a quest because you\'re have an active one' };
