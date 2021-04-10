@@ -26,7 +26,7 @@ export default class Spawn extends Command {
     msg.channel.send({ replyTo: msg.id, content: 'Fetching...' });
     const count = args.amount;
 
-    const docs = (await Mongo.models['currency'].find({})) as (Document & SpawnDocument)[];
+    const docs = (await Mongo.models['spawn-profile'].find({})) as (Document & SpawnDocument)[];
     const filt = docs.filter(s => s.unpaid < Infinity && s.unpaid > 0).sort((a, b) => b.unpaid - a.unpaid).slice(0, count);
     const rich = await Promise.all(filt.map(async (f, i) => {
       const user = await msg.guild.members.fetch({ user: f.userID });
