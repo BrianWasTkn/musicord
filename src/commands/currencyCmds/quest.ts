@@ -91,6 +91,10 @@ export default class Currency extends Command {
     }
 
     if (query === 'stop') {
+      if (!data.quest.id) {
+        return "You don't have an active quest right now.";
+      }
+      
       const aq = data.quest;
       const active = mods.get(aq.id);
       aq.target = 0;
@@ -101,6 +105,10 @@ export default class Currency extends Command {
     }
 
     if (query === 'check') {
+      if (!data.quest.id) {
+        return "You don't have an active quest right now.";
+      }
+
       const aq = data.quest;
       const mod = mods.get(aq.id);
       return `**Quest: ${mod.name}**\n**Status:** ${aq.count}/${aq.target}`;

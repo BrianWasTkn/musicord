@@ -36,6 +36,10 @@ export default class QuestListener extends Listener {
 			const item = items.get(aq.rewards.item[1]);
 			const itemR = `${aq.rewards.item[0]} ${item.emoji} ${item.name}`;
 
+			const inv = data.items.find(i => i.id === item.id);
+			inv.amount += aq.rewards.item[0];
+			data.pocket += aq.rewards.coins;
+
 			quest.id = '';
 			quest.count = 0;
 			quest.target = 0;
