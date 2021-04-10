@@ -30,7 +30,7 @@ export default class Spawn extends Command {
     const filt = docs.filter(s => s.unpaid < Infinity && s.unpaid > 0).sort((a, b) => b.unpaid - a.unpaid).slice(0, count);
     const rich = filt.map((f, i) => {
       const user = msg.guild.members.cache.get(f.userID);
-      return `:${emojis[i] || 'eggplant'}: **${f.unpaid.toLocaleString()}** - ${user.user.tag || 'LOL WHO DIS'}`;
+      return `:${emojis[i] || 'eggplant'}: **${f.unpaid.toLocaleString()}** - ${user.user ? user.user.tag : 'LOL WHO DIS'}`;
     });
 
     return { embed: {
