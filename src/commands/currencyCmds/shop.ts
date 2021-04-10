@@ -40,15 +40,15 @@ export default class Currency extends Command {
       const { paginateArray, parseTime } = this.client.util;
       const sItem = Handler.modules.get(Handler.sale.id);
       const from = Date.now() - Handler.saleInterval;
-      const left = parseTime(Math.round(from - Handler.sale.lastSale) / 1e3);
+      const left = parseTime(Math.round(Handler.sale.lastSale - from) / 1e3);
 
       function displayItem(i: Item, sale: number) {
         const { emoji, cost, info } = i;
         const coss = `[${sale >= 1
-          ? `**${Math.round(cost - (cost * (sale / 100)))} (${sale}% off) - *${left} left***`
+          ? `${Math.round(cost - (cost * (sale / 100)))} (**${sale}% OFF!**) - *${left} left***`
           : cost.toLocaleString()}](https://google.com)`;
 
-        return `**${emoji} ${i.name}** — ${coss}\n${sale >= 1 ? info.long : info.short}`;
+        return `**${emoji} ${i.name}** — ${coss}\n*${sale >= 1 ? info.long : info.short}*`;
       }
 
       const shop = paginateArray(items.sort((a, b) => b.cost - a.cost).map((i) => displayItem(i, 0)), 5);
