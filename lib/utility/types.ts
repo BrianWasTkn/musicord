@@ -21,6 +21,7 @@ export const argTypes = (bot: Lava) => ({
   questQuery: (msg: MessagePlus, phrase: string): Quest | string | null => {
     if (!phrase || phrase.length <= 2) return null;
     if (phrase.toLowerCase() === 'stop') return 'stop';
+    if (phrase.toLowerCase() === 'check') return 'check';
 
     const quests = bot.handlers.quest.modules;
     const search = quests.get(phrase.toLowerCase());

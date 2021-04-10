@@ -80,7 +80,7 @@ export default class Currency extends Command {
     if (query instanceof Quest) {
       const quest = data.quest;
       if (quest.id || quest.target >= 1) {
-        return { replyTo: msg.id, content: 'you can\'t enter a quest because you\'re have an active one' };
+        return { replyTo: msg.id, content: 'you can\'t enter a quest because you have an active one' };
       }
 
       quest.target = (query as Quest).target;
@@ -96,7 +96,14 @@ export default class Currency extends Command {
       aq.target = 0;
       aq.count = 0;
       aq.id = '';
+      await data.save();
       return `You now stopped your **${active.name}** quest, thanks for nothing idiot.`;
+    }
+
+    if (query === 'check') {
+      const aq = data.quest;
+      const mod = mods.get(aq.id);
+      return `**Quest: ${mod.name}**\n**Status:** ${aq.count}/${aq.target}`;
     }
   }
 }
