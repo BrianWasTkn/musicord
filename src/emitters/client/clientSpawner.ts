@@ -9,7 +9,7 @@ export default class ClientListener extends Listener {
     });
   }
 
-  public async exec(message: MessagePlus): Promise<void | MessagePlus> {
+  public async exec(message: MessagePlus) {
     const { config, handlers, ownerID, db } = this.client;
 
     if (!config.spawn.enabled) return;
@@ -21,7 +21,7 @@ export default class ClientListener extends Listener {
     if (ownerID === message.author.id) {
       if (message.content === 'lava spawn') {
         await message.delete();
-        return handler.spawn(spawner, message);
+        return await handler.spawn(spawner, message);
       }
     }
 
