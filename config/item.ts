@@ -8,7 +8,7 @@ export interface ItemConfig {
 
 export const itemConfig: ItemConfig = {
 	discount: {
-		interval: 1e3 * 60 * 15, 
+		interval: 1e3 * 15, 
 		max: 50,
 		min: 1,
 	} 
