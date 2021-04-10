@@ -77,7 +77,7 @@ export default class SpawnListener extends Listener {
     const channels = message.guild.channels.cache;
     const payouts = channels.get('796688961899855893') as TextChannel;
     const embed = new Embed()
-      .setDescription('```diff' + results.join('\n') + '```')
+      .setDescription('```diff\n' + results.join('\n') + '```')
       .setFooter(false, 'Check DMs for info.')
       .setAuthor(spawner.spawn.title)
       .setColor('RANDOM');
