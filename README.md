@@ -28,7 +28,7 @@ Though the source code is visibly here, please ensure you won't host your public
 
 ## Author
 
-**Lava** © [BrianWasTaken](https://github.com/BrianWasTkn).\
+**Lava** © [Brian](https://github.com/BrianWasTaken).\
 Authored and maintained by BrianWasTaken.
 
-> Github [@BrianWasTaken](https://github.com/BrianWasTkn)
+> Github [@Brian](https://github.com/BrianWasTaken)
