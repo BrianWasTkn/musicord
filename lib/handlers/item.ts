@@ -80,6 +80,8 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
     return this.client.once('ready', () => {
       const { interval } = this.client.config.item.discount;
       this.saleInterval = interval;
+      this.intIsRunning = false;
+      this.ticked = false;
       const left = 60 - (new Date()).getMinutes();
       return this.tick(Boolean(left));
     });
