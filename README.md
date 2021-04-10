@@ -18,12 +18,12 @@
 
 ## Self-Hosting
 
-Although the full code is visible and is available here to self-host on any compatible machine, I wouldn't mind you hosting your own. Just don't host a public version of this bot for you or somebody including you as an interest.
+Though the source code is visibly here, please ensure you won't host your public version of this bot for you or with a group including you as an interest. It's only intended for a private server for now and will change in the future.
 
 ## Acknowledgements
 
 - **Dauntless#0711** - _core of slot machine_ - [discord](https://discord.com/invite/Ha7pRB4)
-- **Dank Memer v5** - _general concept for currency_ - [source](https://dankmemer.lol/source)
+- **Dank Memer v5** - _core concept of currency_ - [source](https://dankmemer.lol/source)
 - **Melmsie#0001** - _blackjack command_ - [source](https://blackjack.dankmemer.lol)
 
 ## Author
