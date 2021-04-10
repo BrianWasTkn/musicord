@@ -9,9 +9,12 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: true,
       emoji: ':hot_face:',
-      info: 'Gives up to 50% multiplier for 10 minutes.',
       name: "Badddie's Coffee",
       cost: 25000,
+      info: {
+        short: 'Boosts your multiplier at a massive rate.',
+        long: 'Gives up to 50% multiplier for 10 minutes.',
+      },
     });
   }
 

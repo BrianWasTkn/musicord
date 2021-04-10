@@ -9,9 +9,12 @@ export default class Collectible extends Item {
       buyable: true,
       usable: true,
       emoji: '🏆',
-      info: 'Grants you 50% multiplier for 5 minutes and a random amount of trophies (if you hit the odds of getting it) to flex against normies!',
       name: 'Trophy',
       cost: 3000000,
+      info: {
+        short: 'Flex it against normies.',
+        long: 'Grants you 50% multiplier for 5 minutes and a random amount of trophies (if you hit the odds of getting it) to flex against normies!',
+      }
     });
   }
 

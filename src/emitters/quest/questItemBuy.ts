@@ -25,7 +25,7 @@ export default class QuestListener extends Listener {
 		const data = await msg.author.fetchDB();
 		const { quest } = data;
 
-		const aq = quests.get(data.quest.id);
+		const aq = quests.get(quest.id);
 		if (!aq) return;
 
 		quest.count += amount;

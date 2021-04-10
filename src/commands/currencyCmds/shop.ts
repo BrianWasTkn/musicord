@@ -37,23 +37,27 @@ export default class Currency extends Command {
     const embed = new Embed();
 
     if (typeof query === 'number') {
-      const shop = this.client.util.paginateArray(
-        items
-          .sort((a, b) => b.cost - a.cost)
-          .map((i) => {
-            const { emoji, cost, info } = i;
-            return `**${emoji} ${
-              i.name
-            }** — [${cost.toLocaleString()}](https://discord.gg/memer)\n${info}`;
-          }),
-        5
-      );
+      const { paginateArray, parseTime } = this.client.util;
+      const sItem = Handler.modules.get(Handler.sale.id);
+      const from = Date.now() - Handler.saleInterval;
+      const left = parseTime(Math.round(from - Handler.sale.lastSale) / 1e3);
 
+      function displayItem(i: Item, sale: number) {
+        const { emoji, cost, info } = i;
+        const coss = `${sale >= 1
+          ? `**${Math.round(cost / (cost * (sale / 100)))} (${sale}% off) - *${left} left***`
+          : cost.toLocaleString()}(https://google.com)`;
+
+        return `**${emoji} ${i.name}** — ${coss}\n${sale >= 1 ? info.long : info.short}`;
+      }
+
+      const shop = paginateArray(items.sort((a, b) => b.cost - a.cost).map((i) => displayItem(i, 0)), 5);
       if (query > shop.length) return "That page doesn't even exist lol";
       
       embed
-        .setFooter(false, `Lava Shop — Page ${query} of ${shop.length}`)
+        .addField('Lightning Sale', displayItem(sItem, Handler.sale.discount))
         .addField('Shop Items', shop[(query as number) - 1].join('\n\n'))
+        .setFooter(false, `Lava Shop — Page ${query} of ${shop.length}`)
         .setTitle('Lava Shop')
         .setColor('RANDOM');
     } else {
@@ -66,8 +70,10 @@ export default class Currency extends Command {
       info.push(
         `**Item Price** — ${
           query.buyable
-            ? query.cost.toLocaleString()
-            : '**Not Purchaseable**'
+          ? query.id === Handler.sale.id
+            ? Math.round(query.cost - (query.cost * (Handler.sale.discount / 100))).toLocaleString()
+            : query.cost.toLocaleString()
+          : '**Not Purchaseable**'
         }`
       );
       info.push(
@@ -81,7 +87,7 @@ export default class Currency extends Command {
         .setTitle(
           `${query.emoji} ${query.name} — ${inv.amount.toLocaleString()} Owned`
         )
-        .addField('Description', query.info)
+        .addField('Description', query.info.long)
         .addField('Item Info', info.join('\n'))
         .setColor('RANDOM');
     }

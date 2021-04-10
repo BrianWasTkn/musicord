@@ -59,10 +59,13 @@ export class LotteryHandler extends EventEmitter {
   tick(first: boolean) {
     let catchup = first;
     let now = new Date();
-    this.client.util.console({ 
-      type: 'def', klass: 'Lottery',
-      msg: `Ticking in ${60 - now.getSeconds()} seconds.` 
-    });
+
+    if (!this.ticked) {
+	    this.client.util.console({ 
+	      type: 'def', klass: 'Lottery',
+	      msg: `Ticking in ${60 - now.getSeconds()} seconds.` 
+	    });
+    }
 
     return setTimeout(async () => {
       // The 60-second tick

@@ -1,5 +1,5 @@
+import { ItemOptions, ItemInfo, ItemSaleData } from '@lib/interface/handlers/item';
 import { Collection, MessageEmbed } from 'discord.js';
-import { ItemOptions, ItemInfo } from '@lib/interface/handlers/item';
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
 import { MessagePlus } from '@lib/extensions/message';
 import { Document } from 'mongoose';
@@ -35,7 +35,7 @@ export class Item extends AkairoModule {
    const { category } = opt;
     super(id, { category });
 
-    this.info = typeof opt.info === 'string' ? String(opt.info) : opt.info;
+    this.info = opt.info;
     this.cost = Number(opt.cost);
     this.buyable = Boolean(opt.buyable);
     this.sellable = Boolean(opt.sellable);
@@ -54,6 +54,11 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
   modules: Collection<string, ItemModule>;
   client: Lava;
 
+  intIsRunning: boolean;
+  saleInterval: number;
+  ticked: boolean;
+  sale: ItemSaleData;
+
   constructor(
     client: Lava,
     {
@@ -67,11 +72,78 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
       classToHandle,
       automateCategories,
     });
+
+    this.prepare();
+  }
+
+  prepare() {
+    return this.client.once('ready', () => {
+      const { interval } = this.client.config.item.discount;
+      this.saleInterval = interval;
+      const left = 60 - (new Date()).getMinutes();
+      return this.tick(Boolean(left));
+    });
+  }
+
+  tick(first: boolean) {
+    let catchup = first;
+    let now = new Date();
+
+    if (!this.ticked) {
+      this.client.util.console({ 
+        type: 'def', klass: 'Item',
+        msg: `Next Sale in ${60 - now.getSeconds()} Seconds.` 
+      });
+    }
+
+    return setTimeout(async () => {
+      // The 60-second tick
+      now = new Date();
+
+      // Immediate sale if catching up (let's say, bot login)
+      if (catchup) {
+        const { discount, item, lastSale } = this.getSale();
+        this.sale = { discount, lastSale, id: item.id };
+        catchup = false;
+      }
+
+      // Tick
+      if (now.getSeconds() === 0) {
+        if (!this.ticked) this.ticked = true;
+      }
+
+      // Roll Interval (only once)
+      if (!this.intIsRunning && now.getMinutes() === 0 && this.ticked) {
+        this.intIsRunning = true;
+        this.runSaleInterval.call(this);
+      }
+
+      return this.tick(false);
+    }, ((60 - now.getSeconds()) * 1e3) - now.getMilliseconds());
+  }
+
+  getSale() {
+    const { randomNumber, randomInArray } = this.client.util;
+    const { min, max } = this.client.config.item.discount;
+    const discount = randomNumber(min, max);
+    const item = randomInArray([...this.modules.values()]);
+
+    return { discount, item, lastSale: Date.now() };
+  }
+
+  runSaleInterval() {
+    return setTimeout(() => {
+      const { discount, item, lastSale } = this.getSale();
+      this.sale = { discount, lastSale, id: item.id };
+      return this.runSaleInterval();
+    }, this.saleInterval);
   }
 
   buy(amount: number, data: Document & CurrencyProfile, iid: string) {
     const item = this.modules.get(iid);
-    const paid = amount * item.cost;
+    const isSale = this.sale.id === item.id;
+    const dPrice = Math.round(item.cost - (item.cost * (this.sale.discount / 1e2)));
+    const paid = amount * (isSale ? dPrice : item.cost);
 
     let inv = data.items.find((i) => i.id === item.id);
     data.pocket -= paid;
@@ -82,7 +154,9 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
 
   sell(amount: number, data: Document & CurrencyProfile, iid: string) {
     const item = this.modules.get(iid);
-    const sold = Math.round(amount * (item.cost / 4));
+    const isSale = this.sale.id === item.id;
+    const dPrice = Math.round(item.cost - (item.cost * (this.sale.discount / 1e2)));
+    const sold = Math.round(amount * ((isSale ? dPrice : item.cost) / 4));
 
     let inv = data.items.find((i) => i.id === item.id);
     data.pocket += sold;

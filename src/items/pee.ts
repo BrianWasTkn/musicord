@@ -10,9 +10,12 @@ export default class Flex extends Item {
       buyable: true,
       usable: true,
       emoji: ':baby_bottle:',
-      info: "Use it to surprise somebody!",
       name: "Jenni's Piss",
       cost: 1e6,
+      info: {
+        short: "Use it to surprise somebody!",
+        long: 'Send a bag of jenni\'s yellow substance to stinkingly surprise someone!'
+      }
     });
   }
 

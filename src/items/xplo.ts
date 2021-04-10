@@ -9,9 +9,12 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: true,
       emoji: ':bomb:',
-      info: 'Get sweet treats by risking your coins or items.',
       name: "Xplosive's Bomb",
       cost: 694200,
+      info: {
+        short: 'Get sweet treats by giving a fuck about everything!',
+        long: 'Get a free item by risking what you earned so far from your whole progress.',
+      }
     });
   }
 

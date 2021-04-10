@@ -9,9 +9,12 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: true,
       emoji: ':dragon:',
-      info: 'Gives you +1 to your dice roll, just use it! It won\'t deduct though, you\'ll lose it if your dragon goes away from you.',
       name: "Lava's Dragon",
       cost: 65000,
+      info: {
+        short: 'Grants you a great luck in rolling a dice whilst gambling!',
+        long: 'Gives you +1 to your gambling dice although you\'ll lose it if your dragon goes away from you.',
+      },
     });
   }
 

@@ -9,9 +9,12 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: true,
       emoji: ':beers:',
-      info: 'Gives a 10% chance of getting jackpot on slots for 10 minutes!',
       name: "Crazy's Alcohol",
       cost: 350000,
+      info: {
+        short: 'Grants you a great amount of luck while playing the slot machine!',
+        long: 'Gives you a 10% chance of getting jackpot on slots! Only lasts for 10 minutes since you\'re jsut a normie.',
+      }
     });
   }
 

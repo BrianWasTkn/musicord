@@ -4,14 +4,16 @@ import { AkairoModuleOptions } from 'discord-akairo';
 export type ItemReturn = string 
   | IItemReturn;
 
-export type ItemInfo = string 
-  | { short: string; long: string; }
+export interface ItemInfo { 
+  short: string; 
+  long: string; 
+}
 
 export interface ItemOptions extends AkairoModuleOptions {
   emoji: string;
   name: string;
   category: string;
-  info: string;
+  info: ItemInfo;
   cost: number;
   buyable: boolean;
   sellable: boolean;
@@ -31,4 +33,10 @@ export interface IItemReturn {
   content?: string;
   embed?: MessageEmbed | MessageEmbedOptions;
   reply?: boolean;
+}
+
+export interface ItemSaleData {
+  discount: number;
+  lastSale: number;
+  id: string;
 }

@@ -5,6 +5,7 @@ import { CurrencyType, currencyConfig } from './currency';
 import { ConfigInterface, lavaConfig } from './lava';
 import { LottoConfig, lottoConfig } from './lottery';
 import { SpawnConfig, spawnConfig } from './spawn';
+import { ItemConfig, itemConfig } from './item';
 import { discordOptions } from './discord';
 import { akairoConfig } from './akairo';
 
@@ -14,6 +15,7 @@ export interface Config {
   lottery: LottoConfig;
   akairo: AkairoOptions;
   spawn: SpawnConfig;
+  item: ItemConfig;
   bot: ConfigInterface;
 }
 
@@ -23,5 +25,6 @@ export const config: Config = {
   lottery: lottoConfig,
   akairo: akairoConfig,
   spawn: spawnConfig,
+  item: itemConfig,
   bot: lavaConfig,
 };

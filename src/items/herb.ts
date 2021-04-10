@@ -8,9 +8,12 @@ export default class Flex extends Item {
       buyable: true,
       usable: false,
       emoji: ':herb:',
-      info: 'Just a flex from the man himself.',
       name: "Ken's Herbal Supplement",
       cost: 42000000,
+      info: {
+        short: 'Just a flex from the man himself.',
+        long: 'Nothing, just for his fucking treatment so he could at least change for a bit.',
+      }
     });
   }
 }

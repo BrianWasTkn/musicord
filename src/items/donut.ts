@@ -9,9 +9,12 @@ export default class Flex extends Item {
       buyable: true,
       usable: true,
       emoji: ':doughnut:',
-      info: 'Either eat it (doesn\'t deduct) or use it to marry someone!',
       name: "Donut Ring",
       cost: 100e6,
+      info: {
+        short: 'They say this item is the key for a great relationship.',
+        long: 'Either eat it (doesn\'t deduct) or use it to marry someone!',
+      }
     });
   }
 

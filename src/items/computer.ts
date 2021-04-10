@@ -9,9 +9,12 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: true,
       emoji: ':desktop:',
-      info: 'Post memes on reddit!',
       name: "Prob's Computer",
       cost: 69420,
+      info: {
+        short: 'Post memes on reddit!',
+        long: 'Coins you gain reaches up to a million but it depends to your karma but your computer\'ll most likely break if you get negative karmas.',
+      }
     });
   }
 

@@ -9,9 +9,12 @@ export default class PowerUp extends Item {
       buyable: true,
       usable: true,
       emoji: ':ok_hand:',
-      info: 'Gives you +50% winnings on blackjack for 10 minutes.',
       name: 'Thicco Mode',
       cost: 2750000,
+      info: {
+        short: 'Blackjack rigged? Well if you want more coins, activate thicco mode.'
+        long: 'Gives you +50% winnings on blackjack for 10 minutes.',
+      }
     });
   }
 
