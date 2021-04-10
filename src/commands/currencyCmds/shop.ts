@@ -45,7 +45,7 @@ export default class Currency extends Command {
       function displayItem(i: Item, sale: number) {
         const { emoji, cost, info } = i;
         const coss = sale >= 1
-          ? `${Math.round(cost - (cost * (sale / 100))).toLocaleString()} ( [***${sale}% OFF!***](https://google.com) )`
+          ? `[${Math.round(cost - (cost * (sale / 100))).toLocaleString()}](https://google.com) ( [***${sale}% OFF!***](https://google.com) )`
           : `[${cost.toLocaleString()}](https://google.com)`;
 
         return `**${emoji} ${i.name}** — ${coss}\n${sale >= 1 ? `*${info.long}*` : info.short}`;

@@ -54,6 +54,10 @@ export default class Currency extends Command {
     if (inv.amount >= maxInventory)
       return MESSAGES.INVENTORY_IS_FULL;
 
+    const paid = Items.sale.id === item.id 
+      ? Math.round(item.cost - (item.cost * (Items.sale.discount / 1e2)))
+      : item.cost;
+      
     await Items.buy(Math.trunc(amount), data, item.id);
     this.client.handlers.quest.emit('itemBuy', { msg, item, amount });
 
@@ -65,7 +69,7 @@ export default class Currency extends Command {
         iconURL: msg.author.avatarURL({ dynamic: true })
       },
       description: Constants.ITEM_MESSAGES.BUY_MSG
-        .replace(/{paid}/gi, (amount * item.cost).toLocaleString())
+        .replace(/{paid}/gi, (amount * paid).toLocaleString())
         .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
         .replace(/{emoji}/gi, item.emoji)
         .replace(/{item}/gi, item.name)

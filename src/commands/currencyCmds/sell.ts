@@ -48,6 +48,10 @@ export default class Currency extends Command {
     if (amount > inv.amount) 
       return MESSAGES.CANT_FOOL_ME;
 
+    const sold = Items.sale.id === item.id 
+      ? Math.round(item.cost - (item.cost * (Items.sale.discount / 1e2)))
+      : item.cost;
+
     await Items.sell(Math.trunc(amount), data, item.id);
     this.client.handlers.quest.emit('itemSell', { msg, item, amount });
 
@@ -58,7 +62,7 @@ export default class Currency extends Command {
         iconURL: msg.author.avatarURL({ dynamic: true })
       },
       description: Constants.ITEM_MESSAGES.SELL_MSG
-        .replace(/{got}/gi, (amount * (item.cost / 4)).toLocaleString())
+        .replace(/{got}/gi, (amount * (sold / 4)).toLocaleString())
         .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
         .replace(/{emoji}/gi, item.emoji)
         .replace(/{item}/gi, item.name),
