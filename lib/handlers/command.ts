@@ -110,7 +110,7 @@ export class CommandHandler<
 
   prefixPredicate(msg: MessagePlus): string | string[] {
     // TODO: Per guild prefixes and concat def prefix
-    return [this.client.config.bot.prefix] as string[];
+    return this.client.config.bot.prefix as string;
   }
 
   // @ts-ignore
