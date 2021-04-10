@@ -40,22 +40,22 @@ export default class Currency extends Command {
       const { paginateArray, parseTime } = this.client.util;
       const sItem = Handler.modules.get(Handler.sale.id);
       const from = Date.now() - Handler.saleInterval;
-      const left = parseTime(Math.round(Handler.sale.lastSale - from) / 1e3);
+      const left = parseTime(Math.round(Handler.sale.lastSale - from) / 1e3).join(', ');
 
       function displayItem(i: Item, sale: number) {
         const { emoji, cost, info } = i;
-        const coss = `[${sale >= 1
-          ? `${Math.round(cost - (cost * (sale / 100)))} (**${sale}% OFF!**) - *${left} left***`
-          : cost.toLocaleString()}](https://google.com)`;
+        const coss = sale >= 1
+          ? `${Math.round(cost - (cost * (sale / 100))).toLocaleString()} ( [***${sale}% OFF!***](https://google.com) )`
+          : `[${cost.toLocaleString()}](https://google.com)`;
 
-        return `**${emoji} ${i.name}** — ${coss}\n*${sale >= 1 ? info.long : info.short}*`;
+        return `**${emoji} ${i.name}** — ${coss}\n${sale >= 1 ? `*${info.long}*` : info.short}`;
       }
 
       const shop = paginateArray(items.sort((a, b) => b.cost - a.cost).map((i) => displayItem(i, 0)), 5);
       if (query > shop.length) return "That page doesn't even exist lol";
       
       embed
-        .addField('Lightning Sale', displayItem(sItem, Handler.sale.discount))
+        .addField(`**__LIGHTNING SALE__** (resets in ${left})`, displayItem(sItem, Handler.sale.discount))
         .addField('Shop Items', shop[(query as number) - 1].join('\n\n'))
         .setFooter(false, `Lava Shop — Page ${query} of ${shop.length}`)
         .setTitle('Lava Shop')
