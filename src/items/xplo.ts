@@ -11,7 +11,7 @@ export default class PowerUp extends Item {
       emoji: ':bomb:',
       info: 'Get sweet treats by risking your coins or items.',
       name: "Xplosive's Bomb",
-      cost: 690000,
+      cost: 694200,
     });
   }
 
@@ -67,6 +67,6 @@ export default class PowerUp extends Item {
       .updateItems()
       .db.save();
 
-    return `**LMAO you died from the bomb!**\nYou lost your WHOLE pocket and ALL your ${item.name} from your inventory.`;
+    return `**LMAO you died from the bomb!**\nYou lost your WHOLE pocket and ALL your ${item.name.slice(0, item.name.endsWith('y') ? -1 : undefined)}${item.name.endsWith('y') ? 'ies' : 's'} from your inventory.`;
   }
 }

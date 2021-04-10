@@ -6,7 +6,7 @@ import Constants from './constants'
 
 export const argTypes = (bot: Lava) => ({
   shopItem: (msg: MessagePlus, phrase: string): Item | null => {
-    if (!phrase) return null;
+    if (!phrase || phrase.length <= 1) return null;
     const items = [...bot.handlers.item.modules.values()];
     return items.find((i) => {
       return (
@@ -18,17 +18,23 @@ export const argTypes = (bot: Lava) => ({
     });
   },
 
-  questQuery: (msg: MessagePlus, phrase: string): Quest | null => {
-    if (!phrase) return null;
-    const items = [...bot.handlers.quest.modules.values()];
-    return items.find((i) => {
-      return (
-        i.id.toLowerCase() === phrase.toLowerCase() ||
-        i.name.toLowerCase() === phrase.toLowerCase() ||
-        i.name.toLowerCase().includes(phrase.toLowerCase()) ||
-        i.id.toLowerCase().includes(phrase.toLowerCase())
-      );
-    });
+  questQuery: (msg: MessagePlus, phrase: string): Quest | string | null => {
+    if (!phrase || phrase.length <= 2) return null;
+    if (phrase.toLowerCase() === 'stop') return 'stop';
+
+    const quests = bot.handlers.quest.modules;
+    const search = quests.get(phrase.toLowerCase());
+    if (!search) {
+      phrase = phrase.toLowerCase();
+      const search = quests.array().find(q => {
+        return q.name.toLowerCase() === phrase
+        || q.name.toLowerCase().includes(phrase);
+      });
+
+      return search || null;
+    }
+
+    return search || null;
   },
 
   gambleAmount: async (

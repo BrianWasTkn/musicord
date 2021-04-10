@@ -3,17 +3,17 @@ import { GuildMember } from 'discord.js';
 import { Spawn } from '@lib/handlers/spawn';
 
 const visuals: SpawnVisual = {
-  emoji: '<:memerGreen:729863510296887398>',
+  emoji: '<:memerRed:729863510716317776>',
   type: 'SUPER',
-  title: 'Get Coinified',
-  description: 'Hey i want coins, do you want coins?',
-  strings: ['yes', 'no', "yesn't", "non't"],
+  title: 'Memers Crib',
+  description: 'POV: You are sitting in your chair.',
+  strings: ['WTF', 'what-', 'LOL', 'xd'],
 };
 
 export default class SUPER extends Spawn {
   constructor() {
-    super('coinified', visuals, {
-      rewards: { first: 10e6, min: 5e4, max: 1e5 },
+    super('crib', visuals, {
+      rewards: { first: 5e5, min: 5e3, max: 25e4 },
       enabled: true,
       timeout: 15000,
       entries: 3,
@@ -24,10 +24,10 @@ export default class SUPER extends Spawn {
 
   cd() {
     return {
-      '693324853440282654': 3, // Booster
-      '768858996659453963': 5, // Donator
+      '693324853440282654': 1, // Booster
+      '768858996659453963': 3, // Donator
       '794834783582421032': 10, // Mastery
-      '693380605760634910': 20, // Amari
+      '693380605760634910': 15, // Amari
     }
   }
 }

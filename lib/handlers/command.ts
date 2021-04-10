@@ -3,9 +3,7 @@ import { MessagePlus } from '@lib/extensions/message';
 import { Util } from '@lib/utility/util';
 import { Lava } from '@lib/Lava';
 import {
-  CommandHandlerOptions as HandlerOptions,
   CommandHandler as AkairoCommandHandler,
-  CommandOptions as AkairoCommandOptions,
   Command as AkairoCommand,
   DefaultArgumentOptions,
   Constants,
@@ -17,19 +15,13 @@ import {
   Collection, 
   Message,
 } from 'discord.js';
+import {
+  CommandHandlerOptions,
+  CommandOptions,
+  CommandReturn
+} from '@lib/interface/handlers/command';
 
 const { CommandHandlerEvents: Events, BuiltInReasons } = Constants;
-
-// Local Types
-export type ExamplePredicate = (msg: MessagePlus) => string | string[];
-export type CommandReturn = void | string | MessageOptions;
-
-export interface CommandHandlerOptions extends HandlerOptions {
-	commandTyping?: boolean;
-}
-export interface CommandOptions extends AkairoCommandOptions {
-	examples?: string | string[] | ExamplePredicate;
-}
 
 export class Command extends AkairoCommand {
   // @ts-ignore
@@ -40,7 +32,10 @@ export class Command extends AkairoCommand {
     super(id, opts);
   }
 
-  exec(msg: MessagePlus, args?: any): CommandReturn | Promise<CommandReturn> {
+  exec(
+    msg: MessagePlus, 
+    args?: any
+  ): CommandReturn | Promise<CommandReturn> {
     return {
       embed: {
         title: 'What ya doing?',
@@ -114,11 +109,12 @@ export class CommandHandler<
   }
 
   prefixPredicate(msg: MessagePlus): string | string[] {
-    return this.client.config.bot.prefix;
+    // TODO: Per guild prefixes and concat def prefix
+    return [this.client.config.bot.prefix] as string[];
   }
 
   // @ts-ignore
-  findCommand(name: string): CommandModule {
+  findCommand(name: string) {
     return this.modules.get(this.aliases.get(name.toLowerCase()));
   }
 
@@ -159,17 +155,17 @@ export class CommandHandler<
     }
 
     if (command.channel === 'guild' && !message.guild) {
-        this.emit(Events.COMMAND_BLOCKED, message, command, BuiltInReasons.GUILD);
-        return true;
+      this.emit(Events.COMMAND_BLOCKED, message, command, BuiltInReasons.GUILD);
+      return true;
     }
 
     if (command.channel === 'dm' && message.guild) {
-        this.emit(Events.COMMAND_BLOCKED, message, command, BuiltInReasons.DM);
-        return true;
+      this.emit(Events.COMMAND_BLOCKED, message, command, BuiltInReasons.DM);
+      return true;
     }
 
     if (await this.runPermissionChecks(message, command)) {
-        return true;
+      return true;
     }
 
     const reason = this.inhibitorHandler
@@ -182,7 +178,7 @@ export class CommandHandler<
     }
 
     if (await this.runCooldowns(message, command as unknown as CommandModule)) {
-        return true;
+      return true;
     }
 
     return false;

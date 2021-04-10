@@ -1,3 +1,5 @@
+import { Collection } from 'discord.js';
+import { Lava } from '@lib/Lava';
 import {
   ListenerHandler as AkairoListenerHandler,
   Listener as AkairoListener,
@@ -5,8 +7,6 @@ import {
   ListenerOptions,
   Category,
 } from 'discord-akairo';
-import { Collection } from 'discord.js';
-import { Lava } from '@lib/Lava';
 
 export class Listener extends AkairoListener {
   handler: ListenerHandler<Listener>;

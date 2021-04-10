@@ -11,7 +11,7 @@ export default class PowerUp extends Item {
       emoji: ':desktop:',
       info: 'Post memes on reddit!',
       name: "Prob's Computer",
-      cost: 69000,
+      cost: 69420,
     });
   }
 
@@ -40,7 +40,7 @@ export default class PowerUp extends Item {
       return 'Imagine wasting 15 seconds of my bottime :rolling_eyes:';
     }
     if (!things[rep.content.toLowerCase()]) {
-      return 'Invalid option, buddy.';
+      return 'Stop giving me invalid options buddy >:(';
     }
 
     const karma = util.randomNumber(1, 1e4);
@@ -48,7 +48,7 @@ export default class PowerUp extends Item {
     if (Math.random() < 0.25) {
       comp.amount--;
       await data.save();
-      return `Your meme got **-${karma.toLocaleString()}** karmas and you broke your **${this.emoji} ${this.name}** lmao sucks to be you.`;
+      return `Your meme got **-${karma.toLocaleString()}** karmas so you broke your **${this.emoji} ${this.name}** lmao sucks to be you.`;
     }
 
     const gain = util.randomNumber(100, 1e5);

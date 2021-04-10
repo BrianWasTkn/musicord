@@ -23,7 +23,6 @@ export default class PowerUp extends Item {
     thicc.amount--;
 
     await msg.author.initDB(data).updateItems().db.save();
-
     return 'You have been granted an additional **50%** winnings in gambling for a lucky 10 minutes!';
   }
 }

@@ -39,18 +39,29 @@ export class Spawn extends AkairoModule {
   spawn: SpawnVisual;
 
   constructor(
-    config: Partial<SpawnConfig>,
+    id: string,
     spawn: SpawnVisual,
-    rewards: SpawnReward
+    config: Partial<SpawnConfig>,
   ) {
-    super(spawn.title, { category: spawn.type });
+    super(id, { category: spawn.type });
     this.answered = new Collection();
-    this.config = { ...config, rewards };
+    this.config = config;
     this.spawn = spawn;
   }
 
-  has(member: GuildMember, role: string): boolean {
-    return member.roles.cache.has(role);
+  cd(): { [k: string]: number } {
+    return {
+      '693324853440282654': 1, // Booster
+      '768858996659453963': 3, // Donator
+      '794834783582421032': 5, // Mastery
+      '693380605760634910': 10, // Amari
+    }
+  }
+
+  getCooldown(m: GuildMember, cds: { [role: string]: number }) {
+    for (const [r, cd] of Object.entries(cds)) {
+      if (m.roles.cache.has(r)) return cd;
+    }
   }
 }
 
@@ -59,8 +70,8 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
   categories: Collection<string, Category<string, SpawnModule>>;
   messages: Collection<Snowflake, MessagePlus>;
   modules: Collection<string, SpawnModule>;
-  client: Lava;
   queue: Collection<Snowflake, SpawnQueue>;
+  client: Lava;
 
   constructor(client: Lava, options: AkairoHandlerOptions) {
     super(client, options);
@@ -76,6 +87,8 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
   }): boolean {
     const { msg, collector, spawner } = args;
     const { collected } = collector;
+    const isFirst = collected.first().id === msg.id;
+    const handler = this;
 
     if (spawner.config.type === 'spam') {
       const filter: CollectorFilter = ({ author }: T) =>
@@ -84,11 +97,8 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
       if (authorEntries.length > 1) collected.delete(msg.id);
     }
 
-    return this.emit('messageCollect', {
-      msg,
-      spawner,
-      handler: this,
-      isFirst: collected.first().id === msg.id,
+    return this.emit('messageCollect', { 
+      msg, spawner, handler, isFirst 
     });
   }
 
@@ -98,12 +108,10 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
     msg: T;
   }): boolean {
     const { collected, spawner, msg } = args;
-    return this.emit('messageResults', {
-      msg,
-      spawner,
-      collected,
-      handler: this,
-      isEmpty: Boolean(collected.size),
+    const isEmpty = Boolean(collected.size);
+    const handler = this;
+    return this.emit('messageResults', { 
+      msg, spawner, collected, handler, isEmpty 
     });
   }
 
@@ -113,21 +121,17 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
     ctx: {
       collector: ReactionCollector;
       spawner: SpawnModule;
-      message: MessagePlus;
+      msg: MessagePlus;
     }
   ): boolean {
-    const { collector, spawner, message } = ctx;
-    const isFirst =
-      collector.collected.first().users.cache.first().id === user.id;
-    return this.emit(
-      'reactionCollect',
-      this,
-      spawner,
-      message,
-      reaction,
-      user,
-      isFirst
-    );
+    const { collector, spawner, msg } = ctx;
+    const { users } = collector.collected.first();
+    const isFirst = users.cache.first().id === user.id;
+    const handler = this;
+
+    return this.emit('reactionCollect', {
+      handler, spawner, msg, reaction, user, isFirst
+    });
   }
 
   handleReactionRemove(
@@ -136,43 +140,48 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
     ctx: {
       collector: ReactionCollector;
       spawner: SpawnModule;
-      message: MessagePlus;
+      msg: MessagePlus;
     }
   ): boolean {
-    const { collector, spawner, message } = ctx;
-    return this.emit('reactionCollect', this, spawner, message, reaction, user);
+    const { collector, spawner, msg } = ctx;
+    const handler = this;
+    return this.emit('reactionCollect', {
+      handler, spawner, msg, reaction, user
+    });
   }
 
   handleReactionEnd(
     collected: Collection<string, MessageReaction>,
-    ctx: { message: MessagePlus; spawner: SpawnModule }
+    ctx: { msg: MessagePlus; spawner: SpawnModule }
   ): boolean {
-    return this.emit(
-      'reactionResults',
-      this,
-      ctx.spawner,
-      ctx.message,
-      collected,
-      Boolean(collected.size)
-    );
+    const { msg, spawner } = ctx;
+    const isEmpty = Boolean(collected.size);
+    const handler = this;
+
+    return this.emit('reactionResults', {
+      handler, spawner, msg, collected, isEmpty
+    });
   }
 
   /**
    * Self-explanatory
    * @param {Spawn} spawner the spawn module to run
-   * @param {Message} message a discord message obj
+   * @param {Message} msg a discord message obj
    */
-  public async spawn(
+  async spawn(
     spawner: SpawnModule,
-    message: MessagePlus
-  ): Promise<void> {
+    msg: MessagePlus
+  ): Promise<ReactionCollector|MessageCollector|void> {
     if (['spam', 'message'].includes(spawner.config.type)) {
       const str = this.client.util.randomInArray(spawner.spawn.strings);
+
+      // MessageCollector#filter
       const options: MessageCollectorOptions = {
         max: spawner.config.entries,
         time: spawner.config.timeout,
       };
 
+      // MessageCollector#filter
       const filter: CollectorFilter = async (
         msg: MessagePlus
       ): Promise<boolean> => {
@@ -183,77 +192,76 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
 
         return (
           !author.bot &&
-          (await fetch(author.id)).unpaid <= cap &&
+          (await fetch(author.id)).unpaid < cap &&
           content.toLowerCase() === str.toLowerCase() &&
           (isSpam ? true : !spawner.answered.has(author.id))
         );
       };
 
-      this.emit('messageStart', {
-        str,
-        spawner,
-        msg: message,
-        handler: this,
+      // Crap
+      this.emit('messageStart', { str, spawner, msg, handler: this });
+      const cooldown = spawner.getCooldown(msg.member, spawner.cd());
+      this.cooldowns.set(msg.author.id, spawner);
+      const deleteCD = () => this.cooldowns.delete(msg.author.id);
+      this.client.setTimeout(deleteCD, cooldown * 60 * 1000);
+      const collector = msg.channel.createMessageCollector(filter, options);
+
+      // MessageCollector#on<collect|end>
+      collector
+      .on('collect', (msg: MessagePlus) => {
+        this.handleMessageCollect<MessagePlus>({ msg, collector, spawner });
+      })
+      .on('end', (collected: Collection<string, MessagePlus>) => {
+        this.handleMessageEnd<MessagePlus>({ collected, spawner, msg });
       });
 
-      const cooldown = spawner.config.cooldown(message.member);
-      this.cooldowns.set(message.author.id, spawner);
-      const deleteCD = () => this.cooldowns.delete(message.author.id);
-      this.client.setTimeout(deleteCD, cooldown * 60 * 1000);
-      const collector = message.channel.createMessageCollector(filter, options);
-
-      collector
-        .on('collect', (msg: MessagePlus) => {
-          this.handleMessageCollect<MessagePlus>({ msg, collector, spawner });
-        })
-        .on('end', (collected: Collection<string, MessagePlus>) => {
-          this.handleMessageEnd<MessagePlus>({
-            collected,
-            spawner,
-            msg: message,
-          });
-        });
+      return collector;
     } else if (spawner.config.type === 'react') {
+
+      // ReactionCollector#options
       const options: ReactionCollectorOptions = {
         maxUsers: spawner.config.entries,
         maxEmojis: 1,
         max: 1,
       };
+
+      // ReactionCollector#filter
       const filter: CollectorFilter = async (
         reaction: MessageReaction,
         user: User
       ) => {
-        const notCapped =
-          (await this.client.db.spawns.fetch(user.id)).unpaid <= 10e6;
-        // this.client.config.spawns.unpaidCap
+        const { fetch } = this.client.db.spawns;
+        const { cap } = this.client.config.spawn;
+
         return (
-          notCapped &&
           !user.bot &&
+          (await fetch(user.id)).unpaid < cap &&
           !spawner.answered.has(user.id) &&
           reaction.toString() === spawner.spawn.emoji
         );
       };
 
-      this.emit('reactionStart', this, spawner, message); // send message, react to "react :emoji:" and call runCooldown()
-      const collector = message.createReactionCollector(filter, options);
+      // A bunch of shit
+      this.emit('reactionStart', this, spawner, msg); // send message, react to "react :emoji:" and call runCooldown()
+      const cooldown = spawner.getCooldown(msg.member, spawner.cd());
+      this.cooldowns.set(msg.author.id, spawner);
+      const deleteCD = () => this.cooldowns.delete(msg.author.id);
+      this.client.setTimeout(deleteCD, cooldown * 60 * 1000);
+      const collector = msg.createReactionCollector(filter, options);
+
+      // ReactionCollector#on<collect|remove|end>
       collector
-        .on('collect', (reaction: MessageReaction, user: User) => {
-          this.handleReactionCollect(reaction, user, {
-            collector,
-            message,
-            spawner,
-          });
-        })
-        .on('remove', (reaction: MessageReaction, user: User) => {
-          this.handleReactionRemove(reaction, user, {
-            collector,
-            message,
-            spawner,
-          });
-        })
-        .on('end', (collected: Collection<string, MessageReaction>) => {
-          this.handleReactionEnd(collected, { message, spawner });
-        });
+      .on('collect', (reaction: MessageReaction, user: User) => {
+        this.handleReactionCollect(reaction, user, { msg, collector, spawner });
+      })
+      .on('remove', (reaction: MessageReaction, user: User) => {
+        this.handleReactionRemove(reaction, user, { msg, collector, spawner });
+      })
+      .on('end', (collected: Collection<string, MessageReaction>) => {
+        this.handleReactionEnd(collected, { msg, spawner });
+      });
+
+      return collector;
     } else {
       throw new AkairoError(
         `[INVALID_TYPE] Spawn type "${spawner.config.type}" is invalid.`

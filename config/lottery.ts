@@ -15,10 +15,10 @@ export const lottoConfig: LottoConfig = {
 	// channelID: '717351680676462712',
 	channelID: '809489910351921192',
 	requirementID: '692517500814098462',
-	interval: 1000 * 60 * 5,
+	interval: 1e3 * 60 * 60, // 1hr
 	rewards: {
-		cap: 25e5,
-		max: 1e6,
+		cap: 3e6,
+		max: 15e5,
 		min: 5e5,
 	}
 }

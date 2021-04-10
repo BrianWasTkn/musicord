@@ -8,11 +8,13 @@ import { Lava } from '../Lava';
 export class LotteryHandler extends EventEmitter {
   client: Lava;
 
+  // helpers
   intIsRunning: boolean;
   lastRoll: number;
   nextRoll: number;
   ticked: boolean;
 
+  // lotto
   requirement: string;
   interval: number;
   rewards: LottoConfig['rewards'];
@@ -57,10 +59,14 @@ export class LotteryHandler extends EventEmitter {
   tick(first: boolean) {
     let catchup = first;
     let now = new Date();
+    this.client.util.console({ 
+      type: 'def', klass: 'Lottery',
+      msg: `Ticking in ${60 - now.getSeconds()} seconds.` 
+    });
 
     return setTimeout(async () => {
       // The 60-second tick
-      now = new Date(); // reassign to prevent infinite loops
+      now = new Date(); // reassign to prevent unnecessary infinite loops
       const tick = `${now.getHours()}:${LotteryHandler.pad(now.getMinutes())}`;
       const remaining = 60 - now.getMinutes();
 
@@ -78,7 +84,7 @@ export class LotteryHandler extends EventEmitter {
       }
 
       // Roll Interval (only once)
-      if (!this.intIsRunning && this.ticked) {
+      if (!this.intIsRunning && now.getMinutes() === 0 && this.ticked) {
         this.intIsRunning = true;
         this.runInterval.call(this);
       }

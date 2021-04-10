@@ -19,11 +19,10 @@ export default class Currency extends Command {
           id: 'query',
           type: (msg: MessagePlus, phrase: string) => {
             if (!phrase) return 1; // quest page
-            const { resolver } = this.handler;
+            const res = this.handler.resolver;
             return (
-              resolver.type('number')(msg, phrase) ||
-              resolver.type('questQuery')(msg, phrase) ||
-              phrase.constructor === String ? phrase : null
+              res.type('number')(msg, phrase) 
+              || res.type('questQuery')(msg, phrase)
             );
           },
         },
@@ -33,7 +32,7 @@ export default class Currency extends Command {
 
   async exec(
     msg: MessagePlus,
-    { query }: { query: number | Quest | string }
+    { query }: { query: number | (Quest | 'stop') }
   ): Promise<string | MessageOptions> {
     const { quest: Handler } = this.client.handlers;
     const quests = Handler.modules.array();
@@ -78,17 +77,20 @@ export default class Currency extends Command {
       return 'That isn\'t even a valid quest or page number bruh';
     }
 
-    if (query instanceof Quest) {
+    if (query.constructor instanceof Quest) {
       const quest = data.quest;
+      if (quest.id || quest.target >= 1) {
+        return { replyTo: msg.id, content: 'you can\'t enter a quest because you\'re have an active one' };
+      }
+
       quest.target = (query as Quest).target;
       quest.count = 0;
       quest.id = (query as Quest).id;
       await data.save();
-
       return { replyTo: msg.id, content: `You're now doing the **${(query as Quest).name}** quest!` };
     }
 
-    if (query.toLowerCase() === 'stop') {
+    if (query === 'stop') {
       const aq = data.quest;
       const active = mods.get(aq.id);
       aq.target = 0;

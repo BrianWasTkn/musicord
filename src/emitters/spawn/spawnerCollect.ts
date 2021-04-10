@@ -17,10 +17,12 @@ export default class SpawnListener extends Listener {
     isFirst: boolean;
     handler: SpawnHandler<Spawn>;
   }): Promise<MessageReaction> {
-    const { msg, spawner, isFirst, handler } = args;
+    const { msg, spawner, isFirst } = args;
+    const react = isFirst 
+      ? '<:memerGold:753138901169995797>' 
+      : spawner.spawn.emoji;
+
     spawner.answered.set(msg.author.id, true);
-    return msg.react(
-      isFirst ? '<:memerGold:753138901169995797>' : spawner.spawn.emoji
-    );
+    return msg.react(react);
   }
 }

@@ -3,22 +3,22 @@ import { GuildMember } from 'discord.js';
 import { Spawn } from '@lib/handlers/spawn';
 
 const visuals: SpawnVisual = {
-  emoji: '<:memerGreen:729863510296887398>',
-  type: 'SUPER',
-  title: 'Get Coinified',
-  description: 'Hey i want coins, do you want coins?',
-  strings: ['yes', 'no', "yesn't", "non't"],
+  emoji: '<:memerBlue:729863510330310727>',
+  type: 'GODLY',
+  title: 'Amogus',
+  description: 'Amogus',
+  strings: ['amogus', 'red sus', 'sus'],
 };
 
-export default class SUPER extends Spawn {
+export default class GODLY extends Spawn {
   constructor() {
-    super('coinified', visuals, {
-      rewards: { first: 10e6, min: 5e4, max: 1e5 },
+    super('amogus', visuals, {
+      rewards: { first: 69420, min: 1e5, max: 1e5 },
       enabled: true,
       timeout: 15000,
       entries: 3,
       type: 'message',
-      odds: 5,
+      odds: 2,
     });
   }
 

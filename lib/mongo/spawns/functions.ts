@@ -1,5 +1,5 @@
 /**
- * Currency Functions
+ * Spawn Functions
  * Author: brian
  */
 
@@ -11,7 +11,7 @@ import type { Lava } from '@lib/Lava';
 
 import Spawn from './model';
 
-export default class SpawnEndpoint<BaseDocument extends Document> {
+export default class SpawnEndpoint<Profile extends Document> {
   model: Model<Document<SpawnDocument>>;
   bot: Lava;
 
@@ -20,24 +20,18 @@ export default class SpawnEndpoint<BaseDocument extends Document> {
     this.bot = client;
   }
 
-  async create(id: Snowflake): Promise<Document & BaseDocument> {
-    const { id: userID }: User = await this.bot.users.fetch(id);
-    const data = new this.model({ userID });
-    await data.save();
-    return data as Document & BaseDocument;
-  }
+  fetch = async (userID: Snowflake): Promise<Document & Profile> => {
+    const data = ((await this.model.findOne({ userID })) 
+      || new this.model({ userID })) as Document & Profile;
 
-  fetch = async (userID: Snowflake): Promise<Document & BaseDocument> => {
-    let data = await this.model.findOne({ userID });
-    return (!data ? await this.create(userID) : data) as Document &
-      BaseDocument;
+    return data.save() as Promise<Document & Profile>;
   };
 
   add = async (
     userID: Snowflake,
-    key: keyof BaseDocument,
+    key: keyof Profile,
     amount: number
-  ): Promise<Document & BaseDocument> => {
+  ): Promise<Document & Profile> => {
     const data = await this.fetch(userID);
     data[key as string] += amount;
     await data.save();
@@ -46,9 +40,9 @@ export default class SpawnEndpoint<BaseDocument extends Document> {
 
   remove = async (
     userID: Snowflake,
-    key: keyof BaseDocument,
+    key: keyof Profile,
     amount: number
-  ): Promise<Document & BaseDocument> => {
+  ): Promise<Document & Profile> => {
     const data = await this.fetch(userID);
     data[key as string] -= amount;
     await data.save();

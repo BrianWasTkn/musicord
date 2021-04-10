@@ -11,7 +11,7 @@ export default class PowerUp extends Item {
       emoji: ':beers:',
       info: 'Gives a 10% chance of getting jackpot on slots for 10 minutes!',
       name: "Crazy's Alcohol",
-      cost: 250000,
+      cost: 350000,
     });
   }
 
@@ -23,6 +23,6 @@ export default class PowerUp extends Item {
     craz.expire = Date.now() + 10 * 60 * 1e3;
     await msg.author.initDB(data).updateItems().db.save();
 
-    return 'You now have a **10%** jackpot chance for 5 minutes!';
+    return 'You now have a **10%** jackpot chance for 10 minutes!';
   }
 }

@@ -1,6 +1,6 @@
 import { Collection, MessageEmbed } from 'discord.js';
+import { ItemOptions, ItemInfo } from '@lib/interface/handlers/item';
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
-import { ItemOptions } from '@lib/interface/handlers/item';
 import { MessagePlus } from '@lib/extensions/message';
 import { Document } from 'mongoose';
 import { Lava } from '@lib/Lava';
@@ -27,7 +27,7 @@ export class Item extends AkairoModule {
   client: Lava;
   usable: boolean;
   emoji: string;
-  info: string;
+  info: ItemInfo;
   name: string;
   cost: number;
 
@@ -35,7 +35,7 @@ export class Item extends AkairoModule {
    const { category } = opt;
     super(id, { category });
 
-    this.info = String(opt.info);
+    this.info = typeof opt.info === 'string' ? String(opt.info) : opt.info;
     this.cost = Number(opt.cost);
     this.buyable = Boolean(opt.buyable);
     this.sellable = Boolean(opt.sellable);

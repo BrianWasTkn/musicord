@@ -33,7 +33,8 @@ export default class Currency extends Command {
   ): Promise<MessageOptions> {
     const { isGlobal: glob } = args;
     const emojis = ['first_place', 'second_place', 'third_place'];
-
+    msg.channel.send({ replyTo: msg.id, content: 'Fetching...' });
+    
     if (glob) {
       const docs = (await Mongo.models['currency'].find({})) as (Document & CurrencyProfile)[];
       const lava = docs.filter(n => n.pocket > 0).sort((a, b) => b.pocket - a.pocket).slice(0, 10);
@@ -54,13 +55,13 @@ export default class Currency extends Command {
     const mebDocs = (await msg.guild.members.fetch({ force: true })).array().map(({ user }) => documents.find(doc => doc.userID === user.id));
     const abcde = mebDocs.filter(Boolean).filter(m => m.pocket > 0).sort((a, b) => b.pocket - a.pocket).slice(0, 10);
     const filt = (await Promise.all(abcde.map(async d => ({
-      member: await msg.guild.members.fetch({ user: d.userID, force: true }),
+      member: await msg.guild.members.fetch({ user: d.userID }),
       pocket: d.pocket
     })))).filter(m => !m.member.user.bot);
 
     return { embed: {
       author: { name: 'richest players in this server' },
-      description: filt.map((n, i) => `:${emojis[i] || 'eggplant'}: **${n.pocket.toLocaleString()}** — ${n.member.user.tag}`).join('\n'),
+      description: filt.map((n, i) => `:${emojis[i] || 'eggplant'}: **${n.pocket.toLocaleString()}** — ${n.member.user.tag || 'LOL WHO DIS'}`).join('\n'),
       color: msg.member.displayHexColor, footer: {
         iconURL: msg.guild.iconURL({ dynamic: true }),
         text: msg.guild.name + ' — Showing Pockets',

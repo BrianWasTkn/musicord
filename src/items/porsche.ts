@@ -11,7 +11,7 @@ export default class PowerUp extends Item {
       emoji: ':credit_card:',
       info: 'Increases your vault capacity from 20K up to 50K coins.',
       name: "Porsche's Card",
-      cost: 1300000,
+      cost: 1250000,
     });
   }
 
@@ -46,7 +46,7 @@ export default class PowerUp extends Item {
     data.space += gain;
     await data.save();
 
-    return `**You revealed __${choice.toLocaleString()}__ cards into your vault.**\nThis brings you to **${data.space.toLocaleString()}** of total vault capacity, with **${gain.toLocaleString()} (${Math.round(
+    return `**You crafted __${choice.toLocaleString()}__ cards into your vault.**\nThis brings you to **${data.space.toLocaleString()}** of total vault capacity, with **${gain.toLocaleString()} (${Math.round(
       gain / choice
     ).toLocaleString()} average) ** being revealed.`;
   }

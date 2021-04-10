@@ -11,7 +11,7 @@ export default class Collectible extends Item {
       emoji: '🏆',
       info: 'Grants you 50% multiplier for 5 minutes and a random amount of trophies (if you hit the odds of getting it) to flex against normies!',
       name: 'Trophy',
-      cost: 2500000,
+      cost: 3000000,
     });
   }
 
@@ -29,7 +29,6 @@ export default class Collectible extends Item {
     tr.multi = 50;
 
     await msg.author.initDB(data).updateItems().db.save();
-
-    return `**${this.emoji} ${this.name}**\nYou now have a **25%** multiplier for 30 minutes${!hit ? '!' : `AND **${nice.toLocaleString()} ${this.name}**${nice > 1 ? 's' : ''} god you're so lucky.`}`;
+    return `**${this.emoji} ${this.name}**\nYou now have a **25%** multiplier for 30 minutes${!hit ? '!' : ` AND **${nice.toLocaleString()} ${this.name}**${nice > 1 ? 's' : ''} god you're so lucky.`}`;
   }
 }

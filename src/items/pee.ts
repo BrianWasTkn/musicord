@@ -12,7 +12,7 @@ export default class Flex extends Item {
       emoji: ':baby_bottle:',
       info: "Use it to surprise somebody!",
       name: "Jenni's Piss",
-      cost: 5000000,
+      cost: 1e6,
     });
   }
 
@@ -47,6 +47,6 @@ export default class Flex extends Item {
     await data.save();
     await mebData.save();
 
-    return `Alright, ${meb.user.username} got your stinking surprise :flushed:`;
+    return `Alright, ${meb.user.username} got your stinking surprise :kiss:`;
   }
 }

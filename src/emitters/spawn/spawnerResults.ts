@@ -1,12 +1,10 @@
-import { Message, Collection, TextChannel } from 'discord.js';
+import { Collection, TextChannel } from 'discord.js';
 import { SpawnHandler, Spawn } from '@lib/handlers/spawn';
+import { MessagePlus } from '@lib/extensions/message';
 import { Listener } from '@lib/handlers';
 import { Embed } from '@lib/utility/embed';
-import { Lava } from '@lib/Lava';
 
 export default class SpawnListener extends Listener {
-  client: Lava;
-
   constructor() {
     super('messageResults', {
       emitter: 'spawn',
@@ -15,80 +13,77 @@ export default class SpawnListener extends Listener {
   }
 
   async exec(args: {
-    msg: Message;
+    msg: MessagePlus;
     spawner: Spawn;
-    collected: Collection<string, Message>;
+    collected: Collection<string, MessagePlus>;
     handler: SpawnHandler<Spawn>;
     isEmpty: boolean;
-  }): Promise<Message> {
+  }): Promise<MessagePlus> {
     const { msg: message, spawner, collected, handler, isEmpty } = args;
+    const { randomInArray, randomNumber } = this.client.util;
     const queue = handler.queue.get(message.channel.id);
-    const msg = await message.channel.messages.fetch(queue.msg);
+    const msg = message.channel.messages.cache.get(queue.msg);
     const emoji = '<:memerRed:729863510716317776>';
     handler.queue.delete(msg.channel.id);
     spawner.answered.clear();
 
-    try {
-      const embed = msg.embeds[0].setColor('BLACK');
-      await msg.edit({ embed });
-    } catch {}
+    msg.edit({ embed: msg.embeds[0].setColor('BLACK') }).catch(() => {}); // im not racist >:(
 
     if (!isEmpty) {
-      const embed = new Embed()
-        .setDescription(`**${emoji} No one got it RIP**`)
-        .setColor('RED');
-      return msg.channel.send({ embed });
+      const description = `**${emoji} No one got it RIP**`;
+      const color = 'RED';
+
+      return msg.channel.send({ 
+        embed: { color, description }
+      }) as Promise<MessagePlus>;
     }
 
+    const promises: Promise<void | MessagePlus>[] = [];
     const results: string[] = [];
-    const promises: Promise<void | Message>[] = [];
     const verbs = ['obtained', 'got', 'procured', 'won'];
-    const verb = this.client.util.randomInArray(verbs);
+    const verb = randomInArray(verbs);
 
-    collected.array().forEach(async (msg: Message, i: number) => {
-      const { fetch, add } = this.client.db.spawns;
+    collected.array().forEach(async (msg: MessagePlus, i: number) => {
       const { min, max, first } = spawner.config.rewards;
-      let coins = this.client.util.randomNumber(min, max);
-      if (Math.random() > 0.99 && i === 0) coins = first;
+      const { fetch } = this.client.db.spawns;
       const { spawn } = spawner;
       const { user } = msg.member;
+      const oddHit = Math.random() > 0.99 && i === 0;
+      const coins = oddHit ? first : randomNumber(min, max);
 
-      results.push(
-        `\`${user.username}\` ${verb} **${coins.toLocaleString()}** coins`
-      );
-      await add(user.id, 'eventsJoined', 1);
-      const db = await add(user.id, 'unpaid', coins);
+      const result = `+ ${user.username} ${verb} ${coins.toLocaleString()}`;
+      results.push(result);
+      const data = await fetch(user.id);
+      data.eventsJoined++;
+      data.unpaid += coins;
+      const db = await data.save();
 
-      const embed = new Embed()
-        .setFooter(
-          true,
-          message.guild.name,
-          message.guild.iconURL({ dynamic: true })
-        )
-        .addField('• Coins Earned', coins.toLocaleString())
-        .addField('• New Unpaids', db.unpaid.toLocaleString())
-        .setTitle(`${spawn.emoji} ${spawn.title}`)
-        .setColor('RANDOM');
+      if (db.allowDM) {
+        const fields = {
+          '• Coins Earned': coins.toLocaleString(),
+          '• New Unpaids': db.unpaid.toLocaleString()
+        };
 
-      promises.push(user.send({ embed }).catch(() => {}));
+        promises.push(user.send({ embed: {
+          footer: { text: msg.guild.name, iconURL: msg.guild.iconURL({ dynamic: true }) },
+          fields: Object.entries(fields).map(([name, value]) => ({ name, value })),
+          title: `${spawn.emoji} ${spawn.title}`,
+          color: 'RANDOM',
+        }}).catch(() => {}) as Promise<void | MessagePlus>);
+      }
     });
 
-    await Promise.all(promises);
-    const payouts = message.guild.channels.cache.get(
-      '796688961899855893'
-    ) as TextChannel;
+    if (promises.length >= 1) await Promise.all(promises);
+    const channels = message.guild.channels.cache;
+    const payouts = channels.get('796688961899855893') as TextChannel;
     const embed = new Embed()
+      .setDescription('```diff' + results.join('\n') + '```')
       .setFooter(false, 'Check DMs for info.')
-      .setDescription(results.join('\n'))
       .setAuthor(spawner.spawn.title)
       .setColor('RANDOM');
 
-    try {
-      await msg.channel.send({ embed });
-      embed.setFooter(false, msg.channel.id);
-      try {
-        await payouts.send({ embed });
-      } catch {}
-    } catch {}
+    msg.channel.send({ embed }).catch(() => {});
+    embed.setFooter(false, msg.channel.id);
+    payouts.send({ embed }).catch(() => {});
   }
 }

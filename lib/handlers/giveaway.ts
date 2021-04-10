@@ -11,6 +11,7 @@ import {
 
 export class Giveaway extends AkairoModule {
   handler: GiveawayHandler<Giveaway>;
+  client: Lava;
 
   constructor(id: string, opt: AkairoModuleOptions) {
     const { category } = opt;

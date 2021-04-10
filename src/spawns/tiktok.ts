@@ -3,22 +3,22 @@ import { GuildMember } from 'discord.js';
 import { Spawn } from '@lib/handlers/spawn';
 
 const visuals: SpawnVisual = {
-  emoji: '<:memerGreen:729863510296887398>',
-  type: 'SUPER',
-  title: 'Get Coinified',
-  description: 'Hey i want coins, do you want coins?',
-  strings: ['yes', 'no', "yesn't", "non't"],
+  emoji: '<:memerBlue:729863510330310727>',
+  type: 'COMMON',
+  title: 'Tiktok',
+  description: "What is TikTok for you?",
+  strings: ['cringe', 'cool', 'average'],
 };
 
-export default class SUPER extends Spawn {
+export default class COMMON extends Spawn {
   constructor() {
-    super('coinified', visuals, {
-      rewards: { first: 10e6, min: 5e4, max: 1e5 },
+    super('tiktok', visuals, {
+      rewards: { first: 1e6, min: 1e4, max: 5e4 },
       enabled: true,
       timeout: 15000,
       entries: 3,
       type: 'message',
-      odds: 5,
+      odds: 10,
     });
   }
 

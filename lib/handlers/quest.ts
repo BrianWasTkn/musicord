@@ -31,8 +31,8 @@ export class Quest extends AkairoModule {
       Difficult: 2,
       Hard: 3,
       Medium: 4,
-      Easy: 5,
-    }
+      Easy: 5
+    };
 
     this.rawDiff = opt.diff;
     this.rewards = rew;

@@ -2,7 +2,6 @@ import { Message, TextChannel, Collection } from 'discord.js';
 import { SpawnHandler, Spawn } from '@lib/handlers/spawn';
 import { SpawnQueue } from '@lib/interface/handlers/spawn';
 import { Listener } from '@lib/handlers';
-import { Embed } from '@lib/utility/embed';
 import { Lava } from '@lib/Lava';
 
 export default class SpawnListener extends Listener {
@@ -20,26 +19,27 @@ export default class SpawnListener extends Listener {
     handler: SpawnHandler<Spawn>;
   }): Promise<Collection<string, SpawnQueue>> {
     const { str, msg, spawner, handler } = args;
-    const { emoji, type, title, description } = spawner.spawn;
-    const content = `**${emoji} \`${type} EVENT NICE!\`**`;
-    const embed = new Embed()
-      .setFooter(false, msg.author.tag, msg.author.avatarURL({ dynamic: true }))
-      .setDescription(description)
-      .setTitle(title)
-      .setColor('GOLD');
+    const { randomInArray } = this.client.util;
+    const { spawn } = spawner;
 
-    const eventMessage = await msg.channel.send({ content, embed });
-    await msg.channel.send({
+    const m = await msg.channel.send({
+      content: `**${spawn.emoji} \`${spawn.type} EVENT NICE!\`**`,
       embed: {
-        title: `Type \`${str.split('').join('\u200b')}\``,
+        footer: { text: msg.author.tag, iconURL: msg.author.avatarURL({ dynamic: true }) },
+        description: spawn.description,
+        title: spawn.title,
         color: 'GOLD',
-      },
+      }
     });
 
+    const title = `Type \`${str.split('').join('\u200b')}\``;
+    const color = randomInArray(['GOLD', 'GREEN', 'ORANGE']);
+    await msg.channel.send({ embed: { title, color }});
+
     return handler.queue.set(msg.channel.id, {
-      msg: eventMessage.id,
-      spawn: spawner,
       channel: msg.channel.id,
+      spawn: spawner,
+      msg: m.id,
     });
   }
 }

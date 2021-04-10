@@ -1,7 +1,11 @@
+import { MessageEmbed, MessageEmbedOptions } from 'discord.js';
 import { AkairoModuleOptions } from 'discord-akairo';
-import { MessageEmbed } from 'discord.js';
 
-export type ItemReturn = string | IItemReturn;
+export type ItemReturn = string 
+  | IItemReturn;
+
+export type ItemInfo = string 
+  | { short: string; long: string; }
 
 export interface ItemOptions extends AkairoModuleOptions {
   emoji: string;
@@ -25,6 +29,6 @@ export interface InventorySlot {
 
 export interface IItemReturn {
   content?: string;
-  embed?: MessageEmbed;
+  embed?: MessageEmbed | MessageEmbedOptions;
   reply?: boolean;
 }

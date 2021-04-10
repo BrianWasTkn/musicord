@@ -11,7 +11,7 @@ export default class Powerflex extends Item {
       emoji: ':brown_heart:',
       info: 'Gives up to 50% multiplier and a 5% jackpot chance in slots for 10 minutes.',
       name: "Brian's Heart",
-      cost: 125000,
+      cost: 225000,
     });
   }
 
@@ -28,7 +28,6 @@ export default class Powerflex extends Item {
     heart.amount--;
 
     await msg.author.initDB(data).updateItems().db.save();
-
     return `You now have a **${multi}% multiplier** and **5% jackpot chance** under 10 minutes!`;
   }
 }

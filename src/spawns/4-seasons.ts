@@ -12,36 +12,22 @@ const visuals: SpawnVisual = {
 
 export default class COMMON extends Spawn {
   constructor() {
-    super(
-      {
-        cooldown: (m) => this.cd(m),
-        enabled: true,
-        timeout: 10000,
-        entries: 5,
-        odds: 5,
-        type: 'message',
-      },
-      visuals,
-      {
-        first: 100000,
-        min: 5000,
-        max: 5000,
-      }
-    );
+    super('4-seasons', visuals, {
+      rewards: { first: 5e4, min: 1e4, max: 4e4 },
+      enabled: true,
+      timeout: 15000,
+      entries: 3,
+      type: 'message',
+      odds: 10,
+    });
   }
 
-  cd(member: GuildMember): number {
-    const them = {
+  cd() {
+    return {
       '693324853440282654': 3, // Booster
       '768858996659453963': 5, // Donator
       '794834783582421032': 10, // Mastery
       '693380605760634910': 20, // Amari
-    };
-
-    for (const [id, cd] of Object.entries(them)) {
-      if (this.has(member, id)) return cd;
     }
-
-    return 60; // Default
   }
 }
