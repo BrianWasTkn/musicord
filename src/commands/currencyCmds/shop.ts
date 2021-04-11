@@ -47,10 +47,8 @@ export default class Currency extends Command {
         const saleCost = Handler.sale.id === i.id 
           ? Math.round(cost - (cost * (sale / 100)))
           : cost;
-        const coss = sale >= 1
-          ? `[${saleCost.toLocaleString()}](https://google.com) ( [***${sale}% OFF!***](https://google.com) )`
-          : `[${saleCost.toLocaleString()}](https://google.com)`;
 
+        const coss = `[${saleCost.toLocaleString()}](https://google.com) ${Handler.sale.id === i.id ? `( [***${sale}% OFF!***](https://google.com) )` : ''}`;
         return `**${emoji} ${i.name}** — ${coss}\n${sale >= 1 ? `*${info.long}*` : info.short}`;
       }
 
