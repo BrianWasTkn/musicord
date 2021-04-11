@@ -98,9 +98,9 @@ export default class Currency extends Command {
         `You now have **${d.pocket.toLocaleString()}**`,
       ];
     } else if (userD > botD) {
-      let wngs = Math.ceil(bet * (Math.random() + (0.1 + extraWngs)));
+      let wngs = Math.ceil(bet * (Math.random() + + extraWngs));
       wngs = Math.min(maxWin, wngs + Math.ceil(wngs * (multi / 100)));
-      perwn = Number((wngs / bet).toFixed(2));
+      perwn = Number((wngs / bet * 100).toFixed(2));
 
       const d = await msg.author
         .initDB(data)

@@ -44,7 +44,9 @@ export default class Currency extends Command {
 
       function displayItem(i: Item, sale: number = 0 /* 0 just to be safe */) {
         const { emoji, cost, info } = i;
-        const saleCost = Math.round(cost - (cost * (sale / 100)));
+        const saleCost = Handler.sale.id === i.id 
+          ? Math.round(cost - (cost * (sale / 100)))
+          : cost;
         const coss = sale >= 1
           ? `[${saleCost.toLocaleString()}](https://google.com) ( [***${sale}% OFF!***](https://google.com) )`
           : `[${saleCost.toLocaleString()}](https://google.com)`;
