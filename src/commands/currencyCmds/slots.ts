@@ -34,8 +34,8 @@ export default class Currency extends Command {
       peach: [1, 25, false],
       flushed: [2, 50, false],
       star2: [2, 75, true],
-      fire: [3, 250, true],
-      four_leaf_clover: [10, 500, true]
+      fire: [2, 250, true],
+      four_leaf_clover: [2, 500, true]
     };
   }
 

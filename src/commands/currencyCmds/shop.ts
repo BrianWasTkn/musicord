@@ -42,11 +42,12 @@ export default class Currency extends Command {
       const from = Date.now() - Handler.saleInterval;
       const left = parseTime(Math.round(Handler.sale.lastSale - from) / 1e3).join(', ');
 
-      function displayItem(i: Item, sale: number) {
+      function displayItem(i: Item, sale: number = 0 /* 0 just to be safe */) {
         const { emoji, cost, info } = i;
+        const saleCost = Math.round(cost - (cost * (sale / 100)));
         const coss = sale >= 1
-          ? `[${Math.round(cost - (cost * (sale / 100))).toLocaleString()}](https://google.com) ( [***${sale}% OFF!***](https://google.com) )`
-          : `[${cost.toLocaleString()}](https://google.com)`;
+          ? `[${saleCost.toLocaleString()}](https://google.com) ( [***${sale}% OFF!***](https://google.com) )`
+          : `[${saleCost.toLocaleString()}](https://google.com)`;
 
         return `**${emoji} ${i.name}** — ${coss}\n${sale >= 1 ? `*${info.long}*` : info.short}`;
       }

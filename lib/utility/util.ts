@@ -75,29 +75,60 @@ export class Util extends ClientUtil {
   };
 
   tableSlots = () => {
-    return 'haha u suck at coding';
+    const { slots } = this.client.config.currency;
+    const [keys, vals] = [Object.keys(slots), Object.values(slots)];
+
+    const single = keys[keys.length - 1];
+    const sMulti = slots[single][0];
+    const double = keys.filter(k => keys[k][2]);
+    const dMulti = double.map(d => slots[d][1]);
+    const jackpot = keys.filter(k => slots[k][1]);
+
+    return { 
+      single: single, 
+      double: { double, multi: dMulti },
+      jackpot: { jackpot }
+    };
   };
 
-  // dankmemer.lol/source
+  /**
+   * Parses time resolvables into human readable times
+   * @param time time in seconds
+   * @returns {string[]}
+  */
   parseTime = (time: number): string[] => {
     const methods = [
-      { name: 'days', count: 86400 },
-      { name: 'hours', count: 3600 },
-      { name: 'minutes', count: 60 },
-      { name: 'seconds', count: 1 },
+      { name: 'month', count: 2592000 },
+      { name: 'day', count: 86400 },
+      { name: 'hour', count: 3600 },
+      { name: 'minute', count: 60 },
+      { name: 'second', count: 1 },
     ];
 
-    const timeStr = [
-      Math.floor(time / methods[0].count).toString() + ' ' + methods[0].name,
-    ];
-    for (let i = 0; i < 3; i++) {
-      const calced = Math.floor(
-        (time % methods[i].count) / methods[i + 1].count
-      );
-      timeStr.push(calced.toString() + ' ' + methods[i + 1].name);
+    function pluralize(str: string, num: number) {
+      return num > 1 ? `${str}s` : str;
     }
 
-    return timeStr.filter((g) => !g.startsWith('0'));
+    function and(arr: any[]): any {
+      const secToLast = arr[arr.length - 2];
+      const last = arr.pop();
+      return [...arr.slice(0, arr.length - 1), [secToLast, last].join(' and ')];
+    }
+
+    const firstCnt = Math.floor(time / methods[0].count);
+    const timeStr = [firstCnt.toString() + ' ' + pluralize(methods[0].name, firstCnt)];
+    for (let i = 0; i < (methods.length - 1); i++) {
+      const raw = (time % methods[i].count) / methods[i + 1].count;
+      const calced = Math.floor(raw);
+      timeStr.push(calced.toString() + ' ' + pluralize(methods[i + 1].name, calced));
+    }
+
+    const raw = timeStr.filter((g) => !g.startsWith('0'));
+    return raw.length === 2
+      ? raw.join(' and ')
+      : and.length >= 3
+        ? and(raw)
+        : raw;
   };
 
   isPromise = (something: any): boolean => {
