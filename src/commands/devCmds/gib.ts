@@ -41,6 +41,6 @@ export default class Currency extends Command {
     const r = await (user as UserPlus).fetchDB();
     if (isNaN(amount)) return 'Needs to be a whole number yeah?';
     let { pocket } = await msg.dbAdd(member.user.id, 'pocket', amount);
-    await msg.react('\u2713');
+    await msg.react('✅');
   }
 }
