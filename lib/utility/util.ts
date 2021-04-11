@@ -127,8 +127,8 @@ export class Util extends ClientUtil {
     return raw.length === 2
       ? raw.join(' and ')
       : and.length >= 3
-        ? and(raw)
-        : raw;
+        ? and(raw).join(', ')
+        : raw.join(', ');
   };
 
   isPromise = (something: any): boolean => {

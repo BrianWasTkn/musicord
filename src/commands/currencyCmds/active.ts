@@ -23,7 +23,7 @@ export default class Currency extends Command {
         const it = item.modules.get(i.id);
         const expire = parseTime(Math.floor((i.expire - stamp) / 1e3));
 
-        return `**${it.emoji} ${it.name}** — expires in ${expire.join(', ')}`;
+        return `**${it.emoji} ${it.name}** — expires in ${expire}`;
       });
 
     if (actives.length < 1) {

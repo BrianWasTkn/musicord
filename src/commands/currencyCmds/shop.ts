@@ -40,7 +40,7 @@ export default class Currency extends Command {
       const { paginateArray, parseTime } = this.client.util;
       const sItem = Handler.modules.get(Handler.sale.id);
       const from = Date.now() - Handler.saleInterval;
-      const left = parseTime(Math.round(Handler.sale.lastSale - from) / 1e3).join(', ');
+      const left = parseTime(Math.round(Handler.sale.lastSale - from) / 1e3);
 
       function displayItem(i: Item, sale: number = 0 /* 0 just to be safe */) {
         const { emoji, cost, info } = i;
