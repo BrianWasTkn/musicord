@@ -32,7 +32,7 @@ export default class Fun extends Command {
 				return { replyTo: msg.id, content: 'You\'re not married to anyone right now.' };
 			}
 
-			const some1 = await this.client.users.fetch(me.marriage.id);
+			const some1 = await this.client.users.fetch(me.marriage.id, true, true);
 			const since = new Date(me.marriage.since);
 
 			return { embed: {
