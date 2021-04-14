@@ -237,7 +237,7 @@ export default class Currency extends Command {
         desc = `**${status.message}** ${finalMsg}`;
       }
       const satisfied = final;
-      msg.channel.send({
+      await msg.channel.send({
         content: !final
           ? `${
               first ? 'What do you want to do?\n' : ''

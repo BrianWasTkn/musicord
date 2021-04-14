@@ -42,46 +42,58 @@ export default class Currency extends Command {
       const from = Date.now() - Handler.saleInterval;
       const left = parseTime(Math.round(Handler.sale.lastSale - from) / 1e3);
 
-      function displayItem(i: Item, sale: number = 0) {
-        const { emoji, cost, info } = i;
-        const saleCost = Handler.sale.id === i.id 
-          ? Math.round(cost - (cost * (sale / 100)))
-          : cost;
-        const coss = sale >= 1
-          ? `[${saleCost.toLocaleString()}](https://google.com) ( [***${sale}% OFF!***](https://google.com) )`
-          : `[${saleCost.toLocaleString()}](https://google.com)`;
-
-        return `**${emoji} ${i.name}** — ${coss}\n${sale >= 1 ? `*${info.long}*` : info.short}`;
+      function displaySaleItem(it: string, discount: number) {
+        const item = Handler.modules.get(it);
+        const { emoji, cost, info } = item;
+        const saleCost = Math.round(cost - (cost * (discount / 1e3)));
+        const off = `[${saleCost.toLocaleString()}](https://google.com) ( [***${discount}% OFF!***](https://google.com) )`;
+        
+        return `**${emoji} ${item.name}** — ${off}\n*${info.long}*`;
       }
 
-      const shop = paginateArray(items.sort((a, b) => b.cost - a.cost).map((i) => displayItem(i, 0)), 5);
+      function displayItem(i: Item) {
+        const { emoji, cost, info } = i;
+        const { discount, id } = Handler.sale;
+        const onSale = id === i.id;
+        const price = onSale ? Math.round(cost - (cost * (discount / 100))) : cost;
+
+        return `**${emoji} ${i.name}** — [${price.toLocaleString()}](https://google.com)\n${info.short}`;
+      }
+
+      const shop = paginateArray(items.sort((a, b) => b.cost - a.cost).map(displayItem), 5);
       if (query > shop.length) return "That page doesn't even exist lol";
       
       embed
-        .addField(`**__LIGHTNING SALE__** (resets in ${left})`, displayItem(sItem, Handler.sale.discount))
+        .addField(`**__LIGHTNING SALE__** (resets in ${left})`, displaySaleItem(Handler.sale.id, Handler.sale.discount))
         .addField('Shop Items', shop[(query as number) - 1].join('\n\n'))
         .setFooter(false, `Lava Shop — Page ${query} of ${shop.length}`)
         .setTitle('Lava Shop')
         .setColor('RANDOM');
     } else {
-      if (!query)
-        return "That item doesn't even exist in the shop what're you doing?";
+      if (!query) return "That item doesn't even exist in the shop what're you doing?";
       const data = await msg.author.fetchDB();
       const inv = data.items.find((i) => i.id === query.id);
+
+      function calc(amount: number, discount: number) {
+        return amount - (amount * (discount / 100));
+      }
+
+      const { id, discount } = Handler.sale;
+      const buy = query.id === id ? Math.round(calc(query.cost, discount)) : query.cost;
+      const sell = query.id === id ? Math.round(calc(query.cost / 4, discount)) : Math.round(query.cost / 4);
 
       let info: string[] = [];
       info.push(
         `**Item Price** — ${
           query.buyable
-          ? query.id === Handler.sale.id
-            ? Math.round(query.cost - (query.cost * (Handler.sale.discount / 100))).toLocaleString()
-            : query.cost.toLocaleString()
+          ? buy.toLocaleString()
           : '**Not Purchaseable**'
         }`
       );
       info.push(
-        `**Sell Price** — ${(query.sellable
-          ? query.cost / 4
+        `**Sell Price** — ${(
+          query.sellable
+          ? sell.toLocaleString()
           : '**Not Sellable**'
         ).toLocaleString()}`
       );

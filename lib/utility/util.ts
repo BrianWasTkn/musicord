@@ -126,7 +126,7 @@ export class Util extends ClientUtil {
     const raw = timeStr.filter((g) => !g.startsWith('0'));
     return raw.length === 2
       ? raw.join(' and ')
-      : and.length >= 3
+      : and(raw).length >= 3
         ? and(raw).join(', ')
         : raw.join(', ');
   };

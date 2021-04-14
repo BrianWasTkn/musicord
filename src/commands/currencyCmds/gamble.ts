@@ -66,13 +66,12 @@ export default class Currency extends Command {
     }
 
     // Dice
+    const rig = (a: number, b: number) => (a > b ? [a, a = b] : [b])[0];
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);
-    if (Math.random() > 0.55) {
-      userD = (botD > userD ? [botD, (botD = userD)] : [userD])[0] + dceRoll;
-    } else {
-      botD = (userD > botD ? [userD, (userD = botD)] : [botD])[0];
-    }
+    if (Math.random() > 0.55) userD = rig(botD, userD);
+    else botD = rig(userD, botD);
+    userD += dceRoll;
     
     // vis and db
     let perwn: number,
@@ -82,7 +81,7 @@ export default class Currency extends Command {
 
     if (botD === userD || botD > userD) {
       const ties = botD === userD;
-      let lost = ties ? Math.round(bet / 4) : bet;
+      const lost = ties ? Math.round(bet / 4) : bet;
 
       const d = await msg.author
         .initDB(data)
@@ -98,9 +97,9 @@ export default class Currency extends Command {
         `You now have **${d.pocket.toLocaleString()}**`,
       ];
     } else if (userD > botD) {
-      let wngs = Math.ceil(bet * (Math.random() + + extraWngs));
+      let wngs = Math.ceil(bet * (Math.random() + extraWngs));
       wngs = Math.min(maxWin, wngs + Math.ceil(wngs * (multi / 100)));
-      perwn = Number((wngs / bet * 100).toFixed(2));
+      perwn = Math.round(wngs / bet * 100);
 
       const d = await msg.author
         .initDB(data)
@@ -109,7 +108,7 @@ export default class Currency extends Command {
         .calcSpace()
         .db.save();
 
-      identifier = Boolean(extraWngs) ? 'thicc' : 'winning';
+      identifier = Boolean(extraWngs) ? 'powered' : 'winning';
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
       description = [
         `You won **${wngs.toLocaleString()}**\n`,

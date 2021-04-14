@@ -5,15 +5,25 @@ import { Effects } from '@lib/utility/effects';
 import { Lava } from '@lib/Lava';
 
 export class UserPlus extends User {
-  client: Lava;
   db: Document & CurrencyProfile;
+  client: Lava;
 
   constructor(client: Lava, data: object) {
     super(client, data);
   }
 
+  get isBlacklisted() {
+    return !!this.db.bled;
+  }
+
   get isBotOwner() {
     return this.client.isOwner(this.id);
+  }
+
+  async fetchData() {
+    const { fetch } = this.client.db.currency;
+    this.db = await fetch(this.id);
+    return this;
   }
 
   initDB(data: Document & CurrencyProfile) {
@@ -29,27 +39,25 @@ export class UserPlus extends User {
     for (const item of items) {
       const inv = this.db.items.find((i) => i.id === item.id);
       if (inv.expire > Date.now()) {
-        switch(inv.id) {
-          case 'brian':
-            eff.addSlotJackpotOdd(5);
-            break;
-          case 'crazy':
-            eff.addSlotJackpotOdd(5);
-            break;
-          case 'thicc':
-            eff.addGambleWinnings(0.5);
-            break;
-          case 'thicm':
-            eff.addBlackjackWinnings(0.5);
-            break;
-          case 'dragon': 
-            if (inv.amount >= 1) {
-              eff.addDiceRoll(1);
-              if (Math.random() < 1) {
-                inv.amount--;
-              }
+        const trigger = {
+          'brian': () => eff.addSlotJackpotOdd(5),
+          'crazy': () => eff.addSlotJackpotOdd(5),
+          'thicc': () => eff.addGambleWinnings(0.5),
+          'thicm': () => eff.addBlackjackWinnings(0.5),
+          'dragon': () => eff.addDiceRoll(1)
+        };
+
+        if (['dragon'].includes(inv.id)) {
+          if (inv.amount >= 1) {
+            trigger[inv.id]();
+            if (Math.random() < 1) {
+              inv.amount--;
             }
-            break;
+          }
+        } else {
+          const includes = ['brian', 'crazy', 'thicc', 'thicm'].includes(inv.id);
+          if (includes) trigger[inv.id]();
+          else continue;
         }        
 
         const temp = new Collection<string, Effects>();

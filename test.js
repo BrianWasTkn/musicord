@@ -49,7 +49,7 @@ Time.prototype.see = function see() {
 
 const time = new Time(5);
 // console.log(time.see());
-global.console.log(~~0)
+global.console.log(~~0);
 
 /** @type {number} */
 const and = time.parseTime((60 * 60 * 24 * 30 * 12 * 5) 

@@ -6,3 +6,4 @@ import { Lava } from '@lib/Lava';
 
 const bot = new Lava(config);
 bot.build();
+// epic
