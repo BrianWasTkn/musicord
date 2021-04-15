@@ -28,9 +28,10 @@ export default class ClientListener extends Listener {
 
   	if (matchingRoles.length >= 1) {
   		// Promise.race big flex
-  		await Promise.race([...ids.map(r => n.roles.add(r))]);
+  		await Promise.race([...ids.map(r => n.roles.add(r.id))]);
   	} else {
-  		await Promise.all([...roles.map(r => n.roles.remove(r))]);
+  		const hasRoles = n.roles.cache.array().map(r => r.id).some(r => ids.includes(r.id));
+  		if (!hasRoles) await Promise.all([...roles.map(r => n.roles.remove(r))]);
   	}
   }
 }
