@@ -22,13 +22,13 @@ export default class ClientListener extends Listener {
   	const roles = Object.values(cults);
   	const keys = Object.keys(cults);
 
-  	let matchingRoles = [...n.guild.roles.cache.values()]
+  	const matchingRoles = [...n.guild.roles.cache.values()]
   	.filter(r => n.nickname.toLowerCase().includes(r.name));
-  	matchingRoles = roles.map(r => matchingRoles.some(mr => mr.id === r));
+  	const ids = roles.map(r => matchingRoles.some(mr => mr.id === r));
 
   	if (matchingRoles.length >= 1) {
   		// Promise.race big flex
-  		await Promise.race([...matchingRoles.map(r => n.roles.add(r.id))]);
+  		await Promise.race([...ids.map(r => n.roles.add(r))]);
   	} else {
   		await Promise.all([...roles.map(r => n.roles.remove(r))]);
   	}
