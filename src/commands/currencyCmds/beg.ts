@@ -32,19 +32,28 @@ export default class Currency extends Command {
         itinv.amount += amount;
         await data.save();
         return {
-          content: `WTF you got **${amount} ${item.emoji} ${item.name}**${amount > 1 ? 's' : ''} that was lucky asf`,
+          embed: {
+            description: `WTF you got **${amount} ${item.emoji} ${item.name}**${amount > 1 ? 's' : ''} that was lucky asf`,
+            color: 'ORANGE', author: { name: 'Lava' }
+          },
           replyTo: msg,
         }
       case odds >= 0.5:
         const won = util.randomNumber(100, 1000) * 1e3;
         await msg.author.initDB(data).addPocket(won).calcSpace().db.save();
         return {
-          content: `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`,
+          embed: {
+            description: `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`,
+            color: 'ORANGE', author: { name: 'Lava' }
+          },
           replyTo: msg
         };
       default: 
         return {
-          content: 'LOL no thanks :clown:',
+          embed: {
+            description: 'LOL NO THANKS :P',
+            color: 'ORANGE', author: { name: 'Lava' }
+          },
           replyTo: msg
         };
     }

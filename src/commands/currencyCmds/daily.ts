@@ -1,0 +1,45 @@
+import { MessageOptions } from 'discord.js';
+import { MessagePlus } from '@lib/extensions/message';
+import { Command } from '@lib/handlers/command';
+
+export default class Currency extends Command {
+  constructor() {
+    super('daily', {
+      aliases: ['daily', '24hr'],
+      channel: 'guild',
+      description: 'Claim your daily coins.',
+      category: 'Currency',
+      cooldown: 1e3 * 60 * 60 * 24,
+    });
+  }
+
+  public async exec(msg: MessagePlus): Promise<string | MessageOptions> {
+    const data = await msg.author.fetchDB();
+    let { streak, time } = data.daily;
+
+    if (Date.now() - time > 172800000) {
+    	data.daily.streak = 1;
+    	await data.save();
+      streak = 1;
+    } else {
+    	data.daily.streak++;
+    	await data.save();
+      streak += 1;
+    }
+
+    let won = 10000;
+    const streakBonus = Math.round((0.2 * won) * streak);
+    if (streak > 1) {
+    	won += streakBonus;
+    }
+    data.daily.time = Date.now();
+    data.pocket += won;
+    await data.save();
+
+    return { embed: {
+      title: `Here are your daily coins, ${msg.author.username}`,
+      description: `**${won.toLocaleString()}** were placed in your pocket.`,
+      color: 'BLUE',
+    }};
+  }
+}

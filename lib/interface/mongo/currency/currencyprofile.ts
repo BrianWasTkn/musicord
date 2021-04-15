@@ -11,11 +11,17 @@ export interface CurrencyProfile extends Document {
   banned: boolean;
   pocket: number;
   items: InventorySlot[];
+  daily: DailyData;
   quest: QuestSlot;
   vault: number;
   space: number;
   multi: number;
   bled: boolean;
+}
+
+export interface DailyData {
+  streak: number;
+  time: number;
 }
 
 export interface QuestSlot {

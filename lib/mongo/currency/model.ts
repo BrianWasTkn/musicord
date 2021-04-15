@@ -25,6 +25,11 @@ const CurrencySchema = new Schema({
     id: String,
     cd: Number,
   }],
+  /* Daily */
+  daily: {
+    streak: { required: false, default: 0, type: Number },
+    time: { required: false, default: 0, type: Number },
+  },
   /* Marriage */
   marriage: {
     since: { required: false, default: 0, type: Number },
