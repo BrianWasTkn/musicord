@@ -22,8 +22,9 @@ export default class ClientListener extends Listener {
   	const roles = Object.values(cults);
   	const keys = Object.keys(cults);
 
-  	const matchingRoles = [...n.guild.roles.cache.values()]
+  	let matchingRoles = [...n.guild.roles.cache.values()]
   	.filter(r => n.nickname.toLowerCase().includes(r.name));
+  	matchingRoles = roles.map(r => matchingRoles.some(mr => mr.id === r));
 
   	if (matchingRoles.length >= 1) {
   		// Promise.race big flex
