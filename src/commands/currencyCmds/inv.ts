@@ -2,6 +2,7 @@ import { MessageOptions, GuildMember } from 'discord.js';
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
 import { InventorySlot } from '@lib/interface/handlers/item';
 import { MessagePlus } from '@lib/extensions/message';
+import { UserPlus } from '@lib/extensions/user';
 import { Document } from 'mongoose';
 import { Command } from '@lib/handlers/command';
 
@@ -45,8 +46,8 @@ export default class Currency extends Command {
     const { util, handlers } = this.client;
     const { member, page } = args;
     const { item: Items } = handlers;
-
     const isNum = typeof member === 'number';
+
     let inv: string[] | string[][] | InventorySlot[];
     let total: number = 0;
     let data: Document & CurrencyProfile;
@@ -55,7 +56,7 @@ export default class Currency extends Command {
 
     memb = (isNum ? msg.member : member) as GuildMember;
     pg = (isNum ? member : page) as number;
-    data = await msg.fetchDB(memb.user.id);
+    data = await (memb.user as UserPlus).fetchDB();
     inv = data.items.filter((i) => i.amount >= 1);
     inv.filter(i => i.amount >= 1).forEach((i) => (total += i.amount));
     if (inv.length < 1) {
@@ -74,7 +75,7 @@ export default class Currency extends Command {
       .map((inv) => {
         const it = Items.modules.get(inv.id);
         const iv = data.items.find(i => i.id === it.id);
-        return `**${it.emoji} ${it.name}** — \`${iv.amount.toLocaleString()}\`\n*ID* \`${it.id}\` — ${it.category.id}`;
+        return `**${it.emoji} ${it.name}** — ${iv.amount.toLocaleString()}\n*ID* \`${it.id}\` — ${it.category.id}`;
       }),
       5
     );
@@ -84,7 +85,7 @@ export default class Currency extends Command {
     }
 
     return { embed: {
-      color: 'ORANGE',
+      color: 'BLURPLE',
       author: {
         name: `${memb.user.username}'s inventory`,
         iconURL: memb.user.avatarURL({ dynamic: true }),

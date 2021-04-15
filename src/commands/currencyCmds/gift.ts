@@ -9,7 +9,7 @@ export default class Currency extends Command {
     super('gift', {
       aliases: ['gift', 'gi'],
       channel: 'guild',
-      description: 'Gift items to others.',
+      description: 'Gift items to others. Sharing is caring, they say.',
       category: 'Currency',
       cooldown: 5e3,
       args: [

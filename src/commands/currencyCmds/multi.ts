@@ -52,7 +52,7 @@ export default class Currency extends Command {
       )
       .setFooter(
         false,
-        `${multi.unlocked.length} active — Page ${page} of ${multis.length}`
+        `${multi.unlocked.length}/${multi.multis} active — Page ${page} of ${multis.length}`
       )
       .setColor('BLURPLE');
 

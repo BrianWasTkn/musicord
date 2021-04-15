@@ -1,1 +1,1 @@
-worker: node build/src/
+worker: node build/src

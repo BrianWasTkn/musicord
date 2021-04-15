@@ -8,15 +8,14 @@ export default class Currency extends Command {
       channel: 'guild',
       description: "Burn a certain amount of coins if you're already max",
       category: 'Currency',
-      cooldown: 10e3,
+      cooldown: 6e4,
       args: [
         {
           id: 'amount',
           type: 'number',
           default: async (msg: MessagePlus) => {
-            const { randomNumber } = this.client.util;
             const { pocket } = await msg.author.fetchDB();
-            return Math.round(pocket / randomNumber(1, 5));
+            return Math.round(pocket / 2);
           },
         },
       ],

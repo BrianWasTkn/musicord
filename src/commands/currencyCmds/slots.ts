@@ -133,7 +133,7 @@ export default class Currency extends Command {
       color = jackpot ? (slots ? 'BLUE' : 'GOLD') : 'GREEN';
       state = jackpot ? (slots ? 'powered' : 'jackpot') : 'winning';
       description.push(`\nYou won **${winnings.toLocaleString()}**`);
-      description.push(`**Multiplier** \`x${Math.round(winnings / bet)}\``);
+      description.push(`**Multiplier** \`x${Math.round(winnings / bet).toLocaleString()}\``);
       description.push(`You now have **${d.pocket.toLocaleString()}**`);
     } else {
       const d = await msg.author

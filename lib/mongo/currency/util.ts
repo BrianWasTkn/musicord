@@ -17,22 +17,23 @@ export const utils: CurrencyUtil = {
    * calc the multi of user
    * @param {Lava} bot an extended instance of akairo client
    * @param {MessagePlus} msg a discord msg obj
-   * @returns {Promise<number>}
    */
   calcMulti: function CalcMulti(
     bot: Lava,
     msg: MessagePlus,
     db: Document & CurrencyProfile
-  ): { unlocked: string[]; total: number } {
+  ): { unlocked: string[]; total: number, multis: number } {
     const { maxMulti } = bot.config.currency;
     const channel = msg.channel as GuildChannel;
     let unlocked = [];
+    let multis = 0;
     let total = 0;
     total += db.multi;
 
     // Discord-based
     if (msg.guild.id === '691416705917779999') {
       unlocked.push(`${msg.guild.name} — \`10%\``);
+      multis++;
       total += 10;
     }
     if (msg.member.nickname) {
@@ -41,16 +42,19 @@ export const utils: CurrencyUtil = {
 
       if (includes('taken')) {
         let m = 10;
+        multis++;
         total += m;
         unlocked.push(`Taken Cult — \`${m}%\``);
       }
       if (includes('probber')) {
         let m = 3.5;
+        multis++;
         total += m;
         unlocked.push(`Probber Cult — \`${m}%\``);
       }
       if (includes('chips')) {
         let m = 3.5;
+        multis++;
         total += m;
         unlocked.push(`Chips Cult — \`${m}%\``);
       }
@@ -64,12 +68,16 @@ export const utils: CurrencyUtil = {
       total += 5;
     }
     if (msg.guild.emojis.cache.size >= 420) {
-      total += 4.5;
-      unlocked.push(`420 Server Emojis — \`2.5%\``);
+      let m = 4.5;
+      multis++;
+      total += m;
+      unlocked.push(`420 Server Emojis — \`${m}%\``);
     }
     if (msg.guild.members.cache.size >= 1000) {
-      total += 1;
-      unlocked.push(`1000+ Members — \`1%\``);
+      let m = 1;
+      multis++;
+      total += m;
+      unlocked.push(`1000+ Members — \`${m}%\``);
     }
 
     // Currency-based (10%)
@@ -78,6 +86,7 @@ export const utils: CurrencyUtil = {
       const mod = items.get(item);
       const inv = db.items.find((i) => i.id === mod.id);
       if (inv.expire > Date.now()) {
+        multis++;
         total += inv.multi;
         unlocked.push(`${mod.name} — \`${inv.multi}%\``);
       }
@@ -86,12 +95,13 @@ export const utils: CurrencyUtil = {
     const trophyItem = items.get('trophy');
     const trophy = db.items.find((i) => i.id === trophyItem.id);
     if (trophy.amount >= 1) {
-      let multi = trophy.multi;
-      total += multi;
-      unlocked.push(`${trophyItem.name} — \`${multi}%\``);
+      let m = trophy.multi;
+      multis++;
+      total += m;
+      unlocked.push(`${trophyItem.name} — \`${m}%\``);
     }
 
     total = Math.min(total, maxMulti);
-    return { total, unlocked };
+    return { total, unlocked, multis };
   },
 };

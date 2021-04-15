@@ -38,7 +38,7 @@ export default class Currency extends Command {
     }
 
     const data = await msg.author.fetchDB();
-    const r = await msg.fetchDB(member.user.id);
+    const r = await (member.user as UserPlus).fetchDB();
     let give: number;
     if (isNaN(amount as number)) {
       let tAmt = (amount as string).toLowerCase();
@@ -71,10 +71,12 @@ export default class Currency extends Command {
     const recib = await (member.user as UserPlus)
       .initDB(r)
       .addPocket(paid)
+      .updateItems()
       .db.save();
     const giver = await msg.author
       .initDB(data)
       .removePocket(give)
+      .updateItems()
       .calcSpace()
       .db.save();
 

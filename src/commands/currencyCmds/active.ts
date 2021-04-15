@@ -9,7 +9,7 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'View your active items.',
       category: 'Currency',
-      cooldown: 5e3,
+      cooldown: 1e3,
     });
   }
 
@@ -27,7 +27,7 @@ export default class Currency extends Command {
       });
 
     if (actives.length < 1) {
-      return "You don't have any active items!";
+      return { replyTo: msg, content: "You don't have active items!" };
     }
 
     return { embed: {

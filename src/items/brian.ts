@@ -4,7 +4,7 @@ import { Item } from '@lib/handlers/item';
 export default class Powerflex extends Item {
   constructor() {
     super('brian', {
-      category: 'Powerflex',
+      category: 'Power-Flex',
       sellable: true,
       buyable: true,
       usable: true,

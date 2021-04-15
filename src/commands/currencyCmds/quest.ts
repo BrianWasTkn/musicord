@@ -10,10 +10,10 @@ export default class Currency extends Command {
     super('quest', {
       aliases: ['quest', 'q'],
       channel: 'guild',
-      description: 'View or enter a quest you want.',
+      description: 'View, enter or stop a quest.',
       category: 'Currency',
       ownerOnly: true,
-      cooldown: 35e3,
+      cooldown: 3e3,
       args: [
         {
           id: 'query',
@@ -48,7 +48,7 @@ export default class Currency extends Command {
             const [amt, item]: [number, Item] = [itemRew[0], mods.get(itemRew[1])];
             const r = [`${rewards.coins.toLocaleString()} coins`, `${amt.toLocaleString()} ${item.emoji} ${item.name}`];
 
-            return `**${name}** — ${rawDiff}\n${info}\n[\`REWARDS\`](https://discord.gg/memer) **${r.join('** and **')}**`;
+            return `**${name}** — ${rawDiff}\n${info}\n[\`REWARDS\`](https://google.com) **${r.join('** and **')}**`;
           }),
         3
       );
@@ -101,7 +101,7 @@ export default class Currency extends Command {
       aq.count = 0;
       aq.id = '';
       await data.save();
-      return `You now stopped your **${active.name}** quest, thanks for nothing idiot.`;
+      return `You stopped your **${active.name}** quest, thanks for nothing idiot.`;
     }
 
     if (query === 'check') {

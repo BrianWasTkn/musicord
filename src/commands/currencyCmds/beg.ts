@@ -10,7 +10,7 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'Gives you a random amount of coins from 100k to 1m coins',
       category: 'Currency',
-      cooldown: 2e4,
+      cooldown: 3e4,
     });
   }
 
@@ -19,27 +19,34 @@ export default class Currency extends Command {
     const data = await msg.author.fetchDB();
     const items = handlers.item.modules;
 
-    const odds = Math.random();
-
-    if (odds >= 0.9) {
-      const item = items.filter((i) => i.cost < 30e6).random();
-      const amount = util.randomNumber(1, 5);
-      let itinv = data.items.find((i) => i.id === item.id);
-      itinv.amount += amount;
-      await data.save();
-      return `WTF you got **${amount} ${item.emoji} ${item.name}**${
-        amount > 1 ? 's' : ''
-      } that was lucky asf`;
-    } else if (odds >= 0.5) {
-      if (data.pocket >= config.currency.maxPocket) {
-        return 'You\'re already rich stop begging already';
-      }
-      
-      const won = util.randomNumber(100, 1000) * 1e3;
-      await msg.author.initDB(data).addPocket(won).calcSpace().db.save();
-      return `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`;
+    if (data.pocket >= config.currency.maxPocket) {
+      return 'You\'re already rich stop begging already';
     }
 
-    return { replyTo: msg.id, content: 'LOL no thanks' };
+    const odds = Math.random();
+    switch(true) {
+      case odds >= 0.9:
+        const item = items.filter((i) => i.cost < 30e6).random();
+        const amount = util.randomNumber(1, 5);
+        let itinv = data.items.find((i) => i.id === item.id);
+        itinv.amount += amount;
+        await data.save();
+        return {
+          content: `WTF you got **${amount} ${item.emoji} ${item.name}**${amount > 1 ? 's' : ''} that was lucky asf`,
+          replyTo: msg,
+        }
+      case odds >= 0.5:
+        const won = util.randomNumber(100, 1000) * 1e3;
+        await msg.author.initDB(data).addPocket(won).calcSpace().db.save();
+        return {
+          content: `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`,
+          replyTo: msg
+        };
+      default: 
+        return {
+          content: 'LOL no thanks :clown:',
+          replyTo: msg
+        };
+    }
   }
 }

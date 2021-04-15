@@ -12,7 +12,7 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'View top users locally or globally.',
       category: 'Currency',
-      cooldown: 1e3,
+      cooldown: 1e4,
       args: [
         {
           id: 'isGlobal',
@@ -31,15 +31,17 @@ export default class Currency extends Command {
       type: keyof CurrencyProfile;
     }
   ): Promise<MessageOptions> {
+    const { randomInArray } = this.client.util;
     const { isGlobal: glob } = args;
     const emojis = ['first_place', 'second_place', 'third_place'];
+    const mjs = ['eggplant', 'skull', 'clown', 'kiss'];
     msg.channel.send({ replyTo: msg.id, content: 'Fetching...' });
     
     if (glob) {
       const docs = (await Mongo.models['currency'].find({})) as (Document & CurrencyProfile)[];
       const lava = docs.filter(n => n.pocket > 0).sort((a, b) => b.pocket - a.pocket).slice(0, 10);
       const nice = await Promise.all(lava.map((l, i) => msg.client.users.fetch(l.userID, false, true).then(o => ({ o: o as UserPlus, pocket: l.pocket }))));
-      const rich = nice.filter(n => !n.o.bot).map((n, i) => `:${emojis[i] || 'eggplant'}: **${n.pocket.toLocaleString()}** — ${n.o.tag}`);
+      const rich = nice.filter(n => !n.o.bot).map((n, i) => `:${emojis[i] || randomInArray(mjs)}: **${n.pocket.toLocaleString()}** — ${n.o.tag}`);
     
       return { embed: {
         author: { name: 'richest discord players' },
@@ -61,7 +63,7 @@ export default class Currency extends Command {
 
     return { embed: {
       author: { name: 'richest players in this server' },
-      description: filt.map((n, i) => `:${emojis[i] || 'eggplant'}: **${n.pocket.toLocaleString()}** — ${n.member.user.tag || 'LOL WHO DIS'}`).join('\n'),
+      description: filt.map((n, i) => `:${emojis[i] || randomInArray(mjs)}: **${n.pocket.toLocaleString()}** — ${n.member.user.tag || 'LOL WHO DIS'}`).join('\n'),
       color: msg.member.displayHexColor, footer: {
         iconURL: msg.guild.iconURL({ dynamic: true }),
         text: msg.guild.name + ' — Showing Pockets',

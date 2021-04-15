@@ -54,7 +54,7 @@ export default class Currency extends Command {
 
     const faces = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
     const suits = ['spades', 'hearts', 'diamonds', 'clubs'];
-    const values = [1,2,3,4,5,6,7,8,9,10,10,10,10];
+    const values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10];
 
     let winnings = 0;
     let stood = false;
@@ -73,11 +73,10 @@ export default class Currency extends Command {
     }
 
     function deal() {
-      let cards = {
+      return {
         face: util.randomInArray(faces),
         suit: util.randomInArray(suits),
       };
-      return cards;
     }
 
     function getRespectiveIcon(suit: string) {
@@ -211,7 +210,7 @@ export default class Currency extends Command {
             .updateItems()
             .calcSpace()
             .db.save();
-          state = extraWngs ? 'thicc' : 'winning';
+          state = extraWngs ? 'powered' : 'winning';
         } else {
           // Tie
           if (status.result === null) {
@@ -245,7 +244,7 @@ export default class Currency extends Command {
           : '',
         embed: {
           author: {
-            name: `${msg.author.username}'s ${state} blackjack game`,
+            name: `${msg.author.username}'s${state ? ` ${state}` : ' '}blackjack game`,
             icon_url: msg.author.avatarURL({ dynamic: true }),
           },
           color: final

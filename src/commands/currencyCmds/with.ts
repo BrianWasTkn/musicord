@@ -10,19 +10,19 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'Withdraw coins from your vault.',
       category: 'Currency',
-      cooldown: 1e3,
+      cooldown: 5e2,
       args: [
         {
           id: 'amount',
           type: async (msg: MessagePlus, phrase: number | string) => {
             if (!phrase) {
-              await msg.reply('You need something to withdraw');
+              msg.reply('You need something to withdraw');
               return null;
             }
 
             const data = await msg.author.fetchDB();
             if (data.vault < 1) {
-              await msg.reply('You have nothing to withdraw');
+              msg.reply('You have nothing to withdraw');
               return null;
             }
 
@@ -34,7 +34,7 @@ export default class Currency extends Command {
               } else if (phrase === 'half') {
                 withd = Math.round(data.vault / 2);
               } else {
-                await msg.channel.send('You need a number to deposit.');
+                msg.reply('You need a number to deposit.');
                 return null;
               }
             }

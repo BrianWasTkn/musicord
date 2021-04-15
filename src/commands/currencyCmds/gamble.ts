@@ -15,9 +15,9 @@ export default class Currency extends Command {
     super('bet', {
       aliases: ['gamble', 'roll', 'bet'],
       channel: 'guild',
-      description: 'Totally not rigged gambling game for grinders.',
+      description: 'Play a dice game by rolling a d12 dice!',
       category: 'Currency',
-      cooldown: 3000,
+      cooldown: 5e3,
       args: [
         {
           id: 'amount',
@@ -97,7 +97,7 @@ export default class Currency extends Command {
         `You now have **${d.pocket.toLocaleString()}**`,
       ];
     } else if (userD > botD) {
-      let wngs = Math.ceil(bet * (Math.random() + extraWngs));
+      let wngs = Math.ceil(bet * (Math.random() + (0.3 + extraWngs)));
       wngs = Math.min(maxWin, wngs + Math.ceil(wngs * (multi / 100)));
       perwn = Math.round(wngs / bet * 100);
 
@@ -112,7 +112,7 @@ export default class Currency extends Command {
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
       description = [
         `You won **${wngs.toLocaleString()}**\n`,
-        `**Percent Won** \`${perwn}%\``,
+        `**Percent Won** \`${perwn}% ${extraWngs ? `(${perwn}% original)` : ''}\``,
         `You now have **${d.pocket.toLocaleString()}**`,
       ];
     }

@@ -10,7 +10,7 @@ export default class Currency extends Command {
       channel: 'guild',
       description: "Post a meme on reddit.",
       category: 'Currency',
-      cooldown: 1e3,
+      cooldown: 45e3,
       examples: () => this.aliases[0]
     });
   }
@@ -25,6 +25,6 @@ export default class Currency extends Command {
     }
 
     const ret = await comp.use(msg) as string;
-    return { content: ret };
+    return { replyTo: msg.id, content: ret };
   }
 }

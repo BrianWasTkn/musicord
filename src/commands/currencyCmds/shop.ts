@@ -16,8 +16,8 @@ export default class Currency extends Command {
         {
           id: 'query',
           type: (msg: MessagePlus, phrase: string) => {
-            if (!phrase) return 1; // shop page
             const { resolver } = this.handler;
+            if (!phrase) return 1; // shop page
             return (
               resolver.type('number')(msg, phrase) ||
               resolver.type('shopItem')(msg, phrase)
@@ -40,12 +40,12 @@ export default class Currency extends Command {
       const { paginateArray, parseTime } = this.client.util;
       const sItem = Handler.modules.get(Handler.sale.id);
       const from = Date.now() - Handler.saleInterval;
-      const left = parseTime(Math.round(Handler.sale.lastSale - from) / 1e3);
+      const left = parseTime(Math.round(Handler.sale.lastSale - from) / 1e2);
 
       function displaySaleItem(it: string, discount: number) {
         const item = Handler.modules.get(it);
         const { emoji, cost, info } = item;
-        const saleCost = Math.round(cost - (cost * (discount / 1e3)));
+        const saleCost = Math.round(cost - (cost * (discount / 1e2)));
         const off = `[${saleCost.toLocaleString()}](https://google.com) ( [***${discount}% OFF!***](https://google.com) )`;
         
         return `**${emoji} ${item.name}** — ${off}\n*${info.long}*`;
@@ -54,8 +54,9 @@ export default class Currency extends Command {
       function displayItem(i: Item) {
         const { emoji, cost, info } = i;
         const { discount, id } = Handler.sale;
-        const onSale = id === i.id;
-        const price = onSale ? Math.round(cost - (cost * (discount / 100))) : cost;
+        const price = id === i.id 
+          ? Math.round(cost - (cost * (discount / 100))) 
+          : cost;
 
         return `**${emoji} ${i.name}** — [${price.toLocaleString()}](https://google.com)\n${info.short}`;
       }
@@ -75,7 +76,7 @@ export default class Currency extends Command {
       const inv = data.items.find((i) => i.id === query.id);
 
       function calc(amount: number, discount: number) {
-        return amount - (amount * (discount / 100));
+        return amount - (amount * (discount / 1e2));
       }
 
       const { id, discount } = Handler.sale;

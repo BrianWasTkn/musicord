@@ -10,22 +10,22 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'Deposit coins into your vault.',
       category: 'Currency',
-      cooldown: 1e3,
+      cooldown: 500,
       args: [
         {
           id: 'amount',
           type: async (msg: MessagePlus, phrase: number | string) => {
             if (!phrase) {
-              await msg.channel.send('You need something to deposit');
+              msg.reply('You need something to deposit');
               return null;
             }
             const data = await msg.author.fetchDB();
             if (data.pocket < 1) {
-              await msg.channel.send("Lol you don't have coins to deposit rip");
+              msg.reply("Lol you don't have coins to deposit rip");
               return null;
             }
             if (data.vault >= data.space) {
-              await msg.channel.send('You already have full vault');
+              msg.reply('You already have full vault');
               return null;
             }
 
@@ -37,9 +37,7 @@ export default class Currency extends Command {
               } else if (phrase === 'half') {
                 dep = Math.round(data.pocket / 2);
               } else {
-                await msg.channel.send(
-                  'You actually need a number to deposit...'
-                );
+                msg.reply('You actually need a number to deposit...');
                 return null;
               }
             }

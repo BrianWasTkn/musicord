@@ -11,7 +11,7 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'Buy something from the shop.',
       category: 'Currency',
-      cooldown: 5e3,
+      cooldown: 3e3,
       args: [
         {
           id: 'item',
@@ -62,8 +62,8 @@ export default class Currency extends Command {
     this.client.handlers.quest.emit('itemBuy', { msg, item, amount });
 
     return { replyTo: msg.id, embed: {
-      color: 'GREEN',
       footer: { text: 'Thanks for your purchase!' },
+      color: 'GREEN',
       author: {
         name: `Successful ${item.name} purchase`,
         iconURL: msg.author.avatarURL({ dynamic: true })
