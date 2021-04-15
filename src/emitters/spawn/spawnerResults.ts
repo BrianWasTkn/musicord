@@ -49,7 +49,7 @@ export default class SpawnListener extends Listener {
       const { spawn } = spawner;
       const { user } = msg.member;
       const oddHit = Math.random() > 0.99 && i === 0;
-      const coins = oddHit ? first : randomNumber(min, max);
+      const coins = oddHit ? first : randomNumber(min / 1e3, max / 1e3) * 1e3;
 
       const result = `+ ${user.username} ${verb} ${coins.toLocaleString()}`;
       results.push(result);
