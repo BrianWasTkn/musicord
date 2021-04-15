@@ -28,7 +28,7 @@ export default class Currency extends Command {
     }
 
     let won = 10000;
-    const streakBonus = Math.round((0.1 * won) * streak);
+    const streakBonus = Math.round((0.15 * won) * streak);
     if (streak > 1) {
     	won += streakBonus;
     }
@@ -39,7 +39,7 @@ export default class Currency extends Command {
     return { embed: {
       title: `Here are your daily coins, ${msg.author.username}`,
       description: `**${won.toLocaleString()}** were placed in your pocket.`,
-      color: 'BLUE', footer: { text: `Streak: ${streak} (+${streakBonus})` }
+      color: 'BLUE', footer: { text: `Streak: ${streak} days (+${streakBonus})` }
     }};
   }
 }
