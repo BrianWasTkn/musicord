@@ -21,18 +21,11 @@ export default class ClientListener extends Listener {
 
   	const keys = Object.keys(cults);
   	const roles = Object.values(cults);
-  	const found = keys.find(k => n.nickname.toLowerCase().includes(k));
-  	if (found) {
-  		await n.roles.add(found);
+  	const match = n.guild.roles.cache.get(keys.find(k => n.nickname.toLowerCase().includes(k)));
+  	if (match) {
+  		await n.roles.add(match.id);
   	} else {
-  		await n.roles.remove(roles
-  			.map(r => {
-  				return n.guild.roles.cache.get(r);
-  			})
-  			.find(r => {
-  				return roles.some(ro => ro === r.id);
-  			}).id
-  		);
+  		await Promise.all([...roles.map(r => n.roles.remove(r))])
   	}
   }
 }
