@@ -4,7 +4,7 @@ import { Listener } from '@lib/handlers';
 const cults = {
 	probber: '790379642359119902',
 	chips: '824984193170931782',
-	wastaken: '824984100695310367',
+	wastaken: '768812126633984021 ',
 };
 
 export default class ClientListener extends Listener {
