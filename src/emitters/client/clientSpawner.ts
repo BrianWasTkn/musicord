@@ -11,6 +11,9 @@ export default class ClientListener extends Listener {
 
   public async exec(message: MessagePlus) {
     const { config, handlers, ownerID, db } = this.client;
+    this.client.on('guildMemberUpdate', async (o, n) => {
+      if (n.partial) await n.fetch(true);
+    })
 
     if (!config.spawn.enabled) return;
     if (message.author.bot || message.channel.type === 'dm') return;

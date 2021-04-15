@@ -25,17 +25,15 @@ export default class Fun extends Command {
 		const resp = (await msg.channel.awaitMessages(filt, { max: 1, time: 3e4 })).first();
 
 		if (!resp || !['yes', 'y'].includes(resp.content.toLowerCase())) {
-			return { content: 'I guess not then.' };
+			return { replyTo: msg, content: 'I guess not then.' };
 		}
 
-		const div = await this.client.db.currency.fetch(husOrWif.id);
-
+		const div = await husOrWif.fetchDB();
 		me.marriage.id = '';
-		await me.save();
-
 		div.marriage.id = '';
+		await me.save();
 		await div.save();
 
-		return { replyTo: msg.id, content: `Divorce successfull.` };
+		return { replyTo: msg.id, content: `Divorce against ${husOrWif.tag} successfull.` };
 	}
 }

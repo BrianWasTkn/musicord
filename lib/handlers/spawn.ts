@@ -91,8 +91,7 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
     const handler = this;
 
     if (spawner.config.type === 'spam') {
-      const filter: CollectorFilter = ({ author }: T) =>
-        author.id === msg.author.id;
+      const filter = ({ author }: T) => author.id === msg.author.id;
       const authorEntries = collected.array().filter(filter);
       if (authorEntries.length > 1) collected.delete(msg.id);
     }
@@ -182,10 +181,9 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
       };
 
       // MessageCollector#filter
-      const filter: CollectorFilter = async (
-        msg: MessagePlus
-      ): Promise<boolean> => {
-        const { author, content } = msg;
+      const filter: CollectorFilter<MessagePlus[]> = async ({
+        author, content
+      }) => {
         const { fetch } = this.client.db.spawns;
         const { cap } = this.client.config.spawn;
         const isSpam = spawner.config.type === 'spam';
@@ -226,10 +224,7 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
       };
 
       // ReactionCollector#filter
-      const filter: CollectorFilter = async (
-        reaction: MessageReaction,
-        user: User
-      ) => {
+      const filter: CollectorFilter<[MessageReaction, User]> = async (reaction, user) => {
         const { fetch } = this.client.db.spawns;
         const { cap } = this.client.config.spawn;
 

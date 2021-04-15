@@ -8,5 +8,5 @@ export interface CurrencyUtil {
     bot: Lava,
     msg: MessagePlus,
     db: Document & CurrencyProfile
-  ) => { unlocked: string[]; total: number };
+  ) => { unlocked: string[]; total: number, multis: number };
 }

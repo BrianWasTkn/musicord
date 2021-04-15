@@ -11,10 +11,9 @@ export default class ClientListener extends Listener {
 
   async exec(): Promise<void> {
     const { channels, util, user: bot } = this.client;
-    const activity: PresenceData['activity'] = {
-      name: 'Memers Crib',
-      type: 'COMPETING',
-    };
+    const activities: PresenceData['activities'] = [
+      { name: 'Memers Crib', type: 'COMPETING' }
+    ];
 
     const channel = await channels.fetch('789692296094285825');
     const e = await channels.fetch('821719437316718624');
@@ -32,7 +31,7 @@ export default class ClientListener extends Listener {
     (channel as TextChannel).send({ embed, content: '<@605419747361947649>' });
     (e as TextChannel).send({ embed });
     
-    await bot.setPresence({ activity });
+    await bot.setPresence({ activities });
     const msg = `${bot.tag} has flown within Discord.`;
     return util.console({ msg, type: 'def', klass: 'Lava' });
   }

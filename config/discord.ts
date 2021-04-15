@@ -1,6 +1,6 @@
 import type { ClientOptions, WebSocketOptions } from 'discord.js';
 
-const intents: WebSocketOptions['intents'] = [
+const intents: ClientOptions['intents'] = [
   'DIRECT_MESSAGE_TYPING',
   'DIRECT_MESSAGES',
   'GUILD_PRESENCES',
@@ -11,7 +11,8 @@ const intents: WebSocketOptions['intents'] = [
 ];
 
 export const discordOptions: ClientOptions = {
-  fetchAllMembers: false,
-  disableMentions: 'everyone',
-  ws: { intents },
+  intents, allowedMentions: {
+    parse: ['users', 'roles'],
+    repliedUser: true,    
+  }
 };
