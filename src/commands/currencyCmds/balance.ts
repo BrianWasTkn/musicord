@@ -29,7 +29,7 @@ export default class Currency extends Command {
   ): Promise<MessageOptions> {
     const { pocket, vault, space, items } = await (args.member.user as UserPlus).fetchDB();
     
-    function calc(i: InventorySlot) {
+    const calc = (i: InventorySlot) => {
       const { modules } = this.client.handlers.item;
       const it = modules.get(i.id);
       return it.cost * i.amount;
