@@ -223,7 +223,7 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     this.client.once('ready', () => {
       this.client.on('message', async (m: MessagePlus) => {
         if (m.partial) await m.fetch();
-        this.handle(m);
+        await this.handle(m);
       });
 
       if (this.handleEdits) {
@@ -231,7 +231,7 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
           if (o.partial) await o.fetch();
           if (n.partial) await n.fetch();
           if (o.content === n.content) return;
-          if (this.handleEdits) this.handle(n);
+          if (this.handleEdits) await this.handle(n);
         });
       }
     });
