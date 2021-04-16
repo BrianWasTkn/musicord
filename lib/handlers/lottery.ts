@@ -97,7 +97,7 @@ export class LotteryHandler extends EventEmitter {
   }
 
   runInterval() {
-    return this.client.setTimeout(async () => {
+    return this.client.setTimeout(() => {
       const { winner, coins, raw, multi } = this.roll();
       this.emit('roll', this, winner, coins, raw, multi);
       return this.runInterval();
@@ -125,35 +125,17 @@ export class LotteryHandler extends EventEmitter {
   }
 
   static calcCoins(args: LottoConfig['rewards']) {
-    const randomNumber = (a: number, b: number) => Math.floor(Math.random() * (a - b + 1) + a);
+    const randomNumber = (a: number, b: number) => Math.floor(Math.random() * (b - a + 1) + a);
 
     const { min, max, cap } = args;
-    let odds = Math.random();
     let coins = randomNumber(min / 1e3, max / 1e3);
     let raw = coins * 1e3;
     let multi: number;
 
-    function getMulti() {
-      switch(true) {
-        case odds > 0.9:
-          return randomNumber(91, 100); // 10 (differences for all odds)
-        case odds > 0.8:
-          return randomNumber(76, 90); // 15
-        case odds > 0.6:
-          return randomNumber(51, 75); // 25
-        case odds > 0.5:
-          return randomNumber(26, 50); // 25
-        case odds > 0.3:
-          return randomNumber(11, 25); // 15
-        default:
-          return randomNumber(1, 10); // 10
-      }
-    }
-
-    multi = getMulti();
+    multi = randomNumber(10, 250);
     coins += Math.round(coins * (multi / 100));
     coins *= 1e3;
-    coins = coins >= cap ? cap + 1 : coins;
+    coins = Math.min(cap + 1, coins);
 
     return { coins, raw, multi };
   }
