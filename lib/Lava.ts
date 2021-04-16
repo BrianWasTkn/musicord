@@ -66,6 +66,7 @@ export class Lava extends AkairoClient {
       }),
       command: new CommandHandler<Command>(this, {
         directory: join(__dirname, '..', 'src', 'commands'),
+        prefix: config.bot.prefix
       }),
       spawn: new SpawnHandler<Spawn>(this, {
         directory: join(__dirname, '..', 'src', 'spawns'),
