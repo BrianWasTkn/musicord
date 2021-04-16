@@ -1,7 +1,7 @@
 import { MessageOptions, TextChannel, DMChannel, NewsChannel } from 'discord.js';
 import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
-import { Lava } from '@lib/lava';
+import { Lava } from '@lib/Lava';
 
 export class Context {
 	channel: TextChannel | DMChannel | NewsChannel;
