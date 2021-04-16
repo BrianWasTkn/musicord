@@ -396,7 +396,7 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
         this.emit('commandBreakout', msg, cmd, args.message);
         return this.handle(args.message as MessagePlus);
       } else if (Flag.is(args, 'continue')) {
-        const continueCommand = this.modules.get(args.cmd);
+        const continueCommand = this.modules.get(args.command);
         return this.handleDirectCommand(msg, args.rest, continueCommand, args.ignore);
       }
 
@@ -672,7 +672,7 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     return false;
   }
 
-  async runCommand(msg: MessagePlus, cmd: CommandModule, args: any[]): Promise<boolean> {
+  async runCommand(msg: MessagePlus, cmd: CommandModule, args: any): Promise<boolean> {
     // @TODO: make context class
     if (this.commandTyping || cmd.typing) {
       msg.channel.startTyping();
@@ -809,14 +809,14 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     users.add(user.id);
   }
 
-  removePrompt(channel: Channel, user: User) {
+  removePrompt(channel: Channel, user: UserPlus) {
     const users = this.prompts.get(channel.id);
     if (!users) return;
     users.delete(user.id);
     if (!users.size) this.prompts.delete(user.id);
   }
 
-  hasPrompt(channel: Channel, user: User) {
+  hasPrompt(channel: Channel, user: UserPlus) {
     const users = this.prompts.get(channel.id);
     if (!users) return false;
     return users.has(user.id);
