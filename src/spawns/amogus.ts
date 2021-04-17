@@ -13,7 +13,7 @@ const visuals: SpawnVisual = {
 export default class GODLY extends Spawn {
   constructor() {
     super('amogus', visuals, {
-      rewards: { first: 69420, min: 1e5, max: 1e5 },
+      rewards: { first: 10000, min: 100, max: 500 },
       enabled: true,
       timeout: 15000,
       entries: 3,

@@ -13,7 +13,7 @@ const visuals: SpawnVisual = {
 export default class COMMON extends Spawn {
   constructor() {
     super('tiktok', visuals, {
-      rewards: { first: 1e6, min: 1e4, max: 5e4 },
+      rewards: { first: 100, min: 1, max: 10 },
       enabled: true,
       timeout: 15000,
       entries: 3,

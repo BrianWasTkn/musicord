@@ -13,7 +13,7 @@ const visuals: SpawnVisual = {
 export default class COMMON extends Spawn {
   constructor() {
     super('4-seasons', visuals, {
-      rewards: { first: 5e4, min: 1e4, max: 4e4 },
+      rewards: { first: 4e3, min: 100, max: 400 },
       enabled: true,
       timeout: 15000,
       entries: 3,

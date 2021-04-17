@@ -48,14 +48,17 @@ export default class SpawnListener extends Listener {
       const { fetch } = this.client.db.spawns;
       const { spawn } = spawner;
       const { user } = msg.member;
-      const oddHit = Math.random() > 0.99 && i === 0;
-      const coins = oddHit ? first : randomNumber(min / 1e3, max / 1e3) * 1e3;
+      const oddHit = Math.random() > 0.9 && i === 0;
+      const coins = oddHit ? first : randomNumber(min, max);
 
-      const result = `+ ${user.username} ${verb} ${coins.toLocaleString()}`;
+      const win = Math.random() > 0.25;
+      const result = win 
+        ? `+ ${user.username} ${verb} ${coins.toLocaleString()}`
+        : `# ${user.username} got nothing rip`;
       results.push(result);
       const data = await fetch(user.id);
       data.eventsJoined++;
-      data.unpaid += coins;
+      data.unpaid += win ? coins : 0;
       const db = await data.save();
 
       if (db.allowDM) {

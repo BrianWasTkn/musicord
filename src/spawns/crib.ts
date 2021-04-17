@@ -13,7 +13,7 @@ const visuals: SpawnVisual = {
 export default class SUPER extends Spawn {
   constructor() {
     super('crib', visuals, {
-      rewards: { first: 5e5, min: 5e3, max: 25e4 },
+      rewards: { first: 6000, min: 100, max: 500 },
       enabled: true,
       timeout: 15000,
       entries: 3,
