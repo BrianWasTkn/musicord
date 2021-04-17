@@ -56,8 +56,8 @@ export class UserPlus extends User {
           }
         } else {
           const includes = ['brian', 'crazy', 'thicc', 'thicm'].includes(inv.id);
-          if (includes) trigger[inv.id]();
-          else continue;
+          if (includes) { trigger[inv.id](); }
+          else { continue; };
         }        
 
         const temp = new Collection<string, Effects>();

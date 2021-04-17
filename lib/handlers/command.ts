@@ -3,6 +3,7 @@ import { CooldownData } from '@lib/interface/mongo/currency/currencyprofile';
 import { MessagePlus } from '@lib/extensions/message';
 import { AkairoError } from '@lib/utility/error';
 import { UserPlus } from '@lib/extensions/user';
+import { Context } from '@lib/utility/context';
 import { Util } from '@lib/utility/util';
 import { Lava } from '@lib/Lava';
 import {
@@ -16,6 +17,7 @@ import {
   PrefixSupplier,
   AkairoHandler,
   LoadPredicate,
+  AkairoModule,
   TypeResolver,
   CommandUtil,
   Constants,
@@ -73,8 +75,13 @@ function prefixCompare(aKey: string | Function, bKey: string | Function) {
     : bKey.length - aKey.length;
 }
 
+declare class TypedCommand extends AkairoCommand {
+  public client: Lava;
+  handler: CommandHandler<this>;
+  classToHandle: typeof Command;
+}
+
 export class Command extends AkairoCommand {
-  // @ts-ignore
   handler: CommandHandler<Command>;
   client: Lava;
 
@@ -82,10 +89,7 @@ export class Command extends AkairoCommand {
     super(id, args); 
   }
 
-  exec(
-    msg: MessagePlus,
-    args?: any
-  ): CommandReturn | Promise<CommandReturn> {
+  exec(msg: MessagePlus, args: any): CommandReturn | Promise<CommandReturn> {
     return {
       embed: {
         title: 'What ya doing?',
@@ -98,6 +102,7 @@ export class Command extends AkairoCommand {
 
 export class CommandHandler<CommandModule extends Command> extends AkairoHandler {
   client: Lava;
+  classToHandle: new () => CommandModule;
   resolver: TypeResolver;
   aliases: Collection<string, string>;
   aliasReplacement: RegExp;
@@ -149,7 +154,7 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     argumentDefaults = {},
     prefix = '!',
     directory = './commands',
-    classToHandle = Command,
+    classToHandle = Command as Function,
     handleEdits = true,
     commandUtil = true,
     allowMention = true,

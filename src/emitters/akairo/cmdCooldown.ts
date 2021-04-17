@@ -17,10 +17,10 @@ export default class CommandListener extends Listener {
   ): Promise<MessagePlus> {
     const time = remaining <= 60e3 
       ? `${(remaining / 1e3).toFixed(1)} seconds` 
-      : this.client.util.parseTime(remaining);
+      : this.client.util.parseTime(remaining / 1e3);
     const defCd = command.cooldown <= 60e3
       ? `${command.cooldown / 1e3} seconds`
-      : this.client.util.parseTime(command.cooldown);
+      : this.client.util.parseTime(command.cooldown / 1e3);
     
     return msg.channel.send({
       embed: {

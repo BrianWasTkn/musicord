@@ -4,7 +4,6 @@ function Time(num) {
 
 /** 
  * @param {number} time time in seconds
- * @param {boolean} [short] shorten time strings
  */
 Time.prototype.parseTime = function parseTime(time) {
 	const methods = [
@@ -47,9 +46,12 @@ Time.prototype.see = function see() {
 	return this.num;
 }
 
+const runner = require('discord-akairo/src/commands/arguments/ArgumentRunner');
+console.log(runner);
+
 const time = new Time(5);
 // console.log(time.see());
-global.console.log(~~0);
+// global.console.log(~~0);
 
 /** @type {number} */
 const and = time.parseTime((60 * 60 * 24 * 30 * 12 * 5) 
