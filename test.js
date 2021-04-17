@@ -46,8 +46,6 @@ Time.prototype.see = function see() {
 	return this.num;
 }
 
-const runner = require('discord-akairo/src/commands/arguments/ArgumentRunner');
-console.log(runner);
 
 const time = new Time(5);
 // console.log(time.see());
@@ -61,9 +59,9 @@ const and = time.parseTime((60 * 60 * 24 * 30 * 12 * 5)
 	+ (60 * 15)
 	+ (15));
 
-// console.log(and.length === 2 
-// 	? and.join(' and ') 
-// 	: and.length >= 3 
-// 		? join(and).join(', ')
-// 		: parseTime(and)
-// );
+console.log(and.length === 2 
+	? and.join(' and ') 
+	: time.join(and).length >= 3 
+		? join(and).join(', ')
+		: parseTime(and).join(', ')
+);

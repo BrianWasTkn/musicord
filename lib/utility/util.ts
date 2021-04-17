@@ -94,9 +94,8 @@ export class Util extends ClientUtil {
   /**
    * Parses time resolvables into human readable times
    * @param time time in seconds
-   * @returns {string[]}
   */
-  parseTime = (time: number): string[] => {
+  parseTime = (time: number): string => {
     const methods = [
       { name: 'month', count: 2592000 },
       { name: 'day', count: 86400 },
@@ -123,10 +122,10 @@ export class Util extends ClientUtil {
       timeStr.push(calced.toString() + ' ' + pluralize(methods[i + 1].name, calced));
     }
 
-    const raw = timeStr.filter((g) => !g.startsWith('0'));
+    const raw: string[] = timeStr.filter((g) => !g.startsWith('0'));
     return raw.length === 2
       ? raw.join(' and ')
-      : and(raw).length >= 3
+      : raw.length >= 3
         ? and(raw).join(', ')
         : raw.join(', ');
   };
