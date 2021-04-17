@@ -75,13 +75,8 @@ function prefixCompare(aKey: string | Function, bKey: string | Function) {
     : bKey.length - aKey.length;
 }
 
-declare class TypedCommand extends AkairoCommand {
-  public client: Lava;
-  handler: CommandHandler<this>;
-  classToHandle: typeof Command;
-}
-
 export class Command extends AkairoCommand {
+  // @ts-ignore
   handler: CommandHandler<Command>;
   client: Lava;
 
