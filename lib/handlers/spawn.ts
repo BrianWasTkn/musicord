@@ -73,21 +73,21 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
   handleMessageCollect<T extends Context>(args: {
     collector: MessageCollector;
     spawner: Module;
-    msg: T;
+    ctx: T;
   }): boolean {
-    const { msg, collector, spawner } = args;
+    const { ctx, collector, spawner } = args;
     const { collected } = collector;
-    const isFirst = collected.first().id === msg.id;
+    const isFirst = collected.first().id === ctx.id;
     const handler = this;
 
     if (spawner.config.type === 'spam') {
-      const filter = ({ author }: T) => author.id === msg.author.id;
+      const filter = ({ author }: T) => author.id === ctx.author.id;
       const authorEntries = collected.array().filter(filter);
-      if (authorEntries.length > 1) collected.delete(msg.id);
+      if (authorEntries.length > 1) collected.delete(ctx.id);
     }
 
     return this.emit('messageCollect', {
-      msg,
+      ctx,
       spawner,
       handler,
       isFirst,
@@ -97,13 +97,13 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
   handleMessageEnd<T extends Context>(args: {
     collected: Collection<string, T>;
     spawner: Module;
-    msg: T;
+    ctx: T;
   }): boolean {
-    const { collected, spawner, msg } = args;
+    const { collected, spawner, ctx } = args;
     const isEmpty = Boolean(collected.size);
     const handler = this;
     return this.emit('messageResults', {
-      msg,
+      ctx,
       spawner,
       collected,
       handler,
@@ -128,7 +128,7 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
     return this.emit('reactionCollect', {
       handler,
       spawner,
-      msg,
+      ctx: msg,
       reaction,
       user,
       isFirst,
@@ -149,7 +149,7 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
     return this.emit('reactionCollect', {
       handler,
       spawner,
-      msg,
+      ctx: msg,
       reaction,
       user,
     });
@@ -166,7 +166,7 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
     return this.emit('reactionResults', {
       handler,
       spawner,
-      msg,
+      ctx: msg,
       collected,
       isEmpty,
     });

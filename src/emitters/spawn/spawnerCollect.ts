@@ -12,17 +12,17 @@ export default class SpawnListener extends Listener<SpawnHandler<Spawn>> {
   }
 
   exec(args: {
-    msg: Message;
+    ctx: Message;
     spawner: Spawn;
     isFirst: boolean;
     handler: SpawnHandler<Spawn>;
   }): Promise<MessageReaction> {
-    const { msg, spawner, isFirst } = args;
+    const { ctx, spawner, isFirst } = args;
     const react = isFirst
       ? '<:memerGold:753138901169995797>'
       : spawner.spawn.emoji;
 
-    spawner.answered.set(msg.author.id, true);
-    return msg.react(react);
+    spawner.answered.set(ctx.author.id, true);
+    return ctx.react(react);
   }
 }
