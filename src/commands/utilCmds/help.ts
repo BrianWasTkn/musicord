@@ -42,13 +42,14 @@ export default class Utility extends Command {
   }
 
   private fieldifyCmd(c: Command): EmbedFieldData[] {
+    const { parseTime } = c.client.util;
     return new Embed()
       .addField(
         'Description',
         typeof c.description === 'string' ? c.description : 'No description.'
       )
       .addField('Triggers', `\`${c.aliases.join('`, `')}\``)
-      .addField('Cooldown', c.cooldown / 1000, true)
+      .addField('Cooldown', parseTime(c.cooldown / 1000), true)
       .addField('Category', c.category.id, true)
       .addField('CD Ratelimit', c.ratelimit || 1, true).fields;
   }

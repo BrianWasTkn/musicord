@@ -91,17 +91,19 @@ export class Util extends ClientUtil {
   /**
    * Parses time resolvables into human readable times
    * @param time time in seconds
+   * @param [short] shorten the time
    */
-  parseTime = (time: number): string => {
+  parseTime = (time: number, short = false): string => {
     const methods = [
-      { name: 'month', count: 2592000 },
-      { name: 'day', count: 86400 },
-      { name: 'hour', count: 3600 },
-      { name: 'minute', count: 60 },
-      { name: 'second', count: 1 },
+      { name: ['mo', 'month' ] , count: 2592000 },
+      { name: ['d' , 'day'   ] , count: 86400 },
+      { name: ['h' , 'hour'  ] , count: 3600 },
+      { name: ['m' , 'minute'] , count: 60 },
+      { name: ['s' , 'second'] , count: 1 },
     ];
 
     function pluralize(str: string, num: number) {
+      if (short) return str;
       return num > 1 ? `${str}s` : str;
     }
 
@@ -113,13 +115,13 @@ export class Util extends ClientUtil {
 
     const firstCnt = Math.floor(time / methods[0].count);
     const timeStr = [
-      firstCnt.toString() + ' ' + pluralize(methods[0].name, firstCnt),
+      firstCnt.toString() + ' ' + pluralize(methods[0].name[short ? 0 : 1], firstCnt),
     ];
     for (let i = 0; i < methods.length - 1; i++) {
       const raw = (time % methods[i].count) / methods[i + 1].count;
       const calced = Math.floor(raw);
       timeStr.push(
-        calced.toString() + ' ' + pluralize(methods[i + 1].name, calced)
+        calced.toString() + ' ' + pluralize(methods[i + 1].name[short ? 0 : 1], calced)
       );
     }
 
