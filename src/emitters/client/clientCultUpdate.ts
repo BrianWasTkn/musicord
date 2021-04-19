@@ -20,17 +20,21 @@ export default class ClientListener extends Listener<Lava> {
   async exec(o: MemberPlus, n: MemberPlus): Promise<void> {
     if (o.nickname === n.nickname) return;
     if (n.partial) await n.fetch(true);
+    if (!this.client.isOwner(n.user.id)) return;
 
     const [roles, keys] = [Object.values(cults), Object.keys(cults)];
     const gRoles = n.guild.roles.cache.filter((r, i) => r.id === roles[i]);
     const matchingRoles = [...gRoles.values()].filter((r) =>
       r.name.toLowerCase().includes(n.nickname.toLowerCase())
     );
+    const logs = n.guild.channels.cache.get('809489910351921192') as TextChannel;
 
     if (matchingRoles.length >= 1) {
-      await n.roles.add(matchingRoles[0].id);
+      logs.send(`**Member:** ${n.user.tag}\n**Old Nick:** ${o.nickname}**\n**New Nick:** ${n.nickname}\n**Roles:** ${matchingRoles.map(r => r.name).join(', ')}`);
+      // await n.roles.add(matchingRoles[0].id);
     } else {
-      await Promise.all([...roles.map((r) => n.roles.remove(r))]);
+      logs.send('Removed.');
+      // await Promise.all([...roles.map((r) => n.roles.remove(r))]);
     }
   }
 }
