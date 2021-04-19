@@ -25,7 +25,7 @@ export default class ClientListener extends Listener<Lava> {
     const [roles, keys] = [Object.values(cults), Object.keys(cults)];
     const gRoles = n.guild.roles.cache.filter((r, i) => r.id === roles[i]);
     const matchingRoles = [...gRoles.values()].filter((r) =>
-      r.name.toLowerCase().includes(n.nickname.toLowerCase())
+      keys.some(k => r.name.toLowerCase().includes(k) && n.nickname.toLowerCase().includes(k))
     );
     const logs = n.guild.channels.cache.get('809489910351921192') as TextChannel;
 
