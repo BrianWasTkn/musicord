@@ -2,9 +2,11 @@
 node_modules
 build
 source
+tests
 
 # Dotfiles
 .env
 
 # Tests
 index.js
+test.js

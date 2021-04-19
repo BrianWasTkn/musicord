@@ -10,13 +10,16 @@
         "target": "ESNext",
         "outDir": "build",
         "strict": false,
-        "resolveJsonModule": true,
         "moduleResolution": "node",
+        "resolveJsonModule": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "sourceMap": true,
         "baseUrl": ".",
-        "typeRoots": ["./types", "./node_modules/@types"],
+        "typeRoots": [
+            "./types", 
+            "./node_modules/@types"
+        ],
         "paths": {
             "@src/*": ["src/*"],
             "@config/*": ["config/*"],

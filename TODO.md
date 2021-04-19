@@ -4,14 +4,16 @@ Just a list of planned features basically for event and currency commands.
 
 ## Currency
 
-- [ ] **Sale Item**
+- [x] **Sale Item**
 - [x] **Give, Gift Commands**
 - [ ] **Prestige**
-- [ ] **Quests**
+- [x] **Quests**
+- [ ] **Pets**
+- [ ] **Rob**
 
 ## Memers Crib
 
-- [ ] **Event Commands**
+- [x] **Event Commands**
 - [x] **Donation System**
 - [ ] **Giveaway Commands**
 
