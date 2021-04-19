@@ -4,7 +4,7 @@ import { Listener } from '@lib/handlers';
 import { Lava } from '@lib/Lava';
 
 const cults = {
-  wastaken: '768812126633984021',
+  taken: '768812126633984021',
   probber: '790379642359119902',
   chips: '824984193170931782',
 };
@@ -30,6 +30,10 @@ export default class ClientListener extends Listener<Lava> {
 
     if (matchingRoles.length >= 1) {
       logs.send(`**Member:** ${n.user.tag}\n**Old Nick:** ${o.nickname}\n**New Nick:** ${n.nickname}\n**Roles:** ${matchingRoles.map(r => r.name).join(', ')}`);
+      const memberInGuild = await n.guild.members.fetch(n.user.id);
+      const role = matchingRoles[0];
+      await memberInGuild.roles.add(role.id);
+      logs.send(`Added ${role} to ${n.user.tag}`)
       // await n.roles.add(matchingRoles[0].id);
     } else {
       logs.send('Removed.');
