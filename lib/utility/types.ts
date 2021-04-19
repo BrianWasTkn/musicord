@@ -1,7 +1,7 @@
-import type { Context } from '@lib/extensions/message';
-import type { Quest } from '@lib/handlers/quest';
-import type { Item } from '@lib/handlers/item';
-import type { Lava } from '@lib/Lava';
+import { Context, ContextDatabase } from '@lib/extensions/message';
+import { Quest } from '@lib/handlers/quest';
+import { Item } from '@lib/handlers/item';
+import { Lava } from '@lib/Lava';
 import Constants from './constants';
 
 export const argTypes = (bot: Lava) => ({
@@ -46,7 +46,7 @@ export const argTypes = (bot: Lava) => ({
   ): Promise<number | null> => {
     const { minBet, maxBet, maxPocket, maxSafePocket } = bot.config.currency;
     const { GAMBLE_MESSAGES: MESSAGES } = Constants;
-    const { pocket } = (await ctx.db.fetch()).data;
+    const { pocket } = (await (ctx.db = new ContextDatabase(ctx)).fetch()).data;
 
     let bet: string | number = phrase;
 
