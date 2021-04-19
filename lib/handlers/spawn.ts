@@ -208,7 +208,7 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
       };
 
       // Crap
-      this.emit('messageStart', { str, spawner, msg, handler: this });
+      this.emit('messageStart', { str, spawner, ctx: msg, handler: this });
       const cooldown = spawner.getCooldown(msg.member, spawner.cd());
       this.cooldowns.set(msg.author.id, spawner);
       const deleteCD = () => this.cooldowns.delete(msg.author.id);
