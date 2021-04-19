@@ -218,10 +218,10 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
       // MessageCollector#on<collect|end>
       collector
         .on('collect', (msg: Context) => {
-          this.handleMessageCollect<Context>({ msg, collector, spawner });
+          this.handleMessageCollect<Context>({ ctx: msg, collector, spawner });
         })
         .on('end', (collected: Collection<string, Context>) => {
-          this.handleMessageEnd<Context>({ collected, spawner, msg });
+          this.handleMessageEnd<Context>({ collected, spawner, ctx: msg });
         });
 
       return collector;
