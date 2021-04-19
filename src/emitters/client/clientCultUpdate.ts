@@ -29,7 +29,7 @@ export default class ClientListener extends Listener<Lava> {
     const logs = n.guild.channels.cache.get('809489910351921192') as TextChannel;
 
     if (matchingRoles.length >= 1) {
-      logs.send(`**Member:** ${n.user.tag}\n**Old Nick:** ${o.nickname}**\n**New Nick:** ${n.nickname}\n**Roles:** ${matchingRoles.map(r => r.name).join(', ')}`);
+      logs.send(`**Member:** ${n.user.tag}\n**Old Nick:** ${o.nickname}\n**New Nick:** ${n.nickname}\n**Roles:** ${matchingRoles.map(r => r.name).join(', ')}`);
       // await n.roles.add(matchingRoles[0].id);
     } else {
       logs.send('Removed.');
