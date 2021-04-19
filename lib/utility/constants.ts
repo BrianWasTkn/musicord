@@ -33,7 +33,7 @@ export const COLORS = {
 };
 
 export const GAMBLE_MESSAGES = {
-  NO_COINS: 'You have no coins to gamble :skull:',
+  NO_COINS: 'You have no coins to gamble RIP',
   BET_IS_NAN: 'It should be a positive number yeah?',
   USER_IS_POOR: 'You have no coins to gamble rip :skull:',
   BET_IS_LOWER: `C'mon, you're not gambling lower than **${minBet.toLocaleString()}** yeah?`,
@@ -59,7 +59,7 @@ export const ITEM_MESSAGES = {
 
   // Sell Command
   NEED_TO_SELL: 'you need something to sell.',
-  NOT_SELLABLE: 'you can\'t sell this item :skull',
+  NOT_SELLABLE: 'you can\'t sell this item :skull:',
   SELLING_NONE: 'imagine selling none, couldn\'t be me',
   CANT_FOOL_ME: 'lmao you shouldn\'t sell to more than what you have'
 }

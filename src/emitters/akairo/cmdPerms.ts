@@ -1,9 +1,8 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Listener, CommandHandler, Command } from '@lib/handlers';
+import { Context } from '@lib/extensions/message';
 import { MessageEmbed } from 'discord.js';
-import { Listener } from '@lib/handlers';
-import { Command } from 'discord-akairo';
 
-export default class CommandListener extends Listener {
+export default class CommandListener extends Listener<CommandHandler<Command>> {
   constructor() {
     super('missingPermissions', {
       emitter: 'command',
@@ -12,11 +11,11 @@ export default class CommandListener extends Listener {
   }
 
   async exec(
-    msg: MessagePlus,
+    ctx: Context,
     command: Command,
     type: string,
     missing: any
-  ): Promise<MessagePlus> {
+  ) {
     type = type === 'client' ? 'I' : 'You';
     const d: string[] = [];
     d.push(
@@ -34,6 +33,6 @@ export default class CommandListener extends Listener {
       .setFooter(this.client.user.username, this.client.user.avatarURL())
       .setTitle('Well rip, no perms.');
 
-    return msg.channel.send({ embed }) as Promise<MessagePlus>;
+    return ctx.send({ embed });
   }
 }

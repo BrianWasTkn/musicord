@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Item } from '@lib/handlers/item';
 
 export default class Collectible extends Item {
@@ -18,10 +18,10 @@ export default class Collectible extends Item {
     });
   }
 
-  async use(msg: MessagePlus): Promise<string> {
+  async use(ctx: Context): Promise<string> {
+    const { data } = await ctx.db.fetch();
     const { util } = this.client;
-    const data = await msg.author.fetchDB();
-    const tr = data.items.find((i) => i.id === this.id);
+    const tr = this.findInv(data.items, this);
 
     let odds = util.randomNumber(1, 100);
     let nice = util.randomNumber(1, 5);
@@ -31,7 +31,7 @@ export default class Collectible extends Item {
     tr.expire = Date.now() + (30 * 60 * 1e3);
     tr.multi = 50;
 
-    await msg.author.initDB(data).updateItems().db.save();
+    await ctx.db.updateItems().save();
     return `**${this.emoji} ${this.name}**\nYou now have a **25%** multiplier for 30 minutes${!hit ? '!' : ` AND **${nice.toLocaleString()} ${this.name}**${nice > 1 ? 's' : ''} god you're so lucky.`}`;
   }
 }

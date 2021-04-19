@@ -1,5 +1,5 @@
 import { GuildMember, MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 
@@ -14,18 +14,19 @@ export default class Currency extends Command {
       args: [
         {
           id: 'amount',
-          type: async (msg: MessagePlus, phrase: number | string) => {
+          type: async (ctx: Context, phrase: number | string) => {
             if (!phrase) {
-              msg.reply('You need something to deposit');
+              ctx.reply('You need something to deposit.');
               return null;
             }
-            const data = await msg.author.fetchDB();
+
+            const { data } = await ctx.db.fetch();
             if (data.pocket < 1) {
-              msg.reply("Lol you don't have coins to deposit rip");
+              ctx.reply("You're an idiot, you don't have anything to deposit.");
               return null;
             }
             if (data.vault >= data.space) {
-              msg.reply('You already have full vault');
+              ctx.reply('You already have full vault.');
               return null;
             }
 
@@ -37,7 +38,16 @@ export default class Currency extends Command {
               } else if (phrase === 'half') {
                 dep = Math.round(data.pocket / 2);
               } else {
-                msg.reply('You actually need a number to deposit...');
+                ctx.reply('You actually need a number to deposit...');
+                return null;
+              }
+            } else {
+              dep = Number(dep as number);
+              if (dep >= data.pocket) {
+                ctx.reply(`Are you fr? You only have ${data.pocket} in your pocket right now. Don't try and break me.`);
+                return null;
+              } else if (dep > (data.space - data.vault)) {
+                ctx.reply(`NOPE! Can't break me, you can only deposit up to **${(data.space - data.vault).toLocaleString()}** coins right now.`);
                 return null;
               }
             }
@@ -49,15 +59,9 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(
-    msg: MessagePlus,
-    {
-      amount,
-    }: {
-      amount: number;
-    }
-  ): Promise<string | MessageOptions> {
-    const d = await msg.author.fetchDB();
+  public async exec(ctx: Context<{ amount: number }>): Promise<string | MessageOptions> {
+    const { data: d } = await ctx.db.fetch();
+    const { amount } = ctx.args;
 
     if (!amount) 
       return 'You need something to deposit, bro.';
@@ -67,11 +71,11 @@ export default class Currency extends Command {
       return `Bro, you only have ${d.pocket.toLocaleString()} coins what're you doing?`;
 
     const input = amount >= d.space - d.vault ? d.space - d.vault : amount;
-    const { vault } = await msg.author.initDB(d).deposit(input).db.save();
+    const { vault } = await ctx.db.deposit(input).save();
 
     return {
       content: `**${input.toLocaleString()}** coins deposited. You now have **${vault.toLocaleString()}** in your vault.`,
-      replyTo: msg.id,
+      replyTo: ctx.id,
     };
   }
 }

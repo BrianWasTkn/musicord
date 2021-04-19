@@ -1,5 +1,5 @@
 import { GuildMember, MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 
@@ -14,7 +14,7 @@ export default class Currency extends Command {
       args: [
         {
           id: 'amount',
-          type: async (msg: MessagePlus, phrase: number | string) => {
+          type: async (msg: Context, phrase: number | string) => {
             if (!phrase) {
               msg.reply('You need something to withdraw');
               return null;
@@ -46,15 +46,9 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(
-    msg: MessagePlus,
-    {
-      amount,
-    }: {
-      amount: number;
-    }
-  ): Promise<string | MessageOptions> {
-    const d = await msg.author.fetchDB();
+  public async exec(ctx: Context<{ amount: number }>): Promise<string | MessageOptions> {
+    const { data: d } = await ctx.db.fetch();
+    const { amount } = ctx.args;
     const embed: Embed = new Embed();
 
     if (!amount) return;
@@ -62,7 +56,7 @@ export default class Currency extends Command {
     else if (amount > d.vault)
       return `Bro, you only have ${d.vault.toLocaleString()} coins in your vault what're you up to?`;
 
-    const { vault } = await msg.author.initDB(d).withdraw(amount).db.save();
-    return { replyTo: msg.id, content: `**${amount.toLocaleString()}** coins withdrawn. You now have **${vault.toLocaleString()}** left in your vault.`};
+    const { vault } = await ctx.db.withdraw(amount).save();
+    return { replyTo: ctx.id, content: `**${amount.toLocaleString()}** coins withdrawn. You now have **${vault.toLocaleString()}** left in your vault.`};
   }
 }

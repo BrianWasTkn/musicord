@@ -1,6 +1,7 @@
 import { CollectorFilter, Collection, TextChannel } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
 import { Listener } from '@lib/handlers';
+import { Context } from '@lib/extensions/message';
+import { Lava } from '@lib/Lava';
 
 const qObj = {
   giveaway: {
@@ -32,19 +33,19 @@ const roles = {
 };
 
 async function handleDonation(
-  msg: MessagePlus,
+  ctx: Context,
   type: 'giveaway' | 'event' | 'heist'
 ) {
   try {
     await msg.delete();
-    const dm = await msg.author.createDM();
+    const dm = await ctx.author.createDM();
     const res = new Collection<string, string>();
     try {
       const questions = qObj[type];
       await dm.send(
         `**Welcome to our interactive ${type} donation menu**\n*I will ask you series of questions for your ${type} donation. You have **60 seconds** for each question. You can type \`cancel\` anytime. Type anything to continue.*`
       );
-      const filter: CollectorFilter<MessagePlus[]> = m => m.author.id === msg.author.id;
+      const filter: CollectorFilter<Context[]> = m => m.author.id === ctx.author.id;
       const fcol = (await dm.awaitMessages(filter, { max: 1, time: 60000 })).first();
       if (!fcol || fcol.content.toLowerCase() === 'cancel') {
         return await dm.send('The donation has been cancelled.');
@@ -69,27 +70,27 @@ async function handleDonation(
         results.push(`**${label}:** ${response}`);
       }
 
-      const chan = msg.guild.channels.cache.get(
+      const chan = ctx.guild.channels.cache.get(
         '691596367776186379'
       ) as TextChannel;
-      const role = msg.guild.roles.cache.get(roles[type]);
+      const role = ctx.guild.roles.cache.get(roles[type]);
       const r = results.join('\n');
       await chan.send({
-        content: `${role.toString()} ${msg.author.toString()}`,
-        allowedMentions: { roles: [role.id], users: [msg.author.id] },
+        content: `${role.toString()} ${ctx.author.toString()}`,
+        allowedMentions: { roles: [role.id], users: [ctx.author.id] },
         embed: {
           description: r,
           title: `${type.charAt(0).toUpperCase() + type.slice(1)} Donation`,
           color: 'RANDOM',
           footer: {
-            text: `${msg.author.tag} (${msg.author.id})`,
-            icon_url: msg.author.avatarURL({ dynamic: true }),
+            text: `${ctx.author.tag} (${ctx.author.id})`,
+            icon_url: ctx.author.avatarURL({ dynamic: true }),
           },
         },
       });
 
-      const accChan = msg.guild.channels.cache.get('691596367776186379');
-      await msg.member.roles.add('715507078860505091');
+      const accChan = ctx.guild.channels.cache.get('691596367776186379');
+      await ctx.member.roles.add('715507078860505091');
       return await dm.send(
         `Thanks for your donation! You now have access to ${accChan.toString()} to give your donation to our staffs.`
       );
@@ -97,13 +98,13 @@ async function handleDonation(
       return await dm.send('Something wrong occured :c');
     }
   } catch {
-    const m = await msg.channel.send(`${msg.author.toString()} please open your DMs.`);
+    const m = await ctx.send({ content: `${ctx.author.toString()} please open your DMs.` });
     await new Promise(res => setTimeout(res, 1e4));
     return await m.delete();
   }
 }
 
-export default class ClientListener extends Listener {
+export default class ClientListener extends Listener<Lava> {
   constructor() {
     super('donation', {
       emitter: 'client',
@@ -111,14 +112,14 @@ export default class ClientListener extends Listener {
     });
   }
 
-  public async exec(msg: MessagePlus): Promise<void | MessagePlus> {
-    if (msg.channel.id !== '818667160918425630') return;
+  public async exec(ctx: Context): Promise<void | Context> {
+    if (ctx.channel.id !== '818667160918425630') return;
 
     const haha = { 1: 'giveaway', 2: 'heist', 3: 'event' };
-    const query = haha[Number(msg.content)];
-    if (msg.author.bot) return;
-    if (!query) return msg.delete() as Promise<MessagePlus>;
+    const query = haha[Number(ctx.content)];
+    if (ctx.author.bot) return;
+    if (!query) return ctx.delete() as Promise<Context>;
 
-    return (await handleDonation(msg, query)) as MessagePlus;
+    return (await handleDonation(ctx, query)) as Context;
   }
 }

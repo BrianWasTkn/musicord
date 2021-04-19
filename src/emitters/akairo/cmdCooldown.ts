@@ -1,8 +1,8 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { CommandHandler, Command } from '@lib/handlers/command';
+import { Context } from '@lib/extensions/message';
 import { Listener } from '@lib/handlers';
-import { Command } from 'discord-akairo';
 
-export default class CommandListener extends Listener {
+export default class CommandListener extends Listener<CommandHandler<Command>> {
   constructor() {
     super('cooldown', {
       emitter: 'command',
@@ -11,10 +11,10 @@ export default class CommandListener extends Listener {
   }
 
   async exec(
-    msg: MessagePlus,
+    ctx: Context,
     command: Command,
     remaining: number
-  ): Promise<MessagePlus> {
+  ) {
     const time = remaining <= 60e3 
       ? `${(remaining / 1e3).toFixed(1)} seconds` 
       : this.client.util.parseTime(remaining / 1e3);
@@ -22,7 +22,7 @@ export default class CommandListener extends Listener {
       ? `${command.cooldown / 1e3} seconds`
       : this.client.util.parseTime(command.cooldown / 1e3);
     
-    return msg.channel.send({
+    return ctx.send({
       embed: {
         title: 'LOL calm down',
         color: 'INDIGO',
@@ -32,6 +32,6 @@ export default class CommandListener extends Listener {
           icon_url: this.client.user.avatarURL(),
         },
       },
-    }) as Promise<MessagePlus>;
+    });
   }
 }

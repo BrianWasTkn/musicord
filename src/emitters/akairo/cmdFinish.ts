@@ -1,9 +1,8 @@
+import { Listener, CommandHandler, Command } from '@lib/handlers';
 import { MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
-import { Listener } from '@lib/handlers';
-import { Command } from 'discord-akairo';
+import { Context } from '@lib/extensions/message';
 
-export default class CommandListener extends Listener {
+export default class CommandListener extends Listener<CommandHandler<Command>> {
   constructor() {
     super('commandFinished', {
       emitter: 'command',
@@ -12,19 +11,19 @@ export default class CommandListener extends Listener {
   }
 
   async exec(
-    msg: MessagePlus,
+    ctx: Context,
     command: Command,
     _: any[],
     returned: MessageOptions | Promise<MessageOptions>
   ) {
     if (!returned) return;
 
-    const data = await msg.author.fetchDB();
+    const { data } = await ctx.db.fetch();
     data.lastRan = Date.now();
     data.lastCmd = command.aliases[0];
     await data.save();
     
-    // (await msg.channel.send(returned as MessageOptions)) as MessagePlus;
-    return this.client.handlers.command.commandUtils.delete(msg.id);
+    // (await msg.channel.send(returned as MessageOptions)) as Context;
+    return this.client.handlers.command.commandUtils.delete(ctx.id);
   }
 }

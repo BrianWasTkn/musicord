@@ -133,4 +133,6 @@ export class UserPlus extends User {
   }
 }
 
-Structures.extend('User', () => UserPlus);
+export default () => {
+  return Structures.extend('User', () => UserPlus);
+}

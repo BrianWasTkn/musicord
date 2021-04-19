@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Item } from '@lib/handlers/item';
 
 export default class PowerUp extends Item {
@@ -18,20 +18,20 @@ export default class PowerUp extends Item {
     });
   }
 
-  async use(msg: MessagePlus): Promise<string> {
+  async use(ctx: Context): Promise<string> {
     const { util, config } = this.client;
-    const data = await msg.author.fetchDB();
-    const card = data.items.find((i) => i.id === this.id);
+    const { data } = await ctx.db.fetch();
+    const card = this.findInv(data.items, this);
 
     if (data.space >= config.currency.maxSafeSpace) {
       return 'You already have max vault space bruh'
     }
 
-    const m = `${msg.author.toString()} You have ${card.amount.toLocaleString()} cards. How many cards do you wanna reveal right now?`;
-    await msg.channel.send(m);
-    const f = (m: MessagePlus) => m.author.id === msg.author.id;
+    const m = `${ctx.author.toString()} You have ${card.amount.toLocaleString()} cards. How many cards do you wanna reveal right now?`;
+    await ctx.send({ content: m });
+    const f = (m: Context) => m.author.id === ctx.author.id;
     const rep = (
-      await msg.channel.awaitMessages(f, { max: 1, time: 15000 })
+      await ctx.channel.awaitMessages(f, { max: 1, time: 15000 })
     ).first();
 
     if (!rep) return 'lol bye, thanks for nothing.';

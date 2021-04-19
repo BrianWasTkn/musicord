@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Item } from '@lib/handlers/item';
 
 export default class PowerUp extends Item {
@@ -18,8 +18,8 @@ export default class PowerUp extends Item {
     });
   }
 
-  async use(msg: MessagePlus) {
-    const data = await msg.author.fetchDB();
+  async use(ctx: Context) {
+    const { data } = await ctx.db.fetch();
     const inv = data.items.find(i => i.id === this.id);
 
     inv.expire = Date.now() + (12 * 60 * 60 * 1e3); // 12 hours

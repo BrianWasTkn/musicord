@@ -1,5 +1,6 @@
-import { MessageOptions, GuildMember } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { MessageOptions } from 'discord.js';
+import { MemberPlus } from '@lib/extensions/member';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 import { Item } from '@lib/handlers/item';
@@ -20,25 +21,24 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(msg: MessagePlus, args: {
-  	amount: number,
-  	item: Item,
-  	member: GuildMember
-  }): Promise<string | MessageOptions> {
-  	const { amount, item, member } = args;
+  async exec(ctx: Context<{
+    member: MemberPlus;
+    amount: number;
+    item: Item;
+  }>): Promise<string | MessageOptions> {
+  	const { amount, item, member } = ctx.args;
   	if (!amount || !item || !member) {
   		return `**Wrong Syntax bro**\n**Usage:** \`lava ${this.aliases[0]} <amount> <item> <@user>\``;
   	}
 
-    if (member.user.id === msg.author.id) {
+    if (member.user.id === ctx.author.id) {
       return 'Lol imagine gifting that to yourself dummy'
     }
 
   	const cap = this.client.config.currency.maxInventory;
-    
-  	const data = await msg.author.fetchDB();
+  	const { data } = await ctx.db.fetch();
+  	const r = (await ctx.db.fetch(member.user.id)).data;
   	const dInv = data.items.find(i => i.id === item.id);
-  	const r = await msg.fetchDB(member.user.id);
   	const rInv = r.items.find(i => i.id === item.id);
 
   	if (amount < 1) 
@@ -53,6 +53,6 @@ export default class Currency extends Command {
   	rInv.amount += amount;
   	await r.save();
 
-  	return { replyTo: msg.id, content: `You gave ${member.user.username} **${amount.toLocaleString()} ${item.emoji} ${item.name}**${amount > 1 ? 's' : ''}! They now have **${rInv.amount.toLocaleString()}** ${item.id}${rInv.amount > 1 ? 's' : ''} while you have **${dInv.amount.toLocaleString()}** ${item.id}${dInv.amount > 1 ? 's' : ''} left.` };
+  	return { replyTo: ctx.id, content: `You gave ${member.user.username} **${amount.toLocaleString()} ${item.emoji} ${item.name}**${amount > 1 ? 's' : ''}! They now have **${rInv.amount.toLocaleString()}** ${item.id}${rInv.amount > 1 ? 's' : ''} while you have **${dInv.amount.toLocaleString()}** ${item.id}${dInv.amount > 1 ? 's' : ''} left.` };
   }
 }

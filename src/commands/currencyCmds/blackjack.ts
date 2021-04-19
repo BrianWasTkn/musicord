@@ -1,9 +1,9 @@
 import { MessageOptions, Collection } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Effects } from '@lib/utility/effects';
 
-// blackjack.dankmemer.lol
+// blackjack.dankmemer.lol but a bit modified
 export default class Currency extends Command {
   constructor() {
     super('blackjack', {
@@ -21,34 +21,31 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(
-    msg: MessagePlus,
-    args: { amount: number }
-  ): Promise<string | MessageOptions> {
+  async exec(ctx: Context<{ amount: number }>): Promise<string | MessageOptions> {
     const {
       util,
       util: { effects },
       config: { currency },
       db: { currency: DB },
-    } = this.client;
+    } = ctx.client;
 
     // Core
     const { maxWin, maxBet, maxPocket } = currency;
-    const data = await msg.author.fetchDB();
-    let { total: multi } = DB.utils.calcMulti(this.client, msg, data);
-    const { amount: bet } = args;
+    const { data } = await ctx.db.fetch();
+    let { total: multi } = DB.utils.calcMulti(this.client, ctx, data);
+    const { amount: bet } = ctx.args;
     if (!bet) return;
 
     // Item Effects
     let extraWngs: number = 0;
     for (const it of ['thicm']) {
-      const userEf = effects.get(msg.author.id);
+      const userEf = effects.get(ctx.author.id);
       if (!userEf) {
         const col = new Collection<string, Effects>().set(it, new Effects());
-        effects.set(msg.author.id, col);
+        effects.set(ctx.author.id, col);
       }
-      if (effects.get(msg.author.id).has(it)) {
-        extraWngs += effects.get(msg.author.id).get(it).blackjackWinnings;
+      if (effects.get(ctx.author.id).has(it)) {
+        extraWngs += effects.get(ctx.author.id).get(it).blackjackWinnings;
       }
     }
 
@@ -180,14 +177,13 @@ export default class Currency extends Command {
       let state: string = '';
       let desc = '';
       if (status.constructor === Object) {
-        const coinCheck = await DB.fetch(msg.author.id); // ugh don't really know else how to do this thanks to reversal
+        const { data: coinCheck } = await ctx.db.fetch(); // ugh don't really know else how to do this thanks to reversal
         if (bet > coinCheck.pocket) {
-          await msg.author
-            .initDB(data)
+          await ctx.db
             .removePocket(bet)
             .calcSpace()
             .updateItems()
-            .db.save();
+            .save();
           return {
             content: `What the hell man, you don't have the coins to cover this bet anymore??? I'm keeping your bet since you tried to SCAM ME.`,
             reply: true,
@@ -197,19 +193,15 @@ export default class Currency extends Command {
         // Win
         if (status.result) {
           winnings = Math.ceil(bet * (Math.random() + (0.3 + extraWngs))); // "Base Multi"
-          winnings = Math.min(
-            maxPocket as number,
-            winnings + Math.ceil(winnings * (multi / 100))
-          ); // This brings in the user's secret multi (pls multi)
+          winnings = Math.min(maxPocket,winnings + Math.ceil(winnings * (multi / 100))); // This brings in the user's secret multi (lava multi)
           finalMsg += `\nYou won **${winnings.toLocaleString()}**. You now have ${(
             data.pocket + winnings
           ).toLocaleString()}.`;
-          await msg.author
-            .initDB(data)
+          await ctx.db
             .addPocket(winnings)
             .updateItems()
             .calcSpace()
-            .db.save();
+            .save();
           state = extraWngs ? 'powered' : 'winning';
         } else {
           // Tie
@@ -223,12 +215,11 @@ export default class Currency extends Command {
             ).toLocaleString()}**. You now have ${(
               data.pocket - bet
             ).toLocaleString()}.`;
-            await msg.author
-              .initDB(data)
+            await ctx.db
               .removePocket(bet)
               .updateItems()
               .calcSpace()
-              .db.save();
+              .save();
             state = 'losing';
           }
         }
@@ -236,7 +227,7 @@ export default class Currency extends Command {
         desc = `**${status.message}** ${finalMsg}`;
       }
       const satisfied = final;
-      await msg.channel.send({
+      await ctx.send({
         content: !final
           ? `${
               first ? 'What do you want to do?\n' : ''
@@ -244,8 +235,8 @@ export default class Currency extends Command {
           : '',
         embed: {
           author: {
-            name: `${msg.author.username}'s${state ? ` ${state}` : ' '}blackjack game`,
-            icon_url: msg.author.avatarURL({ dynamic: true }),
+            name: `${ctx.author.username}'s${state ? ` ${state}` : ' '}blackjack game`,
+            icon_url: ctx.author.avatarURL({ dynamic: true }),
           },
           color: final
             ? status.result === null
@@ -259,7 +250,7 @@ export default class Currency extends Command {
           description: desc,
           fields: [
             {
-              name: msg.author.username,
+              name: ctx.author.username,
               value: `Cards - **${cards.user
                 .map(
                   (card) =>
@@ -272,7 +263,7 @@ export default class Currency extends Command {
             },
             {
               // Always show the first card, all other cards are unknown until stood or final is called
-              name: msg.client.user.username,
+              name: ctx.client.user.username,
               value: `Cards - **${cards.bot
                 .slice(0, satisfied ? cards.bot.length : 2)
                 .map((card, i) =>
@@ -298,18 +289,21 @@ export default class Currency extends Command {
       first = false;
       if (final) return;
       const choice = (
-        await msg.channel.awaitMessages((m) => m.author.id === msg.author.id, {
+        await ctx.channel.awaitMessages((m) => m.author.id === ctx.author.id, {
           max: 1,
           time: 3e4,
         })
       ).first();
       if (!choice) {
         // No bank space for you bitch
-        await msg.author.initDB(data).updateItems().removePocket(bet).db.save();
+        await ctx.db
+          .removePocket(bet)
+          .updateItems()
+          .save();
         return {
           content:
             "You ended the game since you didn't respond. The dealer is keeping your money to deal with your bullcrap.",
-          replyTo: msg.id,
+          replyTo: ctx.id,
         };
       }
       switch (choice.content.toLowerCase().slice(0, 1)) {
@@ -321,27 +315,25 @@ export default class Currency extends Command {
           return dealersTurn(stood);
         case 'e':
           // You too, no space for you :P
-          await msg.author
-            .initDB(data)
+          await ctx.db
             .updateItems()
             .removePocket(bet)
-            .db.save();
+            .save();
           return {
             content:
               'You ended the game. The dealer is keeping your money to deal with your bullcrap.',
-            replyTo: msg.id,
+            replyTo: ctx.id,
           };
         default:
           // You too, no space for you :P
-          await msg.author
-            .initDB(data)
+          await ctx.db
             .updateItems()
             .removePocket(bet)
-            .db.save();
+            .save();
           return {
             content:
               'Ur an idiot you need to give a valid response. You lost your entire bet.',
-            replyTo: msg.id,
+            replyTo: ctx.id,
           };
       }
     };

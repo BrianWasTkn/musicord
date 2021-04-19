@@ -22,7 +22,7 @@ const Messages = {
 export class AkairoError extends Error {
   code: string;
   constructor(key: keyof typeof Messages, ...args) {
-    if (Messages[key] == null) throw new TypeError(`Error key '${key}' does not exist`);
+    if (Messages[key] == null) throw new TypeError(`Error key "${key}" does not exist`);
     const message = typeof Messages[key] === 'function'
       ? (Messages[key] as (...args: any[]) => string)(...args)
       : Messages[key];

@@ -1,11 +1,8 @@
+import { Collection, Role } from 'discord.js';
 import { ClientUtil } from 'discord-akairo';
 import { Effects } from './effects';
 import { COLORS } from '../utility/constants';
 import { Lava } from '../Lava';
-import {
-  Collection,
-  Role,
-} from 'discord.js';
 
 import chalk from 'chalk';
 import moment from 'moment';

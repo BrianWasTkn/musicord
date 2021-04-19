@@ -1,5 +1,5 @@
 import { MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 import { Item } from '@lib/handlers/item';
@@ -15,7 +15,7 @@ export default class Currency extends Command {
       args: [
         {
           id: 'query',
-          type: (msg: MessagePlus, phrase: string) => {
+          type: (msg: Context, phrase: string) => {
             const { resolver } = this.handler;
             if (!phrase) return 1; // shop page
             return (
@@ -28,11 +28,9 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(
-    msg: MessagePlus,
-    { query }: { query: number | Item }
-  ): Promise<string | MessageOptions> {
+  async exec(ctx: Context<{ query: number | Item }>): Promise<string | MessageOptions> {
     const { item: Handler } = this.client.handlers;
+    const { query } = ctx.args;
     const items = Handler.modules.array();
     const embed = new Embed();
 
@@ -72,7 +70,7 @@ export default class Currency extends Command {
         .setColor('RANDOM');
     } else {
       if (!query) return "That item doesn't even exist in the shop what're you doing?";
-      const data = await msg.author.fetchDB();
+      const { data } = await ctx.db.fetch();
       const inv = data.items.find((i) => i.id === query.id);
 
       function calc(amount: number, discount: number) {
@@ -80,8 +78,12 @@ export default class Currency extends Command {
       }
 
       const { id, discount } = Handler.sale;
-      const buy = query.id === id ? Math.round(calc(query.cost, discount)) : query.cost;
-      const sell = query.id === id ? Math.round(calc(query.cost / 4, discount)) : Math.round(query.cost / 4);
+      const buy = query.id === id 
+        ? Math.round(calc(query.cost, discount)) 
+        : query.cost;
+      const sell = query.id === id 
+        ? Math.round(calc(query.cost / 4, discount)) 
+        : Math.round(query.cost / 4);
 
       let info: string[] = [];
       info.push(

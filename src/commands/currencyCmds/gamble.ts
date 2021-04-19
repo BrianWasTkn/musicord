@@ -1,5 +1,5 @@
 import { MessageOptions, Collection } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Argument } from 'discord-akairo';
 import { Document } from 'mongoose';
 
@@ -27,24 +27,19 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(
-    msg: MessagePlus,
-    args: {
-      amount?: number;
-    }
-  ): Promise<string | MessageOptions> {
+  async exec(ctx: Context<{ amount: number }>): Promise<string | MessageOptions> {
     const {
       util,
       util: { effects },
       config: { currency },
       db: { currency: DB },
-    } = this.client;
+    } = ctx.client;
 
     // Core
     const { maxWin, maxBet } = currency;
-    const data = await msg.author.fetchDB();
-    let { total: multi } = DB.utils.calcMulti(this.client, msg, data);
-    const { amount: bet } = args;
+    const { data } = await ctx.db.fetch();
+    let { total: multi } = DB.utils.calcMulti(this.client, ctx, data);
+    const { amount: bet } = ctx.args;
     if (!bet) return;
 
     // Item Effects
@@ -52,25 +47,28 @@ export default class Currency extends Command {
     let extraWngs: number = 0;
     let dceRoll: number = 0;
     for (const it of ['thicc', 'brian', 'dragon']) {
-      const userEf = effects.get(msg.author.id);
+      const userEf = effects.get(ctx.author.id);
       if (!userEf) {
         const col = new Collection<string, Effects>().set(it, new Effects());
-        effects.set(msg.author.id, col);
+        effects.set(ctx.author.id, col);
       }
-      if (effects.get(msg.author.id).has(it)) {
+      if (effects.get(ctx.author.id).has(it)) {
       	if (it === 'dragon') iDiceEffs.push(this.client.handlers.item.modules.get(it));
-        const i = effects.get(msg.author.id).get(it);
+        const i = effects.get(ctx.author.id).get(it);
         extraWngs += i.gambleWinnings;
         dceRoll += i.gambleDice;
       }
     }
 
     // Dice
-    const rig = (a: number, b: number) => (a > b ? [a, a = b] : [b])[0];
+    const rig = (a: number, b: number) => a > b ? [b, a] : [a, b];
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);
-    if (Math.random() > 0.55) userD = rig(botD, userD);
-    else botD = rig(userD, botD);
+    if (Math.random() > 0.55) {
+      [userD, botD] = rig(botD, userD);
+    } else {
+      [botD, userD] = rig(userD, botD);
+    }
     userD += dceRoll;
     
     // vis and db
@@ -83,12 +81,11 @@ export default class Currency extends Command {
       const ties = botD === userD;
       const lost = ties ? Math.round(bet / 4) : bet;
 
-      const d = await msg.author
-        .initDB(data)
-        .updateItems()
+      const d = await ctx.db
         .removePocket(lost)
+        .updateItems()
         .calcSpace()
-        .db.save();
+        .save();
 
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';
@@ -101,12 +98,11 @@ export default class Currency extends Command {
       wngs = Math.min(maxWin, wngs + Math.ceil(wngs * (multi / 100)));
       perwn = Math.round(wngs / bet * 100);
 
-      const d = await msg.author
-        .initDB(data)
-        .updateItems()
+      const d = await ctx.db
         .addPocket(wngs)
+        .updateItems()
         .calcSpace()
-        .db.save();
+        .save();
 
       identifier = Boolean(extraWngs) ? 'powered' : 'winning';
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
@@ -121,20 +117,20 @@ export default class Currency extends Command {
       color, description: description.join('\n'),
       footer: {
         text: `Multiplier: ${multi}%`,
-        iconURL: this.client.user.avatarURL()
+        iconURL: ctx.client.user.avatarURL()
       },
       author: {
-        name: `${msg.author.username}'s ${identifier} gambling game`,
-        iconURL: msg.author.displayAvatarURL({ dynamic: true })
+        name: `${ctx.author.username}'s ${identifier} gambling game`,
+        iconURL: ctx.author.displayAvatarURL({ dynamic: true })
       },
       fields: [
         {
-          name: `${msg.author.username}`,
+          name: `${ctx.author.username}`,
           value: `Rolled a \`${userD}\` ${iDiceEffs.length >= 1 ? iDiceEffs.map(i => i.emoji).join(' ') : ''}`,
           inline: true
         },
         {
-          name: `${this.client.user.username}`,
+          name: `${ctx.client.user.username}`,
           value: `Rolled a \`${botD}\``,
           inline: true
         }

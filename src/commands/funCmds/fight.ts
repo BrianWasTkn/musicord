@@ -1,5 +1,5 @@
 import { GuildMember, MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { UserPlus } from '@lib/extensions/user';
 import { Command } from '@lib/handlers/command';
 
@@ -26,12 +26,10 @@ export default class Fun extends Command {
 		})
 	}
 
-	async exec(msg: MessagePlus, args: {
-		enemy: UserPlusPlus
-	}): Promise<MessageOptions> {
+	async exec(ctx: Context<{ enemy: UserPlusPlus }>): Promise<MessageOptions> {
 		const { randomNumber } = this.client.util;
-		const { enemy } = args;
-		const author = msg.author as UserPlusPlus;
+		const { enemy } = ctx.args;
+		const author = ctx.author as UserPlusPlus;
 
 		// arg shits
 		if (!enemy) {
@@ -57,9 +55,9 @@ export default class Fun extends Command {
 		// Thing
 		const performTurn = async (attacker: UserPlusPlus, opponent: UserPlusPlus, retry?: boolean) => {
 			const cmds = ['slap', 'def', 'end'];
-			await msg.channel.send(`${turn.toString()}, \`${cmds.join('`, `')}\``);
+			await ctx.channel.send(`${turn.toString()}, \`${cmds.join('`, `')}\``);
 			const filter = m => m.author.id === turn.id;
-			const prompt = (await msg.channel.awaitMessages(filter, { max: 1, time: 3e4 })).first();
+			const prompt = (await ctx.channel.awaitMessages(filter, { max: 1, time: 3e4 })).first();
 
 			if (prompt.content.toLowerCase() === cmds[0]) {
 				const bigPunch = Math.random() >= 0.5;
@@ -74,18 +72,18 @@ export default class Fun extends Command {
 
 				if (attacker.armor <= 100) {
 					attacker.armor += def;
-					await msg.channel.send(`**${attacker.username}** increased their defense to **${attacker.armor}** by **${def}**!`);
+					await ctx.channel.send(`**${attacker.username}** increased their defense to **${attacker.armor}** by **${def}**!`);
 					return false;
 				} else {
-					await msg.channel.send(`${attacker.toString()} damn stop being greedy, you already have max armor!`);
+					await ctx.channel.send(`${attacker.toString()} damn stop being greedy, you already have max armor!`);
 					return false;
 				} 
 			} else if (prompt.content.toLowerCase() === cmds[2]) {
-				await msg.channel.send(`**${attacker.username}** nobber ended the game.`);
+				await ctx.channel.send(`**${attacker.username}** nobber ended the game.`);
 			} else {
-				await msg.channel.send(`${attacker.toString()}, why are you not following my instructions bro?`);
+				await ctx.channel.send(`${attacker.toString()}, why are you not following my instructions bro?`);
 				if (!retry) return await performTurn(attacker, opponent, true);
-				else await msg.channel.send('The game ended due to multiple invalid responses.');
+				else await ctx.channel.send('The game ended due to multiple invalid responses.');
 			}
 		}
 
@@ -98,7 +96,7 @@ export default class Fun extends Command {
 				return await play();
 			}
 
-			await msg.channel.send([
+			await ctx.channel.send([
 			`**${turn.username}** landed a hit on **${oppturn.username}** dealing **${damage}HP**!`,
 			`**${oppturn.username}** is left with **\`${oppturn.hp < 1 ? 0 : oppturn.hp}\`** health left.`
 			].join('\n'));
@@ -117,6 +115,6 @@ export default class Fun extends Command {
 			}
 		}
 
-		return { content: await play() };
+		return { content: await play(), replyTo: ctx.id };
 	}
 }

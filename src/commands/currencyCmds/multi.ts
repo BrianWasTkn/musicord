@@ -1,5 +1,5 @@
 import { GuildMember, MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 
@@ -21,22 +21,12 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(
-    msg: MessagePlus,
-    {
-      page,
-    }: {
-      page: number;
-    }
-  ): Promise<string | MessageOptions> {
+  public async exec(ctx: Context<{ page: number }>): Promise<string | MessageOptions> {
     const { maxMulti } = this.client.config.currency;
     const { utils } = this.client.db.currency;
     const { util } = this.client;
-    const multi = utils.calcMulti(
-      this.client,
-      msg,
-      await msg.author.fetchDB()
-    );
+    const { page } = ctx.args;
+    const multi = utils.calcMulti(ctx.client, ctx, (await ctx.db.fetch()).data);
 
     const multis = util.paginateArray(multi.unlocked, 5);
     if (page > multis.length) return "That page doesn't exist.";
@@ -47,8 +37,8 @@ export default class Currency extends Command {
         multis[page - 1].join('\n')
       )
       .setAuthor(
-        `${msg.member.user.username}'s multipliers`,
-        msg.author.avatarURL({ dynamic: true })
+        `${ctx.member.user.username}'s multipliers`,
+        ctx.author.avatarURL({ dynamic: true })
       )
       .setFooter(
         false,

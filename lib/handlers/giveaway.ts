@@ -1,40 +1,22 @@
-import type { MessagePlus } from '@lib/extensions/message';
-import type { Collection } from 'discord.js';
-import type { Lava } from '../Lava';
-import {
-  AkairoHandlerOptions,
-  AkairoModuleOptions,
-  AkairoHandler,
-  AkairoModule,
-  Category,
-} from 'discord-akairo';
+import { Category, AkairoModuleOptions, AkairoHandlerOptions } from 'discord-akairo';
+import { BaseHandler, BaseModule } from './Base';
+import { Lava } from '../Lava';
 
-export class Giveaway extends AkairoModule {
-  handler: GiveawayHandler<Giveaway>;
-  client: Lava;
-
-  constructor(id: string, opt: AkairoModuleOptions) {
-    const { category } = opt;
-    super(id, { category });
+export class Giveaway extends BaseModule {
+  constructor(...args: [string, AkairoModuleOptions]) {
+    super(...args);
   }
 }
 
-export class GiveawayHandler<
-  GiveawayModule extends Giveaway
-> extends AkairoHandler {
-  categories: Collection<string, Category<string, GiveawayModule>>;
-  modules: Collection<string, GiveawayModule>;
-  client: Lava;
-
-  constructor(
-    client: Lava,
-    {
+export class GiveawayHandler<Module extends Giveaway> extends BaseHandler<Module> {
+  constructor(...args: [Lava, AkairoHandlerOptions]) {
+    const [client, {
       directory = './src/giveaway',
       extensions = ['.js', '.ts'],
       classToHandle = Giveaway,
       automateCategories = true,
-    }: AkairoHandlerOptions
-  ) {
+    }] = args;
+
     super(client, {
       directory,
       classToHandle,

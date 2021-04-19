@@ -1,5 +1,5 @@
 import { MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 
 export default class Currency extends Command {
@@ -13,13 +13,13 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(msg: MessagePlus): Promise<string | MessageOptions> {
-    const data = await msg.author.fetchDB();
+  async exec(ctx: Context): Promise<string | MessageOptions> {
+    const { data } = await ctx.db.fetch();
     const won = 1000;
 
-    await msg.author.initDB(data).addPocket(won).db.save();
+    await ctx.db.addPocket(won).save();
     return { embed: {
-      title: `Here are your hourly coins, ${msg.author.username}`,
+      title: `Here are your hourly coins, ${ctx.author.username}`,
       description: `**${won.toLocaleString()}** were placed in your pocket.`,
       color: 'RANDOM', footer: { text: `Thanks for supporting this trash bot!` }
     }};

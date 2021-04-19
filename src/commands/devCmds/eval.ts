@@ -1,5 +1,5 @@
 import { MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { inspect } from 'util';
 import { Embed } from '@lib/utility/embed';
@@ -24,14 +24,10 @@ export default class Dev extends Command {
     return inspect(obj, options);
   }
 
-  public async exec(
-    msg: MessagePlus,
-    args: any
-  ): Promise<string | MessageOptions> {
-    const { channel } = msg;
-    const code: string = args.code;
-    const asynchronous: boolean =
-      code.includes('await') || code.includes('return');
+  public async exec(ctx: Context<{ code: string }>): Promise<string | MessageOptions> {
+    const { codeBlock } = ctx.client.util;
+    const { code } = ctx.args;
+    const isAsync: boolean = code.includes('await') || code.includes('return');
     let before: number,
       evaled: string,
       evalTime: number,
@@ -40,7 +36,7 @@ export default class Dev extends Command {
 
     before = Date.now();
     try {
-      evaled = await eval(asynchronous ? `(async()=>{${code}})()` : code);
+      evaled = await eval(isAsync ? `(async()=>{${code}})()` : code);
     } catch (error) {
       evaled = error.message;
     }
@@ -51,21 +47,18 @@ export default class Dev extends Command {
       evaled = this.inspect(evaled, { depth: 0 });
     }
 
-    token = new RegExp(this.client.token, 'gi');
+    token = new RegExp(ctx.client.token, 'gi');
     evaled = evaled.replace(token, 'N0.T0K4N.4Y0U');
     return {
       embed: {
         color: 'ORANGE',
-        description: this.client.util.codeBlock(
-          'js',
-          evaled.length > 1900 ? 'Too many to print' : evaled
+        description: codeBlock('js', evaled.length > 1900 
+          ? 'Too many to print' 
+          : evaled
         ),
         fields: [
-          { name: 'Type', value: this.client.util.codeBlock('js', type) },
-          {
-            name: 'Latency',
-            value: this.client.util.codeBlock('js', `${evalTime}ms`),
-          },
+          { name: 'Type', value: codeBlock('js', type) },
+          { name: 'Latency', value: codeBlock('js', `${evalTime}ms`) },
         ],
       },
     };

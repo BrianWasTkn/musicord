@@ -1,7 +1,8 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Listener } from '@lib/handlers';
+import { Lava } from '@lib/Lava';
 
-export default class ClientListener extends Listener {
+export default class ClientListener extends Listener<Lava> {
   constructor() {
     super('spawner', {
       emitter: 'client',
@@ -9,7 +10,7 @@ export default class ClientListener extends Listener {
     });
   }
 
-  public async exec(message: MessagePlus) {
+  public async exec(message: Context) {
     const { config, handlers, ownerID, db } = this.client;
 
     if (!config.spawn.enabled) return;

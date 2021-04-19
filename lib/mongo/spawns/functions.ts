@@ -22,7 +22,7 @@ export default class SpawnEndpoint<Profile extends Document> {
 
   fetch = async (userID: Snowflake): Promise<Document & Profile> => {
     const data = ((await this.model.findOne({ userID })) 
-      || new this.model({ userID })) as Document & Profile;
+    || new this.model({ userID })) as Document & Profile;
 
     return data.save() as Promise<Document & Profile>;
   };
@@ -34,8 +34,7 @@ export default class SpawnEndpoint<Profile extends Document> {
   ): Promise<Document & Profile> => {
     const data = await this.fetch(userID);
     data[key as string] += amount;
-    await data.save();
-    return data;
+    return data.save();
   };
 
   remove = async (
@@ -45,7 +44,6 @@ export default class SpawnEndpoint<Profile extends Document> {
   ): Promise<Document & Profile> => {
     const data = await this.fetch(userID);
     data[key as string] -= amount;
-    await data.save();
-    return data;
+    return data.save();
   };
 }

@@ -5,18 +5,20 @@
 
 import { Document, Schema, model } from 'mongoose';
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { Type } from '../Type';
 
 const CurrencySchema = new Schema({
   /* Basic Info */
-  lastRan: { type: Number, required: true, default: Date.now() },
-  lastCmd: { type: String, required: true, default: 'command' },
-  userID: { type: String, required: true, default: '123456' },
-  pocket: { type: Number, required: false, default: 100000 },
-  banned: { type: Boolean, required: false, default: false },
-  multi: { type: Number, required: false, default: 5 },
-  vault: { type: Number, required: false, default: 0 },
-  space: { type: Number, required: false, default: 0 },
-  bled: { type: Boolean, required: false, default: false },
+  lastRan: Type(Number, true, Date.now()),
+  lastCmd: Type(String, true, 'command'),
+  userID: Type(String, true, '123'),
+  pocket: Type(Number, false, 100000),
+  banned: Type(Boolean, false, false),
+  multi: Type(Number, false, 5),
+  vault: Type(Number, false, 0),
+  space: Type(Number, false, 0),
+  bled: Type(Boolean, false, false),
+
   /* Inventory */
   items: [{ 
     amount: Number, 
@@ -25,27 +27,31 @@ const CurrencySchema = new Schema({
     id: String,
     cd: Number,
   }],
+
   /* Daily */
   daily: {
-    streak: { required: false, default: 0, type: Number },
-    time: { required: false, default: 0, type: Number },
+    streak: Type(Number, false, 0),
+    time: Type(Number, false, 0),
   },
+
   /* Marriage */
   marriage: {
-    since: { required: false, default: 0, type: Number },
-    id: { required: false, type: String, default: '123'}
+    since: Type(Number, false, 0),
+    id: Type(String, false, 0),
   },
+
   /* Quests */
   quest: {
-    target: { required: false, default: 0, type: Number },
-    count: { required: false, default: 0, type: Number },
-    id: { required: false, type: String }
+    target: Type(Number, false, 0),
+    count: Type(Number, false, 0),
+    id: Type(String, false, '123')
   },
+
   /* Cooldowns */
   cooldowns: [{
-    expire: { type: Number, required: false, default: 0 },
-    uses: { type: Number, required: false, default: 0 },
-    id: { type: String, required: false },
+    expire: Type(Number, false, 0),
+    uses: Type(Number, false, 0),
+    id: Type(String, false, 'help')
   }]
 });
 

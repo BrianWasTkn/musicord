@@ -1,7 +1,8 @@
 import { PresenceData, TextChannel } from 'discord.js';
 import { Listener } from '@lib/handlers';
+import { Lava } from '@lib/Lava';
 
-export default class ClientListener extends Listener {
+export default class ClientListener extends Listener<Lava> {
   constructor() {
     super('ready', {
       emitter: 'client',

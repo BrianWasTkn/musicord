@@ -1,5 +1,5 @@
-import { GuildMember, MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context, MemberPlus } from '@lib/extensions';
+import { MessageOptions } from 'discord.js';
 import { Command } from '@lib/handlers/command';
 import { Lava } from '@lib/Lava';
 
@@ -15,20 +15,15 @@ export default class Spawn extends Command {
         {
           id: 'member',
           type: 'member',
-          default: (message: MessagePlus) => message.member,
+          default: (message: Context) => message.member,
         },
       ],
     });
   }
 
-  async exec(
-    msg: MessagePlus,
-    args: {
-      member: GuildMember;
-    }
-  ): Promise<MessageOptions> {
+  async exec(ctx: Context<{ member: MemberPlus }>): Promise<MessageOptions> {
     const { fetch } = this.client.db.spawns;
-    const { user } = args.member;
+    const { user } = ctx.args.member;
     const data = await fetch(user.id);
 
     return { embed: {

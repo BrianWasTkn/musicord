@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import {
   PermissionOverwriteOption,
@@ -18,15 +18,14 @@ export default class Util extends Command {
     });
   }
 
-  async exec(msg: MessagePlus): Promise<MessageOptions> {
-    await msg.delete();
-
-    const role: Role = this.client.util.heists.get(msg.channel.id);
+  async exec(ctx: Context): Promise<MessageOptions> {
+    ctx.delete().catch(() => {});
+    const role = this.client.util.heists.get(ctx.channel.id);
     if (!role) return;
 
-    const reason = `Heist Lock — ${msg.author.tag}`;
+    const reason = `Heist Lock — ${ctx.author.tag}`;
     const owrite: PermissionOverwriteOption = { SEND_MESSAGES: null };
-    await (msg.channel as TextChannel).updateOverwrite(role.id, owrite, reason);
+    await (ctx.channel as TextChannel).updateOverwrite(role.id, owrite, reason);
 
     return {
       embed: {
@@ -34,8 +33,8 @@ export default class Util extends Command {
         title: `Channel Locked`,
         color: 'RED',
         footer: {
-          text: msg.guild.name,
-          iconURL: msg.guild.iconURL({ dynamic: true }),
+          text: ctx.guild.name,
+          iconURL: ctx.guild.iconURL({ dynamic: true }),
         },
       },
     };

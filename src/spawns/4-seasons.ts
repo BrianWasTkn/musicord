@@ -10,7 +10,7 @@ const visuals: SpawnVisual = {
   strings: ['summer', 'winter', 'spring', 'autumn'],
 };
 
-export default class COMMON extends Spawn {
+export default class Common extends Spawn {
   constructor() {
     super('4-seasons', visuals, {
       rewards: { first: 4e3, min: 100, max: 400 },

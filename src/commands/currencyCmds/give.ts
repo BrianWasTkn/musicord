@@ -1,5 +1,6 @@
-import { GuildMember, MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { MessageOptions } from 'discord.js';
+import { MemberPlus } from '@lib/extensions/member';
+import { Context } from '@lib/extensions/message';
 import { UserPlus } from '@lib/extensions/user';
 import { Argument } from 'discord-akairo';
 import { Command } from '@lib/handlers/command';
@@ -25,38 +26,34 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(
-    msg: MessagePlus,
-    args: {
-      member: GuildMember;
-      amount: number | string;
-    }
-  ): Promise<string | MessageOptions> {
-    const { member, amount } = args;
+  public async exec(ctx: Context<{
+    amount: number | string;
+    member: MemberPlus;
+  }>): Promise<string | MessageOptions> {
+    const { member, amount } = ctx.args;
     if (!member || !amount) {
       return `**Wrong Syntax bro**\n**Usage:** \`lava ${this.id} <amount> <@user>\``;
     }
 
-    const data = await msg.author.fetchDB();
-    const r = await (member.user as UserPlus).fetchDB();
+    const authorEntry = await ctx.db.fetch();
+    const { data } = authorEntry;
     let give: number;
     if (isNaN(amount as number)) {
       let tAmt = (amount as string).toLowerCase();
-
       if (tAmt === 'all') {
         give = data.pocket;
-      }
-      else if (tAmt === 'half') {
+      } else if (tAmt === 'half') {
         give = Math.round(data.pocket / 2);
-      }
-      else {
+      } else {
         return 'Needs to be a whole number yeah?';
       }
     } else {
       give = amount as number;
     }
 
-    if (member.user.id === msg.author.id) 
+    const memberEntry = await ctx.db.fetch(member.user.id);
+    const { data: r } = memberEntry;
+    if (member.user.id === ctx.author.id) 
       return 'Lol imagine giving yourself coins';
     if (amount > data.pocket) 
       return 'Thought you can fool me?';
@@ -68,20 +65,24 @@ export default class Currency extends Command {
     let paid = Math.round(give - give * 0.08);
     let tax = Math.round((give * 0.8) / (give / 10));
 
-    const recib = await (member.user as UserPlus)
-      .initDB(r)
+    const recib = await memberEntry
       .addPocket(paid)
       .updateItems()
-      .db.save();
-    const giver = await msg.author
-      .initDB(data)
+      .save();
+    const giver = await authorEntry
       .removePocket(give)
       .updateItems()
       .calcSpace()
-      .db.save();
+      .save();
 
     return `You gave ${
       member.user.username
-    } **${paid.toLocaleString()}** coins after a **${tax}%** tax. They now have **${recib.pocket.toLocaleString()}** coins while you have **${giver.pocket.toLocaleString()}** coins.`;
+    } **${paid.toLocaleString()}** coins after a **${
+      tax
+    }%** tax. They now have **${
+      recib.pocket.toLocaleString()
+    }** while you have **${
+      giver.pocket.toLocaleString()
+    }** left.`;
   }
 }

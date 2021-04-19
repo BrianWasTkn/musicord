@@ -1,7 +1,7 @@
 import { LotteryHandler, Listener } from '@lib/handlers';
 import { TextChannel } from 'discord.js';
 
-export default class LottoListener extends Listener {
+export default class LottoListener extends Listener<LotteryHandler> {
   constructor() {
     super('lottoPatch', {
       emitter: 'lottery',

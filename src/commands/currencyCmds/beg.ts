@@ -1,5 +1,5 @@
 import { MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Item } from '@lib/handlers/item';
 
@@ -14,13 +14,13 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(msg: MessagePlus): Promise<string | MessageOptions> {
+  async exec(ctx: Context): Promise<string | MessageOptions> {
     const { db, util, handlers, config } = this.client;
-    const data = await msg.author.fetchDB();
+    const { data } = await ctx.db.fetch();
     const items = handlers.item.modules;
 
     if (data.pocket >= config.currency.maxPocket) {
-      return 'You\'re already rich stop begging already';
+      return 'You\'re already rich stop begging already.';
     }
 
     const odds = Math.random();
@@ -33,20 +33,20 @@ export default class Currency extends Command {
         await data.save();
         return {
           embed: {
-            description: `WTF you got **${amount} ${item.emoji} ${item.name}**${amount > 1 ? 's' : ''} that was lucky asf`,
+            description: `WOWSIES! You got **${amount} ${item.emoji} ${item.name}**${amount > 1 ? 's' : ''} you're so lucky`,
             color: 'ORANGE', author: { name: 'Lava' }
           },
-          replyTo: msg,
+          replyTo: ctx,
         }
       case odds >= 0.5:
         const won = util.randomNumber(100, 1000) * 1e3;
-        await msg.author.initDB(data).addPocket(won).calcSpace().db.save();
+        await ctx.db.addPocket(won).calcSpace().updateItems().save();
         return {
           embed: {
-            description: `GG! You got **${won.toLocaleString()}** coins from begging to me, congrats i guess.`,
+            description: `GG! You got **${won.toLocaleString()}** coins from begging.`,
             color: 'ORANGE', author: { name: 'Lava' }
           },
-          replyTo: msg
+          replyTo: ctx
         };
       default: 
         return {
@@ -54,7 +54,7 @@ export default class Currency extends Command {
             description: 'LOL NO THANKS :P',
             color: 'ORANGE', author: { name: 'Lava' }
           },
-          replyTo: msg
+          replyTo: ctx
         };
     }
   }

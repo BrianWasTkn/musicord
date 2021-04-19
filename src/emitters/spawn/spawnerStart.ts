@@ -1,10 +1,11 @@
-import { Message, TextChannel, Collection } from 'discord.js';
+import { TextChannel, Collection } from 'discord.js';
 import { SpawnHandler, Spawn } from '@lib/handlers/spawn';
 import { SpawnQueue } from '@lib/interface/handlers/spawn';
 import { Listener } from '@lib/handlers';
+import { Context } from '@lib/extensions';
 import { Lava } from '@lib/Lava';
 
-export default class SpawnListener extends Listener {
+export default class SpawnListener extends Listener<SpawnHandler<Spawn>> {
   constructor() {
     super('messageStart', {
       emitter: 'spawn',
@@ -14,18 +15,18 @@ export default class SpawnListener extends Listener {
 
   async exec(args: {
     str: string;
-    msg: Message;
+    ctx: Context;
     spawner: Spawn;
     handler: SpawnHandler<Spawn>;
   }): Promise<Collection<string, SpawnQueue>> {
-    const { str, msg, spawner, handler } = args;
+    const { str, ctx, spawner, handler } = args;
     const { randomInArray } = this.client.util;
     const { spawn } = spawner;
 
-    const m = await msg.channel.send({
+    const m = await ctx.send({
       content: `**${spawn.emoji} \`${spawn.type} EVENT NICE!\`**`,
       embed: {
-        footer: { text: msg.author.tag, iconURL: msg.author.avatarURL({ dynamic: true }) },
+        footer: { text: ctx.author.tag, iconURL: ctx.author.avatarURL({ dynamic: true }) },
         description: spawn.description,
         title: spawn.title,
         color: 'GOLD',
@@ -34,10 +35,10 @@ export default class SpawnListener extends Listener {
 
     const title = `Type \`${str.split('').join('\u200b')}\``;
     const color = randomInArray(['GOLD', 'GREEN', 'ORANGE']);
-    await msg.channel.send({ embed: { title, color }});
+    await ctx.send({ embed: { title, color }});
 
-    return handler.queue.set(msg.channel.id, {
-      channel: msg.channel.id,
+    return handler.queue.set(ctx.channel.id, {
+      channel: ctx.channel.id,
       spawn: spawner,
       msg: m.id,
     });

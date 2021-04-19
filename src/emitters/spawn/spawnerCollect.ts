@@ -3,7 +3,7 @@ import { SpawnHandler, Spawn } from '@lib/handlers/spawn';
 import { Listener } from '@lib/handlers';
 import { Lava } from '@lib/Lava';
 
-export default class SpawnListener extends Listener {
+export default class SpawnListener extends Listener<SpawnHandler<Spawn>> {
   constructor() {
     super('messageCollect', {
       emitter: 'spawn',

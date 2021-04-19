@@ -1,6 +1,6 @@
 import { EmbedField, MessageOptions } from 'discord.js';
 import { Argument, Category } from 'discord-akairo';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { EmbedFieldData } from 'discord.js';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
@@ -53,17 +53,16 @@ export default class Utility extends Command {
       .addField('CD Ratelimit', c.ratelimit || 1, true).fields;
   }
 
-  public async exec(msg: MessagePlus, args: Help): Promise<MessageOptions> {
+  public async exec(ctx: Context<Help>): Promise<MessageOptions> {
     const { handler } = this;
-    const { query } = args;
+    const { query } = ctx.args;
     const embed = new Embed();
 
     let cat: Category<string, Command>;
     let cmd: Command;
 
     try {
-      // @ts-ignore
-      cat = this.handler.findCategory(query as string) as Category<string, Command>;
+      cat = this.handler.findCategory(query as string);
       cmd = this.handler.findCommand(query as string);
     } catch {}
 
@@ -71,20 +70,14 @@ export default class Utility extends Command {
       embed
         .setFooter(
           false,
-          msg.author.tag,
-          msg.author.avatarURL({ dynamic: true })
+          ctx.author.tag,
+          ctx.author.avatarURL({ dynamic: true })
         )
-        .setTitle(
-          `${
-            (this.handler.prefix as (m: MessagePlus) => string | string[])(
-              msg
-            )[0]
-          } ${cmd.id} info`
-        )
+        .setTitle(`${this.handler.prefix[0]} ${cmd.id} info`)
         .addFields(this.fieldifyCmd(cmd))
         .setColor('ORANGE');
     } else if (cat) {
-      const bot = this.client.user;
+      const bot = ctx.client.user;
       embed
         .setDescription(
           `\`${cat

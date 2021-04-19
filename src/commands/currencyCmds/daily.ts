@@ -1,5 +1,5 @@
 import { MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 
 export default class Currency extends Command {
@@ -13,8 +13,8 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(msg: MessagePlus): Promise<string | MessageOptions> {
-    const data = await msg.author.fetchDB();
+  public async exec(ctx: Context): Promise<string | MessageOptions> {
+    const { data } = await ctx.db.fetch();
     let { streak, time } = data.daily;
 
     if (Date.now() - time > 172800000) {
@@ -37,7 +37,7 @@ export default class Currency extends Command {
     await data.save();
 
     return { embed: {
-      title: `Here are your daily coins, ${msg.author.username}`,
+      title: `Here are your daily coins, ${ctx.author.username}`,
       description: `**${won.toLocaleString()}** were placed in your pocket.`,
       color: 'BLUE', footer: { text: `Streak: ${streak} days (+${streakBonus.toLocaleString()})` }
     }};

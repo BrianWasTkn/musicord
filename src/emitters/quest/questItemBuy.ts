@@ -1,8 +1,9 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { QuestHandler, Quest } from '@lib/handlers/quest';
 import { Listener } from '@lib/handlers/listener';
+import { Context } from '@lib/extensions/message';
 import { Item } from '@lib/handlers/item';
 
-export default class QuestListener extends Listener {
+export default class QuestListener extends Listener<QuestHandler<Quest>> {
 	constructor() {
 		super('itemBuy', {
 			emitter: 'quest',
@@ -11,18 +12,18 @@ export default class QuestListener extends Listener {
 	}
 
 	async exec(args: {
-		msg: MessagePlus,
+		ctx: Context,
 		item: Item,
 		amount: number
 	}) {
 		const { quest: q, item: i } = this.client.handlers;
-		const { msg, item, amount } = args;
+		const { ctx, item, amount } = args;
 		const quests = q.modules;
 		const items = i.modules;
 
-		if (!this.client.isOwner(msg.author)) return;
+		if (!this.client.isOwner(ctx.author)) return;
 
-		const data = await msg.author.fetchDB();
+		const { data } = await ctx.db.fetch();
 		const { quest } = data;
 
 		const aq = quests.get(quest.id);
@@ -45,8 +46,8 @@ export default class QuestListener extends Listener {
 			quest.target = 0;
 			await data.save();
 
-			return await msg.channel.send({
-				replyTo: msg.id,
+			return await ctx.send({
+				replyTo: ctx.id,
 				content: `**Quest Finished!**\nYou successfully finished the **${aq.name}** quest.\nYou got **${coinR}** coins and **${itemR}** as a reward.`
 			});
 		}

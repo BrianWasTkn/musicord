@@ -2,9 +2,9 @@ export class Effects {
   blackjackWinnings: number; // bj winnings
   slotJackpotOdds: number; // jackpot odds
   gambleWinnings: number; // gamble winnigns
-  shopDiscount: number; // understandable
+  shopDiscount: number; // understandable, have a good day.
   gambleDice: number; // dice roll
-  pocketCap: number; // understandable
+  pocketCap: number; // understandable, have a good day.
 
   constructor(
     data: Partial<{

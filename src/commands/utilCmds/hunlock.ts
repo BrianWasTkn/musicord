@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import {
   PermissionOverwriteOption,
@@ -7,6 +7,11 @@ import {
   TextChannel,
   Role,
 } from 'discord.js';
+
+type ContextPlus =  Context<{
+  interval: number;
+  role: Role
+}>;
 
 export default class Util extends Command {
   constructor() {
@@ -20,7 +25,7 @@ export default class Util extends Command {
         {
           id: 'role',
           type: 'role',
-          default: (m: MessagePlus) => m.guild.roles.cache.get(m.guild.id),
+          default: (m: Context) => m.guild.roles.cache.get(m.guild.id),
         },
         {
           id: 'interval',
@@ -43,20 +48,14 @@ export default class Util extends Command {
     };
   }
 
-  async exec(
-    _: MessagePlus,
-    args: {
-      interval?: number;
-      role?: Role;
-    }
-  ): Promise<MessageOptions> {
-    await _.delete();
-    const { role, interval } = args;
+  async exec(ctx: ContextPlus): Promise<MessageOptions> {
+    await ctx.delete();
+    const { role, interval } = ctx.args;
     const { sleep } = this.client.util;
     if (!role) return;
 
     let num = 60;
-    let msg = await _.channel.send({
+    let msg = await ctx.send({
       embed: this.embed(num, role, 'ORANGE'),
     });
 
@@ -75,7 +74,9 @@ export default class Util extends Command {
 
       await sleep(int * 1e3);
       num -= 10;
-      msg = await msg.edit({ embed: this.embed(num, role, 'ORANGE') });
+      msg = await msg.edit({ 
+        embed: this.embed(num, role, 'ORANGE') 
+      }) as ContextPlus;
       return await run(int);
     };
 
@@ -92,8 +93,8 @@ export default class Util extends Command {
         title: `Channel Unlocked`,
         color: 'GREEN',
         footer: {
-          text: _.guild.name,
-          iconURL: _.guild.iconURL({ dynamic: true }),
+          text: ctx.guild.name,
+          iconURL: ctx.guild.iconURL({ dynamic: true }),
         },
       },
     };

@@ -16,7 +16,7 @@ const visuals: SpawnVisual = {
   ],
 };
 
-export default class GODLY extends Spawn {
+export default class Godly extends Spawn {
   constructor() {
     super('doubloon', visuals, {
       rewards: { first: 10000, min: 100, max: 500 },

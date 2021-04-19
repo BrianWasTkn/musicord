@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import {
   PermissionOverwriteOption,
@@ -43,21 +43,18 @@ export default class Fun extends Command {
     return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456'.split('');
   }
 
-  async exec(
-    msg: MessagePlus,
-    args: {
-      amount: number;
-      lock: boolean;
-      hits: number;
-    }
-  ): Promise<MessageOptions> {
-    await msg.delete().catch(() => {});
-    const { amount, lock, hits } = args;
+  async exec(ctx: Context<{
+    amount: number;
+    lock: boolean;
+    hits: number;
+  }>): Promise<MessageOptions> {
+    await ctx.delete().catch(() => {});
+    const { amount, lock, hits } = ctx.args;
     const { util } = this.client;
     const { events } = util;
-    const { guild } = msg;
-    const channel = msg.channel as TextChannel;
-    const lockChan = this.lockChan.bind(msg);
+    const { guild } = ctx;
+    const channel = ctx.channel as TextChannel;
+    const lockChan = this.lockChan.bind(ctx);
 
     if (events.has(guild.id)) return;
     else events.set(guild.id, channel.id);
@@ -72,24 +69,24 @@ export default class Fun extends Command {
     const entries = new Collection<string, GuildMember>();
 
     const options: MessageCollectorOptions = { max: hits, time: 120000 };
-    const filter: CollectorFilter<[MessagePlus]> = ({ content }) =>
+    const filter: CollectorFilter<[Context]> = ({ content }) =>
       content.toLowerCase() === (string as string).toLowerCase();
     const collector = channel.createMessageCollector(filter, options);
 
     collector
-      .on('collect', async (m: MessagePlus) => {
+      .on('collect', async (m: Context) => {
         if (!entries.has(m.author.id)) {
           entries.set(m.author.id, m.member);
           return await m.react('<:memerGold:753138901169995797>');
         }
       })
-      .on('end', async (col: Collection<string, MessagePlus>) => {
+      .on('end', async (col: Collection<string, Context>) => {
         let success: GuildMember[] = [];
         events.delete(guild.id);
         if (lock) await lockChan(false);
 
         if (col.size <= 1) {
-          return msg.reply('**:skull: RIP! No one joined.**');
+          return ctx.reply('**:skull: RIP! No one joined.**');
         }
 
         await channel.send(
@@ -119,14 +116,14 @@ export default class Fun extends Command {
         await channel.send(
           `**Good job everybody, we split up \`${split}\` each!**`
         );
-        return msg.channel.send({
+        return ctx.send({
           code: 'diff',
           content: order.join('\n'),
         });
       });
   }
 
-  private lockChan(this: MessagePlus, bool: boolean): Promise<TextChannel> {
+  private lockChan(this: Context, bool: boolean): Promise<TextChannel> {
     const change: PermissionOverwriteOption = { SEND_MESSAGES: bool };
     const reason = `Spam Event — ${this.author.tag}}`;
     const channel = this.channel as TextChannel;

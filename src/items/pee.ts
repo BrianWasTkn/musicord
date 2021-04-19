@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { UserPlus } from '@lib/extensions/user';
 import { Item } from '@lib/handlers/item';
 
@@ -19,13 +19,13 @@ export default class Flex extends Item {
     });
   }
 
-  async use(msg: MessagePlus): Promise<string> {
-    const data = await msg.author.fetchDB();
-    const piss = data.items.find(i => i.id === this.id);
+  async use(ctx: Context): Promise<string> {
+    const { data } = await ctx.db.fetch();
+    const piss = this.findInv(data.items, this);
 
-    msg.channel.send(`You have ${piss.amount.toLocaleString()} baby bottles of jenni's piss, how many do you wanna give to someone?`);
-    const f = (m: MessagePlus) => m.author.id === msg.author.id;
-    const rep = (await msg.channel.awaitMessages(f, { max: 1, time: 15000 })).first();
+    ctx.channel.send(`You have ${piss.amount.toLocaleString()} baby bottles of jenni's piss, how many do you wanna give to someone?`);
+    const f = (m: Context) => m.author.id === ctx.author.id;
+    const rep = (await ctx.channel.awaitMessages(f, { max: 1, time: 15000 })).first();
     if (!rep.content || !Number.isInteger(Number(rep.content))) {
       return 'It\'s gotta be a real number yeah?';
     }
@@ -35,9 +35,9 @@ export default class Flex extends Item {
       return 'Lol imagine having way less than what you actually wanted to give';
     }
 
-    msg.channel.send('Now tell me who the frick you want me to surprise.');
-    const rep2 = (await msg.channel.awaitMessages(f, { max: 1, time: 15000 })).first();
-    const meb = this.client.util.resolveMember(rep2.content, msg.guild.members.cache, false);
+    ctx.channel.send('Now tell me who the frick you want me to surprise.');
+    const rep2 = (await ctx.channel.awaitMessages(f, { max: 1, time: 15000 })).first();
+    const meb = this.client.util.resolveMember(rep2.content, ctx.guild.members.cache, false);
     if (!meb) {
       return 'Bro imagine not surprising anyone, that\'s so sad :(';
     }

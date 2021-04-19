@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 
 export default class Currency extends Command {
@@ -13,8 +13,8 @@ export default class Currency extends Command {
         {
           id: 'amount',
           type: 'number',
-          default: async (msg: MessagePlus) => {
-            const { pocket } = await msg.author.fetchDB();
+          default: async (ctx: Context) => {
+            const { pocket } = (await ctx.db.fetch()).data;
             return Math.round(pocket / 2);
           },
         },
@@ -22,9 +22,9 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(msg: MessagePlus, args: { amount: number }): Promise<string> {
-    const data = await msg.author.fetchDB();
-    const { amount } = args;
+  async exec(ctx: Context<{ amount: number }>): Promise<string> {
+    const { data } = await ctx.db.fetch();
+    const { amount } = ctx.args;
 
     if (!amount) 
       return 'You need something to burn, bruh';
@@ -33,7 +33,7 @@ export default class Currency extends Command {
     if (amount > data.pocket)
       return 'Imagine burning money higher than your pocket lmao';
 
-    await msg.author.initDB(data).removePocket(amount).db.save();
+    await ctx.db.removePocket(amount).save();
     return `Burned **${amount.toLocaleString()}** coins from your pocket.`;
   }
 }

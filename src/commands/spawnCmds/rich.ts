@@ -1,6 +1,6 @@
-import { MessageOptions, GuildMember } from 'discord.js';
+import { Context, MemberPlus } from '@lib/extensions';
+import { MessageOptions } from 'discord.js';
 import { SpawnDocument } from '@lib/interface/mongo/spawns';
-import { MessagePlus } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 
 import Mongo, { Document } from 'mongoose';
@@ -13,32 +13,29 @@ export default class Spawn extends Command {
       category: 'Spawn',
       cooldown: 1e4,
       args: [
-        { id: 'amount', type: 'number', default: 10 },
+        { id: 'count', type: 'number', default: 10 },
       ],
     });
   }
 
-  async exec(
-    msg: MessagePlus,
-    args: { amount: number }
-  ): Promise<MessageOptions> {
+  async exec(ctx: Context<{ count: number }>): Promise<MessageOptions> {
     const emojis = ['first_place', 'second_place', 'third_place'];
-    msg.channel.send({ replyTo: msg.id, content: 'Fetching...' });
-    const count = args.amount;
+    const { count } = ctx.args;
+    ctx.send({ replyTo: ctx.id, content: 'Fetching...' });
 
     const docs = (await Mongo.models['spawn-profile'].find({})) as (Document & SpawnDocument)[];
     const filt = docs.filter(s => s.unpaid < Infinity && s.unpaid > 0).sort((a, b) => b.unpaid - a.unpaid).slice(0, count);
     const rich = filt.map((f, i) => {
-      const user = msg.guild.members.cache.get(f.userID) || '**LOL WHO DIS**';
-      return `:${emojis[i] || 'eggplant'}: **${f.unpaid.toLocaleString()}** - ${typeof user === 'object' ? (user as GuildMember).user.tag : user}`;
+      const user = ctx.guild.members.cache.get(f.userID) || '**LOL WHO DIS**';
+      return `:${emojis[i] || 'eggplant'}: **${f.unpaid.toLocaleString()}** - ${typeof user === 'object' ? (user as MemberPlus).user.tag : user}`;
     });
 
     return { embed: {
       author: { name: 'top unpaids' },
       description: rich.join('\n'),
       color: 'ORANGE', footer: {
-        iconURL: msg.client.user.avatarURL(),
-        text: msg.client.user.username,
+        iconURL: ctx.client.user.avatarURL(),
+        text: ctx.client.user.username,
       }
     }};
   }

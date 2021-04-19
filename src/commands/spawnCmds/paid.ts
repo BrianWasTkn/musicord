@@ -1,5 +1,5 @@
-import { Message, MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context, MemberPlus } from '@lib/extensions';
+import { MessageOptions } from 'discord.js';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 
@@ -20,21 +20,18 @@ export default class Spawn extends Command {
           id: 'member',
           type: 'member',
           unordered: true,
-          default: (message: MessagePlus) => message.member,
+          default: (message: Context) => message.member,
         },
       ],
     });
   }
 
-  async exec(
-    msg: MessagePlus,
-    args: {
-      amount: number;
-      member: Message['member'];
-    }
-  ): Promise<string | MessageOptions> {
+  async exec(ctx: Context<{
+    member: MemberPlus;
+    amount: number;
+  }>): Promise<string | MessageOptions> {
     const { fetch, remove } = this.client.db.spawns;
-    const { amount, member } = args;
+    const { amount, member } = ctx.args;
     if (!amount) return 'You need an amount';
     else if (!member) return 'You need a user';
 

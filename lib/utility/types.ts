@@ -1,11 +1,11 @@
-import type { MessagePlus } from '@lib/extensions/message';
+import type { Context } from '@lib/extensions/message';
 import type { Quest } from '@lib/handlers/quest';
 import type { Item } from '@lib/handlers/item';
 import type { Lava } from '@lib/Lava';
 import Constants from './constants'
 
 export const argTypes = (bot: Lava) => ({
-  shopItem: (msg: MessagePlus, phrase: string): Item | null => {
+  shopItem: (ctx: Context, phrase: string): Item | null => {
     if (!phrase || phrase.length <= 1) return null;
     const items = [...bot.handlers.item.modules.values()];
     return items.find((i) => {
@@ -18,7 +18,7 @@ export const argTypes = (bot: Lava) => ({
     });
   },
 
-  questQuery: (msg: MessagePlus, phrase: string): Quest | string | null => {
+  questQuery: (ctx: Context, phrase: string): Quest | string | null => {
     if (!phrase || phrase.length <= 2) return null;
     if (phrase.toLowerCase() === 'stop') return 'stop';
     if (phrase.toLowerCase() === 'check') return 'check';
@@ -39,17 +39,17 @@ export const argTypes = (bot: Lava) => ({
   },
 
   gambleAmount: async (
-    msg: MessagePlus,
+    ctx: Context,
     phrase: string | number
   ): Promise<number | null> => {
     const { minBet, maxBet, maxPocket, maxSafePocket } = bot.config.currency;
     const { GAMBLE_MESSAGES: MESSAGES } = Constants;
-    const { pocket } = await msg.author.fetchDB();
+    const { pocket } = (await ctx.db.fetch()).data;
 
     let bet: string | number = phrase;
 
     if (!bet) {
-      msg.channel.send(MESSAGES.NEED_SOMETHING);
+      ctx.channel.send(MESSAGES.NEED_SOMETHING);
       return null;
     }
 
@@ -67,28 +67,28 @@ export const argTypes = (bot: Lava) => ({
       else if (bet.toLowerCase().endsWith('k'))
         bet = Number(bet.toLowerCase().replace('k', '000'));
       else {
-        msg.channel.send(MESSAGES.INVALID_AMOUNT);
+        ctx.channel.send(MESSAGES.INVALID_AMOUNT);
         return null;
       }
     }
 
     if (pocket <= 0) {
-      msg.channel.send(MESSAGES.NO_COINS);
+      ctx.channel.send(MESSAGES.NO_COINS);
       return null;
     } else if (bet > maxBet) {
-      msg.channel.send(MESSAGES.BET_IS_HIGHER);
+      ctx.channel.send(MESSAGES.BET_IS_HIGHER);
       return null;
     } else if (bet < minBet) {
-      msg.channel.send(MESSAGES.BET_IS_LOWER);
+      ctx.channel.send(MESSAGES.BET_IS_LOWER);
       return null;
     } else if (bet > pocket) {
-      msg.channel.send(MESSAGES.BET_HIGHER_THAN_POCKET.replace(/{pocket}/gi, pocket.toLocaleString()));
+      ctx.channel.send(MESSAGES.BET_HIGHER_THAN_POCKET.replace(/{pocket}/gi, pocket.toLocaleString()));
       return null;
     } else if (pocket > maxPocket) {
-      msg.channel.send(MESSAGES.POCKET_HIGHER_THAN_CAP);
+      ctx.channel.send(MESSAGES.POCKET_HIGHER_THAN_CAP);
       return null;
     } else if (bet < 1) {
-      msg.channel.send(MESSAGES.BET_IS_NAN);
+      ctx.channel.send(MESSAGES.BET_IS_NAN);
       return null;
     }
 

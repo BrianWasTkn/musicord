@@ -1,9 +1,4 @@
-import {
-  MessageEmbedOptions,
-  ColorResolvable,
-  EmbedFieldData,
-  MessageEmbed,
-} from 'discord.js';
+import { MessageEmbedOptions, MessageEmbed } from 'discord.js';
 
 export class Embed extends MessageEmbed {
   constructor(data?: MessageEmbed | MessageEmbedOptions) {

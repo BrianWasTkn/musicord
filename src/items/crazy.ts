@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Item } from '@lib/handlers/item';
 
 export default class PowerUp extends Item {
@@ -18,13 +18,13 @@ export default class PowerUp extends Item {
     });
   }
 
-  async use(msg: MessagePlus): Promise<string> {
-    const data = await msg.author.fetchDB();
-    const craz = data.items.find((i) => i.id === this.id);
+  async use(ctx: Context): Promise<string> {
+    const { data } = await ctx.db.fetch();
+    const craz = this.findInv(data.items, this);
 
     craz.amount--;
     craz.expire = Date.now() + 10 * 60 * 1e3;
-    await msg.author.initDB(data).updateItems().db.save();
+    await ctx.db.updateItems().save();
 
     return 'You now have a **10%** jackpot chance for 10 minutes!';
   }

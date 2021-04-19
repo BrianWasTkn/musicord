@@ -1,8 +1,8 @@
-import { ItemOptions, ItemInfo, ItemSaleData } from '@lib/interface/handlers/item';
+import { ItemOptions, ItemInfo, ItemSaleData, InventorySlot } from '@lib/interface/handlers/item';
 import { Collection, MessageEmbed } from 'discord.js';
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
-import { MessagePlus } from '@lib/extensions/message';
 import { Document } from 'mongoose';
+import { Context } from '@lib/extensions/message';
 import { Lava } from '@lib/Lava';
 import { 
   AkairoHandlerOptions, 
@@ -43,8 +43,12 @@ export class Item extends AkairoModule {
     this.emoji = opt.emoji;
     this.name = opt.name;
   }
+
+  findInv(inventory: InventorySlot[], item: this) {
+    return inventory.find(i => i.id === item.id);
+  }
   
-  use(msg: MessagePlus): ItemReturn | Promise<ItemReturn> {
+  use(msg: Context): ItemReturn | Promise<ItemReturn> {
     return 'This item perhaps, is a work in progress :)';
   }
 }

@@ -1,5 +1,7 @@
-import { GuildMember, TextChannel } from 'discord.js';
+import { TextChannel } from 'discord.js';
+import { MemberPlus } from '@lib/extensions';
 import { Listener } from '@lib/handlers';
+import { Lava } from '@lib/Lava';
 
 const cults = {
 	wastaken: '768812126633984021',
@@ -7,7 +9,7 @@ const cults = {
 	chips: '824984193170931782',
 };
 
-export default class ClientListener extends Listener {
+export default class ClientListener extends Listener<Lava> {
   constructor() {
     super('cult', {
       emitter: 'client',
@@ -15,13 +17,11 @@ export default class ClientListener extends Listener {
     });
   }
 
-  async exec(o: GuildMember, n: GuildMember): Promise<void> {
+  async exec(o: MemberPlus, n: MemberPlus): Promise<void> {
   	if (o.nickname === n.nickname) return;
   	if (n.partial) await n.fetch(true);
 
-  	const roles = Object.values(cults);
-  	const keys = Object.keys(cults);
-
+  	const [roles, keys] = [Object.values(cults), Object.keys(cults)];
   	const gRoles = n.guild.roles.cache.filter((r, i) => r.id === roles[i]);
   	const matchingRoles = [...gRoles.values()].filter(r => r.name.toLowerCase().includes(n.nickname.toLowerCase()));  	
 

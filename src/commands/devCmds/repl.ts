@@ -1,5 +1,5 @@
 import { CollectorFilter, AwaitMessagesOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { inspect } from 'util';
 import repl from 'programmatic-repl';
@@ -14,15 +14,15 @@ export default class Dev extends Command {
     });
   }
 
-  private async _collect(_: MessagePlus): Promise<MessagePlus> {
+  private async _collect(ctx: Context): Promise<Context> {
     const options: AwaitMessagesOptions = { max: 1, time: 600000 };
-    const filter: CollectorFilter<[MessagePlus]> = ({ author }) => author.id === _.author.id;
+    const filter: CollectorFilter<[Context]> = ({ author }) => author.id === ctx.author.id;
 
-    const collected = await _.channel.awaitMessages(filter, options);
-    return [...collected.values()][0] as MessagePlus;
+    const collected = await ctx.channel.awaitMessages(filter, options);
+    return [...collected.values()][0] as Context;
   }
 
-  async exec(_: MessagePlus): Promise<any> {
+  async exec(ctx: Context): Promise<any> {
     const REPL = new repl(
       {
         name: 'lava.repl',
@@ -32,22 +32,23 @@ export default class Dev extends Command {
       },
       {
         lava: this.client,
-        channel: _.channel,
-        guild: _.guild,
-        msg: _,
+        channel: ctx.channel,
+        guild: ctx.guild,
+        msg: ctx, ctx,
         db: this.client.db,
       }
     );
 
     // from https://dankmemer.lol/source and modified.
     const run = async (retry: boolean) => {
-      if (!retry) await _.channel.send('Started a REPL session');
-      const msg: MessagePlus = await this._collect(_);
+      if (!retry) await ctx.send({ content: 'Started a REPL session' });
+      const msg: Context = await this._collect(ctx);
       if (msg.content.toLowerCase().includes('.exit') || !msg.content) {
-        return _.channel.send('Exiting REPL...');
+        return ctx.send({ content: 'Exiting REPL...' });
       }
 
       (REPL as any).ctx.msg = msg; // ts smfh
+      (REPL as any).ctx.ctx = msg; // ts smfh
       let b: any;
       let a: any;
       let r: any;
@@ -73,20 +74,21 @@ export default class Dev extends Command {
         });
       }
 
-      r = r.replace(new RegExp(this.client.token, 'gi'), 'yes');
+      r = r.replace(new RegExp(ctx.client.token, 'gi'), 'yes');
       if (r.length > 1900) {
         r = r.slice(0, 1900).split('\n');
         r.pop();
         r = r.join('\n') + '\n\n...';
       }
 
-      await msg.channel.send({
+      const { codeBlock } = ctx.client.util;
+      await msg.send({
         embed: {
           color: 'ORANGE',
-          description: this.client.util.codeBlock('js', r),
+          description: codeBlock('js', r),
           fields: [
-            { name: 'Type', value: this.client.util.codeBlock('js', t) },
-            { name: 'Latency', value: this.client.util.codeBlock('js', a) },
+            { name: 'Type', value: codeBlock('js', t) },
+            { name: 'Latency', value: codeBlock('js', a) },
           ],
         },
       });

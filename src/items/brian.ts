@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Item } from '@lib/handlers/item';
 
 export default class Powerflex extends Item {
@@ -18,19 +18,17 @@ export default class Powerflex extends Item {
     });
   }
 
-  async use(msg: MessagePlus) {
+  async use(ctx: Context) {
     const { randomNumber, sleep } = this.client.util;
-    const data = await msg.author.fetchDB();
+    const { data } = await ctx.db.fetch();
     const heart = data.items.find((i) => i.id === this.id);
 
-    await msg.channel.send(`Beating your heart...`);
     const multi = randomNumber(5, 50);
-
     heart.expire = Date.now() + 10 * 60 * 1e3;
     heart.multi = multi;
     heart.amount--;
 
-    await msg.author.initDB(data).updateItems().db.save();
+    await ctx.db.updateItems().save();
     return `You now have a **${multi}% multiplier** and **5% jackpot chance** under 10 minutes!`;
   }
 }

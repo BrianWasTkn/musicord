@@ -7,7 +7,7 @@ import type { CurrencyProfile } from '@lib/interface/mongo/currency';
 import type { InventorySlot } from '@lib/interface/handlers/item';
 import type { CurrencyUtil } from '@lib/interface/mongo/currency';
 import type { GuildChannel } from 'discord.js';
-import type { MessagePlus } from '@lib/extensions/message';
+import type { Context } from '@lib/extensions/message';
 import type { Item } from '@lib/handlers/item';
 import type { Lava } from '@lib/Lava';
 import { Document } from 'mongoose';
@@ -16,29 +16,29 @@ export const utils: CurrencyUtil = {
   /**
    * calc the multi of user
    * @param {Lava} bot an extended instance of akairo client
-   * @param {MessagePlus} msg a discord msg obj
+   * @param {Context} msg a discord msg obj
    */
   calcMulti: function CalcMulti(
     bot: Lava,
-    msg: MessagePlus,
+    ctx: Context,
     db: Document & CurrencyProfile
   ): { unlocked: string[]; total: number, multis: number } {
     const { maxMulti } = bot.config.currency;
-    const channel = msg.channel as GuildChannel;
+    const channel = ctx.channel as GuildChannel;
     let unlocked = [];
     let multis = 0;
     let total = 0;
     total += db.multi;
 
     // Discord-based
-    if (msg.guild.id === '691416705917779999') {
-      unlocked.push(`${msg.guild.name} — \`10%\``);
+    if (ctx.guild.id === '691416705917779999') {
+      unlocked.push(`${ctx.guild.name} — \`10%\``);
       multis++;
       total += 10;
     }
-    if (msg.member.nickname) {
+    if (ctx.member.nickname) {
       const includes = (name) =>
-        msg.member.nickname.toLowerCase().includes(name);
+        ctx.member.nickname.toLowerCase().includes(name);
 
       if (includes('taken')) {
         let m = 10;
@@ -60,20 +60,22 @@ export const utils: CurrencyUtil = {
       }
     }
     if (channel.name.includes('・')) {
-      unlocked.push(`Dotted Channel — \`2.5%\``);
       total += 2.5;
+      multis++;
+      unlocked.push(`Dotted Channel — \`2.5%\``);
     }
     if (channel.name.includes('lava')) {
-      unlocked.push(`${channel.name} — \`5%\``);
       total += 5;
+      multis++;
+      unlocked.push(`${channel.name} — \`5%\``);
     }
-    if (msg.guild.emojis.cache.size >= 420) {
+    if (ctx.guild.emojis.cache.size >= 420) {
       let m = 4.5;
       multis++;
       total += m;
       unlocked.push(`420 Server Emojis — \`${m}%\``);
     }
-    if (msg.guild.members.cache.size >= 1000) {
+    if (ctx.guild.members.cache.size >= 1000) {
       let m = 1;
       multis++;
       total += m;

@@ -1,5 +1,5 @@
 import { MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Item } from '@lib/handlers/item';
 import Constants from '@lib/utility/constants';
@@ -26,18 +26,15 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(
-    msg: MessagePlus,
-    args: {
-      amount: number;
-      item: Item;
-    }
-  ): Promise<string | MessageOptions> {
+  async exec(ctx: Context<{
+    amount: number;
+    item: Item;
+  }>): Promise<string | MessageOptions> {
     const { ITEM_MESSAGES: MESSAGES } = Constants;
-    const { amount = 1, item } = args;
+    const { amount = 1, item } = ctx.args;
     const { maxInventory } = this.client.config.currency;
     const { item: Items } = this.client.handlers;
-    const data = await msg.author.fetchDB();
+    const { data } = await ctx.db.fetch();
 
     if (!item) return MESSAGES.NEED_TO_BUY;
 
@@ -59,14 +56,14 @@ export default class Currency extends Command {
       : item.cost;
       
     await Items.buy(Math.trunc(amount), data, item.id);
-    this.client.handlers.quest.emit('itemBuy', { msg, item, amount });
+    this.client.handlers.quest.emit('itemBuy', { ctx, item, amount });
 
-    return { replyTo: msg.id, embed: {
+    return { replyTo: ctx.id, embed: {
       footer: { text: 'Thanks for your purchase!' },
       color: 'GREEN',
       author: {
         name: `Successful ${item.name} purchase`,
-        iconURL: msg.author.avatarURL({ dynamic: true })
+        iconURL: ctx.author.avatarURL({ dynamic: true })
       },
       description: Constants.ITEM_MESSAGES.BUY_MSG
         .replace(/{paid}/gi, (amount * paid).toLocaleString())

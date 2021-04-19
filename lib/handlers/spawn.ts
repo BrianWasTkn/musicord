@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Lava } from '@lib/Lava';
 import {
   ReactionCollectorOptions,
@@ -30,12 +30,11 @@ import {
   AkairoError,
   Category,
 } from 'discord-akairo';
+import { BaseHandler, BaseModule } from './Base';
 
-export class Spawn extends AkairoModule {
+export class Spawn extends BaseModule {
   answered: Collection<string, boolean>;
-  handler: SpawnHandler<Spawn>;
   config: Partial<SpawnConfig>;
-  client: Lava;
   spawn: SpawnVisual;
 
   constructor(
@@ -49,14 +48,12 @@ export class Spawn extends AkairoModule {
     this.spawn = spawn;
   }
 
-  cd(): { [k: string]: number } {
-    return {
-      '693324853440282654': 1, // Booster
-      '768858996659453963': 3, // Donator
-      '794834783582421032': 5, // Mastery
-      '693380605760634910': 10, // Amari
-    }
-  }
+  cd = (): { [id: string]: number } => ({
+    '693324853440282654': 1, // Booster
+    '768858996659453963': 3, // Donator
+    '794834783582421032': 5, // Mastery
+    '693380605760634910': 10, // Amari
+  })
 
   getCooldown(m: GuildMember, cds: { [role: string]: number }) {
     for (const [r, cd] of Object.entries(cds)) {
@@ -65,13 +62,10 @@ export class Spawn extends AkairoModule {
   }
 }
 
-export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
-  cooldowns: Collection<Snowflake, SpawnModule>;
-  categories: Collection<string, Category<string, SpawnModule>>;
-  messages: Collection<Snowflake, MessagePlus>;
-  modules: Collection<string, SpawnModule>;
+export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
+  cooldowns: Collection<Snowflake, Module>;
+  messages: Collection<Snowflake, Context>;
   queue: Collection<Snowflake, SpawnQueue>;
-  client: Lava;
 
   constructor(client: Lava, options: AkairoHandlerOptions) {
     super(client, options);
@@ -80,9 +74,9 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
     this.queue = new Collection();
   }
 
-  handleMessageCollect<T extends MessagePlus>(args: {
+  handleMessageCollect<T extends Context>(args: {
     collector: MessageCollector;
-    spawner: SpawnModule;
+    spawner: Module;
     msg: T;
   }): boolean {
     const { msg, collector, spawner } = args;
@@ -101,9 +95,9 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
     });
   }
 
-  handleMessageEnd<T extends MessagePlus>(args: {
+  handleMessageEnd<T extends Context>(args: {
     collected: Collection<string, T>;
-    spawner: SpawnModule;
+    spawner: Module;
     msg: T;
   }): boolean {
     const { collected, spawner, msg } = args;
@@ -119,8 +113,8 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
     user: User,
     ctx: {
       collector: ReactionCollector;
-      spawner: SpawnModule;
-      msg: MessagePlus;
+      spawner: Module;
+      msg: Context;
     }
   ): boolean {
     const { collector, spawner, msg } = ctx;
@@ -138,8 +132,8 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
     user: User,
     ctx: {
       collector: ReactionCollector;
-      spawner: SpawnModule;
-      msg: MessagePlus;
+      spawner: Module;
+      msg: Context;
     }
   ): boolean {
     const { collector, spawner, msg } = ctx;
@@ -151,7 +145,7 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
 
   handleReactionEnd(
     collected: Collection<string, MessageReaction>,
-    ctx: { msg: MessagePlus; spawner: SpawnModule }
+    ctx: { msg: Context; spawner: Module }
   ): boolean {
     const { msg, spawner } = ctx;
     const isEmpty = Boolean(collected.size);
@@ -168,8 +162,8 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
    * @param {Message} msg a discord message obj
    */
   async spawn(
-    spawner: SpawnModule,
-    msg: MessagePlus
+    spawner: Module,
+    msg: Context
   ): Promise<ReactionCollector|MessageCollector|void> {
     if (['spam', 'message'].includes(spawner.config.type)) {
       const str = this.client.util.randomInArray(spawner.spawn.strings);
@@ -179,11 +173,11 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
         max: spawner.config.entries,
         time: spawner.config.timeout,
       };
-
+      
       // MessageCollector#filter
-      const filter: CollectorFilter<MessagePlus[]> = async ({
-        author, content
-      }) => {
+      const filter: CollectorFilter<[Context]> = async (
+        { author, content }
+      ) => {
         const { fetch } = this.client.db.spawns;
         const { cap } = this.client.config.spawn;
         const isSpam = spawner.config.type === 'spam';
@@ -206,11 +200,11 @@ export class SpawnHandler<SpawnModule extends Spawn> extends AkairoHandler {
 
       // MessageCollector#on<collect|end>
       collector
-      .on('collect', (msg: MessagePlus) => {
-        this.handleMessageCollect<MessagePlus>({ msg, collector, spawner });
+      .on('collect', (msg: Context) => {
+        this.handleMessageCollect<Context>({ msg, collector, spawner });
       })
-      .on('end', (collected: Collection<string, MessagePlus>) => {
-        this.handleMessageEnd<MessagePlus>({ collected, spawner, msg });
+      .on('end', (collected: Collection<string, Context>) => {
+        this.handleMessageEnd<Context>({ collected, spawner, msg });
       });
 
       return collector;

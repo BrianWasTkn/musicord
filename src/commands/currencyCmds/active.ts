@@ -1,5 +1,6 @@
 import { MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { MemberPlus } from '@lib/extensions/member';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 
 export default class Currency extends Command {
@@ -7,16 +8,21 @@ export default class Currency extends Command {
     super('active', {
       aliases: ['active', 'ac'],
       channel: 'guild',
-      description: 'View your active items.',
+      description: 'View yours or someone else\'s active items.',
       category: 'Currency',
       cooldown: 1e3,
+      args: [{
+        id: 'member',
+        type: 'member',
+        default: (m: Context) => m.member
+      }]
     });
   }
 
-  public async exec(msg: MessagePlus): Promise<string | MessageOptions> {
+  public async exec(ctx: Context<{ member: MemberPlus }>): Promise<string | MessageOptions> {
     const { handlers: { item }, util: { parseTime } } = this.client;
-    const data = await msg.author.fetchDB();
-    const stamp = msg.createdTimestamp;
+    const { data } = await ctx.db.fetch(ctx.args.member.user.id);
+    const stamp = ctx.createdTimestamp;
     const actives = data.items
       .filter((i) => i.expire > stamp)
       .map((i) => {
@@ -27,11 +33,11 @@ export default class Currency extends Command {
       });
 
     if (actives.length < 1) {
-      return { replyTo: msg, content: "You don't have active items!" };
+      return { replyTo: ctx, content: "You don't have active items!" };
     }
 
     return { embed: {
-      title: `${msg.author.username}'s active items`,
+      title: `${ctx.args.member.user.username}'s active items`,
       description: actives.join('\n'),
       color: 'RANDOM',
     }};

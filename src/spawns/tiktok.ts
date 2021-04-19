@@ -10,7 +10,7 @@ const visuals: SpawnVisual = {
   strings: ['cringe', 'cool', 'average'],
 };
 
-export default class COMMON extends Spawn {
+export default class Common extends Spawn {
   constructor() {
     super('tiktok', visuals, {
       rewards: { first: 100, min: 1, max: 10 },

@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message'
+import { Context } from '@lib/extensions/message'
 import { Item } from '@lib/handlers/item';
 
 export default class Flex extends Item {
@@ -10,7 +10,7 @@ export default class Flex extends Item {
       usable: true,
       emoji: ':doughnut:',
       name: "Donut Ring",
-      cost: 100e6,
+      cost: 200e6,
       info: {
         short: 'They say this item is the key for a great relationship.',
         long: 'Either eat it (doesn\'t deduct) or use it to marry someone!',

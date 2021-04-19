@@ -1,7 +1,8 @@
-import { MessageOptions, GuildMember } from 'discord.js';
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { MessageOptions } from 'discord.js';
 import { InventorySlot } from '@lib/interface/handlers/item';
-import { MessagePlus } from '@lib/extensions/message';
+import { MemberPlus } from '@lib/extensions/member';
+import { Context } from '@lib/extensions/message';
 import { UserPlus } from '@lib/extensions/user';
 import { Document } from 'mongoose';
 import { Command } from '@lib/handlers/command';
@@ -18,7 +19,7 @@ export default class Currency extends Command {
         {
           id: 'member',
           default: 1,
-          type: (msg: MessagePlus, phrase: string) => {
+          type: (msg: Context, phrase: string) => {
             if (!phrase) return 1; // inventory page
             const { resolver } = this.handler;
             return (
@@ -36,37 +37,34 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(
-    msg: MessagePlus,
-    args: {
-      member: number | GuildMember;
-      page: number;
-    }
-  ): Promise<string | MessageOptions> {
-    const { util, handlers } = this.client;
-    const { member, page } = args;
+  async exec(ctx: Context<{
+    member: number | MemberPlus;
+    page: number
+  }>): Promise<string | MessageOptions> {
+    const { util, handlers } = ctx.client;
+    const { member, page } = ctx.args;
     const { item: Items } = handlers;
     const isNum = typeof member === 'number';
 
     let inv: string[] | string[][] | InventorySlot[];
     let total: number = 0;
     let data: Document & CurrencyProfile;
-    let memb: GuildMember;
+    let memb: MemberPlus;
     let pg: number;
 
-    memb = (isNum ? msg.member : member) as GuildMember;
+    memb = (isNum ? ctx.member : member) as MemberPlus;
     pg = (isNum ? member : page) as number;
     data = await (memb.user as UserPlus).fetchDB();
     inv = data.items.filter((i) => i.amount >= 1);
-    inv.filter(i => i.amount >= 1).forEach((i) => (total += i.amount));
+    total = inv.reduce((e, a) => a.amount + e, 0);
     if (inv.length < 1) {
-      return 'Imagine not having any items, buy something weirdo';
+      return 'Breh buy at least one item from the shop yeah?';
     }
 
     inv = util.paginateArray(
       Array.from(Items.modules.values())
       .map((mod) => mod.id)
-      .sort()
+      .sort() // alphabetical order of IDs
       .map((mod) => {
         const it = Items.modules.get(mod);
         return data.items.find(i => i.id === it.id);
@@ -81,7 +79,7 @@ export default class Currency extends Command {
     );
 
     if (pg > inv.length) {
-      return "That page doesn't even exist wtf are you high or what?";
+      return `No because that page doesn't exist.`;
     }
 
     return { embed: {

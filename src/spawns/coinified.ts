@@ -10,7 +10,7 @@ const visuals: SpawnVisual = {
   strings: ['yes', 'no', "yesn't", "non't"],
 };
 
-export default class SUPER extends Spawn {
+export default class Super extends Spawn {
   constructor() {
     super('coinified', visuals, {
       rewards: { first: 6000, min: 100, max: 500 },

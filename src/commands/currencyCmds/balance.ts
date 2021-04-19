@@ -1,7 +1,8 @@
 import { GuildMember, MessageOptions } from 'discord.js';
 import { InventorySlot } from '@lib/interface/handlers/item';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { UserPlus } from '@lib/extensions/user';
+import { MemberPlus } from '@lib/extensions/member';
 import { Command } from '@lib/handlers/command';
 import { Item } from '@lib/handlers/item';
 
@@ -17,17 +18,14 @@ export default class Currency extends Command {
         {
           id: 'member',
           type: 'member',
-          default: (m: MessagePlus) => m.member,
+          default: (m: Context) => m.member,
         },
       ],
     });
   }
 
-  public async exec(
-    msg: MessagePlus,
-    args: { member: GuildMember }
-  ): Promise<MessageOptions> {
-    const { pocket, vault, space, items } = await (args.member.user as UserPlus).fetchDB();
+  async exec(ctx: Context<{ member: MemberPlus }>): Promise<MessageOptions> {
+    const { pocket, vault, space, items } = (await ctx.db.fetch(ctx.args.member.user.id)).data;
     
     const calc = (i: InventorySlot) => {
       const { modules } = this.client.handlers.item;
@@ -38,15 +36,15 @@ export default class Currency extends Command {
     const inv = items.map(calc).reduce((a, b) => a + b, 0);
     const info = {
       'Pocket': pocket.toLocaleString(),
-      'Vault': `${vault.toLocaleString()}${args.member.user.id === msg.author.id ? `/${space.toLocaleString()}` : ''}`,
+      'Vault': `${vault.toLocaleString()}${ctx.args.member.user.id === ctx.author.id ? `/${space.toLocaleString()}` : ''}`,
       'Inventory': inv.toLocaleString(),
       'Net Worth': (pocket + vault + inv).toLocaleString()
     };
 
     return { embed: {
       description: Object.entries(info).map(([k, v]) => `**${k}:** ${v}`).join('\n'),
-      title: `${args.member.user.username}'s balance`,
-      footer: { text: msg.guild.name },
+      title: `${ctx.args.member.user.username}'s balance`,
+      footer: { text: ctx.guild.name },
       color: 'RANDOM',
     }};
   }

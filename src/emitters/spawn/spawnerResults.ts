@@ -1,10 +1,10 @@
 import { Collection, TextChannel } from 'discord.js';
 import { SpawnHandler, Spawn } from '@lib/handlers/spawn';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Listener } from '@lib/handlers';
 import { Embed } from '@lib/utility/embed';
 
-export default class SpawnListener extends Listener {
+export default class SpawnListener extends Listener<SpawnHandler<Spawn>> {
   constructor() {
     super('messageResults', {
       emitter: 'spawn',
@@ -13,16 +13,16 @@ export default class SpawnListener extends Listener {
   }
 
   async exec(args: {
-    msg: MessagePlus;
+    ctx: Context;
     spawner: Spawn;
-    collected: Collection<string, MessagePlus>;
+    collected: Collection<string, Context>;
     handler: SpawnHandler<Spawn>;
     isEmpty: boolean;
-  }): Promise<MessagePlus> {
-    const { msg: message, spawner, collected, handler, isEmpty } = args;
+  }) {
+    const { ctx, spawner, collected, handler, isEmpty } = args;
     const { randomInArray, randomNumber } = this.client.util;
-    const queue = handler.queue.get(message.channel.id);
-    const msg = message.channel.messages.cache.get(queue.msg);
+    const queue = handler.queue.get(ctx.channel.id);
+    const msg = ctx.channel.messages.cache.get(queue.msg);
     const emoji = '<:memerRed:729863510716317776>';
     handler.queue.delete(msg.channel.id);
     spawner.answered.clear();
@@ -35,15 +35,15 @@ export default class SpawnListener extends Listener {
 
       return msg.channel.send({ 
         embed: { color, description }
-      }) as Promise<MessagePlus>;
+      })
     }
 
-    const promises: Promise<void | MessagePlus>[] = [];
+    const promises: Promise<void | Context>[] = [];
     const results: string[] = [];
     const verbs = ['obtained', 'got', 'procured', 'won'];
     const verb = randomInArray(verbs);
 
-    collected.array().forEach(async (msg: MessagePlus, i: number) => {
+    collected.array().forEach(async (msg: Context, i: number) => {
       const { min, max, first } = spawner.config.rewards;
       const { fetch } = this.client.db.spawns;
       const { spawn } = spawner;
@@ -51,7 +51,7 @@ export default class SpawnListener extends Listener {
       const oddHit = Math.random() > 0.9 && i === 0;
       const coins = oddHit ? first : randomNumber(min, max);
 
-      const win = Math.random() > 0.25;
+      const win = Math.random() > 0.2;
       const result = win 
         ? `+ ${user.username} ${verb} ${coins.toLocaleString()}`
         : `# ${user.username} got nothing rip`;
@@ -72,12 +72,12 @@ export default class SpawnListener extends Listener {
           fields: Object.entries(fields).map(([name, value]) => ({ name, value })),
           title: `${spawn.emoji} ${spawn.title}`,
           color: 'RANDOM',
-        }}).catch(() => {}) as Promise<void | MessagePlus>);
+        }}).catch(() => {}) as Promise<void | Context>);
       }
     });
 
     if (promises.length >= 1) await Promise.all(promises);
-    const channels = message.guild.channels.cache;
+    const channels = ctx.guild.channels.cache;
     const payouts = channels.get('796688961899855893') as TextChannel;
     const embed = new Embed()
       .setDescription('```diff\n' + results.join('\n') + '```')

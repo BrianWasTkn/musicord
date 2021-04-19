@@ -10,7 +10,7 @@ const visuals: SpawnVisual = {
   strings: ['WTF', 'what-', 'LOL', 'xd'],
 };
 
-export default class SUPER extends Spawn {
+export default class Crib extends Spawn {
   constructor() {
     super('crib', visuals, {
       rewards: { first: 6000, min: 100, max: 500 },

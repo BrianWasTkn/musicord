@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 
 export default class Util extends Command {
@@ -11,8 +11,8 @@ export default class Util extends Command {
     });
   }
 
-  async exec(msg: MessagePlus): Promise<string> {
-    const { channel, guild } = msg;
+  async exec(ctx: Context): Promise<string> {
+    const { channel, guild } = ctx;
     const { ping } = guild.shard;
 
     return `**Ponge:** ${ping}ms`;

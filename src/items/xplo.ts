@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Item } from '@lib/handlers/item';
 
 export default class PowerUp extends Item {
@@ -18,14 +18,14 @@ export default class PowerUp extends Item {
     });
   }
 
-  async use(msg: MessagePlus): Promise<string> {
+  async use(ctx: Context): Promise<string> {
     const { randomNumber, randomInArray, sleep } = this.client.util;
-    const data = await msg.author.fetchDB();
-    const xplo = data.items.find((i) => i.id === this.id);
+    const { data } = await ctx.db.fetch();
+    const xplo = this.findInv(data.items, this);
 
-    await msg.channel.send({
+    await ctx.send({
       content: `**${this.emoji} Fusing your bomb...**`,
-      replyTo: msg.id,
+      replyTo: ctx.id,
     });
 
     await sleep(randomNumber(1, 5) * 1e3);
@@ -56,20 +56,16 @@ export default class PowerUp extends Item {
           return `\`${amt.toLocaleString()}\` ${item.emoji} ${item.name}`
         });
 
-      await msg.author.initDB(data).addPocket(coins).updateItems().db.save();
-      return `**__:slight_smile: Bomb contents for ${msg.author.toString()}__**\n${[`\`${coins.toLocaleString()} coins\``, ...its].join('\n')}`;
+      await ctx.db.addPocket(coins).updateItems().save();
+      return `**__:slight_smile: Bomb contents for ${ctx.author.toString()}__**\n${[`\`${coins.toLocaleString()} coins\``, ...its].join('\n')}`;
     }
 
     // Punishment: Clean one item from their inv and their pocket
     const inv = randomInArray(data.items);
     const item = this.client.handlers.item.modules.get(inv.id);
     inv.amount = 0; xplo.amount--;
-    await msg.author
-      .initDB(data)
-      .setPocket(0)
-      .updateItems()
-      .db.save();
 
+    await ctx.db.removePocket(data.pocket).updateItems().save();
     return `**LMAO you died from the bomb!**\nYou lost your WHOLE pocket and ALL your ${item.name.slice(0, item.name.endsWith('y') ? -1 : undefined)}${item.name.endsWith('y') ? 'ies' : 's'} from your inventory.`;
   }
 }

@@ -1,4 +1,4 @@
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Item } from '@lib/handlers/item';
 
 export default class PowerUp extends Item {
@@ -18,14 +18,14 @@ export default class PowerUp extends Item {
     });
   }
 
-  async use(msg: MessagePlus): Promise<string> {
-    const data = await msg.author.fetchDB();
-    const thicc = data.items.find((i) => i.id === this.id);
+  async use(ctx: Context): Promise<string> {
+    const { data } = await ctx.db.fetch();
+    const thicc = this.findInv(data.items, this);
 
     thicc.expire = Date.now() + 10 * 60 * 1000; // client.setTimeout just breaks this
     thicc.amount--;
 
-    await msg.author.initDB(data).updateItems().db.save();
+    await ctx.db.updateItems().save();
     return 'You have been granted an additional **50%** winnings in gambling for a lucky 10 minutes!';
   }
 }

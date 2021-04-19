@@ -1,5 +1,5 @@
 import { ColorResolvable, MessageOptions, Collection } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Document } from 'mongoose';
 
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
@@ -81,31 +81,26 @@ export default class Currency extends Command {
    * @param _ a discord message object
    * @param args the passed arguments
    */
-  async exec(
-    msg: MessagePlus,
-    args: {
-      amount?: number;
-    }
-  ): Promise<string | MessageOptions> {
+  async exec(ctx: Context<{ amount: number }>): Promise<string | MessageOptions> {
     const {
       util: { effects },
     } = this.client;
 
     // Check Args
-    const { amount: bet } = args;
+    const { amount: bet } = ctx.args;
     if (!bet) return;
 
     // Item Effects
-    const data = await msg.author.fetchDB();
+    const { data } = await ctx.db.fetch();
     let slots: number = 0;
     for (const it of ['crazy', 'brian']) {
-      const userEf = effects.get(msg.author.id);
+      const userEf = effects.get(ctx.author.id);
       if (!userEf) {
         const col = new Collection<string, Effects>().set(it, new Effects());
-        effects.set(msg.author.id, col);
+        effects.set(ctx.author.id, col);
       }
-      if (effects.get(msg.author.id).has(it)) {
-        slots += effects.get(msg.author.id).get(it).slotJackpotOdds;
+      if (effects.get(ctx.author.id).has(it)) {
+        slots += effects.get(ctx.author.id).get(it).slotJackpotOdds;
       }
     }
 
@@ -123,12 +118,11 @@ export default class Currency extends Command {
     description.push(outcome);
     if (length === 1 || length === 2) {
       const jackpot = length === 1;
-      const d = await msg.author
-        .initDB(data)
+      const d = await ctx.db
         .addPocket(winnings)
         .updateItems()
         .calcSpace()
-        .db.save(); 
+        .save(); 
 
       color = jackpot ? (slots ? 'BLUE' : 'GOLD') : 'GREEN';
       state = jackpot ? (slots ? 'powered' : 'jackpot') : 'winning';
@@ -136,12 +130,11 @@ export default class Currency extends Command {
       description.push(`**Multiplier** \`x${Math.round(winnings / bet).toLocaleString()}\``);
       description.push(`You now have **${d.pocket.toLocaleString()}**`);
     } else {
-      const d = await msg.author
-        .initDB(data)
+      const d = await ctx.db
         .removePocket(bet)
         .updateItems()
         .calcSpace()
-        .db.save();
+        .save();
 
       color = 'RED';
       state = 'losing';
@@ -150,9 +143,9 @@ export default class Currency extends Command {
     }
 
     // Final Message
-    const title = `${msg.author.username}'s ${state} slot machine`;
+    const title = `${ctx.author.username}'s ${state} slot machine`;
     const embed = new Embed()
-      .setAuthor(title, msg.author.avatarURL({ dynamic: true }))
+      .setAuthor(title, ctx.author.avatarURL({ dynamic: true }))
       .setDescription(description.join('\n'))
       .setColor(color);
 

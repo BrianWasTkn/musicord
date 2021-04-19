@@ -1,5 +1,5 @@
 import { MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Embed } from '@lib/utility/embed';
 import { Quest } from '@lib/handlers/quest';
@@ -17,7 +17,7 @@ export default class Currency extends Command {
       args: [
         {
           id: 'query',
-          type: (msg: MessagePlus, phrase: string) => {
+          type: (msg: Context, phrase: string) => {
             if (!phrase) return 1; // quest page
             const res = this.handler.resolver;
             return (
@@ -30,11 +30,9 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(
-    msg: MessagePlus,
-    { query }: { query: number | (Quest | 'stop') }
-  ): Promise<string | MessageOptions> {
+  async exec(ctx: Context<{ query: number | Quest | 'stop' }>): Promise<string | MessageOptions> {
     const { quest: Handler } = this.client.handlers;
+    const { query } = ctx.args;
     const quests = Handler.modules.array();
 
     if (typeof query === 'number') {
@@ -71,7 +69,7 @@ export default class Currency extends Command {
     }
 
     const mods = this.client.handlers.quest.modules;
-    const data = await msg.author.fetchDB();
+    const { data } = await ctx.db.fetch();
 
     if (!query) {
       return 'That isn\'t even a valid quest or page number bruh';
@@ -80,14 +78,14 @@ export default class Currency extends Command {
     if (query instanceof Quest) {
       const quest = data.quest;
       if (quest.id || quest.target >= 1) {
-        return { replyTo: msg.id, content: 'you can\'t enter a quest because you have an active one' };
+        return { replyTo: ctx.id, content: 'you can\'t enter a quest because you have an active one' };
       }
 
       quest.target = (query as Quest).target;
       quest.count = 0;
       quest.id = (query as Quest).id;
       await data.save();
-      return { replyTo: msg.id, content: `You're now doing the **${(query as Quest).name}** quest!` };
+      return { replyTo: ctx.id, content: `You're now doing the **${(query as Quest).name}** quest!` };
     }
 
     if (query === 'stop') {

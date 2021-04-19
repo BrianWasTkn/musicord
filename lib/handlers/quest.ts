@@ -1,6 +1,6 @@
-import type { QuestOptions, QuestReward } from '@lib/interface/handlers/quest';
-import type { Collection } from 'discord.js';
-import type { Lava } from '../Lava';
+import { QuestOptions, QuestReward } from '@lib/interface/handlers/quest';
+import { Collection } from 'discord.js';
+import { Lava } from '../Lava';
 import {
   AkairoHandlerOptions,
   AkairoHandler,

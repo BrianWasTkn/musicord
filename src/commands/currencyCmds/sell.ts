@@ -1,5 +1,5 @@
 import { MessageOptions } from 'discord.js';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Command } from '@lib/handlers/command';
 import { Item } from '@lib/handlers/item';
 import Constants from '@lib/utility/constants';
@@ -26,17 +26,11 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(
-    msg: MessagePlus,
-    args: {
-      amount: number;
-      item: Item;
-    }
-  ): Promise<string | MessageOptions> {
+  async exec(ctx: Context<{ amount: number, item: Item }>): Promise<string | MessageOptions> {
     const { ITEM_MESSAGES: MESSAGES } = Constants;
-    const { amount = 1, item } = args;
+    const { amount = 1, item } = ctx.args;
     const { item: Items } = this.client.handlers;
-    const data = await msg.author.fetchDB();
+    const { data } = await ctx.db.fetch();
 
     if (!item) return MESSAGES.NEED_TO_SELL
 
@@ -53,13 +47,13 @@ export default class Currency extends Command {
       : item.cost;
 
     await Items.sell(Math.trunc(amount), data, item.id);
-    this.client.handlers.quest.emit('itemSell', { msg, item, amount });
+    this.client.handlers.quest.emit('itemSell', { ctx, item, amount });
 
-    return { replyTo: msg.id, embed: {
+    return { replyTo: ctx.id, embed: {
       color: 'GREEN',
       author: {
         name: `${item.name} successfully sold`,
-        iconURL: msg.author.avatarURL({ dynamic: true })
+        iconURL: ctx.author.avatarURL({ dynamic: true })
       },
       description: Constants.ITEM_MESSAGES.SELL_MSG
         .replace(/{got}/gi, (amount * (sold / 4)).toLocaleString())
