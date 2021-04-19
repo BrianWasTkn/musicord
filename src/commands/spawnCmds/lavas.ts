@@ -26,11 +26,13 @@ export default class Spawn extends Command {
     const { user } = ctx.args.member;
     const data = await fetch(user.id);
 
-    return { embed: {
-      description: `**Total Events:** ${data.eventsJoined.toLocaleString()}\n**Unpaids:** ${data.unpaid.toLocaleString()}`,
-      footer: { text: `Payments may take long.` },
-      title: `${user.username}'s unpaids`,
-      color: 'RANDOM',
-    }};
+    return {
+      embed: {
+        description: `**Total Events:** ${data.eventsJoined.toLocaleString()}\n**Unpaids:** ${data.unpaid.toLocaleString()}`,
+        footer: { text: `Payments may take long.` },
+        title: `${user.username}'s unpaids`,
+        color: 'RANDOM',
+      },
+    };
   }
 }

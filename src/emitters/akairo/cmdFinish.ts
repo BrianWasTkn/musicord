@@ -22,7 +22,7 @@ export default class CommandListener extends Listener<CommandHandler<Command>> {
     data.lastRan = Date.now();
     data.lastCmd = command.aliases[0];
     await data.save();
-    
+
     // (await msg.channel.send(returned as MessageOptions)) as Context;
     return this.client.handlers.command.commandUtils.delete(ctx.id);
   }

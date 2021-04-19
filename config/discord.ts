@@ -11,8 +11,9 @@ const intents: ClientOptions['intents'] = [
 ];
 
 export const discordOptions: ClientOptions = {
-  intents, allowedMentions: {
+  intents,
+  allowedMentions: {
     parse: ['users', 'roles'],
-    repliedUser: true,    
-  }
+    repliedUser: true,
+  },
 };

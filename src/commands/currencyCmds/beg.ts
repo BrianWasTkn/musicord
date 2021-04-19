@@ -20,11 +20,11 @@ export default class Currency extends Command {
     const items = handlers.item.modules;
 
     if (data.pocket >= config.currency.maxPocket) {
-      return 'You\'re already rich stop begging already.';
+      return "You're already rich stop begging already.";
     }
 
     const odds = Math.random();
-    switch(true) {
+    switch (true) {
       case odds >= 0.9:
         const item = items.filter((i) => i.cost < 30e6).random();
         const amount = util.randomNumber(1, 5);
@@ -33,28 +33,33 @@ export default class Currency extends Command {
         await data.save();
         return {
           embed: {
-            description: `WOWSIES! You got **${amount} ${item.emoji} ${item.name}**${amount > 1 ? 's' : ''} you're so lucky`,
-            color: 'ORANGE', author: { name: 'Lava' }
+            description: `WOWSIES! You got **${amount} ${item.emoji} ${
+              item.name
+            }**${amount > 1 ? 's' : ''} you're so lucky`,
+            color: 'ORANGE',
+            author: { name: 'Lava' },
           },
           replyTo: ctx,
-        }
+        };
       case odds >= 0.5:
         const won = util.randomNumber(100, 1000) * 1e3;
         await ctx.db.addPocket(won).calcSpace().updateItems().save();
         return {
           embed: {
             description: `GG! You got **${won.toLocaleString()}** coins from begging.`,
-            color: 'ORANGE', author: { name: 'Lava' }
+            color: 'ORANGE',
+            author: { name: 'Lava' },
           },
-          replyTo: ctx
+          replyTo: ctx,
         };
-      default: 
+      default:
         return {
           embed: {
             description: 'LOL NO THANKS :P',
-            color: 'ORANGE', author: { name: 'Lava' }
+            color: 'ORANGE',
+            author: { name: 'Lava' },
           },
-          replyTo: ctx
+          replyTo: ctx,
         };
     }
   }

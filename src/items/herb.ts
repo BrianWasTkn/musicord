@@ -13,7 +13,7 @@ export default class Flex extends Item {
       info: {
         short: 'Just a flex from the man himself.',
         long: 'Nothing, just for his fucking treatment to fix himself.',
-      }
+      },
     });
   }
 }

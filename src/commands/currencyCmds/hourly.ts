@@ -18,10 +18,13 @@ export default class Currency extends Command {
     const won = 1000;
 
     await ctx.db.addPocket(won).save();
-    return { embed: {
-      title: `Here are your hourly coins, ${ctx.author.username}`,
-      description: `**${won.toLocaleString()}** were placed in your pocket.`,
-      color: 'RANDOM', footer: { text: `Thanks for supporting this trash bot!` }
-    }};
+    return {
+      embed: {
+        title: `Here are your hourly coins, ${ctx.author.username}`,
+        description: `**${won.toLocaleString()}** were placed in your pocket.`,
+        color: 'RANDOM',
+        footer: { text: `Thanks for supporting this trash bot!` },
+      },
+    };
   }
 }

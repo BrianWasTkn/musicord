@@ -21,7 +21,9 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(ctx: Context<{ amount: number }>): Promise<string | MessageOptions> {
+  async exec(
+    ctx: Context<{ amount: number }>
+  ): Promise<string | MessageOptions> {
     const {
       util,
       util: { effects },
@@ -49,7 +51,21 @@ export default class Currency extends Command {
       }
     }
 
-    const faces = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+    const faces = [
+      'A',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+      'J',
+      'Q',
+      'K',
+    ];
     const suits = ['spades', 'hearts', 'diamonds', 'clubs'];
     const values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10];
 
@@ -179,11 +195,7 @@ export default class Currency extends Command {
       if (status.constructor === Object) {
         const { data: coinCheck } = await ctx.db.fetch(); // ugh don't really know else how to do this thanks to reversal
         if (bet > coinCheck.pocket) {
-          await ctx.db
-            .removePocket(bet)
-            .calcSpace()
-            .updateItems()
-            .save();
+          await ctx.db.removePocket(bet).calcSpace().updateItems().save();
           return {
             content: `What the hell man, you don't have the coins to cover this bet anymore??? I'm keeping your bet since you tried to SCAM ME.`,
             reply: true,
@@ -193,15 +205,14 @@ export default class Currency extends Command {
         // Win
         if (status.result) {
           winnings = Math.ceil(bet * (Math.random() + (0.3 + extraWngs))); // "Base Multi"
-          winnings = Math.min(maxPocket,winnings + Math.ceil(winnings * (multi / 100))); // This brings in the user's secret multi (lava multi)
+          winnings = Math.min(
+            maxPocket,
+            winnings + Math.ceil(winnings * (multi / 100))
+          ); // This brings in the user's secret multi (lava multi)
           finalMsg += `\nYou won **${winnings.toLocaleString()}**. You now have ${(
             data.pocket + winnings
           ).toLocaleString()}.`;
-          await ctx.db
-            .addPocket(winnings)
-            .updateItems()
-            .calcSpace()
-            .save();
+          await ctx.db.addPocket(winnings).updateItems().calcSpace().save();
           state = extraWngs ? 'powered' : 'winning';
         } else {
           // Tie
@@ -215,11 +226,7 @@ export default class Currency extends Command {
             ).toLocaleString()}**. You now have ${(
               data.pocket - bet
             ).toLocaleString()}.`;
-            await ctx.db
-              .removePocket(bet)
-              .updateItems()
-              .calcSpace()
-              .save();
+            await ctx.db.removePocket(bet).updateItems().calcSpace().save();
             state = 'losing';
           }
         }
@@ -235,7 +242,9 @@ export default class Currency extends Command {
           : '',
         embed: {
           author: {
-            name: `${ctx.author.username}'s${state ? ` ${state}` : ' '}blackjack game`,
+            name: `${ctx.author.username}'s${
+              state ? ` ${state}` : ' '
+            }blackjack game`,
             icon_url: ctx.author.avatarURL({ dynamic: true }),
           },
           color: final
@@ -296,10 +305,7 @@ export default class Currency extends Command {
       ).first();
       if (!choice) {
         // No bank space for you bitch
-        await ctx.db
-          .removePocket(bet)
-          .updateItems()
-          .save();
+        await ctx.db.removePocket(bet).updateItems().save();
         return {
           content:
             "You ended the game since you didn't respond. The dealer is keeping your money to deal with your bullcrap.",
@@ -315,10 +321,7 @@ export default class Currency extends Command {
           return dealersTurn(stood);
         case 'e':
           // You too, no space for you :P
-          await ctx.db
-            .updateItems()
-            .removePocket(bet)
-            .save();
+          await ctx.db.updateItems().removePocket(bet).save();
           return {
             content:
               'You ended the game. The dealer is keeping your money to deal with your bullcrap.',
@@ -326,10 +329,7 @@ export default class Currency extends Command {
           };
         default:
           // You too, no space for you :P
-          await ctx.db
-            .updateItems()
-            .removePocket(bet)
-            .save();
+          await ctx.db.updateItems().removePocket(bet).save();
           return {
             content:
               'Ur an idiot you need to give a valid response. You lost your entire bet.',

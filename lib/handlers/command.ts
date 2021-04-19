@@ -35,22 +35,27 @@ import {
 import {
   CommandHandlerOptions,
   CommandOptions,
-  CommandReturn
+  CommandReturn,
 } from '@lib/interface/handlers/command';
 
 const { CommandHandlerEvents: Events, BuiltInReasons } = Constants;
 
 function isPromise(value) {
-  return value
-    && typeof value.then === 'function'
-    && typeof value.catch === 'function';
+  return (
+    value &&
+    typeof value.then === 'function' &&
+    typeof value.catch === 'function'
+  );
 }
 
 function deepAssign(o1, ...os) {
   for (const o of os) {
     for (const [k, v] of Object.entries(o)) {
       const vIsObject = v && typeof v === 'object';
-      const o1kIsObject = Object.prototype.hasOwnProperty.call(o1, k) && o1[k] && typeof o1[k] === 'object';
+      const o1kIsObject =
+        Object.prototype.hasOwnProperty.call(o1, k) &&
+        o1[k] &&
+        typeof o1[k] === 'object';
       if (vIsObject && o1kIsObject) {
         deepAssign(o1[k], v);
       } else {
@@ -83,28 +88,34 @@ export class Command extends AkairoCommand {
   handler: CommandHandler<Command>;
   client: Lava;
 
-  constructor(id: string, args: CommandOptions) { 
-    super(id, args); 
+  constructor(id: string, args: CommandOptions) {
+    super(id, args);
   }
 
   run(ctx: Context): PromiseOr<CommandReturn> {
-    return { embed: {
-      title: 'What ya doing?',
-      color: 'BLURPLE',
-      description: 'Command hasn\'t been implemented yet.'
-    }};
+    return {
+      embed: {
+        title: 'What ya doing?',
+        color: 'BLURPLE',
+        description: "Command hasn't been implemented yet.",
+      },
+    };
   }
 
   exec(ctx: Context): PromiseOr<CommandReturn> {
-    return { embed: {
-      title: 'What ya doing?',
-      color: 'BLURPLE',
-      description: 'Command hasn\'t been implemented yet.'
-    }};
+    return {
+      embed: {
+        title: 'What ya doing?',
+        color: 'BLURPLE',
+        description: "Command hasn't been implemented yet.",
+      },
+    };
   }
 }
 
-export class CommandHandler<CommandModule extends Command> extends AkairoHandler {
+export class CommandHandler<
+  CommandModule extends Command
+> extends AkairoHandler {
   client: Lava;
   classToHandle: new () => CommandModule;
   resolver: TypeResolver;
@@ -144,31 +155,40 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
   remove: (id: string) => CommandModule;
   removeAll: () => this;
 
-  constructor(client: Lava, {
-    extensions = ['.js', '.ts'],
-    loadFilter,
-    blockClient = true,
-    blockBots = true,
-    fetchMembers = false,
-    storeMessages = false,
-    commandUtilLifetime = 3e5,
-    commandUtilSweepInterval = 3e5,
-    ignoreCooldown = client.ownerID,
-    ignorePermissions = [],
-    argumentDefaults = {},
-    prefix = '!',
-    directory = './commands',
-    classToHandle = Command as Function,
-    handleEdits = true,
-    commandUtil = true,
-    allowMention = true,
-    commandTyping = false,
-    defaultCooldown = 1500,
-    aliasReplacement = /(-|\.)/gi,
-    automateCategories = true,
-  }: CommandHandlerOptions = {}) {
-    if (!(classToHandle.prototype instanceof Command || classToHandle === Command)) {
-      throw new AkairoError('INVALID_CLASS_TO_HANDLE', classToHandle.name, Command.name);
+  constructor(
+    client: Lava,
+    {
+      extensions = ['.js', '.ts'],
+      loadFilter,
+      blockClient = true,
+      blockBots = true,
+      fetchMembers = false,
+      storeMessages = false,
+      commandUtilLifetime = 3e5,
+      commandUtilSweepInterval = 3e5,
+      ignoreCooldown = client.ownerID,
+      ignorePermissions = [],
+      argumentDefaults = {},
+      prefix = '!',
+      directory = './commands',
+      classToHandle = Command as Function,
+      handleEdits = true,
+      commandUtil = true,
+      allowMention = true,
+      commandTyping = false,
+      defaultCooldown = 1500,
+      aliasReplacement = /(-|\.)/gi,
+      automateCategories = true,
+    }: CommandHandlerOptions = {}
+  ) {
+    if (
+      !(classToHandle.prototype instanceof Command || classToHandle === Command)
+    ) {
+      throw new AkairoError(
+        'INVALID_CLASS_TO_HANDLE',
+        classToHandle.name,
+        Command.name
+      );
     }
 
     super(client, {
@@ -176,10 +196,10 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
       classToHandle,
       extensions,
       automateCategories,
-      loadFilter
+      loadFilter,
     });
 
-    this.resolver = new TypeResolver(this as unknown as OldCommandHandler);
+    this.resolver = new TypeResolver((this as unknown) as OldCommandHandler);
     this.aliases = new Collection();
     this.aliasReplacement = aliasReplacement;
     this.prefixes = new Collection();
@@ -197,33 +217,48 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     this.commandUtilLifetime = commandUtilLifetime;
     this.commandUtilSweepInterval = commandUtilSweepInterval;
     if (this.commandUtilSweepInterval > 0) {
-      this.client.setInterval(() => this.sweepCommandUtil(), this.commandUtilSweepInterval);
+      this.client.setInterval(
+        () => this.sweepCommandUtil(),
+        this.commandUtilSweepInterval
+      );
     }
     this.commandUtils = new Collection();
     this.cooldowns = new Collection();
     this.defaultCooldown = defaultCooldown;
-    this.ignoreCooldown = typeof ignoreCooldown === 'function' ? ignoreCooldown.bind(this) : ignoreCooldown;
-    this.ignorePermissions = typeof ignorePermissions === 'function' ? ignorePermissions.bind(this) : ignorePermissions;
+    this.ignoreCooldown =
+      typeof ignoreCooldown === 'function'
+        ? ignoreCooldown.bind(this)
+        : ignoreCooldown;
+    this.ignorePermissions =
+      typeof ignorePermissions === 'function'
+        ? ignorePermissions.bind(this)
+        : ignorePermissions;
     this.prompts = new Collection();
-    this.argumentDefaults = deepAssign({
-      prompt: {
-        start: '',
-        retry: '',
-        timeout: '',
-        ended: '',
-        cancel: '',
-        retries: 1,
-        time: 30000,
-        cancelWord: 'cancel',
-        stopWord: 'stop',
-        optional: false,
-        infinite: false,
-        limit: Infinity,
-        breakout: true
-      }
-    }, argumentDefaults);
+    this.argumentDefaults = deepAssign(
+      {
+        prompt: {
+          start: '',
+          retry: '',
+          timeout: '',
+          ended: '',
+          cancel: '',
+          retries: 1,
+          time: 30000,
+          cancelWord: 'cancel',
+          stopWord: 'stop',
+          optional: false,
+          infinite: false,
+          limit: Infinity,
+          breakout: true,
+        },
+      },
+      argumentDefaults
+    );
     this.prefix = typeof prefix === 'function' ? prefix.bind(this) : prefix;
-    this.allowMention = typeof allowMention === 'function' ? allowMention.bind(this) : allowMention;
+    this.allowMention =
+      typeof allowMention === 'function'
+        ? allowMention.bind(this)
+        : allowMention;
     this.inhibitorHandler = null;
     this.setup();
   }
@@ -248,13 +283,14 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
 
   /**
    * Register command modules
-  */
+   */
   register(cmd: CommandModule, filepath?: string): void {
     super.register(cmd, filepath);
 
     for (let alias of cmd.aliases) {
       const conflict = this.aliases.get(alias.toLowerCase());
-      if (conflict) throw new AkairoError('ALIAS_CONFLICT', alias, cmd.id, conflict);
+      if (conflict)
+        throw new AkairoError('ALIAS_CONFLICT', alias, cmd.id, conflict);
 
       alias = alias.toLowerCase();
       this.aliases.set(alias, cmd.id);
@@ -263,7 +299,13 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
 
         if (replacement !== alias) {
           const replacementConflict = this.aliases.get(replacement);
-          if (replacementConflict) throw new AkairoError('ALIAS_CONFLICT', replacement, cmd.id, replacementConflict);
+          if (replacementConflict)
+            throw new AkairoError(
+              'ALIAS_CONFLICT',
+              replacement,
+              cmd.id,
+              replacementConflict
+            );
           this.aliases.set(replacement, cmd.id);
         }
       }
@@ -293,7 +335,9 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
       }
 
       if (newEntry) {
-        this.prefixes = this.prefixes.sort((aVal, bVal, aKey, bKey) => prefixCompare(aKey, bKey));
+        this.prefixes = this.prefixes.sort((aVal, bVal, aKey, bKey) =>
+          prefixCompare(aKey, bKey)
+        );
       }
     }
   }
@@ -346,7 +390,10 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
         if (this.commandUtils.has(msg.id)) {
           msg.util = this.commandUtils.get(msg.id);
         } else {
-          msg.util = new CommandUtil(this as unknown as OldCommandHandler, msg);
+          msg.util = new CommandUtil(
+            (this as unknown) as OldCommandHandler,
+            msg
+          );
           this.commandUtils.set(msg.id, msg.util);
         }
       }
@@ -358,7 +405,10 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
       let parsed = await this.parseCommand(msg);
       if (!parsed.command) {
         const overParsed = await this.parseCommandOverwrittenPrefixes(msg);
-        if (overParsed.command || (parsed.prefix == null && overParsed.prefix != null)) {
+        if (
+          overParsed.command ||
+          (parsed.prefix == null && overParsed.prefix != null)
+        ) {
           parsed = overParsed;
         }
       }
@@ -371,7 +421,11 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
       if (!parsed.command) {
         ran = await this.handleRegexAndConditionalCommands(msg);
       } else {
-        ran = await this.handleDirectCommand(msg, parsed.content, parsed.command);
+        ran = await this.handleDirectCommand(
+          msg,
+          parsed.content,
+          parsed.command
+        );
       }
 
       if (ran === false) {
@@ -386,7 +440,12 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     }
   }
 
-  async handleDirectCommand(msg: Context, content: string, cmd: CommandModule, ignore: boolean = false)/*: Promise<boolean | null>*/ {
+  async handleDirectCommand(
+    msg: Context,
+    content: string,
+    cmd: CommandModule,
+    ignore: boolean = false
+  ) /*: Promise<boolean | null>*/ {
     let key;
     try {
       if (!ignore) {
@@ -406,7 +465,12 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
         return this.handle(args.message as Context);
       } else if (Flag.is(args, 'continue')) {
         const continueCommand = this.modules.get(args.command);
-        return this.handleDirectCommand(msg, args.rest, continueCommand, args.ignore);
+        return this.handleDirectCommand(
+          msg,
+          args.rest,
+          continueCommand,
+          args.ignore
+        );
       }
 
       if (!ignore) {
@@ -442,7 +506,10 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     const hasRegexCommands = [];
     for (const command of this.modules.values()) {
       if (msg.editedAt ? command.editable : true) {
-        const regex = typeof command.regex === 'function' ? command.regex(msg) : command.regex;
+        const regex =
+          typeof command.regex === 'function'
+            ? command.regex(msg)
+            : command.regex;
         if (regex) hasRegexCommands.push({ command, regex });
       }
     }
@@ -471,16 +538,18 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
 
     const promises = [];
     for (const { command, match, matches } of matchedCommands) {
-      promises.push((async () => {
-        try {
-          if (await this.runPostTypeInhibitors(msg, command)) return;
-          const before = command.before(msg);
-          if (isPromise(before)) await before;
-          await this.runCommand(msg, command, { match, matches });
-        } catch (err) {
-          this.emitError(err, msg, command);
-        }
-      })());
+      promises.push(
+        (async () => {
+          try {
+            if (await this.runPostTypeInhibitors(msg, command)) return;
+            const before = command.before(msg);
+            if (isPromise(before)) await before;
+            await this.runCommand(msg, command, { match, matches });
+          } catch (err) {
+            this.emitError(err, msg, command);
+          }
+        })()
+      );
     }
 
     await Promise.all(promises);
@@ -493,11 +562,13 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     const filterPromises = [];
     for (const command of this.modules.values()) {
       if (msg.editedAt && !command.editable) continue;
-      filterPromises.push((async () => {
-        let cond = command.condition(msg);
-        if (isPromise(cond)) cond = await cond;
-        if (cond) trueCommands.push(command);
-      })());
+      filterPromises.push(
+        (async () => {
+          let cond = command.condition(msg);
+          if (isPromise(cond)) cond = await cond;
+          if (cond) trueCommands.push(command);
+        })()
+      );
     }
 
     await Promise.all(filterPromises);
@@ -508,16 +579,18 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
 
     const promises = [];
     for (const command of trueCommands) {
-      promises.push((async () => {
-        try {
-          if (await this.runPostTypeInhibitors(msg, command)) return;
-          const before = command.before(msg);
-          if (isPromise(before)) await before;
-          await this.runCommand(msg, command, {});
-        } catch (err) {
-          this.emitError(err, msg, command);
-        }
-      })());
+      promises.push(
+        (async () => {
+          try {
+            if (await this.runPostTypeInhibitors(msg, command)) return;
+            const before = command.before(msg);
+            if (isPromise(before)) await before;
+            await this.runCommand(msg, command, {});
+          } catch (err) {
+            this.emitError(err, msg, command);
+          }
+        })()
+      );
     }
 
     await Promise.all(promises);
@@ -582,7 +655,11 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     }
 
     const reason = this.inhibitorHandler
-      ? await this.inhibitorHandler.test('post', msg, cmd as unknown as AkairoCommand)
+      ? await this.inhibitorHandler.test(
+          'post',
+          msg,
+          (cmd as unknown) as AkairoCommand
+        )
       : null;
 
     if (reason != null) {
@@ -608,7 +685,9 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
           return true;
         }
       } else if (msg.guild) {
-        const missing = (msg.channel as GuildChannel).permissionsFor(this.client.user).missing(cmd.clientPermissions);
+        const missing = (msg.channel as GuildChannel)
+          .permissionsFor(this.client.user)
+          .missing(cmd.clientPermissions);
         if (missing.length) {
           this.emit(Events.MISSING_PERMISSIONS, msg, cmd, 'client', missing);
           return true;
@@ -621,8 +700,8 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
       const isIgnored = Array.isArray(ignorer)
         ? ignorer.includes(msg.author.id)
         : typeof ignorer === 'function'
-          ? ignorer(msg, cmd as unknown as AkairoCommand)
-          : msg.author.id === ignorer;
+        ? ignorer(msg, (cmd as unknown) as AkairoCommand)
+        : msg.author.id === ignorer;
 
       if (!isIgnored) {
         if (typeof cmd.userPermissions === 'function') {
@@ -634,7 +713,9 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
             return true;
           }
         } else if (msg.guild) {
-          const missing = (msg.channel as GuildChannel).permissionsFor(msg.author).missing(cmd.userPermissions);
+          const missing = (msg.channel as GuildChannel)
+            .permissionsFor(msg.author)
+            .missing(cmd.userPermissions);
           if (missing.length) {
             this.emit(Events.MISSING_PERMISSIONS, msg, cmd, 'user', missing);
             return true;
@@ -651,8 +732,8 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     const isIgnored = Array.isArray(ignorer)
       ? ignorer.includes(msg.author.id)
       : typeof ignorer === 'function'
-        ? ignorer(msg, cmd as unknown as AkairoCommand)
-        : msg.author.id === ignorer;
+      ? ignorer(msg, (cmd as unknown) as AkairoCommand)
+      : msg.author.id === ignorer;
 
     if (isIgnored) return false;
 
@@ -662,10 +743,10 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     const expire = msg.createdTimestamp + time;
     const data = await msg.author.fetchDB();
 
-    let cd = data.cooldowns.find(c => c.id === cmd.id);
+    let cd = data.cooldowns.find((c) => c.id === cmd.id);
     if (!cd) {
       data.cooldowns.push({ expire, uses: 0, id: cmd.id });
-      cd = (await data.save()).cooldowns.find(c => c.id === cmd.id);
+      cd = (await data.save()).cooldowns.find((c) => c.id === cmd.id);
     }
 
     const diff = cd.expire - msg.createdTimestamp;
@@ -681,7 +762,11 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     return false;
   }
 
-  async runCommand(ctx: Context, cmd: CommandModule, args: any): Promise<boolean> {
+  async runCommand(
+    ctx: Context,
+    cmd: CommandModule,
+    args: any
+  ): Promise<boolean> {
     ctx.command = cmd;
     ctx.args = args;
     ctx.db = new ContextDatabase(ctx);
@@ -707,17 +792,23 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
   }
 
   async parseCommand(msg: Context) {
-    const intoCallable = f => typeof f === 'function' ? f : (() => f);
-    const intoArray = x => Array.isArray(x) ? x : [x];
+    const intoCallable = (f) => (typeof f === 'function' ? f : () => f);
+    const intoArray = (x) => (Array.isArray(x) ? x : [x]);
     let prefixes: string[] = intoArray(await intoCallable(this.prefix)(msg));
     const allowMention = await intoCallable(this.prefix)(msg);
     if (allowMention) {
-      const mentions = [`<@${this.client.user.id}>`, `<@!${this.client.user.id}>`];
+      const mentions = [
+        `<@${this.client.user.id}>`,
+        `<@!${this.client.user.id}>`,
+      ];
       prefixes = [...mentions, ...prefixes];
     }
 
     prefixes.sort(prefixCompare);
-    return this.parseMultiplePrefixes(msg, prefixes.map(p => [p, null]) as any);
+    return this.parseMultiplePrefixes(
+      msg,
+      prefixes.map((p) => [p, null]) as any
+    );
   }
 
   async parseCommandOverwrittenPrefixes(msg: Context) {
@@ -734,26 +825,28 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
       return f;
     }
 
-    const intoCallable = f => typeof f === 'function' ? f : (() => f);
-    const intoArray = x => Array.isArray(x) ? x : [x];
+    const intoCallable = (f) => (typeof f === 'function' ? f : () => f);
+    const intoArray = (x) => (Array.isArray(x) ? x : [x]);
     const promises = this.prefixes.map(async (cmds, provider) => {
       const prefixes = intoArray(await intoCallable(provider)(msg));
-      return prefixes.map(p => [p, cmds]);
+      return prefixes.map((p) => [p, cmds]);
     });
 
-    const pairs = flatMap(await Promise.all(promises), x => x);
+    const pairs = flatMap(await Promise.all(promises), (x) => x);
     pairs.sort(([a], [b]) => prefixCompare(a, b));
     return this.parseMultiplePrefixes(msg, pairs);
   }
 
   parseMultiplePrefixes(msg: Context, pairs: any[]) {
-    const parses = pairs.map(([prefix, cmds]) => this.parseWithPrefix(msg, prefix, cmds));
-    const result = parses.find(parsed => parsed.command);
+    const parses = pairs.map(([prefix, cmds]) =>
+      this.parseWithPrefix(msg, prefix, cmds)
+    );
+    const result = parses.find((parsed) => parsed.command);
     if (result) {
       return result;
     }
 
-    const guess = parses.find(parsed => parsed.prefix != null);
+    const guess = parses.find((parsed) => parsed.prefix != null);
     if (guess) {
       return guess;
     }
@@ -761,14 +854,20 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     return {};
   }
 
-  parseWithPrefix(msg: Context, prefix: string, associatedCommands: Set<string> = null) {
+  parseWithPrefix(
+    msg: Context,
+    prefix: string,
+    associatedCommands: Set<string> = null
+  ) {
     const lowerContent = msg.content.toLowerCase();
     if (!lowerContent.startsWith(prefix.toLowerCase())) {
       return {};
     }
 
-    const endOfPrefix = lowerContent.indexOf(prefix.toLowerCase()) + prefix.length;
-    const startOfArgs = msg.content.slice(endOfPrefix).search(/\S/) + prefix.length;
+    const endOfPrefix =
+      lowerContent.indexOf(prefix.toLowerCase()) + prefix.length;
+    const startOfArgs =
+      msg.content.slice(endOfPrefix).search(/\S/) + prefix.length;
     const alias = msg.content.slice(startOfArgs).split(/\s{1,}|\n{1,}/)[0];
     const command = this.findCommand(alias);
     const content = msg.content.slice(startOfArgs + alias.length + 1).trim();
@@ -844,7 +943,9 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     return this;
   }
 
-  useListenerHandler(listenerHandler: ListenerHandler<Listener>) {
+  useListenerHandler(
+    listenerHandler: ListenerHandler<Listener<this['client']>>
+  ) {
     this.resolver.listenerHandler = listenerHandler;
 
     return this;
@@ -854,8 +955,7 @@ export class CommandHandler<CommandModule extends Command> extends AkairoHandler
     const g = this.client.guilds.cache.get('691416705917779999');
     const byp = g.roles.cache.get('692941106475958363');
     return (
-      msg.member.roles.cache.has(byp.id)
-      || this.client.isOwner(msg.author.id)
+      msg.member.roles.cache.has(byp.id) || this.client.isOwner(msg.author.id)
     );
   }
 }

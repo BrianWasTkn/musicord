@@ -53,7 +53,11 @@ export class Context<Args extends {} = {}> extends Message {
   }
 
   fetchMember(id: string = null, force = false, limit?: number) {
-    return this.guild.members.fetch({ user: id != null ? id : this.member.user.id, force, limit });
+    return this.guild.members.fetch({
+      user: id != null ? id : this.member.user.id,
+      force,
+      limit,
+    });
   }
 
   fetchMessage(id: string = null, cache = false, force = false) {
@@ -61,7 +65,9 @@ export class Context<Args extends {} = {}> extends Message {
   }
 
   toString(isSuper = false) {
-    return isSuper ? super.toString() : `[${this.constructor.name}] ${this.content || this.id}`;
+    return isSuper
+      ? super.toString()
+      : `[${this.constructor.name}] ${this.content || this.id}`;
   }
 }
 
@@ -75,7 +81,7 @@ export class ContextDatabase extends Base {
     this.ctx = ctx;
     this.data = null;
   }
-  
+
   private async init(id: string): Promise<this> {
     const { fetch } = this.ctx.client.db.currency;
     this.data = await fetch(id);
@@ -113,7 +119,8 @@ export class ContextDatabase extends Base {
   }
 
   calcSpace(offset: number = 55, boost: number = 1, limit: number = 1000e6) {
-    const randomNumber = (a: number, b: number) => Math.floor(Math.random() * (b - a + 1) + a);
+    const randomNumber = (a: number, b: number) =>
+      Math.floor(Math.random() * (b - a + 1) + a);
     const calc = (boosty: number) => Math.round(offset * (boosty / 2) + offset);
     this.data.space = Math.min(calc(boost), limit);
     return this;
@@ -128,11 +135,11 @@ export class ContextDatabase extends Base {
       const inv = this.data.items.find((i) => i.id === item.id);
       if (inv.expire > Date.now()) {
         const trigger = {
-          'brian': () => eff.addSlotJackpotOdd(5),
-          'crazy': () => eff.addSlotJackpotOdd(5),
-          'thicc': () => eff.addGambleWinnings(0.5),
-          'thicm': () => eff.addBlackjackWinnings(0.5),
-          'dragon': () => eff.addDiceRoll(1)
+          brian: () => eff.addSlotJackpotOdd(5),
+          crazy: () => eff.addSlotJackpotOdd(5),
+          thicc: () => eff.addGambleWinnings(0.5),
+          thicm: () => eff.addBlackjackWinnings(0.5),
+          dragon: () => eff.addDiceRoll(1),
         };
 
         if (['dragon'].includes(inv.id)) {
@@ -143,14 +150,20 @@ export class ContextDatabase extends Base {
             }
           }
         } else {
-          const includes = ['brian', 'crazy', 'thicc', 'thicm'].includes(inv.id);
-          if (includes) { trigger[inv.id](); }
-          else { continue; };
-        }        
+          const includes = ['brian', 'crazy', 'thicc', 'thicm'].includes(
+            inv.id
+          );
+          if (includes) {
+            trigger[inv.id]();
+          } else {
+            continue;
+          }
+        }
 
         const temp = new Collection<string, Effects>();
         temp.set(item.id, new Effects());
-        if (!effects.has(this.ctx.author.id)) effects.set(this.ctx.author.id, temp);
+        if (!effects.has(this.ctx.author.id))
+          effects.set(this.ctx.author.id, temp);
         effects.get(this.ctx.author.id).set(item.id, eff);
       } else {
         const useref = effects.get(this.ctx.author.id);

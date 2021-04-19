@@ -16,7 +16,8 @@ export default class Dev extends Command {
 
   private async _collect(ctx: Context): Promise<Context> {
     const options: AwaitMessagesOptions = { max: 1, time: 600000 };
-    const filter: CollectorFilter<[Context]> = ({ author }) => author.id === ctx.author.id;
+    const filter: CollectorFilter<[Context]> = ({ author }) =>
+      author.id === ctx.author.id;
 
     const collected = await ctx.channel.awaitMessages(filter, options);
     return [...collected.values()][0] as Context;
@@ -34,7 +35,8 @@ export default class Dev extends Command {
         lava: this.client,
         channel: ctx.channel,
         guild: ctx.guild,
-        msg: ctx, ctx,
+        msg: ctx,
+        ctx,
         db: this.client.db,
       }
     );

@@ -44,10 +44,16 @@ export default class Currency extends Command {
             } else {
               dep = Number(dep as number);
               if (dep >= data.pocket) {
-                ctx.reply(`Are you fr? You only have ${data.pocket} in your pocket right now. Don't try and break me.`);
+                ctx.reply(
+                  `Are you fr? You only have ${data.pocket} in your pocket right now. Don't try and break me.`
+                );
                 return null;
-              } else if (dep > (data.space - data.vault)) {
-                ctx.reply(`NOPE! Can't break me, you can only deposit up to **${(data.space - data.vault).toLocaleString()}** coins right now.`);
+              } else if (dep > data.space - data.vault) {
+                ctx.reply(
+                  `NOPE! Can't break me, you can only deposit up to **${(
+                    data.space - data.vault
+                  ).toLocaleString()}** coins right now.`
+                );
                 return null;
               }
             }
@@ -59,14 +65,14 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(ctx: Context<{ amount: number }>): Promise<string | MessageOptions> {
+  public async exec(
+    ctx: Context<{ amount: number }>
+  ): Promise<string | MessageOptions> {
     const { data: d } = await ctx.db.fetch();
     const { amount } = ctx.args;
 
-    if (!amount) 
-      return 'You need something to deposit, bro.';
-    if (amount < 1) 
-      return 'You thought you can fool me?';
+    if (!amount) return 'You need something to deposit, bro.';
+    if (amount < 1) return 'You thought you can fool me?';
     if (amount > d.pocket)
       return `Bro, you only have ${d.pocket.toLocaleString()} coins what're you doing?`;
 

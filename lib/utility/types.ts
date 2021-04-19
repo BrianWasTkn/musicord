@@ -2,7 +2,7 @@ import type { Context } from '@lib/extensions/message';
 import type { Quest } from '@lib/handlers/quest';
 import type { Item } from '@lib/handlers/item';
 import type { Lava } from '@lib/Lava';
-import Constants from './constants'
+import Constants from './constants';
 
 export const argTypes = (bot: Lava) => ({
   shopItem: (ctx: Context, phrase: string): Item | null => {
@@ -27,9 +27,11 @@ export const argTypes = (bot: Lava) => ({
     const search = quests.get(phrase.toLowerCase());
     if (!search) {
       phrase = phrase.toLowerCase();
-      const search = quests.array().find(q => {
-        return q.name.toLowerCase() === phrase
-        || q.name.toLowerCase().includes(phrase);
+      const search = quests.array().find((q) => {
+        return (
+          q.name.toLowerCase() === phrase ||
+          q.name.toLowerCase().includes(phrase)
+        );
       });
 
       return search || null;
@@ -56,14 +58,11 @@ export const argTypes = (bot: Lava) => ({
     if (!Boolean(Number(bet as number))) {
       bet = (bet as string).toLowerCase();
 
-      if (bet === 'all') 
-        bet = pocket;
-      else if (bet === 'half') 
-        bet = Math.round(pocket / 2);
+      if (bet === 'all') bet = pocket;
+      else if (bet === 'half') bet = Math.round(pocket / 2);
       else if (bet === 'max')
         bet = pocket > (maxBet as number) ? (maxBet as number) : pocket;
-      else if (bet === 'min') 
-        bet = minBet as number;
+      else if (bet === 'min') bet = minBet as number;
       else if (bet.toLowerCase().endsWith('k'))
         bet = Number(bet.toLowerCase().replace('k', '000'));
       else {
@@ -82,7 +81,12 @@ export const argTypes = (bot: Lava) => ({
       ctx.channel.send(MESSAGES.BET_IS_LOWER);
       return null;
     } else if (bet > pocket) {
-      ctx.channel.send(MESSAGES.BET_HIGHER_THAN_POCKET.replace(/{pocket}/gi, pocket.toLocaleString()));
+      ctx.channel.send(
+        MESSAGES.BET_HIGHER_THAN_POCKET.replace(
+          /{pocket}/gi,
+          pocket.toLocaleString()
+        )
+      );
       return null;
     } else if (pocket > maxPocket) {
       ctx.channel.send(MESSAGES.POCKET_HIGHER_THAN_CAP);

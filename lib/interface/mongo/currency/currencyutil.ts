@@ -1,12 +1,12 @@
 import { CurrencyProfile } from '.';
-import { MessagePlus } from '@lib/extensions/message';
+import { Context } from '@lib/extensions/message';
 import { Document } from 'mongoose';
 import { Lava } from '@lib/Lava';
 
 export interface CurrencyUtil {
   calcMulti: (
     bot: Lava,
-    msg: MessagePlus,
+    msg: Context,
     db: Document & CurrencyProfile
-  ) => { unlocked: string[]; total: number, multis: number };
+  ) => { unlocked: string[]; total: number; multis: number };
 }

@@ -18,11 +18,7 @@ export class Quest extends AkairoModule {
   info: string;
   name: string;
 
-  constructor(
-		id: string, 
-		opt: QuestOptions, 
-		rew: QuestReward
-  ) {
+  constructor(id: string, opt: QuestOptions, rew: QuestReward) {
     const { category } = opt;
     super(id, { category });
 
@@ -31,7 +27,7 @@ export class Quest extends AkairoModule {
       Difficult: 2,
       Hard: 3,
       Medium: 4,
-      Easy: 5
+      Easy: 5,
     };
 
     this.rawDiff = opt.diff;
@@ -66,11 +62,11 @@ export class QuestHandler<QuestModule extends Quest> extends AkairoHandler {
   }
 
   findQuest(query: string): QuestModule {
-  	return this.modules.get(query)
-		|| this.modules.find(m => {
-			return m.name
-				.toLowerCase()
-				.includes(query.toLowerCase());
-		});
+    return (
+      this.modules.get(query) ||
+      this.modules.find((m) => {
+        return m.name.toLowerCase().includes(query.toLowerCase());
+      })
+    );
   }
 }

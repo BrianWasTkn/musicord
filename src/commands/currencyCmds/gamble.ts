@@ -27,7 +27,9 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(ctx: Context<{ amount: number }>): Promise<string | MessageOptions> {
+  async exec(
+    ctx: Context<{ amount: number }>
+  ): Promise<string | MessageOptions> {
     const {
       util,
       util: { effects },
@@ -53,7 +55,8 @@ export default class Currency extends Command {
         effects.set(ctx.author.id, col);
       }
       if (effects.get(ctx.author.id).has(it)) {
-      	if (it === 'dragon') iDiceEffs.push(this.client.handlers.item.modules.get(it));
+        if (it === 'dragon')
+          iDiceEffs.push(this.client.handlers.item.modules.get(it));
         const i = effects.get(ctx.author.id).get(it);
         extraWngs += i.gambleWinnings;
         dceRoll += i.gambleDice;
@@ -61,7 +64,7 @@ export default class Currency extends Command {
     }
 
     // Dice
-    const rig = (a: number, b: number) => a > b ? [b, a] : [a, b];
+    const rig = (a: number, b: number) => (a > b ? [b, a] : [a, b]);
     let userD = util.randomNumber(1, 12);
     let botD = util.randomNumber(1, 12);
     if (Math.random() > 0.55) {
@@ -70,12 +73,9 @@ export default class Currency extends Command {
       [botD, userD] = rig(userD, botD);
     }
     userD += dceRoll;
-    
+
     // vis and db
-    let perwn: number,
-      description: string[],
-      identifier: string,
-      color: string;
+    let perwn: number, description: string[], identifier: string, color: string;
 
     if (botD === userD || botD > userD) {
       const ties = botD === userD;
@@ -96,45 +96,50 @@ export default class Currency extends Command {
     } else if (userD > botD) {
       let wngs = Math.ceil(bet * (Math.random() + (0.3 + extraWngs)));
       wngs = Math.min(maxWin, wngs + Math.ceil(wngs * (multi / 100)));
-      perwn = Math.round(wngs / bet * 100);
+      perwn = Math.round((wngs / bet) * 100);
 
-      const d = await ctx.db
-        .addPocket(wngs)
-        .updateItems()
-        .calcSpace()
-        .save();
+      const d = await ctx.db.addPocket(wngs).updateItems().calcSpace().save();
 
       identifier = Boolean(extraWngs) ? 'powered' : 'winning';
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
       description = [
         `You won **${wngs.toLocaleString()}**\n`,
-        `**Percent Won** \`${perwn}% ${extraWngs ? `(${perwn}% original)` : ''}\``,
+        `**Percent Won** \`${perwn}% ${
+          extraWngs ? `(${perwn}% original)` : ''
+        }\``,
         `You now have **${d.pocket.toLocaleString()}**`,
       ];
     }
 
-    return { embed: {
-      color, description: description.join('\n'),
-      footer: {
-        text: `Multiplier: ${multi}%`,
-        iconURL: ctx.client.user.avatarURL()
-      },
-      author: {
-        name: `${ctx.author.username}'s ${identifier} gambling game`,
-        iconURL: ctx.author.displayAvatarURL({ dynamic: true })
-      },
-      fields: [
-        {
-          name: `${ctx.author.username}`,
-          value: `Rolled a \`${userD}\` ${iDiceEffs.length >= 1 ? iDiceEffs.map(i => i.emoji).join(' ') : ''}`,
-          inline: true
+    return {
+      embed: {
+        color,
+        description: description.join('\n'),
+        footer: {
+          text: `Multiplier: ${multi}%`,
+          iconURL: ctx.client.user.avatarURL(),
         },
-        {
-          name: `${ctx.client.user.username}`,
-          value: `Rolled a \`${botD}\``,
-          inline: true
-        }
-      ]
-    }};
+        author: {
+          name: `${ctx.author.username}'s ${identifier} gambling game`,
+          iconURL: ctx.author.displayAvatarURL({ dynamic: true }),
+        },
+        fields: [
+          {
+            name: `${ctx.author.username}`,
+            value: `Rolled a \`${userD}\` ${
+              iDiceEffs.length >= 1
+                ? iDiceEffs.map((i) => i.emoji).join(' ')
+                : ''
+            }`,
+            inline: true,
+          },
+          {
+            name: `${ctx.client.user.username}`,
+            value: `Rolled a \`${botD}\``,
+            inline: true,
+          },
+        ],
+      },
+    };
   }
 }

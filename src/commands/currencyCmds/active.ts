@@ -8,19 +8,26 @@ export default class Currency extends Command {
     super('active', {
       aliases: ['active', 'ac'],
       channel: 'guild',
-      description: 'View yours or someone else\'s active items.',
+      description: "View yours or someone else's active items.",
       category: 'Currency',
       cooldown: 1e3,
-      args: [{
-        id: 'member',
-        type: 'member',
-        default: (m: Context) => m.member
-      }]
+      args: [
+        {
+          id: 'member',
+          type: 'member',
+          default: (m: Context) => m.member,
+        },
+      ],
     });
   }
 
-  public async exec(ctx: Context<{ member: MemberPlus }>): Promise<string | MessageOptions> {
-    const { handlers: { item }, util: { parseTime } } = this.client;
+  public async exec(
+    ctx: Context<{ member: MemberPlus }>
+  ): Promise<string | MessageOptions> {
+    const {
+      handlers: { item },
+      util: { parseTime },
+    } = this.client;
     const { data } = await ctx.db.fetch(ctx.args.member.user.id);
     const stamp = ctx.createdTimestamp;
     const actives = data.items
@@ -36,10 +43,12 @@ export default class Currency extends Command {
       return { replyTo: ctx, content: "You don't have active items!" };
     }
 
-    return { embed: {
-      title: `${ctx.args.member.user.username}'s active items`,
-      description: actives.join('\n'),
-      color: 'RANDOM',
-    }};
+    return {
+      embed: {
+        title: `${ctx.args.member.user.username}'s active items`,
+        description: actives.join('\n'),
+        color: 'RANDOM',
+      },
+    };
   }
 }

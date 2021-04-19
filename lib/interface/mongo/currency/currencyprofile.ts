@@ -25,14 +25,14 @@ export interface DailyData {
 }
 
 export interface QuestSlot {
-	target: number;
-	count: number;
-	id: string;
+  target: number;
+  count: number;
+  id: string;
 }
 
 export interface MarriageData {
-	since: number;
-	id: string;
+  since: number;
+  id: string;
 }
 
 export interface CooldownData {

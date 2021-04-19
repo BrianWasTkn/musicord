@@ -26,10 +26,12 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(ctx: Context<{
-    amount: number | string;
-    member: MemberPlus;
-  }>): Promise<string | MessageOptions> {
+  public async exec(
+    ctx: Context<{
+      amount: number | string;
+      member: MemberPlus;
+    }>
+  ): Promise<string | MessageOptions> {
     const { member, amount } = ctx.args;
     if (!member || !amount) {
       return `**Wrong Syntax bro**\n**Usage:** \`lava ${this.id} <amount> <@user>\``;
@@ -53,22 +55,17 @@ export default class Currency extends Command {
 
     const memberEntry = await ctx.db.fetch(member.user.id);
     const { data: r } = memberEntry;
-    if (member.user.id === ctx.author.id) 
+    if (member.user.id === ctx.author.id)
       return 'Lol imagine giving yourself coins';
-    if (amount > data.pocket) 
-      return 'Thought you can fool me?';
+    if (amount > data.pocket) return 'Thought you can fool me?';
     if (r.pocket >= this.client.config.currency.maxSafePocket)
       return `Hah! Having over ${this.client.config.currency.maxSafePocket.toLocaleString()} makes them too rich, no thanks.`;
-    if (give < 1) 
-      return 'Nah, no negative coins for you';
+    if (give < 1) return 'Nah, no negative coins for you';
 
     let paid = Math.round(give - give * 0.08);
     let tax = Math.round((give * 0.8) / (give / 10));
 
-    const recib = await memberEntry
-      .addPocket(paid)
-      .updateItems()
-      .save();
+    const recib = await memberEntry.addPocket(paid).updateItems().save();
     const giver = await authorEntry
       .removePocket(give)
       .updateItems()
@@ -77,12 +74,6 @@ export default class Currency extends Command {
 
     return `You gave ${
       member.user.username
-    } **${paid.toLocaleString()}** coins after a **${
-      tax
-    }%** tax. They now have **${
-      recib.pocket.toLocaleString()
-    }** while you have **${
-      giver.pocket.toLocaleString()
-    }** left.`;
+    } **${paid.toLocaleString()}** coins after a **${tax}%** tax. They now have **${recib.pocket.toLocaleString()}** while you have **${giver.pocket.toLocaleString()}** left.`;
   }
 }

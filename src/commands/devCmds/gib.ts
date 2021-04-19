@@ -26,7 +26,7 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(ctx: Context<{ amount: number, member: MemberPlus }>) {
+  public async exec(ctx: Context<{ amount: number; member: MemberPlus }>) {
     const { member, amount } = ctx.args;
     const { maxSafePocket } = ctx.client.config.currency;
     const { user } = member;

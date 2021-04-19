@@ -21,7 +21,9 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(ctx: Context<{ page: number }>): Promise<string | MessageOptions> {
+  public async exec(
+    ctx: Context<{ page: number }>
+  ): Promise<string | MessageOptions> {
     const { maxMulti } = this.client.config.currency;
     const { utils } = this.client.db.currency;
     const { util } = this.client;

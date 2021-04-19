@@ -4,7 +4,6 @@ export type GiveawayBypassOptions = {
   roles?: string[];
 };
 
-
 export interface GiveawayStartOptions {
   channel: TextChannel;
   winners: number;

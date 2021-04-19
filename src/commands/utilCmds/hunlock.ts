@@ -8,9 +8,9 @@ import {
   Role,
 } from 'discord.js';
 
-type ContextPlus =  Context<{
+type ContextPlus = Context<{
   interval: number;
-  role: Role
+  role: Role;
 }>;
 
 export default class Util extends Command {
@@ -74,9 +74,9 @@ export default class Util extends Command {
 
       await sleep(int * 1e3);
       num -= 10;
-      msg = await msg.edit({ 
-        embed: this.embed(num, role, 'ORANGE') 
-      }) as ContextPlus;
+      msg = (await msg.edit({
+        embed: this.embed(num, role, 'ORANGE'),
+      })) as ContextPlus;
       return await run(int);
     };
 

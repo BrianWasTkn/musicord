@@ -26,17 +26,17 @@ export default class Currency extends Command {
 
   private get slotMachine() {
     return {
-      broken_heart:      [1, 3, false],
-      middle_finger:     [1, 5, false],
-      clown:             [1, 10, false],
-      pizza:             [1, 15, false],
-      eggplant:          [1, 25, false],
-      peach:             [1, 50, false],
-      flushed:           [1, 75, true],
-      star2:             [1, 100, true],
-      fire:              [1, 1000, true],
-      four_leaf_clover:  [1, 2500, true],
-      kiss:              [1, 5000, true],
+      broken_heart: [1, 3, false],
+      middle_finger: [1, 5, false],
+      clown: [1, 10, false],
+      pizza: [1, 15, false],
+      eggplant: [1, 25, false],
+      peach: [1, 50, false],
+      flushed: [1, 75, true],
+      star2: [1, 100, true],
+      fire: [1, 1000, true],
+      four_leaf_clover: [1, 2500, true],
+      kiss: [1, 5000, true],
     };
   }
 
@@ -56,7 +56,7 @@ export default class Currency extends Command {
 
     if (odds > 145 - oddRdce) {
       return Array(3).fill(emoji);
-    } else if (odds > (95 - Math.floor(oddRdce / 2))) {
+    } else if (odds > 95 - Math.floor(oddRdce / 2)) {
       const emjis = Array(3).fill(emoji);
       const ind = randomNumber(1, emjis.length) - 1;
       emjis[ind] = randomInArray(emojis.filter((e) => e !== emoji));
@@ -81,7 +81,9 @@ export default class Currency extends Command {
    * @param _ a discord message object
    * @param args the passed arguments
    */
-  async exec(ctx: Context<{ amount: number }>): Promise<string | MessageOptions> {
+  async exec(
+    ctx: Context<{ amount: number }>
+  ): Promise<string | MessageOptions> {
     const {
       util: { effects },
     } = this.client;
@@ -122,19 +124,17 @@ export default class Currency extends Command {
         .addPocket(winnings)
         .updateItems()
         .calcSpace()
-        .save(); 
+        .save();
 
       color = jackpot ? (slots ? 'BLUE' : 'GOLD') : 'GREEN';
       state = jackpot ? (slots ? 'powered' : 'jackpot') : 'winning';
       description.push(`\nYou won **${winnings.toLocaleString()}**`);
-      description.push(`**Multiplier** \`x${Math.round(winnings / bet).toLocaleString()}\``);
+      description.push(
+        `**Multiplier** \`x${Math.round(winnings / bet).toLocaleString()}\``
+      );
       description.push(`You now have **${d.pocket.toLocaleString()}**`);
     } else {
-      const d = await ctx.db
-        .removePocket(bet)
-        .updateItems()
-        .calcSpace()
-        .save();
+      const d = await ctx.db.removePocket(bet).updateItems().calcSpace().save();
 
       color = 'RED';
       state = 'losing';
@@ -172,19 +172,19 @@ export default class Currency extends Command {
 
       // Blacklisted Doubles
       if (!multi[2] && length === 2) {
-        if (slots.some(s => s === emojis[emojis.length - 1])) {
+        if (slots.some((s) => s === emojis[emojis.length - 1])) {
           return { length: 2, winnings: bet };
         }
-        
-      	return { length: 3, winnings: 0 };
+
+        return { length: 3, winnings: 0 };
       }
-      
+
       let winnings = Math.round(bet * multiplier);
       return { length, winnings };
     }
 
     // includes one op emoji
-    if (slots.some(s => s === emojis[emojis.length - 1])) {
+    if (slots.some((s) => s === emojis[emojis.length - 1])) {
       return { length: 2, winnings: bet };
     }
 

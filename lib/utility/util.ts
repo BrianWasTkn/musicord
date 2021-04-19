@@ -8,7 +8,7 @@ import chalk from 'chalk';
 import moment from 'moment';
 
 export class Util extends ClientUtil {
-  cmdQueue: Collection<string, boolean>
+  cmdQueue: Collection<string, boolean>;
   effects: Collection<string, Collection<string, Effects>>;
   events: Collection<string, string>;
   heists: Collection<string, Role>;
@@ -77,21 +77,21 @@ export class Util extends ClientUtil {
 
     const single = keys[keys.length - 1];
     const sMulti = slots[single][0];
-    const double = keys.filter(k => keys[k][2]);
-    const dMulti = double.map(d => slots[d][1]);
-    const jackpot = keys.filter(k => slots[k][1]);
+    const double = keys.filter((k) => keys[k][2]);
+    const dMulti = double.map((d) => slots[d][1]);
+    const jackpot = keys.filter((k) => slots[k][1]);
 
-    return { 
-      single: single, 
+    return {
+      single: single,
       double: { double, multi: dMulti },
-      jackpot: { jackpot }
+      jackpot: { jackpot },
     };
   };
 
   /**
    * Parses time resolvables into human readable times
    * @param time time in seconds
-  */
+   */
   parseTime = (time: number): string => {
     const methods = [
       { name: 'month', count: 2592000 },
@@ -112,19 +112,23 @@ export class Util extends ClientUtil {
     }
 
     const firstCnt = Math.floor(time / methods[0].count);
-    const timeStr = [firstCnt.toString() + ' ' + pluralize(methods[0].name, firstCnt)];
-    for (let i = 0; i < (methods.length - 1); i++) {
+    const timeStr = [
+      firstCnt.toString() + ' ' + pluralize(methods[0].name, firstCnt),
+    ];
+    for (let i = 0; i < methods.length - 1; i++) {
       const raw = (time % methods[i].count) / methods[i + 1].count;
       const calced = Math.floor(raw);
-      timeStr.push(calced.toString() + ' ' + pluralize(methods[i + 1].name, calced));
+      timeStr.push(
+        calced.toString() + ' ' + pluralize(methods[i + 1].name, calced)
+      );
     }
 
     const raw: string[] = timeStr.filter((g) => !g.startsWith('0'));
     return raw.length === 2
       ? raw.join(' and ')
       : raw.length >= 3
-        ? and(raw).join(', ')
-        : raw.join(', ');
+      ? and(raw).join(', ')
+      : raw.join(', ');
   };
 
   isPromise = (something: any): boolean => {

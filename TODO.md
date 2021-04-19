@@ -1,6 +1,6 @@
 # To Do's
 
-Just a list of planned features basically for event and currency commands. 
+Just a list of planned features basically for event and currency commands.
 
 ## Currency
 

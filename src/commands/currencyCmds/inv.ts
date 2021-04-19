@@ -37,10 +37,12 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(ctx: Context<{
-    member: number | MemberPlus;
-    page: number
-  }>): Promise<string | MessageOptions> {
+  async exec(
+    ctx: Context<{
+      member: number | MemberPlus;
+      page: number;
+    }>
+  ): Promise<string | MessageOptions> {
     const { util, handlers } = ctx.client;
     const { member, page } = ctx.args;
     const { item: Items } = handlers;
@@ -63,18 +65,22 @@ export default class Currency extends Command {
 
     inv = util.paginateArray(
       Array.from(Items.modules.values())
-      .map((mod) => mod.id)
-      .sort() // alphabetical order of IDs
-      .map((mod) => {
-        const it = Items.modules.get(mod);
-        return data.items.find(i => i.id === it.id);
-      })
-      .filter((i) => i.amount >= 1)
-      .map((inv) => {
-        const it = Items.modules.get(inv.id);
-        const iv = data.items.find(i => i.id === it.id);
-        return `**${it.emoji} ${it.name}** — ${iv.amount.toLocaleString()}\n*ID* \`${it.id}\` — ${it.category.id}`;
-      }),
+        .map((mod) => mod.id)
+        .sort() // alphabetical order of IDs
+        .map((mod) => {
+          const it = Items.modules.get(mod);
+          return data.items.find((i) => i.id === it.id);
+        })
+        .filter((i) => i.amount >= 1)
+        .map((inv) => {
+          const it = Items.modules.get(inv.id);
+          const iv = data.items.find((i) => i.id === it.id);
+          return `**${it.emoji} ${
+            it.name
+          }** — ${iv.amount.toLocaleString()}\n*ID* \`${it.id}\` — ${
+            it.category.id
+          }`;
+        }),
       5
     );
 
@@ -82,21 +88,23 @@ export default class Currency extends Command {
       return `No because that page doesn't exist.`;
     }
 
-    return { embed: {
-      color: 'BLURPLE',
-      author: {
-        name: `${memb.user.username}'s inventory`,
-        iconURL: memb.user.avatarURL({ dynamic: true }),
-      },
-      fields: [
-        {
-          name: `Owned Items — ${total.toLocaleString()} total`,
-          value: inv[pg - 1].join('\n\n'),
+    return {
+      embed: {
+        color: 'BLURPLE',
+        author: {
+          name: `${memb.user.username}'s inventory`,
+          iconURL: memb.user.avatarURL({ dynamic: true }),
         },
-      ],
-      footer: {
-        text: `Owned Items — Page ${pg} of ${inv.length}`,
+        fields: [
+          {
+            name: `Owned Items — ${total.toLocaleString()} total`,
+            value: inv[pg - 1].join('\n\n'),
+          },
+        ],
+        footer: {
+          text: `Owned Items — Page ${pg} of ${inv.length}`,
+        },
       },
-    }};
+    };
   }
 }

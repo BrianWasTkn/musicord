@@ -6,14 +6,8 @@ const visuals: SpawnVisual = {
   emoji: '<:memerGold:753138901169995797>',
   type: 'GODLY',
   title: 'Gold Doubloon',
-  description: 'Ah sh\*t here we go again',
-  strings: [
-    'bomb it',
-    'gold doubloon',
-    'queen lava',
-    'pjsalt',
-    'siopiao',
-  ],
+  description: 'Ah sh*t here we go again',
+  strings: ['bomb it', 'gold doubloon', 'queen lava', 'pjsalt', 'siopiao'],
 };
 
 export default class Godly extends Spawn {

@@ -13,8 +13,9 @@ export default class PowerUp extends Item {
       cost: 1250000,
       info: {
         short: 'Expand your vault capacity for more coin space.',
-        long: 'Increases your vault capacity from 20K up to 50K coins or sell it for coins, it\'s your choice really.',
-      }
+        long:
+          "Increases your vault capacity from 20K up to 50K coins or sell it for coins, it's your choice really.",
+      },
     });
   }
 
@@ -24,7 +25,7 @@ export default class PowerUp extends Item {
     const card = this.findInv(data.items, this);
 
     if (data.space >= config.currency.maxSafeSpace) {
-      return 'You already have max vault space bruh'
+      return 'You already have max vault space bruh';
     }
 
     const m = `${ctx.author.toString()} You have ${card.amount.toLocaleString()} cards. How many cards do you wanna reveal right now?`;

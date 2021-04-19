@@ -40,11 +40,11 @@ export class UserPlus extends User {
       const inv = this.db.items.find((i) => i.id === item.id);
       if (inv.expire > Date.now()) {
         const trigger = {
-          'brian': () => eff.addSlotJackpotOdd(5),
-          'crazy': () => eff.addSlotJackpotOdd(5),
-          'thicc': () => eff.addGambleWinnings(0.5),
-          'thicm': () => eff.addBlackjackWinnings(0.5),
-          'dragon': () => eff.addDiceRoll(1)
+          brian: () => eff.addSlotJackpotOdd(5),
+          crazy: () => eff.addSlotJackpotOdd(5),
+          thicc: () => eff.addGambleWinnings(0.5),
+          thicm: () => eff.addBlackjackWinnings(0.5),
+          dragon: () => eff.addDiceRoll(1),
         };
 
         if (['dragon'].includes(inv.id)) {
@@ -55,10 +55,15 @@ export class UserPlus extends User {
             }
           }
         } else {
-          const includes = ['brian', 'crazy', 'thicc', 'thicm'].includes(inv.id);
-          if (includes) { trigger[inv.id](); }
-          else { continue; };
-        }        
+          const includes = ['brian', 'crazy', 'thicc', 'thicm'].includes(
+            inv.id
+          );
+          if (includes) {
+            trigger[inv.id]();
+          } else {
+            continue;
+          }
+        }
 
         const temp = new Collection<string, Effects>();
         temp.set(item.id, new Effects());
@@ -135,4 +140,4 @@ export class UserPlus extends User {
 
 export default () => {
   return Structures.extend('User', () => UserPlus);
-}
+};

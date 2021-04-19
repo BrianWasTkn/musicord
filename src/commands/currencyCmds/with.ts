@@ -46,7 +46,9 @@ export default class Currency extends Command {
     });
   }
 
-  public async exec(ctx: Context<{ amount: number }>): Promise<string | MessageOptions> {
+  public async exec(
+    ctx: Context<{ amount: number }>
+  ): Promise<string | MessageOptions> {
     const { data: d } = await ctx.db.fetch();
     const { amount } = ctx.args;
     const embed: Embed = new Embed();
@@ -57,6 +59,9 @@ export default class Currency extends Command {
       return `Bro, you only have ${d.vault.toLocaleString()} coins in your vault what're you up to?`;
 
     const { vault } = await ctx.db.withdraw(amount).save();
-    return { replyTo: ctx.id, content: `**${amount.toLocaleString()}** coins withdrawn. You now have **${vault.toLocaleString()}** left in your vault.`};
+    return {
+      replyTo: ctx.id,
+      content: `**${amount.toLocaleString()}** coins withdrawn. You now have **${vault.toLocaleString()}** left in your vault.`,
+    };
   }
 }

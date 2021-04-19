@@ -9,6 +9,6 @@ export default model<Document<SpawnDocument>>(
     eventsJoined: Type(Number, false, 0),
     allowDM: Type(Boolean, false, true),
     userID: Type(String, true, '123'),
-    unpaid: Type(Number, false, 0)
+    unpaid: Type(Number, false, 0),
   })
 );

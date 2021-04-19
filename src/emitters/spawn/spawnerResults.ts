@@ -33,9 +33,9 @@ export default class SpawnListener extends Listener<SpawnHandler<Spawn>> {
       const description = `**${emoji} No one got it RIP**`;
       const color = 'RED';
 
-      return msg.channel.send({ 
-        embed: { color, description }
-      })
+      return msg.channel.send({
+        embed: { color, description },
+      });
     }
 
     const promises: Promise<void | Context>[] = [];
@@ -52,7 +52,7 @@ export default class SpawnListener extends Listener<SpawnHandler<Spawn>> {
       const coins = oddHit ? first : randomNumber(min, max);
 
       const win = Math.random() > 0.2;
-      const result = win 
+      const result = win
         ? `+ ${user.username} ${verb} ${coins.toLocaleString()}`
         : `# ${user.username} got nothing rip`;
       results.push(result);
@@ -64,15 +64,27 @@ export default class SpawnListener extends Listener<SpawnHandler<Spawn>> {
       if (db.allowDM) {
         const fields = {
           '• Coins Earned': coins.toLocaleString(),
-          '• New Unpaids': db.unpaid.toLocaleString()
+          '• New Unpaids': db.unpaid.toLocaleString(),
         };
 
-        promises.push(user.send({ embed: {
-          footer: { text: msg.guild.name, iconURL: msg.guild.iconURL({ dynamic: true }) },
-          fields: Object.entries(fields).map(([name, value]) => ({ name, value })),
-          title: `${spawn.emoji} ${spawn.title}`,
-          color: 'RANDOM',
-        }}).catch(() => {}) as Promise<void | Context>);
+        promises.push(
+          user
+            .send({
+              embed: {
+                footer: {
+                  text: msg.guild.name,
+                  iconURL: msg.guild.iconURL({ dynamic: true }),
+                },
+                fields: Object.entries(fields).map(([name, value]) => ({
+                  name,
+                  value,
+                })),
+                title: `${spawn.emoji} ${spawn.title}`,
+                color: 'RANDOM',
+              },
+            })
+            .catch(() => {}) as Promise<void | Context>
+        );
       }
     });
 

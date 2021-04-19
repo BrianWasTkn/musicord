@@ -12,9 +12,9 @@ export default class PowerUp extends Item {
       name: "Thicco's Thiccness",
       cost: 3000000,
       info: {
-        short: 'Empower your gamble winnings with thicco\'s thiccnes.',
+        short: "Empower your gamble winnings with thicco's thiccnes.",
         long: 'Gives you +50% winnings on gambling for roughly 10 minutes.',
-      }
+      },
     });
   }
 

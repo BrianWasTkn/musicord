@@ -9,7 +9,7 @@ export type CurrencyType = {
   maxWin: number;
   slots: {
     [slot: string]: [number, number, boolean];
-  }
+  };
 };
 
 export const currencyConfig: CurrencyType = {
@@ -32,6 +32,6 @@ export const currencyConfig: CurrencyType = {
     flushed: [2, 50, false],
     star2: [2, 75, true],
     fire: [2, 250, true],
-    four_leaf_clover: [2, 500, true]
-  }
+    four_leaf_clover: [2, 500, true],
+  },
 };

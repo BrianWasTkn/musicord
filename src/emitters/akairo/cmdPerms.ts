@@ -10,12 +10,7 @@ export default class CommandListener extends Listener<CommandHandler<Command>> {
     });
   }
 
-  async exec(
-    ctx: Context,
-    command: Command,
-    type: string,
-    missing: any
-  ) {
+  async exec(ctx: Context, command: Command, type: string, missing: any) {
     type = type === 'client' ? 'I' : 'You';
     const d: string[] = [];
     d.push(

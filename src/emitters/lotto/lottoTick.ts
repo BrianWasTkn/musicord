@@ -9,11 +9,7 @@ export default class LottoListener extends Listener<LotteryHandler> {
     });
   }
 
-  async exec(
-  	_: LotteryHandler, 
-  	minLeft: string, 
-  	remain: number
-  ) {
+  async exec(_: LotteryHandler, minLeft: string, remain: number) {
     return console.log({ minLeft, remain });
   }
 }

@@ -10,12 +10,7 @@ export default class CommandListener extends Listener<CommandHandler<Command>> {
     });
   }
 
-  async exec(
-    ctx: Context,
-    __: Command,
-    _: any[],
-    error: Error
-  ) {
+  async exec(ctx: Context, __: Command, _: any[], error: Error) {
     console.error(error.stack);
     const channel = await this.client.channels.fetch('789692296094285825');
     (channel as TextChannel).send(error.message);

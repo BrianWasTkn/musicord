@@ -12,9 +12,10 @@ export default class PowerUp extends Item {
       name: 'Thicco Mode',
       cost: 2750000,
       info: {
-        short: 'Blackjack rigged? Well if you want more coins, activate thicco mode.',
+        short:
+          'Blackjack rigged? Well if you want more coins, activate thicco mode.',
         long: 'Gives you +50% winnings on blackjack for 10 minutes.',
-      }
+      },
     });
   }
 
@@ -22,7 +23,7 @@ export default class PowerUp extends Item {
     const { data } = await ctx.db.fetch();
     const thicc = this.findInv(data.items, this);
 
-    thicc.expire = Date.now() + (10 * 60 * 1000);
+    thicc.expire = Date.now() + 10 * 60 * 1000;
     thicc.amount--;
 
     await ctx.db.updateItems().save();

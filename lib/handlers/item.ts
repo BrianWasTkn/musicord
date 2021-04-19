@@ -1,14 +1,19 @@
-import { ItemOptions, ItemInfo, ItemSaleData, InventorySlot } from '@lib/interface/handlers/item';
+import {
+  ItemOptions,
+  ItemInfo,
+  ItemSaleData,
+  InventorySlot,
+} from '@lib/interface/handlers/item';
 import { Collection, MessageEmbed } from 'discord.js';
 import { CurrencyProfile } from '@lib/interface/mongo/currency';
 import { Document } from 'mongoose';
 import { Context } from '@lib/extensions/message';
 import { Lava } from '@lib/Lava';
-import { 
-  AkairoHandlerOptions, 
-  AkairoHandler, 
-  AkairoModule, 
-  Category 
+import {
+  AkairoHandlerOptions,
+  AkairoHandler,
+  AkairoModule,
+  Category,
 } from 'discord-akairo';
 
 export type ItemReturn = string | IReturn;
@@ -32,7 +37,7 @@ export class Item extends AkairoModule {
   cost: number;
 
   constructor(id: string, opt: Partial<ItemOptions>) {
-   const { category } = opt;
+    const { category } = opt;
     super(id, { category });
 
     this.info = opt.info;
@@ -45,9 +50,9 @@ export class Item extends AkairoModule {
   }
 
   findInv(inventory: InventorySlot[], item: this) {
-    return inventory.find(i => i.id === item.id);
+    return inventory.find((i) => i.id === item.id);
   }
-  
+
   use(msg: Context): ItemReturn | Promise<ItemReturn> {
     return 'This item perhaps, is a work in progress :)';
   }
@@ -88,7 +93,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
       this.saleInterval = interval;
       this.intIsRunning = false;
       this.ticked = false;
-      const left = 60 - (new Date()).getMinutes();
+      const left = 60 - new Date().getMinutes();
       return this.tick(Boolean(left));
     });
   }
@@ -98,9 +103,10 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
     let now = new Date();
 
     if (!this.ticked) {
-      this.client.util.console({ 
-        type: 'def', klass: 'Item',
-        msg: `Next Sale in ${60 - now.getSeconds()} Seconds.` 
+      this.client.util.console({
+        type: 'def',
+        klass: 'Item',
+        msg: `Next Sale in ${60 - now.getSeconds()} Seconds.`,
       });
     }
 
@@ -127,7 +133,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
       }
 
       return this.tick(false);
-    }, ((60 - now.getSeconds()) * 1e3) - now.getMilliseconds());
+    }, (60 - now.getSeconds()) * 1e3 - now.getMilliseconds());
   }
 
   getSale() {
@@ -150,7 +156,9 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
   buy(amount: number, data: Document & CurrencyProfile, iid: string) {
     const item = this.modules.get(iid);
     const isSale = this.sale.id === item.id;
-    const dPrice = Math.round(item.cost - (item.cost * (this.sale.discount / 1e2)));
+    const dPrice = Math.round(
+      item.cost - item.cost * (this.sale.discount / 1e2)
+    );
     const paid = amount * (isSale ? dPrice : item.cost);
 
     let inv = data.items.find((i) => i.id === item.id);
@@ -163,7 +171,9 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
   sell(amount: number, data: Document & CurrencyProfile, iid: string) {
     const item = this.modules.get(iid);
     const isSale = this.sale.id === item.id;
-    const dPrice = Math.round(item.cost - (item.cost * (this.sale.discount / 1e2)));
+    const dPrice = Math.round(
+      item.cost - item.cost * (this.sale.discount / 1e2)
+    );
     const sold = Math.round(amount * ((isSale ? dPrice : item.cost) / 4));
 
     let inv = data.items.find((i) => i.id === item.id);

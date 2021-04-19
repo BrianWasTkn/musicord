@@ -1,4 +1,8 @@
-import { Category, AkairoModuleOptions, AkairoHandlerOptions } from 'discord-akairo';
+import {
+  Category,
+  AkairoModuleOptions,
+  AkairoHandlerOptions,
+} from 'discord-akairo';
 import { BaseHandler, BaseModule } from './Base';
 import { Lava } from '../Lava';
 
@@ -8,14 +12,19 @@ export class Giveaway extends BaseModule {
   }
 }
 
-export class GiveawayHandler<Module extends Giveaway> extends BaseHandler<Module> {
+export class GiveawayHandler<
+  Module extends Giveaway
+> extends BaseHandler<Module> {
   constructor(...args: [Lava, AkairoHandlerOptions]) {
-    const [client, {
-      directory = './src/giveaway',
-      extensions = ['.js', '.ts'],
-      classToHandle = Giveaway,
-      automateCategories = true,
-    }] = args;
+    const [
+      client,
+      {
+        directory = './src/giveaway',
+        extensions = ['.js', '.ts'],
+        classToHandle = Giveaway,
+        automateCategories = true,
+      },
+    ] = args;
 
     super(client, {
       directory,

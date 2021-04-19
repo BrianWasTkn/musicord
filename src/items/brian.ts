@@ -13,8 +13,9 @@ export default class Powerflex extends Item {
       cost: 225000,
       info: {
         short: 'Grants you a great amount of luck on gamble and slots!',
-        long: 'Gives up to 50% multiplier and a 5% jackpot chance in slots for 10 minutes.',
-      }
+        long:
+          'Gives up to 50% multiplier and a 5% jackpot chance in slots for 10 minutes.',
+      },
     });
   }
 

@@ -24,7 +24,9 @@ export default class Dev extends Command {
     return inspect(obj, options);
   }
 
-  public async exec(ctx: Context<{ code: string }>): Promise<string | MessageOptions> {
+  public async exec(
+    ctx: Context<{ code: string }>
+  ): Promise<string | MessageOptions> {
     const { codeBlock } = ctx.client.util;
     const { code } = ctx.args;
     const isAsync: boolean = code.includes('await') || code.includes('return');
@@ -52,9 +54,9 @@ export default class Dev extends Command {
     return {
       embed: {
         color: 'ORANGE',
-        description: codeBlock('js', evaled.length > 1900 
-          ? 'Too many to print' 
-          : evaled
+        description: codeBlock(
+          'js',
+          evaled.length > 1900 ? 'Too many to print' : evaled
         ),
         fields: [
           { name: 'Type', value: codeBlock('js', type) },

@@ -10,13 +10,19 @@ export default class LottoListener extends Listener<LotteryHandler> {
   }
 
   async exec(
-  	handler: LotteryHandler, 
-  	winner: GuildMember,
-  	coins: number,
-  	raw: number,
-  	_: number
+    handler: LotteryHandler,
+    winner: GuildMember,
+    coins: number,
+    raw: number,
+    _: number
   ): Promise<void> {
-  	const chan = await this.client.channels.fetch(handler.channel) as TextChannel;
-    await chan.send(`**${winner.user.tag}** (${winner.user.toString()}) walked away with **${coins.toLocaleString()} (${raw.toLocaleString()} original)** coins :fire:`);
+    const chan = (await this.client.channels.fetch(
+      handler.channel
+    )) as TextChannel;
+    await chan.send(
+      `**${
+        winner.user.tag
+      }** (${winner.user.toString()}) walked away with **${coins.toLocaleString()} (${raw.toLocaleString()} original)** coins :fire:`
+    );
   }
 }

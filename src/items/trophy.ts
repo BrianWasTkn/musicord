@@ -13,8 +13,9 @@ export default class Collectible extends Item {
       cost: 3000000,
       info: {
         short: 'Flex it against normies.',
-        long: 'Grants you 50% multiplier for 5 minutes and a random amount of trophies (if you hit the odds of getting it) to flex against normies!',
-      }
+        long:
+          'Grants you 50% multiplier for 5 minutes and a random amount of trophies (if you hit the odds of getting it) to flex against normies!',
+      },
     });
   }
 
@@ -28,10 +29,18 @@ export default class Collectible extends Item {
     let hit = odds <= 10;
 
     tr.amount += hit ? nice : 0;
-    tr.expire = Date.now() + (30 * 60 * 1e3);
+    tr.expire = Date.now() + 30 * 60 * 1e3;
     tr.multi = 50;
 
     await ctx.db.updateItems().save();
-    return `**${this.emoji} ${this.name}**\nYou now have a **25%** multiplier for 30 minutes${!hit ? '!' : ` AND **${nice.toLocaleString()} ${this.name}**${nice > 1 ? 's' : ''} god you're so lucky.`}`;
+    return `**${this.emoji} ${
+      this.name
+    }**\nYou now have a **25%** multiplier for 30 minutes${
+      !hit
+        ? '!'
+        : ` AND **${nice.toLocaleString()} ${this.name}**${
+            nice > 1 ? 's' : ''
+          } god you're so lucky.`
+    }`;
   }
 }

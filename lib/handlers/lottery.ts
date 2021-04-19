@@ -1,7 +1,6 @@
 import { Collection, GuildMember, TextChannel, Guild, Role } from 'discord.js';
 import { QuestOptions, QuestReward } from '@lib/interface/handlers/quest';
 import { EventEmitter } from 'events';
-import { MessagePlus } from '@lib/extensions/message';
 import { LottoConfig } from '@config/lottery';
 import { Lava } from '../Lava';
 
@@ -29,9 +28,15 @@ export class LotteryHandler extends EventEmitter {
   }
 
   prepare() {
-  	return this.client.once('ready', async () => {
-      const { channelID, guildID, interval, rewards, requirementID } = this.client.config.lottery;
-  		
+    return this.client.once('ready', async () => {
+      const {
+        channelID,
+        guildID,
+        interval,
+        rewards,
+        requirementID,
+      } = this.client.config.lottery;
+
       this.requirement = requirementID;
       this.interval = Number(interval);
       this.channel = channelID;
@@ -43,14 +48,15 @@ export class LotteryHandler extends EventEmitter {
 
       this.emit('patch', this);
       this.startClock(new Date());
-  	});
+    });
   }
 
   startClock(date: Date) {
     const left = 60 - date.getMinutes();
-    this.client.util.console({ 
-      type: 'def', klass: 'Lottery',
-      msg: `Lotto clock starting in ${left} minutes.` 
+    this.client.util.console({
+      type: 'def',
+      klass: 'Lottery',
+      msg: `Lotto clock starting in ${left} minutes.`,
     });
 
     return this.tick(Boolean(left));
@@ -61,10 +67,11 @@ export class LotteryHandler extends EventEmitter {
     let now = new Date();
 
     if (!this.ticked) {
-	    this.client.util.console({ 
-	      type: 'def', klass: 'Lottery',
-	      msg: `Ticking in ${60 - now.getSeconds()} seconds.` 
-	    });
+      this.client.util.console({
+        type: 'def',
+        klass: 'Lottery',
+        msg: `Ticking in ${60 - now.getSeconds()} seconds.`,
+      });
     }
 
     return setTimeout(async () => {
@@ -82,7 +89,8 @@ export class LotteryHandler extends EventEmitter {
 
       // Tick
       if (now.getSeconds() === 0) {
-        if (!this.ticked) this.ticked = this.emit('tick', this, tick, remaining);
+        if (!this.ticked)
+          this.ticked = this.emit('tick', this, tick, remaining);
         else this.emit('tick', this, tick, remaining);
       }
 
@@ -93,7 +101,7 @@ export class LotteryHandler extends EventEmitter {
       }
 
       return this.tick(false);
-    }, ((60 - now.getSeconds()) * 1e3) - now.getMilliseconds());
+    }, (60 - now.getSeconds()) * 1e3 - now.getMilliseconds());
   }
 
   runInterval() {
@@ -113,8 +121,11 @@ export class LotteryHandler extends EventEmitter {
     const { requirement } = this;
 
     const { coins, raw, multi } = LotteryHandler.calcCoins(this.rewards);
-    const hasRole = (m: GuildMember, r: string) => m.roles.cache.has(r) && !m.user.bot;
-    const winner = randomInArray([...members.values()].filter(m => hasRole(m, requirement)));
+    const hasRole = (m: GuildMember, r: string) =>
+      m.roles.cache.has(r) && !m.user.bot;
+    const winner = randomInArray(
+      [...members.values()].filter((m) => hasRole(m, requirement))
+    );
 
     return { winner, coins, raw, multi };
   }
@@ -125,7 +136,8 @@ export class LotteryHandler extends EventEmitter {
   }
 
   static calcCoins(args: LottoConfig['rewards']) {
-    const randomNumber = (a: number, b: number) => Math.floor(Math.random() * (b - a + 1) + a);
+    const randomNumber = (a: number, b: number) =>
+      Math.floor(Math.random() * (b - a + 1) + a);
 
     const { min, max, cap } = args;
     let coins = randomNumber(min / 1e3, max / 1e3);

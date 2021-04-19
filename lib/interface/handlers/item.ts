@@ -1,12 +1,11 @@
 import { MessageEmbed, MessageEmbedOptions } from 'discord.js';
 import { AkairoModuleOptions } from 'discord-akairo';
 
-export type ItemReturn = string 
-  | IItemReturn;
+export type ItemReturn = string | IItemReturn;
 
-export interface ItemInfo { 
-  short: string; 
-  long: string; 
+export interface ItemInfo {
+  short: string;
+  long: string;
 }
 
 export interface ItemOptions extends AkairoModuleOptions {

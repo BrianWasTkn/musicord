@@ -2,7 +2,6 @@ import { AkairoClient, AkairoModule, AkairoHandler } from 'discord-akairo';
 import { CurrencyProfile } from './interface/mongo/currency';
 import { Config, config } from '../config';
 import { SpawnDocument } from './interface/mongo/spawns';
-import { MessagePlus } from './extensions/message';
 import { Collection } from 'discord.js';
 import { promisify } from 'util';
 import { argTypes } from './utility/types';
@@ -29,8 +28,7 @@ import mongoose from 'mongoose';
 import chalk from 'chalk';
 
 // ext structures
-import './extensions/message';
-import './extensions/user';
+import './extensions';
 
 interface DB {
   currency: CurrencyFunc<CurrencyProfile>;
@@ -38,7 +36,7 @@ interface DB {
 }
 
 interface Handlers {
-  emitter: ListenerHandler<Listener>;
+  emitter: ListenerHandler<Listener<Lava>>;
   command: CommandHandler<Command>;
   lottery: LotteryHandler;
   spawn: SpawnHandler<Spawn>;
@@ -61,12 +59,12 @@ export class Lava extends AkairoClient {
     this.config = cfg;
 
     this.handlers = {
-      emitter: new ListenerHandler<Listener>(this, {
+      emitter: new ListenerHandler<Listener<this>>(this, {
         directory: join(__dirname, '..', 'src', 'emitters'),
       }),
       command: new CommandHandler<Command>(this, {
         directory: join(__dirname, '..', 'src', 'commands'),
-        prefix: config.bot.prefix
+        prefix: config.bot.prefix,
       }),
       spawn: new SpawnHandler<Spawn>(this, {
         directory: join(__dirname, '..', 'src', 'spawns'),
@@ -77,11 +75,11 @@ export class Lava extends AkairoClient {
       item: new ItemHandler<Item>(this, {
         directory: join(__dirname, '..', 'src', 'items'),
       }),
-      lottery: new LotteryHandler(this)
+      lottery: new LotteryHandler(this),
     };
   }
 
-  setListenerHandler(handler: ListenerHandler<Listener>) {
+  setListenerHandler(handler: ListenerHandler<Listener<this>>) {
     this.handlers.emitter = handler;
     return this;
   }
@@ -112,19 +110,19 @@ export class Lava extends AkairoClient {
       Command: command,
       Spawn: spawn,
       Quest: quest,
-      Item: item
+      Item: item,
     };
 
     for (const [e, handler] of Object.entries(handlers)) {
       handler
-      .on('load', (mod: AkairoModule) => {
-        this.util.console({
-          klass: this.constructor.name,
-          type: 'def',
-          msg: `${e} ${mod.id} loaded.`
-        });
-      })
-      .loadAll();
+        .on('load', (mod: AkairoModule) => {
+          this.util.console({
+            klass: this.constructor.name,
+            type: 'def',
+            msg: `${e} ${mod.id} loaded.`,
+          });
+        })
+        .loadAll();
     }
   }
 

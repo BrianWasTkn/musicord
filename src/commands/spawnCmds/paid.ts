@@ -26,10 +26,12 @@ export default class Spawn extends Command {
     });
   }
 
-  async exec(ctx: Context<{
-    member: MemberPlus;
-    amount: number;
-  }>): Promise<string | MessageOptions> {
+  async exec(
+    ctx: Context<{
+      member: MemberPlus;
+      amount: number;
+    }>
+  ): Promise<string | MessageOptions> {
     const { fetch, remove } = this.client.db.spawns;
     const { amount, member } = ctx.args;
     if (!amount) return 'You need an amount';

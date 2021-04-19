@@ -43,11 +43,13 @@ export default class Fun extends Command {
     return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456'.split('');
   }
 
-  async exec(ctx: Context<{
-    amount: number;
-    lock: boolean;
-    hits: number;
-  }>): Promise<MessageOptions> {
+  async exec(
+    ctx: Context<{
+      amount: number;
+      lock: boolean;
+      hits: number;
+    }>
+  ): Promise<MessageOptions> {
     await ctx.delete().catch(() => {});
     const { amount, lock, hits } = ctx.args;
     const { util } = this.client;

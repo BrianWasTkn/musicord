@@ -20,13 +20,15 @@ const CurrencySchema = new Schema({
   bled: Type(Boolean, false, false),
 
   /* Inventory */
-  items: [{ 
-    amount: Number, 
-    expire: Number, 
-    multi: Number,
-    id: String,
-    cd: Number,
-  }],
+  items: [
+    {
+      amount: Number,
+      expire: Number,
+      multi: Number,
+      id: String,
+      cd: Number,
+    },
+  ],
 
   /* Daily */
   daily: {
@@ -44,15 +46,17 @@ const CurrencySchema = new Schema({
   quest: {
     target: Type(Number, false, 0),
     count: Type(Number, false, 0),
-    id: Type(String, false, '123')
+    id: Type(String, false, '123'),
   },
 
   /* Cooldowns */
-  cooldowns: [{
-    expire: Type(Number, false, 0),
-    uses: Type(Number, false, 0),
-    id: Type(String, false, 'help')
-  }]
+  cooldowns: [
+    {
+      expire: Type(Number, false, 0),
+      uses: Type(Number, false, 0),
+      id: Type(String, false, 'help'),
+    },
+  ],
 });
 
 export default model<Document<CurrencyProfile>>('currency', CurrencySchema);

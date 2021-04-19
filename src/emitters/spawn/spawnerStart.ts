@@ -26,16 +26,19 @@ export default class SpawnListener extends Listener<SpawnHandler<Spawn>> {
     const m = await ctx.send({
       content: `**${spawn.emoji} \`${spawn.type} EVENT NICE!\`**`,
       embed: {
-        footer: { text: ctx.author.tag, iconURL: ctx.author.avatarURL({ dynamic: true }) },
+        footer: {
+          text: ctx.author.tag,
+          iconURL: ctx.author.avatarURL({ dynamic: true }),
+        },
         description: spawn.description,
         title: spawn.title,
         color: 'GOLD',
-      }
+      },
     });
 
     const title = `Type \`${str.split('').join('\u200b')}\``;
     const color = randomInArray(['GOLD', 'GREEN', 'ORANGE']);
-    await ctx.send({ embed: { title, color }});
+    await ctx.send({ embed: { title, color } });
 
     return handler.queue.set(ctx.channel.id, {
       channel: ctx.channel.id,

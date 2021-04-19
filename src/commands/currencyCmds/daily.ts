@@ -18,28 +18,33 @@ export default class Currency extends Command {
     let { streak, time } = data.daily;
 
     if (Date.now() - time > 172800000) {
-    	data.daily.streak = 1;
-    	await data.save();
+      data.daily.streak = 1;
+      await data.save();
       streak = 1;
     } else {
-    	data.daily.streak++;
-    	await data.save();
+      data.daily.streak++;
+      await data.save();
       streak += 1;
     }
 
     let won = 10000;
-    const streakBonus = Math.round((0.15 * won) * streak);
+    const streakBonus = Math.round(0.15 * won * streak);
     if (streak > 1) {
-    	won += streakBonus;
+      won += streakBonus;
     }
     data.daily.time = Date.now();
     data.pocket += won;
     await data.save();
 
-    return { embed: {
-      title: `Here are your daily coins, ${ctx.author.username}`,
-      description: `**${won.toLocaleString()}** were placed in your pocket.`,
-      color: 'BLUE', footer: { text: `Streak: ${streak} days (+${streakBonus.toLocaleString()})` }
-    }};
+    return {
+      embed: {
+        title: `Here are your daily coins, ${ctx.author.username}`,
+        description: `**${won.toLocaleString()}** were placed in your pocket.`,
+        color: 'BLUE',
+        footer: {
+          text: `Streak: ${streak} days (+${streakBonus.toLocaleString()})`,
+        },
+      },
+    };
   }
 }

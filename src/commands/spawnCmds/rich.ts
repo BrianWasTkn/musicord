@@ -12,9 +12,7 @@ export default class Spawn extends Command {
       description: 'View the leaderboard for spawns.',
       category: 'Spawn',
       cooldown: 1e4,
-      args: [
-        { id: 'count', type: 'number', default: 10 },
-      ],
+      args: [{ id: 'count', type: 'number', default: 10 }],
     });
   }
 
@@ -23,20 +21,29 @@ export default class Spawn extends Command {
     const { count } = ctx.args;
     ctx.send({ replyTo: ctx.id, content: 'Fetching...' });
 
-    const docs = (await Mongo.models['spawn-profile'].find({})) as (Document & SpawnDocument)[];
-    const filt = docs.filter(s => s.unpaid < Infinity && s.unpaid > 0).sort((a, b) => b.unpaid - a.unpaid).slice(0, count);
+    const docs = (await Mongo.models['spawn-profile'].find({})) as (Document &
+      SpawnDocument)[];
+    const filt = docs
+      .filter((s) => s.unpaid < Infinity && s.unpaid > 0)
+      .sort((a, b) => b.unpaid - a.unpaid)
+      .slice(0, count);
     const rich = filt.map((f, i) => {
       const user = ctx.guild.members.cache.get(f.userID) || '**LOL WHO DIS**';
-      return `:${emojis[i] || 'eggplant'}: **${f.unpaid.toLocaleString()}** - ${typeof user === 'object' ? (user as MemberPlus).user.tag : user}`;
+      return `:${emojis[i] || 'eggplant'}: **${f.unpaid.toLocaleString()}** - ${
+        typeof user === 'object' ? (user as MemberPlus).user.tag : user
+      }`;
     });
 
-    return { embed: {
-      author: { name: 'top unpaids' },
-      description: rich.join('\n'),
-      color: 'ORANGE', footer: {
-        iconURL: ctx.client.user.avatarURL(),
-        text: ctx.client.user.username,
-      }
-    }};
+    return {
+      embed: {
+        author: { name: 'top unpaids' },
+        description: rich.join('\n'),
+        color: 'ORANGE',
+        footer: {
+          iconURL: ctx.client.user.avatarURL(),
+          text: ctx.client.user.username,
+        },
+      },
+    };
   }
 }

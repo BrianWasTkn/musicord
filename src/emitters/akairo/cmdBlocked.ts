@@ -10,21 +10,17 @@ export default class CommandListener extends Listener<CommandHandler<Command>> {
     });
   }
 
-  async exec(
-    ctx: Context,
-    cmd: Command,
-    reason: string
-  ) {
+  async exec(ctx: Context, cmd: Command, reason: string) {
     function getMessage(reason: string) {
-      switch(reason.toLowerCase()) {
+      switch (reason.toLowerCase()) {
         case 'owner':
-          return 'You\'re not my bot owner :P';
+          return "You're not my bot owner :P";
         case 'dm':
           return 'Not usable in guilds sorry';
         case 'guild':
           return 'Not usable in DMs sorry';
         default:
-          return 'You can\'t use this command for no reason wtf';
+          return "You can't use this command for no reason wtf";
       }
     }
 

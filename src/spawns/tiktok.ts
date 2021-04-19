@@ -6,7 +6,7 @@ const visuals: SpawnVisual = {
   emoji: '<:memerBlue:729863510330310727>',
   type: 'COMMON',
   title: 'Tiktok',
-  description: "What is TikTok for you?",
+  description: 'What is TikTok for you?',
   strings: ['cringe', 'cool', 'average'],
 };
 

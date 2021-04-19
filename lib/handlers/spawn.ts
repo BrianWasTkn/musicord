@@ -37,11 +37,7 @@ export class Spawn extends BaseModule {
   config: Partial<SpawnConfig>;
   spawn: SpawnVisual;
 
-  constructor(
-    id: string,
-    spawn: SpawnVisual,
-    config: Partial<SpawnConfig>,
-  ) {
+  constructor(id: string, spawn: SpawnVisual, config: Partial<SpawnConfig>) {
     super(id, { category: spawn.type });
     this.answered = new Collection();
     this.config = config;
@@ -53,7 +49,7 @@ export class Spawn extends BaseModule {
     '768858996659453963': 3, // Donator
     '794834783582421032': 5, // Mastery
     '693380605760634910': 10, // Amari
-  })
+  });
 
   getCooldown(m: GuildMember, cds: { [role: string]: number }) {
     for (const [r, cd] of Object.entries(cds)) {
@@ -90,8 +86,11 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
       if (authorEntries.length > 1) collected.delete(msg.id);
     }
 
-    return this.emit('messageCollect', { 
-      msg, spawner, handler, isFirst 
+    return this.emit('messageCollect', {
+      msg,
+      spawner,
+      handler,
+      isFirst,
     });
   }
 
@@ -103,8 +102,12 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
     const { collected, spawner, msg } = args;
     const isEmpty = Boolean(collected.size);
     const handler = this;
-    return this.emit('messageResults', { 
-      msg, spawner, collected, handler, isEmpty 
+    return this.emit('messageResults', {
+      msg,
+      spawner,
+      collected,
+      handler,
+      isEmpty,
     });
   }
 
@@ -123,7 +126,12 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
     const handler = this;
 
     return this.emit('reactionCollect', {
-      handler, spawner, msg, reaction, user, isFirst
+      handler,
+      spawner,
+      msg,
+      reaction,
+      user,
+      isFirst,
     });
   }
 
@@ -139,7 +147,11 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
     const { collector, spawner, msg } = ctx;
     const handler = this;
     return this.emit('reactionCollect', {
-      handler, spawner, msg, reaction, user
+      handler,
+      spawner,
+      msg,
+      reaction,
+      user,
     });
   }
 
@@ -152,7 +164,11 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
     const handler = this;
 
     return this.emit('reactionResults', {
-      handler, spawner, msg, collected, isEmpty
+      handler,
+      spawner,
+      msg,
+      collected,
+      isEmpty,
     });
   }
 
@@ -164,7 +180,7 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
   async spawn(
     spawner: Module,
     msg: Context
-  ): Promise<ReactionCollector|MessageCollector|void> {
+  ): Promise<ReactionCollector | MessageCollector | void> {
     if (['spam', 'message'].includes(spawner.config.type)) {
       const str = this.client.util.randomInArray(spawner.spawn.strings);
 
@@ -173,11 +189,12 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
         max: spawner.config.entries,
         time: spawner.config.timeout,
       };
-      
+
       // MessageCollector#filter
-      const filter: CollectorFilter<[Context]> = async (
-        { author, content }
-      ) => {
+      const filter: CollectorFilter<[Context]> = async ({
+        author,
+        content,
+      }) => {
         const { fetch } = this.client.db.spawns;
         const { cap } = this.client.config.spawn;
         const isSpam = spawner.config.type === 'spam';
@@ -200,16 +217,15 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
 
       // MessageCollector#on<collect|end>
       collector
-      .on('collect', (msg: Context) => {
-        this.handleMessageCollect<Context>({ msg, collector, spawner });
-      })
-      .on('end', (collected: Collection<string, Context>) => {
-        this.handleMessageEnd<Context>({ collected, spawner, msg });
-      });
+        .on('collect', (msg: Context) => {
+          this.handleMessageCollect<Context>({ msg, collector, spawner });
+        })
+        .on('end', (collected: Collection<string, Context>) => {
+          this.handleMessageEnd<Context>({ collected, spawner, msg });
+        });
 
       return collector;
     } else if (spawner.config.type === 'react') {
-
       // ReactionCollector#options
       const options: ReactionCollectorOptions = {
         maxUsers: spawner.config.entries,
@@ -218,7 +234,10 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
       };
 
       // ReactionCollector#filter
-      const filter: CollectorFilter<[MessageReaction, User]> = async (reaction, user) => {
+      const filter: CollectorFilter<[MessageReaction, User]> = async (
+        reaction,
+        user
+      ) => {
         const { fetch } = this.client.db.spawns;
         const { cap } = this.client.config.spawn;
 
@@ -240,15 +259,23 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
 
       // ReactionCollector#on<collect|remove|end>
       collector
-      .on('collect', (reaction: MessageReaction, user: User) => {
-        this.handleReactionCollect(reaction, user, { msg, collector, spawner });
-      })
-      .on('remove', (reaction: MessageReaction, user: User) => {
-        this.handleReactionRemove(reaction, user, { msg, collector, spawner });
-      })
-      .on('end', (collected: Collection<string, MessageReaction>) => {
-        this.handleReactionEnd(collected, { msg, spawner });
-      });
+        .on('collect', (reaction: MessageReaction, user: User) => {
+          this.handleReactionCollect(reaction, user, {
+            msg,
+            collector,
+            spawner,
+          });
+        })
+        .on('remove', (reaction: MessageReaction, user: User) => {
+          this.handleReactionRemove(reaction, user, {
+            msg,
+            collector,
+            spawner,
+          });
+        })
+        .on('end', (collected: Collection<string, MessageReaction>) => {
+          this.handleReactionEnd(collected, { msg, spawner });
+        });
 
       return collector;
     } else {

@@ -37,7 +37,7 @@ async function handleDonation(
   type: 'giveaway' | 'event' | 'heist'
 ) {
   try {
-    await msg.delete();
+    await ctx.delete();
     const dm = await ctx.author.createDM();
     const res = new Collection<string, string>();
     try {
@@ -45,8 +45,11 @@ async function handleDonation(
       await dm.send(
         `**Welcome to our interactive ${type} donation menu**\n*I will ask you series of questions for your ${type} donation. You have **60 seconds** for each question. You can type \`cancel\` anytime. Type anything to continue.*`
       );
-      const filter: CollectorFilter<Context[]> = m => m.author.id === ctx.author.id;
-      const fcol = (await dm.awaitMessages(filter, { max: 1, time: 60000 })).first();
+      const filter: CollectorFilter<Context[]> = (m) =>
+        m.author.id === ctx.author.id;
+      const fcol = (
+        await dm.awaitMessages(filter, { max: 1, time: 60000 })
+      ).first();
       if (!fcol || fcol.content.toLowerCase() === 'cancel') {
         return await dm.send('The donation has been cancelled.');
       }
@@ -55,7 +58,9 @@ async function handleDonation(
       let index: number = 0;
       async function collect(question: string) {
         await dm.send(question);
-        const m = (await dm.awaitMessages(filter, { max: 1, time: 60000 })).first();
+        const m = (
+          await dm.awaitMessages(filter, { max: 1, time: 60000 })
+        ).first();
         if (!m || m.content.toLowerCase() === 'cancel') return false;
         res.set(qArr[index], m.content);
         index++;
@@ -98,8 +103,10 @@ async function handleDonation(
       return await dm.send('Something wrong occured :c');
     }
   } catch {
-    const m = await ctx.send({ content: `${ctx.author.toString()} please open your DMs.` });
-    await new Promise(res => setTimeout(res, 1e4));
+    const m = await ctx.send({
+      content: `${ctx.author.toString()} please open your DMs.`,
+    });
+    await new Promise((res) => setTimeout(res, 1e4));
     return await m.delete();
   }
 }

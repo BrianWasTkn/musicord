@@ -22,7 +22,7 @@ export const utils: CurrencyUtil = {
     bot: Lava,
     ctx: Context,
     db: Document & CurrencyProfile
-  ): { unlocked: string[]; total: number, multis: number } {
+  ): { unlocked: string[]; total: number; multis: number } {
     const { maxMulti } = bot.config.currency;
     const channel = ctx.channel as GuildChannel;
     let unlocked = [];

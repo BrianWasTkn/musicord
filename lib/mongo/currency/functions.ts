@@ -25,13 +25,16 @@ export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
   }
 
   fetch = async (userID: Snowflake): Promise<Document & Profile> => {
-    const data = ((await this.model.findOne({ userID })) 
-      || new this.model({ userID })) as Document & Profile;
+    const data = ((await this.model.findOne({ userID })) ||
+      new this.model({ userID })) as Document & Profile;
 
     for (const item of this.bot.handlers.item.modules.array()) {
       const inv = data.items.find((i) => i.id === item.id);
       if (!inv) {
-        const expire = 0, amount = 0, multi = 0, id = item.id;
+        const expire = 0,
+          amount = 0,
+          multi = 0,
+          id = item.id;
         data.items.push({ expire, amount, multi, id });
       }
     }

@@ -52,7 +52,10 @@ import {
 
 // Mandate types for both mod and handler constructors
 type HandlerConstructor = [Lava, AkairoHandlerOptions];
-type ModConstructor = [string, ListenerOptions & { emitter: string | EventEmitter }];
+type ModConstructor = [
+  string,
+  ListenerOptions & { emitter: string | EventEmitter }
+];
 
 export class Listener<Emitter extends EventEmitter> extends AkairoListener {
   handler: ListenerHandler<this>;
@@ -64,18 +67,23 @@ export class Listener<Emitter extends EventEmitter> extends AkairoListener {
   }
 }
 
-export class ListenerHandler<Module extends Listener<EventEmitter>> extends AkairoListenerHandler {
+export class ListenerHandler<
+  Module extends Listener<EventEmitter>
+> extends AkairoListenerHandler {
   categories: Collection<string, Category<string, Module>>;
   modules: Collection<string, Module>;
   client: Lava;
 
   constructor(...args: HandlerConstructor) {
-    const [client, {
-      automateCategories = true,
-      classToHandle = Listener,
-      loadFilter = () => true,
-      directory = './src/emitters',
-    }] = args;
+    const [
+      client,
+      {
+        automateCategories = true,
+        classToHandle = Listener,
+        loadFilter = () => true,
+        directory = './src/emitters',
+      },
+    ] = args;
 
     super(client, {
       automateCategories,

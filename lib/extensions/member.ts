@@ -5,22 +5,22 @@ import { Lava } from '@lib/Lava';
 type Constructor = [Lava, object, Guild];
 
 export class MemberPlus extends GuildMember {
-	public user: UserPlus;
-	public client: Lava;
+  public user: UserPlus;
+  public client: Lava;
 
-	public constructor(...args: Constructor) {
-		super(...args);
-	}
+  public constructor(...args: Constructor) {
+    super(...args);
+  }
 
-	getColor(hex = false) {
-		return hex ? this.displayHexColor : this.displayColor;
-	}
+  getColor(hex = false) {
+    return hex ? this.displayHexColor : this.displayColor;
+  }
 
-	getData() {
-		return this.client.db.currency.fetch(this.user.id);
-	}
+  getData() {
+    return this.client.db.currency.fetch(this.user.id);
+  }
 }
 
 export default () => {
-	return Structures.extend('GuildMember', () => MemberPlus);
-}
+  return Structures.extend('GuildMember', () => MemberPlus);
+};

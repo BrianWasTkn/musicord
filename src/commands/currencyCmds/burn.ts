@@ -26,10 +26,8 @@ export default class Currency extends Command {
     const { data } = await ctx.db.fetch();
     const { amount } = ctx.args;
 
-    if (!amount) 
-      return 'You need something to burn, bruh';
-    if (amount < 1) 
-      return 'Not allowed, sorry not sorry';
+    if (!amount) return 'You need something to burn, bruh';
+    if (amount < 1) return 'Not allowed, sorry not sorry';
     if (amount > data.pocket)
       return 'Imagine burning money higher than your pocket lmao';
 
