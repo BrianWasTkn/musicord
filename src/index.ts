@@ -7,6 +7,7 @@ import { join } from 'path';
 import Args from './arguments';
 
 const read = (...dirs: string[]) => join(__dirname, ...dirs);
+console.log(read('commands'));
 const lava = new Lava(config.akairo, config.discord, {
 	command: { directory: read('commands'), prefix: config.bot.prefix },
 	listener: { directory: read('listeners') },
