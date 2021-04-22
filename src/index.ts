@@ -7,7 +7,6 @@ import { join } from 'path';
 import Args from './arguments';
 
 const read = (...dirs: string[]) => join(__dirname, ...dirs);
-console.log(read('commands'));
 const lava = new Lava(config.akairo, config.discord, {
 	command: { directory: read('commands'), prefix: config.bot.prefix },
 	listener: { directory: read('listeners') },
@@ -32,4 +31,4 @@ lava.on('moduleLoad', module => {
 })
 
 const { uri, options } = config.bot.mongo;
-lava.setMongoPath(uri, options).loadModules().addTypes(Args).start();
+lava.setMongoPath(uri, options).loadAll().addTypes(Args).start();
