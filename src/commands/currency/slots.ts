@@ -85,7 +85,7 @@ export default class Currency extends Command {
     } = this.client;
 
     // Check Args
-    const { minBet, maxBet } = config.currency;
+    const { minBet, maxBet, maxPocket } = config.currency;
     const userEntry = await ctx.db.fetch();
     const { data } = userEntry;
 
@@ -98,6 +98,8 @@ export default class Currency extends Command {
           return { state, m: 'You need something to slot!' };
         case data.pocket <= 0:
           return { state, m: "You don't have coins to slot!" };
+        case data.pocket >= maxPocket: 
+          return { state, m: `You're too rich (${maxPocket.toLocaleString()}) to gamble!` };
         case bet < minBet:
           return { state, m: `You can't slot lower than **${minBet}** coins sorry` };
         case bet > maxBet:

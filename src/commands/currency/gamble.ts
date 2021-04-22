@@ -38,7 +38,7 @@ export default class Currency extends Command {
     } = ctx.client;
 
     // Core
-    const { maxWin, minBet, maxBet } = config.currency;
+    const { maxWin, minBet, maxBet, maxPocket } = config.currency;
     const userEntry = await ctx.db.fetch();
     const { data } = userEntry;
     let { total: multi } = DB.utils.calcMulti(ctx, data);
@@ -52,6 +52,8 @@ export default class Currency extends Command {
           return { state, m: 'You need something to gamble!' };
         case data.pocket <= 0:
           return { state, m: "You don't have coins to gamble!" };
+        case data.pocket >= maxPocket: 
+          return { state, m: `You're too rich (${maxPocket.toLocaleString()}) to gamble!` };
         case bet < minBet:
           return { state, m: `You can't gamble lower than **${minBet}** coins sorry` };
         case bet > maxBet:

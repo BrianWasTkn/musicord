@@ -24,10 +24,10 @@ export default class Currency extends Command {
 	}
 
 	async exec(ctx: Context<{ member: MemberPlus }>): Promise<MessageOptions> {
-		const { user } = ctx.args.member;
 		if (!ctx.args.member) {
 			return { content: `You need to rob someone!` };
 		}
+		const { user } = ctx.args.member;
 		if (user.id === ctx.author.id) {
 			return { content: `Bro you need to rob someone, not yourself dumbo` };
 		}
@@ -48,6 +48,14 @@ export default class Currency extends Command {
 		let lock = vicEntry.data.items.find(i => i.id === 'lock');
 		let odds = ctx.client.util.randomNumber(1, 100);
 		if (lock.expire > Date.now()) {
+			if (odds >= 30) {
+				const hahayes = vicEntry.data.items.find(i => i.id === 'lock');
+				hahayes.expire = 0;
+				hahayes.active = false;
+				await vicEntry.data.save();
+				return { content: `**You broke their padlock!**\nGive one more attempt for a robbery!` };
+			}
+			
 			return { content: `You almost broke their padlock! Give one more try.` };
 		}
 		// Cleaned

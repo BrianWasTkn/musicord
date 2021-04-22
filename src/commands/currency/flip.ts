@@ -38,7 +38,7 @@ export default class Currency extends Command {
     } = ctx.client;
 
     // Core
-    const { maxWin, minBet, maxBet } = config.currency;
+    const { maxWin, minBet, maxBet, maxPocket } = config.currency;
     const userEntry = await ctx.db.fetch();
     const { data } = userEntry;
     let { total: multi } = DB.utils.calcMulti(ctx, data);
@@ -52,6 +52,8 @@ export default class Currency extends Command {
           return { state, m: 'You need something to flip!' };
         case data.pocket <= 0:
           return { state, m: "You don't have coins to flip!" };
+        case data.pocket >= maxPocket: 
+          return { state, m: `You're too rich (${maxPocket.toLocaleString()}) to gamble!` };
         case bet < minBet:
           return { state, m: `You can't flip lower than **${minBet}** coins sorry` };
         case bet > maxBet:
@@ -77,8 +79,11 @@ export default class Currency extends Command {
 
     // vis and db
     // let perwn: number, description: string[], identifier: string, color: string;
-
-    ctx.send({ content: 'Call `heads` or `tails` within 30 seconds.' });
+    const getAuthor = () => ({ author: `${ctx.author.username}'s coin game`, icon_url: ctx.author.avatarURL({ dynamic: true }) });
+    ctx.send({ embed: {
+      description: `**Call \`heads\` or \`tails\` in 30 seconds.**\nYour bet is **${bet.toLocaleString()}** coins.`,
+      author: getAuthor(), color: 2533018, 
+    }})
     const choice = (await ctx.awaitMessage()).first();
     if (!choice || !choice.content) {
     	await userEntry.removePocket(bet).updateItems().save();
@@ -87,20 +92,32 @@ export default class Currency extends Command {
     if (choice.content.toLowerCase().includes('heads')) {
     	if (cflip === heads) {
     		await userEntry.addPocket(bet).updateItems().calcSpace().save();
-    		return { content: `It was heads! You won **${bet.toLocaleString()}** coins.` };
+        return { embed: {
+          description: `**You won! It was heads!**\nYou won **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
+          author: getAuthor(), color: 'GREEN',
+        }};
     	}
 
     	await userEntry.removePocket(bet).updateItems().save();
-    	return { content: 'aw it was tails, you lost your bet.' };
+      return { embed: {
+        description: `**You lost! It was heads!**\nYou lost **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
+        author: getAuthor(), color: 'RED',
+      }};
     }
     if (choice.content.toLowerCase().includes('tails')) {
     	if (cflip === tails) {
     		await userEntry.addPocket(bet).updateItems().calcSpace().save();
-    		return { content: `It was tails! You won **${bet.toLocaleString()}** coins.` };
+        return { embed: {
+          description: `**You won! It was tails!**\nYou won **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
+          author: getAuthor(), color: 'GREEN',
+        }};
     	}
 
     	await userEntry.removePocket(bet).updateItems().save();
-    	return { content: 'aw it was heads, you lost your bet.' };
+      return { embed: {
+        description: `**You lost! It was tails!**\nYou lost **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
+        author: getAuthor(), color: 'RED',
+      }};
     }
   }
 }

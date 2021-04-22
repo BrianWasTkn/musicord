@@ -26,8 +26,9 @@ export default class Tool extends Item {
 
   	const time = 3 * 60 * 60 * 1e3;
     inv.expire = Date.now() + time; // 3 hours
+    inv.amount--;
     await data.save();
 
-    return `${this.emoji} Your pocket's now safe for ${parseTime(time / 1e3)} so be careful!`;
+    return `Your **${this.emoji} ${this.name}** has been activated for **${parseTime(time / 1e3)}** so be careful!`;
   }
 }
