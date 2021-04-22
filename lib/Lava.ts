@@ -124,7 +124,7 @@ export class Lava extends AkairoClient {
 		const { listener, command, spawn, quest, item } = this.handlers;
 		command.useListenerHandler(listener);
 		listener.setEmitters({ listener, command, spawn, quest, item });
-		for (const handler of [listener, command, spanw, quest, item]) {
+		for (const handler of [listener, command, spawn, quest, item]) {
 			handler.loadAll();
 		}
 
