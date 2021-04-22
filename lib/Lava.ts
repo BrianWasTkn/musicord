@@ -124,6 +124,8 @@ export class Lava extends AkairoClient {
 			handler.on('load', mod => { mods[index].push(mod) })
 			.loadAll().client.emit('handlerLoad', handler);
 		});
+
+		return this;
 	}
 
 	patch() {

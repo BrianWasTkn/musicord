@@ -31,4 +31,4 @@ lava.on('handlerLoad', handler => {
 })
 
 const { uri, options } = config.bot.mongo;
-lava.setMongoPath(uri, options).addTypes(Args).start();
+lava.setMongoPath(uri, options).loadModules().addTypes(Args).start();
