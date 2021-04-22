@@ -100,7 +100,7 @@ export default class Currency extends Command {
 
     	await userEntry.removePocket(bet).updateItems().save();
       return { embed: {
-        description: `**You lost! It was heads!**\nYou lost **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
+        description: `**You lost! It was tails!**\nYou lost **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
         author: getAuthor(), color: 'RED',
       }};
     }
@@ -115,7 +115,7 @@ export default class Currency extends Command {
 
     	await userEntry.removePocket(bet).updateItems().save();
       return { embed: {
-        description: `**You lost! It was tails!**\nYou lost **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
+        description: `**You lost! It was heads!**\nYou lost **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
         author: getAuthor(), color: 'RED',
       }};
     }
