@@ -8,11 +8,10 @@ export default { type: 'shopItem', fn: ((ctx: Context, args: string): Item => {
 	const mod = modules.get(args.toLowerCase());
 
 	let found: Item;
-	if (!found) {
-		found = modules.find(mod => [mod.name, mod.id]
-		.map(things => things.toLowerCase())
-		.includes(args.toLowerCase()));
-	}
+	found = modules.find(mod => {
+		return mod.name.toLowerCase().includes(args.toLowerCase())
+		|| mod.id.toLowerCase().includes(args.toLowerCase());
+	});
 
 	return mod || found || null;
 }) as ArgumentTypeCaster };

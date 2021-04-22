@@ -29,7 +29,7 @@ export default { type: 'gambleAmount', fn: (async (ctx: Context, args: string): 
 			bet = minBet;
 		else if (args.match(/k/g)) {
 			const kay = args.replace(/k$/g, '');
-			bet = Number(kay) ? Number(kay)	: null;
+			bet = Number(kay) ? Number(kay) * 1e3 : null;
 		}	else {
 			reply(Const.BET_IS_NAN);
 			return null;

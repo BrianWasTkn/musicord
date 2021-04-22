@@ -12,11 +12,10 @@ export default { type: 'questQuery', fn: ((ctx: Context, args: string): string |
 	const mod = modules.get(args.toLowerCase());
 
 	let found: Quest;
-	if (!found) {
-		found = modules.find(mod => [mod.name, mod.id]
-		.map(things => things.toLowerCase())
-		.includes(args.toLowerCase()));
-	}
+	found = modules.find(mod => {
+		return mod.name.toLowerCase().includes(args.toLowerCase())
+		|| mod.id.toLowerCase().includes(args.toLowerCase());
+	});
 
 	return mod || found || null;
 }) as ArgumentTypeCaster };
