@@ -28,7 +28,7 @@ export default class Currency extends Command {
       handlers: { item },
       util: { parseTime },
     } = this.client;
-    const { data } = await ctx.db.fetch(ctx.args.member.user.id);
+    const { data } = await ctx.db.fetch(ctx.args.member.user.id, ctx.author.id === ctx.args.member.user.id);
     const stamp = ctx.createdTimestamp;
     const actives = data.items
       .filter((i) => i.expire > stamp)
@@ -40,10 +40,11 @@ export default class Currency extends Command {
       });
 
     if (actives.length < 1) {
-      return { replyTo: ctx, content: "You don't have active items!" };
+      return { replyTo: ctx, content: `${ctx.args.member.user.id === ctx.author.id ? 'You' : 'They'} don't have active items!` };
     }
 
     return {
+      replyTo: ctx.id,
       embed: {
         title: `${ctx.args.member.user.username}'s active items`,
         description: actives.join('\n'),

@@ -80,7 +80,7 @@ export default class Currency extends Command {
     } else {
       if (!query)
         return "That item doesn't even exist in the shop what're you doing?";
-      const { data } = await ctx.db.fetch();
+      const data = (await ctx.db.fetch()).data;
       const inv = data.items.find((i) => i.id === query.id);
 
       function calc(amount: number, discount: number) {

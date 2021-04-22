@@ -25,6 +25,7 @@ export default class PowerUp extends Item {
     const inv = data.items.find((i) => i.id === this.id);
 
     inv.expire = Date.now() + 12 * 60 * 60 * 1e3; // 12 hours
+    inv.active = true;
     await data.save();
 
     return `Your dragon has been activated for **12 hours** so be careful when gambling :smiley:`;

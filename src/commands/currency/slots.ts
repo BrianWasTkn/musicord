@@ -33,9 +33,9 @@ export default class Currency extends Command {
       eggplant: [1, 25, false],
       flushed: [1, 75, true],
       star2: [1, 100, true],
-      fire: [1, 1000, true],
-      four_leaf_clover: [1, 2500, true],
-      kiss: [1, 5000, true],
+      fire: [2, 1000, true],
+      four_leaf_clover: [3, 2500, true],
+      kiss: [5, 5000, true],
     };
   }
 

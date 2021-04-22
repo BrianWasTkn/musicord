@@ -1,6 +1,6 @@
+import { Collection, CollectorFilter, MessageCollectorOptions } from 'discord.js';
 import { MemberPlus, UserPlus } from '.';
 import { CurrencyProfile } from 'lib/interface/mongo/currency';
-import { Collection } from 'discord.js';
 import { Document } from 'mongoose';
 import { Command } from 'lib/handlers/command';
 import { Effects } from 'lib/utility/effects';
@@ -63,6 +63,12 @@ export class Context<Args extends {} = {}> extends Message {
     return this.channel.messages.fetch(id != null ? id : this.id);
   }
 
+  awaitMessage(user = this.author.id, time = 3e4): Promise<Collection<string, this>> {
+    const options: MessageCollectorOptions = { max: 1, time };
+    const filter: CollectorFilter<[this]> = ({ author }) => user === author.id;
+    return this.channel.awaitMessages.call(this.channel, filter, options);
+  }
+
   toString() {
     return super.toString();
   }
@@ -84,7 +90,9 @@ export class ContextDatabase extends Base {
     let data: CurrencyProfile;
     data = await fetch(id);
     if (assign) this.data = data;
-    return assign ? this : { ...this, data };
+    const temp = new ContextDB(this.ctx);
+    temp.data = data;
+    return assign ? this : temp as this;
   }
 
   fetch(id = this.ctx.author.id, assign = true) {
@@ -118,8 +126,43 @@ export class ContextDatabase extends Base {
   }
 
   calcSpace(offset: number = 55, boost: number = 1, limit: number = 1000e6) {
+    if (!this.data) this._reportError();
     const calc = (boosty: number) => Math.round(offset * (boosty / 2) + offset);
-    this.data.space = Math.min(calc(boost), limit);
+    this.data.space = Math.min(this.data.space + calc(boost), limit);
+    return this;
+  }
+
+  recordDailyStreak() {
+    if (!this.data) this._reportError();
+    this.data.daily.time = Date.now();
+    return this;
+  }
+
+  addDailyStreak() {
+    if (!this.data) this._reportError();
+    this.data.daily.streak++;
+    return this;
+  }
+
+  resetDailyStreak() {
+    if (!this.data) this._reportError();
+    this.data.daily.streak = 1;
+    return this;
+  }
+
+  addInv(item: string, amount = 1) {
+    if (!this.data) this._reportError();
+    const module = this.client.handlers.item.modules.get(item);
+    const inv = module.findInv(this.data.items, module);
+    inv.amount += amount;
+    return this;
+  }
+
+  removeInv(item: string, amount = 1) {
+    if (!this.data) this._reportError();
+    const module = this.client.handlers.item.modules.get(item);
+    const inv = module.findInv(this.data.items, module);
+    inv.amount -= amount;
     return this;
   }
 
@@ -140,9 +183,10 @@ export class ContextDatabase extends Base {
       };
 
       if (item.checks.includes('activeState') && inv.active) {
-        trigger[inv.id](); if (Math.random() < 0.1) inv.amount--;
+        if (trigger[item.id]) trigger[item.id](); 
+        if (Math.random() < 0.1) inv.amount--;
       } else if (item.checks.includes('time') && inv.expire > Date.now()) {
-        trigger[inv.id]();
+        if (trigger[item.id]) trigger[item.id](); 
       } else { continue; }
 
       const temp = new Collection<string, Effects>();
@@ -176,5 +220,8 @@ export class ContextDatabase extends Base {
     return `[${this.constructor.name}]`;
   }
 }
+
+// Circular 
+const ContextDB = ContextDatabase;
 
 export default () => Structures.extend('Message', () => Context);

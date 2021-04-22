@@ -6,7 +6,7 @@ export default class Flex extends Item {
   constructor() {
     super('pee', {
       category: 'Flex',
-      sellable: false,
+      sellable: true,
       buyable: true,
       usable: true,
       emoji: ':baby_bottle:',

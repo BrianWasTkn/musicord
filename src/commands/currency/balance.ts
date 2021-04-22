@@ -25,9 +25,8 @@ export default class Currency extends Command {
   }
 
   async exec(ctx: Context<{ member: MemberPlus }>): Promise<MessageOptions> {
-    const { pocket, vault, space, items } = (
-      await ctx.db.fetch(ctx.args.member.user.id)
-    ).data;
+    const userEntry = await ctx.db.fetch(ctx.args.member.user.id, ctx.args.member.user.id === ctx.author.id),
+    { pocket, vault, space, items } = userEntry.data;
 
     const calc = (i: InventorySlot) => {
       const { modules } = this.client.handlers.item;

@@ -21,8 +21,9 @@ export default class PowerUp extends Item {
 
   async use(ctx: Context): Promise<string> {
     const { randomNumber, randomInArray, sleep } = this.client.util;
-    const { data } = await ctx.db.fetch();
-    const xplo = this.findInv(data.items, this);
+    const entry = await ctx.db.fetch();
+    const data = entry.data;
+    const xplo = super.findInv(data.items, this);
 
     await ctx.send({
       content: `**${this.emoji} Fusing your bomb...**`,
@@ -35,8 +36,8 @@ export default class PowerUp extends Item {
     if (odds >= 60) {
       const mods = this.client.handlers.item.modules
         .array()
-        .filter((i) => i.cost >= 5e6);
-      const items: { amt: number; item: Item }[] = [];
+        .filter((i) => i.cost >= 1e6);
+      const items: { amt?: number; item?: Item }[] = [{ amt: 1, item: this }];
       const coins = randomNumber(10, 100) * 1e6;
 
       xplo.amount--;
@@ -57,11 +58,11 @@ export default class PowerUp extends Item {
       const its = items
         .sort((a, b) => b.amt - a.amt)
         .map(({ amt, item }) => {
-          data.items.find((i) => i.id === item.id).amount += amt;
+          entry.addInv(item.id, amt);
           return `\`${amt.toLocaleString()}\` ${item.emoji} ${item.name}`;
         });
 
-      await ctx.db.addPocket(coins).updateItems().save();
+      await entry.addPocket(coins).updateItems().save();
       return `**__:slight_smile: Bomb contents for ${ctx.author.toString()}__**\n${[
         `\`${coins.toLocaleString()} coins\``,
         ...its,
@@ -71,10 +72,7 @@ export default class PowerUp extends Item {
     // Punishment: Clean one item from their inv and their pocket
     const inv = randomInArray(data.items);
     const item = this.client.handlers.item.modules.get(inv.id);
-    inv.amount = 0;
-    xplo.amount--;
-
-    await ctx.db.removePocket(data.pocket).updateItems().save();
+    await entry.removePocket(data.pocket).removeInv(this.id).removeInv(item.id, super.findInv(data.items, item as Item).amount).updateItems().save();
     return `**LMAO you died from the bomb!**\nYou lost your WHOLE pocket and ALL your ${item.name.slice(
       0,
       item.name.endsWith('y') ? -1 : undefined

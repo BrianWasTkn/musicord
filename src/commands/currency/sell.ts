@@ -32,7 +32,8 @@ export default class Currency extends Command {
     const { ITEM_MESSAGES: MESSAGES } = Constants;
     const { amount = 1, item } = ctx.args;
     const { item: Items } = this.client.handlers;
-    const { data } = await ctx.db.fetch();
+    const userEntry = await ctx.db.fetch();
+    const data = userEntry.data;
 
     if (!item) return MESSAGES.NEED_TO_SELL;
 
@@ -41,12 +42,10 @@ export default class Currency extends Command {
     if (!item.sellable) return MESSAGES.NOT_SELLABLE;
     if (amount > inv.amount) return MESSAGES.CANT_FOOL_ME;
 
-    const sold =
-      Items.sale.id === item.id
-        ? Math.round(item.cost - item.cost * (Items.sale.discount / 1e2))
-        : item.cost;
-
-    await Items.sell(Math.trunc(amount), data, item.id);
+    const isSale = Items.sale.id === item.id;
+    const dPrice = Math.round(item.cost - item.cost * (Items.sale.discount / 1e2));
+    const sold = Math.round(amount * ((isSale ? dPrice : item.cost) / 4));
+    await userEntry.addPocket(sold).removeInv(item.id, amount).save();
     this.client.handlers.quest.emit('itemSell', { ctx, item, amount });
 
     return {

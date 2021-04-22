@@ -14,10 +14,10 @@ export default class Currency extends Command {
   }
 
   async exec(ctx: Context): Promise<string | MessageOptions> {
-    const { data } = await ctx.db.fetch();
+    const userEntry = await ctx.db.fetch();
     const won = 1000;
 
-    await ctx.db.addPocket(won).save();
+    await userEntry.addPocket(won).save();
     return {
       embed: {
         title: `Here are your hourly coins, ${ctx.author.username}`,

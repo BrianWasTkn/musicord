@@ -68,19 +68,20 @@ export default class Currency extends Command {
   public async exec(
     ctx: Context<{ amount: number }>
   ): Promise<string | MessageOptions> {
-    const { data: d } = await ctx.db.fetch();
+    const userEntry = await ctx.db.fetch();
+    const { pocket, vault, space } = userEntry.data;
     const { amount } = ctx.args;
 
     if (!amount) return;
     if (amount < 1) return 'You thought you can fool me?';
-    if (amount > d.pocket)
-      return `Bro, you only have ${d.pocket.toLocaleString()} coins what're you doing?`;
+    if (amount > pocket)
+      return `Bro, you only have ${pocket.toLocaleString()} coins what're you doing?`;
 
-    const input = amount >= d.space - d.vault ? d.space - d.vault : amount;
-    const { vault } = await ctx.db.deposit(input).save();
+    const input = amount >= space - vault ? space - vault : amount;
+    const { vault: nVault } = await userEntry.deposit(input).updateItems().save();
 
     return {
-      content: `**${input.toLocaleString()}** coins deposited. You now have **${vault.toLocaleString()}** in your vault.`,
+      content: `**${input.toLocaleString()}** coins deposited. You now have **${nVault.toLocaleString()}** in your vault.`,
       replyTo: ctx.id,
     };
   }

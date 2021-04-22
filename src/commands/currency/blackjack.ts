@@ -32,10 +32,10 @@ export default class Currency extends Command {
     } = ctx.client;
 
     // Core
-    const { maxWin, minBet, maxBet, maxPocket } = config.currency;
-    const userEntry = await ctx.db.fetch();
-    const { data } = userEntry;
-    let { total: multi } = DB.utils.calcMulti(this.client, ctx, data);
+    const { maxWin, minBet, maxBet, maxPocket } = config.currency,
+    userEntry = await ctx.db.fetch(),
+    { data } = userEntry,
+    { total: multi } = DB.utils.calcMulti(ctx, data);
 
     // Args
     const { amount: bet } = ctx.args;
@@ -312,12 +312,7 @@ export default class Currency extends Command {
       });
       first = false;
       if (final) return;
-      const choice = (
-        await ctx.channel.awaitMessages((m) => m.author.id === ctx.author.id, {
-          max: 1,
-          time: 3e4,
-        })
-      ).first();
+      const choice = (await ctx.awaitMessage()).first();
       if (!choice) {
         // No bank space for you bitch
         await userEntry.removePocket(bet).updateItems().save();

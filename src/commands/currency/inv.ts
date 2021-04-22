@@ -56,7 +56,7 @@ export default class Currency extends Command {
 
     memb = (isNum ? ctx.member : member) as MemberPlus;
     pg = (isNum ? member : page) as number;
-    data = (await ctx.db.fetch(memb.user.id)).data;
+    data = (await ctx.db.fetch(memb.user.id, false)).data;
     inv = data.items.filter((i) => i.amount >= 1);
     total = inv.reduce((e, a) => a.amount + e, 0);
     if (inv.length < 1) {

@@ -33,9 +33,9 @@ export default class Currency extends Command {
     const { user } = member;
     if (!member || !amount) return;
 
-    const { data: r } = await ctx.db.fetch(member.user.id);
+    const entry = await ctx.db.fetch(member.user.id, false);
     if (isNaN(amount)) return 'Needs to be a whole number yeah?';
-    let { pocket } = await ctx.db.addPocket(amount).save();
+    let { pocket } = await entry.addPocket(amount).updateItems().save();
     await ctx.react('✅');
   }
 }

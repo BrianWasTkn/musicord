@@ -4,7 +4,7 @@ import { Context } from 'lib/extensions/message';
 import { UserPlus } from 'lib/extensions/user';
 import { Argument } from 'discord-akairo';
 import { Command } from 'lib/handlers/command';
-import config from 'config/index' ;
+import config from 'config/index';
 
 export default class Currency extends Command {
   constructor() {
@@ -54,7 +54,7 @@ export default class Currency extends Command {
       give = amount as number;
     }
 
-    const memberEntry = await ctx.db.fetch(member.user.id);
+    const memberEntry = await ctx.db.fetch(member.user.id, false);
     const { data: r } = memberEntry;
     if (member.user.id === ctx.author.id)
       return 'Lol imagine giving yourself coins';
@@ -66,12 +66,8 @@ export default class Currency extends Command {
     let paid = Math.round(give - give * 0.08);
     let tax = Math.round((give * 0.8) / (give / 10));
 
+    const giver = await authorEntry.removePocket(give).updateItems().calcSpace().save();
     const recib = await memberEntry.addPocket(paid).updateItems().save();
-    const giver = await authorEntry
-      .removePocket(give)
-      .updateItems()
-      .calcSpace()
-      .save();
 
     return `You gave ${
       member.user.username

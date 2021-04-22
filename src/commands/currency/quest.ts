@@ -81,7 +81,8 @@ export default class Currency extends Command {
     }
 
     const mods = this.client.handlers.quest.modules;
-    const { data } = await ctx.db.fetch();
+    const userEntry = await ctx.db.fetch();
+    const { data } = userEntry;
 
     if (!query) {
       return "That isn't even a valid quest or page number bruh";
@@ -99,7 +100,7 @@ export default class Currency extends Command {
       quest.target = (query as Quest).target;
       quest.count = 0;
       quest.id = (query as Quest).id;
-      await data.save();
+      await userEntry.save();
       return {
         replyTo: ctx.id,
         content: `You're now doing the **${(query as Quest).name}** quest!`,
@@ -116,7 +117,7 @@ export default class Currency extends Command {
       aq.target = 0;
       aq.count = 0;
       aq.id = '';
-      await data.save();
+      await userEntry.save();
       return `You stopped your **${active.name}** quest, thanks for nothing idiot.`;
     }
 

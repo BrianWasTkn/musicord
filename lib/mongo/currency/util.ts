@@ -20,9 +20,7 @@ export const utils: CurrencyUtil = {
    * @param {Context} msg a discord msg obj
    */
   calcMulti: function CalcMulti(
-    bot: Lava,
-    ctx: Context,
-    db: Document & CurrencyProfile
+    ctx: Context, db: Document & CurrencyProfile
   ): { unlocked: string[]; total: number; multis: number } {
     const { maxMulti } = config.currency;
     const channel = ctx.channel as GuildChannel;
@@ -84,7 +82,7 @@ export const utils: CurrencyUtil = {
     }
 
     // Currency-based (10%)
-    const items = bot.handlers.item.modules;
+    const items = ctx.client.handlers.item.modules;
     for (const item of ['coffee', 'brian']) {
       const mod = items.get(item);
       const inv = db.items.find((i) => i.id === mod.id);

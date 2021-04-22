@@ -16,9 +16,10 @@ export default class Currency extends Command {
   }
 
   async exec(ctx: Context): Promise<string | MessageOptions> {
-    const { db, util, handlers } = this.client;
-    const { data } = await ctx.db.fetch();
-    const items = handlers.item.modules;
+    const { db, util, handlers } = this.client,
+    userEntry = await ctx.db.fetch(),
+    items = handlers.item.modules,
+    { data } = userEntry;
 
     if (data.pocket >= config.currency.maxPocket) {
       return "You're already rich stop begging already.";
@@ -29,27 +30,27 @@ export default class Currency extends Command {
       case odds >= 0.9:
         const item = items.filter((i) => i.cost < 30e6).random();
         const amount = util.randomNumber(1, 5);
-        let itinv = data.items.find((i) => i.id === item.id);
+        let itinv = item.findInv(data.items, item);
         itinv.amount += amount;
-        await data.save();
+        await userEntry.save();
         return {
           embed: {
             description: `WOWSIES! You got **${amount} ${item.emoji} ${
               item.name
             }**${amount > 1 ? 's' : ''} you're so lucky`,
+            author: { name: ctx.client.user.username },
             color: 'ORANGE',
-            author: { name: 'Lava' },
           },
           replyTo: ctx,
         };
       case odds >= 0.5:
         const won = util.randomNumber(100, 1000) * 1e3;
-        await ctx.db.addPocket(won).calcSpace().updateItems().save();
+        await userEntry.addPocket(won).calcSpace().updateItems().save();
         return {
           embed: {
             description: `GG! You got **${won.toLocaleString()}** coins from begging.`,
+            author: { name: ctx.client.user.username },
             color: 'ORANGE',
-            author: { name: 'Lava' },
           },
           replyTo: ctx,
         };
@@ -57,8 +58,8 @@ export default class Currency extends Command {
         return {
           embed: {
             description: 'LOL NO THANKS :P',
+            author: { name: ctx.client.user.username },
             color: 'ORANGE',
-            author: { name: 'Lava' },
           },
           replyTo: ctx,
         };

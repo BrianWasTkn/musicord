@@ -7,9 +7,9 @@ import { CurrencyProfile } from 'lib/interface/mongo/currency';
 import { InventorySlot } from 'lib/interface/handlers/item';
 import { Command } from 'lib/handlers/command';
 import { Effects } from 'lib/utility/effects';
-import config from 'config/index' ;
 import { Embed } from 'lib/utility/embed';
 import { Item } from 'lib/handlers/item';
+import config from 'config/index';
 
 export default class Currency extends Command {
   constructor() {
@@ -41,7 +41,7 @@ export default class Currency extends Command {
     const { maxWin, minBet, maxBet } = config.currency;
     const userEntry = await ctx.db.fetch();
     const { data } = userEntry;
-    let { total: multi } = DB.utils.calcMulti(this.client, ctx, data);
+    let { total: multi } = DB.utils.calcMulti(ctx, data);
 
     // Args
     const { amount: bet } = ctx.args;
@@ -123,7 +123,7 @@ export default class Currency extends Command {
       description = [
         `You won **${wngs.toLocaleString()}**\n`,
         `**Percent Won** \`${perwn}%${
-          extraWngs ? ` (${perwn}% original)` : ''
+          extraWngs ? ` (${Math.round(perwn + (extraWngs * 100))}% original)` : ''
         }\``,
         `You now have **${(data.pocket + wngs).toLocaleString()}**`,
       ];

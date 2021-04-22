@@ -14,27 +14,22 @@ export default class Currency extends Command {
   }
 
   public async exec(ctx: Context): Promise<string | MessageOptions> {
-    const { data } = await ctx.db.fetch();
+    const userEntry = await ctx.db.fetch();
+    const data = userEntry.data;
     let { streak, time } = data.daily;
 
     if (Date.now() - time > 172800000) {
-      data.daily.streak = 1;
-      await data.save();
+      userEntry.resetDailyStreak();
       streak = 1;
     } else {
-      data.daily.streak++;
-      await data.save();
+      userEntry.addDailyStreak();
       streak += 1;
     }
 
     let won = 10000;
     const streakBonus = Math.round(0.15 * won * streak);
-    if (streak > 1) {
-      won += streakBonus;
-    }
-    data.daily.time = Date.now();
-    data.pocket += won;
-    await data.save();
+    if (streak > 1) won += streakBonus;
+    await userEntry.recordDailyStreak().addPocket(won).save();
 
     return {
       embed: {

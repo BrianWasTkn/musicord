@@ -53,7 +53,7 @@ export class Item extends AkairoModule {
     this.checks = [].concat(opt.checks || []);
   }
 
-  findInv(inventory: InventorySlot[], item: this) {
+  findInv(inventory: InventorySlot[], item: this | Item) {
     return inventory.find((i) => i.id === item.id);
   }
 
@@ -155,35 +155,5 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
       this.sale = { discount, lastSale, id: item.id };
       return this.runSaleInterval();
     }, this.saleInterval);
-  }
-
-  buy(amount: number, data: Document & CurrencyProfile, iid: string) {
-    const item = this.modules.get(iid);
-    const isSale = this.sale.id === item.id;
-    const dPrice = Math.round(
-      item.cost - item.cost * (this.sale.discount / 1e2)
-    );
-    const paid = amount * (isSale ? dPrice : item.cost);
-
-    let inv = data.items.find((i) => i.id === item.id);
-    data.pocket -= paid;
-    inv.amount += amount;
-
-    return data.save();
-  }
-
-  sell(amount: number, data: Document & CurrencyProfile, iid: string) {
-    const item = this.modules.get(iid);
-    const isSale = this.sale.id === item.id;
-    const dPrice = Math.round(
-      item.cost - item.cost * (this.sale.discount / 1e2)
-    );
-    const sold = Math.round(amount * ((isSale ? dPrice : item.cost) / 4));
-
-    let inv = data.items.find((i) => i.id === item.id);
-    data.pocket += sold;
-    inv.amount -= amount;
-
-    return data.save();
   }
 }

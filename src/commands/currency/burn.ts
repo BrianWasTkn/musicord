@@ -12,26 +12,22 @@ export default class Currency extends Command {
       args: [
         {
           id: 'amount',
-          type: 'number',
-          default: async (ctx: Context) => {
-            const { pocket } = (await ctx.db.fetch()).data;
-            return Math.round(pocket / 2);
-          },
+          type: 'number'
         },
       ],
     });
   }
 
   async exec(ctx: Context<{ amount: number }>): Promise<string> {
-    const { data } = await ctx.db.fetch();
-    const { amount } = ctx.args;
+    const userEntry = await ctx.db.fetch(), { data } = userEntry;
+    const { amount = Math.round(data.pocket / 2) } = ctx.args;
 
     if (!amount) return 'You need something to burn, bruh';
     if (amount < 1) return 'Not allowed, sorry not sorry';
     if (amount > data.pocket)
       return 'Imagine burning money higher than your pocket lmao';
 
-    await ctx.db.removePocket(amount).save();
+    await userEntry.removePocket(amount).save();
     return `Burned **${amount.toLocaleString()}** coins from your pocket.`;
   }
 }

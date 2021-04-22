@@ -37,24 +37,22 @@ export default class Currency extends Command {
     const { amount = 1, item } = ctx.args;
     const { maxInventory } = config.currency;
     const { item: Items } = this.client.handlers;
-    const { data } = await ctx.db.fetch();
+    const userEntry = await ctx.db.fetch();
+    const data = userEntry.data; // no destruct coz style owo
 
     if (!item) return MESSAGES.NEED_TO_BUY;
 
     let inv = data.items.find((i) => i.id === item.id);
-
     if (amount < 1) return MESSAGES.AMOUNT_BELOW_ONE;
     if (!item.buyable) return MESSAGES.NOT_BUYABLE;
     if (data.pocket < item.cost) return MESSAGES.BROKE_TO_BUY;
     if (data.pocket < amount * item.cost) return MESSAGES.NOT_BUYABLE_BULK;
     if (inv.amount >= maxInventory) return MESSAGES.INVENTORY_IS_FULL;
 
-    const paid =
-      Items.sale.id === item.id
-        ? Math.round(item.cost - item.cost * (Items.sale.discount / 1e2))
-        : item.cost;
-
-    await Items.buy(Math.trunc(amount), data, item.id);
+    const isSale = Items.sale.id === item.id;
+    const dPrice = Math.round(item.cost - item.cost * (Items.sale.discount / 1e2));
+    const paid = amount * (isSale ? dPrice : item.cost);
+    await userEntry.removePocket(paid).addInv(item.id, amount).save();
     this.client.handlers.quest.emit('itemBuy', { ctx, item, amount });
 
     return {

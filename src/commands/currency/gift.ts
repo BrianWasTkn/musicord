@@ -39,22 +39,22 @@ export default class Currency extends Command {
     }
 
     const { maxInventory: cap } = config.currency;
-    const { data } = await ctx.db.fetch();
-    const r = (await ctx.db.fetch(member.user.id)).data;
-    const dInv = data.items.find((i) => i.id === item.id);
-    const rInv = r.items.find((i) => i.id === item.id);
+    const userEntry = await ctx.db.fetch(ctx.author.id);
+    const rEntry = await ctx.db.fetch(member.user.id, false);
+    const { data: uData } = userEntry;
+    const { data: rData } = rEntry;
+    const uInv = item.findInv(uData.items, item);
+    const rInv = item.findInv(rData.items, item);
 
     if (amount < 1)
       return `Bro what the heck, you can't gift negative items smh`;
-    if (amount > dInv.amount)
-      return `Meh, you only have ${dInv.amount.toLocaleString()} of this item, i guess you're too broke to gift many items then.`;
+    if (amount > uInv.amount)
+      return `Meh, you only have ${uInv.amount.toLocaleString()} of this item, i guess you're too broke to gift many items then.`;
     if (rInv > cap)
       return `They already have more than ${cap.toLocaleString()} of this item!`;
 
-    dInv.amount -= amount;
-    await data.save();
-    rInv.amount += amount;
-    await r.save();
+    await userEntry.removeInv(item.id, amount).save();
+    await rEntry.addInv(item.id, amount).save();
 
     return {
       replyTo: ctx.id,
@@ -64,8 +64,8 @@ export default class Currency extends Command {
         amount > 1 ? 's' : ''
       }! They now have **${rInv.amount.toLocaleString()}** ${item.id}${
         rInv.amount > 1 ? 's' : ''
-      } while you have **${dInv.amount.toLocaleString()}** ${item.id}${
-        dInv.amount > 1 ? 's' : ''
+      } while you have **${uInv.amount.toLocaleString()}** ${item.id}${
+        uInv.amount > 1 ? 's' : ''
       } left.`,
     };
   }

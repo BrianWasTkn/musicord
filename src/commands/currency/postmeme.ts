@@ -21,9 +21,7 @@ export default class Currency extends Command {
     const inv = data.items.find((i) => i.id === comp.id);
 
     if (inv.amount < 1) {
-      return {
-        content: `LOL buy a ${comp.name} first before posting a meme ty`,
-      };
+      return { replyTo: ctx.id, content: `LOL buy a ${comp.name} first before posting a meme ty` };
     }
 
     const ret = (await comp.use(ctx)) as string;
