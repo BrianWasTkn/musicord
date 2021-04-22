@@ -30,12 +30,14 @@ Though the source code is visible here, please make sure you won't host a public
 - Node.JS >=12.0.0
 - MongoDB Database
 - Discord Token
+- Git CLI
 
 ## Installation
 1. Clone this repository: `git clone https://github.com/BrianWasTaken/lava`
-2. Install dependencies: `npm install`
-3. Build source files: `npm run build`
-4. Run the bot: `npm run start`
+2. Install required dependencies: `npm install`
+3. Build typescript source files: `npm run build`
+4. Rename `.env-example` to `.env` and fill it in.
+4. Run the bot something: `npm run start`
 
 ## Acknowledgements
 
