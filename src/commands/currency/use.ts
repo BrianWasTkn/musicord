@@ -37,7 +37,7 @@ export default class Currency extends Command {
           return {
             state,
             m: `This item is active right now. You can use it again in ${parseTime(
-              (Date.now() - inv.expire) / 1e3
+              (inv.expire - Date.now()) / 1e3
             )}`,
           };
         case !item.usable:
