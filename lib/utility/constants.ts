@@ -28,16 +28,13 @@ export const COLORS = {
 };
 
 export const GAMBLE_MESSAGES = {
+  NO_ARGS: 'You need something to {do}!',
+  TOO_RICH: 'You are too rich to {do}!',
   NO_COINS: 'You have no coins to gamble RIP',
   BET_IS_NAN: 'It should be a positive number yeah?',
-  USER_IS_POOR: 'You have no coins to gamble rip :skull:',
   BET_IS_LOWER: `C'mon, you're not gambling lower than **${minBet.toLocaleString()}** yeah?`,
   BET_IS_HIGHER: `You can't gamble higher than **${maxBet.toLocaleString()}** coins >:(`,
-  NEED_SOMETHING: 'You need something to gamble!',
-  INVALID_AMOUNT: 'You actually need a number to gamble yeah?',
-  TOO_RICH_TO_GAMBLE: 'You are too rich to {do}!',
-  BET_HIGHER_THAN_POCKET: `You only have **{pocket}** lol don't try me`,
-  POCKET_HIGHER_THAN_CAP: `You're too rich (${maxPocket.toLocaleString()}) to gamble!`,
+  BET_HIGHER_POCKET: `You only have **{pocket}** lol don't try me`,
 };
 
 export const ITEM_MESSAGES = {

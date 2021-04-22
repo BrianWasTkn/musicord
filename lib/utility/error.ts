@@ -1,3 +1,7 @@
+/**
+ * Akairo Error
+*/
+
 const Messages = {
   // Module-related
   FILE_NOT_FOUND: (filename) => `File '${filename}' not found`,

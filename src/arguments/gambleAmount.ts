@@ -6,14 +6,9 @@ import { currencyConfig } from 'config/currency';
 export default { type: 'gambleAmount', fn: (async (ctx: Context, args: string): Promise<number> => {
 	const { pocket } = (await (ctx.db = new ContextDatabase(ctx)).fetch()).data;
 	const { minBet, maxBet, maxPocket, maxSafePocket } = currencyConfig;
-	const reply = (content: string) => ctx.reply({ content });
 
 	// No Gamble Amount
-	if (!args) {
-		reply(Const.NEED_SOMETHING);
-		return null;
-	}
-
+	if (!args) return null;
 	let bet: number;
 	// Non-integer
 	if (!Number.isInteger(args)) {
@@ -31,11 +26,9 @@ export default { type: 'gambleAmount', fn: (async (ctx: Context, args: string): 
 			const kay = args.replace(/k$/g, '');
 			bet = Number(kay) ? Number(kay) * 1e3 : null;
 		}	else {
-			reply(Const.BET_IS_NAN);
 			return null;
 		}
 	}
 
-	// @TODO: Move limit checks to individual gamble commands.
 	return Number(args) || bet;
 }) as ArgumentTypeCaster };

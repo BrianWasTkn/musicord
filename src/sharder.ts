@@ -12,3 +12,5 @@ const sharder = new ShardingManager('./index', {
 sharder.on('shardCreate', shard => {
 	console.log(`[SHARDER] Shard ${shard.id} created.`);
 });
+
+sharder.spawn();

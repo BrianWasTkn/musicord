@@ -30,7 +30,10 @@ import {
   AkairoError,
   Category,
 } from 'discord-akairo';
-import { BaseHandler, BaseModule } from './Base';
+import { 
+  BaseHandler, 
+  BaseModule 
+} from './Base';
 import config from 'config/index' ;
 
 export class Spawn extends BaseModule {
@@ -202,7 +205,7 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
 
         return (
           !author.bot &&
-          (await fetch(author.id)).unpaid < cap &&
+          (await fetch(author.id)).unpaid <= cap &&
           content.toLowerCase() === str.toLowerCase() &&
           (isSpam ? true : !spawner.answered.has(author.id))
         );
@@ -244,7 +247,7 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
 
         return (
           !user.bot &&
-          (await fetch(user.id)).unpaid < cap &&
+          (await fetch(user.id)).unpaid <= cap &&
           !spawner.answered.has(user.id) &&
           reaction.toString() === spawner.spawn.emoji
         );
@@ -258,25 +261,23 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
       this.client.setTimeout(deleteCD, cooldown * 60 * 1000);
       const collector = msg.createReactionCollector(filter, options);
 
+      const onCollect = (r: MessageReaction, u: User) => {
+        const ctx = { msg, collector, spawner };
+        return this.handleReactionCollect(r, u, ctx);
+      };
+      const onRemove = (r: MessageReaction, u: User) => {
+        const ctx = { msg, collector, spawner };
+        return this.handleReactionRemove(r, u, ctx);
+      };
+      const onEnd = (col: Collection<string, MessageReaction>) => {
+        this.handleReactionEnd(col, { msg, spawner });
+      };
+
       // ReactionCollector#on<collect|remove|end>
       collector
-        .on('collect', (reaction: MessageReaction, user: User) => {
-          this.handleReactionCollect(reaction, user, {
-            msg,
-            collector,
-            spawner,
-          });
-        })
-        .on('remove', (reaction: MessageReaction, user: User) => {
-          this.handleReactionRemove(reaction, user, {
-            msg,
-            collector,
-            spawner,
-          });
-        })
-        .on('end', (collected: Collection<string, MessageReaction>) => {
-          this.handleReactionEnd(collected, { msg, spawner });
-        });
+        .on('collect', onCollect)
+        .on('remove', onRemove)
+        .on('end', onRemove);
 
       return collector;
     } else {

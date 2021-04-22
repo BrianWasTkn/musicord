@@ -1,21 +1,23 @@
-export class Effects {
-  blackjackWinnings: number; // bj winnings
-  slotJackpotOdds: number; // jackpot odds
-  gambleWinnings: number; // gamble winnigns
-  shopDiscount: number; // understandable, have a good day.
-  gambleDice: number; // dice roll
-  pocketCap: number; // understandable, have a good day.
+interface EffectsConstructor {
+  bjWngs: number;
+  sOdds: number;
+  gWngs: number;
+  dcnt: number;
+  dice: number;
+  pCap: number;
+}
 
-  constructor(
-    data: Partial<{
-      bjWngs: Effects['blackjackWinnings'];
-      gWngs: Effects['gambleWinnings'];
-      sOdds: Effects['slotJackpotOdds'];
-      dcnt: Effects['shopDiscount'];
-      pCap: Effects['pocketCap'];
-      dice: Effects['gambleDice'];
-    }> = {}
-  ) {
+export declare interface Effects {
+  blackjackWinnings: number;
+  slotJackpotOdds: number;
+  gambleWinnings: number;
+  shopDiscount: number;
+  gambleDice: number;
+  pocketCap: number;
+}
+
+export class Effects {
+  constructor(data: Partial<EffectsConstructor> = {}) {
     this.blackjackWinnings = data.bjWngs || 0;
     this.slotJackpotOdds = data.sOdds || 0;
     this.gambleWinnings = data.gWngs || 0;

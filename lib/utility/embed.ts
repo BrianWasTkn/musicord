@@ -1,12 +1,14 @@
 import { MessageEmbedOptions, MessageEmbed } from 'discord.js';
 
+type EmbedConstruct = [(MessageEmbed | MessageEmbedOptions)?];
+
 export class Embed extends MessageEmbed {
-  constructor(data?: MessageEmbed | MessageEmbedOptions) {
-    super(data);
+  constructor(...data: EmbedConstruct) {
+    super(...data);
   }
 
-  setAuthor(name: any, icon?: string, url?: string) {
-    return super.setAuthor(name, icon || null, url || null);
+  setAuthor(name: any, icon: string = null, url: string = null) {
+    return super.setAuthor(name, icon, url);
   }
 
   setTitle(title: string, url?: string) {
