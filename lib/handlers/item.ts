@@ -50,7 +50,7 @@ export class Item extends AkairoModule {
     this.usable = Boolean(opt.usable);
     this.emoji = opt.emoji;
     this.name = opt.name;
-    this.checks = opt.checks;
+    this.checks = [].concat(opt.checks || []);
   }
 
   findInv(inventory: InventorySlot[], item: this) {

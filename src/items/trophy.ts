@@ -11,6 +11,7 @@ export default class Collectible extends Item {
       emoji: '🏆',
       name: 'Trophy',
       cost: 3000000,
+      checks: ['time'],
       info: {
         short: 'Flex it against normies.',
         long:

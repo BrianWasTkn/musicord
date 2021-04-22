@@ -11,6 +11,7 @@ export default class PowerUp extends Item {
       emoji: ':ok_hand:',
       name: 'Thicco Mode',
       cost: 2750000,
+      checks: ['time'],
       info: {
         short:
           'Blackjack rigged? Well if you want more coins, activate thicco mode.',
