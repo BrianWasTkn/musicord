@@ -1,5 +1,5 @@
 import { MessageOptions } from 'discord.js';
-import { Context } from '@lib/extensions';
+import { Context } from 'lib/extensions';
 import {
   CommandHandlerOptions as AkairoHandlerOptions,
   CommandOptions as AkairoCommandOptions,

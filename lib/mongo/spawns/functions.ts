@@ -5,9 +5,9 @@
 
 import type { Snowflake, User } from 'discord.js';
 import type { Model, Document } from 'mongoose';
-import type { SpawnDocument } from '@lib/interface/mongo/spawns';
-import type { CurrencyUtil } from '@lib/interface/mongo/currency';
-import type { Lava } from '@lib/Lava';
+import type { SpawnDocument } from 'lib/interface/mongo/spawns';
+import type { CurrencyUtil } from 'lib/interface/mongo/currency';
+import type { Lava } from 'lib/Lava';
 
 import Spawn from './model';
 

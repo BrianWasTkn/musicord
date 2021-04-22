@@ -1,11 +1,10 @@
-import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { MemberPlus, UserPlus } from '.';
+import { CurrencyProfile } from 'lib/interface/mongo/currency';
 import { Collection } from 'discord.js';
-import { MemberPlus } from './member';
-import { UserPlus } from './user';
 import { Document } from 'mongoose';
-import { Command } from '@lib/handlers/command';
-import { Effects } from '@lib/utility/effects';
-import { Lava } from '@lib/Lava';
+import { Command } from 'lib/handlers/command';
+import { Effects } from 'lib/utility/effects';
+import { Lava } from 'lib/Lava';
 import {
   MessageEmbedOptions,
   TextBasedChannel,
@@ -64,10 +63,8 @@ export class Context<Args extends {} = {}> extends Message {
     return this.channel.messages.fetch(id != null ? id : this.id);
   }
 
-  toString(isSuper = false) {
-    return isSuper
-      ? super.toString()
-      : `[${this.constructor.name}] ${this.content || this.id}`;
+  toString() {
+    return super.toString();
   }
 }
 
@@ -82,14 +79,16 @@ export class ContextDatabase extends Base {
     this.data = null;
   }
 
-  private async init(id: string): Promise<this> {
+  private async init(id: string, assign: boolean): Promise<this> {
     const { fetch } = this.ctx.client.db.currency;
-    this.data = await fetch(id);
-    return this;
+    let data: CurrencyProfile;
+    data = await fetch(id);
+    if (assign) this.data = data;
+    return assign ? this : { ...this, data };
   }
 
-  fetch(id = this.ctx.author.id) {
-    return this.init(id);
+  fetch(id = this.ctx.author.id, assign = true) {
+    return this.init(id, assign);
   }
 
   addPocket(amount: number): this {
@@ -119,58 +118,44 @@ export class ContextDatabase extends Base {
   }
 
   calcSpace(offset: number = 55, boost: number = 1, limit: number = 1000e6) {
-    const randomNumber = (a: number, b: number) =>
-      Math.floor(Math.random() * (b - a + 1) + a);
     const calc = (boosty: number) => Math.round(offset * (boosty / 2) + offset);
     this.data.space = Math.min(calc(boost), limit);
     return this;
   }
 
   updateItems() {
-    const { effects } = this.client.util;
-    const items = this.client.handlers.item.modules.array();
-    const eff = new Effects();
+    const { util: { effects }, handlers: { item: handler } } = this.client;
+    const items = [...handler.modules.values()];
+    const call = () => new Effects();
+    const eff = call();
 
     for (const item of items) {
-      const inv = this.data.items.find((i) => i.id === item.id);
-      if (inv.expire > Date.now()) {
-        const trigger = {
-          brian: () => eff.addSlotJackpotOdd(5),
-          crazy: () => eff.addSlotJackpotOdd(5),
-          thicc: () => eff.addGambleWinnings(0.5),
-          thicm: () => eff.addBlackjackWinnings(0.5),
-          dragon: () => eff.addDiceRoll(1),
-        };
+      const inv = item.findInv(this.data.items, item);
+      const trigger = {
+        brian: () => eff.addSlotJackpotOdd(5),
+        crazy: () => eff.addSlotJackpotOdd(5),
+        thicc: () => eff.addGambleWinnings(0.5),
+        thicm: () => eff.addBlackjackWinnings(0.5),
+        dragon: () => eff.addDiceRoll(1),
+      };
 
-        if (['dragon'].includes(inv.id)) {
-          if (inv.amount >= 1) {
-            trigger[inv.id]();
-            if (Math.random() < 1) {
-              inv.amount--;
-            }
-          }
-        } else {
-          const includes = ['brian', 'crazy', 'thicc', 'thicm'].includes(
-            inv.id
-          );
-          if (includes) {
-            trigger[inv.id]();
-          } else {
-            continue;
-          }
-        }
+      if (item.checks.includes('activeState') && inv.active) {
+        trigger[inv.id](); if (Math.random() < 0.1) inv.amount--;
+      } else if (item.checks.includes('time') && inv.expire > Date.now()) {
+        trigger[inv.id]();
+      } else { continue; }
 
-        const temp = new Collection<string, Effects>();
-        temp.set(item.id, new Effects());
-        if (!effects.has(this.ctx.author.id))
-          effects.set(this.ctx.author.id, temp);
-        effects.get(this.ctx.author.id).set(item.id, eff);
+      const temp = new Collection<string, Effects>();
+      const { id } = this.ctx.author;
+      if (effects.has(id)) {
+        temp.set(item.id, call());
+        effects.get(id).set(item.id, eff);
       } else {
-        const useref = effects.get(this.ctx.author.id);
+        const useref = effects.get(id);
         if (!useref || useref.has(item.id)) {
           const meh = new Collection<string, Effects>();
-          meh.set(item.id, new Effects());
-          effects.set(this.ctx.author.id, meh);
+          meh.set(item.id, call());
+          effects.set(id, meh);
         }
       }
     }
@@ -183,7 +168,7 @@ export class ContextDatabase extends Base {
     return this.data.save();
   }
 
-  _reportError() {
+  private _reportError() {
     throw new Error(`[${this.toString()}] property "db" hasn't been assigned.`);
   }
 
@@ -192,6 +177,4 @@ export class ContextDatabase extends Base {
   }
 }
 
-export default () => {
-  return Structures.extend('Message', () => Context);
-};
+export default () => Structures.extend('Message', () => Context);

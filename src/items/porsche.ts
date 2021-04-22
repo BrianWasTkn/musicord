@@ -1,5 +1,6 @@
-import { Context } from '@lib/extensions/message';
-import { Item } from '@lib/handlers/item';
+import { Context } from 'lib/extensions/message';
+import config from 'config/index' ;
+import { Item } from 'lib/handlers/item';
 
 export default class PowerUp extends Item {
   constructor() {
@@ -20,8 +21,8 @@ export default class PowerUp extends Item {
   }
 
   async use(ctx: Context): Promise<string> {
-    const { util, config } = this.client;
     const { data } = await ctx.db.fetch();
+    const { util } = this.client;
     const card = this.findInv(data.items, this);
 
     if (data.space >= config.currency.maxSafeSpace) {

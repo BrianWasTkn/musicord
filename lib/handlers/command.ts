@@ -1,10 +1,10 @@
-import { Listener, ListenerHandler } from '@lib/handlers/listener';
-import { Context, ContextDatabase } from '@lib/extensions/message';
-import { CooldownData } from '@lib/interface/mongo/currency/currencyprofile';
-import { AkairoError } from '@lib/utility/error';
-import { UserPlus } from '@lib/extensions/user';
-import { Util } from '@lib/utility/util';
-import { Lava } from '@lib/Lava';
+import { Listener, ListenerHandler } from 'lib/handlers/listener';
+import { Context, ContextDatabase } from 'lib/extensions/message';
+import { CooldownData } from 'lib/interface/mongo/currency/currencyprofile';
+import { AkairoError } from 'lib/utility/error';
+import { UserPlus } from 'lib/extensions/user';
+import { Util } from 'lib/utility/util';
+import { Lava } from 'lib/Lava';
 import {
   CommandHandler as OldCommandHandler,
   Command as AkairoCommand,
@@ -36,7 +36,7 @@ import {
   CommandHandlerOptions,
   CommandOptions,
   CommandReturn,
-} from '@lib/interface/handlers/command';
+} from 'lib/interface/handlers/command';
 
 const { CommandHandlerEvents: Events, BuiltInReasons } = Constants;
 
@@ -741,7 +741,7 @@ export class CommandHandler<
     if (!time) return false;
 
     const expire = msg.createdTimestamp + time;
-    const data = await msg.author.fetchDB();
+    const { data } = await (msg.db = new ContextDatabase(msg)).fetch();
 
     let cd = data.cooldowns.find((c) => c.id === cmd.id);
     if (!cd) {

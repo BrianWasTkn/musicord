@@ -1,6 +1,6 @@
-import { SpawnVisual } from '@lib/interface/handlers/spawn';
+import { SpawnVisual } from 'lib/interface/handlers/spawn';
 import { GuildMember } from 'discord.js';
-import { Spawn } from '@lib/handlers/spawn';
+import { Spawn } from 'lib/handlers/spawn';
 
 const visuals: SpawnVisual = {
   emoji: '<:memerGreen:729863510296887398>',

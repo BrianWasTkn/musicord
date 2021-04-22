@@ -1,4 +1,4 @@
-import { QuestOptions, QuestReward } from '@lib/interface/handlers/quest';
+import { QuestOptions, QuestReward } from 'lib/interface/handlers/quest';
 import { Collection } from 'discord.js';
 import { Lava } from '../Lava';
 import {

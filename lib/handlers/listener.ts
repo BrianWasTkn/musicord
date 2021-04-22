@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import { Collection } from 'discord.js';
 import { CommandHandler, Command } from '.';
-import { Lava } from '@lib/Lava';
+import { Lava } from 'lib/Lava';
 import {
   ListenerHandler as AkairoListenerHandler,
   Listener as AkairoListener,
@@ -67,9 +67,7 @@ export class Listener<Emitter extends EventEmitter> extends AkairoListener {
   }
 }
 
-export class ListenerHandler<
-  Module extends Listener<EventEmitter>
-> extends AkairoListenerHandler {
+export class ListenerHandler<Module extends Listener<EventEmitter>> extends AkairoListenerHandler {
   categories: Collection<string, Category<string, Module>>;
   modules: Collection<string, Module>;
   client: Lava;

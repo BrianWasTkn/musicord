@@ -6,7 +6,7 @@ import {
   Category,
 } from 'discord-akairo';
 import { Collection } from 'discord.js';
-import { Lava } from '@lib/Lava';
+import { Lava } from 'lib/Lava';
 
 export class BaseModule extends AkairoModule {
   category: Category<string, this>;

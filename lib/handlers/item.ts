@@ -1,14 +1,16 @@
-import {
-  ItemOptions,
-  ItemInfo,
-  ItemSaleData,
-  InventorySlot,
-} from '@lib/interface/handlers/item';
 import { Collection, MessageEmbed } from 'discord.js';
-import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { CurrencyProfile } from 'lib/interface/mongo/currency';
 import { Document } from 'mongoose';
-import { Context } from '@lib/extensions/message';
-import { Lava } from '@lib/Lava';
+import { Context } from 'lib/extensions/message';
+import config from 'config/index' ;
+import { Lava } from 'lib/Lava';
+import {
+  InventorySlot,
+  ItemSaleData,
+  ItemOptions,
+  ItemCheck,
+  ItemInfo,
+} from 'lib/interface/handlers/item';
 import {
   AkairoHandlerOptions,
   AkairoHandler,
@@ -26,10 +28,11 @@ export interface IReturn {
 
 export class Item extends AkairoModule {
   handler: ItemHandler<Item>;
+  client: Lava;
 
   sellable: boolean;
   buyable: boolean;
-  client: Lava;
+  checks: ItemCheck;
   usable: boolean;
   emoji: string;
   info: ItemInfo;
@@ -47,6 +50,7 @@ export class Item extends AkairoModule {
     this.usable = Boolean(opt.usable);
     this.emoji = opt.emoji;
     this.name = opt.name;
+    this.checks = opt.checks;
   }
 
   findInv(inventory: InventorySlot[], item: this) {
@@ -87,7 +91,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
 
   prepare() {
     return this.client.once('ready', () => {
-      const { interval } = this.client.config.item.discount;
+      const { interval } = config.item.discount;
       const { discount, item, lastSale } = this.getSale();
       this.sale = { discount, lastSale, id: item.id };
       this.saleInterval = interval;
@@ -138,7 +142,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
 
   getSale() {
     const { randomNumber, randomInArray } = this.client.util;
-    const { min, max } = this.client.config.item.discount;
+    const { min, max } = config.item.discount;
     const discount = randomNumber(min, max);
     const item = randomInArray([...this.modules.values()]);
 

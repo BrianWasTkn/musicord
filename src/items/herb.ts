@@ -1,4 +1,4 @@
-import { Item } from '@lib/handlers/item';
+import { Item } from 'lib/handlers/item';
 
 export default class Flex extends Item {
   constructor() {

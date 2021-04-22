@@ -3,6 +3,8 @@ import { AkairoModuleOptions } from 'discord-akairo';
 
 export type ItemReturn = string | IItemReturn;
 
+export type ItemCheck = ArrayUnion<('time' | 'activeState')>;
+
 export interface ItemInfo {
   short: string;
   long: string;
@@ -14,6 +16,7 @@ export interface ItemOptions extends AkairoModuleOptions {
   category: string;
   info: ItemInfo;
   cost: number;
+  checks: ItemCheck;
   buyable: boolean;
   sellable: boolean;
   usable: boolean;

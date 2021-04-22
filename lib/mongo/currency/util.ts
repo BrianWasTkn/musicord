@@ -3,14 +3,15 @@
  * Author: brian
  */
 
-import type { CurrencyProfile } from '@lib/interface/mongo/currency';
-import type { InventorySlot } from '@lib/interface/handlers/item';
-import type { CurrencyUtil } from '@lib/interface/mongo/currency';
+import type { CurrencyProfile } from 'lib/interface/mongo/currency';
+import type { InventorySlot } from 'lib/interface/handlers/item';
+import type { CurrencyUtil } from 'lib/interface/mongo/currency';
 import type { GuildChannel } from 'discord.js';
-import type { Context } from '@lib/extensions/message';
-import type { Item } from '@lib/handlers/item';
-import type { Lava } from '@lib/Lava';
+import type { Context } from 'lib/extensions/message';
+import type { Item } from 'lib/handlers/item';
+import type { Lava } from 'lib/Lava';
 import { Document } from 'mongoose';
+import config from 'config/index' ;
 
 export const utils: CurrencyUtil = {
   /**
@@ -23,7 +24,7 @@ export const utils: CurrencyUtil = {
     ctx: Context,
     db: Document & CurrencyProfile
   ): { unlocked: string[]; total: number; multis: number } {
-    const { maxMulti } = bot.config.currency;
+    const { maxMulti } = config.currency;
     const channel = ctx.channel as GuildChannel;
     let unlocked = [];
     let multis = 0;

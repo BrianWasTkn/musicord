@@ -1,6 +1,6 @@
 import { Structures, GuildMember, Guild } from 'discord.js';
 import { UserPlus } from './user';
-import { Lava } from '@lib/Lava';
+import { Lava } from 'lib/Lava';
 
 type Constructor = [Lava, object, Guild];
 
@@ -21,6 +21,4 @@ export class MemberPlus extends GuildMember {
   }
 }
 
-export default () => {
-  return Structures.extend('GuildMember', () => MemberPlus);
-};
+export default () => Structures.extend('GuildMember', () => MemberPlus);

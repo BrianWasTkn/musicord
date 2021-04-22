@@ -1,4 +1,4 @@
-import { Quest } from '@lib/handlers/quest';
+import { Quest } from 'lib/handlers/quest';
 
 export default class Extreme extends Quest {
   constructor() {

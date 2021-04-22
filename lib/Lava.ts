@@ -1,157 +1,152 @@
-import { AkairoClient, AkairoModule, AkairoHandler } from 'discord-akairo';
-import { CurrencyProfile } from './interface/mongo/currency';
-import { Config, config } from '../config';
+import { Collection, ClientEvents, ClientOptions } from 'discord.js';
+import { ConnectOptions } from 'mongoose';
 import { SpawnDocument } from './interface/mongo/spawns';
-import { Collection } from 'discord.js';
-import { promisify } from 'util';
-import { argTypes } from './utility/types';
+import { EventEmitter } from 'events';
 import { Util } from './utility/util';
 import { join } from 'path';
+import { 
+	CommandHandlerOptions,
+	AkairoHandlerOptions,
+	ArgumentTypeCaster,
+	AkairoOptions,
+	AkairoHandler, 
+	AkairoClient, 
+	AkairoModule, 
+} from 'discord-akairo';
 import {
-  ListenerHandler,
+  ListenerHandler, Listener,
+  CommandHandler, Command,
+  SpawnHandler, Spawn,
+  QuestHandler, Quest,
+  ItemHandler, Item,
   LotteryHandler,
-  CommandHandler,
-  SpawnHandler,
-  QuestHandler,
-  ItemHandler,
-  Listener,
-  Command,
-  Spawn,
-  Quest,
-  Item,
 } from './handlers';
 
 // def imports
 import CurrencyFunc from './mongo/currency/functions';
 import SpawnerFunc from './mongo/spawns/functions';
 import mongoose from 'mongoose';
-import chalk from 'chalk';
 
 // ext structures
 import './extensions';
 
+interface ClientEventsPlus extends ClientEvents {
+	handlerLoad: [handler: AkairoHandler];
+	dbConnect: [db: typeof mongoose];
+}
+
 interface DB {
-  currency: CurrencyFunc<CurrencyProfile>;
-  spawns: SpawnerFunc<SpawnDocument>;
+	currency: CurrencyFunc<CurrencyProfile>;
+	spawns: SpawnerFunc<SpawnDocument>;
 }
 
 interface Handlers {
-  emitter: ListenerHandler<Listener<Lava>>;
-  command: CommandHandler<Command>;
-  lottery: LotteryHandler;
-  spawn: SpawnHandler<Spawn>;
-  quest: QuestHandler<Quest>;
-  item: ItemHandler<Item>;
+	listener: ListenerHandler<Listener<Lava>>;
+	command: CommandHandler<Command>;
+	lottery: LotteryHandler;
+	spawn: SpawnHandler<Spawn>;
+	quest: QuestHandler<Quest>;
+	item: ItemHandler<Item>;
 }
 
+interface HandlerConstructor {
+	listener: AkairoHandlerOptions;
+	command: CommandHandlerOptions;
+	spawn: AkairoHandlerOptions;
+	quest: AkairoHandlerOptions;
+	item: AkairoHandlerOptions;
+}
+
+interface MongoData {
+  options?: ConnectOptions;
+  uri: string;
+}
+
+type HandlerOptions = AkairoHandlerOptions | CommandHandlerOptions; 
+
 export class Lava extends AkairoClient {
-  handlers: Handlers;
-  config: Config;
-  util: Util;
-  db: DB = {
-    currency: new CurrencyFunc<CurrencyProfile>(this),
-    spawns: new SpawnerFunc<SpawnDocument>(this),
-  };
+	mongoPath: MongoData;
+	handlers: Handlers;
+	util: Util = new Util(this);
+	db: DB = {
+	currency: new CurrencyFunc<CurrencyProfile>(this),
+	spawns: new SpawnerFunc<SpawnDocument>(this),
+	};
 
-  constructor(cfg: Config) {
-    super({ ...cfg.discord, ...cfg.akairo });
-    this.util = new Util(this);
-    this.config = cfg;
+	// Event Types
+	on: <K extends keyof ClientEventsPlus>(
+		event: K, 
+		listener: (...args: ClientEventsPlus[K]) => void
+	) => this;
+	once: <K extends keyof ClientEventsPlus>(
+		event: K, 
+		listener: (...args: ClientEventsPlus[K]) => void
+	) => this;
+	emit: <K extends keyof ClientEventsPlus>(
+		event: K, 
+		...args: ClientEventsPlus[K]
+	) => boolean;
 
-    this.handlers = {
-      emitter: new ListenerHandler<Listener<this>>(this, {
-        directory: join(__dirname, '..', 'src', 'emitters'),
-      }),
-      command: new CommandHandler<Command>(this, {
-        directory: join(__dirname, '..', 'src', 'commands'),
-        prefix: config.bot.prefix,
-      }),
-      spawn: new SpawnHandler<Spawn>(this, {
-        directory: join(__dirname, '..', 'src', 'spawns'),
-      }),
-      quest: new QuestHandler<Quest>(this, {
-        directory: join(__dirname, '..', 'src', 'quests'),
-      }),
-      item: new ItemHandler<Item>(this, {
-        directory: join(__dirname, '..', 'src', 'items'),
-      }),
-      lottery: new LotteryHandler(this),
-    };
-  }
+	constructor(
+		akairoOptions: AkairoOptions, 
+		clientOptions: ClientOptions,
+		handlers: HandlerConstructor,
+	) {
+		super({ ...akairoOptions, ...clientOptions });
+		this.handlers = {
+		  listener: new ListenerHandler<Listener<this>>(this, handlers.listener),
+		  command: new CommandHandler<Command>(this, handlers.command),
+		  spawn: new SpawnHandler<Spawn>(this, handlers.spawn),
+		  quest: new QuestHandler<Quest>(this, handlers.quest),
+		  item: new ItemHandler<Item>(this, handlers.item),
+		  lottery: new LotteryHandler(this),
+		};
+	}
 
-  setListenerHandler(handler: ListenerHandler<Listener<this>>) {
-    this.handlers.emitter = handler;
-    return this;
-  }
+	setMongoPath(uri: string, options: ConnectOptions = {}) {
+		return this.mongoPath = { uri, options };
+	}
 
-  setCommandHandler(handler: CommandHandler<Command>) {
-    this.handlers.command = handler;
-    return this;
-  }
+	addTypes(args: { type: string, fn: ArgumentTypeCaster }[]) {
+		for (const { type, fn } of args) {
+		  this.handlers.command.resolver.addType(type, fn);
+		}
 
-  setSpawnHandler(handler: SpawnHandler<Spawn>) {
-    this.handlers.spawn = handler;
-    return this;
-  }
+		return this;
+	}
 
-  setQuestHandler(handler: QuestHandler<Quest>) {
-    this.handlers.quest = handler;
-    return this;
-  }
+	loadModules() {
+		const mods: Array<AkairoModule[]> = Array(Object.keys(this.handlers).length).fill([]);
+		(Object.values(this.handlers) as AkairoHandler[])
+		.forEach((handler: AkairoHandler, index: number) => {
+			// @TODO: Remove these listeners after loading modules.
+			handler.on('load', mod => { mods[index].push(mod) })
+			.loadAll().client.emit('handlerLoad', handler);
+		});
+	}
 
-  patch() {
-    const { command, lottery, emitter, spawn, quest, item } = this.handlers;
-    command.useListenerHandler(emitter);
-    emitter.setEmitters({ command, lottery, emitter, spawn, quest, item });
-    command.resolver.addTypes(argTypes(this));
+	patch() {
+		// const { command, lottery, listener, spawn, quest, item } = this.handlers;
+		const { handlers } = this;
+		handlers.command.useListenerHandler(handlers.listener);
+		handlers.listener.setEmitters({ ...handlers });
+		return this;
+	}
 
-    const handlers = {
-      Emitter: emitter,
-      Command: command,
-      Spawn: spawn,
-      Quest: quest,
-      Item: item,
-    };
+	async connectDB(): Promise<boolean | void> {
+		try {
+			const { uri, options } = this.mongoPath;
+			const db = await mongoose.connect(uri, options);
+			return this.emit('dbConnect', db);
+		} catch (err) {
+			console.error(err.message);
+			throw err;
+		}
+	}
 
-    for (const [e, handler] of Object.entries(handlers)) {
-      handler
-        .on('load', (mod: AkairoModule) => {
-          this.util.console({
-            klass: this.constructor.name,
-            type: 'def',
-            msg: `${e} ${mod.id} loaded.`,
-          });
-        })
-        .loadAll();
-    }
-  }
-
-  async connectDB(): Promise<never | typeof import('mongoose')> {
-    try {
-      const { options, uri } = this.config.bot.mongo;
-      const db = await mongoose.connect(uri, options);
-      this.util.console({
-        msg: `Mongoose v${db.version}`,
-        type: 'def',
-        klass: 'Lava',
-      });
-
-      return db;
-    } catch (err) {
-      this.util.console({
-        msg: err.message,
-        type: 'err',
-        klass: 'Lava',
-      });
-
-      throw err;
-      return process.exit(1);
-    }
-  }
-
-  async build(token: string = this.config.bot.token): Promise<string> {
-    this.patch();
-    await this.connectDB();
-    return super.login(token);
-  }
+	async start(token: string = process.env.TOKEN): Promise<string> {
+		this.patch();
+		await this.connectDB();
+		return super.login(token);
+	}
 }

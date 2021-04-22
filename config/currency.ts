@@ -16,11 +16,11 @@ export const currencyConfig: CurrencyType = {
   maxSafePocket: 1000000000,
   maxSafeSpace: 5000000000,
   maxInventory: 100000,
-  maxPocket: 10000000,
-  maxMulti: 100,
-  minBet: 10,
-  maxBet: 250000,
-  maxWin: 750001,
+  maxPocket: 50000000,
+  maxMulti: 200,
+  minBet: 100,
+  maxBet: 500000,
+  maxWin: 2222222,
   slots: {
     // [prop: string]: [doubles, jackpots, canWinOnDouble]
     broken_heart: [1, 3, false],

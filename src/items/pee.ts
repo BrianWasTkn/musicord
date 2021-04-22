@@ -1,6 +1,6 @@
-import { Context } from '@lib/extensions/message';
-import { UserPlus } from '@lib/extensions/user';
-import { Item } from '@lib/handlers/item';
+import { Context } from 'lib/extensions/message';
+import { UserPlus } from 'lib/extensions/user';
+import { Item } from 'lib/handlers/item';
 
 export default class Flex extends Item {
   constructor() {
@@ -53,7 +53,7 @@ export default class Flex extends Item {
       return "Bro imagine not surprising anyone, that's so sad :(";
     }
 
-    const mebData = await (meb.user as UserPlus).fetchDB();
+    const mebData = (await ctx.db.fetch(meb.user.id, false)).data;
     const mebInv = mebData.items.find((piss) => piss.id === this.id);
 
     mebInv.amount += choice;

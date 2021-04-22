@@ -1,5 +1,5 @@
 import { AkairoModuleOptions } from 'discord-akairo';
-import { Item } from '@lib/handlers/item';
+import { Item } from 'lib/handlers/item';
 
 export type QuestDifficulty =
   | 'Easy'

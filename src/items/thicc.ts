@@ -1,5 +1,5 @@
-import { Context } from '@lib/extensions/message';
-import { Item } from '@lib/handlers/item';
+import { Context } from 'lib/extensions/message';
+import { Item } from 'lib/handlers/item';
 
 export default class PowerUp extends Item {
   constructor() {

@@ -17,13 +17,13 @@
         "sourceMap": true,
         "baseUrl": ".",
         "typeRoots": [
-            "./types", 
+            "./src/typings", 
             "./node_modules/@types"
         ],
         "paths": {
-            "@src/*": ["src/*"],
-            "@config/*": ["config/*"],
-            "@lib/*": ["lib/*"]
+            "src/*": ["src/*"],
+            "config/*": ["config/*"],
+            "lib/*": ["lib/*"]
         },
     }
 }

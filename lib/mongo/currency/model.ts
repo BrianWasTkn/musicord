@@ -4,7 +4,7 @@
  */
 
 import { Document, Schema, model } from 'mongoose';
-import { CurrencyProfile } from '@lib/interface/mongo/currency';
+import { CurrencyProfile } from 'lib/interface/mongo/currency';
 import { Type } from '../Type';
 
 const CurrencySchema = new Schema({

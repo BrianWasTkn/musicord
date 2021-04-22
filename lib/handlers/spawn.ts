@@ -1,5 +1,5 @@
-import { Context } from '@lib/extensions/message';
-import { Lava } from '@lib/Lava';
+import { Context } from 'lib/extensions/message';
+import { Lava } from 'lib/Lava';
 import {
   ReactionCollectorOptions,
   MessageCollectorOptions,
@@ -22,7 +22,7 @@ import type {
   SpawnConfig,
   SpawnVisual,
   SpawnQueue,
-} from '@lib/interface/handlers/spawn';
+} from 'lib/interface/handlers/spawn';
 import {
   AkairoHandlerOptions,
   AkairoHandler,
@@ -31,6 +31,7 @@ import {
   Category,
 } from 'discord-akairo';
 import { BaseHandler, BaseModule } from './Base';
+import config from 'config/index' ;
 
 export class Spawn extends BaseModule {
   answered: Collection<string, boolean>;
@@ -196,7 +197,7 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
         content,
       }) => {
         const { fetch } = this.client.db.spawns;
-        const { cap } = this.client.config.spawn;
+        const { cap } = config.spawn;
         const isSpam = spawner.config.type === 'spam';
 
         return (
@@ -239,7 +240,7 @@ export class SpawnHandler<Module extends Spawn> extends BaseHandler<Module> {
         user
       ) => {
         const { fetch } = this.client.db.spawns;
-        const { cap } = this.client.config.spawn;
+        const { cap } = config.spawn;
 
         return (
           !user.bot &&

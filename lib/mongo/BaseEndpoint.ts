@@ -1,6 +1,6 @@
 import { Document, Model } from 'mongoose';
 import { Snowflake } from 'discord.js';
-import { Lava } from '@lib/Lava';
+import { Lava } from 'lib/Lava';
 
 export abstract class BaseEndpoint<Profile extends Document> {
   private model: Model<Document<Profile>>;

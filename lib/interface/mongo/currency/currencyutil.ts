@@ -1,7 +1,7 @@
 import { CurrencyProfile } from '.';
-import { Context } from '@lib/extensions/message';
+import { Context } from 'lib/extensions/message';
 import { Document } from 'mongoose';
-import { Lava } from '@lib/Lava';
+import { Lava } from 'lib/Lava';
 
 export interface CurrencyUtil {
   calcMulti: (

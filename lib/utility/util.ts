@@ -2,6 +2,7 @@ import { Collection, Role } from 'discord.js';
 import { ClientUtil } from 'discord-akairo';
 import { Effects } from './effects';
 import { COLORS } from '../utility/constants';
+import config from 'config/index' ;
 import { Lava } from '../Lava';
 
 import chalk from 'chalk';
@@ -72,7 +73,7 @@ export class Util extends ClientUtil {
   };
 
   tableSlots = () => {
-    const { slots } = this.client.config.currency;
+    const { slots } = config.currency;
     const [keys, vals] = [Object.keys(slots), Object.values(slots)];
 
     const single = keys[keys.length - 1];

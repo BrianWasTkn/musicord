@@ -1,4 +1,4 @@
-import { InventorySlot } from '@lib/interface/handlers/item';
+import { InventorySlot } from 'lib/interface/handlers/item';
 import { Snowflake } from 'discord.js';
 import { Document } from 'mongoose';
 

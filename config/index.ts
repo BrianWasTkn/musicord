@@ -19,7 +19,7 @@ export interface Config {
   bot: ConfigInterface;
 }
 
-export const config: Config = {
+export default <Config> {
   currency: currencyConfig,
   discord: discordOptions,
   lottery: lottoConfig,

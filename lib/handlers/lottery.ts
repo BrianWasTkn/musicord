@@ -1,7 +1,8 @@
 import { Collection, GuildMember, TextChannel, Guild, Role } from 'discord.js';
-import { QuestOptions, QuestReward } from '@lib/interface/handlers/quest';
+import { QuestOptions, QuestReward } from 'lib/interface/handlers/quest';
 import { EventEmitter } from 'events';
-import { LottoConfig } from '@config/lottery';
+import { LottoConfig } from 'config/lottery';
+import config from 'config/index' ;
 import { Lava } from '../Lava';
 
 export class LotteryHandler extends EventEmitter {
@@ -35,7 +36,7 @@ export class LotteryHandler extends EventEmitter {
         interval,
         rewards,
         requirementID,
-      } = this.client.config.lottery;
+      } = config.lottery;
 
       this.requirement = requirementID;
       this.interval = Number(interval);

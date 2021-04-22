@@ -3,7 +3,7 @@
  * Author: brian
  */
 
-import { currencyConfig } from '@config/currency';
+import { currencyConfig } from 'config/currency';
 
 const { maxInventory, maxPocket, maxBet, minBet } = currencyConfig;
 
