@@ -15,10 +15,10 @@ const lava = new Lava(config.akairo, config.discord, {
 	item: { directory: read('items') },
 });
 
-lava.on('handlerLoad', handler => {
-	const { constructor: ctor, modules } = handler;
+lava.on('moduleLoad', module => {
+	const { constructor: ctor } = module;
 	lava.util.console({
-		msg: `${modules.size} ${ctor.name} loaded.`,
+		msg: `${ctor.name} ${module.id} loaded.`,
 		klass: 'Lava',
 		type: 'def',
 	});

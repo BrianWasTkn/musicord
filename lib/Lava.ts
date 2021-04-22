@@ -31,7 +31,7 @@ import mongoose from 'mongoose';
 import './extensions';
 
 interface ClientEventsPlus extends ClientEvents {
-	handlerLoad: [handler: AkairoHandler];
+	moduleLoad: [module: AkairoModule];
 	dbConnect: [db: typeof mongoose];
 }
 
@@ -69,8 +69,8 @@ export class Lava extends AkairoClient {
 	handlers: Handlers;
 	util: Util = new Util(this);
 	db: DB = {
-	currency: new CurrencyFunc<CurrencyProfile>(this),
-	spawns: new SpawnerFunc<SpawnDocument>(this),
+		currency: new CurrencyFunc<CurrencyProfile>(this),
+		spawns: new SpawnerFunc<SpawnDocument>(this),
 	};
 
 	// Event Types
@@ -117,12 +117,9 @@ export class Lava extends AkairoClient {
 	}
 
 	loadModules() {
-		const mods: Array<AkairoModule[]> = Array(Object.keys(this.handlers).length).fill([]);
 		(Object.values(this.handlers) as AkairoHandler[])
 		.forEach((handler: AkairoHandler, index: number) => {
-			// @TODO: Remove these listeners after loading modules.
-			handler.on('load', mod => { mods[index].push(mod) })
-			.loadAll().client.emit('handlerLoad', handler);
+			handler.on('load', mod => this.emit('moduleLoad', mod)).loadAll();
 		});
 
 		return this;
