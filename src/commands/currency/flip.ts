@@ -79,7 +79,7 @@ export default class Currency extends Command {
 
     // vis and db
     // let perwn: number, description: string[], identifier: string, color: string;
-    const getAuthor = () => ({ author: `${ctx.author.username}'s coin game`, icon_url: ctx.author.avatarURL({ dynamic: true }) });
+    const getAuthor = () => ({ name: `${ctx.author.username}'s coin game`, icon_url: ctx.author.avatarURL({ dynamic: true }) });
     ctx.send({ embed: {
       description: `**Call \`heads\` or \`tails\` in 30 seconds.**\nYour bet is **${bet.toLocaleString()}** coins.`,
       author: getAuthor(), color: 2533018, 
