@@ -45,7 +45,7 @@ export default class Currency extends Command {
     const isSale = Items.sale.id === item.id;
     const dPrice = Math.round(item.cost - item.cost * (Items.sale.discount / 1e2));
     const sold = Math.round(amount * ((isSale ? dPrice : item.cost) / 4));
-    await userEntry.addPocket(sold).removeInv(item.id, amount).save();
+    await userEntry.addPocket(Math.round(sold)).removeInv(item.id, Math.round(amount)).save();
     this.client.handlers.quest.emit('itemSell', { ctx, item, amount });
 
     return {
@@ -58,7 +58,7 @@ export default class Currency extends Command {
         },
         description: Constants.ITEM_MESSAGES.SELL_MSG.replace(
           /{got}/gi,
-          (amount * (sold / 4)).toLocaleString()
+          Math.round(amount * (sold / 4)).toLocaleString()
         )
           .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
           .replace(/{emoji}/gi, item.emoji)

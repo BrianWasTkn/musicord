@@ -52,7 +52,7 @@ export default class Currency extends Command {
     const isSale = Items.sale.id === item.id;
     const dPrice = Math.round(item.cost - item.cost * (Items.sale.discount / 1e2));
     const paid = amount * (isSale ? dPrice : item.cost);
-    await userEntry.removePocket(paid).addInv(item.id, amount).save();
+    await userEntry.removePocket(Math.round(paid)).addInv(item.id, Math.round(amount)).save();
     this.client.handlers.quest.emit('itemBuy', { ctx, item, amount });
 
     return {
@@ -66,7 +66,7 @@ export default class Currency extends Command {
         },
         description: Constants.ITEM_MESSAGES.BUY_MSG.replace(
           /{paid}/gi,
-          (amount * paid).toLocaleString()
+          Math.round(amount * paid).toLocaleString()
         )
           .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
           .replace(/{emoji}/gi, item.emoji)

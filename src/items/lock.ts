@@ -8,7 +8,7 @@ export default class Tool extends Item {
       sellable: true,
       buyable: true,
       usable: true,
-      emoji: ':herb:',
+      emoji: ':lock:',
       name: "Lock",
       cost: 20000,
       checks: ['time'],
