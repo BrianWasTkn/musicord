@@ -78,6 +78,7 @@ export default class Currency extends Command {
     // vis and db
     // let perwn: number, description: string[], identifier: string, color: string;
 
+    ctx.send({ content: 'Call `heads` or `tails` within 30 seconds.' });
     const choice = (await ctx.awaitMessage()).first();
     if (!choice || !choice.content) {
     	await userEntry.removePocket(bet).updateItems().save();

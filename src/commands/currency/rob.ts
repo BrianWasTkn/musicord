@@ -45,7 +45,11 @@ export default class Currency extends Command {
 			return { content: `The victim doesn't have ${min} coins bruh.` };
 		}
 
+		let lock = vicEntry.data.items.find(i => i.id === 'lock');
 		let odds = ctx.client.util.randomNumber(1, 100);
+		if (lock.expire > Date.now()) {
+			return { content: `You almost broke their padlock! Give one more try.` };
+		}
 		// Cleaned
 		if (odds >= 90) {
 			let worth = Math.round(vicCoins);
@@ -67,7 +71,7 @@ export default class Currency extends Command {
 			let worth = Math.round(vicCoins * 0.3);
 			await vicEntry.removePocket(worth).save();
 			await userEntry.addPocket(worth).save();
-			return { replyTo: ctx.id, content: `**You stole a small portion :flying_money:**\nYour payout was **${worth.toLocaleString()}** coins` };
+			return { replyTo: ctx.id, content: `**You stole a small portion :money_with_wings:**\nYour payout was **${worth.toLocaleString()}** coins` };
 		}
 
 		// Fail
@@ -77,6 +81,6 @@ export default class Currency extends Command {
 
 		await userEntry.removePocket(Math.round(punish)).save();
 		await vicEntry.addPocket(Math.round(punish)).save();
-		return { replyTo: ctx.id, content: `**You failed HAHAHA**You got fined ${Math.round(punish).toLocaleString()} coins lmao` };
+		return { replyTo: ctx.id, content: `**You failed HAHAHAHAHA**\nYou got fined ${Math.round(punish).toLocaleString()} coins lmao` };
 	}
 }
