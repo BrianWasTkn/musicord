@@ -122,14 +122,11 @@ export class Lava extends AkairoClient {
 			handler.on('load', mod => this.emit('moduleLoad', mod)).loadAll();
 		});
 
-		return this;
-	}
-
-	patch() {
-		// const { command, lottery, listener, spawn, quest, item } = this.handlers;
 		const { handlers } = this;
 		handlers.command.useListenerHandler(handlers.listener);
 		handlers.listener.setEmitters({ ...handlers });
+		return this;
+
 		return this;
 	}
 
@@ -145,7 +142,6 @@ export class Lava extends AkairoClient {
 	}
 
 	async start(token: string = process.env.TOKEN): Promise<string> {
-		this.patch();
 		await this.connectDB();
 		return super.login(token);
 	}
