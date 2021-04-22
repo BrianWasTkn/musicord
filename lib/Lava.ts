@@ -117,14 +117,16 @@ export class Lava extends AkairoClient {
 	}
 
 	loadModules() {
-		(Object.values(this.handlers) as AkairoHandler[])
-		.forEach((handler: AkairoHandler, index: number) => {
-			handler.on('load', mod => this.emit('moduleLoad', mod)).loadAll();
-		});
+		for (const handler of Object.values(this.handlers)) {
+			handler.on('load', mod => this.emit('moduleLoad', mod));
+		}
 
 		const { listener, command, spawn, quest, item } = this.handlers;
 		command.useListenerHandler(listener);
 		listener.setEmitters({ listener, command, spawn, quest, item });
+		for (const handler of [listener, command, spanw, quest, item]) {
+			handler.loadAll();
+		}
 
 		return this;
 	}
