@@ -28,4 +28,7 @@ lava.on('handlerLoad', handler => {
 		type: 'def',
 		msg: `Mongoose v${db.version}`
 	});
-}).addTypes(Args).start();
+})
+
+const { uri, options } = config.bot.mongo;
+lava.setMongoPath(uri, options).addTypes(Args).start();

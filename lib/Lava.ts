@@ -104,7 +104,8 @@ export class Lava extends AkairoClient {
 	}
 
 	setMongoPath(uri: string, options: ConnectOptions = {}) {
-		return this.mongoPath = { uri, options };
+		this.mongoPath = { uri, options };
+		return this;
 	}
 
 	addTypes(args: { type: string, fn: ArgumentTypeCaster }[]) {
