@@ -29,8 +29,8 @@ export default class Collectible extends Item {
     const tr = this.findInv(data.items, this);
     const odds = randomNumber(1, 100);
 
-    if (odds >= 30) {
-      const nice = randomNumber(1, 5);
+    if (odds >= 5) {
+      const nice = randomNumber(1, 100);
       const won = randomNumber(1, 100) * 1e3;
       await entry.addInv(this.id, nice).addPocket(won).save();
       return { content: `You got **${nice} ${this.name}** and **${won.toLocaleString()}** coins!` };
