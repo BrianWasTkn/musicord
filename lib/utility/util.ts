@@ -118,13 +118,13 @@ export class Util extends ClientUtil {
 
     const firstCnt = Math.floor(time / methods[0].count);
     const timeStr = [
-      firstCnt.toString() + ' ' + pluralize(methods[0].name[short ? 0 : 1], firstCnt),
+      firstCnt.toString() + `${short ? '' : ' '}` + pluralize(methods[0].name[short ? 0 : 1], firstCnt),
     ];
     for (let i = 0; i < methods.length - 1; i++) {
       const raw = (time % methods[i].count) / methods[i + 1].count;
       const calced = Math.floor(raw);
       timeStr.push(
-        calced.toString() + ' ' + pluralize(methods[i + 1].name[short ? 0 : 1], calced)
+        calced.toString() + `${short ? '' : ' '}` + pluralize(methods[i + 1].name[short ? 0 : 1], calced)
       );
     }
 
