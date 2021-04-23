@@ -84,8 +84,8 @@ declare global {
 }
 
 export class Command extends AkairoCommand {
-  // @ts-ignore
   manualCooldown: boolean;
+  // @ts-ignore
   handler: CommandHandler<Command>;
   client: Lava;
 
