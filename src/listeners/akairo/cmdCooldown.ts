@@ -18,13 +18,13 @@ export default class CommandListener extends Listener<CommandHandler<Command>> {
     const defCd =
       command.cooldown <= 60e3
         ? `${command.cooldown / 1e3} seconds`
-        : this.client.util.parseTime(command.cooldown / 1e3);
+        : this.client.util.parseTime(command.cooldown / 1e3, false);
 
     return ctx.send({
       embed: {
         title: 'LOL calm down',
         color: 'INDIGO',
-        description: `You're currently on cooldown for the \`${command.id}\` command.\nPlease wait **${time}** and try again.\nDefault cooldown for this command is **${defCd}**!`,
+        description: `You're currently on cooldown for the \`${command.id}\` command.\nYou can use this command in**${time}**\nYou only need to wait **${defCd}** by default!`,
         footer: {
           text: this.client.user.username,
           icon_url: this.client.user.avatarURL(),
