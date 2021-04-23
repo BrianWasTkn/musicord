@@ -74,7 +74,7 @@ export default class Currency extends Command {
 			const entry = await ctx.db.fetch(m.author.id, false);
 			const remove = (id: string) => entries.delete(id);
 			entries.set(m.id, m);
-			if (entries.has(m.author.id)) {
+			if (entries.has(m.id)) {
 				remove(m.id); return m.send({ replyTo: m.id, content: 'You already joined bruh' });
 			}
 			if (m.author.id === user.id) {
@@ -148,7 +148,7 @@ export default class Currency extends Command {
 
 			// final
 			await vicEntry.withdraw(vicCoins).removePocket(vicCoins).save();
-			let content = `**Good job everybody! We racked up \`${coins.toLocaleString()}\` coins each!`;
+			let content = `**Good job everybody! We racked up \`${coins.toLocaleString()}\` coins each!**`;
 			content += `\n${'```diff'}\n${[...fail, ...nothing].sort(() => Math.random() - 0.5).join('\n')}\n${success.join('\n')}\n${'```'}`;
 			return ctx.send({ content });
 		};
