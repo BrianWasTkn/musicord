@@ -45,6 +45,9 @@ export default class Currency extends Command {
 		if (vicCoins < min) {
 			return { content: `The victim doesn't have ${min} coins in their vault bruh.` };
 		}
+		if (ctx.client.util.curHeist.has(ctx.guild.id)) {
+			return { content: `There's a heist going on this server right now.` };
+		}
 
 		let lock = vicEntry.data.items.find(i => i.id === 'lock');
 		let odds = ctx.client.util.randomNumber(1, 100);
@@ -60,6 +63,8 @@ export default class Currency extends Command {
 			return { content: `You almost broke their padlock! Give one more try.` };
 		}
 
+		await ctx.send({ content: `${ctx.author.username} is starting a heist against ${user.username}! Type \`JOIN HEIST\` to join!` });
+		ctx.client.util.curHeist.set(ctx.guild.id, true);
 		const entries = new Collection<string, boolean>([[ctx.author.id, true]]);
 		const options: MessageCollectorOptions = { max: Infinity, time: 6e4 };
 		const filter: CollectorFilter<[Context]> = m => m.content.toLowerCase() === 'join heist';

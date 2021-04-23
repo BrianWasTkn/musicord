@@ -10,6 +10,7 @@ import moment from 'moment';
 
 export class Util extends ClientUtil {
   cmdQueue: Collection<string, boolean>;
+  curHeist: Collection<string, boolean>;
   effects: Collection<string, Collection<string, Effects>>;
   events: Collection<string, string>;
   heists: Collection<string, Role>;
@@ -22,6 +23,7 @@ export class Util extends ClientUtil {
     this.events = new Collection();
     this.effects = new Collection();
     this.cmdQueue = new Collection();
+    this.curHeist = new Collection();
 
     for (const color of Object.keys(COLORS)) {
       require('discord.js').Constants.Colors[color.toUpperCase()] =
