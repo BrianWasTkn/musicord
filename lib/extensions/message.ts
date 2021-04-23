@@ -20,6 +20,7 @@ import {
   Channel,
   Base,
 } from 'discord.js';
+import config from 'config/index';
 
 type TextableChannel = DMChannel | TextChannel | NewsChannel;
 type Constructor = [Lava, object, TextableChannel];
@@ -125,7 +126,7 @@ export class ContextDatabase extends Base {
     return this;
   }
 
-  calcSpace(offset: number = 55, boost: number = 1, limit: number = 1000e6) {
+  calcSpace(offset: number = 55, boost: number = 1, limit: number = config.currency.maxSafeSpace) {
     if (!this.data) this._reportError();
     const calc = (boosty: number) => Math.round(offset * (boosty / 2) + offset);
     this.data.space = Math.min(this.data.space + calc(boost), limit);
