@@ -40,10 +40,6 @@ export class Context<Args extends {} = {}> extends Message {
     this.args = Object.create(null);
   }
 
-  addCooldown(cmd: Command): this {
-    return this; // for now
-  }
-
   send(args: MessageOptions): Promise<this> {
     return this.channel.send.call(this.channel, args);
   }
@@ -98,6 +94,16 @@ export class ContextDatabase extends Base {
 
   fetch(id = this.ctx.author.id, assign = true) {
     return this.init(id, assign);
+  }
+
+  addCd(cmd = this.ctx.command) {
+    if (!this.data) this._reportError();
+    const { cooldowns: cds } = this.data;
+    const expire = this.ctx.createdTimestamp + cmd.cooldown;
+    const cd = cds.find(c => c.id === cmd.id);
+    if (!cd) cds.push({ expire, uses: 0, id: cmd.id });
+    else cd.expire = expire;
+    return this;
   }
 
   addPocket(amount: number): this {

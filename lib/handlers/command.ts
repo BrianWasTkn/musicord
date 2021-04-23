@@ -85,11 +85,13 @@ declare global {
 
 export class Command extends AkairoCommand {
   // @ts-ignore
+  manualCooldown: boolean;
   handler: CommandHandler<Command>;
   client: Lava;
 
   constructor(id: string, args: CommandOptions) {
     super(id, args);
+    this.manualCooldown = Boolean(args.manualCooldown);
   }
 
   run(ctx: Context): PromiseOr<CommandReturn> {
@@ -756,10 +758,10 @@ export class CommandHandler<
     }
 
     // increment for ratelimit
-    cd.uses++;
-    if (diff < 0) cd.expire = expire;
+    if (!cmd.manualCooldown) cd.uses++;
+    if (diff < 0 && cd.uses <= 1) cd.expire = expire;
     await data.save();
-    return false;
+    return cmd.manualCooldown;
   }
 
   async runCommand(

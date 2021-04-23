@@ -63,6 +63,7 @@ export default class Currency extends Command {
 			return { replyTo: ctx.id, content: `You almost broke their padlock! Give one more try.` };
 		}
 
+		await userEntry.addCd().save();
 		await ctx.send({ content: `${ctx.author.username} is starting a heist against ${user.username}! Type \`JOIN HEIST\` to join!` });
 		ctx.client.util.curHeist.set(ctx.guild.id, true);
 		const finish = () => ctx.client.util.curHeist.delete(ctx.guild.id);

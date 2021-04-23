@@ -45,6 +45,7 @@ export default class Currency extends Command {
 			return { replyTo: ctx.id, content: `The victim doesn't have ${min} coins bruh.` };
 		}
 
+		await userEntry.addCd().save();
 		let lock = vicEntry.data.items.find(i => i.id === 'lock');
 		let odds = ctx.client.util.randomNumber(1, 100);
 		if (lock.expire > Date.now()) {
