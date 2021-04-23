@@ -180,7 +180,10 @@ export class ContextDatabase extends Base {
         crazy: () => eff.addSlotJackpotOdd(5),
         thicc: () => eff.addGambleWinnings(0.5),
         thicm: () => eff.addBlackjackWinnings(0.5),
-        dragon: () => eff.addDiceRoll(1),
+        trophy: () => eff.addGambleWinnings(0.5),
+        dragon: () => eff.addDiceRoll(1)
+          .addBlackjackWinnings(1)
+          .addGambleWinnings(1),
       };
 
       if (item.checks.includes('activeState') && inv.active) {

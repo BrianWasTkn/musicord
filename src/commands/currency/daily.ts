@@ -27,7 +27,7 @@ export default class Currency extends Command {
     }
 
     let won = 10000;
-    const streakBonus = Math.round(0.15 * won * streak);
+    const streakBonus = Math.round(0.2 * won * streak);
     if (streak > 1) won += streakBonus;
     await userEntry.recordDailyStreak().addPocket(won).save();
 

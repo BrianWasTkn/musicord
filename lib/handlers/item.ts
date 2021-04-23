@@ -1,4 +1,4 @@
-import { Collection, MessageEmbed } from 'discord.js';
+import { Collection, MessageEmbed, MessageOptions } from 'discord.js';
 import { CurrencyProfile } from 'lib/interface/mongo/currency';
 import { Document } from 'mongoose';
 import { Context } from 'lib/extensions/message';
@@ -18,7 +18,7 @@ import {
   Category,
 } from 'discord-akairo';
 
-export type ItemReturn = string | IReturn;
+export type ItemReturn = string | IReturn | MessageOptions;
 
 export interface IReturn {
   content?: string;
@@ -57,7 +57,7 @@ export class Item extends AkairoModule {
     return inventory.find((i) => i.id === item.id);
   }
 
-  use(msg: Context): ItemReturn | Promise<ItemReturn> {
+  use(msg: Context): PromiseUnion<ItemReturn> {
     return 'This item perhaps, is a work in progress :)';
   }
 }

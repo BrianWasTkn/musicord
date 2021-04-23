@@ -1,3 +1,4 @@
+import { MessageOptions } from 'discord.js';
 import { Context } from 'lib/extensions/message';
 import { Item } from 'lib/handlers/item';
 
@@ -10,38 +11,38 @@ export default class Collectible extends Item {
       usable: true,
       emoji: '🏆',
       name: 'Trophy',
-      cost: 3000000,
-      checks: ['time'],
+      cost: 50000000,
+      checks: ['activeState'],
       info: {
-        short: 'Flex it against normies.',
+        short: 'A very powerful item to flex against normies.',
         long:
-          'Grants you 50% multiplier for 5 minutes and a random amount of trophies (if you hit the odds of getting it) to flex against normies!',
+          'Grants you 1% multiplier for every trophy you own, another trophy and powers all kinds of gambling games by adding 100% of your winnings for 12 hours to flex against normies!',
       },
     });
   }
 
-  async use(ctx: Context): Promise<string> {
-    const { data } = await ctx.db.fetch();
-    const { util } = this.client;
+  async use(ctx: Context): Promise<MessageOptions> {
+    const entry = await ctx.db.fetch(),
+    { randomNumber } = this.client.util,
+    { data } = entry;
+
     const tr = this.findInv(data.items, this);
+    const odds = randomNumber(1, 100);
 
-    let odds = util.randomNumber(1, 100);
-    let nice = util.randomNumber(1, 5);
-    let hit = odds <= 10;
+    if (odds >= 30) {
+      const nice = randomNumber(1, 5);
+      const won = randomNumber(1, 100) * 1e3;
+      await entry.addInv(this.id, nice).addPocket(won).save();
+      return { content: `You got **${nice} ${this.name}** and **${won.toLocaleString()}** coins!` };
+    }
 
-    tr.amount += hit ? nice : 0;
-    tr.expire = Date.now() + 30 * 60 * 1e3;
-    tr.multi = 50;
+    const hahayes = randomNumber(tr.amount / 2, tr.amount);
+    await entry.removeInv(this.id, hahayes).save();
 
-    await ctx.db.updateItems().save();
-    return `**${this.emoji} ${
-      this.name
-    }**\nYou now have a **25%** multiplier for 30 minutes${
-      !hit
-        ? '!'
-        : ` AND **${nice.toLocaleString()} ${this.name}**${
-            nice > 1 ? 's' : ''
-          } god you're so lucky.`
-    }`;
+    return { embed: {
+      description: `You lost **${hahayes} ${this.name}** lmao`,
+      title: `You failed!`,
+      color: 'RED',
+    }};
   }
 }

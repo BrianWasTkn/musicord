@@ -29,7 +29,7 @@ export default class Currency extends Command {
     switch (true) {
       case odds >= 0.9:
         const item = items.filter((i) => i.cost < 30e6).random();
-        const amount = util.randomNumber(1, 5);
+        const amount = util.randomNumber(1, 10);
         let itinv = item.findInv(data.items, item);
         itinv.amount += amount;
         await userEntry.save();
@@ -44,7 +44,7 @@ export default class Currency extends Command {
           replyTo: ctx,
         };
       case odds >= 0.5:
-        const won = util.randomNumber(100, 1000) * 1e3;
+        const won = util.randomNumber(1, 100) * 1e2;
         await userEntry.addPocket(won).calcSpace().updateItems().save();
         return {
           embed: {

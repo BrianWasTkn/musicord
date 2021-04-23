@@ -13,7 +13,7 @@ export default class Currency extends Command {
 			channel: 'guild',
 			description: "Rob someone from the currency!",
 			category: 'Currency',
-			cooldown: 6e4 * 2,
+			cooldown: 6e4 * 5,
 			args: [
 				{
 				  id: 'member',
@@ -25,11 +25,11 @@ export default class Currency extends Command {
 
 	async exec(ctx: Context<{ member: MemberPlus }>): Promise<MessageOptions> {
 		if (!ctx.args.member) {
-			return { content: `You need to rob someone!` };
+			return { replyTo: ctx.id, content: `You need to rob someone!` };
 		}
 		const { user } = ctx.args.member;
 		if (user.id === ctx.author.id) {
-			return { content: `Bro you need to rob someone, not yourself dumbo` };
+			return { replyTo: ctx.id, content: `Bro you need to rob someone, not yourself dumbo` };
 		}
 
 		const userEntry = await ctx.db.fetch(ctx.author.id);
@@ -39,10 +39,10 @@ export default class Currency extends Command {
 		let min = 5000;
 
 		if (userCoins < min) {
-			return { content: `You need ${min} coins to rob someone.` };
+			return { replyTo: ctx.id, content: `You need ${min} coins to rob someone.` };
 		}
 		if (vicCoins < min) {
-			return { content: `The victim doesn't have ${min} coins bruh.` };
+			return { replyTo: ctx.id, content: `The victim doesn't have ${min} coins bruh.` };
 		}
 
 		let lock = vicEntry.data.items.find(i => i.id === 'lock');
@@ -53,29 +53,29 @@ export default class Currency extends Command {
 				hahayes.expire = 0;
 				hahayes.active = false;
 				await vicEntry.data.save();
-				return { content: `**You broke their padlock!**\nGive one more attempt for a robbery!` };
+				return { replyTo: ctx.id, content: `**You broke their padlock!**\nGive one more attempt for a robbery!` };
 			}
 			
-			return { content: `You almost broke their padlock! Give one more try.` };
+			return { replyTo: ctx.id, content: `You almost broke their padlock! Give one more try.` };
 		}
 		// Cleaned
 		if (odds >= 90) {
-			let worth = Math.round(vicCoins);
+			let worth = Math.round(vicCoins * 0.99);
 			await vicEntry.removePocket(worth).save();
 			await userEntry.addPocket(worth).save();
-			return { replyTo: ctx.id, content: `**You stole ALL :herb:**\nYou managed to steal **${worth.toLocaleString()}** coins LMAO` };
+			return { replyTo: ctx.id, content: `**You managed to steal ALL before leaving :money_mouth:**\nYou managed to steal **${worth.toLocaleString()}** coins LMAO` };
 		}
 
 		// 50% of Pocket
-		if (odds >= 60) {
-			let worth = Math.round(vicCoins * 0.5);
+		if (odds >= 80) {
+			let worth = Math.round(vicCoins * 0.49);
 			await vicEntry.removePocket(worth).save();
 			await userEntry.addPocket(worth).save();
-			return { replyTo: ctx.id, content: `**You stole HALF :money_mouth:**\nYour payout was **${worth.toLocaleString()}** coins` };
+			return { replyTo: ctx.id, content: `**You managed to steal almost HALF of their money:moneybag:**\nYour payout was **${worth.toLocaleString()}** coins` };
 		}
 
 		// 30% of Pocket
-		if (odds >= 30) {
+		if (odds >= 60) {
 			let worth = Math.round(vicCoins * 0.3);
 			await vicEntry.removePocket(worth).save();
 			await userEntry.addPocket(worth).save();
@@ -89,6 +89,6 @@ export default class Currency extends Command {
 
 		await userEntry.removePocket(Math.round(punish)).save();
 		await vicEntry.addPocket(Math.round(punish)).save();
-		return { replyTo: ctx.id, content: `**You failed HAHAHAHAHA**\nYou got fined ${Math.round(punish).toLocaleString()} coins lmao` };
+		return { replyTo: ctx.id, content: `**You failed the robbery HAHAHAHAHA**\nYou paid them ${Math.round(punish).toLocaleString()} coins instead lmao` };
 	}
 }

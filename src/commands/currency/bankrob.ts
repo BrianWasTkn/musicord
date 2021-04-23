@@ -13,7 +13,7 @@ export default class Currency extends Command {
 			channel: 'guild',
 			description: "Rob their banks!",
 			category: 'Currency',
-			cooldown: 6e4 * 5,
+			cooldown: 6e4 * 10,
 			manualCooldown: true,
 			args: [
 				{
@@ -26,27 +26,27 @@ export default class Currency extends Command {
 
 	async exec(ctx: Context<{ member: MemberPlus }>): Promise<MessageOptions> {
 		if (!ctx.args.member) {
-			return { content: `You need to heist someone!` };
+			return { replyTo: ctx.id, content: `You need to heist someone!` };
 		}
 		const { user } = ctx.args.member;
 		if (user.id === ctx.author.id) {
-			return { content: `Bro you need to heist someone, not yourself dumbo` };
+			return { replyTo: ctx.id, content: `Bro you need to heist someone, not yourself dumbo` };
 		}
 
 		const userEntry = await ctx.db.fetch(ctx.author.id);
-		const vicEntry = await ctx.db.fetch(user.id, false),
-		{ vault: userCoins } = userEntry.data, 
-		{ vault: vicCoins } = vicEntry.data;
+		const vicEntry = await ctx.db.fetch(user.id, false);
+		const { vault: userCoins } = userEntry.data;
+		let { vault: vicCoins } = vicEntry.data;
 		let min = 5000;
 
 		if (userCoins < min) {
-			return { content: `You need ${min} coins to rob someone.` };
+			return { replyTo: ctx.id, content: `You need ${min} coins to rob someone.` };
 		}
 		if (vicCoins < min) {
-			return { content: `The victim doesn't have ${min} coins in their vault bruh.` };
+			return { replyTo: ctx.id, content: `The victim doesn't have ${min} coins in their vault bruh.` };
 		}
 		if (ctx.client.util.curHeist.has(ctx.guild.id)) {
-			return { content: `There's a heist going on this server right now.` };
+			return { replyTo: ctx.id, content: `There's a heist going on this server right now.` };
 		}
 
 		let lock = vicEntry.data.items.find(i => i.id === 'lock');
@@ -57,10 +57,10 @@ export default class Currency extends Command {
 				hahayes.expire = 0;
 				hahayes.active = false;
 				await vicEntry.data.save();
-				return { content: `**You broke their padlock!**\nGive one more attempt for a robbery!` };
+				return { replyTo: ctx.id, content: `**You broke their padlock!**\nGive one more attempt for a robbery!` };
 			}
 			
-			return { content: `You almost broke their padlock! Give one more try.` };
+			return { replyTo: ctx.id, content: `You almost broke their padlock! Give one more try.` };
 		}
 
 		await ctx.send({ content: `${ctx.author.username} is starting a heist against ${user.username}! Type \`JOIN HEIST\` to join!` });
@@ -101,6 +101,12 @@ export default class Currency extends Command {
 				finish();
 				return ctx.reply('Well looks like you\'re alone.');
 			}
+
+			// Limit to half if less than 10
+			if (entries.size <= 5) {
+				vicCoins /= 2;
+			}
+
 			// fail
 			if (odds() <= 10) {
 				await Promise.all([...entries.values()].map(async c => {

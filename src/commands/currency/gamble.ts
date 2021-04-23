@@ -74,7 +74,7 @@ export default class Currency extends Command {
     const iDiceEffs: Item[] = [];
     let extraWngs: number = 0;
     let dceRoll: number = 0;
-    for (const it of ['thicc', 'brian', 'dragon']) {
+    for (const it of ['thicc', 'brian', 'dragon', 'trophy']) {
       const userEf = effects.get(ctx.author.id);
       if (!userEf) {
         const col = new Collection<string, Effects>().set(it, new Effects());
@@ -115,7 +115,7 @@ export default class Currency extends Command {
         `You now have **${(data.pocket - lost).toLocaleString()}**`,
       ];
     } else if (userD > botD) {
-      let wngs = Math.ceil(bet * (Math.random() + (0.3 + extraWngs)));
+      let wngs = Math.ceil(bet * (Math.random() + (0.4 + extraWngs)));
       wngs = Math.min(maxWin, wngs + Math.ceil(wngs * (multi / 100)));
       perwn = Math.round((wngs / bet) * 100);
 

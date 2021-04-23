@@ -1,3 +1,4 @@
+import { MessageOptions } from 'discord.js';
 import { Context } from 'lib/extensions/message';
 import { Item } from 'lib/handlers/item';
 
@@ -20,7 +21,7 @@ export default class PowerUp extends Item {
     });
   }
 
-  async use(ctx: Context) {
+  async use(ctx: Context): Promise<MessageOptions> {
     const { data } = await ctx.db.fetch();
     const inv = data.items.find((i) => i.id === this.id);
 
@@ -28,6 +29,6 @@ export default class PowerUp extends Item {
     inv.active = true;
     await data.save();
 
-    return `Your dragon has been activated for **12 hours** so be careful when gambling :smiley:`;
+    return { content: `Your dragon has been activated for **12 hours** so be careful when gambling :smiley:` };
   }
 }

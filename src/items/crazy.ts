@@ -1,4 +1,5 @@
 import { Context } from 'lib/extensions/message';
+import { MessageOptions } from 'discord.js';
 import { Item } from 'lib/handlers/item';
 
 export default class PowerUp extends Item {
@@ -10,7 +11,7 @@ export default class PowerUp extends Item {
       usable: true,
       emoji: ':beers:',
       name: "Crazy's Alcohol",
-      cost: 350000,
+      cost: 500000,
       checks: ['time'],
       info: {
         short:
@@ -21,7 +22,7 @@ export default class PowerUp extends Item {
     });
   }
 
-  async use(ctx: Context): Promise<string> {
+  async use(ctx: Context): Promise<MessageOptions> {
     const { data } = await ctx.db.fetch();
     const craz = this.findInv(data.items, this);
 
@@ -29,6 +30,6 @@ export default class PowerUp extends Item {
     craz.expire = Date.now() + 10 * 60 * 1e3;
     await ctx.db.updateItems().save();
 
-    return 'You now have a **10%** jackpot chance for 10 minutes!';
+    return { content: 'You now have a **10%** jackpot chance for 10 minutes!' };
   }
 }

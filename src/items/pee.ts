@@ -1,4 +1,5 @@
 import { Context } from 'lib/extensions/message';
+import { MessageOptions } from 'discord.js';
 import { UserPlus } from 'lib/extensions/user';
 import { Item } from 'lib/handlers/item';
 
@@ -11,7 +12,7 @@ export default class Flex extends Item {
       usable: true,
       emoji: ':baby_bottle:',
       name: "Jenni's Piss",
-      cost: 1e6,
+      cost: 100,
       info: {
         short: 'Use it to surprise somebody!',
         long:
@@ -20,7 +21,7 @@ export default class Flex extends Item {
     });
   }
 
-  async use(ctx: Context): Promise<string> {
+  async use(ctx: Context): Promise<MessageOptions> {
     const { data } = await ctx.db.fetch();
     const piss = this.findInv(data.items, this);
 
@@ -32,12 +33,12 @@ export default class Flex extends Item {
       await ctx.channel.awaitMessages(f, { max: 1, time: 15000 })
     ).first();
     if (!rep.content || !Number.isInteger(Number(rep.content))) {
-      return "It's gotta be a real number yeah?";
+      return { content: "It's gotta be a real number yeah?" };
     }
 
     let choice = Number(rep.content);
     if (choice > piss.amount) {
-      return 'Lol imagine having way less than what you actually wanted to give';
+      return { content: 'Lol imagine having way less than what you actually wanted to give' };
     }
 
     ctx.channel.send('Now tell me who the frick you want me to surprise.');
@@ -50,7 +51,7 @@ export default class Flex extends Item {
       false
     );
     if (!meb) {
-      return "Bro imagine not surprising anyone, that's so sad :(";
+      return { content: "Bro imagine not surprising anyone, that's so sad :(" };
     }
 
     const mebData = (await ctx.db.fetch(meb.user.id, false)).data;
@@ -61,6 +62,6 @@ export default class Flex extends Item {
     await data.save();
     await mebData.save();
 
-    return `Alright, ${meb.user.username} got your stinking surprise :kiss:`;
+    return { content: `Alright, ${meb.user.username} got your stinking surprise :kiss:` };
   }
 }

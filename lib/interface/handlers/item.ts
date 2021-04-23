@@ -3,7 +3,7 @@ import { AkairoModuleOptions } from 'discord-akairo';
 
 export type ItemReturn = string | IItemReturn;
 
-export type ItemCheck = ArrayUnion<('time' | 'activeState')>;
+export type ItemCheck = ArrayUnion<('time' | 'activeState' | 'presence')>;
 
 export interface ItemInfo {
   short: string;

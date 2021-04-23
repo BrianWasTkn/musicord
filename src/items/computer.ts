@@ -1,4 +1,5 @@
 import { Context } from 'lib/extensions/message';
+import { MessageOptions } from 'discord.js';
 import { Item } from 'lib/handlers/item';
 
 export default class PowerUp extends Item {
@@ -7,7 +8,7 @@ export default class PowerUp extends Item {
       category: 'Power-Up',
       sellable: true,
       buyable: true,
-      usable: true,
+      usable: false,
       emoji: ':desktop:',
       name: "Prob's Computer",
       cost: 69420,
@@ -19,7 +20,7 @@ export default class PowerUp extends Item {
     });
   }
 
-  async use(ctx: Context): Promise<string> {
+  async use(ctx: Context): Promise<MessageOptions> {
     const { util } = this.client;
     const { data } = await ctx.db.fetch();
     const comp = data.items.find((i) => i.id === this.id);
@@ -46,10 +47,10 @@ export default class PowerUp extends Item {
       await ctx.channel.awaitMessages(f, { max: 1, time: 15000 })
     ).first();
     if (!rep) {
-      return 'Imagine wasting 15 seconds of my bottime :rolling_eyes:';
+      return { content: 'Imagine wasting 15 seconds of my bottime :rolling_eyes:' };
     }
     if (!things[rep.content.toLowerCase()]) {
-      return 'Stop giving me invalid options buddy >:(';
+      return { content: 'Stop giving me invalid options buddy >:(' };
     }
 
     const karma = util.randomNumber(1, 1e4);
@@ -57,16 +58,16 @@ export default class PowerUp extends Item {
     if (Math.random() < 0.2) {
       comp.amount--;
       await data.save();
-      return `Your meme got **-${karma.toLocaleString()}** karmas so you broke your **${
+      return { content: `Your meme got **-${karma.toLocaleString()}** karmas so you broke your **${
         this.emoji
-      } ${this.name}** lmao sucks to be you.`;
+      } ${this.name}** lmao sucks to be you.` };
     }
 
     const gain = util.randomNumber(100, 1e5);
     await ctx.db.addPocket(gain).save();
 
-    return `You got **__${gain.toLocaleString()} coins__** (${karma} karmas) from posting a ${things[
+    return { content: `You got **__${gain.toLocaleString()} coins__** (${karma} karmas) from posting a ${things[
       rep.content.toLowerCase()
-    ].toLowerCase()} meme on reddit.`;
+    ].toLowerCase()} meme on reddit.` };
   }
 }

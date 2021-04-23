@@ -1,3 +1,4 @@
+import { MessageOptions } from 'discord.js';
 import { Context } from 'lib/extensions/message';
 import { Item } from 'lib/handlers/item';
 
@@ -10,7 +11,7 @@ export default class PowerUp extends Item {
       usable: true,
       emoji: ':joy:',
       name: "Thicco's Thiccness",
-      cost: 3000000,
+      cost: 60000,
       checks: ['time'],
       info: {
         short: "Empower your gamble winnings with thicco's thiccnes.",
@@ -19,14 +20,13 @@ export default class PowerUp extends Item {
     });
   }
 
-  async use(ctx: Context): Promise<string> {
-    const { data } = await ctx.db.fetch();
+  async use(ctx: Context): Promise<MessageOptions> {
+    const entry = await ctx.db.fetch();
+    const data = entry.data;
     const thicc = this.findInv(data.items, this);
 
     thicc.expire = Date.now() + 10 * 60 * 1000; // client.setTimeout just breaks this
-    thicc.amount--;
-
-    await ctx.db.updateItems().save();
-    return 'You have been granted an additional **50%** winnings in gambling for a lucky 10 minutes!';
+    await entry.updateItems().removeInv(this.id).save();
+    return { content: 'You have been granted an additional **50%** winnings in gambling for a lucky 10 minutes!' };
   }
 }

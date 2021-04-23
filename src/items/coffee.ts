@@ -1,4 +1,5 @@
 import { Context } from 'lib/extensions/message';
+import { MessageOptions } from 'discord.js';
 import { Item } from 'lib/handlers/item';
 
 export default class PowerUp extends Item {
@@ -10,7 +11,7 @@ export default class PowerUp extends Item {
       usable: true,
       emoji: ':hot_face:',
       name: "Badddie's Coffee",
-      cost: 25000,
+      cost: 30000,
       checks: ['time'],
       info: {
         short: 'Boosts your multiplier at a massive rate.',
@@ -19,7 +20,7 @@ export default class PowerUp extends Item {
     });
   }
 
-  async use(ctx: Context): Promise<string> {
+  async use(ctx: Context): Promise<MessageOptions> {
     const { randomNumber, sleep } = this.client.util;
     const { data } = await ctx.db.fetch();
     const cof = data.items.find((i) => i.id === this.id);
@@ -30,6 +31,6 @@ export default class PowerUp extends Item {
     cof.amount--;
 
     await ctx.db.updateItems().save();
-    return `Your coffee got cold giving you a **${multi}%** multiplier valid for 10 minutes!`;
+    return { content: `Your coffee got so cold it gave you a **${multi}%** multiplier valid for 10 minutes!` };
   }
 }

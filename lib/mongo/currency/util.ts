@@ -45,13 +45,13 @@ export const utils: CurrencyUtil = {
         total += m;
         unlocked.push(`Taken Cult — \`${m}%\``);
       }
-      if (includes('probber')) {
+      else if (includes('probber')) {
         let m = 3.5;
         multis++;
         total += m;
         unlocked.push(`Probber Cult — \`${m}%\``);
       }
-      if (includes('chips')) {
+      else if (includes('chips')) {
         let m = 3.5;
         multis++;
         total += m;
@@ -96,7 +96,7 @@ export const utils: CurrencyUtil = {
     const trophyItem = items.get('trophy');
     const trophy = db.items.find((i) => i.id === trophyItem.id);
     if (trophy.amount >= 1) {
-      let m = trophy.multi;
+      let m = trophy.multi * trophy.amount;
       multis++;
       total += m;
       unlocked.push(`${trophyItem.name} — \`${m}%\``);

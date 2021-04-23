@@ -51,15 +51,7 @@ export default class Currency extends Command {
       return { replyTo: ctx, content: check(inv).m };
     }
 
-    const ret = await item.use(ctx);
-    if (ret.constructor === String) return ret as string;
-
-    const yes: MessageOptions = {};
-    const r = ret as IReturn;
-    if (r.embed) yes.embed = r.embed;
-    if (r.content) yes.content = r.content;
-    if ('reply' in r) yes.replyTo = ctx.id;
-
-    return { ...yes, allowedMentions: { repliedUser: r.reply } };
+    const ret = (await item.use(ctx)) as MessageOptions;
+    return { ...ret, replyTo: ctx.id };
   }
 }

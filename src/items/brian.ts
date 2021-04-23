@@ -1,5 +1,6 @@
 import { Context } from 'lib/extensions/message';
 import { Item } from 'lib/handlers/item';
+import { MessageOptions } from 'discord.js';
 
 export default class Powerflex extends Item {
   constructor() {
@@ -10,7 +11,7 @@ export default class Powerflex extends Item {
       usable: true,
       emoji: ':brown_heart:',
       name: "Brian's Heart",
-      cost: 225000,
+      cost: 50000,
       checks: ['time'],
       info: {
         short: 'Grants you a great amount of luck on gamble and slots!',
@@ -20,7 +21,7 @@ export default class Powerflex extends Item {
     });
   }
 
-  async use(ctx: Context) {
+  async use(ctx: Context): Promise<MessageOptions> {
     const { randomNumber, sleep } = this.client.util;
     const { data } = await ctx.db.fetch();
     const heart = data.items.find((i) => i.id === this.id);
@@ -31,6 +32,6 @@ export default class Powerflex extends Item {
     heart.amount--;
 
     await ctx.db.updateItems().save();
-    return `You now have a **${multi}% multiplier** and **5% jackpot chance** under 10 minutes!`;
+    return { content: `You now have a **${multi}% multiplier** and **5% jackpot chance** under 10 minutes!` };
   }
 }

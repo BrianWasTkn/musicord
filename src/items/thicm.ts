@@ -1,3 +1,4 @@
+import { MessageOptions } from 'discord.js';
 import { Context } from 'lib/extensions/message';
 import { Item } from 'lib/handlers/item';
 
@@ -10,7 +11,7 @@ export default class PowerUp extends Item {
       usable: true,
       emoji: ':ok_hand:',
       name: 'Thicco Mode',
-      cost: 2750000,
+      cost: 55000,
       checks: ['time'],
       info: {
         short:
@@ -20,14 +21,13 @@ export default class PowerUp extends Item {
     });
   }
 
-  async use(ctx: Context): Promise<string> {
-    const { data } = await ctx.db.fetch();
+  async use(ctx: Context): Promise<MessageOptions> {
+    const entry = await ctx.db.fetch();
+    const data = entry.data
     const thicc = this.findInv(data.items, this);
 
     thicc.expire = Date.now() + 10 * 60 * 1000;
-    thicc.amount--;
-
-    await ctx.db.updateItems().save();
-    return `**You activated thicco mode**\nYou've been granted a **50%** winnning power for blackjack for 10 minutes!`;
+    await entry.updateItems().removeInv(this.id).save();
+    return { content: `**You activated thicco mode**\nYou've been granted a **50%** winnning power for blackjack for 10 minutes!` };
   }
 }

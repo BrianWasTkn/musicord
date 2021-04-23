@@ -28,14 +28,14 @@ export default class Currency extends Command {
   private get slotMachine() {
     return {
       broken_heart: [1, 3, false],
-      clown: [1, 10, false],
-      pizza: [1, 15, false],
-      eggplant: [1, 25, false],
-      flushed: [1, 75, true],
-      star2: [1, 100, true],
-      fire: [2, 1000, true],
-      four_leaf_clover: [3, 2500, true],
-      kiss: [5, 5000, true],
+      clown: [1, 5, false],
+      pizza: [1, 10, false],
+      eggplant: [1, 15, false],
+      flushed: [1, 25, true],
+      star2: [1, 50, true],
+      fire: [2, 75, true],
+      four_leaf_clover: [3, 100, true],
+      kiss: [5, 150, true],
     };
   }
 

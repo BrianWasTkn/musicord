@@ -29,12 +29,12 @@ export default class Currency extends Command {
       type: keyof CurrencyProfile;
       isGlobal: boolean;
     }>
-  ): Promise<MessageOptions> {
+  ): Promise<void> {
     const { randomInArray } = this.client.util;
     const { isGlobal: glob } = ctx.args;
     const emojis = ['first_place', 'second_place', 'third_place'];
     const mjs = ['eggplant', 'skull', 'clown', 'kiss'];
-    ctx.send({ replyTo: ctx.id, content: 'Fetching...' });
+    const m = await ctx.send({ replyTo: ctx.id, content: 'Fetching...' });
 
     if (glob) {
       const docs = (await Mongo.models['currency'].find({})) as (Document &
@@ -59,7 +59,7 @@ export default class Currency extends Command {
             }: **${n.pocket.toLocaleString()}** — ${n.o.tag}`
         );
 
-      return {
+      await m.edit({
         embed: {
           author: { name: 'richest discord players' },
           description: rich.join('\n'),
@@ -69,7 +69,7 @@ export default class Currency extends Command {
             text: ctx.client.user.username + ' — Showing Pockets',
           },
         },
-      };
+      });
     }
 
     const documents = (await Mongo.models['currency'].find({})) as (Document &
@@ -91,7 +91,7 @@ export default class Currency extends Command {
       )
     ).filter((m) => !m.member.user.bot);
 
-    return {
+    await m.edit({
       embed: {
         author: { name: 'richest players in this server' },
         description: filt
@@ -110,6 +110,6 @@ export default class Currency extends Command {
           text: ctx.guild.name + ' — Showing Pockets',
         },
       },
-    };
+    });
   }
 }

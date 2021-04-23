@@ -5,10 +5,10 @@ import { Command } from 'lib/handlers/command';
 
 export default class Currency extends Command {
   constructor() {
-    super('active', {
-      aliases: ['active', 'ac'],
+    super('profile', {
+      aliases: ['profile', 'level'],
       channel: 'guild',
-      description: "View yours or someone else's active items.",
+      description: "View basic info about your currency progress.",
       category: 'Currency',
       cooldown: 1e3,
       args: [
@@ -39,17 +39,22 @@ export default class Currency extends Command {
         return `**${it.emoji} ${it.name}** — expires in ${expire}`;
       });
 
+    const other = [
+      `**${data.pocket}** in pocket`,
+      `**${data.vault}** in vault`,
+      `**${this.client.db.currency.utils.calcMulti(ctx, data).total}%** multiplier`,
+    ];
+
     if (actives.length < 1) {
       return { replyTo: ctx, content: `${ctx.args.member.user.id === ctx.author.id ? 'You' : 'They'} don't have active items!` };
     }
 
-    return {
-      replyTo: ctx.id,
-      embed: {
-        title: `${ctx.args.member.user.username}'s active items`,
-        description: actives.join('\n'),
-        color: 'RANDOM',
-      },
-    };
+    return { embed: {
+      title: `${ctx.args.member.user.username}'s profile`,
+      color: 'BLURPLE', fields: [
+        { name: 'Active Items', value: actives.join('\n') },
+        { name: 'Other', value: other.join('\n') },
+      ]
+    }};
   }
 }
