@@ -65,6 +65,7 @@ export default class Currency extends Command {
 
 		await ctx.send({ content: `${ctx.author.username} is starting a heist against ${user.username}! Type \`JOIN HEIST\` to join!` });
 		ctx.client.util.curHeist.set(ctx.guild.id, true);
+		const finish = () => ctx.client.util.curHeist.delete(ctx.guild.id);
 		const entries = new Collection<string, Context>([[ctx.author.id, ctx]]);
 		const options: MessageCollectorOptions = { max: Infinity, time: 6e4 };
 		const filter: CollectorFilter<[Context]> = m => m.content.toLowerCase() === 'join heist';
@@ -97,6 +98,7 @@ export default class Currency extends Command {
 			let s: MemberPlus[] = [], n: MemberPlus[] = [], f: MemberPlus[] = [];
 			let promises: Promise<CurrencyProfile>[] = [];
 			if (entries.size <= 2) {
+				finish();
 				return ctx.reply('Well looks like you\'re alone.');
 			}
 			// fail
@@ -106,6 +108,7 @@ export default class Currency extends Command {
 					return data.removePocket(min).save();
 				}));
 
+				finish();
 				return ctx.send({ content: `Everyone failed! ${entries.size} people paid ${user.username} ${min} coins each for an unsuccessful robbery.` });
 			}
 
@@ -148,9 +151,10 @@ export default class Currency extends Command {
 			}`) : [];
 
 			// final
-			await vicEntry.withdraw(vicCoins).removePocket(vicCoins).save();
+			if (success.length >= 1) await vicEntry.withdraw(vicCoins).removePocket(vicCoins).save();
 			let content = `**Good job everybody! We racked up \`${coins.toLocaleString()}\` coins each!**`;
 			content += `\n${'```diff'}\n${[...fail, ...nothing].sort(() => Math.random() - 0.5).join('\n')}\n${success.join('\n')}\n${'```'}`;
+			finish();
 			return ctx.send({ content });
 		};
 
