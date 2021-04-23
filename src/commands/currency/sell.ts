@@ -58,7 +58,7 @@ export default class Currency extends Command {
         },
         description: Constants.ITEM_MESSAGES.SELL_MSG.replace(
           /{got}/gi,
-          Math.round(amount * (sold / 4)).toLocaleString()
+          Math.round(sold).toLocaleString()
         )
           .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
           .replace(/{emoji}/gi, item.emoji)
