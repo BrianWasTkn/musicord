@@ -48,7 +48,7 @@ export default class Currency extends Command {
     return { embed: {
       title: `${ctx.args.member.user.username}'s profile`,
       color: 'BLURPLE', fields: [
-        { inline: true, name: 'Active Items', value: [].concat([actives] || 'No active items.').join('\n') },
+        { inline: true, name: 'Active Items', value: `${actives.length >= 1 ? actives.join('\n') : 'No active items.` },
         { inline: true, name: 'Other', value: other.join('\n') },
       ]
     }};
