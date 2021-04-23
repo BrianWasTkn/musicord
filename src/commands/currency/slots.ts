@@ -53,10 +53,10 @@ export default class Currency extends Command {
       return srcArr.filter((src: A) => filter(filtArr, src));
     }
 
-    if (odds > 140 - oddRdce) {
+    if (odds > 145 - oddRdce) {
       return Array(3).fill(emoji);
     } 
-    if (odds > 90 - Math.floor(oddRdce / 2)) {
+    if (odds > 100 - Math.floor(oddRdce / 2)) {
       const emjis = Array(3).fill(emoji);
       const ind = randomNumber(1, emjis.length) - 1;
       emjis[ind] = randomInArray(emojis.filter((e) => e !== emoji));
