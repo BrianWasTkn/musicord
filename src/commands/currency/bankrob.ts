@@ -65,22 +65,23 @@ export default class Currency extends Command {
 
 		await ctx.send({ content: `${ctx.author.username} is starting a heist against ${user.username}! Type \`JOIN HEIST\` to join!` });
 		ctx.client.util.curHeist.set(ctx.guild.id, true);
-		const entries = new Collection<string, boolean>([[ctx.author.id, true]]);
+		const entries = new Collection<string, Context>([[ctx.author.id, ctx]]);
 		const options: MessageCollectorOptions = { max: Infinity, time: 6e4 };
 		const filter: CollectorFilter<[Context]> = m => m.content.toLowerCase() === 'join heist';
 		const collector = ctx.channel.createMessageCollector(filter, options);
 
 		const onCollect = async (m: Context) => {
 			const entry = await ctx.db.fetch(m.author.id, false);
-			const remove = () => collector.collected.delete(m.id);
+			const remove = (id: string) => entries.delete(id);
+			entries.set(m.id, m);
 			if (entries.has(m.author.id)) {
-				remove(); return m.send({ replyTo: m.id, content: 'You already joined bruh' });
+				remove(m.id); return m.send({ replyTo: m.id, content: 'You already joined bruh' });
 			}
 			if (m.author.id === user.id) {
-				remove(); return m.send({ replyTo: m.id, content: `No because you're being heisted HAHAHAHA` });
+				remove(m.id); return m.send({ replyTo: m.id, content: `No because you're being heisted HAHAHAHA` });
 			}
 			if (entry.data.pocket < min) {
-				remove(); return m.send({ replyTo: m.id,  content: `You need ${min} coins to join LMAO` });
+				remove(m.id); return m.send({ replyTo: m.id,  content: `You need ${min} coins to join LMAO` });
 			}
 
 			await entry.removePocket(min).save();
@@ -146,8 +147,9 @@ export default class Currency extends Command {
 			}`) : [];
 
 			// final
+			await vicEntry.withdraw(vicCoins).removePocket(vicCoins).save();
 			let content = `**Good job everybody! We racked up \`${coins.toLocaleString()}\` coins each!`;
-			content += `\n${'```diff'}\n${[...fail, ...nothing].sort(() => Math.random() - 0.5).join('\n')}\n${success.join('\n')}`;
+			content += `\n${'```diff'}\n${[...fail, ...nothing].sort(() => Math.random() - 0.5).join('\n')}\n${success.join('\n')}\n${'```'}`;
 			return ctx.send({ content });
 		};
 
