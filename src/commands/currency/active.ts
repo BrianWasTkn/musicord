@@ -40,20 +40,16 @@ export default class Currency extends Command {
       });
 
     const other = [
-      `**${data.pocket}** in pocket`,
-      `**${data.vault}** in vault`,
+      `**${data.pocket.toLocaleString()}** in pocket`,
+      `**${data.vault.toLocaleString()}** in vault`,
       `**${this.client.db.currency.utils.calcMulti(ctx, data).total}%** multiplier`,
     ];
-
-    if (actives.length < 1) {
-      return { replyTo: ctx, content: `${ctx.args.member.user.id === ctx.author.id ? 'You' : 'They'} don't have active items!` };
-    }
 
     return { embed: {
       title: `${ctx.args.member.user.username}'s profile`,
       color: 'BLURPLE', fields: [
-        { name: 'Active Items', value: actives.join('\n') },
-        { name: 'Other', value: other.join('\n') },
+        { inline: true, name: 'Active Items', value: (actives || ['No active items.']).join('\n') },
+        { inline: true, name: 'Other', value: other.join('\n') },
       ]
     }};
   }
