@@ -751,7 +751,7 @@ export class CommandHandler<
       cd = (await data.save()).cooldowns.find((c) => c.id === cmd.id);
     }
 
-    const diff = cd.expire - msg.createdTimestamp;
+    const diff = cmd.manualCooldown ? 0 : cd.expire - msg.createdTimestamp;
     if (cd.uses >= cmd.ratelimit && diff > 0) {
       this.emit(Events.COOLDOWN, msg, cmd, diff);
       return true;
