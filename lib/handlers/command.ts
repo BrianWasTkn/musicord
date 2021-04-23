@@ -747,7 +747,7 @@ export class CommandHandler<
 
     let cd = data.cooldowns.find((c) => c.id === cmd.id);
     if (!cd) {
-      data.cooldowns.push({ expire, uses: 0, id: cmd.id });
+      data.cooldowns.push({ expire: cmd.manualCooldown ? 0 : expire, uses: 0, id: cmd.id });
       cd = (await data.save()).cooldowns.find((c) => c.id === cmd.id);
     }
 
