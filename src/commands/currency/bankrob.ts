@@ -75,7 +75,7 @@ export default class Currency extends Command {
 			const remove = (id: string) => entries.delete(id);
 			entries.set(m.id, m);
 
-			if (entries.filter(e => e.author.id === m.author.id).size >= 1) {
+			if (entries.filter(e => e.author.id === m.author.id).size > 1) {
 				remove(m.id); return m.send({ replyTo: m.id, content: 'You already joined bruh' });
 			}
 			if (m.author.id === user.id) {
@@ -96,26 +96,26 @@ export default class Currency extends Command {
 			// s - success; n - nothing; f - fail
 			let s: MemberPlus[] = [], n: MemberPlus[] = [], f: MemberPlus[] = [];
 			let promises: Promise<CurrencyProfile>[] = [];
-			if (col.size <= 2) {
+			if (entries.size <= 2) {
 				return ctx.reply('Well looks like you\'re alone.');
 			}
 			// fail
 			if (odds() <= 10) {
-				await Promise.all([...col.values()].map(async c => {
+				await Promise.all([...entries.values()].map(async c => {
 					const data = await ctx.db.fetch(c.author.id, false);
 					return data.removePocket(min).save();
 				}));
 
-				return ctx.send({ content: `Everyone failed! ${col.size} people paid ${user.username} ${min} coins each for an unsuccessful robbery.` });
+				return ctx.send({ content: `Everyone failed! ${entries.size} people paid ${user.username} ${min} coins each for an unsuccessful robbery.` });
 			}
 
 			// end message
 			await ctx.send({
-				content: `\`${col.size}\` people are teaming up against **${user.username}** for **${vicCoins.toLocaleString()}** coins...`
+				content: `\`${entries.size}\` people are teaming up against **${user.username}** for **${vicCoins.toLocaleString()}** coins...`
 			});
 
 			// Odds for each individual idiots who spammed join heist
-			[...col.values()].sort(() => Math.random() - 0.5).forEach(m => {
+			[...entries.values()].sort(() => Math.random() - 0.5).forEach(m => {
 				const chance = odds();
 				return chance > 60 && s.length <= 15
 				? s.push(m.member)
