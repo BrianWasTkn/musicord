@@ -33,15 +33,17 @@ export default class Collectible extends Item {
       const nice = randomNumber(1, 100);
       const won = randomNumber(1, 100) * 1e3;
       await entry.addInv(this.id, nice).addPocket(won).save();
-      return { content: `You got **${nice} ${this.name}** and **${won.toLocaleString()}** coins!` };
+      return { embed: {
+        description: `You got **${nice} ${this.emoji} ${this.name}** and **${won.toLocaleString()}** coins!`,
+        color: 'GREEN',
+      }};
     }
 
     const hahayes = randomNumber(tr.amount / 2, tr.amount);
     await entry.removeInv(this.id, hahayes).save();
 
     return { embed: {
-      description: `You lost **${hahayes} ${this.name}** lmao`,
-      title: `You failed!`,
+      description: `You lost **${hahayes} ${this.emoji} ${this.name}** :skull:`,
       color: 'RED',
     }};
   }
