@@ -34,7 +34,7 @@ export default class Currency extends Command {
       .filter((i) => i.expire > stamp)
       .map((i) => {
         const it = item.modules.get(i.id);
-        const expire = parseTime(Math.floor((i.expire - stamp) / 1e3));
+        const expire = parseTime(Math.floor((i.expire - stamp) / 1e3), true);
 
         return `**${it.emoji} ${it.name}** — expires in ${expire}`;
       });
