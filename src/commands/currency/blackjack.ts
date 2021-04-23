@@ -308,7 +308,7 @@ export default class Currency extends Command {
           footer: {
             text: !final
               ? 'K, Q, J = 10  |  A = 1 or 11'
-              : `Percent Won: ${Math.round((winnings / bet) * 100)}%${extraWngs ? ` (${Math.round(((winnings / bet) * 100) + (extraWngs * 100))} original)` : ''}`,
+              : `Percent Won: ${Math.round((winnings / bet) * 100)}%${extraWngs ? ` (${Math.round(((winnings / bet) * 100) - (extraWngs * 100))} original)` : ''}`,
           },
         },
       });

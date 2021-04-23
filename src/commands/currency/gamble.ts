@@ -125,7 +125,7 @@ export default class Currency extends Command {
       description = [
         `You won **${wngs.toLocaleString()}**\n`,
         `**Percent Won** \`${perwn}%${
-          extraWngs ? ` (${Math.round(perwn + (extraWngs * 100))}% original)` : ''
+          extraWngs ? ` (${Math.round(perwn - (extraWngs * 100))}% original)` : ''
         }\``,
         `You now have **${(data.pocket + wngs).toLocaleString()}**`,
       ];
