@@ -1,15 +1,22 @@
 import 'module-alias/register';
 import 'dotenv/config';
 
-import config from 'config/index' ;
+import { Context } from 'lib/extensions/message';
 import { Lava } from 'lib/Lava';
 import { join } from 'path';
+import config from 'config/index' ;
 import Args from './arguments';
 
 const read = (...dirs: string[]) => join(__dirname, ...dirs);
 const lava = new Lava(config.akairo, config.discord, {
-	command: { directory: read('commands'), prefix: config.bot.prefix },
 	listener: { directory: read('listeners') },
+	command: { 
+		directory: read('commands'), 
+		prefix: config.bot.prefix,
+		ignorePermissions: (m: Context) => {
+			return m.member.roles.cache.has('692941106475958363');
+		}
+	},
 	spawn: { directory: read('spawns') },
 	quest: { directory: read('quests') },
 	item: { directory: read('items') },
