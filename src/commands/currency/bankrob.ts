@@ -74,7 +74,8 @@ export default class Currency extends Command {
 			const entry = await ctx.db.fetch(m.author.id, false);
 			const remove = (id: string) => entries.delete(id);
 			entries.set(m.id, m);
-			if (entries.has(m.id)) {
+
+			if (entries.filter(e => e.author.id === m.author.id).size >= 1) {
 				remove(m.id); return m.send({ replyTo: m.id, content: 'You already joined bruh' });
 			}
 			if (m.author.id === user.id) {
