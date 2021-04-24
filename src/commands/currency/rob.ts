@@ -31,6 +31,9 @@ export default class Currency extends Command {
 		if (user.id === ctx.author.id) {
 			return { replyTo: ctx.id, content: `Bro you need to rob someone, not yourself dumbo` };
 		}
+		if (user.bot) {
+			return { replyTo: ctx.id, content: 'LOL imagine pestering bots, shut-' };
+		}
 
 		const userEntry = await ctx.db.fetch(ctx.author.id);
 		const vicEntry = await ctx.db.fetch(user.id, false),

@@ -91,6 +91,7 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
 
   prepare() {
     return this.client.once('ready', () => {
+      const { sleep } = this.client.util;
       const { interval } = config.item.discount;
       const { discount, item, lastSale } = this.getSale();
       this.sale = { discount, lastSale, id: item.id };
