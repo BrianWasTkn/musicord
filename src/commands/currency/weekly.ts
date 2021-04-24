@@ -10,6 +10,7 @@ export default class Currency extends Command {
       description: 'Claim your weekly rewards.',
       category: 'Currency',
       cooldown: 1e3 * 60 * 60 * 24 * 7,
+      manualCooldown: true
     });
   }
 
@@ -17,7 +18,7 @@ export default class Currency extends Command {
     const userEntry = await ctx.db.fetch();
     const won = 150000;
 
-    await userEntry.addPocket(won).save();
+    await userEntry.addPocket(won).addCd().save();
     return {
       embed: {
         title: `Here are your daily coins, ${ctx.author.username}`,

@@ -20,7 +20,31 @@ declare global {
 		vault: number;
 		space: number;
 		multi: number;
+		stats: Stats;
+		misc: MiscData;
 		bled: boolean;
+	}
+
+	interface InventorySlot {
+		active?: boolean;
+		expire?: number;
+		amount?: number;
+		multi?: number;
+		id?: string;
+		cd?: number;
+	}
+
+	interface Stats {
+		wins: number;
+		loses: number;
+		won: number;
+		lost: number;
+		xp: number;
+		prestige: number;
+	}
+
+	interface MiscData {
+		beingHeisted: boolean;
 	}
 
 	interface DailyData {

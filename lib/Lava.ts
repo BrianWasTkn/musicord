@@ -94,12 +94,12 @@ export class Lava extends AkairoClient {
 	) {
 		super({ ...akairoOptions, ...clientOptions });
 		this.handlers = {
-		  listener: new ListenerHandler<Listener<this>>(this, handlers.listener),
-		  command: new CommandHandler<Command>(this, handlers.command),
-		  spawn: new SpawnHandler<Spawn>(this, handlers.spawn),
-		  quest: new QuestHandler<Quest>(this, handlers.quest),
-		  item: new ItemHandler<Item>(this, handlers.item),
-		  lottery: new LotteryHandler(this),
+			listener: new ListenerHandler<Listener<this>>(this, handlers.listener),
+			command: new CommandHandler<Command>(this, handlers.command),
+			spawn: new SpawnHandler<Spawn>(this, handlers.spawn),
+			quest: new QuestHandler<Quest>(this, handlers.quest),
+			item: new ItemHandler<Item>(this, handlers.item),
+			lottery: new LotteryHandler(this),
 		};
 	}
 

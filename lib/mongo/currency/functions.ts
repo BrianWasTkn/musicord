@@ -7,7 +7,6 @@ import type { Snowflake, User } from 'discord.js';
 import type { Model, Document } from 'mongoose';
 import type { CurrencyProfile } from 'lib/interface/mongo/currency';
 import type { InventorySlot } from 'lib/interface/handlers/item';
-import type { CurrencyUtil } from 'lib/interface/mongo/currency';
 import type { Lava } from 'lib/Lava';
 import { utils } from './util';
 
@@ -24,9 +23,9 @@ export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
     this.bot = client;
   }
 
-  fetch = async (userID: Snowflake): Promise<Document & Profile> => {
+  fetch = async (userID: Snowflake): Promise<Profile> => {
     const data = ((await this.model.findOne({ userID })) ||
-      new this.model({ userID })) as Document & Profile;
+      new this.model({ userID })) as Profile;
 
     for (const item of this.bot.handlers.item.modules.array()) {
       const inv = data.items.find((i) => i.id === item.id);
@@ -39,36 +38,6 @@ export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
       }
     }
 
-    return data.save() as Promise<Document & Profile>;
-  };
-
-  set = async (
-    userID: Snowflake,
-    key: keyof Profile,
-    amount: number
-  ): Promise<Document & Profile> => {
-    const data = await this.fetch(userID);
-    data[key as string] = amount;
-    return data.save();
-  };
-
-  add = async (
-    userID: Snowflake,
-    key: keyof Profile,
-    amount: number
-  ): Promise<Document & Profile> => {
-    const data = await this.fetch(userID);
-    data[key as string] += amount;
-    return data.save();
-  };
-
-  remove = async (
-    userID: Snowflake,
-    key: keyof Profile,
-    amount: number
-  ): Promise<Document & Profile> => {
-    const data = await this.fetch(userID);
-    data[key as string] -= amount;
-    return data.save();
+    return data.save() as Promise<Profile>;
   };
 }

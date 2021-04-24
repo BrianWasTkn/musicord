@@ -50,14 +50,14 @@ export default class Currency extends Command {
     ctx: Context<{ amount: number }>
   ): Promise<string | MessageOptions> {
     const userEntry = await ctx.db.fetch();
-    const { pocket, vault } = userEntry.data;
+    const { pocket, vault, misc } = userEntry.data;
     const { amount } = ctx.args;
     const embed: Embed = new Embed();
 
     if (!amount) return;
-    else if (amount < 1) return 'Thought you can fool me?';
-    else if (amount > vault)
-      return `Bro, you only have ${vault.toLocaleString()} coins in your vault what're you up to?`;
+    if (misc.beingHeisted) return 'LOL you\'re being heisted :clap:';
+    if (amount < 1) return 'Thought you can fool me?';
+    if (amount > vault) return `Bro, you only have ${vault.toLocaleString()} coins`;
 
     const { vault: n } = await userEntry.withdraw(amount).save();
     return {

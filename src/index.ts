@@ -22,20 +22,15 @@ const lava = new Lava(config.akairo, config.discord, {
 	item: { directory: read('items') },
 });
 
-lava.on('moduleLoad', module => {
-	const { constructor: ctor } = module;
-	lava.util.console({
-		msg: `${ctor.name} ${module.id} loaded.`,
-		klass: 'Lava',
-		type: 'def',
-	});
-}).on('dbConnect', db => {
-	lava.util.console({ 
-		klass: 'Lava', 
-		type: 'def',
-		msg: `Mongoose v${db.version}`
-	});
-})
+lava.on('moduleLoad', mod => lava.util.console({
+	msg: `${mod.constructor.name} ${mod.id} loaded.`,
+	klass: 'Lava',
+	type: 'def',
+})).on('dbConnect', db => lava.util.console({
+	msg: `Mongoose v${db.version}`,
+	klass: 'Lava', 
+	type: 'def',
+}));
 
 const { uri, options } = config.bot.mongo;
 lava.setMongoPath(uri, options).loadAll().addTypes(Args).start();

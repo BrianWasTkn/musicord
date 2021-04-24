@@ -49,7 +49,7 @@ export default class Util extends Command {
   }
 
   async exec(ctx: ContextPlus): Promise<MessageOptions> {
-    await ctx.delete();
+    await ctx.delete().catch(() => {});
     const { role, interval } = ctx.args;
     const { sleep } = this.client.util;
     if (!role) return;

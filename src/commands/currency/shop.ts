@@ -59,7 +59,11 @@ export default class Currency extends Command {
 
         return `**${emoji} ${
           i.name
-        }** — [${price.toLocaleString()}](https://google.com)\n${info.short}`;
+        }** — [${
+          price.toLocaleString()
+        }](https://google.com)\n${
+          info.short
+        }`;
       }
 
       const shop = paginateArray(

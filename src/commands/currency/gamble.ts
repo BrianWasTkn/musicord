@@ -106,7 +106,7 @@ export default class Currency extends Command {
     if (botD === userD || botD > userD) {
       const ties = botD === userD;
       const lost = ties ? Math.round(bet / 4) : bet;
-      await userEntry.removePocket(lost).updateItems().calcSpace().save();
+      await userEntry.removePocket(lost).updateItems().calcSpace().updateStats('lost', lost).updateStats('loses').save();
 
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';
@@ -119,7 +119,7 @@ export default class Currency extends Command {
       wngs = Math.min(maxWin, wngs + Math.ceil(wngs * (multi / 100)));
       perwn = Math.round((wngs / bet) * 100);
 
-      await userEntry.addPocket(wngs).updateItems().calcSpace().save();
+      await userEntry.addPocket(wngs).updateItems().calcSpace().updateStats('won', wngs).updateStats('wins').save();
       identifier = Boolean(extraWngs) ? 'powered' : 'winning';
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
       description = [

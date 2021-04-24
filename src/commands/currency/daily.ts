@@ -10,6 +10,7 @@ export default class Currency extends Command {
       description: 'Claim your daily coins.',
       category: 'Currency',
       cooldown: 1e3 * 60 * 60 * 24,
+      manualCooldown: true
     });
   }
 
@@ -29,7 +30,7 @@ export default class Currency extends Command {
     let won = 10000;
     const streakBonus = Math.round(0.2 * won * streak);
     if (streak > 1) won += streakBonus;
-    await userEntry.recordDailyStreak().addPocket(won).save();
+    await userEntry.recordDailyStreak().addPocket(won).addCd().save();
 
     return {
       embed: {

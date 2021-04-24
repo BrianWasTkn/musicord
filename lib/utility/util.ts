@@ -91,6 +91,47 @@ export class Util extends ClientUtil {
     };
   };
 
+  toRoman = (int: number): string => {
+    let lets = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'],
+      nums = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1],
+      roman = '',
+      ind = 0;
+
+    while(ind < lets.length) {
+      roman += lets[ind].repeat(int / nums[ind]);
+      int %= nums[ind]; ind++;
+    }
+
+    return roman;
+  }
+
+  toNumber = (s: string[]) => {
+    const sym = { 
+      'I': 1,
+      'V': 5,
+      'X': 10,
+      'L': 50,
+      'C': 100,
+      'D': 500,
+      'M': 1000
+    }
+
+    let result = 0;
+    for (let i = 0; i < s.length; i++){
+      const cur = sym[s[i]];
+      const next = sym[s[i+1]];
+
+      if (cur < next){
+        result += next - cur // IV -> 5 - 1 = 4
+          i++
+      } else {
+        result += cur
+      }
+    }
+
+    return result;
+  }
+
   /**
    * Parses time resolvables into human readable times
    * @param time time in seconds

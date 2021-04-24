@@ -4,7 +4,6 @@
  */
 
 import { Document, Schema, model } from 'mongoose';
-import { CurrencyProfile } from 'lib/interface/mongo/currency';
 import { Type } from '../Type';
 
 const CurrencySchema = new Schema({
@@ -19,6 +18,21 @@ const CurrencySchema = new Schema({
   space: Type(Number, false, 0),
   bled: Type(Boolean, false, false),
 
+  /* Stats */
+  stats: {
+    wins: Type(Number, false, 0),
+    loses: Type(Number, false, 0),
+    won: Type(Number, false, 0),
+    lost: Type(Number, false, 0),
+    xp: Type(Number, false, 1),
+    prestige: Type(Number, false, 0),
+  },
+
+  /* Misc */
+  misc: {
+    beingHeisted: Type(Boolean, false, false)
+  },
+  
   /* Inventory */
   items: [
     {

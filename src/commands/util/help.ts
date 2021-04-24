@@ -43,15 +43,13 @@ export default class Utility extends Command {
 
   private fieldifyCmd(c: Command): EmbedFieldData[] {
     const { parseTime } = c.client.util;
+    const { description } = c;
     return new Embed()
-      .addField(
-        'Description',
-        typeof c.description === 'string' ? c.description : 'No description.'
-      )
+      .addField('Description', description || 'No description.')
       .addField('Triggers', `\`${c.aliases.join('`, `')}\``)
-      .addField('Cooldown', parseTime(c.cooldown / 1000), true)
-      .addField('Category', c.category.id, true)
-      .addField('CD Ratelimit', c.ratelimit || 1, true).fields;
+      .addField('Cooldown', parseTime((c.cooldown || 1e3) / 1000))
+      .addField('Category', c.category.id)
+      .addField('Ratelimit', c.ratelimit || 1).fields;
   }
 
   public async exec(ctx: Context<Help>): Promise<MessageOptions> {

@@ -1,6 +1,5 @@
 import { Collection, CollectorFilter, MessageCollectorOptions } from 'discord.js';
 import { MemberPlus, UserPlus } from '.';
-import { CurrencyProfile } from 'lib/interface/mongo/currency';
 import { Document } from 'mongoose';
 import { Command } from 'lib/handlers/command';
 import { Effects } from 'lib/utility/effects';
@@ -72,7 +71,7 @@ export class Context<Args extends {} = {}> extends Message {
 }
 
 export class ContextDatabase extends Base {
-  public data: Document & CurrencyProfile;
+  public data: CurrencyProfile;
   public ctx: Context;
   public client: Lava;
 
@@ -132,6 +131,12 @@ export class ContextDatabase extends Base {
     return this;
   }
 
+  beingHeisted(bool = true) {
+    if (!this.data) this._reportError();
+    this.data.misc.beingHeisted = bool;
+    return this;
+  }
+
   calcSpace(offset: number = 55, boost: number = 1, limit: number = config.currency.maxSafeSpace) {
     if (!this.data) this._reportError();
     const calc = (boosty: number) => Math.round(offset * (boosty / 2) + offset);
@@ -154,6 +159,12 @@ export class ContextDatabase extends Base {
   resetDailyStreak() {
     if (!this.data) this._reportError();
     this.data.daily.streak = 1;
+    return this;
+  }
+
+  updateStats(key: keyof Stats, amount = 1) {
+    if (!this.data) this._reportError();
+    this.data.stats[key] += amount;
     return this;
   }
 
