@@ -56,7 +56,10 @@ export default class Currency extends Command {
     ];
 
     return { embed: {
-      title: `${ctx.args.member.user.username}'s profile`,
+      author: {
+        name: `${ctx.args.member.user.username}'s profile`,
+        icon_url: ctx.args.member.user.avatarURL({ dynamic: true })
+      },
       color: 'BLURPLE', fields: [
         { inline: true, name: 'General', value: levels.join('\n') },
         { inline: true, name: 'Coins', value: coins.join('\n') },
