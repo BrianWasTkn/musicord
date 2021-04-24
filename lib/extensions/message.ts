@@ -97,6 +97,7 @@ export class ContextDatabase extends Base {
 
   addCd(cmd = this.ctx.command) {
     if (!this.data) this._reportError();
+    if (this.client.isOwner(this.ctx.author.id)) return this;
     const { cooldowns: cds } = this.data;
     const expire = this.ctx.createdTimestamp + cmd.cooldown;
     const cd = cds.find(c => c.id === cmd.id);
