@@ -41,12 +41,12 @@ export default class Currency extends Command {
     });
 
     const levels = Object.entries({
-      'Level\s\s\s\s\s': Math.min(config.currency.maxLevel, (data.stats.xp / 1e2 < 0 ? 0 : Math.round(data.stats.xp / 1e2))),
-      'Prestige\s\s': toRoman(data.stats.prestige) || 0,
+      'Level     ': Math.min(config.currency.maxLevel, (data.stats.xp / 1e2 < 0 ? 0 : Math.round(data.stats.xp / 1e2))),
+      'Prestige  ': toRoman(data.stats.prestige) || 0,
       'Experience': data.stats.prestige,
-      'Coins Won\s': data.stats.won.toLocaleString(),
+      'Coins Won ': data.stats.won.toLocaleString(),
       'Coins Lost': data.stats.lost.toLocaleString(),
-      'Win Rate\s\s': `${Math.round(data.stats.wins / (data.stats.wins + data.stats.loses) * 1e4) / 1e2}%`
+      'Win Rate  ': `${Math.round(data.stats.wins / (data.stats.wins + data.stats.loses) * 1e4) / 1e2}%`
     }).map(([k, v]) => `\`${k}:\` ${v}`);
 
     const coins = [
