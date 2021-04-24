@@ -771,9 +771,8 @@ export class CommandHandler<
         cd.expire = expire;
       }
       await data.save();
-      return false;
     }
-    return cmd.manualCooldown;
+    return false;
   }
 
   async runCommand(
