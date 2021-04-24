@@ -101,6 +101,7 @@ export class ContextDatabase extends Base {
     const expire = this.ctx.createdTimestamp + cmd.cooldown;
     const cd = cds.find(c => c.id === cmd.id);
     if (!cd) cds.push({ expire, uses: 0, id: cmd.id });
+    if (cd.expire <= 0) cd.expire = 0;
     else cd.expire = expire;
     return this;
   }
