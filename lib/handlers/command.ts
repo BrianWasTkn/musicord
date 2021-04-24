@@ -754,7 +754,7 @@ export class CommandHandler<
     */
     let cd = data.cooldowns.find((c) => c.id === cmd.id);
     if (!cd) {
-      data.cooldowns.push({ expire: cmd.manualCooldown ? 0 : expire, uses: 0, id: cmd.id });
+      if (!cmd.manualCooldown) data.cooldowns.push({ expire, uses: 0, id: cmd.id });
       cd = (await data.save()).cooldowns.find((c) => c.id === cmd.id);
     }
 
@@ -765,11 +765,13 @@ export class CommandHandler<
     }
 
     // increment for ratelimit
+    cd.uses++;
     if (!cmd.manualCooldown) {
-      cd.uses++; if (diff < 0 && cd.uses <= 1) {
+      if (diff < 0 && cd.uses <= 1) {
         cd.expire = expire;
       }
       await data.save();
+      return false;
     }
     return cmd.manualCooldown;
   }
