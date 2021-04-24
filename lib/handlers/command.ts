@@ -757,10 +757,6 @@ export class CommandHandler<
       data.cooldowns.push({ expire, uses: 0, id: cmd.id });
       cd = (await data.save()).cooldowns.find((c) => c.id === cmd.id);
     }
-    if (cd.expire <= 0) {
-      cd.expire = expire;
-      await data.save();
-    }
 
     const diff = cd.expire - msg.createdTimestamp;
     if (diff > 0) {
@@ -771,7 +767,7 @@ export class CommandHandler<
     // increment for ratelimit
     // cd.uses++;
     if (!cmd.manualCooldown) {
-      if (diff < 0) cd.expire = expire;
+      if (diff <= 0) cd.expire = expire;
       await data.save();
     }
     return false;
