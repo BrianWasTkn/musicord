@@ -742,8 +742,8 @@ export class CommandHandler<
     const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
     if (!time) return false;
 
-    const expire = msg.createdTimestamp + time;
     const { data } = await (msg.db = new ContextDatabase(msg)).fetch();
+    let expire = msg.createdTimestamp + time;
 
     /*
       - if manual cooldown:
@@ -766,10 +766,8 @@ export class CommandHandler<
 
     // increment for ratelimit
     // cd.uses++;
-    if (!cmd.manualCooldown) {
-      if (diff <= 0) cd.expire = expire;
-      await data.save();
-    }
+    if (!cmd.manualCooldown) cd.expire = expire;
+    await data.save();
     return false;
   }
 

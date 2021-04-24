@@ -94,20 +94,20 @@ export default class Currency extends Command {
     const args = ((bet: number) => {
       let state = false;
       switch (true) {
-        case !bet:
-          return { state, m: 'You need something to slot!' };
         case data.pocket <= 0:
           return { state, m: "You don't have coins to slot!" };
         case data.pocket >= maxPocket: 
           return { state, m: `You're too rich (${maxPocket.toLocaleString()}) to gamble!` };
+        case bet > data.pocket:
+          return { state, m: `You only have **${data.pocket}** coins don't lie to me hoe.` };
+        case !bet:
+          return { state, m: 'You need something to slot!' };
+        case bet < 1:
+          return { state, m: 'It has to be a real number greater than 0 yeah?' };
         case bet < minBet:
           return { state, m: `You can't slot lower than **${minBet}** coins sorry` };
         case bet > maxBet:
           return { state, m: `You can't slot higher than **${maxBet.toLocaleString()}** coins sorry` };
-        case bet > data.pocket:
-          return { state, m: `You only have **${data.pocket}** coins don't lie to me hoe.` };
-        case bet < 1:
-          return { state, m: 'It has to be a real number greater than 0 yeah?' };
         default:
           return { state: true, m: null };
       }
