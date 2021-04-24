@@ -42,7 +42,7 @@ export default class Currency extends Command {
     }
 
     function display(c: CooldownData) {
-    	return `${c.id}: ${calc(c.expire - Date.now()).join(':')}`
+    	return `${c.id}: ${calc((c.expire - Date.now()) / 1e3).join(':')}`
     }
 
     return { embed: {
