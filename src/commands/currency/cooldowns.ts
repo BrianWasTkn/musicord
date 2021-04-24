@@ -30,15 +30,15 @@ export default class Currency extends Command {
     function calc(time: number) {
     	const methods = [2592000, 86400, 3600, 60, 1];
     	const first = Math.floor(time / methods[0]);
-    	const ret = [first.toString()];
+    	const ret = [first];
 
     	for (let i = 0; i < methods.length - 1; i++) {
 			const raw = (time % methods[i]) / methods[i + 1];
 			const calced = Math.floor(raw);
-			ret.push(Math.floor(raw).toString());
+			ret.push(Math.floor(raw));
 		}
 
-		return ret;
+		return ret.map(r => r < 10 ? `0${r}` : r.toString());
     }
 
     function display(c: CooldownData) {

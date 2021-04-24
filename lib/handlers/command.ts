@@ -745,16 +745,9 @@ export class CommandHandler<
     const { data } = await (msg.db = new ContextDatabase(msg)).fetch();
     let expire = msg.createdTimestamp + time;
 
-    /*
-      - if manual cooldown:
-        - only check diff and if so:
-          - emit cooldown event
-      - else
-        - push stuff
-    */
     let cd = data.cooldowns.find((c) => c.id === cmd.id);
     if (!cd) {
-      data.cooldowns.push({ expire, uses: 0, id: cmd.id });
+      data.cooldowns.push({ expire: 0, uses: 0, id: cmd.id });
       cd = (await data.save()).cooldowns.find((c) => c.id === cmd.id);
     }
 
