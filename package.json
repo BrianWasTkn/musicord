@@ -11,7 +11,7 @@
   "scripts": {
     "prod": "npm run format && npm run build",
     "build": "rimraf ./build && tsc --project tsconfig.json",
-    "start": "node ./build/lava",
+    "start": "node ./build/src",
     "format": "prettier --write ."
   },
   "_moduleAliases": {
