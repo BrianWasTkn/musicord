@@ -787,11 +787,13 @@ export class CommandHandler<
         this.emit('commandError', ctx, cmd, args, error);
       } finally {
 	    queue.next();
+	    return;
       }
     } finally {
       if (this.commandTyping || cmd.typing) {
         ctx.channel.stopTyping();
       }
+      return;
     }
   }
 
