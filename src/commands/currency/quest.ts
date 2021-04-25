@@ -32,7 +32,7 @@ export default class Currency extends Command {
 
   async exec(
     ctx: Context<{ query: number | Quest | 'stop' }>
-  ): Promise<string | MessageOptions> {
+  ): Promise<MessageOptions> {
     const { quest: Handler } = this.client.handlers;
     const { query } = ctx.args;
     const quests = Handler.modules.array();
@@ -42,7 +42,7 @@ export default class Currency extends Command {
         quests
           .sort((a, b) => a.diff - b.diff)
           .map((q) => {
-            const { name, info, rawDiff, rewards } = q;
+            const { name, info, rawDiff, rewards, emoji } = q;
             const itemRew = rewards.item;
             const mods = this.client.handlers.item.modules;
             const [amt, item]: [number, Item] = [
@@ -54,7 +54,9 @@ export default class Currency extends Command {
               `${amt.toLocaleString()} ${item.emoji} ${item.name}`,
             ];
 
-            return `**${name}** — ${rawDiff}\n${info}\n[\`REWARDS\`](https://google.com) **${r.join(
+            return `**${emoji} ${name}** — ${
+              rawDiff }\n${ info
+            }\n[\`REWARDS\`](https://google.com) **${r.join(
               '** and **'
             )}**`;
           }),
@@ -62,7 +64,7 @@ export default class Currency extends Command {
       );
 
       if (query > quest.length) {
-        return "That page doesn't even exist lol";
+        return { replyTo: ctx.id, content: `Page \`${query as number}\` doesn't exist.` };
       }
 
       return {
@@ -70,12 +72,10 @@ export default class Currency extends Command {
           footer: { text: `Lava Quests — Page ${query} of ${quest.length}` },
           title: 'Lava Quests',
           color: 'RANDOM',
-          fields: [
-            {
-              name: 'Quest List',
-              value: quest[(query as number) - 1].join('\n\n'),
-            },
-          ],
+          fields: [{
+            name: 'Quest List',
+            value: quest[(query as number) - 1].join('\n\n'),
+          }],
         },
       };
     }
@@ -85,10 +85,11 @@ export default class Currency extends Command {
     const { data } = userEntry;
 
     if (!query) {
-      return "That isn't even a valid quest or page number bruh";
+      return { replyTo: ctx.id, content: "That isn't even a valid quest or page number bruh" };
     }
 
     if (query instanceof Quest) {
+      const mod = query as Quest;
       const quest = data.quest;
       if (quest.id || quest.target >= 1) {
         return {
@@ -97,38 +98,52 @@ export default class Currency extends Command {
         };
       }
 
-      quest.target = (query as Quest).target;
+      quest.target = mod.target[0];
       quest.count = 0;
-      quest.id = (query as Quest).id;
+      quest.type = mod.target[2];
+      quest.id = mod.id;
       await userEntry.save();
       return {
         replyTo: ctx.id,
-        content: `You're now doing the **${(query as Quest).name}** quest!`,
+        content: `You're now doing the **${mod.emoji} ${mod.name}** quest!`,
       };
     }
 
     if (query === 'stop') {
-      if (!data.quest.id) {
-        return "You don't have an active quest right now.";
+      const aq = data.quest;
+      if (!aq.id) {
+        return {
+          content: "You don't have an active quest right now.",
+          replyTo: ctx.id,
+        };
       }
 
-      const aq = data.quest;
       const active = mods.get(aq.id);
-      aq.target = 0;
-      aq.count = 0;
-      aq.id = '';
+      aq.id = ''; aq.target = aq.count = 0;
       await userEntry.save();
-      return `You stopped your **${active.name}** quest, thanks for nothing idiot.`;
+      return { replyTo: ctx.id, content: `You stopped your **${active.name}** quest, thanks for nothing idiot.` };
     }
 
     if (query === 'check') {
       if (!data.quest.id) {
-        return "You don't have an active quest right now.";
+        return {
+          content: "You don't have an active quest right now.",
+          replyTo: ctx.id, 
+        };
       }
 
       const aq = data.quest;
       const mod = mods.get(aq.id);
-      return `**Quest: ${mod.name}**\n**Status:** ${aq.count}/${aq.target}`;
+      return { replyTo: ctx.id, embed: {
+        color: 'ORANGE', title: `${mod.emoji} ${mod.name}`,
+        description: mod.info, fields: [{ 
+          value: `**Status:** ${aq.count}/${aq.target}`,
+          name: 'Current Progress', 
+        }], timestamp: Date.now(), footer: { 
+          iconURL: ctx.client.user.avatarURL(),
+          text: ctx.client.user.username
+        }
+      }};
     }
   }
 }

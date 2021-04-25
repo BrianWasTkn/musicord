@@ -1,4 +1,4 @@
-import { QuestOptions, QuestReward } from 'lib/interface/handlers/quest';
+import { QuestOptions, QuestReward, Target } from 'lib/interface/handlers/quest';
 import { Collection } from 'discord.js';
 import { Lava } from '../Lava';
 import {
@@ -13,12 +13,13 @@ export class Quest extends AkairoModule {
 
   rawDiff: QuestOptions['diff'];
   rewards: QuestReward;
-  target: number;
+  target: Target;
+  emoji: string;
   diff: number;
   info: string;
   name: string;
 
-  constructor(id: string, opt: QuestOptions, rew: QuestReward) {
+  constructor(id: string, opt: QuestOptions) {
     const { category } = opt;
     super(id, { category });
 
@@ -30,10 +31,19 @@ export class Quest extends AkairoModule {
       Easy: 5,
     };
 
+    const emojis = {
+      Extreme: ':fire:',
+      Difficult: ':dragon:',
+      Hard: ':bomb:',
+      Medium: ':leaf:',
+      Easy: ':snowflake:'
+    };
+
     this.rawDiff = opt.diff;
-    this.rewards = rew;
+    this.rewards = opt.rewards;
     this.target = opt.target;
     this.diff = priority[opt.diff];
+    this.emoji = emojis[opt.diff];
     this.info = opt.info;
     this.name = opt.name;
   }

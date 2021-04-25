@@ -32,10 +32,10 @@ export default class Currency extends Command {
       amount: number | string;
       member: MemberPlus;
     }>
-  ): Promise<string | MessageOptions> {
+  ): Promise<MessageOptions> {
     const { member, amount } = ctx.args;
     if (!member || !amount) {
-      return `**Wrong Syntax bro**\n**Usage:** \`lava ${this.id} <amount> <@user>\``;
+      return { replyTo: ctx.id, content: `**Wrong Syntax bro**\n**Usage:** \`lava ${this.id} <amount> <@user>\`` };
     }
 
     const authorEntry = await ctx.db.fetch();
@@ -48,7 +48,7 @@ export default class Currency extends Command {
       } else if (tAmt === 'half') {
         give = Math.round(data.pocket / 2);
       } else {
-        return 'Needs to be a whole number yeah?';
+        return { replyTo: ctx.id, content: 'Needs to be a whole number yeah?' };
       }
     } else {
       give = amount as number;
@@ -57,11 +57,13 @@ export default class Currency extends Command {
     const memberEntry = await ctx.db.fetch(member.user.id, false);
     const { data: r } = memberEntry;
     if (member.user.id === ctx.author.id)
-      return 'Lol imagine giving yourself coins';
-    if (amount > data.pocket) return 'Thought you can fool me?';
+      return { replyTo: ctx.id, content: 'lol imagine giving coins to yourself' };
+    if (amount > data.pocket) 
+      return { replyTo: ctx.id, content: `u only have ${data.pocket.toLocaleString()} coins don't try me bruh` };
     if (r.pocket >= config.currency.maxSafePocket)
-      return `Hah! Having over ${config.currency.maxSafePocket.toLocaleString()} makes them too rich, no thanks.`;
-    if (give < 1) return 'Nah, no negative coins for you';
+      return { replyTo: ctx.id, content: `Hah! Having over ${config.currency.maxSafePocket.toLocaleString()} makes them too rich, no thanks.` };
+    if (give < 1) 
+      return { replyTo: ctx.id, content: 'has to be a number greater than 0' };
 
     let paid = Math.round(give - give * 0.08);
     let tax = Math.round((give * 0.8) / (give / 10));
@@ -69,8 +71,16 @@ export default class Currency extends Command {
     const giver = await authorEntry.removePocket(give).updateItems().calcSpace().save();
     const recib = await memberEntry.addPocket(paid).updateItems().save();
 
-    return `You gave ${
+    return { replyTo: ctx.id, content: `You gave ${
       member.user.username
-    } **${paid.toLocaleString()}** coins after a **${tax}%** tax. They now have **${recib.pocket.toLocaleString()}** while you have **${giver.pocket.toLocaleString()}** left.`;
+    } **${
+      paid.toLocaleString()
+    }** coins after a **${
+      tax
+    }%** tax. You now have **${
+      giver.pocket.toLocaleString()
+    }** while they have **${
+      recib.pocket.toLocaleString()
+    }** left.` };
   }
 }

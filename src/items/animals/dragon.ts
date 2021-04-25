@@ -22,13 +22,12 @@ export default class PowerUp extends Item {
   }
 
   async use(ctx: Context): Promise<MessageOptions> {
-    const { data } = await ctx.db.fetch();
-    const inv = data.items.find((i) => i.id === this.id);
+    const { parseTime } = ctx.client.util;
+    const time = 12 * 60 * 60 * 1000;
+    const expire = Date.now() + time;
+    const active = true;
 
-    inv.expire = Date.now() + 12 * 60 * 60 * 1e3; // 12 hours
-    inv.active = true;
-    await data.save();
-
-    return { content: `Your dragon has been activated for **12 hours** so be careful when gambling :smiley:` };
+    await ctx.db.updateInv(this.id, { expire, active }).updateItems().save();
+    return { content: `${this.emoji} Your dragon has been activated for **${parseTime(time / 1e3)}**, be careful when gambling!` };
   }
 }

@@ -14,7 +14,6 @@ export default class Currency extends Command {
 			description: "Rob their banks!",
 			category: 'Currency',
 			cooldown: 6e4 * 10,
-			manualCooldown: true,
 			args: [
 				{
 				  id: 'member',
@@ -36,10 +35,10 @@ export default class Currency extends Command {
 			return { replyTo: ctx.id, content: 'LOL imagine pestering bots, shut-' };
 		}
 
-		const userEntry = await ctx.db.fetch(ctx.author.id);
 		const vicEntry = await ctx.db.fetch(user.id, false);
-		const { vault: userCoins } = userEntry.data;
-		let { vault: vicCoins } = vicEntry.data;
+		const userEntry = await ctx.db.fetch(ctx.author.id);
+		const userCoins = userEntry.data.vault;
+		let vicCoins = vicEntry.data.vault;
 		let min = 5000;
 
 		if (userCoins < min) {
@@ -68,16 +67,12 @@ export default class Currency extends Command {
 
 		await userEntry.addCd().save();
 		await vicEntry.beingHeisted(true).save();
-		await ctx.send({ content: `${ctx.author.username} is starting a heist against ${user.username}! Type \`JOIN HEIST\` to join!` });
+		await ctx.send({ content: `**${ctx.author.username} is starting a heist against ${user.username}! Type \`JOIN HEIST\` to join in 60 seconds!**` });
 		ctx.client.util.curHeist.set(ctx.guild.id, true);
 		const entries = new Collection<string, Context>([[ctx.author.id, ctx]]);
 		const options: MessageCollectorOptions = { max: Infinity, time: 6e4 };
 		const filter: CollectorFilter<[Context]> = m => m.content.toLowerCase() === 'join heist';
 		const collector = ctx.channel.createMessageCollector(filter, options);
-		const finish = async () => {
-			await vicEntry.beingHeisted(false).save();
-			return ctx.client.util.curHeist.delete(ctx.guild.id);
-		};
 
 		const onCollect = async (m: Context) => {
 			const entry = await ctx.db.fetch(m.author.id, false);
@@ -105,15 +100,10 @@ export default class Currency extends Command {
 			// s - success; n - nothing; f - fail
 			let s: MemberPlus[] = [], n: MemberPlus[] = [], f: MemberPlus[] = [];
 			let promises: Promise<CurrencyProfile>[] = [];
-			if (entries.size <= 2) {
-				await finish();
-				return ctx.reply('Well looks like you\'re alone.');
-			}
-
-			// Limit to half if less than 10
-			if (entries.size <= 5) {
-				vicCoins /= 2;
-			}
+			await vicEntry.beingHeisted(false).save();
+			ctx.client.util.curHeist.delete(ctx.guild.id);
+			if (entries.size <= 1) return ctx.reply('Well looks like you\'re alone.');
+			if (entries.size <= 5) vicCoins /= 2;
 
 			// fail
 			if (odds() <= 10) {
@@ -122,7 +112,6 @@ export default class Currency extends Command {
 					return data.removePocket(min).save();
 				}));
 
-				await finish();
 				return ctx.send({ content: `Everyone failed! ${entries.size} people paid ${user.username} ${min} coins each for an unsuccessful robbery.` });
 			}
 
@@ -135,22 +124,22 @@ export default class Currency extends Command {
 			[...entries.values()].sort(() => Math.random() - 0.5).forEach(m => {
 				const chance = odds();
 				return chance > 60 && s.length <= 15
-				? s.push(m.member)
-				: chance > 10
-				? n.push(m.member)
-				: f.push(m.member);
+				? s.push(m.member) : chance > 10
+				? n.push(m.member) : f.push(m.member);
 			});
 
 			// update their pocket values
 			const coins = Math.round(vicCoins / s.length);
-			await Promise.all([s.map(async m => {
-				const data = await ctx.db.fetch(m.user.id, false);
-				return data.addPocket(coins).save();
-			})]);
-			await Promise.all([f.map(async m => {
-				const data = await ctx.db.fetch(m.user.id, false);
-				return data.removePocket(data.data.pocket).save();
-			})]);
+			await Promise.all([
+				...(s.map(async m => {
+					const data = await ctx.db.fetch(m.user.id, false);
+					return data.addPocket(coins).save();
+				})), 
+				...(f.map(async m => {
+					const data = await ctx.db.fetch(m.user.id, false);
+					return data.removePocket(data.data.pocket).save();
+				}))
+			]);
 
 			// message mapping (this probably sucks tbh)
 			const success = s.length >= 1 ? s.map(m => `+ ${niceMsg
@@ -166,9 +155,8 @@ export default class Currency extends Command {
 
 			// final
 			if (success.length >= 1) await vicEntry.withdraw(vicCoins).removePocket(vicCoins).save();
-			let content = `**Good job everybody! We racked up \`${coins.toLocaleString()}\` coins each!**`;
+			let content = `**Good job everybody! We got a total of \`${vicCoins.toLocaleString()}\` coins!**`;
 			content += `\n${'```diff'}\n${[...fail, ...nothing].sort(() => Math.random() - 0.5).join('\n')}\n${success.join('\n')}\n${'```'}`;
-			await finish();
 			return ctx.send({ content });
 		};
 

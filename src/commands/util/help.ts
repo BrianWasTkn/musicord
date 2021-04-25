@@ -1,12 +1,13 @@
-import { EmbedField, MessageOptions } from 'discord.js';
+import { EmbedField, MessageOptions, Collection } from 'discord.js';
 import { Argument, Category } from 'discord-akairo';
 import { Context } from 'lib/extensions/message';
 import { EmbedFieldData } from 'discord.js';
 import { Command } from 'lib/handlers/command';
 import { Embed } from 'lib/utility/embed';
 
+type CategoryShort = Category<string, Collection<string, Command>>
 interface Help {
-  query?: string | undefined;
+  query: Command | CategoryShort;
 }
 
 export default class Utility extends Command {
@@ -19,18 +20,23 @@ export default class Utility extends Command {
       args: [
         {
           id: 'query',
-          type: 'string',
           default: null,
+          type: Argument.union('command', 'commandAlias', (m: Context, phrase) => {
+            return this.handler.findCategory(phrase) || null;
+          }),
         },
       ],
     });
   }
 
-  private mapCommands(): EmbedField[] {
+  private mapCommands(isOwner = false): EmbedField[] {
     const fields: EmbedField[] = [];
 
     for (const [category, catCmds] of this.handler.categories) {
-      const cmds = [...catCmds.values()].map((c) => c.aliases[0]);
+      const cmds = [...catCmds.values()].filter(cmd => {
+        return isOwner ? !cmd.ownerOnly : true;
+      }).map((c) => c.aliases[0]).sort();
+      
       fields.push({
         name: `${category} Commands • ${cmds.length}`,
         value: `\`${cmds.join('`, `')}\``,
@@ -41,62 +47,47 @@ export default class Utility extends Command {
     return fields;
   }
 
-  private fieldifyCmd(c: Command): EmbedFieldData[] {
-    const { parseTime } = c.client.util;
-    const { description } = c;
-    return new Embed()
-      .addField('Description', description || 'No description.')
-      .addField('Triggers', `\`${c.aliases.join('`, `')}\``)
-      .addField('Cooldown', parseTime((c.cooldown || 1e3) / 1000))
-      .addField('Category', c.category.id)
-      .addField('Ratelimit', c.ratelimit || 1).fields;
-  }
-
   public async exec(ctx: Context<Help>): Promise<MessageOptions> {
-    const { handler } = this;
+    const { parseTime } = ctx.client.util;
     const { query } = ctx.args;
-    const embed = new Embed();
 
-    let cat: Category<string, Command>;
-    let cmd: Command;
+    // Command Search
+    if (query instanceof Command) {
+      const cmd = query as Command;
+      const fields = Object.entries({
+        'Triggers': `\`${cmd.aliases.join('`, `')}\``,
+        'Cooldown': parseTime((cmd.cooldown || 1e3) / 1e3),
+        'Category': cmd.category.id,
+        'Permissions': ['SEND_MESSAGES'].concat((cmd.userPermissions as string[]) || []),
+      }).map(([name, value]) => ({ inline: true, name, value }));
 
-    try {
-      cat = this.handler.findCategory(query as string);
-      cmd = this.handler.findCommand(query as string);
-    } catch {}
-
-    if (cmd && !cat) {
-      embed
-        .setFooter(
-          false,
-          ctx.author.tag,
-          ctx.author.avatarURL({ dynamic: true })
-        )
-        .setTitle(`${this.handler.prefix[0]} ${cmd.id} info`)
-        .addFields(this.fieldifyCmd(cmd))
-        .setColor('ORANGE');
-    } else if (cat) {
-      const bot = ctx.client.user;
-      embed
-        .setDescription(
-          `\`${cat
-            .array()
-            .map((c) => c.aliases[0])
-            .join('`, `')}\``
-        )
-        .setTitle(`${cat.array()[0].categoryID} Commands`)
-        .setFooter(false, bot.username, bot.avatarURL())
-        .setColor('ORANGE');
-    } else {
-      embed
-        .setDescription('Lava.')
-        .setFooter(false, `${this.handler.modules.size} total commands`)
-        .setTitle(`${this.client.user.username} Commands`)
-        .setThumbnail(this.client.user.avatarURL())
-        .addFields(this.mapCommands())
-        .setColor('ORANGE');
+      return { embed: {
+        title: `${this.handler.prefix[0]} ${cmd.aliases[0]} info`,
+        description: cmd.description || 'No description provided.',
+        color: 'ORANGE', fields,
+      }};
     }
 
-    return { embed };
+    // Category Search
+    if (((query as unknown) as Command).category instanceof Category) {
+      const command = (query as unknown) as Command;
+      const category = this.handler.categories.get(command.categoryID);
+      const commands = [...category.values()];
+      return { embed: {
+        description: `\`${commands.map(c => c.aliases[0]).join('`, `')}\``,
+        title: `${category.id} Commands`, color: 'ORANGE', footer: {
+          icon_url: ctx.client.user.avatarURL(),
+          text: `${commands.length} Commands`, 
+        }
+      }};
+    }
+
+    // Neither
+    return { embed: {
+      title: `${ctx.client.user.username} Commands`, color: 'ORANGE',
+      fields: this.mapCommands(ctx.client.isOwner(ctx.author.id)),
+      footer: { text: `${this.handler.modules.size} Commands` },
+      thumbnail: { url: ctx.client.user.avatarURL() }
+    }};
   }
 }

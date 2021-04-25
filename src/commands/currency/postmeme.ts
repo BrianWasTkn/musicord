@@ -18,10 +18,10 @@ export default class Currency extends Command {
   async exec(ctx: Context) {
     const comp = this.client.handlers.item.modules.get('computer');
     const { data } = await ctx.db.fetch();
-    const inv = data.items.find((i) => i.id === comp.id);
+    const inv = comp.findInv(data.items, comp);
 
     if (inv.amount < 1) {
-      return { replyTo: ctx.id, content: `LOL buy a ${comp.name} first before posting a meme ty` };
+      return { replyTo: ctx.id, content: `LOL buy at least **1 ${comp.name} ${comp.name}** to post memes.` };
     }
 
     const ret = (await comp.use(ctx)) as string;

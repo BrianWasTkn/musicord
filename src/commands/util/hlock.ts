@@ -15,6 +15,7 @@ export default class Util extends Command {
       description: 'Locks the heist channel if you have proper permissions.',
       category: 'Utility',
       userPermissions: ['MANAGE_MESSAGES'],
+      clientPermissions: ['MANAGE_CHANNELS'],
     });
   }
 
@@ -27,16 +28,12 @@ export default class Util extends Command {
     const owrite: PermissionOverwriteOption = { SEND_MESSAGES: null };
     await (ctx.channel as TextChannel).updateOverwrite(role.id, owrite, reason);
 
-    return {
-      embed: {
-        description: `**Locked for ${role.toString()} role.**`,
-        title: `Channel Locked`,
-        color: 'RED',
-        footer: {
-          text: ctx.guild.name,
-          iconURL: ctx.guild.iconURL({ dynamic: true }),
-        },
+    return { replyTo: ctx.id,  embed: {
+      description: `**Locked for ${role.toString()} role.**`,
+      title: `Channel Locked`, color: 'RED', footer: {
+        iconURL: ctx.guild.iconURL({ dynamic: true }),
+        text: ctx.guild.name,
       },
-    };
+    }};
   }
 }

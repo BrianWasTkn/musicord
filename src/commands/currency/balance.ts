@@ -13,7 +13,6 @@ export default class Currency extends Command {
       channel: 'guild',
       description: "Check yours or someone else's lava balance.",
       category: 'Currency',
-      cooldown: 5e2,
       args: [
         {
           id: 'member',
@@ -24,37 +23,32 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(ctx: Context<{ member: MemberPlus }>): Promise<MessageOptions> {
-    const userEntry = await ctx.db.fetch(ctx.args.member.user.id, ctx.args.member.user.id === ctx.author.id),
-    { pocket, vault, space, items } = userEntry.data;
+  async exec( ctx: Context<{ member: MemberPlus }> ): Promise<MessageOptions> {
+    const isContext = ctx.args.member.user.id === ctx.author.id
+    const userEntry = await ctx.db.fetch(ctx.args.member.user.id, isContext),
+    { pocket, vault, space, items, prem } = userEntry.data,
+    { modules } = this.client.handlers.item;
 
-    const calc = (i: InventorySlot) => {
-      const { modules } = this.client.handlers.item;
+    const filter = (i: InventorySlot) => i.amount >= 1;
+    const reduce = (a: number, b: number) => a + b;
+    const map = (i: InventorySlot) => {
       const it = modules.get(i.id);
       return it.cost * i.amount;
     };
 
-    const inv = items.map(calc).reduce((a, b) => a + b, 0);
+    const inv = items.filter(filter).map(map).reduce(reduce, 0);
+    const show = isContext ? `/${space.toLocaleString()}` : '';
     const info = {
       Pocket: pocket.toLocaleString(),
-      Vault: `${vault.toLocaleString()}${
-        ctx.args.member.user.id === ctx.author.id
-          ? `/${space.toLocaleString()}`
-          : ''
-      }`,
+      Vault: `${vault.toLocaleString()}${show}`,
       Inventory: inv.toLocaleString(),
       'Net Worth': (pocket + vault + inv).toLocaleString(),
     };
 
-    return {
-      embed: {
-        description: Object.entries(info)
-          .map(([k, v]) => `**${k}:** ${v}`)
-          .join('\n'),
-        title: `${ctx.args.member.user.username}'s balance`,
-        footer: { text: ctx.guild.name },
-        color: 'RANDOM',
-      },
-    };
+    return { embed: {
+      author: { name: `${ctx.args.member.user.username}'s balance`, icon_url: ctx.args.member.user.avatarURL({ dynamic: true }) },
+      title: `:fire: Magmas: ${prem.toLocaleString()}`, footer: { text: ctx.guild.name }, color: 'RANDOM',
+      description: Object.entries(info).map(([k, v]) => `**${k}:** ${v}`).join('\n'),
+    }};
   }
 }

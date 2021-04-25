@@ -1,4 +1,5 @@
 import { Collection, Role } from 'discord.js';
+import { CommandQueue } from './queue';
 import { ClientUtil } from 'discord-akairo';
 import { Effects } from './effects';
 import { COLORS } from '../utility/constants';
@@ -9,7 +10,7 @@ import chalk from 'chalk';
 import moment from 'moment';
 
 export class Util extends ClientUtil {
-  cmdQueue: Collection<string, boolean>;
+  cmdQueue: Collection<string, CommandQueue>;
   curHeist: Collection<string, boolean>;
   effects: Collection<string, Collection<string, Effects>>;
   events: Collection<string, string>;
@@ -26,8 +27,7 @@ export class Util extends ClientUtil {
     this.curHeist = new Collection();
 
     for (const color of Object.keys(COLORS)) {
-      require('discord.js').Constants.Colors[color.toUpperCase()] =
-        COLORS[color];
+      require('discord.js').Constants.Colors[color.toUpperCase()] = COLORS[color];
     }
   }
 
@@ -123,7 +123,7 @@ export class Util extends ClientUtil {
 
       if (cur < next){
         result += next - cur // IV -> 5 - 1 = 4
-          i++
+        i++;
       } else {
         result += cur
       }

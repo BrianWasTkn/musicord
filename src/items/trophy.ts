@@ -22,17 +22,14 @@ export default class Collectible extends Item {
   }
 
   async use(ctx: Context): Promise<MessageOptions> {
-    const entry = await ctx.db.fetch(),
-    { randomNumber } = this.client.util,
-    { data } = entry;
-
-    const tr = this.findInv(data.items, this);
+    const { randomNumber } = this.client.util;
+    const tr = this.findInv(ctx.db.data.items, this);
     const odds = randomNumber(1, 100);
 
     if (odds >= 5) {
       const nice = randomNumber(1, 100);
       const won = randomNumber(1, 100) * 1e3;
-      await entry.addInv(this.id, nice).addPocket(won).save();
+      await ctx.db.addInv(this.id, nice).addPocket(won).updateItems().save();
       return { embed: {
         description: `You got **${nice} ${this.emoji} ${this.name}** and **${won.toLocaleString()}** coins!`,
         color: 'GREEN',
@@ -40,10 +37,10 @@ export default class Collectible extends Item {
     }
 
     const hahayes = randomNumber(tr.amount / 2, tr.amount);
-    await entry.removeInv(this.id, hahayes).save();
+    await ctx.db.removeInv(this.id, hahayes).updateItems().save();
 
     return { embed: {
-      description: `You lost **${hahayes} ${this.emoji} ${this.name}** :skull:`,
+      description: `You broke **${hahayes} ${this.emoji} ${this.name}** :skull:`,
       color: 'RED',
     }};
   }

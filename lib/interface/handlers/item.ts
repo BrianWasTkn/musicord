@@ -14,12 +14,14 @@ export interface ItemOptions extends AkairoModuleOptions {
   emoji: string;
   name: string;
   category: string;
-  info: ItemInfo;
   cost: number;
+  info: ItemInfo;
   checks: ItemCheck;
   buyable: boolean;
   sellable: boolean;
   usable: boolean;
+  shop: boolean;
+  premium: boolean;
 }
 
 export interface InventorySlot {

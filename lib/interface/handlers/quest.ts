@@ -8,8 +8,42 @@ export type QuestDifficulty =
   | 'Difficult'
   | 'Extreme';
 
+/**
+ * In a "questGambleJackpot" listener,
+ * params: [won: number];
+*/
+/**
+ * In a "questGambleWin" listener,
+ * params: [won: number];
+*/
+/**
+ * In a "questItemBuy" listener,
+ * params: [tem: Item, amount: number];
+ * 
+*/
+// or just setup a listener per quest module lmao, easier.
+export type Target = [number, string | SpecificCommand, TargetMethod];
+
+export type TargetMethod = 
+  | 'marrySomeone'
+  | 'expandVault'
+  | 'reachVault'
+  | 'sellItem'
+  | 'buyItem'
+  | 'shareCoins'
+  | 'shareItems'
+  | 'jackpots'
+  | 'loses'
+  | 'wins';
+
+export type SpecificCommand = 
+  // [Command['id'], Context['args']] 
+  // args meaning the item they used or amount they gambled.
+  [string, string];
+
 export interface QuestOptions extends AkairoModuleOptions {
-  target: number;
+  rewards: QuestReward;
+  target: Target;
   diff: QuestDifficulty;
   info: string;
   name: string;

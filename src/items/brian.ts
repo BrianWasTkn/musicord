@@ -22,16 +22,11 @@ export default class Powerflex extends Item {
   }
 
   async use(ctx: Context): Promise<MessageOptions> {
-    const { randomNumber, sleep } = this.client.util;
-    const { data } = await ctx.db.fetch();
-    const heart = data.items.find((i) => i.id === this.id);
+    const { randomNumber, sleep, parseTime } = this.client.util;
+    const multi = randomNumber(5, 50), time = 10 * 60 * 1e3;
+    const expire = Date.now() + time;
 
-    const multi = randomNumber(5, 50);
-    heart.expire = Date.now() + 10 * 60 * 1e3;
-    heart.multi = multi;
-    heart.amount--;
-
-    await ctx.db.updateItems().save();
-    return { content: `You now have a **${multi}% multiplier** and **5% jackpot chance** under 10 minutes!` };
+    await ctx.db.updateInv(this.id, { multi, expire }).removeInv(this.id).updateItems().save();
+    return { content: `${this.emoji} You now have a **${multi}% multiplier** and **5% jackpot chance** for ${parseTime(time / 1e3)}!` };
   }
 }

@@ -12,7 +12,6 @@ export default class Currency extends Command {
       channel: 'guild',
       description: "Check your cooldowns.",
       category: 'Currency',
-      cooldown: 1e3,
       args: [
         {
           id: 'member',
@@ -29,8 +28,7 @@ export default class Currency extends Command {
 
     function calc(time: number) {
     	const methods = [2592000, 86400, 3600, 60, 1];
-    	const first = Math.floor(time / methods[0]);
-    	const ret = [first];
+    	const ret = [ Math.floor(time / methods[0]) ];
 
     	for (let i = 0; i < methods.length - 1; i++) {
 			const raw = (time % methods[i]) / methods[i + 1];
@@ -46,8 +44,8 @@ export default class Currency extends Command {
     }
 
     return { embed: {
+    	color: 'ORANGE', description: cooldowns.filter(c => c.expire > Date.now()).map(display).join('\n') || 'No active cooldowns.',
     	author: { name: `${ctx.author.username}'s cooldowns` },
-    	color: 'ORANGE', description: cooldowns.filter(c => c.expire > Date.now()).map(display).join('\n') || 'No active cooldowns.'
     }}
   }
 }

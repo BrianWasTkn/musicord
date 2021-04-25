@@ -7,11 +7,10 @@ import { Item } from 'lib/handlers/item';
 export default class Currency extends Command {
   constructor() {
     super('shop', {
-      aliases: ['shop', 'item'],
+      aliases: ['shop', 'item', 'store'],
       channel: 'guild',
       description: 'View or buy something from the shop.',
       category: 'Currency',
-      cooldown: 1000,
       args: [
         {
           id: 'query',
@@ -30,7 +29,7 @@ export default class Currency extends Command {
 
   async exec(
     ctx: Context<{ query: number | Item }>
-  ): Promise<string | MessageOptions> {
+  ): Promise<MessageOptions> {
     const { item: Handler } = this.client.handlers;
     const { query } = ctx.args;
     const items = Handler.modules.array();
@@ -66,11 +65,14 @@ export default class Currency extends Command {
         }`;
       }
 
-      const shop = paginateArray(
-        items.sort((a, b) => b.cost - a.cost).map(displayItem),
-        5
-      );
-      if (query > shop.length) return "That page doesn't even exist lol";
+      function sort(a: Item, b: Item) {
+        return b.cost - a.cost;
+      }
+
+      const shop = paginateArray(items.sort(sort).map(displayItem), 5);
+      if (query > shop.length) {
+        return { replyTo: ctx.id, content: "That page doesn't even exist lol" };
+      }
 
       embed
         .addField(
@@ -82,8 +84,9 @@ export default class Currency extends Command {
         .setTitle('Lava Shop')
         .setColor('RANDOM');
     } else {
-      if (!query)
-        return "That item doesn't even exist in the shop what're you doing?";
+      if (!query) {
+        return { replyTo: ctx.id, content: "**That item:** doesn't exist" };
+      }
       const data = (await ctx.db.fetch()).data;
       const inv = data.items.find((i) => i.id === query.id);
 

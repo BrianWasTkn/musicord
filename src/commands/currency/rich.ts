@@ -8,7 +8,7 @@ import Mongo, { Document } from 'mongoose';
 export default class Currency extends Command {
   constructor() {
     super('rich', {
-      aliases: ['rich', 'r'],
+      aliases: ['rich', 'lb'],
       channel: 'guild',
       description: 'View top users locally or globally.',
       category: 'Currency',
@@ -33,7 +33,7 @@ export default class Currency extends Command {
     const { randomInArray } = this.client.util;
     const { isGlobal: glob } = ctx.args;
     const emojis = ['first_place', 'second_place', 'third_place'];
-    const mjs = ['eggplant', 'skull', 'clown', 'kiss'];
+    const mjs = ['eggplant', 'skull', 'clown', 'kiss', 'alien'];
     const m = await ctx.send({ replyTo: ctx.id, content: 'Fetching...' });
 
     if (glob) {

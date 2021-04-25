@@ -19,6 +19,7 @@ export default class Util extends Command {
       aliases: ['hunlock', 'hul'],
       channel: 'guild',
       userPermissions: ['MANAGE_MESSAGES'],
+      clientPermissions: ['MANAGE_CHANNELS'],
       description: 'Unlocks the heist channel if you have right permissions',
       category: 'Utility',
       args: [
@@ -36,12 +37,10 @@ export default class Util extends Command {
     });
   }
 
-  private embed(display: number, role: Role, color?: string): any {
+  private embed(display: number, role: Role, color?: string): MessageOptions['embed'] {
     return {
-      color: color || 'ORANGE',
-      title: `Unlocking In...`,
-      description: `**${display}** seconds.`,
-      footer: {
+      color: color || 'ORANGE', title: `Unlocking In...`,
+      description: `**${display}** seconds.`, footer: {
         text: `Requirement: ${role.name}`,
         iconURL: role.guild.iconURL({ dynamic: true }),
       },
@@ -49,54 +48,44 @@ export default class Util extends Command {
   }
 
   async exec(ctx: ContextPlus): Promise<MessageOptions> {
-    await ctx.delete().catch(() => {});
+    const { sleep, parseTime, heists } = this.client.util;
     const { role, interval } = ctx.args;
-    const { sleep } = this.client.util;
-    if (!role) return;
-
-    let num = 60;
-    let msg = await ctx.send({
-      embed: this.embed(num, role, 'ORANGE'),
-    });
+    const embed = (num: number, color: string) => this.embed(num, role, color);
+    let num = 60, msg = await ctx.send({ embed: embed(num, 'ORANGE') });
+    await ctx.delete().catch(() => {});
 
     const run = async (int: number) => {
       if (num === 10) {
         await sleep(7e3);
-        await msg.edit({ embed: this.embed(3, role, 'RED') });
+        await msg.edit({ embed: embed(3, 'RED') });
         await sleep(1e3);
-        await msg.edit({ embed: this.embed(2, role, 'RED') });
+        await msg.edit({ embed: embed(2, 'RED') });
         await sleep(1e3);
-        await msg.edit({ embed: this.embed(1, role, 'RED') });
+        await msg.edit({ embed: embed(1, 'RED') });
         await sleep(1e3);
-        await msg.edit({ embed: this.embed(0, role, 'RED') });
+        await msg.edit({ embed: embed(0, 'RED') });
         return num;
       }
 
       await sleep(int * 1e3);
-      num -= 10;
-      msg = (await msg.edit({
-        embed: this.embed(num, role, 'ORANGE'),
+      num -= 10; msg = (await msg.edit({ 
+        embed: embed(num, 'ORANGE')
       })) as ContextPlus;
       return await run(int);
     };
 
     await run(interval);
-
     const reason = `Heist Unlock — ${msg.author.tag}`;
     const perms: PermissionOverwriteOption = { SEND_MESSAGES: true };
     (msg.channel as TextChannel).updateOverwrite(role.id, perms, reason);
-    this.client.util.heists.set(msg.channel.id, role);
+    heists.set(msg.channel.id, role);
 
-    return {
-      embed: {
-        description: `**Unlocked for ${role.toString()} role.**`,
-        title: `Channel Unlocked`,
-        color: 'GREEN',
-        footer: {
-          text: ctx.guild.name,
-          iconURL: ctx.guild.iconURL({ dynamic: true }),
-        },
+    return { replyTo: ctx.id, embed: {
+      description: `**Unlocked for ${role.toString()} role.**`,
+      title: `Channel Unlocked`, color: 'GREEN', footer: {
+        text: ctx.guild.name,
+        iconURL: ctx.guild.iconURL({ dynamic: true }),
       },
-    };
+    }};
   }
 }

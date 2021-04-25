@@ -14,14 +14,15 @@ export default class Spawn extends Command {
   }
 
   async exec(ctx: Context): Promise<MessageOptions> {
+    const emojify = (bool: boolean) => `:small_${bool ? 'blue' : 'orange'}_diamond:`
     const status = (bool: boolean) => (bool ? 'ON' : 'OFF');
     const { fetch } = this.client.db.spawns;
     const data = await fetch(ctx.author.id);
     data.allowDM = !data.allowDM;
-    await data.save();
+    const { allowDM } = await data.save();
 
     return {
-      content: `Spawn Notifications are now \`${status(data.allowDM)}\``,
+      content: `**${emojify(allowDM)} Spawn notifications are now \`${status(allowDM)}\`**`,
       replyTo: ctx.id,
     };
   }

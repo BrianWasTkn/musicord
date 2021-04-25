@@ -28,14 +28,13 @@ export default class Currency extends Command {
       amount: number;
       item: Item;
     }>
-  ): Promise<string | MessageOptions> {
+  ): Promise<MessageOptions> {
     const { amount, item, member } = ctx.args;
     if (!amount || !item || !member) {
-      return `**Wrong Syntax bro**\n**Usage:** \`lava ${this.aliases[0]} <amount> <item> <@user>\``;
+      return { replyTo: ctx.id, content: `**Wrong Syntax bro**\n**Usage:** \`lava ${this.aliases[0]} <amount> <item> <@user>\`` };
     }
-
     if (member.user.id === ctx.author.id) {
-      return 'Lol imagine gifting that to yourself dummy';
+      return { replyTo: ctx.id, content: 'Lol imagine gifting that to yourself dummy' };
     }
 
     const { maxInventory: cap } = config.currency;
@@ -46,12 +45,15 @@ export default class Currency extends Command {
     const uInv = item.findInv(uData.items, item);
     const rInv = item.findInv(rData.items, item);
 
-    if (amount < 1)
-      return `Bro what the heck, you can't gift negative items smh`;
-    if (amount > uInv.amount)
-      return `Meh, you only have ${uInv.amount.toLocaleString()} of this item, i guess you're too broke to gift many items then.`;
-    if (rInv > cap)
-      return `They already have more than ${cap.toLocaleString()} of this item!`;
+    if (amount < 1) {
+      return { replyTo: ctx.id, content: `you can't gift negative items smh` };
+    }
+    if (amount > uInv.amount) {
+      return { replyTo: ctx.id, content: `u only have ${uInv.amount.toLocaleString()} of this item` };
+    }
+    if (rInv > cap) {
+      return { replyTo: ctx.id, content: `they already have more than ${cap.toLocaleString()} of this item!` };
+    }
 
     await userEntry.removeInv(item.id, amount).save();
     await rEntry.addInv(item.id, amount).save();

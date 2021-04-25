@@ -22,9 +22,7 @@ export default class PowerUp extends Item {
 
   async use(ctx: Context): Promise<MessageOptions> {
     const { randomNumber, randomInArray, sleep } = this.client.util;
-    const entry = await ctx.db.fetch();
-    const data = entry.data;
-    const xplo = super.findInv(data.items, this);
+    const xplo = super.findInv(ctx.db.data.items, this);
 
     await ctx.send({
       content: `**${this.emoji} Fusing your bomb...**`,
@@ -35,14 +33,10 @@ export default class PowerUp extends Item {
     let odds = randomNumber(1, 100);
 
     if (odds >= 60) {
-      const mods = this.client.handlers.item.modules
-        .array()
-        .filter((i) => i.cost >= 1e6);
+      const mods = this.client.handlers.item.modules.array().filter((i) => i.cost >= 1e6);
       const items: { amt?: number; item?: Item }[] = [{ amt: 1, item: this }];
       const coins = randomNumber(1, 10) * 1e6;
-
-      xplo.amount--;
-      let e = 0;
+      ctx.db.removeInv(this.id); let e = 0;
 
       while (e <= randomNumber(1, 3)) {
         e++;
@@ -59,11 +53,11 @@ export default class PowerUp extends Item {
       const its = items
         .sort((a, b) => b.amt - a.amt)
         .map(({ amt, item }) => {
-          entry.addInv(item.id, amt);
+          ctx.db.addInv(item.id, amt);
           return `\`${amt.toLocaleString()}\` ${item.emoji} ${item.name}`;
         });
 
-      await entry.addPocket(coins).updateItems().save();
+      await ctx.db.addPocket(coins).updateItems().save();
       return { content: `**__:slight_smile: Bomb contents for ${ctx.author.toString()}__**\n${[
         `\`${coins.toLocaleString()} coins\``,
         ...its,
@@ -71,9 +65,9 @@ export default class PowerUp extends Item {
     }
 
     // Punishment: Clean one item from their inv and their pocket
-    const inv = randomInArray(data.items.filter(i => i.amount > 1));
+    const inv = randomInArray(ctx.db.data.items.filter(i => i.amount > 1));
     const item = this.client.handlers.item.modules.get(inv.id);
-    await entry.removePocket(data.pocket).removeInv(this.id).removeInv(item.id, super.findInv(data.items, item as Item).amount).updateItems().save();
+    await ctx.db.removePocket(ctx.db.data.pocket).removeInv(this.id).removeInv(item.id, super.findInv(data.items, item as Item).amount).updateItems().save();
     return { content: `**LMAO you died from the bomb!**\nYou lost your WHOLE pocket and ALL your ${item.name.slice(
       0,
       item.name.endsWith('y') ? -1 : undefined

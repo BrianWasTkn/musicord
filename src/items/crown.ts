@@ -5,18 +5,20 @@ import { Item } from 'lib/handlers/item';
 export default class Tool extends Item {
   constructor() {
     super('crown', {
-      category: 'Tool',
-      sellable: false,
-      buyable: false,
-      usable: false,
-      emoji: ':crown:',
-      name: "Royal Crown",
-      cost: 10,
-      checks: ['time'],
-      info: {
-        short: '[WIP] Secret Item :)',
-        long: 'OwO what\'s this?',
-      },
+		category: 'Tool',
+		sellable: false,
+		buyable: false,
+		premium: true,
+		usable: false,
+		emoji: ':crown:',
+		name: "Royal Crown",
+		shop: false,
+		cost: 10,
+		checks: ['time'],
+		info: {
+			short: '[WIP] Secret Item :)',
+			long: 'OwO what\'s this?',
+		},
     });
   }
 

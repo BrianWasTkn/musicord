@@ -3,11 +3,11 @@ import { Context } from 'lib/extensions/message';
 import { UserPlus } from 'lib/extensions/user';
 import { Command } from 'lib/handlers/command';
 
-type UserPlusPlus = UserPlus & {
+interface UserPlusPlus extends UserPlus {
   hp: number;
   armor: number;
   crits: number;
-};
+}
 
 export default class Fun extends Command {
   constructor() {
@@ -33,29 +33,24 @@ export default class Fun extends Command {
 
     // arg shits
     if (!enemy) {
-      return { content: "Lol imagine fighting with air, couldn't be me." };
+      return { replyTo: ctx.id, content: "Lol imagine fighting with air, couldn't be me." };
     }
     if (enemy.id === author.id) {
-      return {
-        content:
-          'Bruh are you fucking kidding me? Imagine fighting yourself. Type `pls selfharm` to continue.',
-      };
+      return { replyTo: ctx.id, content: 'Bruh are you fucking kidding me? Imagine fighting yourself. Type `pls selfharm` to continue.' };
     }
     if (enemy.bot) {
-      return {
-        content: "Please don't pester bots, they'll start invading us sige ka.",
-      };
+      return { replyTo: ctx.id, content: "Please don't pester bots, they'll start invading us sige ka." };
     }
 
     // Prepare
     author.hp = enemy.hp = 100;
     author.armor = enemy.armor = 0;
     author.crits = enemy.crits = 0;
-    let turn = author;
-    let oppturn = enemy;
-    if (Math.random() > 0.5) {
-      oppturn = [turn, (turn = oppturn)][0];
-    }
+    let turn = author, oppturn = enemy;
+    oppturn = (Math.random() > 0.5 
+      ? [turn, (turn = oppturn)]
+      : [oppturn, turn]
+    )[0];
 
     // Thing
     const performTurn = async (

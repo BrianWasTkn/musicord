@@ -12,7 +12,7 @@ export default class Flex extends Item {
       cost: 1e6,
       info: {
         short: 'Just a flex from the man himself.',
-        long: 'Burn your money and treat him to fucking fix himself.',
+        long: 'Have this item to fix his fucking self.',
       },
     });
   }

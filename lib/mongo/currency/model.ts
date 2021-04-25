@@ -17,6 +17,7 @@ const CurrencySchema = new Schema({
   vault: Type(Number, false, 0),
   space: Type(Number, false, 0),
   bled: Type(Boolean, false, false),
+  prem: Type(Boolean, false, 0), // Premium Currency
 
   /* Stats */
   stats: {

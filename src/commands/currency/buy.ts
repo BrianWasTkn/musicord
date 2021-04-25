@@ -55,23 +55,16 @@ export default class Currency extends Command {
     await userEntry.removePocket(Math.round(paid)).addInv(item.id, Math.round(amount)).save();
     this.client.handlers.quest.emit('itemBuy', { ctx, item, amount });
 
-    return {
-      replyTo: ctx.id,
-      embed: {
-        footer: { text: 'Thanks for your purchase!' },
-        color: 'GREEN',
-        author: {
-          name: `Successful ${item.name} purchase`,
-          iconURL: ctx.author.avatarURL({ dynamic: true }),
-        },
-        description: Constants.ITEM_MESSAGES.BUY_MSG.replace(
-          /{paid}/gi,
-          Math.round(paid).toLocaleString()
-        )
-          .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
-          .replace(/{emoji}/gi, item.emoji)
-          .replace(/{item}/gi, item.name),
-      },
-    };
+    return { replyTo: ctx.id, embed: {
+      author: { name: `Successful ${item.name} purchase`, iconURL: ctx.author.avatarURL({ dynamic: true }) },
+      footer: { text: 'Thanks for your purchase!' }, color: 'GREEN', 
+      description: Constants.ITEM_MESSAGES.BUY_MSG.replace(
+        /{paid}/gi,
+        Math.round(paid).toLocaleString()
+      )
+        .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
+        .replace(/{emoji}/gi, item.emoji)
+        .replace(/{item}/gi, item.name),
+    }};
   }
 }

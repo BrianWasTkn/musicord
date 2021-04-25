@@ -14,7 +14,7 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'Check your inventory.',
       category: 'Currency',
-      cooldown: 1000,
+      cooldown: 1e3,
       args: [
         {
           id: 'member',
@@ -42,7 +42,7 @@ export default class Currency extends Command {
       member: number | MemberPlus;
       page: number;
     }>
-  ): Promise<string | MessageOptions> {
+  ): Promise<MessageOptions> {
     const { util, handlers } = ctx.client;
     const { member, page } = ctx.args;
     const { item: Items } = handlers;
@@ -60,7 +60,7 @@ export default class Currency extends Command {
     inv = data.items.filter((i) => i.amount >= 1);
     total = inv.reduce((e, a) => a.amount + e, 0);
     if (inv.length < 1) {
-      return 'Breh buy at least one item from the shop yeah?';
+      return { replyTo: ctx.id, content: `${memb.user.id === ctx.author.id ? 'you' : 'they'} don't have items in their inventory!` };
     }
 
     inv = util.paginateArray(
@@ -85,7 +85,7 @@ export default class Currency extends Command {
     );
 
     if (pg > inv.length) {
-      return `No because that page doesn't exist.`;
+      return { replyTo: ctx.id, content: `Page \`${pg}\` doesn't exist.` };
     }
 
     return {

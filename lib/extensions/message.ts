@@ -133,6 +133,13 @@ export class ContextDatabase extends Base {
     return this;
   }
 
+  expandSpace(amount: number) {
+    if (!this.data) this._reportError();
+    this.data.space += amount;
+    return this;
+  }
+
+
   beingHeisted(bool = true) {
     if (!this.data) this._reportError();
     this.data.misc.beingHeisted = bool;
@@ -143,6 +150,7 @@ export class ContextDatabase extends Base {
     if (!this.data) this._reportError();
     const calc = (boosty: number) => Math.round(offset * (boosty / 2) + offset);
     this.data.space = Math.min(this.data.space + calc(boost), limit);
+    this.data.stats.xp++;
     return this;
   }
 
@@ -186,6 +194,22 @@ export class ContextDatabase extends Base {
     return this;
   }
 
+  updateInv(id: string, { active, expire, multi }: { 
+    active?: boolean, 
+    expire?: number, 
+    multi?: number 
+  }) {
+    if (!this.data) this._reportError();
+    const item = this.ctx.client.handlers.item.modules.get(id);
+    if (!item) return this;
+    const find = (i: InventorySlot) => i.id === item.id;
+    const inv = this.data.items.find(find);
+    if (expire >= 0) inv.expire = expire;
+    if (multi >= 0) inv.multi = multi;
+    if (active) inv.active = active;
+    return this;
+  }
+
   updateItems() {
     const { util: { effects }, handlers: { item: handler } } = this.client;
     const items = [...handler.modules.values()];
@@ -207,7 +231,7 @@ export class ContextDatabase extends Base {
 
       if (item.checks.includes('activeState') && inv.active) {
         if (trigger[item.id]) trigger[item.id](); 
-        if (Math.random() < 0.1) inv.amount--;
+        if (Math.random() < 0.1 && item.id === 'dragon') inv.amount--;
       } else if (item.checks.includes('time') && inv.expire > Date.now()) {
         if (trigger[item.id]) trigger[item.id](); 
       } else { continue; }

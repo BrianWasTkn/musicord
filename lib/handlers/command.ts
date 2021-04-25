@@ -1,6 +1,7 @@
 import { Listener, ListenerHandler } from 'lib/handlers/listener';
 import { Context, ContextDatabase } from 'lib/extensions/message';
 import { CooldownData } from 'lib/interface/mongo/currency/currencyprofile';
+import { CommandQueue } from 'lib/utility/queue';
 import { AkairoError } from 'lib/utility/error';
 import { UserPlus } from 'lib/extensions/user';
 import { Util } from 'lib/utility/util';
@@ -84,27 +85,23 @@ declare global {
 }
 
 export class Command extends AkairoCommand {
-  manualCooldown: boolean;
   // @ts-ignore
   handler: CommandHandler<Command>;
   client: Lava;
 
   constructor(id: string, args: CommandOptions) {
     super(id, args);
-    this.manualCooldown = Boolean(args.manualCooldown);
   }
 
-  run(ctx: Context): PromiseOr<CommandReturn> {
-    return {
-      embed: {
-        title: 'What ya doing?',
-        color: 'BLURPLE',
-        description: "Command hasn't been implemented yet.",
-      },
-    };
+  run(args: { ctx: Context<any>, userEntry: ContextDatabase }): PromiseUnion<CommandReturn> {
+    return { replyTo: args.ctx.id, embed: {
+      description: `Command \`${this.aliases[0] || this.id}\` hasn't been implemented yet.`,
+      title: 'What ya doing?',
+      color: 'BLURPLE',
+    }};
   }
 
-  exec(ctx: Context): PromiseOr<CommandReturn> {
+  exec(ctx: Context): PromiseUnion<CommandReturn> {
     return {
       embed: {
         title: 'What ya doing?',
@@ -759,8 +756,8 @@ export class CommandHandler<
 
     // increment for ratelimit
     // cd.uses++;
-    if (!cmd.manualCooldown) cd.expire = expire;
-    await data.save();
+    // if (!cmd.manualCooldown) cd.expire = expire;
+    // await data.save();
     return false;
   }
 
@@ -772,6 +769,10 @@ export class CommandHandler<
     ctx.command = cmd;
     ctx.args = args;
     ctx.db = new ContextDatabase(ctx);
+    const { cmdQueue } = this.client.util;
+    const make = (id) => cmdQueue.set(id, new CommandQueue());
+    const queue = cmdQueue.get(ctx.author.id) || make(ctx.author.id).get(ctx.author.id);
+    await queue.wait({ ctx, cmd });
     if (this.commandTyping || cmd.typing) {
       ctx.channel.startTyping();
     }
@@ -779,7 +780,7 @@ export class CommandHandler<
     try {
       this.emit(Events.COMMAND_STARTED, ctx, cmd, args);
       try {
-        const returned = await cmd.exec(ctx); // expect all commands to return strings or embed objects
+        const returned = await cmd.exec(ctx);
         this.emit(Events.COMMAND_FINISHED, ctx, cmd, args, returned);
         if (!returned) return;
         await ctx.send(returned as MessageOptions);
@@ -790,6 +791,7 @@ export class CommandHandler<
       if (this.commandTyping || cmd.typing) {
         ctx.channel.stopTyping();
       }
+      queue.next();
     }
   }
 

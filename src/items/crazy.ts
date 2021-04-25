@@ -23,13 +23,8 @@ export default class PowerUp extends Item {
   }
 
   async use(ctx: Context): Promise<MessageOptions> {
-    const { data } = await ctx.db.fetch();
-    const craz = this.findInv(data.items, this);
-
-    craz.amount--;
-    craz.expire = Date.now() + 10 * 60 * 1e3;
-    await ctx.db.updateItems().save();
-
+    const time = 10 * 60 * 1000, expire = Date.now() + time;
+    await ctx.db.updateInv(this.id, { expire }).removeInv(this.id).updateItems().save();
     return { content: 'You now have a **10%** jackpot chance for 10 minutes!' };
   }
 }

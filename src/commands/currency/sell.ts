@@ -48,22 +48,19 @@ export default class Currency extends Command {
     await userEntry.addPocket(Math.round(sold)).removeInv(item.id, Math.round(amount)).save();
     this.client.handlers.quest.emit('itemSell', { ctx, item, amount });
 
-    return {
-      replyTo: ctx.id,
-      embed: {
-        color: 'GREEN',
-        author: {
-          name: `${item.name} successfully sold`,
-          iconURL: ctx.author.avatarURL({ dynamic: true }),
-        },
-        description: Constants.ITEM_MESSAGES.SELL_MSG.replace(
-          /{got}/gi,
-          Math.round(sold).toLocaleString()
-        )
-          .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
-          .replace(/{emoji}/gi, item.emoji)
-          .replace(/{item}/gi, item.name),
+    return { replyTo: ctx.id, embed: {
+      color: 'GREEN',
+      author: {
+        name: `${item.name} successfully sold`,
+        iconURL: ctx.author.avatarURL({ dynamic: true }),
       },
-    };
+      description: Constants.ITEM_MESSAGES.SELL_MSG.replace(
+        /{got}/gi,
+        Math.round(sold).toLocaleString()
+      )
+        .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
+        .replace(/{emoji}/gi, item.emoji)
+        .replace(/{item}/gi, item.name),
+    }};
   }
 }

@@ -12,9 +12,13 @@ export type CurrencyType = {
   slots: {
     [slot: string]: [number, number, boolean];
   };
+  prestige: {
+    minPocket: number;
+    minLevel: number;
+  }
 };
 
-export const currencyConfig: CurrencyType = {
+export const currencyConfig: Partial<CurrencyType> = {
   maxSafePocket: 1000000000,
   maxSafeSpace: 10000000000,
   maxInventory: 100000,
@@ -26,7 +30,7 @@ export const currencyConfig: CurrencyType = {
   maxBet: 500000,
   maxWin: 2222222,
   slots: {
-    // [prop: string]: [doubles, jackpots, canWinOnDouble]
+    // [Double Winnings, Jackpot Winnings, Win On Doubles]
     broken_heart: [1, 3, false],
     middle_finger: [1, 5, false],
     clown: [1, 10, false],
@@ -38,4 +42,8 @@ export const currencyConfig: CurrencyType = {
     fire: [2, 250, true],
     four_leaf_clover: [2, 500, true],
   },
+  prestige: {
+    minPocket: 10e6,
+    minLevel: 5,
+  }
 };

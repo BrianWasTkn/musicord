@@ -14,32 +14,25 @@ export default class Currency extends Command {
       args: [
         {
           id: 'amount',
-          type: async (msg: Context, phrase: number | string) => {
-            if (!phrase) {
-              msg.reply('You need something to withdraw');
-              return null;
-            }
+          type: async (ctx: Context, args: number | string) => {
+            ctx.db = new ContextDatabase(ctx);
+            const { pocket, vault, space } = (await ctx.db.fetch()).data;
+            if (!args) return null;
 
-            const { data } = await (msg.db = new ContextDatabase(msg)).fetch();
-            if (data.vault < 1) {
-              msg.reply('You have nothing to withdraw');
-              return null;
-            }
-
-            let withd: string | number = phrase;
-            if (!Boolean(Number(withd))) {
+            let withd: number | string = args;
+            if (!Number.isInteger(Number(withd))) {
               withd = (withd as string).toLowerCase();
-              if (['all', 'max'].some((p) => p.toLowerCase() === withd)) {
-                withd = data.vault;
-              } else if (phrase === 'half') {
-                withd = Math.round(data.vault / 2);
-              } else {
-                msg.reply('You need a number to deposit.');
-                return null;
+              if (['all', 'max'].includes(withd)) {
+                withd = Math.round(vault);
+              } else if (withd === 'half') {
+                withd = Math.round(vault / 2);
+              } else if ((args as string).match(/k/g)) {
+                const kay = (args as string).replace(/k$/g, '');
+                withd = Number(kay) ? Number(kay) * 1e3 : null;
               }
             }
 
-            return Math.trunc(Number(withd));
+            return withd || Number(args) || args;
           },
         },
       ],
@@ -48,21 +41,28 @@ export default class Currency extends Command {
 
   public async exec(
     ctx: Context<{ amount: number }>
-  ): Promise<string | MessageOptions> {
+  ): Promise<MessageOptions> {
     const userEntry = await ctx.db.fetch();
     const { pocket, vault, misc } = userEntry.data;
     const { amount } = ctx.args;
-    const embed: Embed = new Embed();
 
-    if (!amount) return;
-    if (misc.beingHeisted) return 'LOL you\'re being heisted :clap:';
-    if (amount < 1) return 'Thought you can fool me?';
-    if (amount > vault) return `Bro, you only have ${vault.toLocaleString()} coins`;
+    if (!amount) {
+      return { replyTo: ctx.id, content: 'you need to deposit something' };
+    }
+    if (misc.beingHeisted) {
+      return { replyTo: ctx.id, content: 'you\'re being heisted so you can\'t withdraw coins lmao' };
+    }
+    if (!Number.isInteger(Number(amount)) || amount < 1) {
+      return { replyTo: ctx.id, content: 'it needs to be a whole number greater than 0' };
+    }
+    if (amount > vault) {
+      return { replyTo: ctx.id, content: `u only have **${vault.toLocaleString()}** don't try and break me` };
+    }
 
-    const { vault: n } = await userEntry.withdraw(amount).save();
+    const { vault: n } = await userEntry.addCd().withdraw(amount).updateItems().save();
     return {
       replyTo: ctx.id,
-      content: `**${amount.toLocaleString()}** coins withdrawn. You now have **${n.toLocaleString()}** left in your vault.`,
+      content: `**${amount.toLocaleString()}** coins withdrawn. You now have **${n.toLocaleString()}** in your vault.`,
     };
   }
 }

@@ -21,16 +21,11 @@ export default class PowerUp extends Item {
   }
 
   async use(ctx: Context): Promise<MessageOptions> {
-    const { randomNumber, sleep } = this.client.util;
-    const { data } = await ctx.db.fetch();
-    const cof = data.items.find((i) => i.id === this.id);
-    const multi = randomNumber(5, 50);
+    const { randomNumber, sleep, parseTime } = this.client.util;
+    const { data } = ctx.db, multi = randomNumber(5, 50);
+    const time = 10 * 60 * 1e3, expire = Date.now() + time;
 
-    cof.expire = Date.now() + 10 * 60 * 1e3;
-    cof.multi = multi;
-    cof.amount--;
-
-    await ctx.db.updateItems().save();
-    return { content: `Your coffee got so cold it gave you a **${multi}%** multiplier valid for 10 minutes!` };
+    await ctx.db.updateInv(this.id, { multi, expire }).removeInv(this.id).updateItems().save();
+    return { content: `${this.emoji} Your coffee granted you a **${multi}% multiplier** valid for ${parseTime(time / 1e3)}!` };
   }
 }

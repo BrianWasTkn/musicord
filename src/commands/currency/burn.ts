@@ -1,3 +1,4 @@
+import { MessageOptions } from 'discord.js';
 import { Context } from 'lib/extensions/message';
 import { Command } from 'lib/handlers/command';
 
@@ -18,16 +19,18 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(ctx: Context<{ amount: number }>): Promise<string> {
+  async exec(ctx: Context<{ amount: number }>): Promise<MessageOptions> {
     const userEntry = await ctx.db.fetch(), { data } = userEntry;
     const { amount = Math.round(data.pocket / 2) } = ctx.args;
 
-    if (!amount) return 'You need something to burn, bruh';
-    if (amount < 1) return 'Not allowed, sorry not sorry';
-    if (amount > data.pocket)
-      return 'Imagine burning money higher than your pocket lmao';
+    if (!amount || amount < 1)  {
+      return { content: 'it has to be a real number greater than 0 yeah?' };
+    }
+    if (amount > data.pocket) {
+      return { content: 'imagine burning money higher than your pocket lmao' };
+    }
 
-    await userEntry.removePocket(amount).save();
-    return `Burned **${amount.toLocaleString()}** coins from your pocket.`;
+    await userEntry.addCd().removePocket(amount).save();
+    return { content: `Burned **${amount.toLocaleString()}** coins from your pocket.` };
   }
 }

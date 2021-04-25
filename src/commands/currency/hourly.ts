@@ -10,15 +10,14 @@ export default class Currency extends Command {
       description: 'Claim your hourly coins.',
       category: 'Currency',
       cooldown: 1e3 * 60 * 60,
-      manualCooldown: true
     });
   }
 
-  async exec(ctx: Context): Promise<string | MessageOptions> {
+  async exec(ctx: Context): Promise<MessageOptions> {
     const userEntry = await ctx.db.fetch();
     const won = 1000;
 
-    await userEntry.addPocket(won).addCd().save();
+    await userEntry.addCd().addPocket(won).save();
     return {
       embed: {
         title: `Here are your hourly coins, ${ctx.author.username}`,

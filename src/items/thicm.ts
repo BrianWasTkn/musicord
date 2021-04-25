@@ -22,12 +22,11 @@ export default class PowerUp extends Item {
   }
 
   async use(ctx: Context): Promise<MessageOptions> {
-    const entry = await ctx.db.fetch();
-    const data = entry.data
-    const thicc = this.findInv(data.items, this);
+    const { parseTime } = ctx.client.util;
+    const time = 10 * 60 * 1e3;
+    const expire = Date.now() + time;
 
-    thicc.expire = Date.now() + 10 * 60 * 1000;
-    await entry.updateItems().removeInv(this.id).save();
+    await ctx.db.updateInv(this.id, { expire }).removeInv(this.id).updateItems().save();
     return { content: `**You activated thicco mode**\nYou've been granted a **50%** winnning power for blackjack for 10 minutes!` };
   }
 }

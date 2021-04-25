@@ -31,8 +31,8 @@ export default class Currency extends Command {
       handlers: { item },
     } = this.client;
     const { data } = await ctx.db.fetch(ctx.args.member.user.id, ctx.author.id === ctx.args.member.user.id);
-    const stamp = ctx.createdTimestamp;
-    const actives = data.items
+    const { pocket, vault, stats, items } = data;
+    const stamp = ctx.createdTimestamp, actives = items
     .filter((i) => i.expire > stamp)
     .map((i) => {
       const it = item.modules.get(i.id);
@@ -41,28 +41,37 @@ export default class Currency extends Command {
     });
 
     const levels = Object.entries({
-      'Level     ': Math.min(config.currency.maxLevel, (data.stats.xp / 1e2 < 0 ? 0 : Math.round(data.stats.xp / 1e2))),
-      'Prestige  ': toRoman(data.stats.prestige) || 0,
-      'Experience': data.stats.prestige,
-      'Coins Won ': data.stats.won.toLocaleString(),
-      'Coins Lost': data.stats.lost.toLocaleString(),
-      'Win Rate  ': `${Math.round(data.stats.wins / (data.stats.wins + data.stats.loses) * 1e4) / 1e2}%`
+      'Level     ': Math.min(config.currency.maxLevel, (stats.xp / 1e2 < 0 ? 0 : Math.round(data.stats.xp / 1e2))),
+      'Prestige  ': toRoman(stats.prestige) || 0,
+      'Experience': stats.prestige,
+      'Coins Won ': stats.won.toLocaleString(),
+      'Coins Lost': stats.lost.toLocaleString(),
+      'Win Rate  ': `${Math.round(stats.wins / (stats.wins + stats.loses)).toFixed(2)}%`
     }).map(([k, v]) => `\`${k}:\` ${v}`);
 
+    const level = Math.min(config.currency.maxLevel, (
+      (stats.xp / 1e2) > 0 ? Math.round(stats.xp / 1e2) : 0
+    ));
     const coins = [
-      `**${data.pocket.toLocaleString()}** in pocket`,
-      `**${data.vault.toLocaleString()}** in vault`,
+      `**${pocket.toLocaleString()}** in pocket`,
+      `**${vault.toLocaleString()}** in vault`,
       `**${utils.calcMulti(ctx, data).total}%** multiplier`,
     ];
 
+    let desc: string[] = [];
+    if (stats.prestige > 0) desc.push(`**Prestige ${toRoman(stats.prestige)}`);
+
     return { embed: {
+      description: desc.join('\n'),
       author: {
         name: `${ctx.args.member.user.username}'s profile`,
         icon_url: ctx.args.member.user.avatarURL({ dynamic: true })
       },
       color: 'BLURPLE', fields: [
-        { inline: true, name: 'General', value: levels.join('\n') },
+        { inline: true, name: 'Level', value: `**${level.toLocaleString()} / ${config.currency.maxLevel.toLocaleString()}**` },
+        { inline: true, name: 'Experience', value: `**${data.stats.xp} / ${config.currency.maxLevel / 1e2}**` },
         { inline: true, name: 'Coins', value: coins.join('\n') },
+        { inline: true, name: 'General', value: levels.join('\n') },
         { inline: false, name: 'Items', value: actives.length >= 1 ? actives.join('\n') : 'No active items.' },
       ]
     }};

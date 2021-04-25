@@ -11,15 +11,17 @@ export default class Spawn extends Command {
       aliases: ['srich'],
       description: 'View the leaderboard for spawns.',
       category: 'Spawn',
-      cooldown: 1e4,
-      args: [{ id: 'count', type: 'number', default: 10 }],
+      args: [
+        { id: 'count', type: 'number', default: 10 }
+      ],
     });
   }
 
   async exec(ctx: Context<{ count: number }>): Promise<MessageOptions> {
     const emojis = ['first_place', 'second_place', 'third_place'];
-    const { count } = ctx.args;
-    ctx.send({ replyTo: ctx.id, content: 'Fetching...' });
+    const { count } = ctx.args; ctx.send({ 
+      replyTo: ctx.id, content: 'Fetching...' 
+    });
 
     const docs = (await Mongo.models['spawn-profile'].find({})) as (Document &
       SpawnDocument)[];
@@ -34,16 +36,13 @@ export default class Spawn extends Command {
       }`;
     });
 
-    return {
-      embed: {
-        author: { name: 'top unpaids' },
-        description: rich.join('\n'),
-        color: 'ORANGE',
-        footer: {
-          iconURL: ctx.client.user.avatarURL(),
-          text: ctx.client.user.username,
-        },
+    return { replyTo: ctx.id, embed: {
+      author: { name: 'top unpaids' },
+      description: rich.join('\n'),
+      color: 'ORANGE', footer: {
+        iconURL: ctx.client.user.avatarURL(),
+        text: ctx.client.user.username,
       },
-    };
+    }};
   }
 }

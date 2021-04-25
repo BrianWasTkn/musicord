@@ -2,6 +2,7 @@
  * Mongo Profiles
 */
 
+import { TargetMethod } from 'lib/interface/handlers/quest';
 import { Snowflake } from 'discord.js';
 import { Document } from 'mongoose';
 
@@ -23,6 +24,7 @@ declare global {
 		stats: Stats;
 		misc: MiscData;
 		bled: boolean;
+		prem: number;
 	}
 
 	interface InventorySlot {
@@ -55,6 +57,7 @@ declare global {
 	interface QuestSlot {
 		target: number;
 		count: number;
+		type: TargetMethod;
 		id: string;
 	}
 

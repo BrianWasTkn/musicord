@@ -87,7 +87,7 @@ export default class Currency extends Command {
     // Check Args
     const { minBet, maxBet, maxPocket } = config.currency;
     const userEntry = await ctx.db.fetch();
-    const { data } = userEntry;
+    const data = userEntry.data;
 
     // Args
     const { amount: bet } = ctx.args;
@@ -143,17 +143,21 @@ export default class Currency extends Command {
     description += outcome;
     if (length === 1 || length === 2) {
       const jackpot = length === 1;
-      await userEntry.addPocket(winnings).updateItems().calcSpace().updateStats('won', winnings).updateStats('wins').save();
+      const { pocket } = await userEntry.addCd().addPocket(winnings).updateItems()
+      .calcSpace().updateStats('won', winnings).updateStats('wins').save();
+
       color = jackpot ? (slots ? 'BLUE' : 'GOLD') : 'GREEN';
       state = jackpot ? (slots ? 'powered' : 'jackpot') : 'winning';
       description += `\n\nYou won **${winnings.toLocaleString()}**`;
       description += `\n**Multiplier** \`x${Math.round(winnings / bet).toLocaleString()}\``;
-      description += `\nYou now have **${(data.pocket + winnings).toLocaleString()}**`;
+      description += `\nYou now have **${pocket.toLocaleString()}**`;
     } else {
-      await userEntry.removePocket(bet).updateItems().calcSpace().updateStats('lost', bet).updateStats('loses').save();
+      const { pocket } = await userEntry.addCd().removePocket(bet).updateItems()
+      .calcSpace().updateStats('lost', bet).updateStats('loses').save();
+
       color = 'RED'; state = 'losing';
       description += `\n\nYou lost **${bet.toLocaleString()}**`;
-      description += `\nYou now have **${(data.pocket - bet).toLocaleString()}**`;
+      description += `\nYou now have **${pocket.toLocaleString()}**`;
     }
 
     // Final Message

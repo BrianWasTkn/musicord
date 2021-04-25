@@ -1,4 +1,4 @@
-import { Context, MemberPlus } from 'lib/extensions';
+import { Context, MemberPlus, UserPlus } from 'lib/extensions';
 import { MessageOptions } from 'discord.js';
 import { Command } from 'lib/handlers/command';
 import { Embed } from 'lib/utility/embed';
@@ -34,12 +34,13 @@ export default class Spawn extends Command {
   ): Promise<string | MessageOptions> {
     const { fetch, remove } = this.client.db.spawns;
     const { amount, member } = ctx.args;
+    const { user } = member;
     if (!amount) return 'You need an amount';
-    else if (!member) return 'You need a user';
+    if (!member) return 'You need a user';
 
     const bot = this.client.user;
-    const old = await fetch(member.user.id);
-    const d = await remove(member.user.id, 'unpaid', amount);
+    const old = await fetch(user.id);
+    const d = await remove(user.id, 'unpaid', amount);
     const embed = new Embed()
       .addField('• Old Value', old.unpaid.toLocaleString())
       .addField('• New Value', d.unpaid.toLocaleString())

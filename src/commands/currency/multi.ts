@@ -7,7 +7,7 @@ import { Embed } from 'lib/utility/embed';
 export default class Currency extends Command {
   constructor() {
     super('multi', {
-      aliases: ['multiplier', 'multi'],
+      aliases: ['multi', 'multiplier'],
       channel: 'guild',
       description: 'View your current multipliers.',
       category: 'Currency',
@@ -24,7 +24,7 @@ export default class Currency extends Command {
 
   public async exec(
     ctx: Context<{ page: number }>
-  ): Promise<string | MessageOptions> {
+  ): Promise<MessageOptions> {
     const { maxMulti } = config.currency;
     const { utils } = this.client.db.currency;
     const { util } = this.client;
@@ -32,7 +32,9 @@ export default class Currency extends Command {
     const multi = utils.calcMulti(ctx, (await ctx.db.fetch()).data);
 
     const multis = util.paginateArray(multi.unlocked, 5);
-    if (page > multis.length) return "That page doesn't exist.";
+    if (page > multis.length) {
+      return { replyTo: ctx.id, content: "That page doesn't exist." };
+    }
 
     const embed: Embed = new Embed()
       .addField(

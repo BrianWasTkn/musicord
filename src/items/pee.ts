@@ -25,15 +25,10 @@ export default class Flex extends Item {
     const { data } = await ctx.db.fetch();
     const piss = this.findInv(data.items, this);
 
-    ctx.channel.send(
-      `You have ${piss.amount.toLocaleString()} baby bottles of jenni's piss, how many do you wanna give to someone?`
-    );
-    const f = (m: Context) => m.author.id === ctx.author.id;
-    const rep = (
-      await ctx.channel.awaitMessages(f, { max: 1, time: 15000 })
-    ).first();
-    if (!rep.content || !Number.isInteger(Number(rep.content))) {
-      return { content: "It's gotta be a real number yeah?" };
+    ctx.send({ content: `You have **${piss.amount.toLocaleString()} ${this.emoji} ${this.name}** to surprise, how many do you wanna use?` });
+    const rep = (await ctx.awaitMessage(ctx.author.id, 15e3)).first();
+    if (!rep.content || !Number.isInteger(Number(rep.content)) || Number(rep.content) < 1) {
+      return { content: "Needs to be a real number greater than 0 yeah?" };
     }
 
     let choice = Number(rep.content);
@@ -41,15 +36,9 @@ export default class Flex extends Item {
       return { content: 'Lol imagine having way less than what you actually wanted to give' };
     }
 
-    ctx.channel.send('Now tell me who the frick you want me to surprise.');
-    const rep2 = (
-      await ctx.channel.awaitMessages(f, { max: 1, time: 15000 })
-    ).first();
-    const meb = this.client.util.resolveMember(
-      rep2.content,
-      ctx.guild.members.cache,
-      false
-    );
+    ctx.send({ content: 'who would you surprise?' });
+    const rep2 = (await ctx.awaitMessage(ctx.author.id, 15e3)).first();
+    const meb = this.client.util.resolveMember(rep2.content, ctx.guild.members.cache, false);
     if (!meb) {
       return { content: "Bro imagine not surprising anyone, that's so sad :(" };
     }

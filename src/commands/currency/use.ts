@@ -21,13 +21,14 @@ export default class Currency extends Command {
     });
   }
 
-  async exec(ctx: Context<{ item: Item }>): Promise<string | MessageOptions> {
-    const { parseTime } = ctx.client.util;
-    const { data } = await ctx.db.fetch();
-    const { item } = ctx.args;
-    if (!item) return "This item doesn't exist :skull:";
+  async exec(ctx: Context<{ item: Item }>): Promise<MessageOptions> {
+    const { parseTime } = ctx.client.util, { item } = ctx.args;
+    const userEntry = await ctx.db.fetch(), { data } = userEntry;
+    if (!item) {
+      return { replyTo: ctx.id, content: "This item doesn't exist :skull:" };
+    }
 
-    const inv = data.items.find((i) => i.id === item.id);
+    const inv = item.findInv(data.items, item);
     function check(inv: InventorySlot) {
       let state = false;
       switch (true) {
@@ -52,6 +53,8 @@ export default class Currency extends Command {
     }
 
     const ret = (await item.use(ctx)) as MessageOptions;
-    return { ...ret, replyTo: ctx.id };
+    await userEntry.addCd().save();
+    ret.replyTo = ctx.id;
+    return ret;
   }
 }

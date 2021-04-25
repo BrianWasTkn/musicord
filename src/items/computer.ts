@@ -15,15 +15,15 @@ export default class PowerUp extends Item {
       info: {
         short: 'Post memes on reddit!',
         long:
-          "Coins you gain reaches up to a million but it depends to your karma but your computer'll most likely break if you get negative karmas.",
+          "Coins you gain depends to your karma but your computer will most likely break if you get negative karmas.",
       },
     });
   }
 
   async use(ctx: Context): Promise<MessageOptions> {
     const { util } = this.client;
-    const { data } = await ctx.db.fetch();
-    const comp = data.items.find((i) => i.id === this.id);
+    const entry = ctx.db;
+    const data = entry.data;
 
     const things = {
       f: 'Funny',
@@ -43,9 +43,7 @@ export default class PowerUp extends Item {
     );
 
     const f = (m: Context) => m.author.id === ctx.author.id;
-    const rep = (
-      await ctx.channel.awaitMessages(f, { max: 1, time: 15000 })
-    ).first();
+    const rep = (await ctx.awaitMessage(ctx.author.id, 15e3)).first();
     if (!rep) {
       return { content: 'Imagine wasting 15 seconds of my bottime :rolling_eyes:' };
     }
@@ -54,17 +52,17 @@ export default class PowerUp extends Item {
     }
 
     const karma = util.randomNumber(1, 1e4);
-
     if (Math.random() < 0.2) {
-      comp.amount--;
-      await data.save();
-      return { content: `Your meme got **-${karma.toLocaleString()}** karmas so you broke your **${
+      await entry.removeInv(this.id).updateItems().save();
+      return { content: `Your meme got **-${
+        karma.toLocaleString()
+      }** karmas and you broke your **${
         this.emoji
       } ${this.name}** lmao sucks to be you.` };
     }
 
-    const gain = util.randomNumber(100, 1e5);
-    await ctx.db.addPocket(gain).save();
+    const gain = util.randomNumber(100, 1e4);
+    await entry.addPocket(gain).updateItems().save();
 
     return { content: `You got **__${gain.toLocaleString()} coins__** (${karma} karmas) from posting a ${things[
       rep.content.toLowerCase()

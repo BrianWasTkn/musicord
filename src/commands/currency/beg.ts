@@ -17,9 +17,9 @@ export default class Currency extends Command {
 
   async exec(ctx: Context): Promise<string | MessageOptions> {
     const { db, util, handlers } = this.client,
+    { modules: items } = handlers.item,
     userEntry = await ctx.db.fetch(),
-    items = handlers.item.modules,
-    { data } = userEntry;
+    data = userEntry.data;
 
     if (data.pocket >= config.currency.maxPocket) {
       return "You're already rich stop begging already.";
@@ -32,7 +32,7 @@ export default class Currency extends Command {
         const amount = util.randomNumber(1, 10);
         let itinv = item.findInv(data.items, item);
         itinv.amount += amount;
-        await userEntry.save();
+        await userEntry.addCd().save();
         return {
           embed: {
             description: `WOWSIES! You got **${amount} ${item.emoji} ${
@@ -44,8 +44,8 @@ export default class Currency extends Command {
           replyTo: ctx,
         };
       case odds >= 0.5:
-        const won = util.randomNumber(1, 100) * 1e2;
-        await userEntry.addPocket(won).calcSpace().updateItems().save();
+        const won = util.randomNumber(10, 5000);
+        await userEntry.addCd().addPocket(won).calcSpace().updateItems().save();
         return {
           embed: {
             description: `GG! You got **${won.toLocaleString()}** coins from begging.`,
@@ -55,9 +55,10 @@ export default class Currency extends Command {
           replyTo: ctx,
         };
       default:
+        await userEntry.addCd().save();
         return {
           embed: {
-            description: 'LOL NO THANKS :P',
+            description: 'LOL YOU SUCK :clown:',
             author: { name: ctx.client.user.username },
             color: 'ORANGE',
           },

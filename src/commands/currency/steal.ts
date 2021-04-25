@@ -48,10 +48,10 @@ export default class Currency extends Command {
 			return { replyTo: ctx.id, content: `The victim doesn't have ${min} coins bruh.` };
 		}
 
-		await userEntry.addCd().save();
 		let lock = vicEntry.data.items.find(i => i.id === 'lock');
 		let odds = ctx.client.util.randomNumber(1, 100);
 		if (lock.expire > Date.now()) {
+			await userEntry.addCd().save();
 			if (odds >= 30) {
 				const hahayes = vicEntry.data.items.find(i => i.id === 'lock');
 				hahayes.expire = 0;
@@ -66,23 +66,23 @@ export default class Currency extends Command {
 		if (odds >= 90) {
 			let worth = Math.round(vicCoins * 0.99);
 			await vicEntry.removePocket(worth).save();
-			await userEntry.addPocket(worth).save();
-			return { replyTo: ctx.id, content: `**You managed to steal ALL before leaving :money_mouth:**\nYou managed to steal **${worth.toLocaleString()}** coins LMAO` };
+			await userEntry.addCd().addPocket(worth).save();
+			return { replyTo: ctx.id, content: `**You managed to steal ALL before leaving :money_mouth:**\nYour payout was **${worth.toLocaleString()}** coins LMAO` };
 		}
 
 		// 50% of Pocket
 		if (odds >= 80) {
 			let worth = Math.round(vicCoins * 0.49);
 			await vicEntry.removePocket(worth).save();
-			await userEntry.addPocket(worth).save();
-			return { replyTo: ctx.id, content: `**You managed to steal almost HALF of their money:moneybag:**\nYour payout was **${worth.toLocaleString()}** coins` };
+			await userEntry.addCd().addPocket(worth).save();
+			return { replyTo: ctx.id, content: `**You managed to steal ALMOST HALF before leaving :moneybag:**\nYour payout was **${worth.toLocaleString()}** coins` };
 		}
 
 		// 30% of Pocket
 		if (odds >= 60) {
 			let worth = Math.round(vicCoins * 0.3);
 			await vicEntry.removePocket(worth).save();
-			await userEntry.addPocket(worth).save();
+			await userEntry.addCd().addPocket(worth).save();
 			return { replyTo: ctx.id, content: `**You stole a small portion :money_with_wings:**\nYour payout was **${worth.toLocaleString()}** coins` };
 		}
 
@@ -91,8 +91,8 @@ export default class Currency extends Command {
 		if ((userCoins * 0.05) < 500) punish = 500;
 		else punish = userCoins * 0.05;
 
-		await userEntry.removePocket(Math.round(punish)).save();
+		await userEntry.addCd().removePocket(Math.round(punish)).save();
 		await vicEntry.addPocket(Math.round(punish)).save();
-		return { replyTo: ctx.id, content: `**You failed the robbery HAHAHAHAHA**\nYou paid them ${Math.round(punish).toLocaleString()} coins instead lmao` };
+		return { replyTo: ctx.id, content: `**You failed the robbery HAHAHAHAHA**\nYou paid them **${Math.round(punish).toLocaleString()}** coins lmao` };
 	}
 }

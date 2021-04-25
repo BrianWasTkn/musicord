@@ -73,7 +73,7 @@ export default class Fun extends Command {
       };
     }
     if (someone.bot) {
-      return { replyTo: ctx.id, content: 'Imagine marrying a bot' };
+      return { replyTo: ctx.id, content: 'Imagine marrying bots' };
     }
     if (ctx.author.id === someone.id) {
       return {

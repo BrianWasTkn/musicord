@@ -14,51 +14,25 @@ export default class Currency extends Command {
       args: [
         {
           id: 'amount',
-          type: async (ctx: Context, phrase: number | string) => {
-            if (!phrase) {
-              ctx.reply('You need something to deposit.');
-              return null;
-            }
+          type: async (ctx: Context, args: number | string) => {
+            ctx.db = new ContextDatabase(ctx);
+            const { pocket, vault, space } = (await ctx.db.fetch()).data;
+            if (!args) return null;
 
-            const { data } = await (ctx.db = new ContextDatabase(ctx)).fetch();
-            if (data.pocket < 1) {
-              ctx.reply("You're an idiot, you don't have anything to deposit.");
-              return null;
-            }
-            if (data.vault >= data.space) {
-              ctx.reply('You already have full vault.');
-              return null;
-            }
-
-            let dep: string | number = phrase;
-            if (!Boolean(Number(dep))) {
-              dep = (<string>dep).toLowerCase();
-              if (['all', 'max'].some((p) => p.toLowerCase() === dep)) {
-                dep = data.pocket;
-              } else if (phrase === 'half') {
-                dep = Math.round(data.pocket / 2);
-              } else {
-                ctx.reply('You actually need a number to deposit...');
-                return null;
-              }
-            } else {
-              dep = Number(dep as number);
-              if (dep >= data.pocket) {
-                ctx.reply(
-                  `Are you fr? You only have ${data.pocket} in your pocket right now. Don't try and break me.`
-                );
-                return null;
-              } else if (dep > data.space - data.vault) {
-                ctx.reply(
-                  `NOPE! Can't break me, you can only deposit up to **${(
-                    data.space - data.vault
-                  ).toLocaleString()}** coins right now.`
-                );
-                return null;
+            let dep: number | string = args;
+            if (!Number.isInteger(Number(dep))) {
+              dep = (dep as string).toLowerCase();
+              if (['all', 'max'].includes(dep)) {
+                dep = Math.round(pocket);
+              } else if (dep === 'half') {
+                dep = Math.round(pocket / 2);
+              } else if ((args as string).match(/k/g)) {
+                const kay = (args as string).replace(/k$/g, '');
+                dep = Number(kay) ? Number(kay) * 1e3 : null;
               }
             }
 
-            return Math.trunc(Number(dep));
+            return dep || Number(args) || args;
           },
         },
       ],
@@ -72,13 +46,24 @@ export default class Currency extends Command {
     const { pocket, vault, space } = userEntry.data;
     const { amount } = ctx.args;
 
-    if (!amount) return;
-    if (amount < 1) return 'You thought you can fool me?';
-    if (amount > pocket)
-      return `Bro, you only have ${pocket.toLocaleString()} coins what're you doing?`;
+    if (!amount) {
+      return { replyTo: ctx.id, content: 'you need to deposit something' };
+    }
+    if (!Number.isInteger(Number(amount)) || amount < 1) {
+      return { replyTo: ctx.id, content: 'it needs to be a whole number greater than 0' };
+    }
+    if (amount > pocket) {
+      return { replyTo: ctx.id, content: `u only have **${pocket.toLocaleString()}** don't try and break me` };
+    }
+    if (vault >= space) {
+      return { replyTo: ctx.id, content: 'u already have full bank stop pushing it through' };
+    }
+    if (amount + vault > space) {
+      return { replyTo: ctx.id, content: `you can only hold up to **${(space - vault).toLocaleString()}** right now. To hold more, use the bot more.` };
+    }
 
     const input = amount >= space - vault ? space - vault : amount;
-    const { vault: nVault } = await userEntry.deposit(input).updateItems().save();
+    const { vault: nVault } = await userEntry.addCd().deposit(input).updateItems().save();
 
     return {
       content: `**${input.toLocaleString()}** coins deposited. You now have **${nVault.toLocaleString()}** in your vault.`,

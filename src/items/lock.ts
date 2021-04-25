@@ -22,14 +22,10 @@ export default class Tool extends Item {
 
   async use(ctx: Context): Promise<MessageOptions> {
   	const { parseTime } = ctx.client.util;
-  	const { data } = await ctx.db.fetch();
-  	const inv = super.findInv(data.items, this);
-
   	const time = 12 * 60 * 60 * 1e3;
-    inv.expire = Date.now() + time; // 12 hours
-    inv.amount--;
-    await data.save();
+    const expire = Date.now() + time;
 
+    await ctx.db.updateInv(this.id, { expire }).removeInv(this.id).updateItems().save();
     return { content: `Your **${this.emoji} ${this.name}** has been activated for **${parseTime(time / 1e3)}** so be careful!` };
   }
 }

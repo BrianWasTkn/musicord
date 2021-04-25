@@ -40,8 +40,8 @@ export default class Currency extends Command {
     // Core
     const { maxWin, minBet, maxBet, maxPocket } = config.currency;
     const userEntry = await ctx.db.fetch();
-    const { data } = userEntry;
-    let { total: multi } = DB.utils.calcMulti(ctx, data);
+    const data = userEntry.data;
+    const multi = DB.utils.calcMulti(ctx, data).total;
 
     // Args
     const { amount: bet } = ctx.args;
@@ -106,20 +106,23 @@ export default class Currency extends Command {
     if (botD === userD || botD > userD) {
       const ties = botD === userD;
       const lost = ties ? Math.round(bet / 4) : bet;
-      await userEntry.removePocket(lost).updateItems().calcSpace().updateStats('lost', lost).updateStats('loses').save();
+      const { pocket } = await userEntry.addCd().removePocket(lost).updateItems()
+      .calcSpace().updateStats('lost', lost).updateStats('loses').save();
 
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';
       description = [
         `You lost **${lost.toLocaleString()}**\n`,
-        `You now have **${(data.pocket - lost).toLocaleString()}**`,
+        `You now have **${pocket.toLocaleString()}**`,
       ];
     } else if (userD > botD) {
       let wngs = Math.ceil(bet * (Math.random() + (0.4 + extraWngs)));
       wngs = Math.min(maxWin, wngs + Math.ceil(wngs * (multi / 100)));
       perwn = Math.round((wngs / bet) * 100);
 
-      await userEntry.addPocket(wngs).updateItems().calcSpace().updateStats('won', wngs).updateStats('wins').save();
+      const { pocket } = await userEntry.addCd().addPocket(wngs).updateItems()
+      .calcSpace().updateStats('won', wngs).updateStats('wins').save();
+
       identifier = Boolean(extraWngs) ? 'powered' : 'winning';
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
       description = [
@@ -127,7 +130,7 @@ export default class Currency extends Command {
         `**Percent Won** \`${perwn}%${
           extraWngs ? ` (${Math.round(perwn - (extraWngs * 100))}% original)` : ''
         }\``,
-        `You now have **${(data.pocket + wngs).toLocaleString()}**`,
+        `You now have **${pocket.toLocaleString()}**`,
       ];
     }
 

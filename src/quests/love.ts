@@ -1,19 +1,13 @@
 import { Quest } from 'lib/handlers/quest';
 
 export default class Easy extends Quest {
-  constructor() {
-    super(
-      'love',
-      {
-        target: 1,
-        diff: 'Easy',
-        info: 'Marry someone with a ring!',
-        name: 'Love It',
-      },
-      {
-        coins: 2e6,
-        item: [2, 'brian'],
-      }
-    );
-  }
+	constructor() {
+	    super('love', {
+			rewards: { coins: 2e6, item: [200, 'brian'] },
+			target: [1, 'marry', 'marrySomeone'],
+			diff: 'Easy',
+			info: 'Marry someone with using a Donut Ring!',
+			name: 'Love It',
+	    });
+	}
 }
