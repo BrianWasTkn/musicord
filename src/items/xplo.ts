@@ -67,7 +67,7 @@ export default class PowerUp extends Item {
     // Punishment: Clean one item from their inv and their pocket
     const inv = randomInArray(ctx.db.data.items.filter(i => i.amount > 1));
     const item = this.client.handlers.item.modules.get(inv.id);
-    await ctx.db.removePocket(ctx.db.data.pocket).removeInv(this.id).removeInv(item.id, super.findInv(data.items, item as Item).amount).updateItems().save();
+    await ctx.db.removePocket(ctx.db.data.pocket).removeInv(this.id).removeInv(item.id, super.findInv(ctx.db.data.items, item as Item).amount).updateItems().save();
     return { content: `**LMAO you died from the bomb!**\nYou lost your WHOLE pocket and ALL your ${item.name.slice(
       0,
       item.name.endsWith('y') ? -1 : undefined
