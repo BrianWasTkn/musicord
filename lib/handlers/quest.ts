@@ -35,7 +35,7 @@ export class Quest extends AkairoModule {
       Extreme: ':fire:',
       Difficult: ':dragon:',
       Hard: ':bomb:',
-      Medium: ':leaf:',
+      Medium: ':leaves:',
       Easy: ':snowflake:'
     };
 
