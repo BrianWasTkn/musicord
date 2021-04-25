@@ -59,7 +59,7 @@ export class QuestHandler<QuestModule extends Quest> extends AkairoHandler {
   constructor(
     client: Lava,
     {
-      directory = './src/items',
+      directory = './src/quests',
       classToHandle = Quest,
       automateCategories = true,
     }: AkairoHandlerOptions

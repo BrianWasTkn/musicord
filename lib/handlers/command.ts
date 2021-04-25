@@ -782,16 +782,16 @@ export class CommandHandler<
       try {
         const returned = await cmd.exec(ctx);
         this.emit(Events.COMMAND_FINISHED, ctx, cmd, args, returned);
-        if (!returned) return;
-        await ctx.send(returned as MessageOptions);
+        if (returned) await ctx.send(returned as MessageOptions);
       } catch (error) {
         this.emit('commandError', ctx, cmd, args, error);
+      } finally {
+	    queue.next();
       }
     } finally {
       if (this.commandTyping || cmd.typing) {
         ctx.channel.stopTyping();
       }
-      queue.next();
     }
   }
 
