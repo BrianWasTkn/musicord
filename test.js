@@ -124,27 +124,27 @@ async function nice(args, time = 5e3) {
 	}
 }
 
-// const instan = (m) => new Context(m);
+// function tryit(num = 100) {
+// 	try {
+// 		if (num > 50) {
+// 			console.log('what')
+// 			return num;
+// 		}
+// 		console.log('below 50')
+// 	} finally {
+// 		return 'finally';
+// 	}
+// }
 
-function tryit(num = 100) {
-	try {
-		if (num > 50) {
-			console.log('what')
-			return num;
-		}
-		console.log('below 50')
-	} finally {
-		return 'finally';
-	}
-}
+// console.log(tryit(15))
 
-console.log(tryit(15))
+const instan = (m) => new Context(m);
 
-// (async () => {
-// 	await nice({ ctx: instan('3s'), cmd: new Command() }, 3e3);
-// 	await nice({ ctx: instan('5s'), cmd: new Command() }, 5e3);
-// 	await nice({ ctx: instan('10s'), cmd: new Command() }, 10e3);
-// })();
+(async () => {
+	await nice({ ctx: instan('3s'), cmd: new Command() }, 3e3);
+	await nice({ ctx: instan('5s'), cmd: new Command() }, 5e3);
+	await nice({ ctx: instan('10s'), cmd: new Command() }, 10e3);
+})();
 
 // nice({ ctx: new Context('after 3 seconds'), cmd: new Command() }, 3e3)
 // .then(() => nice({ ctx: new Context('after 5s'), cmd: new Command() }, 5e3))

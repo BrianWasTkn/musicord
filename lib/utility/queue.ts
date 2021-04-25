@@ -29,7 +29,7 @@ export class CommandQueue {
 
 	next() {
 		const next = this.queues.shift();
-		if (typeof next !== 'undefined') next.resolve();
+		if (typeof next !== 'undefined') next.resolve(next.promise.cmd.exec(next.promise.ctx));
 	}
 }
 

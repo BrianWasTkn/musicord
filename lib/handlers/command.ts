@@ -116,6 +116,7 @@ export class CommandHandler<
   CommandModule extends Command
 > extends AkairoHandler {
   client: Lava;
+  cmdQueue: CommandQueue;
   classToHandle: new () => CommandModule;
   resolver: TypeResolver;
   aliases: Collection<string, string>;
@@ -198,6 +199,7 @@ export class CommandHandler<
       loadFilter,
     });
 
+    this.cmdQueue = new CommandQueue();
     this.resolver = new TypeResolver((this as unknown) as OldCommandHandler);
     this.aliases = new Collection();
     this.aliasReplacement = aliasReplacement;
@@ -769,10 +771,7 @@ export class CommandHandler<
     ctx.command = cmd;
     ctx.args = args;
     ctx.db = new ContextDatabase(ctx);
-    const { cmdQueue } = this.client.util;
-    const make = (id) => cmdQueue.set(id, new CommandQueue());
-    const queue = cmdQueue.get(ctx.author.id) || make(ctx.author.id).get(ctx.author.id);
-    await queue.wait({ ctx, cmd });
+    await this.cmdQueue.wait({ ctx, cmd });
     if (this.commandTyping || cmd.typing) {
       ctx.channel.startTyping();
     }
@@ -786,7 +785,7 @@ export class CommandHandler<
       } catch (error) {
         this.emit('commandError', ctx, cmd, args, error);
       } finally {
-	    queue.next();
+	    this.cmdQueue.next();
 	    return;
       }
     } finally {
