@@ -19,7 +19,7 @@
     "src": "./build/src",
     "lib": "./build/lib"
   },
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.0",
     "discord-akairo": "^8.1.0",
