@@ -18,7 +18,7 @@ interface QueueData {
 }
 
 export class CommandQueue {
-	private queues: QueueData[] = [];
+	queues: QueueData[] = [];
 
 	wait(args: { ctx: Context, cmd: Command }) {
 		const next = this.queues.length ? this.queues[this.queues.length - 1].promise : Promise.resolve();

@@ -772,9 +772,9 @@ export class CommandHandler<
     ctx.args = args;
     ctx.db = new ContextDatabase(ctx);
     await this.cmdQueue.wait({ ctx, cmd });
-    if (this.cmdQueue.find(q => q.queues.promise.ctx.author.id === ctx.author.id)) {
-    	return;
-    }
+    if (this.cmdQueue.queues.find(q => {
+    	return q.promise.ctx.author.id === ctx.author.id);
+	})) { return; }
     if (this.commandTyping || cmd.typing) {
       ctx.channel.startTyping();
     }
