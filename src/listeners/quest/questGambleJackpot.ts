@@ -21,7 +21,7 @@ export default class QuestListener extends Listener<QuestHandler<Quest>> {
     const { quest } = data;
 
     const mod = quests.get(quest.id);
-    if (quest.type !== mod.target[2]) return;
+    // if (quest.type !== mod.target[2]) return;
     if (cmd.id !== mod.target[1]) return;
 
     quest.count++;

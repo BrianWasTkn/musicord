@@ -124,6 +124,7 @@ export default class Currency extends Command {
       const { pocket } = await userEntry.addCd().addPocket(wngs).updateItems()
       .calcSpace().updateStats('won', wngs).updateStats('wins').save();
       ctx.client.handlers.quest.emit('gambleWin', { cmd: this, ctx });
+      
       identifier = Boolean(extraWngs) ? 'powered' : 'winning';
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
       description = [
