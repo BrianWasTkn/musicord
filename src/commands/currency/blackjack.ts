@@ -45,12 +45,12 @@ export default class Currency extends Command {
         case data.pocket <= 0:
           return { state, m: "You don't have coins to play!" };
         case data.pocket >= maxPocket: 
-          return { state, m: `You're too rich (${maxPocket.toLocaleString()}) to gamble!` };
+          return { state, m: `You're too rich (${maxPocket.toLocaleString()}) to play!` };
         case bet > data.pocket:
           return { state, m: `You only have **${data.pocket}** coins don't lie to me hoe.` };
         case !bet:
           return { state, m: 'You need something to play!' };
-        case bet < 1:
+        case bet < 1 || !Number.isInteger(Number(bet)):
           return { state, m: 'It has to be a real number greater than 0 yeah?' };
         case bet < minBet:
           return { state, m: `You can't play lower than **${minBet}** coins sorry` };

@@ -3,7 +3,7 @@ import { GAMBLE_MESSAGES as Const } from 'lib/utility/constants';
 import { ArgumentTypeCaster } from 'discord-akairo';
 import { currencyConfig } from 'config/currency';
 
-export default { type: 'gambleAmount', fn: (async (ctx: Context, args: string): Promise<number> => {
+export default { type: 'gambleAmount', fn: (async (ctx: Context, args: string): Promise<any> => {
 	const { pocket } = (await (ctx.db = new ContextDatabase(ctx)).fetch()).data;
 	const { minBet, maxBet, maxPocket, maxSafePocket } = currencyConfig;
 
@@ -26,9 +26,9 @@ export default { type: 'gambleAmount', fn: (async (ctx: Context, args: string): 
 			const kay = args.replace(/k$/g, '');
 			bet = Number(kay) ? Number(kay) * 1e3 : null;
 		}	else {
-			return null;
+			bet = null;
 		}
 	}
 
-	return Number(args) || bet;
+	return Number(args) || Number(bet) || args || null;
 }) as ArgumentTypeCaster };
