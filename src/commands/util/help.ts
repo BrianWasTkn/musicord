@@ -69,9 +69,8 @@ export default class Utility extends Command {
     }
 
     // Category Search
-    if (((query as unknown) as Command).category instanceof Category) {
-      const command = (query as unknown) as Command;
-      const category = this.handler.categories.get(command.categoryID);
+    if (query instanceof Category) {
+      const category = this.handler.categories.get(query.id);
       const commands = [...category.values()];
       return { embed: {
         description: `\`${commands.map(c => c.aliases[0]).join('`, `')}\``,
