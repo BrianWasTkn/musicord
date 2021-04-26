@@ -47,7 +47,7 @@ export default class Currency extends Command {
 
     return { embed: {
       author: { name: `${ctx.args.member.user.username}'s balance`, icon_url: ctx.args.member.user.avatarURL({ dynamic: true }) },
-      title: `:fire: Magmas: ${prem.toLocaleString()}`, footer: { text: ctx.guild.name }, color: 'RANDOM',
+      title: `:key: Keys: ${prem.toLocaleString()}`, footer: { text: ctx.guild.name }, color: 'RANDOM',
       description: Object.entries(info).map(([k, v]) => `**${k}:** ${v}`).join('\n'),
     }};
   }

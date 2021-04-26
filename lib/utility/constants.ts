@@ -42,6 +42,7 @@ export const ITEM_MESSAGES = {
   SELL_MSG: `Successfully sold **{amount} {emoji} {item}** and got \`{got}\` coins.`,
 
   // Buy Command
+  AMOUNT_CAP: `are you really going to buy more than ${maxInventory.toLocaleString()} of these?`,
   NEED_TO_BUY: 'you need something to buy, bro',
   BROKE_TO_BUY: "you're too broke to buy this item!",
   NOT_BUYABLE: 'this item is not available to be bought by normies like you',

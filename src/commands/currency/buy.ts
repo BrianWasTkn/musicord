@@ -47,6 +47,7 @@ export default class Currency extends Command {
     if (!item.buyable) return MESSAGES.NOT_BUYABLE;
     if (data.pocket < item.cost) return MESSAGES.BROKE_TO_BUY;
     if (data.pocket < amount * item.cost) return MESSAGES.NOT_BUYABLE_BULK;
+    if (amount > maxInventory) return MESSAGES.AMOUNT_CAP;
     if (inv.amount >= maxInventory) return MESSAGES.INVENTORY_IS_FULL;
 
     const isSale = Items.sale.id === item.id;

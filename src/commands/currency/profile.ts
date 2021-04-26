@@ -40,13 +40,10 @@ export default class Currency extends Command {
       return `**${it.emoji} ${it.name}** — expires in ${expire}`;
     });
 
-    const levels = Object.entries({
-      'Level     ': Math.min(config.currency.maxLevel, (stats.xp / 1e2 < 0 ? 0 : Math.round(data.stats.xp / 1e2))),
-      'Prestige  ': toRoman(stats.prestige) || 0,
-      'Experience': stats.prestige,
-      'Coins Won ': stats.won.toLocaleString(),
+    const gamble = Object.entries({
       'Coins Lost': stats.lost.toLocaleString(),
-      'Win Rate  ': `${Math.round(stats.wins / (stats.wins + stats.loses)).toFixed(2)}%`
+      'Coins Won': stats.won.toLocaleString(),
+      'Win Rate': `${Math.round(stats.wins / (stats.wins + stats.loses)).toFixed(2)}%`
     }).map(([k, v]) => `\`${k}:\` ${v}`);
 
     const level = Math.min(config.currency.maxLevel, (
@@ -69,9 +66,9 @@ export default class Currency extends Command {
       },
       color: 'BLURPLE', fields: [
         { inline: true, name: 'Level', value: `**${level.toLocaleString()} / ${config.currency.maxLevel.toLocaleString()}**` },
-        { inline: true, name: 'Experience', value: `**${data.stats.xp} / ${config.currency.maxLevel / 1e2}**` },
+        { inline: true, name: 'Experience', value: `**${data.stats.xp} / ${config.currency.maxLevel * 1e2}**` },
         { inline: true, name: 'Coins', value: coins.join('\n') },
-        { inline: true, name: 'General', value: levels.join('\n') },
+        { inline: false, name: 'Gambling', value: gamble.join('\n') },
         { inline: false, name: 'Items', value: actives.length >= 1 ? actives.join('\n') : 'No active items.' },
       ]
     }};
