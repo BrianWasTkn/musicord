@@ -2,7 +2,7 @@ import { Quest } from 'lib/handlers/quest';
 
 export default class Medium extends Quest {
 	constructor() {
-	    super('hunt', {
+	    super('gift', {
 			rewards: { coins: 5e4, item: [300, 'herb'] },
 			target: [5e3, 'gift', 'shareItems'],
 			diff: 'Medium',
