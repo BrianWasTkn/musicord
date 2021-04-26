@@ -62,7 +62,7 @@ export default class Currency extends Command {
       return { replyTo: ctx.id, content: `u only have **${vault.toLocaleString()}** don't try and break me` };
     }
 
-    const { vault: n } = await userEntry.addCd().withdraw(amount).updateItems().save();
+    const { vault: n } = await userEntry.addCd().withdraw(Math.round(amount)).updateItems().save();
     return {
       replyTo: ctx.id,
       content: `**${amount.toLocaleString()}** coins withdrawn. You now have **${n.toLocaleString()}** in your vault.`,

@@ -34,7 +34,7 @@ export default class Utility extends Command {
 
     for (const [category, catCmds] of this.handler.categories) {
       const cmds = [...catCmds.values()].filter(cmd => {
-        return isOwner ? !cmd.ownerOnly : true;
+        return isOwner ? true : !cmd.ownerOnly;
       }).map((c) => c.aliases[0]).sort();
       
       fields.push({
@@ -70,8 +70,12 @@ export default class Utility extends Command {
 
     // Category Search
     if (query instanceof Category) {
+      const isOwner = this.client.isOwner(ctx.author.id);
       const category = this.handler.categories.get(query.id);
-      const commands = [...category.values()];
+      const commands = [...category.values()].filter(c => {
+        return isOwner ? true : !c.ownerOnly;
+      });
+
       return { embed: {
         description: `\`${commands.map(c => c.aliases[0]).join('`, `')}\``,
         title: `${category.id} Commands`, color: 'ORANGE', footer: {

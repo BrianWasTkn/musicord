@@ -232,9 +232,9 @@ export default class Currency extends Command {
         if (status.result) {
           winnings = Math.ceil(bet * (Math.random() + (0.4 + extraWngs))); // "Base Multi"
           winnings = Math.min(maxPocket, winnings + Math.ceil(winnings * (multi / 100))); // This brings in the user's secret multi (lava multi)
-          finalMsg += `\nYou won **${winnings.toLocaleString()}**. You now have ${(data.pocket + winnings).toLocaleString()}.`;
+          const { pocket } = await userEntry.addCd().addPocket(winnings).updateItems().updateStats('won', winnings).updateStats('wins').calcSpace().save();
+          finalMsg += `\nYou won **${winnings.toLocaleString()}**. You now have ${pocket.toLocaleString()}.`;
           state = extraWngs ? 'powered' : 'winning';
-          await userEntry.addCd().addPocket(winnings).updateItems().updateStats('won', winnings).updateStats('wins').calcSpace().save();
         } else {
           // Tie
           if (status.result === null) {
@@ -242,9 +242,9 @@ export default class Currency extends Command {
             state = 'tie';
           } else {
             // Loss
-            finalMsg += `\nYou lost **${Number(bet).toLocaleString()}**. You now have ${(data.pocket - bet).toLocaleString()}.`;
+            const { pocket } = await userEntry.addCd().removePocket(bet).updateItems().updateStats('lost', bet).updateStats('loses').calcSpace().save();
+            finalMsg += `\nYou lost **${Number(bet).toLocaleString()}**. You now have ${pocket.toLocaleString()}.`;
             state = 'losing';
-            await userEntry.addCd().removePocket(bet).updateItems().updateStats('lost', bet).updateStats('loses').calcSpace().save();
           }
         }
         final = true;
