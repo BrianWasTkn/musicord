@@ -52,6 +52,9 @@ export default class Currency extends Command {
     if (!Number.isInteger(Number(amount)) || amount < 1) {
       return { replyTo: ctx.id, content: 'it needs to be a whole number greater than 0' };
     }
+    if (pocket < 1) {
+      return { replyTo: ctx.id, content: 'u have nothing to deposit lmfao' };
+    }
     if (amount > pocket) {
       return { replyTo: ctx.id, content: `u only have **${pocket.toLocaleString()}** don't try and break me` };
     }
