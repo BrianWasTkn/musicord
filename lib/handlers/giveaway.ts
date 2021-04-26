@@ -1,8 +1,4 @@
-import {
-  Category,
-  AkairoModuleOptions,
-  AkairoHandlerOptions,
-} from 'discord-akairo';
+import { Category, AkairoModuleOptions, AkairoHandlerOptions } from 'discord-akairo';
 import { BaseHandler, BaseModule } from './Base';
 import { Lava } from '../Lava';
 

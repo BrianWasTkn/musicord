@@ -112,6 +112,7 @@ export default class Currency extends Command {
 					return data.removePocket(min).save();
 				}));
 
+				await vicEntry.addPocket(min * entries.size).save();
 				return ctx.send({ content: `Everyone failed! ${entries.size} people paid ${user.username} ${min} coins each for an unsuccessful robbery.` });
 			}
 

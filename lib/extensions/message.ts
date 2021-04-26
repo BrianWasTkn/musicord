@@ -95,11 +95,11 @@ export class ContextDatabase extends Base {
     return this.init(id, assign);
   }
 
-  addCd(cmd = this.ctx.command) {
+  addCd(cmd = this.ctx.command, time?: number) {
     if (!this.data) this._reportError();
     if (this.client.isOwner(this.ctx.author.id)) return this;
     const { cooldowns: cds } = this.data;
-    const expire = this.ctx.createdTimestamp + cmd.cooldown;
+    const expire = this.ctx.createdTimestamp + (typeof time !== 'undefined' ? time: cmd.cooldown);
     const cd = cds.find(c => c.id === cmd.id);
     if (!cd) cds.push({ expire, uses: 0, id: cmd.id });
     if (cd.expire <= this.ctx.createdTimestamp) cd.expire = expire;
@@ -109,27 +109,27 @@ export class ContextDatabase extends Base {
 
   addPocket(amount: number): this {
     if (!this.data) this._reportError();
-    this.data.pocket += amount;
+    this.data.pocket = Math.round(this.data.pocket + amount);
     return this;
   }
 
   removePocket(amount: number): this {
     if (!this.data) this._reportError();
-    this.data.pocket -= amount;
+    this.data.pocket = Math.round(this.data.pocket - amount);
     return this;
   }
 
   deposit(amount: number) {
     if (!this.data) this._reportError();
-    this.data.pocket -= amount;
-    this.data.vault += amount;
+    this.data.pocket = Math.round(this.data.pocket - amount);
+    this.data.vault = Math.round(this.data.vault + amount);
     return this;
   }
 
   withdraw(amount: number) {
     if (!this.data) this._reportError();
-    this.data.pocket += amount;
-    this.data.vault -= amount;
+    this.data.pocket = Math.round(this.data.pocket + amount);
+    this.data.vault = Math.round(this.data.vault - amount);
     return this;
   }
 
@@ -138,7 +138,6 @@ export class ContextDatabase extends Base {
     this.data.space += amount;
     return this;
   }
-
 
   beingHeisted(bool = true) {
     if (!this.data) this._reportError();
@@ -149,7 +148,7 @@ export class ContextDatabase extends Base {
   calcSpace(offset: number = 55, boost: number = 1, limit: number = config.currency.maxSafeSpace) {
     if (!this.data) this._reportError();
     const calc = (boosty: number) => Math.round(offset * (boosty / 2) + offset);
-    this.data.space = Math.min(this.data.space + calc(boost), limit);
+    this.data.space = Math.min(Math.round(this.data.space + calc(boost)), limit);
     this.data.stats.xp++;
     return this;
   }
