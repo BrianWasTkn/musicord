@@ -21,7 +21,7 @@ export class CommandQueue {
 	queues: { [id: string]: QueueData[] } = {};
 
 	wait(args: QueueData['args'], id: string) {
-		const next = this.queues[id].length ? this.queues[id][this.queues[id].length - 1].promise.promise : Promise.resolve();
+		const next = this.queues[id].length ? this.queues[id][this.queues[id].length - 1].promise : Promise.resolve();
 		let resolve; const promise = new Promise(res => { resolve = res });
 		this.queues[id].push({ promise, resolve, args });
 		return next;
