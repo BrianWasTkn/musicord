@@ -37,7 +37,7 @@ export default class Currency extends Command {
 
 		const vicEntry = await ctx.db.fetch(user.id, false);
 		const userEntry = await ctx.db.fetch(ctx.author.id);
-		const userCoins = userEntry.data.vault;
+		const userCoins = userEntry.data.pocket;
 		let vicCoins = vicEntry.data.vault;
 		let min = 5000;
 
