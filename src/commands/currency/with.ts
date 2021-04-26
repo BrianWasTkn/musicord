@@ -32,7 +32,7 @@ export default class Currency extends Command {
               }
             }
 
-            return withd || Number(args) || args;
+            return Number(withd) || Number(args) || args;
           },
         },
       ],
@@ -54,6 +54,9 @@ export default class Currency extends Command {
     }
     if (!Number.isInteger(Number(amount)) || amount < 1) {
       return { replyTo: ctx.id, content: 'it needs to be a whole number greater than 0' };
+    }
+    if (vault < 0) {
+      return { replyTo: ctx.id, content: 'u have nothing to withdraw LOL' };
     }
     if (amount > vault) {
       return { replyTo: ctx.id, content: `u only have **${vault.toLocaleString()}** don't try and break me` };

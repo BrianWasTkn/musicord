@@ -32,7 +32,7 @@ export default class Currency extends Command {
               }
             }
 
-            return dep || Number(args) || args;
+            return Number(dep) || Number(args) || args;
           },
         },
       ],
