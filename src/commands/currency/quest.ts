@@ -121,7 +121,7 @@ export default class Currency extends Command {
       const active = mods.get(aq.id);
       aq.id = ''; aq.target = aq.count = 0;
       await userEntry.save();
-      return { replyTo: ctx.id, content: `You stopped your **${active.name}** quest, thanks for nothing idiot.` };
+      return { replyTo: ctx.id, content: `You stopped your **${active.emoji} ${active.name}** quest, thanks for nothing idiot.` };
     }
 
     if (query === 'check') {
@@ -137,7 +137,7 @@ export default class Currency extends Command {
       return { replyTo: ctx.id, embed: {
         color: 'ORANGE', title: `${mod.emoji} ${mod.name}`,
         description: mod.info, fields: [{ 
-          value: `**Status:** ${aq.count}/${aq.target}`,
+          value: `**Status:** ${aq.count.toLocaleString()}/${mod.target[0].toLocaleString()}`,
           name: 'Current Progress', 
         }], timestamp: Date.now(), footer: { 
           iconURL: ctx.client.user.avatarURL(),

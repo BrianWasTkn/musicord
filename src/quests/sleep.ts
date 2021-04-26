@@ -3,7 +3,7 @@ import { Quest } from 'lib/handlers/quest';
 export default class Extreme extends Quest {
 	constructor() {
     	super('wake', {
-      		rewards: { coins: 10e6, item: [200, 'coffee'] },
+      		rewards: { coins: 10e6, item: [5000, 'coffee'] },
       		target: [1e3, 'slots', 'wins'],
       		diff: 'Extreme',
       		info: 'Win 1,000 games on slots.',

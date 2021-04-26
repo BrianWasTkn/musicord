@@ -5,9 +5,9 @@ import { Item } from 'lib/handlers/item';
 
 export default class QuestListener extends Listener<QuestHandler<Quest>> {
   constructor() {
-    super('itemBuy', {
+    super('itemSell', {
       emitter: 'quest',
-      event: 'itemBuy',
+      event: 'itemSell',
     });
   }
 
@@ -21,7 +21,6 @@ export default class QuestListener extends Listener<QuestHandler<Quest>> {
     const { data } = await ctx.db.fetch();
     const { quest } = data;
 
-    // &
     const mod = quests.get(quest.id);
     if (Array.isArray(mod.target[1])) {
       const [,itemId] = mod.target[1];

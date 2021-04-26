@@ -106,9 +106,9 @@ export default class Fun extends Command {
     s.marriage.since = Date.now();
     await s.save();
 
-    return {
-      replyTo: ctx.id,
-      content: `You're now married to ${someone.toString()} GGs! Type \`lava ${
+    this.client.handlers.quest.emit('marry', { ctx });
+    return { replyTo: ctx.id, content: 
+      `You're now married to ${someone.toString()} GGs! Type \`lava ${
         this.aliases[0]
       }\` to see your marriage profile!`,
     };

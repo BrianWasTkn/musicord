@@ -1,19 +1,18 @@
 import { QuestHandler, Quest } from 'lib/handlers/quest';
-import { Listener } from 'lib/handlers/listener';
+import { Listener, Command } from 'lib/handlers';
 import { Context } from 'lib/extensions/message';
 import { Item } from 'lib/handlers/item';
 
 export default class QuestListener extends Listener<QuestHandler<Quest>> {
   constructor() {
-    super('itemBuy', {
+    super('vaultExpand', {
       emitter: 'quest',
-      event: 'itemBuy',
+      event: 'vaultExpand',
     });
   }
 
-  async exec(args: { ctx: Context; item: Item; amount: number }) {
-    const { ctx, item, amount } = args;
-    const { 
+  async exec(args: { ctx: Context, itemArg: Item, gain: number }) {
+    const { itemArg, ctx, gain } = args, { 
       item: { modules: items },
       quest: { modules: quests }, 
     } = this.client.handlers;
@@ -21,14 +20,13 @@ export default class QuestListener extends Listener<QuestHandler<Quest>> {
     const { data } = await ctx.db.fetch();
     const { quest } = data;
 
-    // &
     const mod = quests.get(quest.id);
     if (Array.isArray(mod.target[1])) {
       const [,itemId] = mod.target[1];
-      if (item.id !== itemId) return;
+      if (itemArg.id !== itemId) return;
     }
 
-    quest.count += amount;
+    quest.count += gain;
     await data.save();
 
     if (quest.count >= mod.target[0]) {

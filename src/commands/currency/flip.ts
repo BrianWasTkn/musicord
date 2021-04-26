@@ -92,6 +92,7 @@ export default class Currency extends Command {
     if (choice.content.toLowerCase().includes('heads')) {
     	if (cflip === heads) {
     		await userEntry.addCd().addPocket(bet).updateItems().calcSpace().updateStats('won', bet).updateStats('wins').save();
+        ctx.client.handlers.quest.emit('gambleWin', { cmd: this, ctx });
         return { embed: {
           description: `**You won! It was heads!**\nYou won **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
           author: getAuthor(), color: 'GREEN',
@@ -99,6 +100,7 @@ export default class Currency extends Command {
     	}
 
     	await userEntry.addCd().removePocket(bet).updateItems().updateStats('won', bet).updateStats('wins').save();
+      ctx.client.handlers.quest.emit('gambleLost', { cmd: this, ctx });
       return { embed: {
         description: `**You lost! It was tails!**\nYou lost **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
         author: getAuthor(), color: 'RED',
@@ -107,6 +109,7 @@ export default class Currency extends Command {
     if (choice.content.toLowerCase().includes('tails')) {
     	if (cflip === tails) {
     		await userEntry.addCd().addPocket(bet).updateItems().calcSpace().updateStats('won', bet).updateStats('wins').save();
+        ctx.client.handlers.quest.emit('gambleWin', { cmd: this, ctx });
         return { embed: {
           description: `**You won! It was tails!**\nYou won **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
           author: getAuthor(), color: 'GREEN',
@@ -114,6 +117,7 @@ export default class Currency extends Command {
     	}
 
     	await userEntry.addCd().removePocket(bet).updateItems().updateStats('won', bet).updateStats('wins').save();
+      ctx.client.handlers.quest.emit('gambleLose', { cmd: this, ctx });
       return { embed: {
         description: `**You lost! It was heads!**\nYou lost **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
         author: getAuthor(), color: 'RED',

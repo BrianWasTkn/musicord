@@ -5,14 +5,14 @@ import { Item } from 'lib/handlers/item';
 
 export default class QuestListener extends Listener<QuestHandler<Quest>> {
   constructor() {
-    super('itemBuy', {
+    super('shareCoins', {
       emitter: 'quest',
-      event: 'itemBuy',
+      event: 'shareCoins',
     });
   }
 
-  async exec(args: { ctx: Context; item: Item; amount: number }) {
-    const { ctx, item, amount } = args;
+  async exec(args: { ctx: Context; paid: number }) {
+    const { ctx, paid } = args;
     const { 
       item: { modules: items },
       quest: { modules: quests }, 
@@ -23,12 +23,7 @@ export default class QuestListener extends Listener<QuestHandler<Quest>> {
 
     // &
     const mod = quests.get(quest.id);
-    if (Array.isArray(mod.target[1])) {
-      const [,itemId] = mod.target[1];
-      if (item.id !== itemId) return;
-    }
-
-    quest.count += amount;
+    quest.count += paid;
     await data.save();
 
     if (quest.count >= mod.target[0]) {

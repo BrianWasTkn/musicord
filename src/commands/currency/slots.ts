@@ -146,6 +146,7 @@ export default class Currency extends Command {
       const { pocket } = await userEntry.addCd().addPocket(winnings).updateItems()
       .calcSpace().updateStats('won', winnings).updateStats('wins').save();
 
+      if (length === 1) ctx.client.handlers.quest.emit('gambleJackpot', { cmd: this, ctx });
       color = jackpot ? (slots ? 'BLUE' : 'GOLD') : 'GREEN';
       state = jackpot ? (slots ? 'powered' : 'jackpot') : 'winning';
       description += `\n\nYou won **${winnings.toLocaleString()}**`;
@@ -154,7 +155,7 @@ export default class Currency extends Command {
     } else {
       const { pocket } = await userEntry.addCd().removePocket(bet).updateItems()
       .calcSpace().updateStats('lost', bet).updateStats('loses').save();
-
+      ctx.client.handlers.quest.emit('gambleLost', { cmd: this, ctx });
       color = 'RED'; state = 'losing';
       description += `\n\nYou lost **${bet.toLocaleString()}**`;
       description += `\nYou now have **${pocket.toLocaleString()}**`;

@@ -233,6 +233,7 @@ export default class Currency extends Command {
           winnings = Math.ceil(bet * (Math.random() + (0.4 + extraWngs))); // "Base Multi"
           winnings = Math.min(maxPocket, winnings + Math.ceil(winnings * (multi / 100))); // This brings in the user's secret multi (lava multi)
           const { pocket } = await userEntry.addCd().addPocket(winnings).updateItems().updateStats('won', winnings).updateStats('wins').calcSpace().save();
+          ctx.client.handlers.quest.emit('gambleWin', { cmd: this, ctx });
           finalMsg += `\nYou won **${winnings.toLocaleString()}**. You now have ${pocket.toLocaleString()}.`;
           state = extraWngs ? 'powered' : 'winning';
         } else {
@@ -243,6 +244,7 @@ export default class Currency extends Command {
           } else {
             // Loss
             const { pocket } = await userEntry.addCd().removePocket(bet).updateItems().updateStats('lost', bet).updateStats('loses').calcSpace().save();
+            ctx.client.handlers.quest.emit('gambleLose', { cmd: this, ctx });
             finalMsg += `\nYou lost **${Number(bet).toLocaleString()}**. You now have ${pocket.toLocaleString()}.`;
             state = 'losing';
           }
