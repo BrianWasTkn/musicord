@@ -18,18 +18,18 @@ interface QueueData {
 }
 
 export class CommandQueue {
-	queues: QueueData[] = [];
+	queues: { [id: string]: QueueData[] } = {};
 
-	wait(args: { ctx: Context, cmd: Command }) {
-		const next = this.queues.length ? this.queues[this.queues.length - 1].promise : Promise.resolve();
+	wait(args: { ctx: Context, cmd: Command }, id: string) {
+		const next = this.queues[id].length ? this.queues[id][this.queues[id].length - 1].promise.promise : Promise.resolve();
 		let resolve; const promise = new Promise(res => { resolve = res });
-		this.queues.push({ promise: { promise, ...args }, resolve });
+		this.queues[id].push({ promise: { promise, ...args }, resolve });
 		return next;
 	}
 
-	next() {
-		const next = this.queues.shift();
-		if (typeof next !== 'undefined') next.resolve(next.promise.cmd.exec(next.promise.ctx));
+	next(id: string) {
+		const next = this.queues[id].shift();
+		if (typeof next !== 'undefined') next.resolve();
 	}
 }
 

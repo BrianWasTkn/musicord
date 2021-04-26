@@ -771,10 +771,7 @@ export class CommandHandler<
     ctx.command = cmd;
     ctx.args = args;
     ctx.db = new ContextDatabase(ctx);
-    await this.cmdQueue.wait({ ctx, cmd });
-    if (this.cmdQueue.queues.find(q => {
-    	return q.promise.ctx.author.id === ctx.author.id);
-	})) { return; }
+    await this.cmdQueue.wait({ ctx, cmd }, ctx.author.id);
     if (this.commandTyping || cmd.typing) {
       ctx.channel.startTyping();
     }
@@ -788,7 +785,7 @@ export class CommandHandler<
       } catch (error) {
         this.emit('commandError', ctx, cmd, args, error);
       } finally {
-	    this.cmdQueue.next();
+	    this.cmdQueue.next(ctx.author.id);
 	    return;
       }
     } finally {
