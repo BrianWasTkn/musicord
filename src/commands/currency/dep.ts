@@ -61,7 +61,7 @@ export default class Currency extends Command {
     if (vault >= space) {
       return { replyTo: ctx.id, content: 'u already have full bank stop pushing it through' };
     }
-    if (amount + vault > space) {
+    if ((amount + vault > space) && amount !== pocket) {
       return { replyTo: ctx.id, content: `you can only hold up to **${(space - vault).toLocaleString()}** right now. To hold more, use the bot more.` };
     }
 
