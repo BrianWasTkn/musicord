@@ -57,7 +57,9 @@ export default class Currency extends Command {
 
     await userEntry.removeInv(item.id, amount).save();
     await rEntry.addInv(item.id, amount).save();
-    this.client.handlers.quest.emit('shareItem', { ctx, itemArg: item, amount });
+    this.client.handlers.quest.emit('itemShare', { 
+      ctx, itemArg: item, amount 
+    });
 
     return {
       replyTo: ctx.id,

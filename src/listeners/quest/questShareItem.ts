@@ -5,9 +5,9 @@ import { Item } from 'lib/handlers/item';
 
 export default class QuestListener extends Listener<QuestHandler<Quest>> {
   constructor() {
-    super('shareItem', {
+    super('itemShare', {
       emitter: 'quest',
-      event: 'shareItem',
+      event: 'itemShare',
     });
   }
 
