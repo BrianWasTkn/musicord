@@ -21,6 +21,6 @@ export default class Flex extends Item {
   }
 
   use(): MessageOptions {
-    return { content: `${this.emoji} You ate sum yummy donuts! Nom Omm Onm` };
+    return { replyTo: ctx.id, content: `${this.emoji} You ate sum yummy donuts! Nom Omm Onm` };
   }
 }

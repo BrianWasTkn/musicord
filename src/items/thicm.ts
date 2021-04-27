@@ -28,6 +28,6 @@ export default class PowerUp extends Item {
     const expire = Date.now() + time;
 
     await ctx.db.updateInv(this.id, { expire }).removeInv(this.id).updateItems().save();
-    return { content: `**You activated thicco mode**\nYou've been granted a **50%** winnning power for blackjack for 10 minutes!` };
+    return { replyTo: ctx.id, content: `**You activated thicco mode**\nYou've been granted a **50%** winnning power for blackjack for 10 minutes!` };
   }
 }

@@ -46,10 +46,10 @@ export default class PowerUp extends Item {
     const f = (m: Context) => m.author.id === ctx.author.id;
     const rep = (await ctx.awaitMessage(ctx.author.id, 15e3)).first();
     if (!rep) {
-      return { content: 'Imagine wasting 15 seconds of my bottime :rolling_eyes:' };
+      return { replyTo: ctx.id, content: 'Imagine wasting 15 seconds of my bottime :rolling_eyes:' };
     }
     if (!things[rep.content.toLowerCase()]) {
-      return { content: 'Stop giving me invalid options buddy >:(' };
+      return { replyTo: ctx.id, content: 'Stop giving me invalid options buddy >:(' };
     }
 
     const karma = util.randomNumber(-1e4, 1e4);

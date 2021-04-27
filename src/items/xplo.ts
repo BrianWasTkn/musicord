@@ -53,7 +53,7 @@ export default class PowerUp extends Item {
 
       items.forEach(({ amt, item }) => ctx.db.addInv(item.id, amt));
       await ctx.db.addPocket(coins).updateItems().save();
-      return { content: `**__:slight_smile: Bomb contents for ${ctx.author.toString()}__**\n${[
+      return { replyTo: ctx.id, content: `**__:slight_smile: Bomb contents for ${ctx.author.toString()}__**\n${[
         `\`${coins.toLocaleString()} coins\``,
         ...its,
       ].join('\n')}` };
@@ -63,7 +63,7 @@ export default class PowerUp extends Item {
     const inv = randomInArray(ctx.db.data.items.filter(i => i.amount > 1));
     const item = this.client.handlers.item.modules.get(inv.id);
     await ctx.db.removePocket(ctx.db.data.pocket).removeInv(this.id).removeInv(item.id, super.findInv(ctx.db.data.items, item as Item).amount).updateItems().save();
-    return { content: `**__LMAO you died from the bomb!__**\nYou lost your WHOLE pocket and ALL your ${item.name.slice(
+    return { replyTo: ctx.id, content: `**__LMAO you died from the bomb!__**\nYou lost your WHOLE pocket and ALL your ${item.name.slice(
       0,
       item.name.endsWith('y') ? -1 : undefined
     )}${item.name.endsWith('y') ? 'ies' : 's'} from your inventory.` };

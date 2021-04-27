@@ -28,6 +28,6 @@ export default class Powerflex extends Item {
     const expire = Date.now() + time;
 
     await ctx.db.updateInv(this.id, { multi, expire }).removeInv(this.id).updateItems().save();
-    return { content: `${this.emoji} You now have a **${multi}% multiplier** and **5% jackpot chance** for ${parseTime(time / 1e3)}!` };
+    return { replyTo: ctx.id, content: `${this.emoji} You now have a **${multi}% multiplier** and **5% jackpot chance** for ${parseTime(time / 1e3)}!` };
   }
 }

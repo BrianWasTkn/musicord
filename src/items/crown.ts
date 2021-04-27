@@ -28,6 +28,6 @@ export default class Tool extends Item {
   	const data = entry.data;
   	const inv = super.findInv(data.items, this);
 
-    return { content: `r/woosh` };
+    return { replyTo: ctx.id, content: `r/woosh` };
   }
 }

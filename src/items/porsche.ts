@@ -38,10 +38,10 @@ export default class PowerUp extends Item {
     if (!rep) return { content: 'lol bye, thanks for nothing.' };
     let choice = Number(rep.content);
     if (!Boolean(Number(rep.content)) || Number(rep.content) < 1) {
-      return { content: 'Needs to be a real number more than 0 bruh' };
+      return { replyTo: ctx.id, content: 'Needs to be a real number more than 0 bruh' };
     }
     if (choice > card.amount) {
-      return { content: `Don't try and break me bish, you only have **${card.amount.toLocaleString()}** of these.` };
+      return { replyTo: ctx.id, content: `Don't try and break me bish, you only have **${card.amount.toLocaleString()}** of these.` };
     }
 
     let gain: number[] | number;
@@ -49,7 +49,7 @@ export default class PowerUp extends Item {
     
     const data = await ctx.db.expandSpace(gain).removeInv(this.id, choice).updateItems().save();
     this.client.handlers.quest.emit('vaultExpand', { ctx, itemArg: this, gain });
-    return { content: `**You crafted __${
+    return { replyTo: ctx.id, content: `**You crafted __${
       choice.toLocaleString()
     }__ cards into your vault.**\nThis brings you to **${
       data.space.toLocaleString()

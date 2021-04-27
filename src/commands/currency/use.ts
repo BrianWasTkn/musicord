@@ -52,9 +52,7 @@ export default class Currency extends Command {
       return { replyTo: ctx, content: check(inv).m };
     }
 
-    const ret = (await item.use(ctx)) as MessageOptions;
     await userEntry.addCd().save();
-    ret.replyTo = ctx.id;
-    return ret;
+    return (await item.use(ctx)) as MessageOptions;
   }
 }

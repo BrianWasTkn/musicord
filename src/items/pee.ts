@@ -29,19 +29,19 @@ export default class Flex extends Item {
     ctx.send({ content: `You have **${piss.amount.toLocaleString()} ${this.emoji} ${this.name}** to surprise, how many do you wanna use?` });
     const rep = (await ctx.awaitMessage(ctx.author.id, 15e3)).first();
     if (!rep.content || !Number.isInteger(Number(rep.content)) || Number(rep.content) < 1) {
-      return { content: "Needs to be a real number greater than 0 yeah?" };
+      return { replyTo: ctx.id, content: "Needs to be a real number greater than 0 yeah?" };
     }
 
     let choice = Number(rep.content);
     if (choice > piss.amount) {
-      return { content: 'Lol imagine having way less than what you actually wanted to give' };
+      return { replyTo: ctx.id, content: 'Lol imagine having way less than what you actually wanted to give' };
     }
 
     ctx.send({ content: 'who would you surprise?' });
     const rep2 = (await ctx.awaitMessage(ctx.author.id, 15e3)).first();
     const meb = this.client.util.resolveMember(rep2.content, ctx.guild.members.cache, false);
     if (!meb) {
-      return { content: "Bro imagine not surprising anyone, that's so sad :(" };
+      return { replyTo: ctx.id, content: "Bro imagine not surprising anyone, that's so sad :(" };
     }
 
     const mebData = (await ctx.db.fetch(meb.user.id, false)).data;
@@ -52,6 +52,6 @@ export default class Flex extends Item {
     await data.save();
     await mebData.save();
 
-    return { content: `Alright, ${meb.user.username} got your stinking surprise :kiss:` };
+    return { replyTo: ctx.id, content: `Alright, ${meb.user.username} got your stinking surprise :kiss:` };
   }
 }

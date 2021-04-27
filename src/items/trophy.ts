@@ -31,7 +31,7 @@ export default class Collectible extends Item {
       const nice = randomNumber(1, 100);
       const won = randomNumber(1, 100) * 1e3;
       await ctx.db.addInv(this.id, nice).addPocket(won).updateItems().save();
-      return { embed: {
+      return { replyTo: ctx.id, embed: {
         description: `You got **${nice} ${this.emoji} ${this.name}** and **${won.toLocaleString()}** coins!`,
         color: 'GREEN',
       }};
@@ -40,7 +40,7 @@ export default class Collectible extends Item {
     const hahayes = randomNumber(tr.amount / 2, tr.amount);
     await ctx.db.removeInv(this.id, hahayes).updateItems().save();
 
-    return { embed: {
+    return { replyTo: ctx.id, embed: {
       description: `You broke **${hahayes} ${this.emoji} ${this.name}** :skull:`,
       color: 'RED',
     }};
