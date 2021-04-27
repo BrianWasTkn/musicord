@@ -12,6 +12,7 @@ export default class PowerUp extends Item {
       emoji: ':desktop:',
       name: "Prob's Computer",
       cost: 69420,
+      tier: 1,
       info: {
         short: 'Post memes on reddit!',
         long:
@@ -51,15 +52,14 @@ export default class PowerUp extends Item {
       return { content: 'Stop giving me invalid options buddy >:(' };
     }
 
-    const karma = util.randomNumber(1, 1e4);
-    if (Math.random() < 0.2) {
+    const karma = util.randomNumber(-1e4, 1e4);
+    if (karma <= 0) {
       await entry.removeInv(this.id).updateItems().save();
       return { content: `Your meme got **-${karma.toLocaleString()}** karmas and you broke your **${this.emoji} ${this.name}** lmao sucks to be you.` };
     }
 
     const gain = util.randomNumber(100, 1e4);
     await entry.addPocket(gain).updateItems().save();
-
     return { content: `You got **__${gain.toLocaleString()} coins__** (${karma} karmas) from posting a ${things[rep.content.toLowerCase()].toLowerCase()} meme on reddit.` };
   }
 }

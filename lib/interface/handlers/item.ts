@@ -20,7 +20,9 @@ export interface ItemOptions extends AkairoModuleOptions {
   buyable: boolean;
   sellable: boolean;
   usable: boolean;
-  shop: boolean;
+  tier: number;
+  showShop: boolean;
+  showInventory: boolean;
   premium: boolean;
 }
 

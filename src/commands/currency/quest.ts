@@ -12,7 +12,6 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'View, enter or stop a quest.',
       category: 'Currency',
-      ownerOnly: true,
       cooldown: 3e3,
       args: [
         {

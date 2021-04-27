@@ -12,6 +12,7 @@ export default class Flex extends Item {
       emoji: ':doughnut:',
       name: 'Donut Ring',
       cost: 100e6,
+      tier: 3,
       info: {
         short: 'They say this item is the key for a great relationship.',
         long: "Either eat it (doesn't deduct) or use it to marry someone!",

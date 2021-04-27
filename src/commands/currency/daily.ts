@@ -28,7 +28,7 @@ export default class Currency extends Command {
 
     let won = 10000, streakBonus = Math.round(0.2 * won * streak);
     if (streak > 1) won += streakBonus;
-    await userEntry.addCd().recordDailyStreak().addPocket(won).addCd().save();
+    await userEntry.addCd().recordDailyStreak().addPocket(won).save();
 
     return {
       embed: {

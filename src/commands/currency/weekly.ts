@@ -17,7 +17,7 @@ export default class Currency extends Command {
     const userEntry = await ctx.db.fetch();
     const won = 150000;
 
-    await userEntry.addCd().addPocket(won).addCd().save();
+    await userEntry.addCd().addPocket(won).save();
     return {
       embed: {
         title: `Here are your daily coins, ${ctx.author.username}`,

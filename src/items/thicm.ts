@@ -12,6 +12,7 @@ export default class PowerUp extends Item {
       emoji: ':ok_hand:',
       name: 'Thicco Mode',
       cost: 55000,
+      tier: 1,
       checks: ['time'],
       info: {
         short:

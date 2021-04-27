@@ -42,22 +42,20 @@ export default class Currency extends Command {
     if (!item.sellable) return MESSAGES.NOT_SELLABLE;
     if (amount > inv.amount) return MESSAGES.CANT_FOOL_ME;
 
-    const isSale = Items.sale.id === item.id;
+    const { discount, id } = Items.sale;
     const dPrice = Math.round(item.cost - item.cost * (Items.sale.discount / 1e2));
-    const sold = Math.round(amount * ((isSale ? dPrice : item.cost) / 4));
-    await userEntry.addPocket(Math.round(sold)).removeInv(item.id, Math.round(amount)).save();
+    const sold = item.premium ? item.cost / 4 : item.id === id
+      ? amount * (dPrice / 4) : amount * (item.cost / 4);
+
+    if (item.premium) userEntry.addPremiumKeys(Math.round(sold));
+    else userEntry.addPocket(Math.round(sold));
+    await userEntry.removeInv(item.id, Math.round(amount)).save();
     this.client.handlers.quest.emit('itemSell', { ctx, item, amount });
 
     return { replyTo: ctx.id, embed: {
-      color: 'GREEN',
-      author: {
-        name: `${item.name} successfully sold`,
-        iconURL: ctx.author.avatarURL({ dynamic: true }),
-      },
-      description: Constants.ITEM_MESSAGES.SELL_MSG.replace(
-        /{got}/gi,
-        Math.round(sold).toLocaleString()
-      )
+      author: { name: `${item.name} successfully sold`, iconURL: ctx.author.avatarURL({ dynamic: true }) },
+      color: 'GREEN', description: Constants.ITEM_MESSAGES.SELL_MSG(item.premium)
+        .replace(/{got}/gi, Math.round(sold).toLocaleString())
         .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
         .replace(/{emoji}/gi, item.emoji)
         .replace(/{item}/gi, item.name),

@@ -7,17 +7,17 @@ export default class Tool extends Item {
     super('crown', {
 		category: 'Tool',
 		sellable: false,
-		buyable: false,
+		buyable: true,
 		premium: true,
 		usable: false,
 		emoji: ':crown:',
 		name: "Royal Crown",
-		shop: false,
-		cost: 10,
+		cost: 3,
+		tier: 3,
 		checks: ['time'],
 		info: {
-			short: '[WIP] Secret Item :)',
-			long: 'OwO what\'s this?',
+			short: 'Wear this to enchant your robbing skills!',
+			long: 'Has a 100% chance of breaking someone\'s padlock!',
 		},
     });
   }

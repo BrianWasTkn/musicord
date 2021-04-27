@@ -12,6 +12,7 @@ export default class Collectible extends Item {
       emoji: '🏆',
       name: 'Trophy',
       cost: 50000000,
+      tier: 2,
       checks: ['activeState'],
       info: {
         short: 'A very powerful item to flex against normies.',
@@ -26,7 +27,7 @@ export default class Collectible extends Item {
     const tr = this.findInv(ctx.db.data.items, this);
     const odds = randomNumber(1, 100);
 
-    if (odds >= 5) {
+    if (odds >= 3) {
       const nice = randomNumber(1, 100);
       const won = randomNumber(1, 100) * 1e3;
       await ctx.db.addInv(this.id, nice).addPocket(won).updateItems().save();

@@ -107,6 +107,18 @@ export class ContextDatabase extends Base {
     return this;
   }
 
+  addPremiumKeys(amount: number): this {
+    if (!this.data) this._reportError();
+    this.data.prem += amount;
+    return this;
+  }
+
+  removePremiumKeys(amount: number): this {
+    if (!this.data) this._reportError();
+    this.data.prem -= amount;
+    return this;
+  }
+
   addPocket(amount: number): this {
     if (!this.data) this._reportError();
     this.data.pocket = Math.round(this.data.pocket + amount);

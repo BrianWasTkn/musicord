@@ -38,8 +38,8 @@ export const GAMBLE_MESSAGES = {
 };
 
 export const ITEM_MESSAGES = {
-  BUY_MSG: `Successfully purchased **{amount} {emoji} {item}** and paid \`{paid}\` coins.`,
-  SELL_MSG: `Successfully sold **{amount} {emoji} {item}** and got \`{got}\` coins.`,
+  BUY_MSG: (premium = false) => `Successfully purchased **{amount} {emoji} {item}** and paid **:${premium ? 'key' : 'coin'}: {paid}** coins.`,
+  SELL_MSG: (premium = false) => `Successfully sold **{amount} {emoji} {item}** and got **:${premium ? 'key' : 'coin'}: {got}** coins.`,
 
   // Buy Command
   AMOUNT_CAP: `are you really going to buy more than ${maxInventory.toLocaleString()} of these?`,

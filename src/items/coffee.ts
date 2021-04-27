@@ -12,6 +12,7 @@ export default class PowerUp extends Item {
       emoji: ':hot_face:',
       name: "Badddie's Coffee",
       cost: 30000,
+      tier: 2,
       checks: ['time'],
       info: {
         short: 'Boosts your multiplier at a massive rate.',

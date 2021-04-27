@@ -12,6 +12,7 @@ export default class PowerUp extends Item {
       emoji: ':joy:',
       name: "Thicco's Thiccness",
       cost: 60000,
+      tier: 1,
       checks: ['time'],
       info: {
         short: "Empower your gamble winnings with thicco's thiccnes.",

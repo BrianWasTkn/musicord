@@ -51,79 +51,90 @@ export default class Currency extends Command {
       }
 
       function displayItem(i: Item) {
-        const { emoji, cost, info } = i;
+        const { name, emoji, cost, info, premium } = i;
         const { discount, id } = Handler.sale;
-        const price =
-          id === i.id ? Math.round(cost - cost * (discount / 100)) : cost;
+        const dCounted = Math.round(cost - cost * (discount / 100));
+        const price = id === i.id ? dCounted : cost;
 
         return `**${emoji} ${
-          i.name
-        }** — [${
-          price.toLocaleString()
+          name
+        }** — :${premium ? 'key' : 'coin'}: [${
+          (premium ? cost : price).toLocaleString()
         }](https://google.com)\n${
           info.short
         }`;
       }
 
       function sort(a: Item, b: Item) {
-        return b.cost - a.cost;
+        return b.moddedPrice - a.moddedPrice;
       }
 
-      const shop = paginateArray(items.sort(sort).map(displayItem), 5);
+      function filter(i: Item) {
+        return i.showInShop;
+      }
+
+      const shop = paginateArray(items.filter(filter).sort(sort).map(displayItem), 5);
       if (query > shop.length) {
         return { replyTo: ctx.id, content: "That page doesn't even exist lol" };
       }
 
-      embed
-        .addField(
-          `**__LIGHTNING SALE__** (resets in ${left})`,
-          displaySaleItem(Handler.sale.id, Handler.sale.discount)
-        )
-        .addField('Shop Items', shop[(query as number) - 1].join('\n\n'))
-        .setFooter(false, `Lava Shop — Page ${query} of ${shop.length}`)
-        .setTitle('Lava Shop')
-        .setColor('RANDOM');
-    } else {
-      if (!query) {
-        return { replyTo: ctx.id, content: "**That item:** doesn't exist" };
-      }
-      const data = (await ctx.db.fetch()).data;
-      const inv = data.items.find((i) => i.id === query.id);
-
-      function calc(amount: number, discount: number) {
-        return amount - amount * (discount / 1e2);
-      }
-
-      const { id, discount } = Handler.sale;
-      const buy =
-        query.id === id ? Math.round(calc(query.cost, discount)) : query.cost;
-      const sell =
-        query.id === id
-          ? Math.round(calc(query.cost / 4, discount))
-          : Math.round(query.cost / 4);
-
-      let info: string[] = [];
-      info.push(
-        `**Item Price** — ${
-          query.buyable ? buy.toLocaleString() : '**Not Purchaseable**'
-        }`
-      );
-      info.push(
-        `**Sell Price** — ${(query.sellable
-          ? sell.toLocaleString()
-          : '**Not Sellable**'
-        ).toLocaleString()}`
-      );
-
-      embed
-        .setTitle(
-          `${query.emoji} ${query.name} — ${inv.amount.toLocaleString()} Owned`
-        )
-        .addField('Description', query.info.long)
-        .addField('Item Info', info.join('\n'))
-        .setColor('RANDOM');
+      return { embed: {
+        title: 'Lava Shop', color: 'RANDOM', footer: {
+          text: `Lava Shop — Page ${query} of ${shop.length}`
+        }, fields: [
+          { 
+            name: `**__LIGHTNING SALE__** (resets in ${left})`,
+            value: displaySaleItem(Handler.sale.id, Handler.sale.discount)
+          },
+          {
+            name: 'Shop Items',
+            value: shop[(query as number) - 1].join('\n\n')
+          }
+        ]
+      }};
     }
 
-    return { embed };
+    if (!query) {
+      return { replyTo: ctx.id, content: "**That item:** doesn't exist" };
+    }
+
+    const { data } = await ctx.db.fetch();
+    const inv = query.findInv(data.items, query);
+
+    function calc(amount: number, discount: number) {
+      return amount - amount * (discount / 1e2);
+    }
+    function getIcon(i: Item) {
+      return `:${i.premium ? 'key' : 'coin'}:`;
+    }
+
+    const { id, discount } = Handler.sale;
+    const buy = query.premium
+      ? query.cost : query.id === id
+        ? Math.round(calc(query.cost, discount))
+        : query.cost;
+    const sell = query.premium
+      ? Math.round(query.cost / 4) : query.id === id
+        ? Math.round(calc(query.cost / 4, discount))
+        : Math.round(query.cost / 4);
+
+    let info: string[] = [];
+    info.push(
+      `**Item Price** — ${getIcon(query)} ${
+        query.buyable ? buy.toLocaleString() : '**Not Purchaseable**'
+      }`
+    );
+    info.push(
+      `**Sell Price** — ${getIcon(query)} ${(query.sellable
+        ? sell.toLocaleString()
+        : '**Not Sellable**'
+      ).toLocaleString()}`
+    );
+
+    return { embed: {
+      title: `${query.emoji} ${query.name} — ${inv.amount.toLocaleString()} Owned`,
+      fields: [ { name: 'Item Info', value: info.join('\n') } ],
+      color: 'RANDOM', description: query.info.long, 
+    }};
   }
 }

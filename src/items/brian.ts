@@ -12,6 +12,7 @@ export default class Powerflex extends Item {
       emoji: ':brown_heart:',
       name: "Brian's Heart",
       cost: 50000,
+      tier: 2,
       checks: ['time'],
       info: {
         short: 'Grants you a great amount of luck on gamble and slots!',

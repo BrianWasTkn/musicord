@@ -13,6 +13,7 @@ export default class PowerUp extends Item {
       emoji: ':credit_card:',
       name: "Porsche's Card",
       cost: 600000,
+      tier: 3,
       info: {
         short: 'Expand your vault capacity for more coin space.',
         long:

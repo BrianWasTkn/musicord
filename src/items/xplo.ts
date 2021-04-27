@@ -12,6 +12,7 @@ export default class PowerUp extends Item {
       emoji: ':bomb:',
       name: "Xplosive's Bomb",
       cost: 100000,
+      tier: 3,
       info: {
         short: 'Get sweet treats by giving a fuck about everything!',
         long:
@@ -32,31 +33,25 @@ export default class PowerUp extends Item {
     await sleep(randomNumber(1, 5) * 1e3);
     let odds = randomNumber(1, 100);
 
-    if (odds >= 60) {
-      const mods = this.client.handlers.item.modules.array().filter((i) => i.cost >= 1e6);
-      const items: { amt?: number; item?: Item }[] = [{ amt: 1, item: this }];
+    if (odds >= 30) {
+      const mods = this.client.handlers.item.modules.array().filter((i) => i.cost <= 5e5);
+      const items: Slot[] = [{ amt: 1, item: this }];
+      type Slot = { amt?: number; item?: Item };
       const coins = randomNumber(1, 10) * 1e6;
-      ctx.db.removeInv(this.id); let e = 0;
+      ctx.db.removeInv(this.id);
 
-      while (e <= randomNumber(1, 3)) {
-        e++;
-        items.push({
-          amt: randomNumber(1, 10),
-          item: randomInArray(
-            mods.filter((m) => {
-              return !items.some((it) => it.item.id === m.id);
-            })
-          ),
-        });
+      for (let e = 0; e < randomNumber(1, 3); e++) {
+        const filter = (m: Item) => !items.some((it) => it.item.id === m.id);
+        const item = randomInArray(mods.filter(filter));
+        const amt = randomNumber(1, 100);
+        items.push({ amt, item });
       }
 
-      const its = items
-        .sort((a, b) => b.amt - a.amt)
-        .map(({ amt, item }) => {
-          ctx.db.addInv(item.id, amt);
-          return `\`${amt.toLocaleString()}\` ${item.emoji} ${item.name}`;
-        });
+      const map = ({ amt, item }: Slot) => `\`${amt.toLocaleString()}\` ${item.emoji} ${item.name}`;
+      const sort = (a: Slot, b: Slot) => b.amt - a.amt;
+      const its = items.sort(sort).map(map);
 
+      items.forEach(({ amt, item }) => ctx.db.addInv(item.id, amt));
       await ctx.db.addPocket(coins).updateItems().save();
       return { content: `**__:slight_smile: Bomb contents for ${ctx.author.toString()}__**\n${[
         `\`${coins.toLocaleString()} coins\``,
@@ -68,7 +63,7 @@ export default class PowerUp extends Item {
     const inv = randomInArray(ctx.db.data.items.filter(i => i.amount > 1));
     const item = this.client.handlers.item.modules.get(inv.id);
     await ctx.db.removePocket(ctx.db.data.pocket).removeInv(this.id).removeInv(item.id, super.findInv(ctx.db.data.items, item as Item).amount).updateItems().save();
-    return { content: `**LMAO you died from the bomb!**\nYou lost your WHOLE pocket and ALL your ${item.name.slice(
+    return { content: `**__LMAO you died from the bomb!__**\nYou lost your WHOLE pocket and ALL your ${item.name.slice(
       0,
       item.name.endsWith('y') ? -1 : undefined
     )}${item.name.endsWith('y') ? 'ies' : 's'} from your inventory.` };

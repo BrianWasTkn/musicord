@@ -12,6 +12,7 @@ export default class PowerUp extends Item {
       emoji: ':beers:',
       name: "Crazy's Alcohol",
       cost: 500000,
+      tier: 2,
       checks: ['time'],
       info: {
         short:

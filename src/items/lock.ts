@@ -10,8 +10,9 @@ export default class Tool extends Item {
       buyable: true,
       usable: true,
       emoji: ':lock:',
-      name: "Lock",
+      name: "Padlock",
       cost: 20000,
+      tier: 2,
       checks: ['time'],
       info: {
         short: 'Increase protection from robbers!',

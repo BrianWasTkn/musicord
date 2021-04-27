@@ -30,12 +30,17 @@ export class Item extends AkairoModule {
   handler: ItemHandler<Item>;
   client: Lava;
 
+  showInventory: boolean;
+  moddedPrice: number;
+  showInShop: boolean;
   sellable: boolean;
+  premium: boolean;
   buyable: boolean;
   checks: ItemCheck;
   usable: boolean;
   emoji: string;
   info: ItemInfo;
+  tier: number;
   name: string;
   cost: number;
 
@@ -44,12 +49,19 @@ export class Item extends AkairoModule {
     super(id, { category });
 
     this.info = opt.info;
+    this.tier = Number(opt.tier);
     this.cost = Number(opt.cost);
     this.buyable = Boolean(opt.buyable);
     this.sellable = Boolean(opt.sellable);
+    this.premium = Boolean(opt.premium);
     this.usable = Boolean(opt.usable);
     this.emoji = opt.emoji;
     this.name = opt.name;
+    this.moddedPrice = opt.premium
+      ? opt.cost * 1000e6
+      : opt.cost;
+    this.showInShop = opt.showShop;
+    this.showInventory = opt.showInventory;
     this.checks = [].concat(opt.checks || []);
   }
 
@@ -143,9 +155,8 @@ export class ItemHandler<ItemModule extends Item> extends AkairoHandler {
 
   getSale() {
     const { randomNumber, randomInArray } = this.client.util;
-    const { min, max } = config.item.discount;
-    const discount = randomNumber(min, max);
-    const item = randomInArray([...this.modules.values()]);
+    const { min, max } = config.item.discount, discount = randomNumber(min, max);
+    const item = randomInArray([...this.modules.values()].filter(m => !m.premium));
 
     return { discount, item, lastSale: Date.now() };
   }

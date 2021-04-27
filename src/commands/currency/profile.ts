@@ -41,9 +41,9 @@ export default class Currency extends Command {
     });
 
     const gamble = Object.entries({
-      'Coins Lost': stats.lost.toLocaleString(),
-      'Coins Won': stats.won.toLocaleString(),
-      'Win Rate': `${Math.round(stats.wins / (stats.wins + stats.loses)).toFixed(2)}%`
+      'Total Lost': stats.lost.toLocaleString(),
+      'Total Won': stats.won.toLocaleString(),
+      'Win Rate': `${(stats.wins / (stats.wins + stats.loses)).toFixed(2) * 100}%`
     }).map(([k, v]) => `\`${k}:\` ${v}`);
 
     const level = Math.min(config.currency.maxLevel, (
@@ -66,7 +66,7 @@ export default class Currency extends Command {
       },
       color: 'BLURPLE', fields: [
         { inline: true, name: 'Level', value: `**${level.toLocaleString()} / ${config.currency.maxLevel.toLocaleString()}**` },
-        { inline: true, name: 'Experience', value: `**${data.stats.xp} / ${config.currency.maxLevel * 1e2}**` },
+        { inline: true, name: 'Experience', value: `**${(data.stats.xp).toLocaleString()} / ${(config.currency.maxLevel * 1e2).toLocaleString()}**` },
         { inline: true, name: 'Coins', value: coins.join('\n') },
         { inline: false, name: 'Gambling', value: gamble.join('\n') },
         { inline: false, name: 'Items', value: actives.length >= 1 ? actives.join('\n') : 'No active items.' },
