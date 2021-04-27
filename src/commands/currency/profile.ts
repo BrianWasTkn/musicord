@@ -43,11 +43,11 @@ export default class Currency extends Command {
     const gamble = Object.entries({
       'Total Lost': stats.lost.toLocaleString(),
       'Total Won': stats.won.toLocaleString(),
-      'Win Rate': Number((stats.wins / (stats.wins + stats.loses)).toFixed(2)) * 100
+      'Win Rate': Number((stats.wins / (stats.wins + stats.loses)).toFixed(2)) * 100 + '%'
     }).map(([k, v]) => `\`${k}:\` ${v}`);
 
     const level = Math.min(config.currency.maxLevel, (
-      (stats.xp / 1e2) > 0 ? Math.round(stats.xp / 1e2) : 0
+      (stats.xp / 1e3) > 0 ? Math.round(stats.xp / 1e3) : 0
     ));
     const coins = [
       `**${pocket.toLocaleString()}** in pocket`,
