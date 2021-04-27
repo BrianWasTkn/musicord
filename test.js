@@ -136,8 +136,9 @@ async function nice(args, time = 5e3) {
 // 	}
 // }
 
-const calc = (w, l) => w / (w + l);
-console.log(calc(100, 100).toFixed(2) * 100)
+// const calc = (w, l) => w / (w + l);
+// console.log(calc(100, 100).toFixed(2) * 100)
+// console.log(process.argv)
 
 // console.log(tryit(15))
 
