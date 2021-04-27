@@ -21,7 +21,8 @@ export class Box extends Item {
 		usable = true,
 		emoji = ':package:',
 		checks = [],
-		contents = {}
+		contents = {},
+		name, tier, cost, info
 	}: Partial<BoxOptions>) {
 		super(id, {
 			category,
@@ -31,6 +32,10 @@ export class Box extends Item {
 			usable,
 			checks,
 			emoji,
+			name,
+			tier,
+			cost,
+			info
 		});
 
 		this.contents = contents;
