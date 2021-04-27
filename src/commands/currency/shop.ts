@@ -17,10 +17,7 @@ export default class Currency extends Command {
           type: (msg: Context, phrase: string) => {
             const { resolver } = this.handler;
             if (!phrase) return 1; // shop page
-            return (
-              resolver.type('number')(msg, phrase) ||
-              resolver.type('shopItem')(msg, phrase)
-            );
+            return Number(phrase) || resolver.type('shopItem')(msg, phrase);
           },
         },
       ],
@@ -33,7 +30,6 @@ export default class Currency extends Command {
     const { item: Handler } = this.client.handlers;
     const { query } = ctx.args;
     const items = Handler.modules.array();
-    const embed = new Embed();
 
     if (typeof query === 'number') {
       const { paginateArray, parseTime } = this.client.util;
@@ -69,11 +65,7 @@ export default class Currency extends Command {
         return b.moddedPrice - a.moddedPrice;
       }
 
-      function filter(i: Item) {
-        return i.showInShop;
-      }
-
-      const shop = paginateArray(items.filter(filter).sort(sort).map(displayItem), 5);
+      const shop = paginateArray(items.sort(sort).map(displayItem), 5);
       if (query > shop.length) {
         return { replyTo: ctx.id, content: "That page doesn't even exist lol" };
       }
