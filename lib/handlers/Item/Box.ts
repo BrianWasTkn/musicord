@@ -9,8 +9,6 @@ interface BoxOptions extends ItemOptions {
 	}
 }
 
-type PushedItem = { amt: number, item: Item };
-
 export class Box extends Item {
 	contents: BoxOptions['contents'];
 	constructor(id: string, {
@@ -50,28 +48,30 @@ export class Box extends Item {
 		};
 
 		await ctx.send({ replyTo: ctx.id, content: `**${this.emoji} Opening your ${this.name}...**` })
-		const items: PushedItem[] = [{ amt: 1, item: random(modules, i => i.cost >= 1e5) }];
+		const tiers = { 1: [10, 1000], 2: [10, 500], 3: [10, 50] };
+		const items: Item[] = [random(modules, i => i.cost >= 1e5)];
+		const amounts: number[] = [randomNumber(...tiers[items[0].tier] as [number, number])];
+
 		const { coins: cCoins, keys: kKeys } = this.contents;
 		const multi = utils.calcMulti(ctx, ctx.db.data);
 		let coins = randomNumber(cCoins[0], cCoins[1]);
 		let keys = kKeys + (kKeys * (multi.total / 100));
 
 		const itemTiers = modules.filter(mod => mod.tier === this.tier);
-		const tiers = { 1: [10, 1000], 2: [10, 500], 3: [10, 50] };
-
 		for (let i = 0; i < randomNumber(1, itemTiers.length); i++) {
 			const item = randomInArray(itemTiers.filter(mod => !items.some(i => i.item.id === mod.id)));
-			const amt = randomNumber(tiers[item.tier][0], tiers[item.tier][1]);
-			items.push({ amt, item: item[0] });
+			const amt = randomNumber(...tiers[item.tier] as [number, number]);
+			items.push(item); amounts.push(amt);
 		}
 
 		let contents = `\`${coins.toLocaleString()}\` :coin: coins`;
 		contents += `\n\`${keys.toLocaleString()}\` :key: keys`;
-		contents += `\n${items.map(({ amt, item: { emoji, name } }) => {
+		contents += `\n${Array(items.length).fill(null).map((_, i) => {
+			const amt = amounts[i], { emoji, name } = items[i];
 			return `\`${amt.toLocaleString()}\` ${emoji} ${name}`;
 		}).join('\n')}`;
 
-		await Promise.all(items.map(({ amt, item }) => ctx.db.addInv(item.id, amt).save()));
+		await Promise.all(Array(items.length).fill(null).map((_, i) => ctx.db.addInv(items[i].id, amounts[i]).save()));
 		await ctx.db.addPocket(coins).addPremiumKeys(keys).updateItems().save();
 		await sleep(randomNumber(2, 10) * 1e3);
 		return { content: `**__${this.emoji} ${this.name} contents for ${ctx.author.username}__**\n${contents}` };
