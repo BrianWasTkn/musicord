@@ -43,7 +43,7 @@ export class Box extends Item {
 		const { util: { sleep, randomNumber, randomInArray }, db: { currency: { utils } } } = ctx.client;
 		const modules = [...this.handler.modules.values()];
 		const random = (arr: Item[], filter: (item: Item) => boolean) => {
-			const items = arr.filter(filter);
+			const items = arr.filter(filter).filter(i => i.categoryID !== this.categoryID);
 			return randomInArray(items);
 		};
 
@@ -59,13 +59,13 @@ export class Box extends Item {
 
 		const itemTiers = modules.filter(mod => mod.tier === this.tier);
 		for (let i = 0; i < randomNumber(1, itemTiers.length); i++) {
-			const item = randomInArray(itemTiers.filter(mod => !items.some(i => i.id === mod.id)));
+			const item = randomInArray(itemTiers.filter(mod => !items.some(i => i.id === mod.id)).filter(i => i.categoryID !== this.categoryID));
 			const amt = randomNumber(...tiers[item.tier] as [number, number]);
 			items.push(item); amounts.push(amt);
 		}
 
 		let contents = `\`${coins.toLocaleString()}\` :coin: coins`;
-		contents += `\n\`${keys.toLocaleString()}\` :key: keys`;
+		contents += `\n\`${Math.round(keys).toLocaleString()}\` :key: keys`;
 		contents += `\n${Array(items.length).fill(null).map((_, i) => {
 			const amt = amounts[i], { emoji, name } = items[i];
 			return `\`${amt.toLocaleString()}\` ${emoji} ${name}`;
