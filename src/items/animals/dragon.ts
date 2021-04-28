@@ -12,6 +12,7 @@ export default class PowerUp extends Item {
       emoji: ':dragon:',
       name: "Lava's Dragon",
       cost: 65000,
+      tier: 3,
       checks: ['activeState'],
       info: {
         short: 'Grants you a great luck in rolling a dice whilst gambling!',
