@@ -65,7 +65,7 @@ export default class Fun extends Command {
     }
     if (s.marriage.id) {
       const marriedTo = (await this.client.users.fetch(
-        s.marriage.id
+        s.marriage.id, true, true
       )) as UserPlus;
       return {
         replyTo: ctx.id,
