@@ -39,7 +39,7 @@ export default class Currency extends Command {
     }
     
     const nice = Number(choice.content);
-    if (nice > Math.round((data.pocket * reqs.coins) * nice)) {
+    if (nice > Math.round((data.pocket * nice) * reqs.coins)) {
       return { replyTo: ctx.id, content: `You can't craft keys more than what you actually can, buddy` };
     }
 
