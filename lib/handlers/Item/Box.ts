@@ -72,7 +72,7 @@ export class Box extends Item {
 		}).join('\n')}`;
 
 		await Promise.all(Array(items.length).fill(null).map((_, i) => ctx.db.addInv(items[i].id, amounts[i])));
-		await ctx.db.addPocket(coins).addPremiumKeys(Math.round(keys)).updateItems().save();
+		await ctx.db.removeInv(this.id).addPocket(coins).addPremiumKeys(Math.round(keys)).updateItems().save();
 		await sleep(randomNumber(2, 10) * 1e3);
 		return { content: `**__${this.emoji} ${this.name} contents for ${ctx.author.username}__**\n${contents}` };
 	}
