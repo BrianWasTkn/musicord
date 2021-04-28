@@ -52,7 +52,7 @@ export default class Currency extends Command {
 
     const { id, discount } = Items.sale;
     const dPrice = Math.round(item.cost - item.cost * (discount / 1e2));
-    const paid = item.premium ? item.cost : id === item.id 
+    const paid = item.premium ? item.cost * amount : id === item.id 
       ? amount * dPrice : amount * item.cost;
 
     if (item.premium) userEntry.removePremiumKeys(Math.round(paid));

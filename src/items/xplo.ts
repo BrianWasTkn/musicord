@@ -34,7 +34,7 @@ export default class PowerUp extends Item {
     let odds = randomNumber(1, 100);
 
     if (odds >= 30) {
-      const mods = this.client.handlers.item.modules.array().filter((i) => i.cost <= 5e5);
+      const mods = this.client.handlers.item.modules.array().filter(i => i.categoryID !== 'Box').filter((i) => i.cost <= 5e5);
       const items: Slot[] = [{ amt: 1, item: this }];
       type Slot = { amt?: number; item?: Item };
       const coins = randomNumber(1, 10) * 1e6;
@@ -42,7 +42,7 @@ export default class PowerUp extends Item {
 
       for (let e = 0; e < randomNumber(1, 3); e++) {
         const filter = (m: Item) => !items.some((it) => it.item.id === m.id);
-        const item = randomInArray(mods.filter(filter));
+        const item = randomInArray(mods.filter(i => i.categoryID !== 'Box').filter(filter));
         const amt = randomNumber(1, 100);
         items.push({ amt, item });
       }

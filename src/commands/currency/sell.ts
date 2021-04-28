@@ -44,7 +44,7 @@ export default class Currency extends Command {
 
     const { discount, id } = Items.sale;
     const dPrice = Math.round(item.cost - item.cost * (Items.sale.discount / 1e2));
-    const sold = item.premium ? item.cost / 4 : item.id === id
+    const sold = item.premium ? amount * (item.cost / 4) : item.id === id
       ? amount * (dPrice / 4) : amount * (item.cost / 4);
 
     if (item.premium) userEntry.addPremiumKeys(Math.round(sold));
