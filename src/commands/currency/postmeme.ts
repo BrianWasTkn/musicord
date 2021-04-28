@@ -25,6 +25,6 @@ export default class Currency extends Command {
     }
 
     const ret = (await comp.use(ctx)) as string;
-    return { replyTo: ctx.id, content: ret };
+    return ret;
   }
 }
