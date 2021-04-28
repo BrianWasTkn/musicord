@@ -21,7 +21,7 @@ export default class Currency extends Command {
     const inv = comp.findInv(data.items, comp);
 
     if (inv.amount < 1) {
-      return { replyTo: ctx.id, content: `LOL buy at least **1 ${comp.name} ${comp.name}** to post memes.` };
+      return { replyTo: ctx.id, content: `LOL buy at least **1 ${comp.emoji} ${comp.name}** to post memes.` };
     }
 
     const ret = (await comp.use(ctx)) as string;
