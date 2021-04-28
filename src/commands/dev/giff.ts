@@ -36,14 +36,10 @@ export default class Currency extends Command {
     }
 
     const { maxInventory: cap } = config.currency;
-    const userEntry = await ctx.db.fetch(ctx.author.id);
     const rEntry = await ctx.db.fetch(member.user.id, false);
-    const { data: uData } = userEntry;
     const { data: rData } = rEntry;
-    const uInv = item.findInv(uData.items, item);
     const rInv = item.findInv(rData.items, item);
 
-    await userEntry.removeInv(item.id, amount).save();
     await rEntry.addInv(item.id, amount).save();
     this.client.handlers.quest.emit('itemShare', { ctx, itemArg: item, amount });
     await ctx.react('✅');
