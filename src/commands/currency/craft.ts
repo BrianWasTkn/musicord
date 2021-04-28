@@ -44,6 +44,6 @@ export default class Currency extends Command {
     }
 
     await userEntry.addPremiumKeys(Math.round(nice)).removePocket(Math.round(nice * reqs.coins)).save();
-    return { replyTo: ctx.id, embed: { color: 'GOLD', description: `Successfully crafted **:coin: ${Math.round(nice * data.pocket).toLocaleString()}** coins into **:key: ${Math.round(nice).toLocaleString()}** keys.` }};
+    return { replyTo: ctx.id, embed: { color: 'GOLD', description: `Successfully crafted **:coin: ${Math.round(nice * reqs.coins).toLocaleString()}** coins into **:key: ${Math.round(nice).toLocaleString()}** keys.` }};
   }
 }

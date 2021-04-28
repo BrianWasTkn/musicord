@@ -12,7 +12,7 @@ export default class Tool extends Item {
 		usable: false,
 		emoji: ':crown:',
 		name: "Royal Crown",
-		cost: 3,
+		cost: 50,
 		tier: 3,
 		checks: ['time'],
 		info: {
