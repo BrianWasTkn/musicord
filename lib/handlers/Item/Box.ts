@@ -43,7 +43,7 @@ export class Box extends Item {
 		const { util: { sleep, randomNumber, randomInArray }, db: { currency: { utils } } } = ctx.client;
 		const modules = [...this.handler.modules.values()];
 		const random = (arr: Item[], filter: (item: Item) => boolean) => {
-			const items = arr.filter(filter).filter(i => i.categoryID !== this.categoryID);
+			const items = arr.filter(filter).filter(i => !i.premium);
 			return randomInArray(items);
 		};
 
@@ -59,7 +59,7 @@ export class Box extends Item {
 
 		const itemTiers = modules.filter(mod => mod.tier === this.tier);
 		for (let i = 0; i < randomNumber(1, itemTiers.length); i++) {
-			const item = randomInArray(itemTiers.filter(mod => !items.some(i => i.id === mod.id)).filter(i => i.categoryID !== this.categoryID));
+			const item = randomInArray(itemTiers.filter(mod => !items.some(i => i.id === mod.id)).filter(i => !.premium));
 			const amt = randomNumber(...tiers[item.tier] as [number, number]);
 			items.push(item); amounts.push(amt);
 		}

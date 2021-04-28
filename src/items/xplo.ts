@@ -42,7 +42,7 @@ export default class PowerUp extends Item {
 
       for (let e = 0; e < randomNumber(1, 3); e++) {
         const filter = (m: Item) => !items.some((it) => it.item.id === m.id);
-        const item = randomInArray(mods.filter(i => !i.premium).filter.filter(filter));
+        const item = randomInArray(mods.filter(i => !i.premium).filter(filter));
         const amt = randomNumber(1, 100);
         items.push({ amt, item });
       }
