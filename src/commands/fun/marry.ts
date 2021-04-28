@@ -21,7 +21,7 @@ export default class Fun extends Command {
   }
 
   async exec(ctx: Context<{ someone: UserPlus }>): Promise<MessageOptions> {
-    const Ring = this.client.handlers.item.modules.get('donut');
+    const Ring = ctx.client.handlers.item.modules.get('donut');
     const { data: me } = await ctx.db.fetch();
     const { someone } = ctx.args;
 
@@ -33,7 +33,7 @@ export default class Fun extends Command {
         };
       }
 
-      const some1 = await this.client.users.fetch(me.marriage.id, true, true);
+      const some1 = await ctx.client.users.fetch(me.marriage.id, true, true);
       const since = new Date(me.marriage.since);
 
       return {
@@ -64,9 +64,7 @@ export default class Fun extends Command {
       };
     }
     if (s.marriage.id) {
-      const marriedTo = (await this.client.users.fetch(
-        s.marriage.id, true, true
-      )) as UserPlus;
+      const marriedTo = (await ctx.client.users.fetch(s.marriage.id, true, true)) as UserPlus;
       return {
         replyTo: ctx.id,
         content: `Sad to say but they're already married to **${marriedTo.tag}** bro :(`,
@@ -106,7 +104,7 @@ export default class Fun extends Command {
     s.marriage.since = Date.now();
     await s.save();
 
-    this.client.handlers.quest.emit('marry', { ctx });
+    ctx.client.handlers.quest.emit('marry', { ctx });
     return { replyTo: ctx.id, content: 
       `You're now married to ${someone.toString()} GGs! Type \`lava ${
         this.aliases[0]

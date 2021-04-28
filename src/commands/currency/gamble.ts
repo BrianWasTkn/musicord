@@ -108,7 +108,7 @@ export default class Currency extends Command {
       const lost = ties ? Math.round(bet / 4) : bet;
       const { pocket } = await userEntry.addCd().removePocket(lost).updateItems()
       .calcSpace().updateStats('lost', lost).updateStats('loses').save();
-      ctx.client.handlers.quest.emit('gambleLose', { cmd: this, ctx });
+      if (!ties) ctx.client.handlers.quest.emit('gambleLose', { cmd: this, ctx });
 
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';

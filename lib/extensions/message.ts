@@ -1,5 +1,6 @@
 import { Collection, CollectorFilter, MessageCollectorOptions } from 'discord.js';
 import { MemberPlus, UserPlus } from '.';
+import { TargetMethod } from 'lib/interface/handlers/quest';
 import { Document } from 'mongoose';
 import { Command } from 'lib/handlers/command';
 import { Effects } from 'lib/utility/effects';
@@ -180,6 +181,32 @@ export class ContextDatabase extends Base {
   resetDailyStreak() {
     if (!this.data) this._reportError();
     this.data.daily.streak = 1;
+    return this;
+  }
+
+  startQuest(id: string, args: { type: TargetMethod, target: number }) {
+    if (!this.data) this._reportError();
+    this.data.quest.id = id;
+    this.data.quest.count = 0;
+    this.data.quest.type = args.type;
+    this.data.quest.target = args.target;
+    return this;
+  }
+
+  updateQuest(count = 1) {
+    if (!this.data) this._reportError();
+    const report = (m: string) => { throw new Error(m) };
+    if (!this.data.quest.id) report(`[${this.toString()}] No active quests.`);
+    this.data.quest.count += count;
+    return this;
+  }
+
+  stopQuest() {
+    if (!this.data) this._reportError();
+    this.data.quest.id = '';
+    this.data.quest.count = 0;
+    this.data.quest.type = '' as string;
+    this.data.quest.target = 0;
     return this;
   }
 

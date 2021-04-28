@@ -66,17 +66,13 @@ export default class Currency extends Command {
         return { replyTo: ctx.id, content: `Page \`${query as number}\` doesn't exist.` };
       }
 
-      return {
-        embed: {
-          footer: { text: `Lava Quests — Page ${query} of ${quest.length}` },
-          title: 'Lava Quests',
-          color: 'RANDOM',
-          fields: [{
-            name: 'Quest List',
-            value: quest[(query as number) - 1].join('\n\n'),
-          }],
-        },
-      };
+      return { embed: {
+        description: `Simply do \`${this.handler.prefix[0]} ${this.id} <quest>\` to enter a quest, \`${this.id} check\` to see your active quest and \`${this.id} stop\` to stop an active quest.`,
+        footer: { text: `Lava Quests — Page ${query} of ${quest.length}` },
+        title: 'Lava Quests', color: 'RANDOM', fields: [{
+          name: 'Quest List', value: quest[(query as number) - 1].join('\n\n'),
+        }],
+      }};
     }
 
     const mods = this.client.handlers.quest.modules;
@@ -89,54 +85,31 @@ export default class Currency extends Command {
 
     if (query instanceof Quest) {
       const mod = query as Quest;
-      const quest = data.quest;
-      if (quest.id || quest.target >= 1) {
-        return {
-          replyTo: ctx.id,
-          content: "you can't enter a quest because you have an active one",
-        };
-      }
+      const aq = data.quest;
+      if (aq.id) return { replyTo: ctx.id, content: "you can't enter a quest because you have an active one" };
 
-      quest.target = mod.target[0];
-      quest.count = 0;
-      quest.type = mod.target[2];
-      quest.id = mod.id;
-      await userEntry.save();
-      return {
-        replyTo: ctx.id,
-        content: `You're now doing the **${mod.emoji} ${mod.name}** quest!`,
-      };
+      await userEntry.startQuest(mod.id, { target: mod.target[0], type: mod.target[2] }).save();
+      return { replyTo: ctx.id, content: `You're now doing the **${mod.emoji} ${mod.name}** quest!` };
     }
 
     if (query === 'stop') {
       const aq = data.quest;
-      if (!aq.id) {
-        return {
-          content: "You don't have an active quest right now.",
-          replyTo: ctx.id,
-        };
-      }
+      if (!aq.id) return { content: "You don't have an active quest right now.", replyTo: ctx.id };
 
       const active = mods.get(aq.id);
-      aq.id = ''; aq.target = aq.count = 0;
-      await userEntry.save();
+      await userEntry.stopQuest().save();
       return { replyTo: ctx.id, content: `You stopped your **${active.emoji} ${active.name}** quest, thanks for nothing idiot.` };
     }
 
     if (query === 'check') {
-      if (!data.quest.id) {
-        return {
-          content: "You don't have an active quest right now.",
-          replyTo: ctx.id, 
-        };
-      }
-
       const aq = data.quest;
+      if (!aq.id) return { content: "You don't have an active quest right now.", replyTo: ctx.id };
+
       const mod = mods.get(aq.id);
       return { replyTo: ctx.id, embed: {
-        color: 'ORANGE', title: `${mod.emoji} ${mod.name}`,
+        color: 'ORANGE', title: `${mod.emoji} ${mod.name} — ${mod.rawDiff}`,
         description: mod.info, fields: [{ 
-          value: `**Status:** ${aq.count.toLocaleString()}/${mod.target[0].toLocaleString()}`,
+          value: `**${aq.count.toLocaleString()} / ${mod.target[0].toLocaleString()}**`,
           name: 'Current Progress', 
         }], timestamp: Date.now(), footer: { 
           iconURL: ctx.client.user.avatarURL(),

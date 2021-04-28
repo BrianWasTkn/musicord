@@ -48,7 +48,7 @@ export default class PowerUp extends Item {
     gain = Array(choice).fill(null).map(() => util.randomNumber(1e4, 5e4)).reduce((p, c) => p + c);
     
     const data = await ctx.db.expandSpace(gain).removeInv(this.id, choice).updateItems().save();
-    this.client.handlers.quest.emit('vaultExpand', { ctx, itemArg: this, gain });
+    ctx.client.handlers.quest.emit('vaultExpand', { ctx, itemArg: this, gain });
     return { replyTo: ctx.id, content: `**You crafted __${
       choice.toLocaleString()
     }__ cards into your vault.**\nThis brings you to **${

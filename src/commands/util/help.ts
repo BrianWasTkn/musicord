@@ -1,9 +1,10 @@
-import { EmbedField, MessageOptions, Collection } from 'discord.js';
+import { EmbedField, MessageOptions, Collection, PermissionString } from 'discord.js';
 import { Argument, Category } from 'discord-akairo';
 import { Context } from 'lib/extensions/message';
 import { EmbedFieldData } from 'discord.js';
 import { Command } from 'lib/handlers/command';
 import { Embed } from 'lib/utility/embed';
+import botPackage from 'src/../package.json';
 
 type CategoryShort = Category<string, Collection<string, Command>>
 interface Help {
@@ -30,21 +31,19 @@ export default class Utility extends Command {
   }
 
   private mapCommands(isOwner = false): EmbedField[] {
-    const fields: EmbedField[] = [];
+    const entries: { [cat: string]: Command[] } = {};
 
     for (const [category, catCmds] of this.handler.categories) {
-      const cmds = [...catCmds.values()].filter(cmd => {
-        return isOwner ? true : !cmd.ownerOnly;
-      }).map((c) => c.aliases[0]).sort();
-      
-      fields.push({
-        name: `${category} Commands • ${cmds.length}`,
-        value: `\`${cmds.join('`, `')}\``,
-        inline: false,
-      });
+      const cmds = [...catCmds.values()];
+      entries[category] = cmds.filter(c => !isOwner ? !c.ownerOnly : true);
+      if (entries[category].length <= 0) delete entries[category];
     }
 
-    return fields;
+    return Object.entries(entries).map(([cat, cmds]) => ({
+      name: `${cat} Commands • ${cmds.length}`,
+      value: `\`${cmds.join('`, `')}\``,
+      inline: false,
+    }));
   }
 
   public async exec(ctx: Context<Help>): Promise<MessageOptions> {
@@ -56,9 +55,9 @@ export default class Utility extends Command {
       const cmd = query as Command;
       const fields = Object.entries({
         'Triggers': `\`${cmd.aliases.join('`, `')}\``,
-        'Cooldown': parseTime((cmd.cooldown || 1e3) / 1e3),
+        'Cooldown': `**${parseTime((cmd.cooldown || 1e3) / 1e3)}**`,
         'Category': cmd.category.id,
-        'Permissions': ['SEND_MESSAGES'].concat((cmd.userPermissions as string[]) || []),
+        'Permissions': `\`${['SEND_MESSAGES'].concat((cmd.userPermissions as string[]) || []).join('`, `')}\``,
       }).map(([name, value]) => ({ inline: true, name, value }));
 
       return { embed: {
@@ -87,10 +86,11 @@ export default class Utility extends Command {
 
     // Neither
     return { embed: {
+      footer: { text: `${this.handler.modules.size} Commands  |  Version: ${botPackage.version}` },
       title: `${ctx.client.user.username} Commands`, color: 'ORANGE',
       fields: this.mapCommands(ctx.client.isOwner(ctx.author.id)),
-      footer: { text: `${this.handler.modules.size} Commands` },
-      thumbnail: { url: ctx.client.user.avatarURL() }
+      thumbnail: { url: ctx.client.user.avatarURL() },
+      description: botPackage.description,
     }};
   }
 }

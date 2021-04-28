@@ -58,7 +58,7 @@ export default class Currency extends Command {
     if (item.premium) userEntry.removePremiumKeys(Math.round(paid));
     else userEntry.removePocket(Math.round(paid));
     await userEntry.addInv(item.id, Math.round(amount)).save();
-    this.client.handlers.quest.emit('itemBuy', { ctx, item, amount });
+    ctx.client.handlers.quest.emit('itemBuy', { ctx, item, amount });
 
     return { replyTo: ctx.id, embed: {
       author: { name: `Successful ${item.name} purchase`, iconURL: ctx.author.avatarURL({ dynamic: true }) },

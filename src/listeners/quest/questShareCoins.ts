@@ -18,32 +18,14 @@ export default class QuestListener extends Listener<QuestHandler<Quest>> {
       quest: { modules: quests }, 
     } = this.client.handlers;
 
-    const { data } = await ctx.db.fetch();
-    const { quest } = data;
+    const entry = await ctx.db.fetch();
+    if (!entry.data.quest.id) return;
+    const mod = quests.get(entry.data.quest.id);
+    if ('give' !== mod.target[1]) return;
+    await entry.updateQuest(paid).save();
 
-    // &
-    const mod = quests.get(quest.id);
-    quest.count += paid;
-    await data.save();
-
-    if (quest.count >= mod.target[0]) {
-      const item = items.get(mod.rewards.item[1]);
-      const coinR = mod.rewards.coins.toLocaleString();
-      const itemR = `${mod.rewards.item[0]} ${item.emoji} ${item.name}`;
-
-      const inv = data.items.find((i) => i.id === item.id);
-      inv.amount += mod.rewards.item[0];
-      data.pocket += mod.rewards.coins;
-
-      quest.id = '';
-      quest.count = 0;
-      quest.target = 0;
-      await data.save();
-
-      return await ctx.send({
-        replyTo: ctx.id,
-        content: `**${mod.emoji} Quest Finished!**\nYou successfully finished the **${mod.name}** quest.\nYou got **${coinR}** coins and **${itemR}** as your reward.`,
-      });
+    if (entry.data.quest.count >= mod.target[0]) {
+      return this.emitter.emit('done', { mod, ctx });
     }
   }
 }

@@ -146,7 +146,7 @@ export default class Currency extends Command {
       const { pocket } = await userEntry.addCd().addPocket(winnings).updateItems()
       .calcSpace().updateStats('won', winnings).updateStats('wins').save();
 
-      if (length === 1) ctx.client.handlers.quest.emit('gambleJackpot', { cmd: this, ctx });
+      ctx.client.handlers.quest.emit(length === 1 ? 'gambleJackpot' : 'gambleWin', { cmd: this, ctx });
       color = jackpot ? (slots ? 'BLUE' : 'GOLD') : 'GREEN';
       state = jackpot ? (slots ? 'powered' : 'jackpot') : 'winning';
       description += `\n\nYou won **${winnings.toLocaleString()}**`;

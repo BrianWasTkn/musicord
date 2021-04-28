@@ -20,7 +20,7 @@
 Dank Memer. First of all, I'd like to thank [Melmsie](https://github.com/melmsie) for inspiring me as a beginner developer because of his passion with coding and breaking everything. I consider Lava as my first successful bot (or node app in general) and I say I've done very good.
 
 ## Name Theory
-The name "Lava" originated for "flowing into your server needs" and I admit, that wasn't a very good description for this bot after all since it's just a currency bot with a small paint of moderation so yeah.
+The name "Lava" originated for "flowing into your server needs" and I admit, that wasn't a very good description for this bot after all since it's just a currency bot with a few paint of moderation so yeah.
 
 ## Self-Hosting
 
@@ -41,7 +41,7 @@ Though the source code is visible here, please make sure you won't host a public
 
 ## Acknowledgements
 
-- **Dauntless#0711** - _core of slot machine_ - [discord](https://discord.com/invite/Ha7pRB4)
+- **Dauntless#0711** - _slot machine function_ - [discord](https://discord.com/invite/Ha7pRB4)
 - **Melmsie#0001** - _blackjack command_ - [source](https://blackjack.dankmemer.lol)
 - **Dank Memer v5** - _base currency commands_ - [source](https://dankmemer.lol/source)
 

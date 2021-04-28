@@ -262,7 +262,7 @@ export default class Currency extends Command {
         embed: {
           author: {
             name: `${ctx.author.username}'s${
-              state ? ` ${state}` : ' '
+              state ? ` ${state} ` : ' '
             }blackjack game`,
             icon_url: ctx.author.avatarURL({ dynamic: true }),
           },

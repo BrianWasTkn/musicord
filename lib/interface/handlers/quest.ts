@@ -34,7 +34,8 @@ export type TargetMethod =
   | 'shareItems'
   | 'jackpots'
   | 'loses'
-  | 'wins';
+  | 'wins'
+  | string;
 
 export type SpecificCommand = 
   // [Command['id'], Context['args']] 

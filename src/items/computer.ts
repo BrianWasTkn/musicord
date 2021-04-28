@@ -22,7 +22,7 @@ export default class PowerUp extends Item {
   }
 
   async use(ctx: Context): Promise<MessageOptions> {
-    const { util } = this.client;
+    const { randomNumber } = this.client.util;
     const entry = ctx.db;
     const data = entry.data;
 
@@ -43,7 +43,6 @@ export default class PowerUp extends Item {
         .join('\n')}`
     );
 
-    const f = (m: Context) => m.author.id === ctx.author.id;
     const rep = (await ctx.awaitMessage(ctx.author.id, 15e3)).first();
     if (!rep) {
       return { replyTo: ctx.id, content: 'Imagine wasting 15 seconds of my bottime :rolling_eyes:' };
@@ -52,13 +51,13 @@ export default class PowerUp extends Item {
       return { replyTo: ctx.id, content: 'Stop giving me invalid options buddy >:(' };
     }
 
-    const karma = util.randomNumber(-1e4, 1e4);
+    const karma = randomNumber(-1e4, 1e4);
     if (karma <= 0) {
       await entry.removeInv(this.id).updateItems().save();
       return { replyTo: ctx.id, content: `Your meme got **-${karma.toLocaleString()}** karmas and you broke your **${this.emoji} ${this.name}** lmao sucks to be you.` };
     }
 
-    const gain = util.randomNumber(100, 1e4);
+    const gain = randomNumber(100, 1e4);
     await entry.addPocket(gain).updateItems().save();
     return { replyTo: ctx.id, content: `You got **__${gain.toLocaleString()} coins__** (${karma} karmas) from posting a ${things[rep.content.toLowerCase()].toLowerCase()} meme on reddit.` };
   }

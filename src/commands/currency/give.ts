@@ -70,7 +70,7 @@ export default class Currency extends Command {
 
     const giver = await authorEntry.removePocket(give).updateItems().calcSpace().save();
     const recib = await memberEntry.addPocket(paid).updateItems().save();
-    this.client.handlers.quest.emit('coinShare', { ctx, paid });
+    ctx.client.handlers.quest.emit('coinShare', { ctx, paid });
     
     return { replyTo: ctx.id, content: `You gave ${
       member.user.username
