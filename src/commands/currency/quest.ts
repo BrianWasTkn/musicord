@@ -84,10 +84,10 @@ export default class Currency extends Command {
     }
 
     if (query instanceof Quest) {
-      const mod = query as Quest;
       const aq = data.quest;
-      if (aq.id) return { replyTo: ctx.id, content: "you can't enter a quest because you have an active one" };
+      if (mods.get(aq.id)) return { replyTo: ctx.id, content: "You can't enter a quest because you have an active one" };
 
+      const mod = query as Quest;
       await userEntry.startQuest(mod.id, { target: mod.target[0], type: mod.target[2] }).save();
       return { replyTo: ctx.id, content: `You're now doing the **${mod.emoji} ${mod.name}** quest!` };
     }

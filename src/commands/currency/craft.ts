@@ -13,21 +13,37 @@ export default class Currency extends Command {
       channel: 'guild',
       description: "Craft your coins into keys!",
       category: 'Currency',
-      ownerOnly: true,
       cooldown: 6e4,
     });
   }
 
   async exec( ctx: Context ): Promise<MessageOptions> {
-    const reqs = { xp: 1000, coins: 1e6 };
+    const reqs = { xp: 1000, coins: 100e6 };
     const calcCoins = (m: number) => m / reqs.coins;
     const calcXP = (m: number) => m / reqs.xp;
-
-    const { data } = await ctx.db.fetch();
+    const userEntry = await ctx.db.fetch();
+    const { data } = userEntry;
     const { xp } = data.stats;
 
-    return { replyTo: ctx.id, embed: {
-      color: 'ORANGE', description: `You'll craft **:coin: ${data.pocket.toLocaleString()}** coins for **:key: ${calcCoins(data.pocket)}** keys.`
-    }};
+    if (calcCoins(data.pocket) <= 0) {
+      return { replyTo: ctx.id, content: `You don't have enough coins to craft!` };
+    }
+
+    await ctx.channel.send(`You can craft **:key: ${Math.round(calcCoins(data.pocket)).toLocaleString()}** keys to craft from **:coin: ${data.pocket.toLocaleString()}** coins, how many keys do you wanna craft right now?`, { replyTo: ctx.id });
+    const choice = (await ctx.awaitMessage()).first();
+    if (!choice) {
+      return { replyTo: ctx.id, content: 'Imagine wasting my time.' };
+    }
+    if (!Number.isInteger(Number(choice.content)) || Number(choice.content) <= 0) {
+      return { replyTo: ctx.id, content: 'It has to be a real number greater than 0 yeah?' };
+    }
+    
+    const nice = Number(choice.content);
+    if (nice > Math.round(data.pocket * nice)) {
+      return { replyTo: ctx.id, content: `You can't craft keys more than what you actually can, buddy` };
+    }
+
+    await userEntry.addPremiumKeys(Math.round(nice)).removePocket(Math.round(nice * reqs.coins)).save();
+    return { replyTo: ctx.id, embed: { color: 'GOLD', description: `Successfully crafted **:coin: ${Math.round(nice * data.pocket).toLocaleString()}** coins into **:key: ${Math.round(nice).toLocaleString()}** keys.` }};
   }
 }

@@ -12,7 +12,7 @@ export default class Currency extends Command {
       aliases: ['giff'],
       channel: 'guild',
       description: 'Gift items to others. Sharing is caring, they say.',
-      category: 'Currency',
+      category: 'Dev',
       ownerOnly: true,
       cooldown: 5e3,
       args: [
