@@ -20,7 +20,7 @@ export default class Flex extends Item {
     });
   }
 
-  use(): MessageOptions {
+  use(ctx: Context): MessageOptions {
     return { replyTo: ctx.id, content: `${this.emoji} You ate sum yummy donuts! Nom Omm Onm` };
   }
 }
