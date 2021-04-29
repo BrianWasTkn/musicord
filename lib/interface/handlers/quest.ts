@@ -32,6 +32,7 @@ export type TargetMethod =
   | 'buyItem'
   | 'shareCoins'
   | 'shareItems'
+  | 'craftKeys'
   | 'jackpots'
   | 'loses'
   | 'wins'

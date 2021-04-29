@@ -31,12 +31,12 @@ export default class Currency extends Command {
     	const ret = [ Math.floor(time / methods[0]) ];
 
     	for (let i = 0; i < methods.length - 1; i++) {
-			const raw = (time % methods[i]) / methods[i + 1];
-			const calced = Math.floor(raw);
-			ret.push(Math.floor(raw));
-		}
+  			const raw = (time % methods[i]) / methods[i + 1];
+  			const calced = Math.floor(raw);
+  			ret.push(Math.floor(raw));
+  		}
 
-		return ret.map(r => r < 10 ? `0${r}` : r.toString());
+  		return ret.map(r => r < 10 ? `0${r}` : r.toString());
     }
 
     function display(c: CooldownData) {

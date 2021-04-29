@@ -37,10 +37,21 @@ export default class Spawn extends Command {
     const { user } = member;
     if (!amount) return 'You need an amount';
     if (!member) return 'You need a user';
-
     const bot = this.client.user;
     const old = await fetch(user.id);
     const d = await remove(user.id, 'unpaid', amount);
+
+    if (d.allowDM) {
+      await user.send({ embed: {
+        author: { name: `${ctx.author.tag} — ${ctx.author.id}`, iconURL: ctx.author.avatarURL({ dynamic: true }) },
+        title: `Paid Unpaids`, color: 'GREEN', footer: { text: ctx.guild.name, iconURL: ctx.guild.iconURL() },
+        fields: [ 
+          { name: '• Old Value', value: old.unpaid.toLocaleString() }, 
+          { name: '• New Value', value: d.unpaid.toLocaleString() }, 
+        ]
+      }});
+    }
+
     const embed = new Embed()
       .addField('• Old Value', old.unpaid.toLocaleString())
       .addField('• New Value', d.unpaid.toLocaleString())

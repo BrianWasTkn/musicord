@@ -69,8 +69,8 @@ export default class Fun extends Command {
         const bigPunch = Math.random() >= 0.5;
         const damage = randomNumber(1, bigPunch ? 35 : 65);
 
-        opponent.hp -=
-          damage - opponent.armor < 0 ? damage : damage - opponent.armor;
+        opponent.hp -= damage - opponent.armor < 0 
+          ? damage : damage - opponent.armor;
         if (bigPunch) attacker.crits++;
         return damage;
       } else if (prompt.content.toLowerCase() === cmds[1]) {

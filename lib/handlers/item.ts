@@ -65,7 +65,7 @@ export class Item extends AkairoModule {
     this.checks = [].concat(opt.checks || []);
   }
 
-  findInv(inventory: InventorySlot[], item: this | Item) {
+  findInv(inventory: InventorySlot[], item: this | Item = this) {
     return inventory.find((i) => i.id === item.id);
   }
 

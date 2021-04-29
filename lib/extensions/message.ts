@@ -1,8 +1,8 @@
 import { Collection, CollectorFilter, MessageCollectorOptions } from 'discord.js';
 import { MemberPlus, UserPlus } from '.';
+import { Command, Quest } from 'lib/handlers';
 import { TargetMethod } from 'lib/interface/handlers/quest';
 import { Document } from 'mongoose';
-import { Command } from 'lib/handlers/command';
 import { Effects } from 'lib/utility/effects';
 import { Lava } from 'lib/Lava';
 import {
@@ -82,10 +82,9 @@ export class ContextDatabase extends Base {
     this.data = null;
   }
 
-  private async init(id: string, assign: boolean): Promise<this> {
+  private async init(userID: string, assign: boolean): Promise<this> {
     const { fetch } = this.ctx.client.db.currency;
-    let data: CurrencyProfile;
-    data = await fetch(id);
+    let data: CurrencyProfile = await fetch(userID);
     if (assign) this.data = data;
     const temp = new ContextDB(this.ctx);
     temp.data = data;
@@ -193,16 +192,37 @@ export class ContextDatabase extends Base {
     return this;
   }
 
-  updateQuest(count = 1) {
+  updateQuest(args: Handlers.QuestArgs) {
     if (!this.data) this._reportError();
-    const report = (m: string) => { throw new Error(m) };
-    if (!this.data.quest.id) report(`[${this.toString()}] No active quests.`);
-    this.data.quest.count += count;
+    const { modules: quests } = this.client.handlers.quest;
+    const { quest: aq } = this.data;
+    if (!quests.get(aq.id)) return this;
+
+    const mod = quests.get(aq.id);
+    if (!mod.check(this.ctx, args)) return this;
+    else aq.count += args.count;
+
+    if (aq.count >= mod.target[0]) {
+      const item = this.client.handlers.item.modules.get(mod.rewards.item[1]);
+      const coinR = mod.rewards.coins.toLocaleString();
+      const itemR = `${mod.rewards.item[0]} ${item.emoji} ${item.name}`;
+
+      const inv = item.findInv(this.data.items, item);
+      this.addInv(item.id, mod.rewards.item[0])
+      this.addPocket(mod.rewards.coins);
+      this.stopQuest();
+
+      this.client.handlers.quest.emit('done', { ctx: this.ctx, quest: mod, itemR, coinR });
+      return this;
+    }
+    
     return this;
   }
 
   stopQuest() {
     if (!this.data) this._reportError();
+    const report = (m: string) => { throw new Error(m) };
+    if (!this.data.quest.id) report(`[${this.toString()}] No active quests.`);
     this.data.quest.id = '';
     this.data.quest.count = 0;
     this.data.quest.type = '' as string;
@@ -261,7 +281,8 @@ export class ContextDatabase extends Base {
         crazy: () => eff.addSlotJackpotOdd(5),
         thicc: () => eff.addGambleWinnings(0.5),
         thicm: () => eff.addBlackjackWinnings(0.5),
-        trophy: () => eff.addGambleWinnings(0.5),
+        trophy: () => eff.addGambleWinnings(0.5)
+          .addBlackjackWinnings(0.5),
         dragon: () => eff.addDiceRoll(1)
           .addBlackjackWinnings(1)
           .addGambleWinnings(1),

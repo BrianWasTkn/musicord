@@ -57,12 +57,11 @@ export default class Currency extends Command {
 
     if (item.premium) userEntry.removePremiumKeys(Math.round(paid));
     else userEntry.removePocket(Math.round(paid));
-    await userEntry.addInv(item.id, Math.round(amount)).save();
-    ctx.client.handlers.quest.emit('itemBuy', { ctx, item, amount });
+    await userEntry.updateQuest({ cmd: this, count: amount, item }).addInv(item.id, Math.round(amount)).save();
 
     return { replyTo: ctx.id, embed: {
-      author: { name: `Successful ${item.name} purchase`, iconURL: ctx.author.avatarURL({ dynamic: true }) },
-      footer: { text: 'Thanks for your purchase!' }, color: 'GREEN', 
+      author: { name: `Successful "${item.name}" purchase`, iconURL: ctx.author.avatarURL({ dynamic: true }) },
+      footer: { text: 'Thank you for your purchase!', iconURL: ctx.client.user.avatarURL() }, color: 'GREEN', 
       description: Constants.ITEM_MESSAGES.BUY_MSG(item.premium)
         .replace(/{paid}/gi, Math.round(paid).toLocaleString())
         .replace(/{amount}/gi, Math.trunc(amount).toLocaleString())

@@ -69,12 +69,12 @@ export default class Currency extends Command {
         .sort() // alphabetical order of IDs
         .map((mod) => {
           const it = Items.modules.get(mod);
-          return data.items.find((i) => i.id === it.id);
+          return it.findInv(data.items);
         })
         .filter((i) => i.amount >= 1)
         .map((inv) => {
           const it = Items.modules.get(inv.id);
-          const iv = data.items.find((i) => i.id === it.id);
+          const iv = it.findInv(data.items);
           return `**${it.emoji} ${
             it.name
           }** — ${iv.amount.toLocaleString()}\n*ID* \`${it.id}\` — ${

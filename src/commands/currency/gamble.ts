@@ -81,8 +81,8 @@ export default class Currency extends Command {
         effects.set(ctx.author.id, col);
       }
       if (effects.get(ctx.author.id).has(it)) {
-        if (it === 'dragon')
-          iDiceEffs.push(this.client.handlers.item.modules.get(it));
+        const { modules: mods } = ctx.client.handlers.item;
+        if (['dragon'].includes(it)) iDiceEffs.push(mods.get(it));
         const i = effects.get(ctx.author.id).get(it);
         extraWngs += i.gambleWinnings;
         dceRoll += i.gambleDice;
@@ -108,7 +108,7 @@ export default class Currency extends Command {
       const lost = ties ? Math.round(bet / 4) : bet;
       const { pocket } = await userEntry.addCd().removePocket(lost).updateItems()
       .calcSpace().updateStats('lost', lost).updateStats('loses').save();
-      if (!ties) ctx.client.handlers.quest.emit('gambleLose', { cmd: this, ctx });
+      // if (!ties) ctx.client.handlers.quest.emit('gambleLose', { cmd: this, ctx });
 
       identifier = ties ? 'tie' : 'losing';
       color = ties ? 'YELLOW' : 'RED';
@@ -117,21 +117,21 @@ export default class Currency extends Command {
         `You now have **${pocket.toLocaleString()}**`,
       ];
     } else if (userD > botD) {
-      let wngs = Math.ceil(bet * (Math.random() + (0.4 + extraWngs)));
+      let wngs = Math.ceil(bet * (Math.random() + (0.3 + extraWngs)));
       wngs = Math.min(maxWin, wngs + Math.ceil(wngs * (multi / 100)));
       perwn = Math.round((wngs / bet) * 100);
 
       const { pocket } = await userEntry.addCd().addPocket(wngs).updateItems()
-      .calcSpace().updateStats('won', wngs).updateStats('wins').save();
-      ctx.client.handlers.quest.emit('gambleWin', { cmd: this, ctx });
+      .calcSpace().updateQuest({ cmd: this, count: 1 }).updateStats('won', wngs)
+      .updateStats('wins').save();
       
       identifier = Boolean(extraWngs) ? 'powered' : 'winning';
       color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
       description = [
         `You won **${wngs.toLocaleString()}**\n`,
-        `**Percent Won** \`${perwn}%${
-          extraWngs ? ` (${Math.round(perwn - (extraWngs * 100))}% original)` : ''
-        }\``,
+        `**Percent Won** \`${perwn}%\`${
+          extraWngs ? ` — \`(${Math.round(perwn - (extraWngs * 100))}% original)\`` : ''
+        }`,
         `You now have **${pocket.toLocaleString()}**`,
       ];
     }

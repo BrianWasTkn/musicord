@@ -14,6 +14,6 @@ export default class Util extends Command {
   }
 
   exec(ctx: Context): MessageOptions {
-    return { replyTo: ctx.id, content: `This instance of ${ctx.client.user.username} is running \`${botPackage.version}\` owo` };
+    return { replyTo: ctx.id, content: `This instance of ${ctx.client.user.username} is running version \`${botPackage.version}\`.` };
   }
 }

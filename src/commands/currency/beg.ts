@@ -11,7 +11,7 @@ export default class Currency extends Command {
       channel: 'guild',
       description: 'Gives you a random amount of coins from 100k to 1m coins',
       category: 'Currency',
-      cooldown: 3e4,
+      cooldown: 6e4,
     });
   }
 
@@ -28,11 +28,9 @@ export default class Currency extends Command {
     const odds = Math.random();
     switch (true) {
       case odds >= 0.9:
-        const item = items.filter((i) => i.cost < 30e6).random();
+        const item = items.filter((i) => !i.premium || i.cost < 30e6).random();
         const amount = util.randomNumber(1, 10);
-        let itinv = item.findInv(data.items, item);
-        itinv.amount += amount;
-        await userEntry.addCd().save();
+        await userEntry.addCd().addInv(item.id, amount).save();
         return {
           embed: {
             description: `WOWSIES! You got **${amount} ${item.emoji} ${
@@ -48,8 +46,8 @@ export default class Currency extends Command {
         await userEntry.addCd().addPocket(won).calcSpace().updateItems().save();
         return {
           embed: {
-            description: `GG! You got **${won.toLocaleString()}** coins from begging.`,
-            author: { name: ctx.client.user.username },
+            description: `"I promised I won't give you up so here's ${won.toLocaleString()} coins"`,
+            author: { name: 'Rich Ashley' },
             color: 'ORANGE',
           },
           replyTo: ctx,
@@ -58,7 +56,7 @@ export default class Currency extends Command {
         await userEntry.addCd().save();
         return {
           embed: {
-            description: 'LOL YOU SUCK :clown:',
+            description: '"no because you\'re an idiot"',
             author: { name: ctx.client.user.username },
             color: 'ORANGE',
           },

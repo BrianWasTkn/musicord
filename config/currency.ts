@@ -25,7 +25,7 @@ export const currencyConfig: Partial<CurrencyType> = {
   maxPrestige: 10,
   maxPocket: 100000000,
   maxLevel: 1000,
-  maxMulti: 200,
+  maxMulti: 500,
   minBet: 100,
   maxBet: 500000,
   maxWin: 2222222,

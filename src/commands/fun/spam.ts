@@ -50,7 +50,7 @@ export default class Fun extends Command {
       hits: number;
     }>
   ): Promise<MessageOptions> {
-    await ctx.delete().catch(() => {});
+    ctx.delete().catch(() => {});
     const { amount, lock, hits } = ctx.args;
     const { util } = this.client;
     const { events } = util;

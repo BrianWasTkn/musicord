@@ -15,7 +15,7 @@ export default class Currency extends Command {
 
   async exec(ctx: Context): Promise<MessageOptions> {
     const userEntry = await ctx.db.fetch();
-    const won = 1000;
+    const won = 5000;
 
     await userEntry.addCd().addPocket(won).save();
     return {

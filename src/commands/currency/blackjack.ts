@@ -219,9 +219,9 @@ export default class Currency extends Command {
       let state: string = '';
       let desc = '';
       if (status.constructor === Object) {
-        const { data: coinCheck } = await ctx.db.fetch(); // ugh don't really know else how to do this thanks to reversal
-        if (bet > coinCheck.pocket) {
-          await userEntry.addCd().removePocket(bet).calcSpace().updateItems().updateStats('lost', bet).updateStats('loses').save();
+        const newEntry = await ctx.db.fetch(); // ugh don't really know else how to do this thanks to reversal
+        if (bet > newEntry.data.pocket) {
+          await newEntry.addCd().removePocket(bet).calcSpace().updateItems().updateStats('lost', bet).updateStats('loses').save();
           return {
             content: `What the hell man, you don't have the coins to cover this bet anymore??? I'm keeping your bet since you tried to SCAM ME.`,
             replyTo: ctx.id,
@@ -230,10 +230,9 @@ export default class Currency extends Command {
         let finalMsg = '';
         // Win
         if (status.result) {
-          winnings = Math.ceil(bet * (Math.random() + (0.4 + extraWngs))); // "Base Multi"
+          winnings = Math.ceil(bet * (Math.random() + (0.3 + extraWngs))); // "Base Multi"
           winnings = Math.min(maxPocket, winnings + Math.ceil(winnings * (multi / 100))); // This brings in the user's secret multi (lava multi)
-          const { pocket } = await userEntry.addCd().addPocket(winnings).updateItems().updateStats('won', winnings).updateStats('wins').calcSpace().save();
-          ctx.client.handlers.quest.emit('gambleWin', { cmd: this, ctx });
+          const { pocket } = await newEntry.addCd().updateQuest({ cmd: this, count: 1 }).addPocket(winnings).updateItems().updateStats('won', winnings).updateStats('wins').calcSpace().save();
           finalMsg += `\nYou won **${winnings.toLocaleString()}**. You now have ${pocket.toLocaleString()}.`;
           state = extraWngs ? 'powered' : 'winning';
         } else {
@@ -243,7 +242,7 @@ export default class Currency extends Command {
             state = 'tie';
           } else {
             // Loss
-            const { pocket } = await userEntry.addCd().removePocket(bet).updateItems().updateStats('lost', bet).updateStats('loses').calcSpace().save();
+            const { pocket } = await newEntry.addCd().removePocket(bet).updateItems().updateStats('lost', bet).updateStats('loses').calcSpace().save();
             ctx.client.handlers.quest.emit('gambleLose', { cmd: this, ctx });
             finalMsg += `\nYou lost **${Number(bet).toLocaleString()}**. You now have ${pocket.toLocaleString()}.`;
             state = 'losing';
@@ -310,7 +309,7 @@ export default class Currency extends Command {
           footer: {
             text: !final
               ? 'K, Q, J = 10  |  A = 1 or 11'
-              : `Percent Won: ${Math.round((winnings / bet) * 100)}%${extraWngs && state === 'winning' ? ` (${Math.round(((winnings / bet) * 100) - (extraWngs * 100))} original)` : ''}`,
+              : `Percent Won: ${Math.round((winnings / bet) * 100)}%${extraWngs && state !== 'losing' ? ` (${Math.round(((winnings / bet) * 100) - (extraWngs * 100))} original)` : ''}`,
           },
         },
       });

@@ -13,4 +13,6 @@ sharder.on('shardCreate', shard => {
 	console.log(`[SHARDER] Shard ${shard.id} created.`);
 });
 
-sharder.spawn();
+sharder.spawn()
+.then(shards => console.log(`[SHARDER] ${shards.size} shards connected.`))
+.catch(console.error).finally(() => console.log(`[SHARDER] Spawned.`));

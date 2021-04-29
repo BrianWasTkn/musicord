@@ -27,6 +27,6 @@ export default class PowerUp extends Item {
     const expire = Date.now() + time;
 
     await ctx.db.updateInv(this.id, { expire }).removeInv(this.id).updateItems().save();
-    return { replyTo: ctx.id, content: 'You have been granted an additional **50%** winnings in gambling for a lucky 10 minutes!' };
+    return { replyTo: ctx.id, content: `**${this.emoji} You activated ${this.name.toLowerCase()}!**\nYou now have an additional **50%** winnings in gambling for a lucky ${parseTime(time / 1e3)}!` };
   }
 }

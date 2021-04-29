@@ -117,10 +117,9 @@ export default class Currency extends Command {
       }`
     );
     info.push(
-      `**Sell Price** — ${getIcon(query)} ${(query.sellable
-        ? sell.toLocaleString()
-        : '**Not Sellable**'
-      ).toLocaleString()}`
+      `**Sell Price** — ${getIcon(query)} ${
+        query.sellable ? sell.toLocaleString() : '**Not Sellable**'
+      }`
     );
 
     return { embed: {

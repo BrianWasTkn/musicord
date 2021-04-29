@@ -71,7 +71,17 @@ export default class Currency extends Command {
     }
 
     // Item Effects
-    // no.
+    let extraWngs: number = 0;
+    for (const it of ['trophy']) {
+      const userEf = effects.get(ctx.author.id);
+      if (!userEf) {
+        const col = new Collection<string, Effects>().set(it, new Effects());
+        effects.set(ctx.author.id, col);
+      }
+      if (effects.get(ctx.author.id).has(it)) {
+        extraWngs += effects.get(ctx.author.id).get(it).gambleWinnings;
+      }
+    }
 
     // Flip
     let cflip = util.randomNumber(1, 2);
@@ -81,7 +91,7 @@ export default class Currency extends Command {
     // let perwn: number, description: string[], identifier: string, color: string;
     const getAuthor = () => ({ name: `${ctx.author.username}'s coin game`, icon_url: ctx.author.avatarURL({ dynamic: true }) });
     ctx.send({ embed: {
-      description: `**Call \`heads\` or \`tails\` in 30 seconds.**\nYour bet is **${bet.toLocaleString()}** coins.`,
+      description: `**Call \`heads\` or \`tails\` in 30 seconds.**\n\nYour bet is **${bet.toLocaleString()}** coins.`,
       author: getAuthor(), color: 2533018, 
     }})
     const choice = (await ctx.awaitMessage()).first();
@@ -94,7 +104,7 @@ export default class Currency extends Command {
     		await userEntry.addCd().addPocket(bet).updateItems().calcSpace().updateStats('won', bet).updateStats('wins').save();
         ctx.client.handlers.quest.emit('gambleWin', { cmd: this, ctx });
         return { embed: {
-          description: `**You won! It was heads!**\nYou won **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
+          description: `**You won! It was heads!**\nYou won **${bet.toLocaleString()}**\n\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
           author: getAuthor(), color: 'GREEN',
         }};
     	}
@@ -102,7 +112,7 @@ export default class Currency extends Command {
     	await userEntry.addCd().removePocket(bet).updateItems().updateStats('won', bet).updateStats('wins').save();
       ctx.client.handlers.quest.emit('gambleLost', { cmd: this, ctx });
       return { embed: {
-        description: `**You lost! It was tails!**\nYou lost **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
+        description: `**You lost! It was tails!**\nYou lost **${bet.toLocaleString()}**\n\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
         author: getAuthor(), color: 'RED',
       }};
     }
@@ -111,7 +121,7 @@ export default class Currency extends Command {
     		await userEntry.addCd().addPocket(bet).updateItems().calcSpace().updateStats('won', bet).updateStats('wins').save();
         ctx.client.handlers.quest.emit('gambleWin', { cmd: this, ctx });
         return { embed: {
-          description: `**You won! It was tails!**\nYou won **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
+          description: `**You won! It was tails!**\nYou won **${bet.toLocaleString()}**\n\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
           author: getAuthor(), color: 'GREEN',
         }};
     	}
@@ -119,7 +129,7 @@ export default class Currency extends Command {
     	await userEntry.addCd().removePocket(bet).updateItems().updateStats('won', bet).updateStats('wins').save();
       ctx.client.handlers.quest.emit('gambleLose', { cmd: this, ctx });
       return { embed: {
-        description: `**You lost! It was heads!**\nYou lost **${bet.toLocaleString()}**\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
+        description: `**You lost! It was heads!**\nYou lost **${bet.toLocaleString()}**\n\nYou now have **${(data.pocket + bet).toLocaleString()}**`,
         author: getAuthor(), color: 'RED',
       }};
     }

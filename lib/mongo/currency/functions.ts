@@ -13,28 +13,25 @@ import { utils } from './util';
 import Currency from './model';
 
 export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
-  model: Model<Document<CurrencyProfile>>;
-  utils: CurrencyUtil;
-  bot: Lava;
+  public model: Model<Document<CurrencyProfile>>;
+  public utils: CurrencyUtil;
+  private lava: Lava;
 
-  constructor(client: Lava) {
+  public constructor(client: Lava) {
     this.utils = utils;
     this.model = Currency;
-    this.bot = client;
+    this.lava = client;
   }
 
-  fetch = async (userID: Snowflake): Promise<Profile> => {
-    const data = ((await this.model.findOne({ userID })) ||
-      new this.model({ userID })) as Profile;
+  public fetchDocs = () => this.model.find({});
+  public deleteAll = () => this.model.deleteMany();
 
-    for (const item of this.bot.handlers.item.modules.array()) {
-      const inv = data.items.find((i) => i.id === item.id);
-      if (!inv) {
-        const expire = 0,
-          amount = 0,
-          multi = 0,
-          id = item.id;
-        data.items.push({ expire, amount, multi, id });
+  public fetch = async (userID: Snowflake): Promise<Profile> => {
+    const data = ((await this.model.findOne({ userID })) || new this.model({ userID })) as Profile;
+    for (const item of [...this.lava.handlers.item.modules.values()]) {
+      if (!data.items.find((i) => i.id === item.id)) {
+        const expire = 0, amount = 0, multi = 0, id = item.id, active = false;
+        data.items.push({ expire, amount, active, multi, id });
       }
     }
 

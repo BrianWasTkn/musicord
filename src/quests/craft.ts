@@ -2,12 +2,12 @@ import { Quest } from 'lib/handlers/quest';
 
 export default class Difficult extends Quest {
 	constructor() {
-	    super('taste', {
+	    super('craft', {
 			rewards: { coins: 5e5, item: [100000, 'pee'] },
-			target: [10, ['buy', 'donut'], 'buyItem'],
+			target: [10, 'craft', 'craftKeys'],
 			diff: 'Difficult',
-			info: 'Buy 10 Donut Rings.',
-			name: 'Taste It',
+			info: 'Craft 50 keys.',
+			name: 'Craft It',
 	    });
 	}
 }

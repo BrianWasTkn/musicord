@@ -26,7 +26,7 @@ export default class Currency extends Command {
       streak += 1;
     }
 
-    let won = 10000, streakBonus = Math.round(0.2 * won * streak);
+    let won = 10000, streakBonus = Math.round(0.3 * won * streak);
     if (streak > 1) won += streakBonus;
     await userEntry.addCd().recordDailyStreak().addPocket(won).save();
 
@@ -36,7 +36,7 @@ export default class Currency extends Command {
         description: `**${won.toLocaleString()}** were placed in your pocket.`,
         color: 'BLUE',
         footer: {
-          text: `Streak: ${streak} days (+${streakBonus.toLocaleString()})`,
+          text: `Streak: ${streak} days (+${(streak > 1 ? streakBonus : 0).toLocaleString()})`,
         },
       },
     };

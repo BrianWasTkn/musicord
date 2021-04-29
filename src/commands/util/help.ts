@@ -57,7 +57,7 @@ export default class Utility extends Command {
         'Triggers': `\`${cmd.aliases.join('`, `')}\``,
         'Cooldown': `**${parseTime((cmd.cooldown || 1e3) / 1e3)}**`,
         'Category': cmd.category.id,
-        'Permissions': `\`${['SEND_MESSAGES'].concat((cmd.userPermissions as string[]) || []).join('`, `')}\``,
+        'Bot Perms': `\`${['SEND_MESSAGES'].concat((cmd.clientPermissions as string[]) || []).join('`, `')}\``,
       }).map(([name, value]) => ({ inline: true, name, value }));
 
       return { embed: {
@@ -75,6 +75,10 @@ export default class Utility extends Command {
         return isOwner ? true : !c.ownerOnly;
       });
 
+      if (commands.length <= 0) {
+        return { replyTo: ctx.id, content: "Wew, all commands under that category are for my owners only." };
+      }
+
       return { embed: {
         description: `\`${commands.map(c => c.aliases[0]).join('`, `')}\``,
         title: `${category.id} Commands`, color: 'ORANGE', footer: {
@@ -86,11 +90,9 @@ export default class Utility extends Command {
 
     // Neither
     return { embed: {
-      footer: { text: `${this.handler.modules.size} Commands  |  Version: ${botPackage.version}` },
-      title: `${ctx.client.user.username} Commands`, color: 'ORANGE',
-      fields: this.mapCommands(ctx.client.isOwner(ctx.author.id)),
-      thumbnail: { url: ctx.client.user.avatarURL() },
-      description: botPackage.description,
+      footer: { text: `${this.handler.modules.size} Commands  |  Version: ${botPackage.version}`, iconURL: ctx.client.user.avatarURL() },
+      title: `${ctx.client.user.username} Commands`, color: 'ORANGE', fields: this.mapCommands(ctx.client.isOwner(ctx.author.id)),
+      thumbnail: { url: ctx.client.user.avatarURL() }, description: botPackage.description,
     }};
   }
 }

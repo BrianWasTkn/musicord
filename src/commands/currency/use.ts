@@ -33,13 +33,13 @@ export default class Currency extends Command {
       let state = false;
       switch (true) {
         case !inv || inv.amount < 1:
-          return { state, m: "You don't own this item!" };
+          return { state, m: `${item.emoji} You don't own this item!` };
         case inv.expire > Date.now():
           return {
             state,
-            m: `This item is active right now. You can use it again in ${parseTime(
+            m: `**${item.emoji} This item is active right now!**\nWait **${parseTime(
               (inv.expire - Date.now()) / 1e3
-            )}`,
+            )}** and use it again.`,
           };
         case !item.usable:
           return { state, m: "You can't use this item :thinking:" };

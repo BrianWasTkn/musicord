@@ -51,7 +51,7 @@ export default class PowerUp extends Item {
       return { replyTo: ctx.id, content: 'Stop giving me invalid options buddy >:(' };
     }
 
-    const karma = randomNumber(-1e4, 1e4);
+    const karma = randomNumber(-1e4, 1e5);
     if (karma <= 0) {
       await entry.removeInv(this.id).updateItems().save();
       return { replyTo: ctx.id, content: `Your meme got **${karma.toLocaleString()}** karmas and you broke your **${this.emoji} ${this.name}** lmao sucks to be you.` };

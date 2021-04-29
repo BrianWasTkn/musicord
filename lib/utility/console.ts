@@ -22,6 +22,6 @@ export class Console {
 	}
 
 	debug(tag: string, msg: string) {
-		log(this.c.yellowBright(`[${this.stamp()} => ${tag}] ${msg}`));
+		log(this.c.whiteBright(`[${this.stamp()} => ${tag}] ${msg}`));
 	}
 }

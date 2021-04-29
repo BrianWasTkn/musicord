@@ -46,7 +46,7 @@ export default class Currency extends Command {
     const { pocket, vault, space } = userEntry.data;
     const { amount } = ctx.args;
 
-    if (!amount) {
+    if (!amount && pocket > 0) {
       return { replyTo: ctx.id, content: 'you need to deposit something' };
     }
     if (!Number.isInteger(Number(amount)) || amount < 1) {

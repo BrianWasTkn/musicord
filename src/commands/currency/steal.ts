@@ -13,7 +13,7 @@ export default class Currency extends Command {
 			channel: 'guild',
 			description: "Rob someone from the currency!",
 			category: 'Currency',
-			cooldown: 6e4 * 5,
+			cooldown: 6e4 * 1,
 			args: [
 				{
 				  id: 'member',
@@ -48,20 +48,18 @@ export default class Currency extends Command {
 			return { replyTo: ctx.id, content: `The victim doesn't have ${min} coins bruh.` };
 		}
 
-		let lock = vicEntry.data.items.find(i => i.id === 'lock');
+		const padMod = ctx.client.handlers.item.modules.get('lock');
+		const hahayes = padMod.findInv(vicEntry.data.items);
 		let odds = ctx.client.util.randomNumber(1, 100);
-		if (lock.expire > Date.now()) {
-			await userEntry.addCd().save();
-			if (odds >= 30) {
-				const hahayes = vicEntry.data.items.find(i => i.id === 'lock');
-				hahayes.expire = 0;
-				hahayes.active = false;
-				await vicEntry.data.save();
-				return { replyTo: ctx.id, content: `**You broke their padlock!**\nGive one more attempt for a robbery!` };
+		if (hahayes.expire > Date.now()) {
+			if (odds >= 60) {
+				await vicEntry.updateInv(padMod.id, { active: false, expire: 0 }).save();
+				return { replyTo: ctx.id, content: `**${padMod.emoji} You broke their padlock!**\nGive one more attempt for a bank robbery!` };
 			}
 			
-			return { replyTo: ctx.id, content: `You almost broke their padlock! Give one more try.` };
+			return { replyTo: ctx.id, content: `${padMod.emoji} You almost broke their padlock! Give one more try.` };
 		}
+
 		// Cleaned
 		if (odds >= 90) {
 			let worth = Math.round(vicCoins * 0.99);

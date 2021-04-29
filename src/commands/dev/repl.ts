@@ -92,6 +92,7 @@ export default class Dev extends Command {
             { name: 'Type', value: codeBlock('js', t) },
             { name: 'Latency', value: codeBlock('js', a) },
           ],
+          footer: { text: '.exit to exit repl' }
         },
       });
 

@@ -4,24 +4,26 @@
  */
 
 import type { InventorySlot } from 'lib/interface/handlers/item';
-import type { CurrencyUtil } from 'lib/interface/mongo/currency';
 import type { GuildChannel } from 'discord.js';
 import type { Context } from 'lib/extensions/message';
 import type { Item } from 'lib/handlers/item';
 import type { Lava } from 'lib/Lava';
 import config from 'config/index' ;
 
+declare interface CurrencyUtil {
+  calcMulti: (ctx: Context, db: CurrencyProfile) => {
+    unlocked: string[];
+    multis: number;
+    total: number;
+  }
+}
+
 export const utils: CurrencyUtil = {
   /**
-   * calc the multi of user
-   * @param {Lava} bot an extended instance of akairo client
-   * @param {Context} msg a discord msg obj
-   */
-  calcMulti: function CalcMulti(
-    ctx: Context, db: CurrencyProfile
-  ): { unlocked: string[]; total: number; multis: number } {
+   * Calculate the multipliers of user context.
+  */
+  calcMulti: function CalcMulti(this: CurrencyUtil, ctx: Context, db: CurrencyProfile) {
     const { maxMulti } = config.currency;
-    const channel = ctx.channel as GuildChannel;
     let unlocked = [];
     let multis = 0;
     let total = 0;
@@ -30,72 +32,71 @@ export const utils: CurrencyUtil = {
     // Discord-based
     multis++;
     if (ctx.guild.id === '691416705917779999') {
-      unlocked.push(`${ctx.guild.name} — \`10%\``);
       total += 10;
+      unlocked.push(`${ctx.guild.name} — \`10%\``);
     }
     if (ctx.member.nickname) {
-      const includes = (name) =>
-        ctx.member.nickname.toLowerCase().includes(name);
+      const includes = (name: string) => {
+        return ctx.member.nickname.toLowerCase().includes(name);
+      };
 
       multis += 3;
       if (includes('taken')) {
-        let m = 10;
-        total += m;
+        let m = 10; total += m;
         unlocked.push(`Taken Cult — \`${m}%\``);
       }
-      else if (includes('probber')) {
-        let m = 3.5;
-        total += m;
+      if (includes('probber')) {
+        let m = 3.5; total += m;
         unlocked.push(`Probber Cult — \`${m}%\``);
       }
-      else if (includes('chips')) {
-        let m = 3.5;
-        total += m;
+      if (includes('chips')) {
+        let m = 3.5; total += m;
         unlocked.push(`Chips Cult — \`${m}%\``);
       }
     }
     multis++;
-    if (channel.name.includes('・')) {
+    if ((ctx.channel as GuildChannel).name.includes('・')) {
       total += 2.5;
       unlocked.push(`Dotted Channel — \`2.5%\``);
     }
     multis++;
-    if (channel.name.includes('lava')) {
+    if ((ctx.channel as GuildChannel).name.includes('lava')) {
       total += 5;
-      unlocked.push(`${channel.name} — \`5%\``);
+      unlocked.push(`${(ctx.channel as GuildChannel).name} — \`5%\``);
     }
     multis++;
     if (ctx.guild.emojis.cache.size >= 420) {
-      let m = 4.5;
-      total += m;
+      let m = 4.5; total += m;
       unlocked.push(`420 Server Emojis — \`${m}%\``);
     }
     multis++;
     if (ctx.guild.members.cache.size >= 1000) {
-      let m = 1;
-      total += m;
+      let m = 1; total += m;
       unlocked.push(`1000+ Members — \`${m}%\``);
     }
 
-    // Currency-based (10%)
+    // Currency-based
     const items = ctx.client.handlers.item.modules;
     for (const item of ['coffee', 'brian']) {
-      const mod = items.get(item);
-      const inv = db.items.find((i) => i.id === mod.id);
       multis++;
+      const mod = items.get(item);
+      const inv = mod.findInv(db.items);
       if (inv.expire > Date.now()) {
         total += inv.multi;
         unlocked.push(`${mod.name} — \`${inv.multi}%\``);
       }
     }
-
     const trophyItem = items.get('trophy');
-    const trophy = db.items.find((i) => i.id === trophyItem.id);
+    const trophy = trophyItem.findInv(db.items);
     multis++;
     if (trophy.amount >= 1) {
-      let m = trophy.multi * trophy.amount;
-      total += m;
+      let m = 1 * trophy.amount; total += m;
       unlocked.push(`${trophyItem.name} — \`${m}%\``);
+    }
+    if (db.stats.prestige >= 1) {
+      const { toRoman } = ctx.client.util;
+      let m = 4 * db.stats.prestige; total += m;
+      unlocked.push(`Mastery ${toRoman(db.stats.prestige)} — \`${m}%\``);
     }
 
     total = Math.min(total, maxMulti);

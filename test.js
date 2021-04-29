@@ -1,68 +1,97 @@
+/** @param {number} sched */
+function get(sched) {
+  const total = Date.parse(new Date(sched)) - Date.parse(new Date());
+  const floor = n => Math.floor(n);
+
+  let seconds = floor((total / 1e3) % 60);
+  let minutes = floor((total / 1e3 / 60) % 60);
+  let hours = floor((total / (1e3 * 60 * 60)) % 24);
+  let days = floor(total / (1e3 * 60 * 60 * 24));
+
+  return { total, seconds, minutes, hours, days };
+}
+
+function init(sched) {
+  function update() {
+    const t = get(sched);
+    console.log(t);
+    if (t.total <= 0) {
+      clearInterval(interval);
+    }
+  }
+
+  update();
+  const interval = setInterval(update, 1e3);
+}
+
+const sched = Date.now() + 10 * 1e3;
+init(sched);
+
 /**
  * An async queue that preserves the stack and prevents lock-ups.
  * @private
  */
-class AsyncQueue {
-  constructor() {
-    /**
-     * The promises array.
-     * @type {Array<{promise: Promise<void>, resolve: Function}>}
-     * @private
-     */
-    this.promises = [];
-  }
+// class AsyncQueue {
+//   constructor() {
+//     /**
+//      * The promises array.
+//      * @type {Array<{promise: Promise<void>, resolve: Function}>}
+//      * @private
+//      */
+//     this.promises = [];
+//   }
 
-  /**
-   * The remaining amount of queued promises
-   * @type {number}
-   */
-  get remaining() {
-    return this.promises.length;
-  }
+//   /**
+//    * The remaining amount of queued promises
+//    * @type {number}
+//    */
+//   get remaining() {
+//     return this.promises.length;
+//   }
 
-  /**
-   * Waits for last promise and queues a new one.
-   * @returns {Promise<void>}
-   * @example
-   * const queue = new AsyncQueue();
-   * async function request(url, options) {
-   *     await queue.wait();
-   *     try {
-   *         const result = await fetch(url, options);
-   *         // Do some operations with 'result'
-   *     } finally {
-   *         // Remove first entry from the queue and resolve for the next entry
-   *         queue.shift();
-   *     }
-   * }
-   *
-   * request(someUrl1, someOptions1); // Will call fetch() immediately
-   * request(someUrl2, someOptions2); // Will call fetch() after the first finished
-   * request(someUrl3, someOptions3); // Will call fetch() after the second finished
-   */
-  wait() {
-    const next = this.promises.length ? this.promises[this.promises.length - 1].promise : Promise.resolve();
-    let resolve;
-    const promise = new Promise(res => {
-      resolve = res;
-    });
+//   *
+//    * Waits for last promise and queues a new one.
+//    * @returns {Promise<void>}
+//    * @example
+//    * const queue = new AsyncQueue();
+//    * async function request(url, options) {
+//    *     await queue.wait();
+//    *     try {
+//    *         const result = await fetch(url, options);
+//    *         // Do some operations with 'result'
+//    *     } finally {
+//    *         // Remove first entry from the queue and resolve for the next entry
+//    *         queue.shift();
+//    *     }
+//    * }
+//    *
+//    * request(someUrl1, someOptions1); // Will call fetch() immediately
+//    * request(someUrl2, someOptions2); // Will call fetch() after the first finished
+//    * request(someUrl3, someOptions3); // Will call fetch() after the second finished
+   
+//   wait() {
+//     const next = this.promises.length ? this.promises[this.promises.length - 1].promise : Promise.resolve();
+//     let resolve;
+//     const promise = new Promise(res => {
+//       resolve = res;
+//     });
 
-    this.promises.push({
-      resolve,
-      promise,
-    });
+//     this.promises.push({
+//       resolve,
+//       promise,
+//     });
 
-    return next;
-  }
+//     return next;
+//   }
 
-  /**
-   * Frees the queue's lock for the next item to process.
-   */
-  shift() {
-    const deferred = this.promises.shift();
-    if (typeof deferred !== 'undefined') deferred.resolve();
-  }
-}
+//   /**
+//    * Frees the queue's lock for the next item to process.
+//    */
+//   shift() {
+//     const deferred = this.promises.shift();
+//     if (typeof deferred !== 'undefined') deferred.resolve();
+//   }
+// }
 
 /**
  * @typedef {object} QueueData
@@ -73,56 +102,56 @@ class AsyncQueue {
  * @property {Promise} promise.promise
 */
 
-class CommandQueue {
-	constructor() {
-		/** @type {QueueData[]} */
-		this.queues = [];
-	}
+// class CommandQueue {
+// 	constructor() {
+// 		/** @type {QueueData[]} */
+// 		this.queues = [];
+// 	}
 
-	/**
-	 * @param {{ ctx: Context, cmd: Command }} args
-	*/
-	wait(args) {
-		const next = this.queues.length ? this.queues[this.queues.length - 1].promise : Promise.resolve();
-		let resolve; const promise = new Promise(res => { resolve = res });
-		this.queues.push({ promise: { ...args, promise }, resolve });
-		return next;
-	}
+// 	/**
+// 	 * @param {{ ctx: Context, cmd: Command }} args
+// 	*/
+// 	wait(args) {
+// 		const next = this.queues.length ? this.queues[this.queues.length - 1].promise : Promise.resolve();
+// 		let resolve; const promise = new Promise(res => { resolve = res });
+// 		this.queues.push({ promise: { ...args, promise }, resolve });
+// 		return next;
+// 	}
 
-	next() {
-		const next = this.queues.shift();
-		if (typeof next !== 'undefined') {
-			next.resolve();
-		}
-	}
-}
+// 	next() {
+// 		const next = this.queues.shift();
+// 		if (typeof next !== 'undefined') {
+// 			next.resolve();
+// 		}
+// 	}
+// }
 
-class Context {
-	constructor(oop) {
-		this.author = { id: 'h2621646211060nd50' };
-		this.content = oop || 'nice';
-	}
-}
+// class Context {
+// 	constructor(oop) {
+// 		this.author = { id: 'h2621646211060nd50' };
+// 		this.content = oop || 'nice';
+// 	}
+// }
 
-class Command {
-	/** @param {Context} ctx */
-	exec(ctx) {
-		return ctx.content;
-	}
-}
+// class Command {
+// 	/** @param {Context} ctx */
+// 	exec(ctx) {
+// 		return ctx.content;
+// 	}
+// }
 
-const queue = new CommandQueue();
-/** @param {string|number} args */
-async function nice(args, time = 5e3) {
-	await queue.wait(args);
-	// console.log(m);
-	try {
-		const nice = await new Promise(res => setTimeout(res, time));
-		console.log(queue.queues.map(q => q.promise));
-	} finally {
-		queue.next();
-	}
-}
+// const queue = new CommandQueue();
+// /** @param {string|number} args */
+// async function nice(args, time = 5e3) {
+// 	await queue.wait(args);
+// 	// console.log(m);
+// 	try {
+// 		const nice = await new Promise(res => setTimeout(res, time));
+// 		console.log(queue.queues.map(q => q.promise));
+// 	} finally {
+// 		queue.next();
+// 	}
+// }
 
 // function tryit(num = 100) {
 // 	try {

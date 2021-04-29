@@ -19,8 +19,8 @@ export default class Util extends Command {
       aliases: ['hunlock', 'hul'],
       channel: 'guild',
       userPermissions: ['MANAGE_MESSAGES'],
-      clientPermissions: ['MANAGE_CHANNELS'],
-      description: 'Unlocks the heist channel if you have right permissions',
+      clientPermissions: ['MANAGE_CHANNELS', 'EMBED_LINKS'],
+      description: 'Unlocks the invoking channel if you have right permissions.',
       category: 'Utility',
       args: [
         {

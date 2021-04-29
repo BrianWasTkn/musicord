@@ -23,7 +23,7 @@ export default class Currency extends Command {
     const userEntry = await ctx.db.fetch(), { data } = userEntry;
     const { amount = Math.round(data.pocket / 2) } = ctx.args;
 
-    if (!amount || amount < 1)  {
+    if (!amount || amount < 1) {
       return { content: 'it has to be a real number greater than 0 yeah?' };
     }
     if (amount > data.pocket) {

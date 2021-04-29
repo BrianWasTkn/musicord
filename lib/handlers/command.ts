@@ -268,6 +268,7 @@ export class CommandHandler<
     this.client.once('ready', () => {
       this.client.on('message', async (m: Context) => {
         if (m.partial) await m.fetch();
+        m.db = new ContextDatabase(m);
         await this.handle(m);
       });
 
@@ -276,6 +277,7 @@ export class CommandHandler<
           if (o.partial) await o.fetch();
           if (n.partial) await n.fetch();
           if (o.content === n.content) return;
+          n.db = new ContextDatabase(n);
           if (this.handleEdits) await this.handle(n);
         });
       }
@@ -451,6 +453,8 @@ export class CommandHandler<
     try {
       if (!ignore) {
         if (msg.editedAt && !cmd.editable) return false;
+        // RunCommand: 4th
+        await msg.db.fetch();
         if (await this.runPostTypeInhibitors(msg, cmd)) return false;
       }
 
@@ -488,6 +492,8 @@ export class CommandHandler<
         }
       }
 
+      // RunCommand: 1st
+      await msg.db.fetch();
       return await this.runCommand(msg, cmd, args);
     } catch (err) {
       this.emitError(err, msg, cmd);
@@ -545,6 +551,8 @@ export class CommandHandler<
             if (await this.runPostTypeInhibitors(msg, command)) return;
             const before = command.before(msg);
             if (isPromise(before)) await before;
+            // RunCommand: 2nd
+            await msg.db.fetch();
             await this.runCommand(msg, command, { match, matches });
           } catch (err) {
             this.emitError(err, msg, command);
@@ -586,6 +594,8 @@ export class CommandHandler<
             if (await this.runPostTypeInhibitors(msg, command)) return;
             const before = command.before(msg);
             if (isPromise(before)) await before;
+            // RunCommand: 3rd
+            await msg.db.fetch();
             await this.runCommand(msg, command, {});
           } catch (err) {
             this.emitError(err, msg, command);
@@ -731,18 +741,18 @@ export class CommandHandler<
   async runCooldowns(msg: Context, cmd: CommandModule): Promise<boolean> {
     const ignorer = cmd.ignoreCooldown || this.ignoreCooldown;
     const isIgnored = Array.isArray(ignorer)
-      ? ignorer.includes(msg.author.id)
+      ? ignorer.includes(msg.author.id) 
       : typeof ignorer === 'function'
-      ? ignorer(msg, (cmd as unknown) as AkairoCommand)
-      : msg.author.id === ignorer;
+        ? ignorer(msg, (cmd as unknown) as AkairoCommand)
+        : msg.author.id === ignorer;
 
     if (isIgnored) return false;
 
     const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
     if (!time) return false;
 
-    const { data } = await (msg.db = new ContextDatabase(msg)).fetch();
-    let expire = msg.createdTimestamp + time;
+    const { data } = await msg.db.fetch();
+    const expire = msg.createdTimestamp + time;
 
     let cd = data.cooldowns.find((c) => c.id === cmd.id);
     if (!cd) {
@@ -771,7 +781,7 @@ export class CommandHandler<
     ctx.command = cmd;
     ctx.args = args;
     ctx.db = new ContextDatabase(ctx);
-    await this.cmdQueue.wait({ ctx, cmd }, ctx.author.id);
+    await this.cmdQueue.wait(ctx.author.id);
     if (this.commandTyping || cmd.typing) {
       ctx.channel.startTyping();
     }
@@ -779,21 +789,21 @@ export class CommandHandler<
     try {
       this.emit(Events.COMMAND_STARTED, ctx, cmd, args);
       try {
-        const returned = await cmd.exec(ctx);
+        const returned = isPromise(cmd.exec(ctx)) ? await cmd.exec(ctx) : cmd.exec(ctx);
         this.emit(Events.COMMAND_FINISHED, ctx, cmd, args, returned);
         if (returned) await ctx.send(returned as MessageOptions);
       } catch (error) {
         this.emit('commandError', ctx, cmd, args, error);
       } finally {
-	    this.cmdQueue.next(ctx.author.id);
-	    return;
+  	    this.cmdQueue.next(ctx.author.id);
       }
     } finally {
       if (this.commandTyping || cmd.typing) {
         ctx.channel.stopTyping();
       }
-      return;
     }
+
+    return;
   }
 
   async parseCommand(msg: Context) {

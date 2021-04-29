@@ -1,12 +1,9 @@
+import { AkairoHandlerOptions, AkairoHandler, AkairoModule, Category } from 'discord-akairo';
 import { QuestOptions, QuestReward, Target } from 'lib/interface/handlers/quest';
+import { Command, Item } from '.';
 import { Collection } from 'discord.js';
+import { Context } from 'lib/extensions';
 import { Lava } from '../Lava';
-import {
-  AkairoHandlerOptions,
-  AkairoHandler,
-  AkairoModule,
-  Category,
-} from 'discord-akairo';
 
 export class Quest extends AkairoModule {
   handler: QuestHandler<Quest>;
@@ -48,7 +45,15 @@ export class Quest extends AkairoModule {
     this.name = opt.name;
   }
 
-  check(): any | Promise<any> {}
+  check(ctx: Context, args: Handlers.QuestArgs): PromiseUnion<boolean> {
+    const aq = ctx.db.data.quest;
+
+    if (args.cmd.id !== this.target[1]) return false;
+    if (aq.type !== this.target[2]) return false;
+    if (aq.count < this.target[0]) return false;
+
+    return true;
+  }
 }
 
 export class QuestHandler<QuestModule extends Quest> extends AkairoHandler {

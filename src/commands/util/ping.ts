@@ -11,10 +11,7 @@ export default class Util extends Command {
     });
   }
 
-  async exec(ctx: Context): Promise<string> {
-    const { channel, guild } = ctx;
-    const { ping } = guild.shard;
-
-    return `**Ponge:** ${ping}ms`;
+  exec(ctx: Context): string {
+    return `**Ponge:** ${ctx.guild.shard.ping}ms`;
   }
 }

@@ -12,10 +12,10 @@ export default class Util extends Command {
     super('hlock', {
       aliases: ['hlock', 'hl'],
       channel: 'guild',
-      description: 'Locks the heist channel if you have proper permissions.',
+      description: 'Locks the invoking channel if you have proper permissions.',
       category: 'Utility',
       userPermissions: ['MANAGE_MESSAGES'],
-      clientPermissions: ['MANAGE_CHANNELS'],
+      clientPermissions: ['MANAGE_CHANNELS', 'EMBED_LINKS'],
     });
   }
 

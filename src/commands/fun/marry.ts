@@ -1,6 +1,6 @@
 import { MessageOptions } from 'discord.js';
 import { Context } from 'lib/extensions/message';
-import { UserPlus } from 'lib/extensions/user';
+import { MemberPlus } from 'lib/extensions/member';
 import { Command } from 'lib/handlers/command';
 
 export default class Fun extends Command {
@@ -13,14 +13,13 @@ export default class Fun extends Command {
       args: [
         {
           id: 'someone',
-          type: 'user',
-          default: null,
+          type: 'member',
         },
       ],
     });
   }
 
-  async exec(ctx: Context<{ someone: UserPlus }>): Promise<MessageOptions> {
+  async exec(ctx: Context<{ someone: MemberPlus }>): Promise<MessageOptions> {
     const Ring = ctx.client.handlers.item.modules.get('donut');
     const { data: me } = await ctx.db.fetch();
     const { someone } = ctx.args;
@@ -53,7 +52,7 @@ export default class Fun extends Command {
       };
     }
 
-    const s = (await ctx.db.fetch(someone.id, false)).data;
+    const s = (await ctx.db.fetch(someone.user.id, false)).data;
     const inv = Ring.findInv(me.items, Ring);
     const inv2 = Ring.findInv(s.items, Ring);
 
@@ -64,16 +63,19 @@ export default class Fun extends Command {
       };
     }
     if (s.marriage.id) {
-      const marriedTo = (await ctx.client.users.fetch(s.marriage.id, true, true)) as UserPlus;
+      const marriedTo = (await ctx.guild.members.fetch({ 
+        user: me.marriage.id, force: true, cache: true, 
+      })) as MemberPlus;
+
       return {
         replyTo: ctx.id,
-        content: `Sad to say but they're already married to **${marriedTo.tag}** bro :(`,
+        content: `Sad to say but they're already married to **${marriedTo.user.tag}** bro :(`,
       };
     }
-    if (someone.bot) {
+    if (someone.user.bot) {
       return { replyTo: ctx.id, content: 'Imagine marrying bots' };
     }
-    if (ctx.author.id === someone.id) {
+    if (ctx.author.id === someone.user.id) {
       return {
         replyTo: ctx.id,
         content: "Lol imagine marrying yourself, couldn't be me honestly.",
@@ -81,32 +83,32 @@ export default class Fun extends Command {
     }
 
     await ctx.channel.send(
-      `${someone.toString()} do you accept this marriage? Type \`y\` or \`n\` in 30 seconds.`
+      `${someone.toString()} do you accept this marriage? Type \`(y / n)\` in 30 seconds.`
     );
     const ido = (
-      await ctx.channel.awaitMessages((m) => m.author.id === someone.id, {
+      await ctx.channel.awaitMessages((m) => m.author.id === someone.user.id, {
         max: 1,
         time: 3e4,
       })
     ).first();
 
-    if (!ido || !['yes', 'y'].includes(ido.content.toLowerCase())) {
+    if (!ido || !['y'].includes(ido.content.toLowerCase().slice(0, 1))) {
       return { content: 'I guess not then.' };
     }
 
     inv.amount--;
-    me.marriage.id = someone.id;
+    me.marriage.id = someone.user.id;
     me.marriage.since = Date.now();
     await me.save();
 
     inv2.amount--;
     s.marriage.id = ctx.author.id;
     s.marriage.since = Date.now();
+    // TODO: make context.db method for marry
+    // userEntry.updateQuest({ cmd: this, count: 1 }); 
     await s.save();
-
-    ctx.client.handlers.quest.emit('marry', { ctx });
     return { replyTo: ctx.id, content: 
-      `You're now married to ${someone.toString()} GGs! Type \`lava ${
+      `You're now married to ${someone.user.toString()} GGs! Type \`lava ${
         this.aliases[0]
       }\` to see your marriage profile!`,
     };

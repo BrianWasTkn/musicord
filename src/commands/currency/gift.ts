@@ -46,7 +46,7 @@ export default class Currency extends Command {
     const rInv = item.findInv(rData.items, item);
 
     if (amount < 1) {
-      return { replyTo: ctx.id, content: `you can't gift negative items smh` };
+      return { replyTo: ctx.id, content: `you can't gift negative amount of items smh` };
     }
     if (amount > uInv.amount) {
       return { replyTo: ctx.id, content: `u only have ${uInv.amount.toLocaleString()} of this item` };
@@ -55,11 +55,8 @@ export default class Currency extends Command {
       return { replyTo: ctx.id, content: `they already have more than ${cap.toLocaleString()} of this item!` };
     }
 
-    await userEntry.removeInv(item.id, amount).save();
     await rEntry.addInv(item.id, amount).save();
-    ctx.client.handlers.quest.emit('itemShare', { 
-      ctx, itemArg: item, amount 
-    });
+    await userEntry.updateQuest({ cmd: this, count: amount, item }).removeInv(item.id, amount).save();
 
     return {
       replyTo: ctx.id,

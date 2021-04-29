@@ -29,7 +29,7 @@ export default class Collectible extends Item {
 
     if (odds >= 3) {
       const nice = randomNumber(1, 100);
-      const won = randomNumber(1, 100) * 1e3;
+      const won = randomNumber(1, 10000);
       await ctx.db.addInv(this.id, nice).addPocket(won).updateItems().save();
       return { replyTo: ctx.id, embed: {
         description: `You got **${nice} ${this.emoji} ${this.name}** and **${won.toLocaleString()}** coins!`,

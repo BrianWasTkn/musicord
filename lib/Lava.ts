@@ -108,9 +108,9 @@ export class Lava extends AkairoClient {
 		return this;
 	}
 
-	addTypes(args: { type: string, fn: ArgumentTypeCaster }[]) {
-		for (const { type, fn } of args) {
-		  this.handlers.command.resolver.addType(type, fn);
+	addTypes(args: { id: string, fn: ArgumentTypeCaster }[]) {
+		for (const { id, fn } of args) {
+			this.handlers.command.resolver.addType(id, fn);
 		}
 
 		return this;

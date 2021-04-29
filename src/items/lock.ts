@@ -27,6 +27,6 @@ export default class Tool extends Item {
     const expire = Date.now() + time;
 
     await ctx.db.updateInv(this.id, { expire }).removeInv(this.id).updateItems().save();
-    return { replyTo: ctx.id, content: `Your **${this.emoji} ${this.name}** has been activated for **${parseTime(time / 1e3)}** so be careful!` };
+    return { replyTo: ctx.id, content: `${this.emoji} Your **${this.name}** has been activated for **${parseTime(time / 1e3)}** so be careful!` };
   }
 }

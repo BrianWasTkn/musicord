@@ -37,7 +37,7 @@ export default class Flex extends Item {
       return { replyTo: ctx.id, content: 'Lol imagine having way less than what you actually wanted to give' };
     }
 
-    ctx.send({ content: 'who would you surprise?' });
+    await ctx.send({ content: 'who would you surprise?' });
     const rep2 = (await ctx.awaitMessage(ctx.author.id, 15e3)).first();
     const meb = this.client.util.resolveMember(rep2.content, ctx.guild.members.cache, false);
     if (!meb) {

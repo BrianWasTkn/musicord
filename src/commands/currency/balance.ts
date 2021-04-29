@@ -24,7 +24,7 @@ export default class Currency extends Command {
   }
 
   async exec( ctx: Context<{ member: MemberPlus }> ): Promise<MessageOptions> {
-    const isContext = ctx.args.member.user.id === ctx.author.id
+    const isContext = ctx.args.member.user.id === ctx.author.id;
     const userEntry = await ctx.db.fetch(ctx.args.member.user.id, isContext),
     { pocket, vault, space, items, prem } = userEntry.data,
     { modules } = this.client.handlers.item;
@@ -46,8 +46,8 @@ export default class Currency extends Command {
     };
 
     return { embed: {
+      title: `:key: Keys — ${prem.toLocaleString()}`, footer: { text: ctx.guild.name, icon_url: ctx.guild.iconURL({ dynamic: true }) }, color: 'RANDOM',
       author: { name: `${ctx.args.member.user.username}'s balance`, icon_url: ctx.args.member.user.avatarURL({ dynamic: true }) },
-      title: `:key: Keys — ${prem.toLocaleString()}`, footer: { text: ctx.guild.name }, color: 'RANDOM',
       description: Object.entries(info).map(([k, v]) => `**${k}:** ${v}`).join('\n'),
     }};
   }

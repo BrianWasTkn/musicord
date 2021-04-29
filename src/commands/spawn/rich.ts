@@ -28,7 +28,7 @@ export default class Spawn extends Command {
     const filt = docs
       .filter((s) => s.unpaid < Infinity && s.unpaid > 0)
       .sort((a, b) => b.unpaid - a.unpaid)
-      .slice(0, count);
+      .slice(0, count > 30 ? 30 : (count < 1 ? 1 : 10));
     const rich = filt.map((f, i) => {
       const user = ctx.guild.members.cache.get(f.userID) || '**LOL WHO DIS**';
       return `:${emojis[i] || 'eggplant'}: **${f.unpaid.toLocaleString()}** - ${

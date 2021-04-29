@@ -1,4 +1,3 @@
-import { CurrencyProfile } from 'lib/interface/mongo/currency';
 import { MessageOptions } from 'discord.js';
 import { Context } from 'lib/extensions/message';
 import { UserPlus } from 'lib/extensions/user';
@@ -37,8 +36,7 @@ export default class Currency extends Command {
     const m = await ctx.send({ replyTo: ctx.id, content: 'Fetching...' });
 
     if (glob) {
-      const docs = (await Mongo.models['currency'].find({})) as (Document &
-        CurrencyProfile)[];
+      const docs = (await Mongo.models['currency'].find({})) as CurrencyProfile[];
       const lava = docs
         .filter((n) => n.pocket > 0)
         .sort((a, b) => b.pocket - a.pocket)
@@ -70,25 +68,23 @@ export default class Currency extends Command {
           },
         },
       });
+
+      return;
     }
 
-    const documents = (await Mongo.models['currency'].find({})) as (Document &
-      CurrencyProfile)[];
-    const mebDocs = (await ctx.guild.members.fetch({ force: true }))
-      .array()
-      .map(({ user }) => documents.find((doc) => doc.userID === user.id));
+    const documents = (await Mongo.models['currency'].find({})) as CurrencyProfile[];
+    const idiots = await ctx.guild.members.fetch({ force: true });
+    const mebDocs = [...idiots.values()].map(({ user }) => documents.find((doc) => doc.userID === user.id));
     const abcde = mebDocs
       .filter(Boolean)
       .filter((m) => m.pocket > 0)
       .sort((a, b) => b.pocket - a.pocket)
       .slice(0, 10);
     const filt = (
-      await Promise.all(
-        abcde.map(async (d) => ({
-          member: await ctx.guild.members.fetch({ user: d.userID }),
-          pocket: d.pocket,
-        }))
-      )
+      abcde.map(d => ({
+        member: idiots.find(i => i.user.id === d.userID),
+        pocket: d.pocket,
+      }))
     ).filter((m) => !m.member.user.bot);
 
     await m.edit({

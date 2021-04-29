@@ -13,7 +13,7 @@ export default class Currency extends Command {
 			channel: 'guild',
 			description: "Rob their banks!",
 			category: 'Currency',
-			cooldown: 6e4 * 10,
+			cooldown: 6e4 * 3,
 			args: [
 				{
 				  id: 'member',
@@ -51,23 +51,21 @@ export default class Currency extends Command {
 			return { replyTo: ctx.id, content: `There's a heist going on this server right now.` };
 		}
 
-		let lock = vicEntry.data.items.find(i => i.id === 'lock');
+		const padMod = ctx.client.handlers.item.modules.get('lock');
+		const hahayes = padMod.findInv(vicEntry.data.items);
 		let odds = ctx.client.util.randomNumber(1, 100);
-		if (lock.expire > Date.now()) {
+		if (hahayes.expire > Date.now()) {
 			if (odds >= 60) {
-				const hahayes = vicEntry.data.items.find(i => i.id === 'lock');
-				hahayes.expire = 0;
-				hahayes.active = false;
-				await vicEntry.data.save();
-				return { replyTo: ctx.id, content: `**You broke their padlock!**\nGive one more attempt for a robbery!` };
+				await vicEntry.updateInv(padMod.id, { active: false, expire: 0 }).save();
+				return { replyTo: ctx.id, content: `**${padMod.emoji} You broke their padlock!**\nGive one more attempt for a robbery!` };
 			}
 			
-			return { replyTo: ctx.id, content: `You almost broke their padlock! Give one more try.` };
+			return { replyTo: ctx.id, content: `${padMod.emoji} You almost broke their padlock! Give one more try.` };
 		}
 
 		await userEntry.addCd().save();
 		await vicEntry.beingHeisted(true).save();
-		await ctx.send({ content: `**${ctx.author.username} is starting a heist against ${user.username}! Type \`JOIN HEIST\` to join in 60 seconds!**` });
+		await ctx.send({ content: `**${ctx.author.username}** is starting a heist against **${user.username}**! Type \`JOIN HEIST\` to join in 60 seconds!` });
 		ctx.client.util.curHeist.set(ctx.guild.id, true);
 		const entries = new Collection<string, Context>([[ctx.author.id, ctx]]);
 		const options: MessageCollectorOptions = { max: Infinity, time: 6e4 };
@@ -75,16 +73,16 @@ export default class Currency extends Command {
 		const collector = ctx.channel.createMessageCollector(filter, options);
 
 		const onCollect = async (m: Context) => {
-			const entry = await ctx.db.fetch(m.author.id, false);
 			const remove = (id: string) => entries.delete(id);
 			entries.set(m.id, m);
-
 			if (entries.filter(e => e.author.id === m.author.id).size > 1) {
 				remove(m.id); return m.send({ replyTo: m.id, content: 'You already joined bruh' });
 			}
 			if (m.author.id === user.id) {
-				remove(m.id); return m.send({ replyTo: m.id, content: `No because you're being heisted HAHAHAHA` });
+				remove(m.id); return m.send({ replyTo: m.id, content: `You ain't allowed to join because you're being heisted HAHAHAHA` });
 			}
+
+			const entry = await ctx.db.fetch(m.author.id, false);
 			if (entry.data.pocket < min) {
 				remove(m.id); return m.send({ replyTo: m.id,  content: `You need ${min} coins to join LMAO` });
 			}
@@ -92,6 +90,7 @@ export default class Currency extends Command {
 			await entry.removePocket(min).save();
 			return m.react('🏦');
 		};
+
 		const onEnd = async (col: Collection<string, Context>) => {
 			const ripMsg = '{user} died and lost all their coins';
 			const niceMsg = '{user} got {got} coins EPIC';
@@ -100,10 +99,15 @@ export default class Currency extends Command {
 			// s - success; n - nothing; f - fail
 			let s: MemberPlus[] = [], n: MemberPlus[] = [], f: MemberPlus[] = [];
 			let promises: Promise<CurrencyProfile>[] = [];
-			await vicEntry.beingHeisted(false).save();
+			vicEntry.beingHeisted(false);
 			ctx.client.util.curHeist.delete(ctx.guild.id);
 			if (entries.size <= 1) return ctx.reply('Well looks like you\'re alone.');
 			if (entries.size <= 5) vicCoins /= 2;
+
+			// end message
+			await ctx.send({
+				content: `\`${entries.size}\` people are teaming up against **${user.username}** for **${vicCoins.toLocaleString()}** coins...`
+			});
 
 			// fail
 			if (odds() <= 10) {
@@ -115,11 +119,6 @@ export default class Currency extends Command {
 				await vicEntry.addPocket(min * entries.size).save();
 				return ctx.send({ content: `Everyone failed! ${entries.size} people paid ${user.username} ${min} coins each for an unsuccessful robbery.` });
 			}
-
-			// end message
-			await ctx.send({
-				content: `\`${entries.size}\` people are teaming up against **${user.username}** for **${vicCoins.toLocaleString()}** coins...`
-			});
 
 			// Odds for each individual idiots who spammed join heist
 			[...entries.values()].sort(() => Math.random() - 0.5).forEach(m => {
@@ -133,12 +132,12 @@ export default class Currency extends Command {
 			const coins = Math.round(vicCoins / s.length);
 			await Promise.all([
 				...(s.map(async m => {
-					const data = await ctx.db.fetch(m.user.id, false);
-					return data.addPocket(coins).save();
+					const enthree = await ctx.db.fetch(m.user.id, false);
+					return enthree.addPocket(coins).save();
 				})), 
 				...(f.map(async m => {
-					const data = await ctx.db.fetch(m.user.id, false);
-					return data.removePocket(data.data.pocket).save();
+					const enthree = await ctx.db.fetch(m.user.id, false);
+					return enthree.removePocket(enthree.data.pocket).save();
 				}))
 			]);
 
@@ -156,7 +155,7 @@ export default class Currency extends Command {
 
 			// final
 			if (success.length >= 1) await vicEntry.withdraw(vicCoins).removePocket(vicCoins).save();
-			let content = `**Good job everybody! We got a total of \`${vicCoins.toLocaleString()}\` coins!**`;
+			let content = `**Good job everybody!** We got a total of \`${vicCoins.toLocaleString()}\` coins!`;
 			content += `\n${'```diff'}\n${[...fail, ...nothing].sort(() => Math.random() - 0.5).join('\n')}\n${success.join('\n')}\n${'```'}`;
 			return ctx.send({ content });
 		};

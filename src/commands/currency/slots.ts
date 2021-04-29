@@ -3,10 +3,10 @@ import { Context } from 'lib/extensions/message';
 import { Document } from 'mongoose';
 
 import { CurrencyProfile } from 'lib/interface/mongo/currency';
-import { Command } from 'lib/handlers/command';
+import { Command, Item } from 'lib/handlers';
 import { Effects } from 'lib/utility/effects';
-import config from 'config/index' ;
 import { Embed } from 'lib/utility/embed';
+import config from 'config/index' ;
 
 export default class Currency extends Command {
   constructor() {
@@ -117,6 +117,7 @@ export default class Currency extends Command {
     }
 
     // Item Effects
+    const iSlotEffs: Item[] = [];
     let slots: number = 0;
     for (const it of ['crazy', 'brian']) {
       const userEf = effects.get(ctx.author.id);
@@ -125,6 +126,8 @@ export default class Currency extends Command {
         effects.set(ctx.author.id, col);
       }
       if (effects.get(ctx.author.id).has(it)) {
+        const { modules: mods } = ctx.client.handlers.item;
+        if (['crazy', 'brian'].includes(it)) iSlotEffs.push(mods.get(it));
         slots += effects.get(ctx.author.id).get(it).slotJackpotOdds;
       }
     }
@@ -132,7 +135,7 @@ export default class Currency extends Command {
     // Slot Emojis
     const emojis = Object.keys(this.slotMachine);
     const order = this.roll(emojis, slots);
-    const outcome = `**>** :${order.join(':    :')}: **<**`;
+    const outcome = `**>** :${order.join(':    :')}: **<**${iSlotEffs.length > 0 ? ` ${iSlotEffs.map(e => e.emoji).join(' ')}` : ''}`;
     let { length, winnings } = this.calcWinnings(bet, order);
 
     // Shit
@@ -144,9 +147,9 @@ export default class Currency extends Command {
     if (length === 1 || length === 2) {
       const jackpot = length === 1;
       const { pocket } = await userEntry.addCd().addPocket(winnings).updateItems()
-      .calcSpace().updateStats('won', winnings).updateStats('wins').save();
+      .calcSpace().updateStats('won', winnings).updateQuest({ cmd: this, count: 1 })
+      .updateStats('wins').save();
 
-      ctx.client.handlers.quest.emit(length === 1 ? 'gambleJackpot' : 'gambleWin', { cmd: this, ctx });
       color = jackpot ? (slots ? 'BLUE' : 'GOLD') : 'GREEN';
       state = jackpot ? (slots ? 'powered' : 'jackpot') : 'winning';
       description += `\n\nYou won **${winnings.toLocaleString()}**`;

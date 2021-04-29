@@ -16,14 +16,14 @@ export default class PowerUp extends Item {
       checks: ['time'],
       info: {
         short: 'Boosts your multiplier at a massive rate.',
-        long: 'Gives up to 50% multiplier for 10 minutes.',
+        long: 'Gives up to 100% multiplier for 10 minutes.',
       },
     });
   }
 
   async use(ctx: Context): Promise<MessageOptions> {
     const { randomNumber, sleep, parseTime } = this.client.util;
-    const { data } = ctx.db, multi = randomNumber(5, 50);
+    const { data } = ctx.db, multi = randomNumber(10, 100);
     const time = 10 * 60 * 1e3, expire = Date.now() + time;
 
     await ctx.db.updateInv(this.id, { multi, expire }).removeInv(this.id).updateItems().save();

@@ -46,8 +46,8 @@ export default class Currency extends Command {
     const { pocket, vault, misc } = userEntry.data;
     const { amount } = ctx.args;
 
-    if (!amount) {
-      return { replyTo: ctx.id, content: 'you need to deposit something' };
+    if (!amount && vault > 0) {
+      return { replyTo: ctx.id, content: 'you need to withdraw something' };
     }
     if (misc.beingHeisted) {
       return { replyTo: ctx.id, content: 'you\'re being heisted so you can\'t withdraw coins lmao' };

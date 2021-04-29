@@ -11,20 +11,20 @@ import { Context } from 'lib/extensions';
 interface QueueData {
 	resolve: Function;
 	promise: Promise<any>;
-	args: {
-		ctx: Context;
-		cmd: Command;
-	}
+}
+
+type Queues = {
+	[id: string]: QueueData[];
 }
 
 export class CommandQueue {
-	queues: { [id: string]: QueueData[] } = {};
+	queues: Queues = {};
 
-	wait(args: QueueData['args'], id: string) {
+	wait(id: string) {
 		if (!this.queues[id] || this.queues[id].length < 1) this.queues[id] = [];
 		const next = this.queues[id].length ? this.queues[id][this.queues[id].length - 1].promise : Promise.resolve();
 		let resolve; const promise = new Promise(res => { resolve = res });
-		this.queues[id].push({ promise, resolve, args });
+		this.queues[id].push({ promise, resolve });
 		return next;
 	}
 
