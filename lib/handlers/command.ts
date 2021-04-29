@@ -454,7 +454,7 @@ export class CommandHandler<
       if (!ignore) {
         if (msg.editedAt && !cmd.editable) return false;
         // RunCommand: 4th
-        await msg.db.fetch();
+        // await msg.db.fetch();
         if (await this.runPostTypeInhibitors(msg, cmd)) return false;
       }
 
@@ -493,7 +493,7 @@ export class CommandHandler<
       }
 
       // RunCommand: 1st
-      await msg.db.fetch();
+      // await msg.db.fetch();
       return await this.runCommand(msg, cmd, args);
     } catch (err) {
       this.emitError(err, msg, cmd);
@@ -552,7 +552,7 @@ export class CommandHandler<
             const before = command.before(msg);
             if (isPromise(before)) await before;
             // RunCommand: 2nd
-            await msg.db.fetch();
+            // await msg.db.fetch();
             await this.runCommand(msg, command, { match, matches });
           } catch (err) {
             this.emitError(err, msg, command);
@@ -595,7 +595,7 @@ export class CommandHandler<
             const before = command.before(msg);
             if (isPromise(before)) await before;
             // RunCommand: 3rd
-            await msg.db.fetch();
+            // await msg.db.fetch();
             await this.runCommand(msg, command, {});
           } catch (err) {
             this.emitError(err, msg, command);
@@ -751,6 +751,7 @@ export class CommandHandler<
     const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
     if (!time) return false;
 
+    msg.db = new ContextDatabase(msg);
     const { data } = await msg.db.fetch();
     const expire = msg.createdTimestamp + time;
 
