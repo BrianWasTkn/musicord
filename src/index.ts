@@ -14,7 +14,8 @@ const lava = new Lava(config.akairo, config.discord, {
 		directory: read('commands'), 
 		prefix: config.bot.prefix,
 		ignorePermissions: (m: Context) => {
-			return m.member.roles.cache.has('692941106475958363');
+			const role = '692941106475958363';
+			return m.member.roles.cache.has(role);
 		}
 	},
 	spawn: { directory: read('spawns') },
