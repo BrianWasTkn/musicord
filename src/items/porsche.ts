@@ -47,7 +47,8 @@ export default class PowerUp extends Item {
     let gain: number[] | number;
     gain = Array(choice).fill(null).map(() => util.randomNumber(1e4, 5e4)).reduce((p, c) => p + c);
     const data = await ctx.db.expandSpace(gain).removeInv(this.id, choice)
-    .updateQuest({ cmd: this, count: gain }).updateItems().save();
+    .updateQuest({ cmd: ctx.client.handlers.command.modules.get('use'), count: gain })
+    .updateItems().save();
     
     return { replyTo: ctx.id, content: `**You crafted __${
       choice.toLocaleString()
