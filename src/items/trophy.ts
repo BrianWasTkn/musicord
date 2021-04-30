@@ -10,14 +10,14 @@ export default class Collectible extends Item {
       buyable: true,
       usable: true,
       emoji: '🏆',
-      name: 'Trophy',
-      cost: 50000000,
+      name: 'Lava Trophy',
+      cost: 500000000,
       tier: 2,
       checks: ['activeState'],
       info: {
         short: 'A very powerful item to flex against normies.',
         long:
-          'Grants you 1% multiplier for every trophy you own, another trophy and powers all kinds of gambling games by adding 100% of your winnings for 12 hours to flex against normies!',
+          'Grants you 100% multiplier if you own one and another trophy to flex against normies!',
       },
     });
   }

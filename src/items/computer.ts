@@ -57,8 +57,8 @@ export default class PowerUp extends Item {
       return { replyTo: ctx.id, content: `Your meme got **${karma.toLocaleString()}** karmas and you broke your **${this.emoji} ${this.name}** lmao sucks to be you.` };
     }
 
-    const gain = randomNumber(100, 1e4);
+    const gain = karma * 3;
     await entry.addPocket(gain).updateItems().save();
-    return { replyTo: ctx.id, content: `You got **__${gain.toLocaleString()} coins__** (${karma} karmas) from posting a ${things[rep.content.toLowerCase()].toLowerCase()} meme on reddit.` };
+    return { replyTo: ctx.id, content: `You got **__${gain.toLocaleString()} coins__** (${karma.toLocaleString()} karmas) from posting a ${things[rep.content.toLowerCase()].toLowerCase()} meme on reddit.` };
   }
 }

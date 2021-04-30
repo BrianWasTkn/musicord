@@ -48,7 +48,7 @@ export class Box extends Item {
 		};
 
 		await ctx.send({ replyTo: ctx.id, content: `**${this.emoji} Opening your ${this.name}...**` })
-		const tiers = { 1: [10, 1000], 2: [10, 500], 3: [10, 50] };
+		const tiers = { 1: [10, 100], 2: [10, 50], 3: [5, 10] };
 		const items: Item[] = [random(modules, i => i.cost >= 1e5)];
 		const amounts: number[] = [randomNumber(...tiers[items[0].tier] as [number, number])];
 

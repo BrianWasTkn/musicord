@@ -11,7 +11,7 @@ export default class Powerflex extends Item {
       usable: true,
       emoji: ':brown_heart:',
       name: "Brian's Heart",
-      cost: 50000,
+      cost: 30000,
       tier: 2,
       checks: ['time'],
       info: {

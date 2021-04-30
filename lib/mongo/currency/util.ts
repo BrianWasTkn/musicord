@@ -90,9 +90,10 @@ export const utils: CurrencyUtil = {
     const trophy = trophyItem.findInv(db.items);
     multis++;
     if (trophy.amount >= 1) {
-      let m = 1 * trophy.amount; total += m;
+      let m = 100/* * trophy.amount*/; total += m;
       unlocked.push(`${trophyItem.name} — \`${m}%\``);
     }
+    multis++;
     if (db.stats.prestige >= 1) {
       const { toRoman } = ctx.client.util;
       let m = 4 * db.stats.prestige; total += m;

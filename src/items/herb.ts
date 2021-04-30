@@ -9,7 +9,7 @@ export default class Flex extends Item {
       usable: false,
       emoji: ':herb:',
       name: "Ken's Herbal Supplement",
-      cost: 1e6,
+      cost: 50e6,
       tier: 3,
       info: {
         short: 'Just a flex from the man himself.',
