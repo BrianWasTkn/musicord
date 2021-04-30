@@ -790,7 +790,7 @@ export class CommandHandler<
     try {
       this.emit(Events.COMMAND_STARTED, ctx, cmd, args);
       try {
-        const returned = isPromise(cmd.exec(ctx)) ? await cmd.exec(ctx) : cmd.exec(ctx);
+        const returned = await cmd.exec(ctx);
         this.emit(Events.COMMAND_FINISHED, ctx, cmd, args, returned);
         if (returned) await ctx.send(returned as MessageOptions);
       } catch (error) {

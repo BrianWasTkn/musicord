@@ -1,8 +1,8 @@
 import { GuildMember, MessageOptions } from 'discord.js';
 import { InventorySlot } from 'lib/interface/handlers/item';
-import { Context } from 'lib/extensions/message';
-import { UserPlus } from 'lib/extensions/user';
 import { MemberPlus } from 'lib/extensions/member';
+import { UserPlus } from 'lib/extensions/user';
+import { Context } from 'lib/extensions/message';
 import { Command } from 'lib/handlers/command';
 import { Item } from 'lib/handlers/item';
 
