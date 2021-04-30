@@ -200,7 +200,7 @@ export class ContextDatabase extends Base {
 
     const mod = quests.get(aq.id);
     if (args.cmd.id !== mod.target[1]) return this;
-    if (aq.type !== mod.target[2]) return this;
+    // if (aq.type !== mod.target[2]) return this;
     aq.count += args.count;
 
     if (aq.count >= mod.target[0]) {
