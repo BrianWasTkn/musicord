@@ -9,7 +9,7 @@ export declare interface ArgumentType {
 
 export class ArgumentType {
 	constructor(id: string, fn: TypeFunction) {
-		this.fn = null;
-		this.id = null;
+		this.fn = fn;
+		this.id = id;
 	}
 }
