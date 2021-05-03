@@ -45,6 +45,11 @@ Though the source code is visible here, please make sure you won't host a public
 - **Melmsie#0001** - _blackjack command_ - [source](https://blackjack.dankmemer.lol)
 - **Dank Memer v5** - _base currency commands_ - [source](https://dankmemer.lol/source)
 
+## Changelogs (>=2.18)
+### v2.18.5 — May 1, 2021
+- Added ability to buy and sell `max`
+- Added 4 new quests for new commands
+
 ## Author
 
 **Lava** © [Brian](https://github.com/BrianWasTaken).\

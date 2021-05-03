@@ -1,6 +1,6 @@
 {
   "name": "lava",
-  "version": "2.18.4",
+  "version": "2.19.0",
   "description": "A simple currency bot with database support.",
   "main": "build/src/index",
   "author": {

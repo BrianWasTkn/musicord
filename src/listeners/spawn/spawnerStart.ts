@@ -1,7 +1,5 @@
+import { SpawnHandler, Spawn, Listener } from 'lib/objects';
 import { TextChannel, Collection } from 'discord.js';
-import { SpawnHandler, Spawn } from 'lib/handlers/spawn';
-import { SpawnQueue } from 'lib/interface/handlers/spawn';
-import { Listener } from 'lib/handlers';
 import { Context } from 'lib/extensions';
 import { Lava } from 'lib/Lava';
 
@@ -18,7 +16,7 @@ export default class SpawnListener extends Listener<SpawnHandler<Spawn>> {
     ctx: Context;
     spawner: Spawn;
     handler: SpawnHandler<Spawn>;
-  }): Promise<Collection<string, SpawnQueue>> {
+  }): Promise<Collection<string, Handlers.Spawn.Queue>> {
     const { str, ctx, spawner, handler } = args;
     const { randomInArray } = this.client.util;
     const { spawn } = spawner;
@@ -43,7 +41,7 @@ export default class SpawnListener extends Listener<SpawnHandler<Spawn>> {
     return handler.queue.set(ctx.channel.id, {
       channel: ctx.channel.id,
       spawn: spawner,
-      msg: m.id,
+      msg: (m as Context).id,
     });
   }
 }

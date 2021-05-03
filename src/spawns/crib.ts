@@ -1,8 +1,7 @@
-import { SpawnVisual } from 'lib/interface/handlers/spawn';
 import { GuildMember } from 'discord.js';
-import { Spawn } from 'lib/handlers/spawn';
+import { Spawn } from 'lib/objects';
 
-const visuals: SpawnVisual = {
+const visuals: Handlers.Spawn.Visual = {
   emoji: '<:memerRed:729863510716317776>',
   type: 'SUPER',
   title: 'Memers Crib',

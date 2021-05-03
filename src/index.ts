@@ -1,7 +1,7 @@
 import 'module-alias/register';
 import 'dotenv/config';
 
-import { Context } from 'lib/extensions/message';
+import { Context } from 'lib/extensions';
 import { Lava } from 'lib/Lava';
 import { join } from 'path';
 import config from 'config/index' ;

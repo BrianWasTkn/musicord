@@ -1,4 +1,4 @@
-import { Quest } from 'lib/handlers/quest';
+import { Quest } from 'lib/objects';
 
 export default class Difficult extends Quest {
 	constructor() {

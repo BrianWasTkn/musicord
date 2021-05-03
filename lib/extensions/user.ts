@@ -5,15 +5,11 @@ import { Effects } from 'lib/utility/effects';
 import { Lava } from 'lib/Lava';
 
 export class UserPlus extends User {
-  client: Lava;
+	public client: Lava;
 
-  constructor(client: Lava, data: object) {
-    super(client, data);
-  }
-
-  get isBotOwner() {
-    return this.client.isOwner(this.id);
-  }
+	get isBotOwner() {
+		return this.client.isOwner(this.id);
+	}
 }
 
 export default () => Structures.extend('User', () => UserPlus);

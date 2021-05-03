@@ -1,7 +1,7 @@
-import { Context } from 'lib/extensions/message';
-import { Listener } from 'lib/handlers';
-import config from 'config/index' ;
+import { Context } from 'lib/extensions';
+import { Listener } from 'lib/objects';
 import { Lava } from 'lib/Lava';
+import config from 'config/index' ;
 
 export default class ClientListener extends Listener<Lava> {
   constructor() {

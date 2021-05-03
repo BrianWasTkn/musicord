@@ -1,6 +1,6 @@
-import { CommandHandler, Command, Listener } from 'lib/handlers';
+import { CommandHandler, Command, Listener } from 'lib/objects';
 import { TextChannel } from 'discord.js';
-import { Context } from 'lib/extensions/message';
+import { Context } from 'lib/extensions';
 
 export default class CommandListener extends Listener<CommandHandler<Command>> {
   constructor() {

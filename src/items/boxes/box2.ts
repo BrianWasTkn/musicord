@@ -1,4 +1,4 @@
-import { Box } from 'lib/handlers/Item/Box';
+import { Box } from 'lib/objects';
 
 export default class Fire extends Box {
 	constructor() {

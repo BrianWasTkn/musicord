@@ -1,6 +1,6 @@
 import { TextChannel } from 'discord.js';
 import { MemberPlus } from 'lib/extensions';
-import { Listener } from 'lib/handlers';
+import { Listener } from 'lib/objects';
 import { Lava } from 'lib/Lava';
 
 const cults = {

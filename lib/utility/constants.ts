@@ -7,7 +7,9 @@ import { currencyConfig } from 'config/currency';
 
 const { maxInventory, maxPocket, maxBet, minBet } = currencyConfig;
 
-export const COLORS = {
+export const COLORS: {
+  [color: string]: number;
+} = {
   RED: 0xf44336,
   ORANGE: 0xff9800,
   YELLOW: 0xffeb3b,

@@ -5,8 +5,8 @@
  * @author BrianWasTaken
 */
 
-import { Command } from 'lib/handlers/command';
 import { Context } from 'lib/extensions';
+import { Command } from 'lib/objects';
 
 interface QueueData {
 	resolve: Function;

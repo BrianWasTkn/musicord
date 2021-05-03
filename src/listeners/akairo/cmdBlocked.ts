@@ -1,6 +1,5 @@
-import { ListenerHandler, Listener } from 'lib/handlers';
-import { CommandHandler, Command } from 'lib/handlers';
-import { Context } from 'lib/extensions/message';
+import { ListenerHandler, CommandHandler, Command, Listener } from 'lib/objects';
+import { Context } from 'lib/extensions';
 
 export default class CommandListener extends Listener<CommandHandler<Command>> {
   constructor() {

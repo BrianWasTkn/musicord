@@ -1,6 +1,6 @@
-import { Listener, CommandHandler, Command } from 'lib/handlers';
-import { Context } from 'lib/extensions/message';
+import { Listener, CommandHandler, Command } from 'lib/objects';
 import { MessageEmbed } from 'discord.js';
+import { Context } from 'lib/extensions';
 
 export default class CommandListener extends Listener<CommandHandler<Command>> {
   constructor() {

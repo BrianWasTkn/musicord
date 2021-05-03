@@ -1,8 +1,7 @@
-import { SpawnVisual } from 'lib/interface/handlers/spawn';
 import { GuildMember } from 'discord.js';
-import { Spawn } from 'lib/handlers/spawn';
+import { Spawn } from 'lib/objects';
 
-const visuals: SpawnVisual = {
+const visuals: Handlers.Spawn.Visual = {
   emoji: '<:memerGold:753138901169995797>',
   type: 'GODLY',
   title: 'Gold Doubloon',

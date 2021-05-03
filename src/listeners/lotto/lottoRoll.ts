@@ -1,4 +1,4 @@
-import { LotteryHandler, Listener } from 'lib/handlers';
+import { LotteryHandler, Listener } from 'lib/objects';
 import { TextChannel, GuildMember } from 'discord.js';
 
 export default class LottoListener extends Listener<LotteryHandler> {

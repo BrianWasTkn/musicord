@@ -4,13 +4,9 @@ import chalk from 'chalk';
 const log = (...args: any[]) => console.log(...args);
 
 export class Console {
-	stamp: () => string;
-	c: typeof chalk;
+	c: typeof chalk = chalk;
 
-	constructor() {
-		this.stamp = () => moment().format('HH:mm:ss');
-		this.c = chalk;
-	}
+	stamp = () => moment().format('HH:mm:ss');
 
 	log(tag: string, msg: string) {
 		log(this.c.cyanBright(`[${this.stamp()} => ${tag}] ${msg}`));
@@ -25,3 +21,5 @@ export class Console {
 		log(this.c.whiteBright(`[${this.stamp()} => ${tag}] ${msg}`));
 	}
 }
+
+export default Console;

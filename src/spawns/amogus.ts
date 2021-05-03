@@ -1,8 +1,7 @@
-import { SpawnVisual } from 'lib/interface/handlers/spawn';
 import { GuildMember } from 'discord.js';
-import { Spawn } from 'lib/handlers/spawn';
+import { Spawn } from 'lib/objects';
 
-const visuals: SpawnVisual = {
+const visuals: Handlers.Spawn.Visual = {
   emoji: '<:memerBlue:729863510330310727>',
   type: 'GODLY',
   title: 'Amogus',

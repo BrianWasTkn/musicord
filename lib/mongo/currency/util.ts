@@ -5,7 +5,7 @@
 
 import type { InventorySlot } from 'lib/interface/handlers/item';
 import type { GuildChannel } from 'discord.js';
-import type { Context } from 'lib/extensions/message';
+import type { Context } from 'lib/extensions';
 import type { Item } from 'lib/handlers/item';
 import type { Lava } from 'lib/Lava';
 import config from 'config/index' ;

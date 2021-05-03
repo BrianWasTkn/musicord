@@ -1,31 +1,37 @@
-/** @param {number} sched */
-function get(sched) {
-  const total = Date.parse(new Date(sched)) - Date.parse(new Date());
-  const floor = n => Math.floor(n);
+// const args = process.argv.filter(arg => arg.startsWith('--'));
+// console.log(args.includes('--epic') ? 'Very Epic' : 'Not Epic');
 
-  let seconds = floor((total / 1e3) % 60);
-  let minutes = floor((total / 1e3 / 60) % 60);
-  let hours = floor((total / (1e3 * 60 * 60)) % 24);
-  let days = floor(total / (1e3 * 60 * 60 * 24));
+// class Nick {}
+// console.log(Nick()); // ok nvm
 
-  return { total, seconds, minutes, hours, days };
-}
+// /** @param {number} sched */
+// function get(sched) {
+//   const total = Date.parse(new Date(sched)) - Date.parse(new Date());
+//   const floor = n => Math.floor(n);
 
-function init(sched) {
-  function update() {
-    const t = get(sched);
-    console.log(t);
-    if (t.total <= 0) {
-      clearInterval(interval);
-    }
-  }
+//   let seconds = floor((total / 1e3) % 60);
+//   let minutes = floor((total / 1e3 / 60) % 60);
+//   let hours = floor((total / (1e3 * 60 * 60)) % 24);
+//   let days = floor(total / (1e3 * 60 * 60 * 24));
 
-  update();
-  const interval = setInterval(update, 1e3);
-}
+//   return { total, seconds, minutes, hours, days };
+// }
 
-const sched = Date.now() + 10 * 1e3;
-init(sched);
+// function init(sched) {
+//   function update() {
+//     const t = get(sched);
+//     console.log(t);
+//     if (t.total <= 0) {
+//       clearInterval(interval);
+//     }
+//   }
+
+//   update();
+//   const interval = setInterval(update, 1e3);
+// }
+
+// const sched = Date.now() + 10 * 1e3;
+// init(sched);
 
 /**
  * An async queue that preserves the stack and prevents lock-ups.

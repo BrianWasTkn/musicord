@@ -1,9 +1,12 @@
-import GuildMember from './member';
-import Message from './message';
-import User from './user';
+import GuildMember from './Member';
+import Message from './Context';
+import Guild from './Guild';
+import User from './User';
 
-[GuildMember, Message, User].forEach((Base) => Base());
+[GuildMember, Message, Guild, User]
+.forEach((Base: Function) => Base());
 
-export { MemberPlus } from './member';
-export { UserPlus } from './user';
-export { Context } from './message';
+export * from './Context';
+export * from './Member';
+export * from './Guild';
+export * from './User';

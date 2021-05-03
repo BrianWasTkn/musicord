@@ -1,6 +1,6 @@
-import { Context } from 'lib/extensions/message';
+import { Context } from 'lib/extensions';
 import { MessageOptions } from 'discord.js';
-import { Item } from 'lib/handlers/item';
+import { Item } from 'lib/objects';
 import config from 'config/index' ;
 
 export default class PowerUp extends Item {

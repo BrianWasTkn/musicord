@@ -5,13 +5,13 @@ Just a list of planned features basically for event and currency commands.
 ## Currency
 
 - [x] **Sale Item**
-- [x] **Give, Gift Commands**
+- [x] **Trade Commands**
 - [ ] **Prestige**
 - [x] **Quests**
 - [ ] **Pets**
-- [ ] **Rob**
+- [x] **Rob**
 
-## Memers Crib
+## (Semi) Plugins
 
 - [x] **Event Commands**
 - [x] **Donation System**
@@ -21,3 +21,9 @@ Just a list of planned features basically for event and currency commands.
 
 - [x] **Item Checks**
 - [x] **Fix Bot Latency**
+- [ ] **Custom Handlers**
+- [ ] **Custom Modules**
+- [ ] **Multiple DB Providers**
+- [ ] **Better Logger**
+- [ ] **Open up a Circus**
+- [ ] **Blacklist Everyone**

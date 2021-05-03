@@ -1,5 +1,5 @@
-import { Context } from 'lib/extensions/message';
-import { Item } from 'lib/handlers/item';
+import { Context } from 'lib/extensions';
+import { Item } from 'lib/objects';
 import { MessageOptions } from 'discord.js';
 
 export default class Powerflex extends Item {

@@ -1,35 +1,32 @@
-import { Context, ContextDatabase } from 'lib/extensions/message';
 import { currencyConfig } from 'config/currency';
-import { ArgumentType } from './ArgumentType';
+import { ArgumentType } from 'lib/objects';
+import { Context } from 'lib/extensions';
 
-export default new ArgumentType('gambleAmount', 
-	async (ctx: Context, args: string): Promise<string | number> => {
-		const { pocket } = (await (ctx.db = new ContextDatabase(ctx)).fetch()).data;
+export default new ArgumentType({
+	id: 'gambleAmount', async fn(ctx: Context, args: string): Promise<string | number> {
 		const { minBet, maxBet, maxPocket, maxSafePocket } = currencyConfig;
-
-		// No Gamble Amount
+		const { isNumber } = ctx.client.util;
+		const { pocket } = (await ctx.db.fetch()).data;
+		
 		if (!args) return null;
-		let bet: number;
-		// Non-integer
-		if (!Number.isInteger(args)) {
-			// Other non numbers
+		if (!isNumber(args)) {
 			args = args.toLowerCase();
 			if (args === 'all')
-				bet = pocket;
+				return pocket;
 			else if (args === 'max')
-				bet = Math.min(maxBet, pocket);
+				return Math.min(maxBet, pocket);
 			else if (args === 'half')
-				bet = Math.round(pocket / 2);
+				return Math.round(pocket / 2);
 			else if (args === 'min')
-				bet = minBet;
+				return minBet;
 			else if (args.match(/k/g)) {
 				const kay = args.replace(/k$/g, '');
-				bet = Number(kay) ? Number(kay) * 1e3 : null;
+				return isNumber(kay) ? Number(kay) * 1e3 : null;
 			}	else {
-				bet = null;
+				return null;
 			}
 		}
 
-		return Number(args) || Number(bet) || args || null;
+		return Number(args) || null;
 	}
-);
+});

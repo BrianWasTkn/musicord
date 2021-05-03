@@ -1,7 +1,7 @@
-import { Context } from 'lib/extensions/message';
+import { Context } from 'lib/extensions';
 import { MessageOptions } from 'discord.js';
 import { UserPlus } from 'lib/extensions/user';
-import { Item } from 'lib/handlers/item';
+import { Item } from 'lib/objects';
 
 export default class Flex extends Item {
   constructor() {

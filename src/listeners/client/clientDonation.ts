@@ -1,6 +1,6 @@
 import { CollectorFilter, Collection, TextChannel } from 'discord.js';
-import { Listener } from 'lib/handlers';
-import { Context } from 'lib/extensions/message';
+import { Listener } from 'lib/objects';
+import { Context } from 'lib/extensions';
 import { Lava } from 'lib/Lava';
 
 const qObj = {

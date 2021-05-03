@@ -20,7 +20,7 @@ import {
   QuestHandler, Quest,
   ItemHandler, Item,
   LotteryHandler,
-} from './handlers';
+} from './objects';
 
 // def imports
 import CurrencyFunc from './mongo/currency/functions';
@@ -28,11 +28,14 @@ import SpawnerFunc from './mongo/spawns/functions';
 import mongoose from 'mongoose';
 
 // ext structures
+import { Context } from './extensions';
 import './extensions';
 
 interface ClientEventsPlus extends ClientEvents {
+	messageUpdate: [o: Context, n: Context];
 	moduleLoad: [module: AkairoModule];
 	dbConnect: [db: typeof mongoose];
+	message: [message: Context];
 }
 
 interface DB {

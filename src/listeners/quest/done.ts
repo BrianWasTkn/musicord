@@ -1,7 +1,5 @@
-import { QuestHandler, Quest } from 'lib/handlers/quest';
-import { Listener, Command } from 'lib/handlers';
-import { Context } from 'lib/extensions/message';
-import { Item } from 'lib/handlers/item';
+import { QuestHandler, Listener, Command, Quest, Item } from 'lib/objects';
+import { Context } from 'lib/extensions';
 
 export default class QuestListener extends Listener<QuestHandler<Quest>> {
   constructor() {

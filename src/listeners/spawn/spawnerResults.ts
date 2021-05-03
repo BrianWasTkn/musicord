@@ -1,8 +1,7 @@
+import { SpawnHandler, Spawn, Listener } from 'lib/objects';
 import { Collection, TextChannel } from 'discord.js';
-import { SpawnHandler, Spawn } from 'lib/handlers/spawn';
-import { Context } from 'lib/extensions/message';
-import { Listener } from 'lib/handlers';
-import { Embed } from 'lib/utility/embed';
+import { Context } from 'lib/extensions';
+import { Embed } from 'lib/utility';
 
 export default class SpawnListener extends Listener<SpawnHandler<Spawn>> {
   constructor() {
