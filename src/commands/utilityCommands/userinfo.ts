@@ -31,6 +31,6 @@ export default class Util extends Command {
 				'Last Command': data.lastCmd,
 				'Command Timestamp': new Date(data.lastRan).toDateString(),
 			}).map(([name, value]) => ({ name, value, inline: true }))
-		}
-	};
+		}};
+	}
 }

@@ -33,7 +33,7 @@ export class Util extends ClientUtil {
         this.effects = new Collection();
         this.cmdQueue = new Collection();
         this.curHeist = new Collection();
-        this.console = 
+        this.console = new Console();
 
         for (const color of Object.keys(COLORS)) {
             require('discord.js').Constants.Colors[color.toUpperCase()] = COLORS[color];

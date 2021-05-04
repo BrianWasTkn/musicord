@@ -14,7 +14,7 @@ export default class ClientListener extends Listener<Lava> {
 
 	public async exec(message: Context) {
 		const { handlers, ownerID, db, util } = this.client;
-		const { randomInArray, randomNumber sleep } = util;
+		const { randomInArray, randomNumber, sleep } = util;
 
 		if (!config.spawn.enabled) return;
 		if (message.author.bot || message.channel.type === 'dm') return;
