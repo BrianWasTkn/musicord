@@ -15,14 +15,14 @@ export default class Currency extends Command {
 		});
 	}
 
-	async exec(ctx: Context): Promise<string | MessageOptions> {
+	async exec(ctx: Context): Promise<MessageOptions> {
 		const { db, util, handlers } = this.client,
 			{ modules: items } = handlers.item,
 			userEntry = await ctx.db.fetch(),
 			data = userEntry.data;
 
 		if (data.pocket >= config.currency.maxPocket) {
-			return "You're already rich stop begging already.";
+			return { content: "You're already rich stop begging already." };
 		}
 
 		const odds = Math.random();

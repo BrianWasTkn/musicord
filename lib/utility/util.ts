@@ -104,23 +104,6 @@ export class Util extends ClientUtil {
         return `${'```'}${lang}\n${content}\n${'```'}`;
     };
 
-    tableSlots = () => {
-        const { slots } = config.currency;
-        const [keys, vals] = [Object.keys(slots), Object.values(slots)];
-
-        const single = keys[keys.length - 1];
-        const sMulti = slots[single][0];
-        const double = keys.filter((k) => keys[k][2]);
-        const dMulti = double.map((d) => slots[d][1]);
-        const jackpot = keys.filter((k) => slots[k][1]);
-
-        return {
-            single: single,
-            double: { double, multi: dMulti },
-            jackpot: { jackpot },
-        };
-    };
-
     toRoman = (int: number): string => {
         let lets = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'],
             nums = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1],

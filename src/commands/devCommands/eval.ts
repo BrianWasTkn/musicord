@@ -27,7 +27,7 @@ export default class Dev extends Command {
 
 	public async exec(
 		ctx: Context<{ code: string }>
-	): Promise<string | MessageOptions> {
+	): Promise<MessageOptions> {
 		const { codeBlock } = ctx.client.util;
 		const { code } = ctx.args;
 		const isAsync: boolean = code.includes('await') || code.includes('return');

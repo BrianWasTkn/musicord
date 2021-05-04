@@ -1,7 +1,7 @@
+import { ITEM_MESSAGES as MESSAGES } from 'lib/utility/constants';
 import { MessageOptions } from 'discord.js';
 import { Command, Item } from 'lib/objects';
 import { Context } from 'lib/extensions';
-import Constants from 'lib/utility';
 
 export default class Currency extends Command {
 	constructor() {
@@ -26,22 +26,23 @@ export default class Currency extends Command {
 		});
 	}
 
-	async exec(
+	public async exec(
 		ctx: Context<{ amount: number; item: Item }>
-	): Promise<string | MessageOptions> {
-		const { ITEM_MESSAGES: MESSAGES } = Constants;
+	): Promise<MessageOptions> {
 		const { amount = 1, item } = ctx.args;
 		const { item: Items } = this.client.handlers;
 		const userEntry = await ctx.db.fetch();
 		const data = userEntry.data;
 
-		if (!item) return MESSAGES.NEED_TO_SELL;
+		function check() {
+			if (!item) return MESSAGES.NEED_TO_SELL;
+			let inv = data.items.find((i) => i.id === item.id);
+			if (amount < 1) return MESSAGES.SELLING_NONE;
+			if (!item.sellable) return MESSAGES.NOT_SELLABLE;
+			if (amount > inv.amount) return MESSAGES.CANT_FOOL_ME;
+		}
 
-		let inv = data.items.find((i) => i.id === item.id);
-		if (amount < 1) return MESSAGES.SELLING_NONE;
-		if (!item.sellable) return MESSAGES.NOT_SELLABLE;
-		if (amount > inv.amount) return MESSAGES.CANT_FOOL_ME;
-
+		if (check()) return { content: check() };
 		const { discount, id } = Items.sale;
 		const dPrice = Math.round(item.cost - item.cost * (Items.sale.discount / 1e2));
 		const sold = item.premium ? amount * (item.cost / 4) : item.id === id
@@ -56,7 +57,7 @@ export default class Currency extends Command {
 			replyTo: ctx.id, embed: {
 				author: { name: `Item "${item.name}" sold`, iconURL: ctx.author.avatarURL({ dynamic: true }) },
 				footer: { text: 'Thanks for stopping by!', iconURL: ctx.client.user.avatarURL() },
-				color: 'GREEN', description: Constants.ITEM_MESSAGES.SELL_MSG(item.premium)
+				color: 'GREEN', description: MESSAGES.SELL_MSG(item.premium)
 					.replace(/{got}/gi, Math.round(sold).toLocaleString())
 					.replace(/{amount}/gi, Math.trunc(amount).toLocaleString())
 					.replace(/{emoji}/gi, item.emoji)

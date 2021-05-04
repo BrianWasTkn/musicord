@@ -85,5 +85,5 @@ declare global {
 	}
 
 	type CurrencyProfile = Document & Currency.Data;
-	type SpawnDocument = Document & Spawns.Document;
+	type SpawnDocument = Document & Spawns.Data;
 }

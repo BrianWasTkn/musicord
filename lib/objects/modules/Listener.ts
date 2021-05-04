@@ -1,11 +1,12 @@
 import { ModulePlus, ModulePlusOptions, ListenerHandler, HandlerPlus } from '..';
+import { AkairoClient, AkairoHandler } from 'discord-akairo';
 import { EventEmitter } from 'events';
-import { AkairoError } from 'lib/utility/error';
+import { AkairoError } from 'lib/utility';
 import { Lava } from 'lib/Lava';
 
-export abstract class Listener<E extends EventEmitter> extends ModulePlus {
+export abstract class Listener<Emitter extends EventEmitter = Lava> extends ModulePlus {
 	public handler: ListenerHandler<this>;
-	public emitter: string | EventEmitter | E;
+	public emitter: string | EventEmitter;
 	public event: string;
 	public type: 'on' | 'once';
 	public constructor(id: string, {

@@ -211,7 +211,7 @@ export class ContextDatabase extends Base {
 		return this;
 	}
 
-	updateQuest(args: Handlers.QuestArgs) {
+	updateQuest(args: Handlers.Quest.CheckArgs) {
 		if (!this.data) this._reportError();
 		const { modules: quests } = this.client.handlers.quest;
 		const { quest: aq } = this.data;

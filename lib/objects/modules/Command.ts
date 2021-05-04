@@ -117,8 +117,8 @@ export abstract class Command extends ModulePlus {
         	? ignorePermissions.bind(this) : ignorePermissions;
 	}
 
-	public exec(ctx: Context): PromiseUnion<MessageOptions>;
-	public exec(ctx: Context): PromiseUnion<MessageOptions> {
+	public exec(ctx: Context): PromiseUnion<void | MessageOptions>;
+	public exec(ctx: Context): PromiseUnion<void | MessageOptions> {
 		throw new AkairoError('NOT_IMPLEMENTED', this.constructor.name, 'exec');
 	}
 

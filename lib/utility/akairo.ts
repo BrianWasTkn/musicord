@@ -1,13 +1,13 @@
 export const intoCallable = (f: FunctionUnion<any>) => (typeof f === 'function' ? f : () => f);
 export const intoArray = (x: ArrayUnion<any>) => (Array.isArray(x) ? x : [x]);
 
-export function flatMap(xs: any, f: Function) {
+export function flatMap(xs: any, f: ((...args: any[]) => any)) {
     const res = [];
     for (const x of xs) {
         res.push(...f(x));
     }
 
-    return f;
+    return res;
 }
 
 export function isEventEmitter(value: import('events').EventEmitter) {

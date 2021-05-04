@@ -26,7 +26,7 @@ export default class PowerUp extends Item {
 		const entry = ctx.db;
 		const data = entry.data;
 
-		const things = {
+		const things: { [thing: string]: string } = {
 			f: 'Funny',
 			u: 'Unoriginal',
 			c: 'Coyrighted',

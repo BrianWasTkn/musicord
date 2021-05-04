@@ -1,4 +1,4 @@
-import { MessageOptions } from 'discord.js';
+import { MessageOptions, Message } from 'discord.js';
 import { Command, Item } from 'lib/objects';
 import { Context } from 'lib/extensions';
 import { Embed } from 'lib/utility';
@@ -14,11 +14,11 @@ export default class Currency extends Command {
 			args: [
 				{
 					id: 'query',
-					type: (msg: Context, phrase: string) => {
+					type: ((msg: Context, phrase: string) => {
 						const { resolver } = this.handler;
 						if (!phrase) return 1; // shop page
 						return Number(phrase) || resolver.type('shopItem')(msg, phrase);
-					},
+					}) as (m: Message, a: string) => any,
 				},
 			],
 		});

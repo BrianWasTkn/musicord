@@ -35,6 +35,6 @@ export default class ClientListener extends Listener<Lava> {
 
 		await bot.setPresence({ activities });
 		const msg = `${bot.tag} has flown within Discord.`;
-		return util.console({ msg, type: 'def', klass: 'Lava' });
+		return util.console.log('Lava', msg);
 	}
 }

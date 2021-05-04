@@ -24,7 +24,7 @@ export default class Currency extends Command {
 
 	public async exec(
 		ctx: Context<{ member: MemberPlus }>
-	): Promise<string | MessageOptions> {
+	): Promise<MessageOptions> {
 		const {
 			db: { currency: { utils } },
 			util: { parseTime, toRoman },

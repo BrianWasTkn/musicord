@@ -24,11 +24,7 @@ export default class LottoListener extends Listener<LotteryHandler> {
 		];
 
 		for (const msg of msgs) {
-			this.client.util.console({
-				msg,
-				klass: 'Lottery',
-				type: 'def',
-			});
+			this.client.util.console.log('Lottery', msg);
 		}
 	}
 }

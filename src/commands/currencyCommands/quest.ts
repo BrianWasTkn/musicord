@@ -1,5 +1,5 @@
+import { MessageOptions, Message } from 'discord.js';
 import { Command, Quest, Item } from 'lib/objects';
-import { MessageOptions } from 'discord.js';
 import { Context } from 'lib/extensions';
 import { Embed } from 'lib/utility';
 
@@ -15,14 +15,14 @@ export default class Currency extends Command {
 			args: [
 				{
 					id: 'query',
-					type: (msg: Context, phrase: string) => {
+					type: ((msg: Context, phrase: string) => {
 						if (!phrase) return 1; // quest page
 						const res = this.handler.resolver;
 						return (
 							res.type('number')(msg, phrase) ||
 							res.type('questQuery')(msg, phrase)
 						);
-					},
+					}) as (m: Message, a: string) => any,
 				},
 			],
 		});
@@ -66,7 +66,7 @@ export default class Currency extends Command {
 
 			return {
 				embed: {
-					description: `Simply do \`${this.handler.prefix[0]} ${this.id} <quest>\` to enter a quest, \`${this.id} check\` to see your active quest and \`${this.id} stop\` to stop an active quest.`,
+					description: `Simply do \`${(this.handler.prefix as string[])[0]} ${this.id} <quest>\` to enter a quest, \`${this.id} check\` to see your active quest and \`${this.id} stop\` to stop an active quest.`,
 					footer: { text: `Lava Quests — Page ${query} of ${quest.length}` },
 					title: 'Lava Quests', color: 'RANDOM', fields: [{
 						name: 'Quest List', value: quest[(query as number) - 1].join('\n\n'),

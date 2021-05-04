@@ -1,6 +1,7 @@
 import { Context, UserPlus } from 'lib/extensions';
 import { MessageOptions } from 'discord.js';
 import { Command } from 'lib/objects';
+import Mongo from 'mongoose';
 
 export default class Currency extends Command {
 	constructor() {
@@ -32,7 +33,9 @@ export default class Currency extends Command {
 		const { isGlobal: glob } = ctx.args;
 		const emojis = ['first_place', 'second_place', 'third_place'];
 		const mjs = ['eggplant', 'skull', 'clown', 'kiss', 'alien'];
-		const m = await ctx.send({ replyTo: ctx.id, content: 'Fetching...' });
+		const m: Context = (await ctx.send({ 
+			replyTo: ctx.id, content: 'Fetching...' 
+		})) as Context;
 
 		if (glob) {
 			const docs = (await Mongo.models['currency'].find({})) as CurrencyProfile[];

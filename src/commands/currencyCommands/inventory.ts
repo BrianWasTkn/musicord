@@ -1,5 +1,5 @@
 import { Context, MemberPlus, UserPlus } from 'lib/extensions';
-import { MessageOptions } from 'discord.js';
+import { MessageOptions, Message } from 'discord.js';
 import { Command } from 'lib/objects';
 
 export default class Currency extends Command {
@@ -15,14 +15,14 @@ export default class Currency extends Command {
 				{
 					id: 'member',
 					default: 1,
-					type: (msg: Context, phrase: string) => {
+					type: ((msg: Context, phrase: string) => {
 						if (!phrase) return 1; // inventory page
 						const { resolver } = this.handler;
 						return (
 							resolver.type('number')(msg, phrase) ||
 							resolver.type('memberMention')(msg, phrase)
 						);
-					},
+					}) as (m: Message, a: string) => any,
 				},
 				{
 					id: 'page',

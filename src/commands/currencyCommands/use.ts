@@ -1,6 +1,6 @@
 import { MessageOptions } from 'discord.js';
+import { Command, Item } from 'lib/objects';
 import { Context } from 'lib/extensions';
-import { Command } from 'lib/objects';
 
 export default class Currency extends Command {
 	constructor() {
@@ -37,7 +37,7 @@ export default class Currency extends Command {
 					return {
 						state,
 						m: `**${item.emoji} This item is active right now!**\nWait **${parseTime(
-							(inv.expire - Date.now()) / 1e3
+							(inv.expire - Date.now()) / 1e3, true
 						)}** and use it again.`,
 					};
 				case !item.usable:

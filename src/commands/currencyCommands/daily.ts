@@ -14,7 +14,7 @@ export default class Currency extends Command {
 		});
 	}
 
-	public async exec(ctx: Context): Promise<string | MessageOptions> {
+	public async exec(ctx: Context): Promise<MessageOptions> {
 		const userEntry = await ctx.db.fetch();
 		const data = userEntry.data;
 		let { streak, time } = data.daily;

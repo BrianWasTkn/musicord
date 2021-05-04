@@ -7,7 +7,7 @@ import config from 'config/index';
 
 export class ItemHandler<Mod extends Item = Item> extends HandlerPlus<Mod> {
 	private intIsRunning: boolean;
-	private saleInterval: number;
+	public saleInterval: number;
 	private ticked: boolean;
 	public sale: Handlers.Item.SaleData;
 

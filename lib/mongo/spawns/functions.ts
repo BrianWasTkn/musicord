@@ -5,12 +5,11 @@
 
 import type { Snowflake, User } from 'discord.js';
 import type { Model, Document } from 'mongoose';
-import type { SpawnDocument } from 'lib/interface/mongo/spawns';
 import type { Lava } from 'lib/Lava';
 
 import Spawn from './model';
 
-export default class SpawnEndpoint<Profile extends Document> {
+export default class SpawnEndpoint<Profile extends SpawnDocument> {
 	model: Model<Document<SpawnDocument>>;
 	bot: Lava;
 
@@ -19,30 +18,10 @@ export default class SpawnEndpoint<Profile extends Document> {
 		this.bot = client;
 	}
 
-	fetch = async (userID: Snowflake): Promise<Document & Profile> => {
+	fetch = async (userID: Snowflake): Promise<Profile> => {
 		const data = ((await this.model.findOne({ userID })) ||
-		new this.model({ userID })) as Document & Profile;
+		new this.model({ userID })) as Profile;
 
-		return data.save() as Promise<Document & Profile>;
-	};
-
-	add = async (
-		userID: Snowflake,
-		key: keyof Profile,
-		amount: number
-	): Promise<Document & Profile> => {
-		const data = await this.fetch(userID);
-		data[key as string] += amount;
-		return data.save();
-	};
-
-	remove = async (
-		userID: Snowflake,
-		key: keyof Profile,
-		amount: number
-	): Promise<Document & Profile> => {
-		const data = await this.fetch(userID);
-		data[key as string] -= amount;
-		return data.save();
+		return data.save() as Promise<Profile>;
 	};
 }

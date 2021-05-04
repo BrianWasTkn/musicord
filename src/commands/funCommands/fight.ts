@@ -1,4 +1,4 @@
-import { GuildMember, MessageOptions } from 'discord.js';
+import { GuildMember, MessageOptions, Message } from 'discord.js';
 import { Context, UserPlus } from 'lib/extensions';
 import { Command } from 'lib/objects';
 
@@ -57,12 +57,14 @@ export default class Fun extends Command {
 			attacker: UserPlusPlus,
 			opponent: UserPlusPlus,
 			retry?: boolean
-		) => {
+		): Promise<number | boolean> => {
 			const cmds = ['slap', 'def', 'end'];
 			await ctx.channel.send(`${turn.toString()}, \`${cmds.join('`, `')}\``);
-			const filter = (m) => m.author.id === turn.id;
+			const filter = (m: Context) => m.author.id === turn.id;
 			const prompt = (
-				await ctx.channel.awaitMessages(filter, { max: 1, time: 3e4 })
+				await ctx.channel.awaitMessages(filter as (
+					(m: Message) => boolean
+				), { max: 1, time: 3e4 })
 			).first();
 
 			if (prompt.content.toLowerCase() === cmds[0]) {

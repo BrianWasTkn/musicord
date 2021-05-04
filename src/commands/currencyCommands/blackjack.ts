@@ -26,7 +26,7 @@ export default class Currency extends Command {
 
 	async exec(
 		ctx: Context<{ amount: number }>
-	): Promise<string | MessageOptions> {
+	): Promise<MessageOptions> {
 		const {
 			util,
 			util: { effects },

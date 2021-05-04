@@ -32,18 +32,22 @@ export default class Spawn extends Command {
 			member: MemberPlus;
 			amount: number;
 		}>
-	): Promise<string | MessageOptions> {
-		const { fetch, remove } = this.client.db.spawns;
+	): Promise<MessageOptions> {
 		const { amount, member } = ctx.args;
-		const { user } = member;
-		if (!amount) return 'You need an amount';
-		if (!member) return 'You need a user';
+		const { fetch } = ctx.client.db.spawns;
+		if (!amount || !member) {
+			return { replyTo: ctx.id, content: `**Wrong Syntax**\n**${
+				(this.handler.prefix as string[])[0]
+			} ${this.aliases[0]} <amount> <@user>` };
+		}
+		
 		const bot = this.client.user;
-		const old = await fetch(user.id);
-		const d = await remove(user.id, 'unpaid', amount);
+		const old = await fetch(member.user.id);
+		old.unpaid -= amount;
+		const d = await old.save();
 
 		if (d.allowDM) {
-			await user.send({
+			await member.user.send({
 				embed: {
 					author: { name: `${ctx.author.tag} — ${ctx.author.id}`, iconURL: ctx.author.avatarURL({ dynamic: true }) },
 					title: `Paid Unpaids`, color: 'GREEN', footer: { text: ctx.guild.name, iconURL: ctx.guild.iconURL() },

@@ -5,8 +5,7 @@
 
 import type { Snowflake, User } from 'discord.js';
 import type { Model, Document } from 'mongoose';
-import type { InventorySlot } from 'lib/interface/handlers/item';
-import type { CurrencyUtil } from 'lib/interface/mongo/currency';
+import type { CurrencyUtil } from './util';
 import type { Lava } from 'lib/Lava';
 import { utils } from './util';
 

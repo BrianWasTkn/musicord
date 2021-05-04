@@ -9,6 +9,7 @@ import {
 	TextChannel,
 	GuildMember,
 	Collection,
+	Message
 } from 'discord.js';
 
 export default class Fun extends Command {
@@ -74,16 +75,18 @@ export default class Fun extends Command {
 		const options: MessageCollectorOptions = { max: hits, time: 120000 };
 		const filter: CollectorFilter<[Context]> = ({ content }) =>
 			content.toLowerCase() === (string as string).toLowerCase();
-		const collector = channel.createMessageCollector(filter, options);
+		const collector = channel.createMessageCollector(filter as (
+			(m: Message) => boolean
+		), options);
 
 		collector
-			.on('collect', async (m: Context) => {
+			.on('collect', (async (m: Context) => {
 				if (!entries.has(m.author.id)) {
 					entries.set(m.author.id, m.member);
 					return await m.react('<:memerGold:753138901169995797>');
 				}
-			})
-			.on('end', async (col: Collection<string, Context>) => {
+			}) as (m: Message) => any)
+			.on('end', (async (col: Collection<string, Context>) => {
 				let success: GuildMember[] = [];
 				events.delete(guild.id);
 				if (lock) await lockChan(false);
@@ -122,7 +125,7 @@ export default class Fun extends Command {
 					code: 'diff',
 					content: order.join('\n'),
 				});
-			});
+			}) as (col: Collection<string, Message>, r?: string) => any);
 	}
 
 	private lockChan(this: Context, bool: boolean): Promise<TextChannel> {

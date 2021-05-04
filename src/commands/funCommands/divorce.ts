@@ -32,8 +32,8 @@ export default class Fun extends Command {
 		}
 
 		const divEntry = await (new ContextDatabase(ctx)).fetch(husOrWif.id);
-		await divEntry.divorce(ctx.author.id).save();
-		await meEntry.divorce(husOrWif.id).save();
+		await divEntry.divorce().save();
+		await meEntry.divorce().save();
 
 		return {
 			replyTo: ctx.id,

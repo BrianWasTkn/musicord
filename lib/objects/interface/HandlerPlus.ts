@@ -39,7 +39,7 @@ export interface HandlerEvents<Mod extends ModulePlus = ModulePlus> {
  * Abstract class for all custom handlers.
  * @abstract
 */
-export abstract class HandlerPlus<Mod extends ModulePlus> extends AkairoHandler {
+export abstract class HandlerPlus<Mod extends ModulePlus = ModulePlus> extends AkairoHandler {
     public readonly classToHandle!: new (...args: any[]) => Mod;
     public readonly useNames: boolean;
     public categories!: Collection<string, Category<string, Mod>>;

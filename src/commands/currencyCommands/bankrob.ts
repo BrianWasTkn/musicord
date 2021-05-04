@@ -1,4 +1,4 @@
-import { GuildMember, Collection, MessageOptions, CollectorFilter, MessageCollectorOptions } from 'discord.js';
+import { GuildMember, Collection, Message, MessageOptions, CollectorFilter, MessageCollectorOptions } from 'discord.js';
 import { MemberPlus, UserPlus, Context } from 'lib/extensions';
 import { Command, Item } from 'lib/objects';
 
@@ -67,7 +67,9 @@ export default class Currency extends Command {
 		const entries = new Collection<string, Context>([[ctx.author.id, ctx]]);
 		const options: MessageCollectorOptions = { max: Infinity, time: 6e4 };
 		const filter: CollectorFilter<[Context]> = m => m.content.toLowerCase() === 'join heist';
-		const collector = ctx.channel.createMessageCollector(filter, options);
+		const collector = ctx.channel.createMessageCollector(filter as (
+			(m: Message) => boolean
+		), options);
 
 		const onCollect = async (m: Context) => {
 			const remove = (id: string) => entries.delete(id);
@@ -158,6 +160,8 @@ export default class Currency extends Command {
 		};
 
 		collector.on('collect', onCollect);
-		collector.on('end', onEnd);
+		collector.on('end', onEnd as (
+			c: Collection<string, Message>, r?: string
+		) => any);
 	}
 }

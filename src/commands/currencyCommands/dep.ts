@@ -1,4 +1,4 @@
-import { GuildMember, MessageOptions } from 'discord.js';
+import { GuildMember, MessageOptions, Message } from 'discord.js';
 import { Context, ContextDatabase } from 'lib/extensions';
 import { Command } from 'lib/objects';
 import { Embed } from 'lib/utility';
@@ -15,7 +15,7 @@ export default class Currency extends Command {
 			args: [
 				{
 					id: 'amount',
-					type: async (ctx: Context, args: number | string) => {
+					type: (async (ctx: Context, args: number | string) => {
 						ctx.db = new ContextDatabase(ctx);
 						const { pocket, vault, space } = (await ctx.db.fetch()).data;
 						if (!args) return null;
@@ -34,7 +34,7 @@ export default class Currency extends Command {
 						}
 
 						return Number(dep) || Number(args) || args;
-					},
+					}) as (m: Message, a: string) => any,
 				},
 			],
 		});
@@ -42,7 +42,7 @@ export default class Currency extends Command {
 
 	public async exec(
 		ctx: Context<{ amount: number }>
-	): Promise<string | MessageOptions> {
+	): Promise<MessageOptions> {
 		const userEntry = await ctx.db.fetch();
 		const { pocket, vault, space } = userEntry.data;
 		const { amount } = ctx.args;

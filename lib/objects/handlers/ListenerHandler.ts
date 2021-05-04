@@ -1,4 +1,4 @@
-import { HandlerPlus, HandlerPlusOptions } from '../interface/HandlerPlus';
+import { HandlerPlus, HandlerPlusOptions, ModulePlus } from '..';
 import { isEventEmitter } from 'lib/utility/akairo';
 import { EventEmitter } from 'events';
 import { AkairoError } from 'lib/utility/error';
@@ -6,7 +6,7 @@ import { Collection } from 'discord.js';
 import { Listener } from '..';
 import { Lava } from 'lib/Lava';
 
-export class ListenerHandler<Mod extends Listener = Listener> extends HandlerPlus<Mod> {
+export class ListenerHandler<Mod extends Listener<Lava> = Listener<Lava>> extends HandlerPlus<Mod> {
 	public emitters: Collection<string, EventEmitter>;
 	public constructor(client: Lava, {
 		directory = './listeners',

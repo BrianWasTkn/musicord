@@ -37,7 +37,7 @@ export default class Currency extends Command {
 			return ret.map(r => r < 10 ? `0${r}` : r.toString());
 		}
 
-		function display(c: CooldownData) {
+		function display(c: Currency.CooldownData) {
 			return `${c.id}: ${calc((c.expire - Date.now()) / 1e3).join(':')}`
 		}
 

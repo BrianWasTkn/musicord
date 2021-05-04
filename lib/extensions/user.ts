@@ -1,5 +1,4 @@
 import { Structures, User, Collection } from 'discord.js';
-import { CurrencyProfile } from 'lib/interface/mongo/currency';
 import { Document } from 'mongoose';
 import { Effects } from 'lib/utility/effects';
 import { Lava } from 'lib/Lava';

@@ -6,7 +6,6 @@ export default class Util extends Command {
 	constructor() {
 		super('ping', {
 			name: 'Ping',
-			name: 'Latency',
 			aliases: ['ping', 'pong'],
 			channel: 'guild',
 			description: 'Checks the average latency across all shards',
@@ -15,6 +14,7 @@ export default class Util extends Command {
 	}
 
 	exec = (ctx: Context): MessageOptions => ({
-		replyTo: ctx.id, content: `**Ponge:** ${ctx.guild.shard.ping}ms`
+		replyTo: ctx.id, 
+		content: `**Ponge:** ${ctx.guild.shard.ping}ms`
 	});
 }
