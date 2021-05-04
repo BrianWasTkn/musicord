@@ -42,7 +42,7 @@ export class Context<Args extends {} = {}> extends Message {
 	}
 
 	send(args: MessageOptions) {
-		return this.channel.send.call(this.channel, args, {});
+		return this.channel.send.call(this.channel, args, null);
 	}
 
 	embed(embed?: MessageEmbedOptions) {
