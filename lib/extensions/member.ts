@@ -7,7 +7,7 @@ export class MemberPlus extends GuildMember {
 	public client: Lava;
 
 	public get isGuildOwner(): boolean {
-		return this.guild.owner.user.id === this.user.id;
+		return this.guild.ownerID === this.user.id;
 	}
 	
 	public getColor(hex = false) {

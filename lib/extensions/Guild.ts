@@ -1,13 +1,9 @@
 import { Lava } from 'lib/Lava';
 import { 
-	GuildMemberResolvable, 
 	FetchMembersOptions, 
 	FetchMemberOptions, 
-	UserResolvable, 
-	BaseManager, 
 	GuildMember, 
 	Structures, 
-	Snowflake, 
 	Guild, 
 } from 'discord.js';
 
