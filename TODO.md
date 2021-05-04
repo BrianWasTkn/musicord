@@ -21,9 +21,9 @@ Just a list of planned features basically for event and currency commands.
 
 - [x] **Item Checks**
 - [x] **Fix Bot Latency**
-- [ ] **Custom Handlers**
-- [ ] **Custom Modules**
+- [x] **Custom Handlers**
+- [x] **Custom Modules**
 - [ ] **Multiple DB Providers**
-- [ ] **Better Logger**
+- [x] **Better Logger**
 - [ ] **Open up a Circus**
 - [ ] **Blacklist Everyone**

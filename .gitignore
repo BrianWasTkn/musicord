@@ -1,8 +1,6 @@
 # Node
 node_modules
 build
-source
-tests
 
 # Dotfiles
 .env
