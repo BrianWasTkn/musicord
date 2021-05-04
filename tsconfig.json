@@ -11,6 +11,7 @@
         "outDir": "build",
         "strict": true,
         "allowJs": true,
+        "incremental": true,
         "strictNullChecks": false,
         "moduleResolution": "node",
         "resolveJsonModule": true,
