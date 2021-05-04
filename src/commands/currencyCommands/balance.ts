@@ -1,7 +1,6 @@
 import { GuildMember, MessageOptions } from 'discord.js';
+import { MemberPlus, UserPlus } from 'lib/extensions';
 import { Command, Item } from 'lib/objects';
-import { MemberPlus } from 'lib/extensions/member';
-import { UserPlus } from 'lib/extensions/user';
 import { Context } from 'lib/extensions';
 
 export default class Currency extends Command {

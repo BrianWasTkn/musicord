@@ -1,5 +1,5 @@
 import { Structures, GuildMember, Guild } from 'discord.js';
-import { UserPlus } from './user';
+import { UserPlus } from './User';
 import { Lava } from 'lib/Lava';
 
 export class MemberPlus extends GuildMember {
