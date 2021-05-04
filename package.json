@@ -4,12 +4,11 @@
     "description": "A simple currency bot with database support.",
     "main": "build/src/index",
     "author": {
-        "name": "Brian",
-        "discord": "BrianWasTaken#9793",
+        "name": "BrianWasTaken",
+        "discord": "JustBrian#9793",
         "github": "https://github.com/BrianWasTaken"
     },
     "scripts": {
-        "prod": "npm run format && npm run build",
         "build": "rimraf ./build && tsc --project tsconfig.json",
         "start": "node ./build/src",
         "format": "prettier --write ."
