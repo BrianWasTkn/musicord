@@ -1,6 +1,5 @@
-import { ArgumentType } from 'lib/objects';
+import { ArgumentType, Quest } from 'lib/objects';
 import { Context } from 'lib/extensions';
-import { Quest } from 'lib/handlers/quest';
 
 export default new ArgumentType({
 	id: 'questQuery', fn(ctx: Context, args: string): string | Quest {

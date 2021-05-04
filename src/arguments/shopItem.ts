@@ -1,6 +1,5 @@
-import { ArgumentType } from 'lib/objects';
+import { ArgumentType, Item } from 'lib/objects';
 import { Context } from 'lib/extensions';
-import { Item } from 'lib/handlers/item';
 
 export default new ArgumentType({
 	id: 'shopItem', fn(ctx: Context, args: string): Item {

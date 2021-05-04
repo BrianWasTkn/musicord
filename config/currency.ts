@@ -30,7 +30,7 @@ export const currencyConfig: Partial<CurrencyType> = {
   maxBet: 500000,
   maxWin: 2222222,
   slots: {
-    // [Double Winnings, Jackpot Winnings, Win On Doubles]
+    // [Double, Jackpot, Should Win On Doubles]
     broken_heart: [1, 3, false],
     middle_finger: [1, 5, false],
     clown: [1, 10, false],

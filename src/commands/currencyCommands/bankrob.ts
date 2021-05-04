@@ -5,6 +5,7 @@ import { Command, Item } from 'lib/objects';
 export default class Currency extends Command {
 	constructor() {
 	    super('bankrob', {
+	    	name: 'Bank Rob',
 			aliases: ['bankrob', 'heist'],
 			channel: 'guild',
 			description: "Rob their banks!",

@@ -5,7 +5,7 @@ export default class Difficult extends Quest {
 	    super('craft', {
 			rewards: { coins: 5e5, item: [100000, 'pee'] },
 			target: [10, 'craft', 'craftKeys'],
-			diff: 'Difficult',
+			difficulty: 'Difficult',
 			info: 'Craft 50 keys.',
 			name: 'Craft It',
 	    });

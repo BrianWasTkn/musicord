@@ -5,7 +5,7 @@ export default class Medium extends Quest {
 	    super('rig', {
 			rewards: { coins: 100e3, item: [100, 'xplo'] },
 			target: [150, 'slots', 'wins'],
-			diff: 'Medium',
+			difficulty: 'Medium',
 			info: 'Win 150 jackpots on slots.',
 			name: 'Rig It',
 	    });

@@ -247,9 +247,9 @@ export class ContextDatabase extends Base {
 		return this;
 	}
 
-	updateStats(key: keyof Stats, amount = 1) {
+	updateStats(key: keyof Currency.Stats, amount = 1) {
 		if (!this.data) this._reportError();
-		this.data.stats[key] += amount;
+		this.data.stats[key as keyof Currency.Stats] += amount;
 		return this;
 	}
 
@@ -277,11 +277,25 @@ export class ContextDatabase extends Base {
 		if (!this.data) this._reportError();
 		const item = this.ctx.client.handlers.item.modules.get(id);
 		if (!item) return this;
-		const find = (i: InventorySlot) => i.id === item.id;
+		const find = (i: Currency.InventorySlot) => i.id === item.id;
 		const inv = this.data.items.find(find);
 		if (expire && expire >= 0) inv.expire = expire;
 		if (multi && multi >= 0) inv.multi = multi;
 		if (active && active === true) inv.active = active;
+		return this;
+	}
+
+	marry(id: string) {
+		if (!this.data) this._reportError();
+		this.data.marriage.id = id;
+		this.data.marriage.since = Date.now();
+		return this;
+	}
+
+	divorce() {
+		if (!this.data) this._reportError();
+		this.data.marriage.id = '';
+		this.data.marriage.since = 0;
 		return this;
 	}
 

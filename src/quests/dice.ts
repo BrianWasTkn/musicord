@@ -5,7 +5,7 @@ export default class Hard extends Quest {
 		super('dice',{
 			rewards: { coins: 150e3, item: [150, 'porsche'] },
 			target: [2e3, 'bet', 'wins'],
-			diff: 'Hard',
+			difficulty: 'Hard',
 			info: 'Win 2,000 games of gambling.',
 			name: 'Dice It',
 		});

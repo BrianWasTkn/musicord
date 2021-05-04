@@ -29,6 +29,19 @@ export const COLORS: {
   DEEP_ORANGE: 0xff5722,
 };
 
+export const Currency = {
+  MAX_SAFE_POCKET: 1000e6,
+  MAX_SAFE_SPACE: 10000e6,
+  MAX_INVENTORY: 100000,
+  MAX_PRESTIGE: 1000,
+  MAX_POCKET: 100e6,
+  MAX_LEVEL: 1000,
+  MAX_MULTI: 500,
+  MAX_WIN: 25e5,
+  MAX_BET: 5e5,
+  MIN_BET: 50
+};
+
 export const GAMBLE_MESSAGES = {
   NO_ARGS: 'You need something to {do}!',
   TOO_RICH: 'You are too rich to {do}!',
@@ -59,4 +72,4 @@ export const ITEM_MESSAGES = {
   CANT_FOOL_ME: "lmao you shouldn't sell to more than what you have",
 };
 
-export default { GAMBLE_MESSAGES, ITEM_MESSAGES, COLORS };
+export default { GAMBLE_MESSAGES, ITEM_MESSAGES, Currency, COLORS };

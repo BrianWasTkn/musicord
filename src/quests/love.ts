@@ -5,7 +5,7 @@ export default class Easy extends Quest {
 	    super('love', {
 			rewards: { coins: 2e6, item: [200, 'brian'] },
 			target: [1, 'marry', 'marrySomeone'],
-			diff: 'Easy',
+			difficulty: 'Easy',
 			info: 'Marry someone with using a Donut Ring!',
 			name: 'Love It',
 	    });

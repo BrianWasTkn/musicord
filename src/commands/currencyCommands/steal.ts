@@ -5,6 +5,7 @@ import { Command, Item } from 'lib/objects';
 export default class Currency extends Command {
 	constructor() {
 	    super('steal', {
+	    	name: 'Steal',
 			aliases: ['steal', 'rob', 'ripoff'],
 			channel: 'guild',
 			description: "Rob someone from the currency!",
@@ -74,17 +75,14 @@ export default class Currency extends Command {
 
 		// 30% of Pocket
 		if (odds >= 60) {
-			let worth = Math.round(vicCoins * 0.3);
+			let worth = Math.round(vicCoins * 0.29);
 			await vicEntry.removePocket(worth).save();
 			await userEntry.addCd().addPocket(worth).save();
 			return { replyTo: ctx.id, content: `**You stole a small portion :money_with_wings:**\nYour payout was **${worth.toLocaleString()}** coins` };
 		}
 
 		// Fail
-		let punish: number;
-		if ((userCoins * 0.05) < 500) punish = 500;
-		else punish = userCoins * 0.05;
-
+		const punish: number = (userCoins * 0.05) < 500 ? 500 : userCoins * 0.05;
 		await userEntry.addCd().removePocket(Math.round(punish)).save();
 		await vicEntry.addPocket(Math.round(punish)).save();
 		return { replyTo: ctx.id, content: `**You failed the robbery HAHAHAHAHA**\nYou paid them **${Math.round(punish).toLocaleString()}** coins lmao` };

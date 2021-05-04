@@ -1,6 +1,5 @@
-import { Collection, ClientEvents, ClientOptions } from 'discord.js';
+import { Collection, ClientEvents, ClientOptions, Message } from 'discord.js';
 import { ConnectOptions } from 'mongoose';
-import { SpawnDocument } from './interface/mongo/spawns';
 import { EventEmitter } from 'events';
 import { Util } from './utility/util';
 import { join } from 'path';
@@ -14,13 +13,16 @@ import {
 	AkairoModule, 
 } from 'discord-akairo';
 import {
+  LotteryHandler, ModulePlus,
   ListenerHandler, Listener,
   CommandHandler, Command,
   SpawnHandler, Spawn,
   QuestHandler, Quest,
   ItemHandler, Item,
-  LotteryHandler,
 } from './objects';
+import {
+	TypeFunction
+} from 'lib/objects';
 
 // def imports
 import CurrencyFunc from './mongo/currency/functions';
@@ -33,7 +35,7 @@ import './extensions';
 
 interface ClientEventsPlus extends ClientEvents {
 	messageUpdate: [o: Context, n: Context];
-	moduleLoad: [module: AkairoModule];
+	moduleLoad: [module: ModulePlus];
 	dbConnect: [db: typeof mongoose];
 	message: [message: Context];
 }
@@ -111,9 +113,10 @@ export class Lava extends AkairoClient {
 		return this;
 	}
 
-	addTypes(args: { id: string, fn: ArgumentTypeCaster }[]) {
+	addTypes(args: { id: string, fn: TypeFunction }[]) {
 		for (const { id, fn } of args) {
-			this.handlers.command.resolver.addType(id, fn);
+			this.handlers.command.resolver
+			.addType(id, fn as ((m: Message, p: string) => any));
 		}
 
 		return this;
@@ -123,9 +126,9 @@ export class Lava extends AkairoClient {
 		const { listener, lottery, command, spawn, quest, item } = this.handlers;
 		command.useListenerHandler(listener);
 		listener.setEmitters({ listener, lottery, command, spawn, quest, item });
-		const onLoad = (mod: AkairoModule) => this.emit('moduleLoad', mod);
+		const onLoad = (mod: ModulePlus) => this.emit('moduleLoad', mod);
 		[listener, command, spawn, quest, item]
-		.forEach(h => h.on('load', onLoad).loadAll());
+		.forEach(h => h.on('load', onLoad as ((m: AkairoModule) => boolean)).loadAll());
 
 		return this;
 	}

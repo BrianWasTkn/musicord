@@ -1,6 +1,6 @@
 import { Context } from 'lib/extensions';
 
-type TypeFunction = (this: ArgumentType, ctx: Context, args: string) => any;
+export type TypeFunction = (this: ArgumentType, ctx: Context, args: string) => any;
 
 export declare interface ArgumentType {
 	fn: TypeFunction;

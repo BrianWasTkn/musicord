@@ -8,8 +8,8 @@
 
 import { deepAssign, isPromise, prefixCompare, intoArray, intoCallable, flatMap } from 'lib/utility/akairo';
 import { Collection, Snowflake, GuildChannel, MessageOptions, Channel } from 'discord.js';
+import { HandlerPlus, Command, ListenerHandler, Listener } from '..';
 import { Context, ContextDatabase, UserPlus } from 'lib/extensions';
-import { HandlerPlus, Command } from '..';
 import { CommandQueue } from 'lib/utility/queue';
 import { AkairoError } from 'lib/utility/error';
 import { Lava } from 'lib/Lava';
@@ -862,16 +862,17 @@ export class CommandHandler<Mod extends Command = Command> extends HandlerPlus<M
         return this.modules.get(this.aliases.get(name.toLowerCase()));
     }
 
-    private useInhibitorHandler(inhibitorHandler: InhibitorHandler) {
+    public useInhibitorHandler(inhibitorHandler: InhibitorHandler) {
         this.inhibitorHandler = inhibitorHandler;
         this.resolver.inhibitorHandler = inhibitorHandler;
 
         return this;
     }
 
-    private useListenerHandler(
+    public useListenerHandler(
         listenerHandler: ListenerHandler<Listener<this['client']>>
     ) {
+        // @ts-ignore
         this.resolver.listenerHandler = listenerHandler;
 
         return this;

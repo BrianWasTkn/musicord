@@ -5,7 +5,7 @@ export default class Extreme extends Quest {
 	    super('slot', {
 			rewards: { coins: 1e6, item: [10, 'donut'] },
 			target: [2e3, 'slots', 'jackpots'],
-			diff: 'Extreme',
+			difficulty: 'Extreme',
 			info: 'Win 2,000 jackpots on slot machine.',
 			name: 'Slot It',
 	    });

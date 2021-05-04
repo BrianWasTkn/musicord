@@ -8,7 +8,7 @@ export abstract class Spawn extends ModulePlus {
 	public spawn: Handlers.Spawn.Visual;
 
 	public constructor(id: string, spawn: Handlers.Spawn.Visual, config: Partial<Handlers.Spawn.Config>) {
-		super(id, { category: spawn.type });
+		super(id, { category: spawn.type, name: spawn.title });
 		this.answered = new Collection();
 		this.config = config;
 		this.spawn = spawn;
