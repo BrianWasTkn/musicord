@@ -11,4 +11,4 @@ export class UserPlus extends User {
 	}
 }
 
-export default () => Structures.extend('User', () => UserPlus);
+export const ExtendUser = () => Structures.extend('User', () => UserPlus);

@@ -19,4 +19,4 @@ export class MemberPlus extends GuildMember {
 	}
 }
 
-export default () => Structures.extend('GuildMember', () => MemberPlus);
+export const ExtendMember = () => Structures.extend('GuildMember', () => MemberPlus);
