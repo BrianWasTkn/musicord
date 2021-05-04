@@ -1,4 +1,4 @@
-import Member from './Member';
+import Member from './GuildMember';
 import Message from './Context';
 import Guild from './Guild';
 import User from './User';
@@ -6,6 +6,6 @@ import User from './User';
 [Member, Message, Guild, User].forEach((Extend: Function) => Extend());
 
 export { ContextDatabase, Context } from './Context';
-export { MemberPlus } from './Member';
+export { MemberPlus } from './GuildMember';
 export { GuildPlus } from './Guild';
 export { UserPlus } from './User';
