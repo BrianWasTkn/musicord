@@ -1,12 +1,11 @@
-import { ExtendMember } from './Member';
-import { ExtendContext } from './Context';
-import { ExtendGuild } from './Guild';
-import { ExtendUser } from './User';
+import Member from './Member';
+import Message from './Context';
+import Guild from './Guild';
+import User from './User';
 
-[ExtendMember, ExtendContext, ExtendGuild, ExtendUser]
-.forEach((Extend: Function) => Extend());
+[Member, Message, Guild, User].forEach((Extend: Function) => Extend());
 
-export * from './Context';
-export * from './Member';
-export * from './Guild';
-export * from './User';
+export { ContextDatabase, Context } from './Context';
+export { MemberPlus } from './Member';
+export { GuildPlus } from './Guild';
+export { UserPlus } from './User';

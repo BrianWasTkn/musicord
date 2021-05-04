@@ -362,4 +362,4 @@ export class ContextDatabase extends Base {
 // Circular 
 const ContextDB = ContextDatabase;
 
-export const ExtendContext = () => Structures.extend('Message', () => Context);
+export default () => Structures.extend('Message', () => Context);
