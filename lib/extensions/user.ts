@@ -1,6 +1,6 @@
 import { Structures, User, Collection } from 'discord.js';
 import { Document } from 'mongoose';
-import { Effects } from 'lib/utility/effects';
+import { Effects } from 'lib/utility';
 import { Lava } from 'lib/Lava';
 
 export class UserPlus extends User {
