@@ -10,8 +10,7 @@ export default class Blacklist extends Inhibitor {
 		});
 	}
 
-	async exec(m: Context, c: Command): Promise<boolean> {
-		const { data } = await m.db.fetch();
-		return data.bled;
+	exec(m: Context, c: Command): Promise<boolean> {
+		return m.db.fetch().then(({ data }) => data.bled);
 	}
 }

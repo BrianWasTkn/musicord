@@ -1,4 +1,4 @@
 /**
  * DiscordJS Extensions
- * @author brian
+ * @author BrianWasTaken
 */

@@ -3,7 +3,6 @@
  * @author BrianWasTaken
 */
 
-
 import { ListenerOptions, InhibitorOptions, CommandOptions, CommandHandlerOptions } from 'discord-akairo';
 import { HandlerPlusOptions, ModulePlusOptions } from 'lib/objects';
 import { EmojiResolvable } from 'discord.js';

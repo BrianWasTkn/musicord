@@ -1,5 +1,6 @@
 /**
  * Mongo Profiles
+ * @author BrianWasTaken
 */
 
 import { TargetMethod } from 'lib/interface/handlers/quest';

@@ -1,7 +1,6 @@
 /**
  * Example declarations
- * @author brian
- * @typedef Examples
+ * @author BrianWasTaken
 */
 
 interface User {
