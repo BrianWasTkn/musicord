@@ -1,6 +1,6 @@
 {
     "name": "lava",
-    "version": "2.19.2",
+    "version": "2.19.3",
     "description": "A simple currency bot with database support.",
     "main": "build/src/index",
     "author": {
@@ -22,6 +22,7 @@
     "dependencies": {
         "chalk": "^4.1.0",
         "discord-akairo": "^8.1.0",
+        "discord-api-types": "^0.18.1",
         "discord.js": "github:discordjs/discord.js#master",
         "dotenv": "^8.2.0",
         "module-alias": "^2.2.2",

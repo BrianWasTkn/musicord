@@ -1,3 +1,8 @@
+/**
+ * Base class for custom command arguments. 
+ * @author BrianWasTaken
+*/
+
 import { Context } from 'lib/extensions';
 
 export type TypeFunction = (this: ArgumentType, ctx: Context, args: string) => any;

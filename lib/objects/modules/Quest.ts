@@ -1,7 +1,7 @@
 import { QuestHandler, ModulePlus } from '..';
 import { Context } from 'lib/extensions';
 
-const priority = {
+const priority: { [p: string]: number } = {
 	Extreme: 1,
 	Difficult: 2,
 	Hard: 3,
@@ -9,7 +9,7 @@ const priority = {
 	Easy: 5,
 };
 
-const emojis = {
+const emojis: { [p: string]: string } = {
 	Extreme: ':fire:',
 	Difficult: ':dragon:',
 	Hard: ':bomb:',
@@ -17,6 +17,10 @@ const emojis = {
 	Easy: ':snowflake:'
 };
 
+/**
+ * Represents a Quest. 
+ * @absract @extends {ModulePlus}
+*/
 export abstract class Quest extends ModulePlus {
 	public handler: QuestHandler<this>;
 	public rawDiff: Handlers.Quest.Difficulty;
@@ -27,8 +31,8 @@ export abstract class Quest extends ModulePlus {
 	public info: string;
 	public name: string;
 
-	public constructor(id: string, opt: Handlers.Quest.Constructor) {
-		super(id, { category: opt.category });
+	public constructor(id: string, opt: Constructors.Modules.Quest) {
+		super(id, { category: opt.category, name: opt.name });
 
 		this.rawDiff = opt.difficulty;
 		this.rewards = opt.rewards;
@@ -36,7 +40,6 @@ export abstract class Quest extends ModulePlus {
 		this.diff = priority[opt.difficulty];
 		this.emoji = emojis[opt.difficulty];
 		this.info = opt.info;
-		this.name = opt.name;
 	}
 
 	public check(ctx: Context, args: Handlers.Quest.CheckArgs): PromiseUnion<boolean> {

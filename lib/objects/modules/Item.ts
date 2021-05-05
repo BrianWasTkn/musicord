@@ -1,6 +1,10 @@
 import { ModulePlus, ItemHandler } from '..';
 import { Context } from 'lib/extensions';
 
+/**
+ * Represents an Item.
+ * @absract @extends {ModulePlus}
+*/
 export abstract class Item extends ModulePlus {
 	public handler: ItemHandler<this>;
 	public showInventory: boolean;
@@ -14,12 +18,10 @@ export abstract class Item extends ModulePlus {
 	public emoji: string;
 	public info: Handlers.Item.Info;
 	public tier: number;
-	public name: string;
 	public cost: number;
 
-	constructor(id: string, opt: Partial<Handlers.Item.Constructor>) {
-		const { category, name } = opt;
-		super(id, { category, name });
+	constructor(id: string, opt: Partial<Constructors.Modules.Item>) {
+		super(id, { category: opt.category, name: opt.name });
 
 		this.info = opt.info;
 		this.tier = Number(opt.tier);
@@ -28,11 +30,11 @@ export abstract class Item extends ModulePlus {
 		this.sellable = Boolean(opt.sellable);
 		this.premium = Boolean(opt.premium);
 		this.usable = Boolean(opt.usable);
-		this.emoji = opt.emoji;
+		this.emoji = opt.emoji as string;
 		this.moddedPrice = opt.premium
 			? opt.cost * 1000e6 // to sort in shop
 			: opt.cost;
-		this.showInShop = opt.showShop;
+		this.showInShop = opt.showInShop;
 		this.showInventory = opt.showInventory;
 		this.checks = [].concat(opt.checks || []);
 	}

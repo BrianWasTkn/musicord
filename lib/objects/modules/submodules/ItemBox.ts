@@ -1,14 +1,18 @@
 import { Context } from 'lib/extensions';
 import { Item } from '../..';
 
-interface BoxOptions extends Handlers.Item.Constructor {
+interface BoxOptions extends Constructors.Modules.Item {
 	contents?: {
 		coins?: [number, number];
 		keys?: number;
 	}
 }
 
-export class Box extends Item {
+/**
+ * Represents a Box Item.
+ * @absract @extends {Item}
+*/
+export abstract class Box extends Item {
 	public contents: BoxOptions['contents'];
 	public constructor(id: string, {
 		category = 'Boxes',
@@ -49,7 +53,7 @@ export class Box extends Item {
 		await ctx.send({ replyTo: ctx.id, content: `**${this.emoji} Opening your ${this.name}...**` })
 		const tiers: { [t: string]: [number, number] } = { 1: [10, 100], 2: [10, 50], 3: [5, 10] };
 		const items: Item[] = [random(modules, i => i.cost >= 1e5)];
-		const amounts: number[] = [randomNumber(...tiers[items[0].tier] as [number, number])];
+		const amounts: number[] = [randomNumber.apply(null, tiers[items[0].tier] as [number, number])];
 
 		const { coins: cCoins, keys: kKeys } = this.contents;
 		const multi = utils.calcMulti(ctx, ctx.db.data);
@@ -58,8 +62,8 @@ export class Box extends Item {
 
 		const itemTiers = modules.filter(mod => mod.tier === this.tier);
 		for (let i = 0; i < randomNumber(1, itemTiers.length); i++) {
-			const item = randomInArray(itemTiers.filter(mod => !items.some(i => i.id === mod.id)).filter(i => !i.premium));
-			const amt = randomNumber(...tiers[item.tier] as [number, number]);
+			const item = randomInArray(itemTiers.filter(mod => !mod.premium || !items.some(i => i.id === mod.id)));
+			const amt = randomNumber.apply(null, tiers[item.tier]);
 			items.push(item); amounts.push(amt);
 		}
 

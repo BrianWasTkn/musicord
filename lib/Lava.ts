@@ -2,23 +2,23 @@ import { Collection, ClientEvents, ClientOptions, Message } from 'discord.js';
 import { ConnectOptions } from 'mongoose';
 import { EventEmitter } from 'events';
 import { Util } from './utility/util';
-import { join } from 'path';
-import { 
+import {
 	CommandHandlerOptions,
 	AkairoHandlerOptions,
 	ArgumentTypeCaster,
 	AkairoOptions,
-	AkairoHandler, 
-	AkairoClient, 
-	AkairoModule, 
+	AkairoHandler,
+	AkairoClient,
+	AkairoModule,
 } from 'discord-akairo';
 import {
-  LotteryHandler, ModulePlus,
-  ListenerHandler, Listener,
-  CommandHandler, Command,
-  SpawnHandler, Spawn,
-  QuestHandler, Quest,
-  ItemHandler, Item,
+	InhibitorHandler, Inhibitor,
+	LotteryHandler, ModulePlus,
+	ListenerHandler, Listener,
+	CommandHandler, Command,
+	SpawnHandler, Spawn,
+	QuestHandler, Quest,
+	ItemHandler, Item,
 } from './objects';
 import {
 	TypeFunction
@@ -34,7 +34,8 @@ import { Context } from './extensions';
 import './extensions';
 
 interface ClientEventsPlus extends ClientEvents {
-	messageUpdate: [o: Context, n: Context];
+	messageUpdate: [om: Context, nm: Context];
+	messageDelete: [message: Context];
 	moduleLoad: [module: ModulePlus];
 	dbConnect: [db: typeof mongoose];
 	message: [message: Context];
@@ -46,6 +47,7 @@ interface DB {
 }
 
 interface Handlers {
+	inhibitor: InhibitorHandler<Inhibitor>;
 	listener: ListenerHandler<Listener<Lava>>;
 	command: CommandHandler<Command>;
 	lottery: LotteryHandler;
@@ -55,19 +57,18 @@ interface Handlers {
 }
 
 interface HandlerConstructor {
-	listener: AkairoHandlerOptions;
-	command: CommandHandlerOptions;
-	spawn: AkairoHandlerOptions;
-	quest: AkairoHandlerOptions;
-	item: AkairoHandlerOptions;
+	inhibitor: Constructors.Handlers.Inhibitor;
+	listener: Constructors.Handlers.Listener;
+	command: Constructors.Handlers.Command;
+	spawn: Constructors.Handlers.Spawn;
+	quest: Constructors.Handlers.Quest;
+	item: Constructors.Handlers.Item;
 }
 
 interface MongoData {
-  options?: ConnectOptions;
-  uri: string;
+	options?: ConnectOptions;
+	uri: string;
 }
-
-type HandlerOptions = AkairoHandlerOptions | CommandHandlerOptions; 
 
 export class Lava extends AkairoClient {
 	mongoPath: MongoData;
@@ -80,25 +81,26 @@ export class Lava extends AkairoClient {
 
 	// Event Types
 	on: <K extends keyof ClientEventsPlus>(
-		event: K, 
+		event: K,
 		listener: (...args: ClientEventsPlus[K]) => void
 	) => this;
 	once: <K extends keyof ClientEventsPlus>(
-		event: K, 
+		event: K,
 		listener: (...args: ClientEventsPlus[K]) => void
 	) => this;
 	emit: <K extends keyof ClientEventsPlus>(
-		event: K, 
+		event: K,
 		...args: ClientEventsPlus[K]
 	) => boolean;
 
 	constructor(
-		akairoOptions: AkairoOptions, 
+		akairoOptions: AkairoOptions,
 		clientOptions: ClientOptions,
 		handlers: HandlerConstructor,
 	) {
 		super({ ...akairoOptions, ...clientOptions });
 		this.handlers = {
+			inhibitor: new InhibitorHandler<Inhibitor>(this, handlers.inhibitor),
 			listener: new ListenerHandler<Listener<this>>(this, handlers.listener),
 			command: new CommandHandler<Command>(this, handlers.command),
 			spawn: new SpawnHandler<Spawn>(this, handlers.spawn),
@@ -108,32 +110,35 @@ export class Lava extends AkairoClient {
 		};
 	}
 
-	setMongoPath(uri: string, options: ConnectOptions = {}) {
+	public setMongoPath(uri: string, options: ConnectOptions = {}) {
 		this.mongoPath = { uri, options };
 		return this;
 	}
 
-	addTypes(args: { id: string, fn: TypeFunction }[]) {
+	public addTypes(args: { id: string, fn: TypeFunction }[]) {
 		for (const { id, fn } of args) {
-			this.handlers.command.resolver
-			.addType(id, fn as ((m: Message, p: string) => any));
+			this.handlers.command.resolver.addType(id, fn as (
+				(m: Message, p: string) => any)
+			);
 		}
 
 		return this;
 	}
 
-	loadAll() {
+	public loadAll() {
 		const { listener, lottery, command, spawn, quest, item } = this.handlers;
 		command.useListenerHandler(listener);
 		listener.setEmitters({ listener, lottery, command, spawn, quest, item });
 		const onLoad = (mod: ModulePlus) => this.emit('moduleLoad', mod);
 		[listener, command, spawn, quest, item]
-		.forEach(h => h.on('load', onLoad as ((m: AkairoModule) => boolean)).loadAll());
+			.forEach(h => h.on('load', onLoad as (
+				(m: AkairoModule) => boolean)
+			).loadAll());
 
 		return this;
 	}
 
-	async connectDB(): Promise<boolean | void> {
+	public async connectDB(): Promise<boolean | void> {
 		try {
 			const { uri, options } = this.mongoPath;
 			const db = await mongoose.connect(uri, options);
@@ -144,7 +149,7 @@ export class Lava extends AkairoClient {
 		}
 	}
 
-	async start(token: string = process.env.TOKEN): Promise<string> {
+	public async start(token: string = process.env.TOKEN): Promise<string> {
 		await this.connectDB();
 		return super.login(token);
 	}

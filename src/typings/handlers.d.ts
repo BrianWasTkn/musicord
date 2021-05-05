@@ -33,13 +33,6 @@ declare global {
 				| 'wins'
 				| string;
 
-			interface Constructor extends ModulePlusOptions {
-				difficulty: Difficulty;
-				rewards: Rewards;
-				target: Target;
-				info: string;
-				name: string;
-			}
 			interface CheckArgs {
 				target?: TargetMethod;
 				count?: number;			
@@ -57,21 +50,6 @@ declare global {
 			type CheckState = ArrayUnion<('time' | 'activeState' | 'presence')>;
 			type UseReturn = MessageOptions;
 
-			interface Constructor extends ModulePlusOptions {
-				showInventory: boolean;
-				category: string;
-				sellable: boolean;
-				showShop: boolean;
-				buyable: boolean;
-				premium: boolean;
-				checks: CheckState;
-				usable: boolean;
-				emoji: string;
-				name: string;
-				cost: number;
-				tier: number;
-				info: Info;
-			}
 			interface Info {
 				short: string;
 				long: string;
@@ -87,11 +65,9 @@ declare global {
 		namespace Spawn {
 			type VisualsType = 'COMMON' | 'UNCOMMON' | 'SUPER' | 'GODLY';
 			type ConfigType = 'message' | 'spam' | 'react';
-			type Cooldown = (member?: GuildMember) => { [k: string]: number };
 			type Reward = { [reward: string]: number };
 
 			interface Config {
-				cooldown?: Cooldown;
 				rewards: Reward;
 				enabled: boolean;
 				timeout: number;
@@ -125,20 +101,10 @@ declare global {
 		}
 
 		// Command
-		namespace Command {
-			interface Constructor extends ModulePlusOptions, CommandOptions {
-				name?: string;
-			};
-		}
+		namespace Command {}
 
 		// Listener
-		namespace Listener {
-			interface Constructor extends ModulePlusOptions {
-				emitter?: string | EventEmitter;
-				event?: string;
-				type?: 'on' | 'once';
-			}
-		}
+		namespace Listener {}
 
 		// Giveaway
 		namespace Giveaway {

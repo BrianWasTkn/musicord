@@ -9,7 +9,7 @@ import { Context } from 'lib/extensions';
 
 /**
  * Represents a Command.
- * @abstract
+ * @abstract @extends {ModulePlus}
 */
 export abstract class Command extends ModulePlus {
 	public handler: CommandHandler<this>;
@@ -37,7 +37,7 @@ export abstract class Command extends ModulePlus {
 	public ignoreCooldown: ArrayUnion<Snowflake> | IgnoreCheckPredicate;
 	public ignorePermissions: ArrayUnion<Snowflake> | IgnoreCheckPredicate;
 	public id: string;
-	public constructor(id: string, options: Handlers.Command.Constructor) {
+	public constructor(id: string, options: Constructors.Modules.Command) {
 		super(id, { category: options.category, name: options.name });
 
 		const {

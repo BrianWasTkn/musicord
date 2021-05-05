@@ -12,7 +12,7 @@ export default class PowerUp extends Item {
 			emoji: ':bomb:',
 			name: "Xplosive's Bomb",
 			cost: 100000,
-			tier: 3,
+			tier: 2,
 			info: {
 				short: 'Get sweet treats by giving a fuck about everything!',
 				long:

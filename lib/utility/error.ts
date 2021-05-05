@@ -32,8 +32,8 @@ const Messages = {
 };
 
 export class AkairoError extends Error {
-    code: string;
-    constructor(key: keyof typeof Messages, ...args: any[]) {
+    public code: string;
+    public constructor(key: keyof typeof Messages, ...args: any[]) {
         if (Messages[key] == null)
             throw new TypeError(`Error key "${key}" does not exist`);
         const message =
@@ -45,7 +45,7 @@ export class AkairoError extends Error {
         this.code = key;
     }
 
-    get name() {
+    public get name() {
         return `AkairoError [${this.code}]`;
     }
 }

@@ -1,4 +1,4 @@
-import { HandlerPlus, HandlerPlusOptions, ModulePlus } from '..';
+import { HandlerPlus, ModulePlus } from '..';
 import { isEventEmitter } from 'lib/utility/akairo';
 import { EventEmitter } from 'events';
 import { AkairoError } from 'lib/utility/error';
@@ -14,7 +14,7 @@ export class ListenerHandler<Mod extends Listener<Lava> = Listener<Lava>> extend
 		extensions = ['.js', '.ts'],
 		automateCategories = true,
 		loadFilter = (() => true)
-	}: HandlerPlusOptions = {}) {
+	}: Constructors.Handlers.Listener = {}) {
 		if (
 			!(classToHandle.prototype instanceof Listener || classToHandle === Listener)
 		) {

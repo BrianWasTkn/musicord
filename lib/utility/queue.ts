@@ -18,17 +18,17 @@ type Queues = {
 }
 
 export class CommandQueue {
-	queues: Queues = {};
+	public queues: Queues = {};
 
-	wait(id: string) {
+	public wait(id: string) {
 		if (!this.queues[id] || this.queues[id].length < 1) this.queues[id] = [];
 		const next = this.queues[id].length ? this.queues[id][this.queues[id].length - 1].promise : Promise.resolve();
-		let resolve; const promise = new Promise(res => { resolve = res });
+		let resolve; const promise = new Promise<any>(res => { resolve = res });
 		this.queues[id].push({ promise, resolve });
 		return next;
 	}
 
-	next(id: string) {
+	public next(id: string) {
 		const next = this.queues[id].shift();
 		if (typeof next !== 'undefined') next.resolve();
 	}

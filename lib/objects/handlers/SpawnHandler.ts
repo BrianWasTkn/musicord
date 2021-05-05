@@ -1,3 +1,4 @@
+import { AkairoError } from 'lib/utility/error';
 import { Context } from 'lib/extensions';
 import { Spawn } from '..';
 import { Lava } from 'lib/Lava';
@@ -44,9 +45,31 @@ export class SpawnHandler<Mod extends Spawn = Spawn> extends HandlerPlus<Mod> {
 	public cooldowns: Collection<Snowflake, Mod>;
 	public messages: Collection<Snowflake, Context>;
 	public queue: Collection<Snowflake, Handlers.Spawn.Queue>;
+	public constructor(client: Lava, {
+		directory,
+		classToHandle = Spawn,
+		extensions = ['.js', '.ts'],
+		automateCategories,
+		loadFilter,
+	}: Constructors.Handlers.Spawn = {}) {
+		if (!(
+			classToHandle.prototype instanceof Spawn || classToHandle === Spawn)
+		) {
+			throw new AkairoError(
+				'INVALID_CLASS_TO_HANDLE', 
+				classToHandle.name, 
+				Spawn.name
+			);
+		}
 
-	public constructor(client: Lava, options: HandlerPlusOptions) {
-		super(client, options);
+		super(client, {
+			directory,
+			classToHandle,
+			extensions,
+			automateCategories,
+			loadFilter
+		});
+
 		this.cooldowns = new Collection();
 		this.messages = new Collection();
 		this.queue = new Collection();

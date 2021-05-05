@@ -10,21 +10,21 @@ import { discordOptions } from './discord';
 import { akairoConfig } from './akairo';
 
 export interface Config {
-  currency: CurrencyType;
-  discord: ClientOptions;
-  lottery: LottoConfig;
-  akairo: AkairoOptions;
-  spawn: SpawnConfig;
-  item: ItemConfig;
-  bot: ConfigInterface;
+	currency: CurrencyType;
+	discord: ClientOptions;
+	lottery: LottoConfig;
+	akairo: AkairoOptions;
+	spawn: SpawnConfig;
+	item: ItemConfig;
+	bot: ConfigInterface;
 }
 
-export default <Config> {
-  currency: currencyConfig,
-  discord: discordOptions,
-  lottery: lottoConfig,
-  akairo: akairoConfig,
-  spawn: spawnConfig,
-  item: itemConfig,
-  bot: lavaConfig,
+export default <Config>{
+	currency: currencyConfig,
+	discord: discordOptions,
+	lottery: lottoConfig,
+	akairo: akairoConfig,
+	spawn: spawnConfig,
+	item: itemConfig,
+	bot: lavaConfig,
 };

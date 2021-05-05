@@ -6,9 +6,9 @@
  * in .runCooldowns() and stuff.
 */
 
+import { HandlerPlus, Command, ListenerHandler, Listener, InhibitorHandler, Inhibitor } from '..';
 import { deepAssign, isPromise, prefixCompare, intoArray, intoCallable, flatMap } from 'lib/utility/akairo';
 import { Collection, Snowflake, GuildChannel, MessageOptions, Channel } from 'discord.js';
-import { HandlerPlus, Command, ListenerHandler, Listener } from '..';
 import { Context, ContextDatabase, UserPlus } from 'lib/extensions';
 import { CommandQueue } from 'lib/utility/queue';
 import { AkairoError } from 'lib/utility/error';
@@ -21,7 +21,6 @@ import {
 	CommandHandlerOptions,
 	IgnoreCheckPredicate,
 	ParsedComponentData,
-	InhibitorHandler,
 	PrefixSupplier,
 	LoadPredicate,
 	TypeResolver,
@@ -97,7 +96,7 @@ export class CommandHandler<Mod extends Command = Command> extends HandlerPlus<M
 		defaultCooldown = 1500,
 		aliasReplacement = /(-|\.)/g,
 		automateCategories = true
-	}: CommandHandlerOptions = {}) {
+	}: Constructors.Handlers.Command = {}) {
 		if (
 			!(classToHandle.prototype instanceof Command || classToHandle === Command)
 		) {
@@ -862,8 +861,9 @@ export class CommandHandler<Mod extends Command = Command> extends HandlerPlus<M
         return this.modules.get(this.aliases.get(name.toLowerCase()));
     }
 
-    public useInhibitorHandler(inhibitorHandler: InhibitorHandler) {
+    public useInhibitorHandler(inhibitorHandler: InhibitorHandler<Inhibitor>) {
         this.inhibitorHandler = inhibitorHandler;
+        // @ts-ignore
         this.resolver.inhibitorHandler = inhibitorHandler;
 
         return this;
@@ -876,13 +876,5 @@ export class CommandHandler<Mod extends Command = Command> extends HandlerPlus<M
         this.resolver.listenerHandler = listenerHandler;
 
         return this;
-    }
-
-    private basePredicate(msg: Context, cmd: Mod): boolean {
-        const g = this.client.guilds.cache.get('691416705917779999');
-        const byp = g.roles.cache.get('692941106475958363');
-        return (
-            msg.member.roles.cache.has(byp.id) || this.client.isOwner(msg.author.id)
-        );
     }
 }

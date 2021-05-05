@@ -1,17 +1,21 @@
 import { ModulePlus, SpawnHandler } from '..';
 import { Collection, GuildMember } from 'discord.js';
 
+/**
+ * Represents a Spawn. 
+ * @absract @extends {ModulePlus}
+*/
 export abstract class Spawn extends ModulePlus {
 	public handler: SpawnHandler<this>;
 	public answered: Collection<string, boolean>;
 	public config: Partial<Handlers.Spawn.Config>;
 	public spawn: Handlers.Spawn.Visual;
 
-	public constructor(id: string, spawn: Handlers.Spawn.Visual, config: Partial<Handlers.Spawn.Config>) {
-		super(id, { category: spawn.type, name: spawn.title });
+	public constructor(id: string, opts: Partial<Constructors.Modules.Spawn>) {
+		super(id, { category: opts.visual.type, name: opts.visual.title });
 		this.answered = new Collection();
-		this.config = config;
-		this.spawn = spawn;
+		this.config = opts.config;
+		this.spawn = opts.visual;
 	}
 
 	public cd = (): { [id: string]: number } => ({

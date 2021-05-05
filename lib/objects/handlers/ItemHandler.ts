@@ -1,5 +1,6 @@
 import { Collection, MessageEmbed, MessageOptions } from 'discord.js';
-import { HandlerPlus, HandlerPlusOptions, Item } from '..';
+import { HandlerPlus, Item } from '..';
+import { AkairoError } from 'lib/utility/error';
 import { Document } from 'mongoose';
 import { Context } from 'lib/extensions';
 import { Lava } from 'lib/Lava';
@@ -10,19 +11,29 @@ export class ItemHandler<Mod extends Item = Item> extends HandlerPlus<Mod> {
 	public saleInterval: number;
 	private ticked: boolean;
 	public sale: Handlers.Item.SaleData;
-
-	constructor(
-		client: Lava,
-		{
-			directory = './src/items',
-			classToHandle = Item,
-			automateCategories = true,
-		}: HandlerPlusOptions
-	) {
+	public constructor(client: Lava, {
+		directory,
+		classToHandle = Item,
+		extensions = ['.js', '.ts'],
+		automateCategories,
+		loadFilter,
+	}: Constructors.Handlers.Item = {}) {
+		if (!(
+			classToHandle.prototype instanceof Item || classToHandle === Item)
+		) {
+			throw new AkairoError(
+				'INVALID_CLASS_TO_HANDLE', 
+				classToHandle.name, 
+				Item.name
+			);
+		}
+		
 		super(client, {
 			directory,
 			classToHandle,
+			extensions,
 			automateCategories,
+			loadFilter
 		});
 
 		this.prepare();

@@ -12,18 +12,38 @@ import Args from './arguments';
 
 const read = (...dirs: string[]) => join(__dirname, ...dirs);
 const lava = new Lava(config.akairo, config.discord, {
-	listener: { directory: read('listeners') },
+	inhibitor: {
+		directory: read('inhibitors'),
+		automateCategories: true
+	},
+	listener: { 
+		directory: read('listeners'),
+		automateCategories: true, 
+	},
 	command: { 
 		directory: read('commands'), 
 		prefix: config.bot.prefix,
-		ignorePermissions: (m: Message) => {
+		automateCategories: true,
+		ignoreCooldown: ((m: Context) => {
+			return m.client.isOwner(m.author.id);
+		}) as ((m: Message) => boolean),
+		ignorePermissions: ((m: Context) => {
 			const role = '692941106475958363';
 			return m.member.roles.cache.has(role);
-		}
+		}) as ((m: Message) => boolean),
 	},
-	spawn: { directory: read('spawns') },
-	quest: { directory: read('quests') },
-	item: { directory: read('items') },
+	spawn: { 
+		directory: read('spawns'),
+		automateCategories: true, 
+	},
+	quest: { 
+		directory: read('quests'),
+		automateCategories: true,
+	},
+	item: { 
+		directory: read('items'),
+		automateCategories: true,
+	},
 });
 
 const { uri, options } = config.bot.mongo;
