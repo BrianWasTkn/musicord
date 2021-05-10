@@ -23,7 +23,7 @@ export default class Currency extends Command {
 
 	async exec(ctx: Context<{ member: MemberPlus }>): Promise<MessageOptions> {
 		const isContext = ctx.args.member.user.id === ctx.author.id;
-		const userEntry = await ctx.db.fetch(ctx.args.member.user.id, isContext),
+		const userEntry = await ctx.db.fetch(ctx.args.member.user.id),
 			{ pocket, vault, space, items, prem } = userEntry.data,
 			{ modules } = ctx.client.handlers.item;
 
