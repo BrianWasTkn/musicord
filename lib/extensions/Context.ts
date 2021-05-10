@@ -278,13 +278,11 @@ export class ContextDatabase extends Base {
 		multi?: number
 	}) {
 		if (!this.data) this._reportError();
-		const item = this.ctx.client.handlers.item.modules.get(id);
-		if (!item) return this;
-		const find = (i: Currency.InventorySlot) => i.id === item.id;
+		const find = (i: Currency.InventorySlot) => i.id === id;
 		const inv = this.data.items.find(find);
-		if (expire && expire >= 0) inv.expire = expire;
-		if (multi && multi >= 0) inv.multi = multi;
-		if (active && active === true) inv.active = active;
+		if (active === true) inv.active = active;
+		if (expire >= 0) inv.expire = expire;
+		if (multi >= 0) inv.multi = multi;
 		return this;
 	}
 
