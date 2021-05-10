@@ -53,11 +53,12 @@ export default class Currency extends Command {
 		const hahayes = padMod.findInv(vicEntry.data.items);
 		let odds = ctx.client.util.randomNumber(1, 100);
 		if (hahayes.expire > Date.now()) {
+			await userEntry.save(true);
+			
 			if (odds >= 60) {
 				await vicEntry.updateInv(padMod.id, { active: false, expire: 0 }).save();
 				return { replyTo: ctx.id, content: `**${padMod.emoji} You broke their padlock!**\nGive one more attempt for a robbery!` };
 			}
-			
 			return { replyTo: ctx.id, content: `${padMod.emoji} You almost broke their padlock! Give one more try.` };
 		}
 
@@ -93,7 +94,7 @@ export default class Currency extends Command {
 
 		const onEnd = async () => {
 			const { randomNumber, randomInArray } = ctx.client.util;
-			const [ripMsg, niceMsg, nullMsg]: string[] = [failMsgs, successMsgs, naniMsgs];
+			const [ripMsg, niceMsg, nullMsg]: string[][] = [failMsgs, successMsgs, naniMsgs];
 			const odds = () => randomNumber(1, 100);
 			// s - success; n - nothing; f - fail
 			let s: MemberPlus[] = [], n: MemberPlus[] = [], f: MemberPlus[] = [];
@@ -140,9 +141,9 @@ export default class Currency extends Command {
 			]);
 
 			function replace<A extends MemberPlus[], S extends string, P extends string>(
-				arr: A, symb: S, placeholder: P[]
+				arr: A, symb: S, placeholders: P[]
 			): P[] {
-				return arr.map(m => `${symb} ${(randomInArray(placeholder))
+				return arr.map(m => `${symb} ${randomInArray(placeholders)
 					.replace(/{user}/g, m.user.username)
 					.replace(/{got}/g, coins.toLocaleString())
 				}`) as P[];
