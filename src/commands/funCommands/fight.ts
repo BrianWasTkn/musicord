@@ -30,6 +30,7 @@ export default class Fun extends Command {
 		const { randomNumber } = this.client.util;
 		const { enemy } = ctx.args;
 		const author = ctx.author as UserPlusPlus;
+		await (await ctx.db.fetch()).save(true);
 
 		// arg shits
 		if (!enemy) {

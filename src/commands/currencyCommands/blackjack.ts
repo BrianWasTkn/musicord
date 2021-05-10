@@ -222,7 +222,7 @@ export default class Currency extends Command {
 			if (status.constructor === Object) {
 				const newEntry = await ctx.db.fetch(); // ugh don't really know else how to do this thanks to reversal
 				if (bet > newEntry.data.pocket) {
-					await newEntry.addCd().removePocket(bet).calcSpace().updateItems().updateStats('lost', bet).updateStats('loses').save();
+					await newEntry.addCd().removePocket(bet).calcSpace().updateItems().updateStats('lost', bet).updateStats('loses').save(true);
 					return {
 						content: `What the hell man, you don't have the coins to cover this bet anymore??? I'm keeping your bet since you tried to SCAM ME.`,
 						replyTo: ctx.id,
@@ -233,17 +233,18 @@ export default class Currency extends Command {
 				if (status.result) {
 					winnings = Math.ceil(bet * (Math.random() + (0.3 + extraWngs))); // "Base Multi"
 					winnings = Math.min(MAX_POCKET, winnings + Math.ceil(winnings * (multi / 100))); // This brings in the user's secret multi (lava multi)
-					const { pocket } = await newEntry.addCd().updateQuest({ cmd: this, count: 1 }).addPocket(winnings).updateItems().updateStats('won', winnings).updateStats('wins').calcSpace().save();
+					const { pocket } = await newEntry.addCd().updateQuest({ cmd: this, count: 1 }).addPocket(winnings).updateItems().updateStats('won', winnings).updateStats('wins').calcSpace().save(true);
 					finalMsg += `\nYou won **${winnings.toLocaleString()}**. You now have ${pocket.toLocaleString()}.`;
 					state = extraWngs ? 'powered' : 'winning';
 				} else {
 					// Tie
 					if (status.result === null) {
+						await newEntry.addCd().save(true);
 						finalMsg += `\nYour wallet hasn't changed! You have **${data.pocket.toLocaleString()}** still.`;
 						state = 'tie';
 					} else {
 						// Loss
-						const { pocket } = await newEntry.addCd().removePocket(bet).updateItems().updateStats('lost', bet).updateStats('loses').calcSpace().save();
+						const { pocket } = await newEntry.addCd().removePocket(bet).updateItems().updateStats('lost', bet).updateStats('loses').calcSpace().save(true);
 						ctx.client.handlers.quest.emit('gambleLose', { cmd: this, ctx });
 						finalMsg += `\nYou lost **${Number(bet).toLocaleString()}**. You now have ${pocket.toLocaleString()}.`;
 						state = 'losing';
@@ -266,7 +267,7 @@ export default class Currency extends Command {
 					},
 					color: final
 						? status.result === null
-							? 'YELLOW'
+							? 'ORANGE'
 							: winnings
 								? extraWngs
 									? 'BLUE'
@@ -305,7 +306,7 @@ export default class Currency extends Command {
 					footer: {
 						text: !final
 							? 'K, Q, J = 10  |  A = 1 or 11'
-							: `Percent Won: ${Math.round((winnings / bet) * 100)}%${extraWngs && state !== 'losing' ? ` (${Math.round(((winnings / bet) * 100) - (extraWngs * 100))} original)` : ''}`,
+							: `Percent Won: ${Math.round((winnings / bet) * 100)}%${extraWngs && state !== 'losing' ? ` (${Math.round(((winnings / bet) * 100) - (extraWngs * 100))}% original)` : ''}`,
 					},
 				},
 			});
@@ -314,7 +315,7 @@ export default class Currency extends Command {
 			const choice = (await ctx.awaitMessage()).first();
 			if (!choice) {
 				// No bank space for you bitch
-				await userEntry.addCd().removePocket(bet).updateItems().updateStats('lost', bet).updateStats('loses').save();
+				await userEntry.addCd().removePocket(bet).updateItems().updateStats('lost', bet).updateStats('loses').save(true);
 				return {
 					content:
 						"You ended the game since you didn't respond. The dealer is keeping your money to deal with your bullcrap.",
@@ -330,7 +331,7 @@ export default class Currency extends Command {
 					return dealersTurn(stood);
 				case 'e':
 					// You too, no space for you :P
-					await userEntry.addCd().updateItems().removePocket(bet).updateStats('lost', bet).updateStats('loses').save();
+					await userEntry.addCd().updateItems().removePocket(bet).updateStats('lost', bet).updateStats('loses').save(true);
 					return {
 						content:
 							'You ended the game. The dealer is keeping your money to deal with your bullcrap.',
@@ -338,7 +339,7 @@ export default class Currency extends Command {
 					};
 				default:
 					// You too, no space for you :P
-					await userEntry.addCd().updateItems().removePocket(bet).updateStats('lost', bet).updateStats('loses').save();
+					await userEntry.addCd().updateItems().removePocket(bet).updateStats('lost', bet).updateStats('loses').save(true);
 					return {
 						content:
 							'Ur an idiot you need to give a valid response. You lost your entire bet.',

@@ -33,6 +33,7 @@ export default class Currency extends Command {
 		const { item: Items } = this.client.handlers;
 		const userEntry = await ctx.db.fetch();
 		const data = userEntry.data;
+		await userEntry.save(true);
 
 		function check() {
 			if (!item) return MESSAGES.NEED_TO_SELL;

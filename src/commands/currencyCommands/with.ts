@@ -46,6 +46,7 @@ export default class Currency extends Command {
 		const userEntry = await ctx.db.fetch();
 		const { pocket, vault, misc } = userEntry.data;
 		const { amount } = ctx.args;
+		await userEntry.save(true);
 
 		if (!amount && vault > 0) {
 			return { replyTo: ctx.id, content: 'you need to withdraw something' };
@@ -63,7 +64,7 @@ export default class Currency extends Command {
 			return { replyTo: ctx.id, content: `u only have **${vault.toLocaleString()}** don't try and break me` };
 		}
 
-		const { vault: n } = await userEntry.addCd().withdraw(Math.round(amount)).updateItems().save();
+		const { vault: n } = await userEntry.addCd().withdraw(Math.round(amount)).updateItems().save(true);
 		return {
 			replyTo: ctx.id,
 			content: `**${amount.toLocaleString()}** coins withdrawn. You now have **${n.toLocaleString()}** in your vault.`,

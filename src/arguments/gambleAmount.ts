@@ -10,20 +10,20 @@ export default new ArgumentType({
 
 		if (!args) return null;
 		if (!isNumber(args)) {
-			args = args.toLowerCase();
-			if (args === 'all')
-				return pocket;
-			else if (args === 'max')
-				return Math.min(MAX_BET, pocket);
-			else if (args === 'half')
-				return Math.round(pocket / 2);
-			else if (args === 'min')
-				return MIN_BET;
-			else if (args.match(/k/g)) {
-				const kay = args.replace(/k$/g, '');
-				return isNumber(kay) ? Number(kay) * 1e3 : null;
-			}	else {
-				return null;
+			switch (args.toLowerCase()) {
+				case 'all':
+					return pocket;
+				case 'max':
+					return Math.min(MAX_BET, pocket);
+				case 'half':
+					return MIN_BET;
+				default:
+					if (args.match(/k/g)) {
+						const kay = args.replace(/k$/g, '');
+						return isNumber(kay) ? Number(kay) * 1e3 : null;
+					}
+
+					return null;
 			}
 		}
 

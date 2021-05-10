@@ -41,6 +41,10 @@ export class Context<Args extends {} = {}> extends Message {
 		this.db = new ContextDB(this);
 	}
 
+	say(content: string) {
+		return this.channel.send.call(this.channel, { content }, null);
+	}
+
 	send(args: MessageOptions) {
 		return this.channel.send.call(this.channel, args, null);
 	}
@@ -68,7 +72,7 @@ export class Context<Args extends {} = {}> extends Message {
 	}
 
 	toString() {
-		return super.toString();
+		return `[${this.constructor.name} ${this.author?.id}]`;
 	}
 }
 
@@ -87,10 +91,10 @@ export class ContextDatabase extends Base {
 
 	private async init(userID: string, assign: boolean): Promise<this> {
 		const { fetch } = this.ctx.client.db.currency;
-		let data: CurrencyProfile = await fetch(userID);
-		if (assign) this.data = data;
+		const data: CurrencyProfile = await fetch(userID);
 		const temp = new ContextDB(this.ctx);
-		temp.data = data;
+		if (assign) temp.data = data;
+		else this.data = data;
 		return assign ? this : temp as this;
 	}
 
@@ -180,7 +184,7 @@ export class ContextDatabase extends Base {
 		const { randomNumber } = this.ctx.client.util;
 		const calc = (boosty: number) => Math.round(offset * (boosty / 2) + offset);
 		this.data.space = Math.min(Math.ceil(this.data.space + calc(boost)), limit);
-		this.data.stats.xp = randomNumber(1, 3);
+		this.data.stats.xp += randomNumber(1, 3);
 		return this;
 	}
 
@@ -287,15 +291,15 @@ export class ContextDatabase extends Base {
 
 	marry(id: string) {
 		if (!this.data) this._reportError();
-		this.data.marriage.id = id;
 		this.data.marriage.since = Date.now();
+		this.data.marriage.id = id;
 		return this;
 	}
 
 	divorce() {
 		if (!this.data) this._reportError();
-		this.data.marriage.id = '';
 		this.data.marriage.since = 0;
+		this.data.marriage.id = '';
 		return this;
 	}
 
@@ -345,8 +349,10 @@ export class ContextDatabase extends Base {
 		return this;
 	}
 
-	save(): Promise<CurrencyProfile> {
+	// melmsie pls-
+	save(addPls = false): Promise<CurrencyProfile> {
 		if (!this.data) this._reportError();
+		if (addPls) this.data.cmdsRan++;
 		return this.data.save();
 	}
 

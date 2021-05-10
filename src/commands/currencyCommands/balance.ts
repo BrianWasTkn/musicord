@@ -25,8 +25,9 @@ export default class Currency extends Command {
 		const isContext = ctx.args.member.user.id === ctx.author.id;
 		const userEntry = await ctx.db.fetch(ctx.args.member.user.id, isContext),
 			{ pocket, vault, space, items, prem } = userEntry.data,
-			{ modules } = this.client.handlers.item;
+			{ modules } = ctx.client.handlers.item;
 
+		// Functions
 		const filter = (i: Currency.InventorySlot) => i.amount >= 1;
 		const reduce = (a: number, b: number) => a + b;
 		const map = (i: Currency.InventorySlot) => {
@@ -34,6 +35,7 @@ export default class Currency extends Command {
 			return it.cost * i.amount;
 		};
 
+		// Display
 		const inv = items.filter(filter).map(map).reduce(reduce, 0);
 		const show = isContext ? `/${space.toLocaleString()}` : '';
 		const info = {
@@ -43,6 +45,7 @@ export default class Currency extends Command {
 			'Net Worth': (pocket + vault + inv).toLocaleString(),
 		};
 
+		await userEntry.save(true);
 		return {
 			embed: {
 				title: `:key: Keys — ${prem.toLocaleString()}`, footer: { text: ctx.guild.name, icon_url: ctx.guild.iconURL({ dynamic: true }) }, color: 'RANDOM',

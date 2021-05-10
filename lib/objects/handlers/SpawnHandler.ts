@@ -21,7 +21,6 @@ import {
 	AkairoHandlerOptions,
 	AkairoHandler,
 	AkairoModule,
-	AkairoError,
 	Category,
 } from 'discord-akairo';
 import {
@@ -278,7 +277,7 @@ export class SpawnHandler<Mod extends Spawn = Spawn> extends HandlerPlus<Mod> {
 
 			return collector;
 		} else {
-			throw new AkairoError(
+			return Promise.reject(
 				`[INVALID_TYPE] Spawn type "${spawner.config.type}" is invalid.`
 			);
 		}

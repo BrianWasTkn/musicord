@@ -41,6 +41,7 @@ export default class Currency extends Command {
 			return `${c.id}: ${calc((c.expire - Date.now()) / 1e3).join(':')}`
 		}
 
+		await userEntry.save(true);
 		return {
 			embed: {
 				color: 'ORANGE', description: cooldowns.filter(c => c.expire > Date.now()).map(display).join('\n') || 'No active cooldowns.',

@@ -59,6 +59,7 @@ export default class Fun extends Command {
 		const { guild } = ctx;
 		const channel = ctx.channel as TextChannel;
 		const lockChan = this.lockChan.bind(ctx);
+		await (await ctx.db.fetch()).save(true);
 
 		if (events.has(guild.id)) return;
 		else events.set(guild.id, channel.id);

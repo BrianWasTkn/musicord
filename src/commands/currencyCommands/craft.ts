@@ -40,7 +40,7 @@ export default class Currency extends Command {
 			return { replyTo: choice.id, content: `you can't craft keys more than what you actually can, buddy` };
 		}
 
-		await userEntry.updateQuest({ cmd: this, count: nice }).addPremiumKeys(Math.round(nice)).removePocket(Math.round(nice * reqs.coins)).save();
+		await userEntry.updateQuest({ cmd: this, count: nice }).addPremiumKeys(Math.round(nice)).removePocket(Math.round(nice * reqs.coins)).save(true);
 		return { replyTo: ctx.id, embed: { color: 'GOLD', description: `Successfully crafted **:coin: ${Math.round(nice * reqs.coins).toLocaleString()}** coins for **:key: ${Math.round(nice).toLocaleString()}** keys.` } };
 	}
 }

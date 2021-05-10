@@ -1,0 +1,5 @@
+{
+    "javascript.suggest.completeFunctionCalls": true,
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "typescript.format.insertSpaceAfterTypeAssertion": true
+}

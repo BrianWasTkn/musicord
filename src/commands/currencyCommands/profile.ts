@@ -30,8 +30,9 @@ export default class Currency extends Command {
 			util: { parseTime, toRoman },
 			handlers: { item },
 		} = this.client;
-		const { data } = await ctx.db.fetch(ctx.args.member.user.id, ctx.author.id === ctx.args.member.user.id);
-		const { pocket, vault, stats, items } = data;
+		const isContext = ctx.author.id === ctx.args.member.user.id;
+		const entry = await ctx.db.fetch(ctx.args.member.user.id, isContext);
+		const { data } = entry, { pocket, vault, stats, items } = data;
 		const stamp = ctx.createdTimestamp, actives = items
 			.filter((i) => i.expire > stamp)
 			.map((i) => {
@@ -59,6 +60,7 @@ export default class Currency extends Command {
 		let desc: string[] = [];
 		if (stats.prestige > 0) desc.push(`**Prestige ${toRoman(stats.prestige)}`);
 
+		if (isContext) await entry.save(true);
 		return {
 			embed: {
 				description: desc.join('\n'),

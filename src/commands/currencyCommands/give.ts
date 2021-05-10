@@ -67,7 +67,7 @@ export default class Currency extends Command {
 		let paid = Math.round(give - give * 0.08);
 		let tax = Math.round((give * 0.8) / (give / 10));
 
-		const giver = await authorEntry.removePocket(give).updateQuest({ cmd: this, count: paid }).updateItems().calcSpace().save();
+		const giver = await authorEntry.removePocket(give).updateQuest({ cmd: this, count: paid }).updateItems().calcSpace().save(true);
 		const recib = await memberEntry.addPocket(paid).updateItems().save();
 
 		return {

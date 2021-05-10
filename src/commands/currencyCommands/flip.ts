@@ -93,12 +93,12 @@ export default class Currency extends Command {
 		})
 		const choice = (await ctx.awaitMessage()).first();
 		if (!choice || !choice.content) {
-			await userEntry.addCd().removePocket(bet).updateItems().updateStats('lost', bet).updateStats('loses').save();
+			await userEntry.addCd().removePocket(bet).updateItems().updateStats('lost', bet).updateStats('loses').save(true);
 			return { content: `I flipped the coin, but you didn't call it in time! You lost your entire bet.` };
 		}
 		if (choice.content.toLowerCase().includes('heads')) {
 			if (cflip === heads) {
-				await userEntry.addCd().addPocket(bet).updateItems().calcSpace().updateStats('won', bet).updateStats('wins').save();
+				await userEntry.addCd().addPocket(bet).updateItems().calcSpace().updateStats('won', bet).updateStats('wins').save(true);
 				ctx.client.handlers.quest.emit('gambleWin', { cmd: this, ctx });
 				return {
 					embed: {
@@ -108,7 +108,7 @@ export default class Currency extends Command {
 				};
 			}
 
-			await userEntry.addCd().removePocket(bet).updateItems().updateStats('won', bet).updateStats('wins').save();
+			await userEntry.addCd().removePocket(bet).updateItems().updateStats('won', bet).updateStats('wins').save(true);
 			ctx.client.handlers.quest.emit('gambleLost', { cmd: this, ctx });
 			return {
 				embed: {
@@ -119,7 +119,7 @@ export default class Currency extends Command {
 		}
 		if (choice.content.toLowerCase().includes('tails')) {
 			if (cflip === tails) {
-				await userEntry.addCd().addPocket(bet).updateItems().calcSpace().updateStats('won', bet).updateStats('wins').save();
+				await userEntry.addCd().addPocket(bet).updateItems().calcSpace().updateStats('won', bet).updateStats('wins').save(true);
 				ctx.client.handlers.quest.emit('gambleWin', { cmd: this, ctx });
 				return {
 					embed: {
@@ -129,7 +129,7 @@ export default class Currency extends Command {
 				};
 			}
 
-			await userEntry.addCd().removePocket(bet).updateItems().updateStats('won', bet).updateStats('wins').save();
+			await userEntry.addCd().removePocket(bet).updateItems().updateStats('won', bet).updateStats('wins').save(true);
 			ctx.client.handlers.quest.emit('gambleLose', { cmd: this, ctx });
 			return {
 				embed: {

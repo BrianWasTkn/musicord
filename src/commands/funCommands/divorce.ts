@@ -16,6 +16,7 @@ export default class Fun extends Command {
 	async exec(ctx: Context): Promise<MessageOptions> {
 		const meEntry = await ctx.db.fetch();
 		const me = meEntry.data;
+		await meEntry.save(true);
 
 		if (!me.marriage.id) {
 			return {

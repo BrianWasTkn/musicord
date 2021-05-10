@@ -55,7 +55,7 @@ export default class Currency extends Command {
 		}
 
 		await rEntry.addInv(item.id, amount).save();
-		await userEntry.updateQuest({ cmd: this, count: amount, item }).removeInv(item.id, amount).save();
+		await userEntry.updateQuest({ cmd: this, count: amount, item }).removeInv(item.id, amount).save(true);
 
 		return {
 			replyTo: ctx.id,

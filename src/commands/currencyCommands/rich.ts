@@ -31,6 +31,7 @@ export default class Currency extends Command {
 	): Promise<void> {
 		const { randomInArray } = this.client.util;
 		const { isGlobal: glob } = ctx.args;
+		await (await ctx.db.fetch()).save(true);
 		const emojis = ['first_place', 'second_place', 'third_place'];
 		const mjs = ['eggplant', 'skull', 'clown', 'kiss', 'alien'];
 		const m: Context = (await ctx.send({ 

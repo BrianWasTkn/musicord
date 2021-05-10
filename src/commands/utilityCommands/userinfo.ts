@@ -20,16 +20,20 @@ export default class Util extends Command {
 
 	exec = async (ctx: Context<{ member: MemberPlus }>): Promise<MessageOptions> => {
 		const { member: m } = ctx.args;
-		const { data } = await ctx.db.fetch();
+		const { modules } = this.handler;
+		const entry = await ctx.db.fetch(m.user.id);
+		const { lastRan, cmdsRan, lastCmd } = entry.data;
+		if (ctx.author.id === m.user.id) await entry.save(true);
 
 		return { embed: {
 			thumbnail: { url: m.user.avatarURL({ dynamic: true }) }, color: 'RANDOM',
-			title: [m.user.username, m.user.id].join(' — '), fields: Object.entries({
-				'Joined At': new Date(m.joinedAt).toDateString(),
+			title: `${m.user.tag} — ${m.user.id}`, fields: Object.entries({
 				'Created At': new Date(m.user.createdAt).toDateString(),
+				'Joined At': new Date(m.joinedAt).toDateString(),
+				'Commands Ran': cmdsRan.toLocaleString(),
+				'Avatar URL': `[Click Here](${m.user.avatarURL({ dynamic: true })})`,
 				'Nickname': m.nickname != null ? m.nickname : m.user.username,
-				'Last Command': data.lastCmd,
-				'Command Timestamp': new Date(data.lastRan).toDateString(),
+				'Last Command': modules.get(lastCmd).aliases[0],
 			}).map(([name, value]) => ({ name, value, inline: true }))
 		}};
 	}

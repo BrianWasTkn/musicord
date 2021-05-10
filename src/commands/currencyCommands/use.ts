@@ -23,6 +23,7 @@ export default class Currency extends Command {
 	async exec(ctx: Context<{ item: Item }>): Promise<MessageOptions> {
 		const { parseTime } = ctx.client.util, { item } = ctx.args;
 		const userEntry = await ctx.db.fetch(), { data } = userEntry;
+		await userEntry.save(true);
 		if (!item) {
 			return { replyTo: ctx.id, content: "This item doesn't exist :skull:" };
 		}

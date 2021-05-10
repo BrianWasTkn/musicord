@@ -4,7 +4,7 @@ import { isPromise } from 'lib/utility/akairo';
 import { Context } from 'lib/extensions';
 import { Lava } from 'lib/Lava';
 
-type InhibitorType = 'all' | 'pre' | 'post';
+export type InhibitorType = 'all' | 'pre' | 'post';
 
 export class InhibitorHandler<Mod extends Inhibitor = Inhibitor> extends HandlerPlus<Mod> {
 	public constructor(client: Lava, {
@@ -15,7 +15,7 @@ export class InhibitorHandler<Mod extends Inhibitor = Inhibitor> extends Handler
 		loadFilter,
 	}: Constructors.Handlers.Inhibitor = {}) {
 		if (!(
-				classToHandle.prototype instanceof Inhibitor || classToHandle === Inhibitor)
+			classToHandle.prototype instanceof Inhibitor || classToHandle === Inhibitor)
 		) {
 			throw new AkairoError(
 				'INVALID_CLASS_TO_HANDLE', 
@@ -33,7 +33,7 @@ export class InhibitorHandler<Mod extends Inhibitor = Inhibitor> extends Handler
 		});
 	}
 
-	public async test(type: InhibitorType, message: Context, command: Command) {
+	public async test(type: InhibitorType, message: Context, command?: Command) {
 		if (!this.modules.size) return null;
 
 		const inhibitors = this.modules.filter(i => i.type === type);

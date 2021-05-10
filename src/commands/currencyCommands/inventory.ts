@@ -52,7 +52,8 @@ export default class Currency extends Command {
 
 		memb = (isNum ? ctx.member : member) as MemberPlus;
 		pg = (isNum ? member : page) as number;
-		data = (await ctx.db.fetch(memb.user.id, false)).data;
+		const entry = await ctx.db.fetch(memb.user.id);
+		data = entry.data;
 		inv = data.items.filter((i) => i.amount >= 1);
 		total = inv.reduce((e, a) => a.amount + e, 0);
 		if (inv.length < 1) {
@@ -82,6 +83,7 @@ export default class Currency extends Command {
 			return { replyTo: ctx.id, content: `Page \`${pg}\` doesn't exist.` };
 		}
 
+		await entry.save();
 		return {
 			embed: {
 				color: 'BLURPLE',

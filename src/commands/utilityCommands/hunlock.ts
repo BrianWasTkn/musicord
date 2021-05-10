@@ -53,6 +53,7 @@ export default class Util extends Command {
 		const { role, interval } = ctx.args;
 		const embed = (num: number, color: string) => this.embed(num, role, color);
 		let num = 60, msg: Context = await ctx.send({ embed: embed(num, 'ORANGE') }) as Context;
+		await (await ctx.db.fetch()).save(true);
 		await ctx.delete().catch(() => { });
 
 		const run = async (int: number): Promise<any> => {

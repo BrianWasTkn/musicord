@@ -6,9 +6,10 @@ import { Command } from 'lib/objects';
 import { Embed } from 'lib/utility/embed';
 import bot from 'src/../package.json';
 
-type CategoryShort = Category<string, Collection<string, Command>>
 interface Help {
-	query: Command | CategoryShort;
+	query: 
+		| Category<string, Collection<string, Command>>
+		| Command;
 }
 
 export default class Utility extends Command {
@@ -48,6 +49,7 @@ export default class Utility extends Command {
 	}
 
 	public async exec(ctx: Context<Help>): Promise<MessageOptions> {
+		await (await ctx.db.fetch()).save(true);
 		const { parseTime } = ctx.client.util;
 		const { query } = ctx.args;
 
@@ -63,9 +65,9 @@ export default class Utility extends Command {
 
 			return {
 				embed: {
-					title: `${(this.handler.prefix as string[])[0]} ${cmd.aliases[0]} info`,
+					// title: `${(this.handler.prefix as string[])[0]} ${cmd.aliases[0]} info`,
 					description: cmd.description || 'No description provided.',
-					color: 'ORANGE', fields,
+					title: `${cmd.name} Command`, color: 'ORANGE', fields,
 				}
 			};
 		}
@@ -78,6 +80,7 @@ export default class Utility extends Command {
 				return isOwner ? true : !c.ownerOnly;
 			});
 
+			// hide my control panel against normies owo
 			if (commands.length <= 0) {
 				return { replyTo: ctx.id, content: "Wew, all commands under that category are for my owners only." };
 			}

@@ -21,6 +21,7 @@ export default class Util extends Command {
 	}
 
 	async exec(ctx: Context): Promise<MessageOptions> {
+		await (await ctx.db.fetch()).save(true);
 		ctx.delete().catch(() => { });
 		const role = this.client.util.heists.get(ctx.channel.id);
 		if (!role) return;

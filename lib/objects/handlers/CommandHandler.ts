@@ -72,7 +72,7 @@ export class CommandHandler<Mod extends Command = Command> extends HandlerPlus<M
 	/**
 	 * Constructor for this command handler.
 	 * @param {Lava} client the discord client instance
-	 * @param {CommandHandlerOptions} {} options for this handler.
+	 * @param {CommandHandlerOptions} options for this handler.
 	*/
 	public constructor(client: Lava, {
 		extensions = ['.js', '.ts'],
@@ -180,20 +180,10 @@ export class CommandHandler<Mod extends Command = Command> extends HandlerPlus<M
 		this.setup();
 	}
 
-	public add: (filename: string) => Mod;
-	public findCategory: (name: string) => Category<string, Mod>;
-	public load: (thing: string | Function, isReload?: boolean) => Mod;
-	public loadAll: (directory?: string, filter?: LoadPredicate) => this;
-	public reload: (id: string) => Mod;
-	public reloadAll: () => this;
-	public remove: (id: string) => Mod;
-	public removeAll: () => this;
-
 	public setup() {
 		this.client.once('ready', () => {
             this.client.on('message', async (m: Context) => {
                 if (m.partial) await m.fetch();
-                m.db = new ContextDatabase(m);
                 await this.handle(m);
             });
 
@@ -202,7 +192,6 @@ export class CommandHandler<Mod extends Command = Command> extends HandlerPlus<M
                     if (o.partial) await o.fetch();
                     if (n.partial) await n.fetch();
                     if (o.content === n.content) return;
-                    n.db = new ContextDatabase(n);
                     if (this.handleEdits) await this.handle(n);
                 });
             }
@@ -591,7 +580,7 @@ export class CommandHandler<Mod extends Command = Command> extends HandlerPlus<M
             ? await this.inhibitorHandler.test(
                 'post',
                 msg,
-                (cmd as unknown) as AkairoCommand
+                cmd
             )
             : null;
 
@@ -673,7 +662,6 @@ export class CommandHandler<Mod extends Command = Command> extends HandlerPlus<M
         const time = cmd.cooldown != null ? cmd.cooldown : this.defaultCooldown;
         if (!time) return false;
 
-        msg.db = new ContextDatabase(msg);
         const { data } = await msg.db.fetch();
         const expire = msg.createdTimestamp + time;
 
@@ -689,10 +677,6 @@ export class CommandHandler<Mod extends Command = Command> extends HandlerPlus<M
             return true;
         }
 
-        // increment for ratelimit
-        // cd.uses++;
-        // if (!cmd.manualCooldown) cd.expire = expire;
-        // await data.save();
         return false;
     }
 
@@ -704,11 +688,12 @@ export class CommandHandler<Mod extends Command = Command> extends HandlerPlus<M
         ctx.command = cmd;
         ctx.args = args;
         ctx.db = new ContextDatabase(ctx);
+        
         await this.cmdQueue.wait(ctx.author.id);
         if (this.commandTyping || cmd.typing) {
             ctx.channel.startTyping();
         }
-
+        
         try {
             this.emit(Events.COMMAND_STARTED, ctx, cmd, args);
             try {

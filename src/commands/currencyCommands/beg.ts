@@ -30,7 +30,7 @@ export default class Currency extends Command {
 			case odds >= 0.9:
 				const item = items.filter((i) => !i.premium || i.cost < 30e6).random();
 				const amount = util.randomNumber(1, 10);
-				await userEntry.addCd().addInv(item.id, amount).save();
+				await userEntry.addCd().addInv(item.id, amount).save(true);
 				return {
 					embed: {
 						description: `WOWSIES! You got **${amount} ${item.emoji} ${item.name
@@ -42,17 +42,17 @@ export default class Currency extends Command {
 				};
 			case odds >= 0.5:
 				const won = util.randomNumber(10, 5000);
-				await userEntry.addCd().addPocket(won).calcSpace().updateItems().save();
+				await userEntry.addCd().addPocket(won).calcSpace().updateItems().save(true);
 				return {
 					embed: {
-						description: `"I promised I won't give you up so here's ${won.toLocaleString()} coins"`,
+						description: `"I promised I won't give you up so here's **${won.toLocaleString()}** coins"`,
 						author: { name: 'Rich Ashley' },
 						color: 'ORANGE',
 					},
 					replyTo: ctx,
 				};
 			default:
-				await userEntry.addCd().save();
+				await userEntry.addCd().save(true);
 				return {
 					embed: {
 						description: '"no because you\'re an idiot"',

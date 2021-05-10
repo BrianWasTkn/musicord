@@ -9,8 +9,8 @@ import { Context } from 'lib/extensions';
 import { Command } from 'lib/objects';
 
 interface QueueData {
-	resolve: Function;
 	promise: Promise<any>;
+	resolve: Function;
 }
 
 type Queues = {
@@ -31,6 +31,7 @@ export class CommandQueue {
 	public next(id: string) {
 		const next = this.queues[id].shift();
 		if (typeof next !== 'undefined') next.resolve();
+		if (this.queues[id].length < 1) delete this.queues[id];
 	}
 }
 

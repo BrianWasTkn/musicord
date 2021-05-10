@@ -34,6 +34,8 @@ export default class Currency extends Command {
 		const { quest: Handler } = this.client.handlers;
 		const { query } = ctx.args;
 		const quests = Handler.modules.array();
+		const userEntry = await ctx.db.fetch();
+		await userEntry.save(true);
 
 		if (typeof query === 'number') {
 			const quest = this.client.util.paginateArray(
@@ -76,7 +78,6 @@ export default class Currency extends Command {
 		}
 
 		const mods = this.client.handlers.quest.modules;
-		const userEntry = await ctx.db.fetch();
 		const { data } = userEntry;
 
 		if (!query) {

@@ -30,7 +30,8 @@ export default class Currency extends Command {
 		const { utils } = this.client.db.currency;
 		const { util } = this.client;
 		const { page } = ctx.args;
-		const multi = utils.calcMulti(ctx, (await ctx.db.fetch()).data);
+		const entry = await ctx.db.fetch();
+		const multi = utils.calcMulti(ctx, entry.data);
 
 		const multis = util.paginateArray(multi.unlocked, 5);
 		if (page > multis.length) {
@@ -52,6 +53,7 @@ export default class Currency extends Command {
 			)
 			.setColor('BLURPLE');
 
+		await entry.save();
 		return { embed };
 	}
 }

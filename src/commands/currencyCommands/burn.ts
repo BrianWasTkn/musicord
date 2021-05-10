@@ -31,7 +31,7 @@ export default class Currency extends Command {
 			return { content: 'imagine burning money higher than your pocket lmao' };
 		}
 
-		await userEntry.addCd().removePocket(amount).save();
+		await userEntry.addCd().removePocket(amount).save(true);
 		return { content: `Burned **${amount.toLocaleString()}** coins from your pocket.` };
 	}
 }

@@ -67,7 +67,7 @@ export default class Currency extends Command {
 		}
 
 		const input = amount >= space - vault ? space - vault : amount;
-		const { vault: nVault } = await userEntry.addCd().deposit(input).updateItems().save();
+		const { vault: nVault } = await userEntry.addCd().deposit(input).updateItems().save(true);
 
 		return {
 			content: `**${input.toLocaleString()}** coins deposited. You now have **${nVault.toLocaleString()}** in your vault.`,

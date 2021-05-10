@@ -1,11 +1,12 @@
-import { GuildMember, Collection, Message, MessageOptions, CollectorFilter, MessageCollectorOptions } from 'discord.js';
-import { MemberPlus, UserPlus, Context } from 'lib/extensions';
-import { Command, Item } from 'lib/objects';
+import { Collection, Message, MessageOptions, CollectorFilter, MessageCollectorOptions } from 'discord.js';
+import { MemberPlus, Context, ContextDatabase } from 'lib/extensions';
+import { successMsgs, naniMsgs, failMsgs } from 'src/../assets/arrays/bankrob.json';
+import { Command } from 'lib/objects';
 
 export default class Currency extends Command {
 	constructor() {
 	    super('bankrob', {
-	    	name: 'Bank Rob',
+	    	name: 'Bankrob',
 			aliases: ['bankrob', 'heist'],
 			channel: 'guild',
 			description: "Rob their banks!",
@@ -32,7 +33,7 @@ export default class Currency extends Command {
 			return { replyTo: ctx.id, content: 'LOL imagine pestering bots, shut-' };
 		}
 
-		const vicEntry = await ctx.db.fetch(user.id, false);
+		const vicEntry = await (new ContextDatabase(ctx)).fetch(user.id);
 		const userEntry = await ctx.db.fetch(ctx.author.id);
 		const userCoins = userEntry.data.pocket;
 		let vicCoins = vicEntry.data.vault;
@@ -60,7 +61,7 @@ export default class Currency extends Command {
 			return { replyTo: ctx.id, content: `${padMod.emoji} You almost broke their padlock! Give one more try.` };
 		}
 
-		await userEntry.addCd().save();
+		await userEntry.addCd().save(true);
 		await vicEntry.beingHeisted(true).save();
 		await ctx.send({ content: `**${ctx.author.username}** is starting a heist against **${user.username}**! Type \`JOIN HEIST\` to join in 60 seconds!` });
 		ctx.client.util.curHeist.set(ctx.guild.id, true);
@@ -90,14 +91,12 @@ export default class Currency extends Command {
 			return m.react('🏦');
 		};
 
-		const onEnd = async (col: Collection<string, Context>) => {
-			const ripMsg = '{user} died and lost all their coins';
-			const niceMsg = '{user} got {got} coins EPIC';
-			const nullMsg = '{user} got nothing RIP';
-			const odds = () => ctx.client.util.randomNumber(1, 100);
+		const onEnd = async () => {
+			const { randomNumber, randomInArray } = ctx.client.util;
+			const [ripMsg, niceMsg, nullMsg]: string[] = [failMsgs, successMsgs, naniMsgs].map(randomInArray);
+			const odds = () => randomNumber(1, 100);
 			// s - success; n - nothing; f - fail
 			let s: MemberPlus[] = [], n: MemberPlus[] = [], f: MemberPlus[] = [];
-			let promises: Promise<CurrencyProfile>[] = [];
 			vicEntry.beingHeisted(false);
 			ctx.client.util.curHeist.delete(ctx.guild.id);
 			if (entries.size <= 1) return ctx.reply('Well looks like you\'re alone.');
@@ -116,7 +115,7 @@ export default class Currency extends Command {
 				}));
 
 				await vicEntry.addPocket(min * entries.size).save();
-				return ctx.send({ content: `Everyone failed! ${entries.size} people paid ${user.username} ${min} coins each for an unsuccessful robbery.` });
+				return ctx.send({ content: `**:skull: Everyone failed the heist!** **${entries.size}** people paid **${user.username}** \`${min}\` coins each for an unsuccessful robbery.` });
 			}
 
 			// Odds for each individual idiots who spammed join heist
@@ -140,17 +139,17 @@ export default class Currency extends Command {
 				}))
 			]);
 
-			// message mapping (this probably sucks tbh)
-			const success = s.length >= 1 ? s.map(m => `+ ${niceMsg
-				.replace(/{user}/g, m.user.username)
-				.replace(/{got}/g, coins.toLocaleString())
-			}`) : [];
-			const nothing = n.length >= 1 ? n.map(m => `# ${nullMsg
-				.replace(/{user}/g, m.user.username)
-			}`) : [];
-			const fail = f.length >= 1 ? f.map(m => `- ${ripMsg
-				.replace(/{user}/g, m.user.username)
-			}`) : [];
+			function replace<A extends MemberPlus[], S extends string, P extends string>(arr: A, symb: S, placeholder: P): P[] {
+				return arr.map(m => `${symb} ${placeholder
+					.replace(/{user}/g, m.user.username)
+					.replace(/{got}/g, coins.toLocaleString())
+				}`) as P[];
+			}
+
+			// message mapping
+			const success = s.length >= 1 ? replace(s, '+', niceMsg) : [];
+			const nothing = n.length >= 1 ? replace(n, '#', nullMsg) : [];
+			const fail = f.length >= 1 ? replace(f, '-', ripMsg) : [];
 
 			// final
 			if (success.length >= 1) await vicEntry.withdraw(vicCoins).removePocket(vicCoins).save();

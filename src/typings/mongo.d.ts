@@ -14,6 +14,7 @@ declare global {
 			marriage: MarriageData;
 			lastRan: number;
 			lastCmd: string;
+			cmdsRan: number;
 			userID: Snowflake;
 			banned: boolean;
 			pocket: number;

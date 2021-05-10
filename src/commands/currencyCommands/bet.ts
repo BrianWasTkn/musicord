@@ -103,7 +103,7 @@ export default class Currency extends Command {
 			const ties = botD === userD;
 			const lost = ties ? Math.round(bet / 4) : bet;
 			const { pocket } = await userEntry.addCd().removePocket(lost).updateItems()
-				.calcSpace().updateStats('lost', lost).updateStats('loses').save();
+				.calcSpace().updateStats('lost', lost).updateStats('loses').save(true);
 			// if (!ties) ctx.client.handlers.quest.emit('gambleLose', { cmd: this, ctx });
 
 			identifier = ties ? 'tie' : 'losing';
@@ -119,7 +119,7 @@ export default class Currency extends Command {
 
 			const { pocket } = await userEntry.addCd().addPocket(wngs).updateItems()
 				.calcSpace().updateQuest({ cmd: this, count: 1 }).updateStats('won', wngs)
-				.updateStats('wins').save();
+				.updateStats('wins').save(true);
 
 			identifier = Boolean(extraWngs) ? 'powered' : 'winning';
 			color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
@@ -145,7 +145,7 @@ export default class Currency extends Command {
 				},
 				fields: [
 					{
-						name: `${ctx.author.username}`,
+						name: ctx.author.username,
 						value: `Rolled a \`${userD}\` ${iDiceEffs.length >= 1
 								? iDiceEffs.map((i) => i.emoji).join(' ')
 								: ''
@@ -153,7 +153,7 @@ export default class Currency extends Command {
 						inline: true,
 					},
 					{
-						name: `${ctx.client.user.username}`,
+						name: ctx.client.user.username,
 						value: `Rolled a \`${botD}\``,
 						inline: true,
 					},

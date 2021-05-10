@@ -30,6 +30,8 @@ export default class Currency extends Command {
 		const { item: Handler } = this.client.handlers;
 		const { query } = ctx.args;
 		const items = Handler.modules.array();
+		const entry = await ctx.db.fetch();
+		await entry.save(true);
 
 		if (typeof query === 'number') {
 			const { paginateArray, parseTime } = this.client.util;
@@ -89,7 +91,7 @@ export default class Currency extends Command {
 			return { replyTo: ctx.id, content: "**That item:** doesn't exist" };
 		}
 
-		const { data } = await ctx.db.fetch();
+		const { data } = entry;
 		const inv = query.findInv(data.items, query);
 
 		function calc(amount: number, discount: number) {

@@ -23,6 +23,7 @@ export default class Fun extends Command {
 		const Ring = ctx.client.handlers.item.modules.get('donut');
 		const meEntry = await ctx.db.fetch(), me = meEntry.data;
 		const { someone } = ctx.args;
+		await meEntry.save(true);
 
 		if (!someone) {
 			if (!me.marriage.id) {

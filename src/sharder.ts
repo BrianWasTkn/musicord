@@ -1,8 +1,8 @@
 import { ShardingManager } from 'discord.js';
-import config from 'config/index' ;
 import { join } from 'path';
+import config from 'config/index';
 
-const sharder = new ShardingManager('./index', {
+const sharder = new ShardingManager(join(__dirname, 'index'), {
 	token: config.bot.token,
 	totalShards: 'auto',
 	mode: 'process',
