@@ -49,8 +49,7 @@ export default class Utility extends Command {
 	}
 
 	public async exec(ctx: Context<Help>): Promise<MessageOptions> {
-		await ctx.db.fetch();
-		await ctx.db.save(true);
+		await (await ctx.db.fetch()).save(true);
 		const { parseTime } = ctx.client.util;
 		const { query } = ctx.args;
 

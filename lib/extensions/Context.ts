@@ -90,11 +90,10 @@ export class ContextDatabase extends Base {
 	}
 
 	private async init(userID: string, assign: boolean): Promise<this> {
-		const { fetch } = this.ctx.client.db.currency;
-		const data: CurrencyProfile = await fetch(userID);
+		const data: CurrencyProfile = await this.ctx.client.db.currency.fetch(userID);
 		const temp = new ContextDB(this.ctx);
-		if (assign) temp.data = data;
-		else this.data = data;
+		if (assign) this.data = data;
+		else temp.data = data;
 		return assign ? this : temp as this;
 	}
 
