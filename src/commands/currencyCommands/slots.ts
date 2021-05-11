@@ -80,10 +80,10 @@ export default class Currency extends Command {
 		const slots = Object.entries(this.slotMachine);
 		const doubles = slots.filter(([k, v]) => v[2]);
 		const dWins = doubles.map(([k, v]) => {
-			return `・:${k}: - \`x${v}\``;
+			return `・:${k}: - \`x${v[0]}\``;
 		});
 		const jWins = slots.map(([k, v]) => {
-			return `・:${k}: - \`x${v}\``;
+			return `・:${k}: - \`x${v[1]}\``;
 		});
 
 		return { embed: this.client.util.embed()
