@@ -43,7 +43,7 @@ export abstract class Item extends ModulePlus {
 		return inventory.find((i) => i.id === item.id);
 	}
 
-	public use(msg: Context): PromiseUnion<Handlers.Item.UseReturn> {
+	public use(msg: Context, times?: number): PromiseUnion<Handlers.Item.UseReturn> {
 		return { content: 'This item perhaps, is a work in progress :)' };
 	}
 }

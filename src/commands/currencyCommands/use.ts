@@ -16,12 +16,17 @@ export default class Currency extends Command {
 					id: 'item',
 					type: 'shopItem',
 				},
+				{
+					id: 'times',
+					type: 'number',
+					default: 1
+				}
 			],
 		});
 	}
 
-	async exec(ctx: Context<{ item: Item }>): Promise<MessageOptions> {
-		const { parseTime } = ctx.client.util, { item } = ctx.args;
+	async exec(ctx: Context<{ item: Item, times: number }>): Promise<MessageOptions> {
+		const { parseTime } = ctx.client.util, { item, times } = ctx.args;
 		const userEntry = await ctx.db.fetch(), { data } = userEntry;
 		await userEntry.save(true);
 		if (!item) {
@@ -53,6 +58,6 @@ export default class Currency extends Command {
 		}
 
 		await userEntry.addCd().save();
-		return (await item.use(ctx)) as MessageOptions;
+		return (await item.use(ctx, times)) as MessageOptions;
 	}
 }
