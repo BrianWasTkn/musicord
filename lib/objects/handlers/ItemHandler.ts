@@ -39,7 +39,7 @@ export class ItemHandler<Mod extends Item = Item> extends HandlerPlus<Mod> {
 			loadFilter
 		});
 
-		this.client.once('ready', this.prepare.bind(this));
+		this.client.once('ready', this.prepare);
 	}
 
 	protected prepare(): Promise<NodeJS.Timeout> {
@@ -52,7 +52,7 @@ export class ItemHandler<Mod extends Item = Item> extends HandlerPlus<Mod> {
 		this.saleInterval = interval;
 		this.ticked = false;
 
-		return sleep(interval).then(ms => setInterval(this.tick, ms));
+		return sleep(interval).then(ms => setInterval(this.tick.bind(this), ms));
 	}
 
 	private tick(): this {

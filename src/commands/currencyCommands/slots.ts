@@ -4,6 +4,7 @@ import { Context } from 'lib/extensions';
 import { default as Constants } from 'lib/utility/constants';
 import { Effects, Embed } from 'lib/utility';
 import { Command, Item } from 'lib/objects';
+import { Argument } from 'discord-akairo';
 import config from 'config/index';
 
 export default class Currency extends Command {
@@ -18,7 +19,11 @@ export default class Currency extends Command {
 			args: [
 				{
 					id: 'amount',
-					type: 'gambleAmount',
+					type: Argument.union('gambleAmount', (_, a) => {
+						if (!a) return null;
+						if (a.toLowerCase() === 'table') return a.toLowerCase();
+						return null;
+					}),
 				},
 			],
 		});
@@ -71,13 +76,31 @@ export default class Currency extends Command {
 		return [emoji, ...Array(2).fill(emoji).map(map)];
 	}
 
+	private table(): MessageOptions {
+		const slots = Object.entries(this.slotMachine);
+		const doubles = slots.filter(([k, v]) => v[2]);
+		const dWins = doubles.map(([k, v]) => {
+			return `・:${k}: - \`x${v}\``;
+		});
+		const jWins = slots.map(([k, v]) => {
+			return `・:${k}: - \`x${v}\``;
+		});
+
+		return { embed: this.client.util.embed()
+			.setTitle(`${this.name} Table`)
+			.addField('Doubles', dWins.join('\n'))
+			.addField('Jackpots', jWins.join('\n'))
+			.setColor('BLUE')
+		};
+	}
+
 	/**
 	 * Basically the whole thang
 	 * @param _ a discord message object
 	 * @param args the passed arguments
 	 */
 	async exec(
-		ctx: Context<{ amount: number }>
+		ctx: Context<{ amount: number | string }>
 	): Promise<MessageOptions> {
 		const {
 			util: { effects },
@@ -110,9 +133,12 @@ export default class Currency extends Command {
 				default:
 					return { state: true, m: null };
 			}
-		})(bet);
-		if (!args.state) {
+		})(bet as number);
+		if (!args.state && bet !== 'table') {
 			return { content: args.m, replyTo: ctx.id };
+		}
+		if (bet === 'table') {
+			return this.table();
 		}
 
 		// Item Effects
@@ -135,7 +161,7 @@ export default class Currency extends Command {
 		const emojis = Object.keys(this.slotMachine);
 		const order = this.roll(emojis, slots);
 		const outcome = `**>** :${order.join(':    :')}: **<**${iSlotEffs.length > 0 ? ` ${iSlotEffs.map(e => e.emoji).join(' ')}` : ''}`;
-		let { length, winnings } = this.calcWinnings(bet, order);
+		let { length, winnings } = this.calcWinnings(bet as number, order);
 
 		// Shit
 		let description: string = '';
@@ -152,11 +178,11 @@ export default class Currency extends Command {
 			color = jackpot ? (slots ? 'BLUE' : 'GOLD') : 'GREEN';
 			state = jackpot ? (slots ? 'powered' : 'jackpot') : 'winning';
 			description += `\n\nYou won **${winnings.toLocaleString()}**`;
-			description += `\n**Multiplier** \`x${Math.round(winnings / bet).toLocaleString()}\``;
+			description += `\n**Multiplier** \`x${Math.round(winnings / (bet as number)).toLocaleString()}\``;
 			description += `\nYou now have **${pocket.toLocaleString()}**`;
 		} else {
-			const { pocket } = await userEntry.addCd().removePocket(bet).updateItems()
-				.calcSpace().updateStats('lost', bet).updateStats('loses').save(true);
+			const { pocket } = await userEntry.addCd().removePocket(bet as number).updateItems()
+				.calcSpace().updateStats('lost', bet as number).updateStats('loses').save(true);
 			ctx.client.handlers.quest.emit('gambleLost', { cmd: this, ctx });
 			color = 'RED'; state = 'losing';
 			description += `\n\nYou lost **${bet.toLocaleString()}**`;

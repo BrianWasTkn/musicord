@@ -38,7 +38,7 @@ export default class Currency extends Command {
 						author: { name: ctx.client.user.username },
 						color: 'ORANGE',
 					},
-					replyTo: ctx,
+					replyTo: ctx.id,
 				};
 			case odds >= 0.5:
 				const won = util.randomNumber(10, 5000);
@@ -49,7 +49,7 @@ export default class Currency extends Command {
 						author: { name: 'Rich Ashley' },
 						color: 'ORANGE',
 					},
-					replyTo: ctx,
+					replyTo: ctx.id,
 				};
 			default:
 				await userEntry.addCd().save(true);
@@ -59,7 +59,7 @@ export default class Currency extends Command {
 						author: { name: ctx.client.user.username },
 						color: 'ORANGE',
 					},
-					replyTo: ctx,
+					replyTo: ctx.id,
 				};
 		}
 	}

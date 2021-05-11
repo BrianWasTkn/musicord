@@ -41,7 +41,7 @@ export default class Dev extends Command {
 		const run = async (retry: boolean) => {
 			if (!retry) await ctx.send({ content: 'Started a REPL session' });
 			const msg: Context = await this._collect(ctx);
-			if (msg.content.toLowerCase().includes('.exit') || !msg.content) {
+			if (!msg || !msg.content || msg.content.toLowerCase().includes('.exit')) {
 				return ctx.send({ content: 'Exiting REPL...' });
 			}
 

@@ -1,20 +1,20 @@
 {
 	"successMsgs": [
-		"{user} claimed their {got} coins",
+		"{user} got {got} coins",
 		"{user} escaped with {got} coins",
-		"{user} was blessed with {got} coins",
-		"{got} coins were procured by {user}",
-		"lmao {user} you bagged {got} coins"
+		"{user} ate {got} coins",
+		"{user} said 1 + 1 is {got}",
+		"{user} bagged {got} coins"
 	],
 	"failMsgs": [
 		"{user} stepped on a landmine and died",
-		"{user} came from a fatal accident and died eventually",
-		"{user} got stuck from the glue and died from eating it",
-		"The clown turned out to be a killer clown and ate {user}"
+		"{user} crashed their plane and died",
+		"{user} died from sinking on quicksand",
+		"{user} got bitten by a venomous snake and slowly ate their soul"
 	],
 	"naniMsgs": [
-		"{user} have been dancing with the god mother for 12 hours straight",
-		"{user} bought McDonalds for free and donated it for charity",
-		"{user} got lost in space and got sucked from the black hole"
+		"{user} danced with the fair god mother instead",
+		"{user} bought McDonalds and danced with ronald McClown",
+		"{user} got sucked from the black hole"
 	]
 }

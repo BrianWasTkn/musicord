@@ -77,15 +77,15 @@ export default class Currency extends Command {
 			const remove = (id: string) => entries.delete(id);
 			entries.set(m.id, m);
 			if (entries.filter(e => e.author.id === m.author.id).size > 1) {
-				remove(m.id); return m.send({ replyTo: m.id, content: 'You already joined bruh' });
+				remove(m.id); return m.reply('You already joined bruh');
 			}
 			if (m.author.id === user.id) {
-				remove(m.id); return m.send({ replyTo: m.id, content: `You ain't allowed to join because you're being heisted HAHAHAHA` });
+				remove(m.id); return m.reply(`You ain't allowed to join because you're being heisted HAHAHAHA`);
 			}
 
 			const entry = await ctx.db.fetch(m.author.id, false);
 			if (entry.data.pocket < min) {
-				remove(m.id); return m.send({ replyTo: m.id,  content: `You need ${min} coins to join LMAO` });
+				remove(m.id); return m.reply(`You need ${min} coins to join LMAO`);
 			}
 
 			await entry.removePocket(min).save();
@@ -97,7 +97,7 @@ export default class Currency extends Command {
 			const [ripMsg, niceMsg, nullMsg]: string[][] = [failMsgs, successMsgs, naniMsgs];
 			const odds = () => randomNumber(1, 100);
 			// s - success; n - nothing; f - fail
-			let s: MemberPlus[] = [], n: MemberPlus[] = [], f: MemberPlus[] = [];
+			const [s, n, f]: MemberPlus[][] = Array(3).fill([]);
 			vicEntry.beingHeisted(false);
 			ctx.client.util.curHeist.delete(ctx.guild.id);
 			if (entries.size <= 1) return ctx.reply('Well looks like you\'re alone.');
@@ -116,7 +116,7 @@ export default class Currency extends Command {
 				}));
 
 				await vicEntry.addPocket(min * entries.size).save();
-				return ctx.send({ content: `**:skull: Everyone failed the heist!** **${entries.size}** people paid **${user.username}** \`${min}\` coins each for an unsuccessful robbery.` });
+				return ctx.send({ content: `**:skull: Everyone failed the heist!**\n**${entries.size}** people paid **${user.username}** \`${min}\` coins each for an unsuccessful robbery.` });
 			}
 
 			// Odds for each individual idiots who spammed join heist

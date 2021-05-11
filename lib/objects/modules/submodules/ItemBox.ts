@@ -4,6 +4,7 @@ import { Item } from '../..';
 interface BoxOptions extends Constructors.Modules.Item {
 	contents?: {
 		coins?: [number, number];
+		tiers?: [number, number];
 		keys?: number;
 	}
 }
@@ -55,14 +56,14 @@ export abstract class Box extends Item {
 		const items: Item[] = [random(modules, i => i.cost >= 1e5)];
 		const amounts: number[] = [randomNumber.apply(null, tiers[items[0].tier] as [number, number])];
 
-		const { coins: cCoins, keys: kKeys } = this.contents;
+		const { coins: cCoins, keys: kKeys, tiers: tTiers } = this.contents;
 		const multi = utils.calcMulti(ctx, ctx.db.data);
 		let coins = randomNumber(cCoins[0], cCoins[1]);
 		let keys = kKeys + (kKeys * (multi.total / 100));
 
-		const itemTiers = modules.filter(mod => mod.tier === this.tier);
+		const itemTiers = modules.filter(mod => mod.tier === randomInArray(tTiers));
 		for (let i = 0; i < randomNumber(1, itemTiers.length); i++) {
-			const item = randomInArray(itemTiers.filter(mod => !mod.premium || !items.some(i => i.id === mod.id)));
+			const item = randomInArray(itemTiers.filter(mod => !mod.premium).filter(mod => !items.some(i => i.id === mod.id)));
 			const amt = randomNumber.apply(null, tiers[item.tier]);
 			items.push(item); amounts.push(amt);
 		}
@@ -77,7 +78,7 @@ export abstract class Box extends Item {
 		Array(items.length).fill(null).forEach((_, i) => ctx.db.addInv(items[i].id, amounts[i]));
 		await ctx.db.removeInv(this.id).addPocket(coins).addPremiumKeys(Math.round(keys)).updateItems().save();
 		await sleep(randomNumber(2, 10) * 1e3);
-		return { content: `**__${this.emoji} ${this.name} contents for ${ctx.author.username}__**\n${contents}` };
+		return { replyTo: ctx.id, content: `**__${this.emoji} ${this.name} contents for ${ctx.author.username}__**\n${contents}` };
 	}
 }
 
