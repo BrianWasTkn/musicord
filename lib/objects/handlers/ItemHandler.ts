@@ -39,7 +39,7 @@ export class ItemHandler<Mod extends Item = Item> extends HandlerPlus<Mod> {
 			loadFilter
 		});
 
-		this.client.once('ready', this.prepare);
+		this.client.once('ready', this.prepare.bind(this));
 	}
 
 	protected prepare(): Promise<NodeJS.Timeout> {
