@@ -47,7 +47,7 @@ export abstract class Box extends Item {
 		const { util: { sleep, randomNumber, randomInArray }, db: { currency: { utils } } } = ctx.client;
 		const modules = [...this.handler.modules.values()];
 		const random = (arr: Item[], filter: (item: Item) => boolean) => {
-			const items = arr.filter(filter).filter(i => !i.premium);
+			const items = arr.filter(i => !i.premium).filter(filter);
 			return randomInArray(items);
 		};
 

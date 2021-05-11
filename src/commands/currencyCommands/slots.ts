@@ -60,7 +60,7 @@ export default class Currency extends Command {
 		if (odds > 145 - oddRdce) {
 			return Array(3).fill(emoji);
 		}
-		if (odds > 100 - Math.floor(oddRdce / 2)) {
+		if (odds > 120 - Math.floor(oddRdce / 2)) {
 			const emjis = Array(3).fill(emoji);
 			const ind = randomNumber(1, emjis.length) - 1;
 			emjis[ind] = randomInArray(emojis.filter((e) => e !== emoji));
@@ -80,10 +80,10 @@ export default class Currency extends Command {
 		const slots = Object.entries(this.slotMachine);
 		const doubles = slots.filter(([k, v]) => v[2]);
 		const dWins = doubles.map(([k, v]) => {
-			return `・:${k}: - \`x${v[0]}\``;
+			return `・:${k}::${k}: - \`x${v[0]}\``;
 		});
 		const jWins = slots.map(([k, v]) => {
-			return `・:${k}: - \`x${v[1]}\``;
+			return `・:${k}::${k}::${k}: - \`x${v[1]}\``;
 		});
 
 		return { embed: this.client.util.embed()
