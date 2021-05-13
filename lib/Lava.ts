@@ -56,7 +56,7 @@ interface Handlers {
 	item: ItemHandler<Item>;
 }
 
-interface HandlerConstructor {
+export interface HandlerConstructor {
 	inhibitor: Constructors.Handlers.Inhibitor;
 	listener: Constructors.Handlers.Listener;
 	command: Constructors.Handlers.Command;
