@@ -50,8 +50,8 @@ export default class Utility extends Command {
 
 		return Object.entries(entries).map(([cat, cmds]) => ({
 			name: `${emojis[cat]} • ${cat} Commands`,
-			value: `\`${(this.handler.prefix as string[])[0]} help ${cat.toLowerCase()}\``,
-			inline: false,
+			value: `\`${(this.handler.prefix as string[])[0]} help ${cat.toLowerCase()}\`\n[Hover for more info](https://google.com '${cmds.length} Commands')`,
+			inline: true,
 		}));
 	}
 
@@ -65,9 +65,9 @@ export default class Utility extends Command {
 			const cmd = query as Command;
 			const fields = Object.entries({
 				'Triggers': `\`${cmd.aliases.join('`, `')}\``,
-				'Cooldown': `**${parseTime((cmd.cooldown || 1e3) / 1e3)}**`,
+				'Cooldown': parseTime((cmd.cooldown || 1e3) / 1e3, true),
 				'Category': cmd.category.id,
-				'Bot Perms': `\`${['SEND_MESSAGES'].concat((cmd.clientPermissions as string[]) || []).join('`, `')}\``,
+				'Permissions': `\`${['SEND_MESSAGES'].concat((cmd.userPermissions as string[]) || []).join('`, `')}\``,
 			}).map(([name, value]) => ({ inline: false, name, value }));
 
 			return {
@@ -108,7 +108,7 @@ export default class Utility extends Command {
 			embed: {
 				footer: { text: `${this.handler.modules.size} Commands  •  Version ${bot.version}`, iconURL: ctx.client.user.avatarURL() },
 				title: `${ctx.client.user.username} Commands`, color: 'ORANGE', fields: this.mapCommands(ctx.client.isOwner(ctx.author.id)),
-				thumbnail: { url: ctx.client.user.avatarURL() }, description: bot.description,
+				description: bot.description,
 			}
 		};
 	}
