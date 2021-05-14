@@ -328,7 +328,7 @@ export class ContextDatabase extends Base {
 				if (trigger[item.id]) trigger[item.id]();
 			} else if (item.checks.includes('time') && inv.expire > Date.now()) {
 				if (trigger[item.id]) trigger[item.id]();
-			} else if (item.checks.includes('presence')) { 
+			} else if (item.checks.includes('presence') && inv.amount >= 1) { 
 				if (Math.random() < 0.1 && item.id === 'dragon') inv.amount--;
 			} else { continue loop; }
 
