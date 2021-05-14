@@ -59,7 +59,7 @@ export default class Currency extends Command {
 		inv = data.items.filter((i) => i.amount >= 1);
 		total = inv.reduce((e, a) => a.amount + e, 0);
 		if (inv.length < 1) {
-			return { replyTo: ctx.id, content: `${memb.user.id === ctx.author.id ? 'you' : 'they'} don't have items in their inventory!` };
+			return { replyTo: ctx.id, content: `${memb.user.id === ctx.author.id ? 'you' : 'they'} don't have items in ${memb.user.id === ctx.author.id ? 'your' : 'their'} inventory!` };
 		}
 
 		inv = util.paginateArray(
