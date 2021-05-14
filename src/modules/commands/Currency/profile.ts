@@ -34,37 +34,37 @@ export default class Currency extends Command {
 		// calc the percents
 		function calc(number: number, base: number) {
 			switch(true) {
-				case number >= base * 1:
-					return 10;
-				case number >= base * 0.9:
-					return 9;
+				case number >= base * 0:
+					return 0;
+				case number >= base * 0.1:
+					return 1;
+				case number >= base * 0.2:
+					return 2;
+				case number >= base * 0.3:
+					return 3;
+				case number >= base * 0.4:
+					return 4;
+				case number >= base * 0.5:
+					return 5;
+				case number >= base * 0.6:
+					return 6;
+				case number >= base * 0.7:
+					return 7;
 				case number >= base * 0.8:
 					return 8;
 				case number >= base * 0.7:
-					return 7;
-				case number >= base * 0.6:
-					return 6;
-				case number >= base * 0.5:
-					return 5;
-				case number >= base * 0.4:
-					return 4;
-				case number >= base * 0.3:
-					return 3;
-				case number >= base * 0.2:
-					return 2;
-				case number >= base * 0.1:
-					return 1;
-				default:
-					return 0;
+					return 9;
+				case number >= base * 1:
+					return 10;
 			}
 		}
 
 		// Level
-		let level: string | number = (stats.xp / 1e3) > 0 ? Math.round(stats.xp / 1e3) : 0;
+		let level: string | number = (stats.xp / 1e2) > 0 ? Math.round(stats.xp / 1e0) : 0;
 		let reusableLevel = level = Math.min(Caps.MAX_LEVEL, level);
 		level = `**${level}**\n[${progressBar(calc(level, 1000))}](https://google.com)`;
 		// XP
-		let xp = `**${stats.xp} / ${(reusableLevel + 1) * 100}**\n[${progressBar(calc(Number(/\d\d$/gi.exec(stats.xp.toString())[0]), 10000))}](https://google.com)`;
+		let xp = `**${stats.xp} / ${(reusableLevel + 1) * 100}**\n[${progressBar(calc(Number(/\d\d$/gi.exec(stats.xp.toString())[0]), 100))}](https://google.com)`;
 		// Coins
 		let coins = [
 			`**${pocket.toLocaleString()}** in pocket`,
