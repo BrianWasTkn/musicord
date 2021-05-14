@@ -82,7 +82,7 @@ export default class Currency extends Command {
 		// solo wins
 		const sWins = slots.map(([k, v], i) => {
 			return i === slots.length - 1
-				? `・ :${k} — \`x${v[i]}\``
+				? `・ :${k}: — \`x${v[slots.length - 1]}\``
 				: undefined;
 		}).filter(Boolean);
 		const dWins = doubles.map(([k, v]) => {
@@ -93,11 +93,8 @@ export default class Currency extends Command {
 		});
 
 		return { embed: this.client.util.embed()
-			.setTitle(`${this.name} Table`)
-			.addField('Singles', sWins.join('\n'))
-			.addField('Doubles', dWins.join('\n'))
-			.addField('Jackpots', jWins.join('\n'))
-			.setColor('BLUE')
+			.setDescription([...sWins, ...dWins, ...jWins].join('\n'))
+			.setTitle(`${this.name} Table`).setColor('BLUE')
 		};
 	}
 
