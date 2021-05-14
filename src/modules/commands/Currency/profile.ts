@@ -86,7 +86,7 @@ export default class Currency extends Command {
 			`**${(stats.won - stats.lost).toLocaleString()}** net`,
 			`**${stats.won.toLocaleString()}** coins won`,
 			`**${stats.lost.toLocaleString()}** coins lost`,
-			`**${(stats.won / (stats.won + stats.lost)).toLocaleString()}%** rate`
+			`**${(100 * (stats.won / (stats.won + stats.lost))).toFixed(1)}%** rate`
 		];
 		// Active Items
 		let activeItems = items.filter((i) => i.expire > ctx.createdTimestamp)
