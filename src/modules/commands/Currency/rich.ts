@@ -47,7 +47,7 @@ export default class Currency extends Command {
 				return ({ u: u as UserPlus, pocket });
 			});
 			const rich = nice
-				.filter((n) => !n.o.bot)
+				.filter((n) => !n.u.bot)
 				.map((n, i) =>
 					`:${
 						emojis[i] || randomInArray(mjs)

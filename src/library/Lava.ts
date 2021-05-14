@@ -16,14 +16,11 @@ import {
 	LotteryHandler, ModulePlus,
 	ListenerHandler, Listener,
 	CommandHandler, Command,
-	ArgumentHandler, Arg,
 	SpawnHandler, Spawn,
 	QuestHandler, Quest,
 	ItemHandler, Item,
+	ArgHandler, Arg,
 } from './objects';
-import {
-	TypeFunction
-} from 'lib/objects';
 
 // def imports
 import CurrencyFunc from './mongo/currency/functions';
@@ -50,7 +47,7 @@ interface DB {
 interface Handlers {
 	inhibitor: InhibitorHandler<Inhibitor>;
 	listener: ListenerHandler<Listener<Lava>>;
-	argument: ArgumentHandler<Arg>;
+	argument: ArgHandler<Arg>;
 	command: CommandHandler<Command>;
 	lottery: LotteryHandler;
 	spawn: SpawnHandler<Spawn>;
@@ -105,7 +102,7 @@ export class Lava extends AkairoClient {
 		this.handlers = {
 			inhibitor: new InhibitorHandler<Inhibitor>(this, handlers.inhibitor),
 			listener: new ListenerHandler<Listener<this>>(this, handlers.listener),
-			argument: new ArgumentHandler<Arg>(this, handlers.argument),
+			argument: new ArgHandler<Arg>(this, handlers.argument),
 			command: new CommandHandler<Command>(this, handlers.command),
 			spawn: new SpawnHandler<Spawn>(this, handlers.spawn),
 			quest: new QuestHandler<Quest>(this, handlers.quest),
