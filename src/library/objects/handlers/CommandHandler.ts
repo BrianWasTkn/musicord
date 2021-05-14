@@ -691,7 +691,6 @@ export class CommandHandler<Mod extends Command = Command> extends HandlerPlus<M
         
         await this.cmdQueue.wait(ctx.author.id);
         await ctx.db.fetch(ctx.author.id, true);
-        await ctx.db.save(true, true);
         if (this.commandTyping || cmd.typing) {
             ctx.channel.startTyping();
         }
@@ -702,6 +701,7 @@ export class CommandHandler<Mod extends Command = Command> extends HandlerPlus<M
                 const returned = await cmd.exec(ctx, ctx.db);
                 this.emit(Events.COMMAND_FINISHED, ctx, cmd, args, returned);
                 if (returned) await ctx.send(returned);
+                await ctx.db.save(true, true);
             } catch (error) {
                 this.emit('commandError', ctx, cmd, args, error);
             } finally {
