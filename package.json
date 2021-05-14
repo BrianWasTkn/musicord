@@ -1,6 +1,6 @@
 {
     "name": "lava",
-    "version": "2.19.5",
+    "version": "2.19.7",
     "description": "A simple currency bot with database support.",
     "main": "build/src/index",
     "author": {
@@ -14,9 +14,9 @@
         "format": "prettier --write ."
     },
     "_moduleAliases": {
-        "config": "./build/config",
-        "src": "./build/src",
-        "lib": "./build/lib"
+        "config": "./build/src/config",
+        "lib": "./build/src/library",
+        "src": "./build/src"
     },
     "license": "MIT",
     "dependencies": {

@@ -11,6 +11,7 @@ declare global {
 	//# Handlers
 	namespace Constructors.Handlers {
 		interface Inhibitor extends HandlerPlusOptions {}
+		interface Argument extends HandlerPlusOptions {}
 		interface Listener extends HandlerPlusOptions {}
 		interface Command extends HandlerPlusOptions, CommandHandlerOptions {}
 		interface Spawn extends HandlerPlusOptions {}
@@ -22,6 +23,7 @@ declare global {
 	namespace Constructors.Modules {
 		interface Inhibitor extends ModulePlusOptions, InhibitorOptions {}
 		interface Listener extends ModulePlusOptions, ListenerOptions {}
+		interface Argument extends ModulePlusOptions {}
 		interface Command extends ModulePlusOptions, CommandOptions {}
 		interface Spawn extends ModulePlusOptions {
 			visual: Handlers.Spawn.Visual;

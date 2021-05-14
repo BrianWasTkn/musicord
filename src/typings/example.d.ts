@@ -3,7 +3,7 @@
  * @author BrianWasTaken
 */
 
-interface User {
+interface IUser {
 	name: string;
 	age: number;
 }
