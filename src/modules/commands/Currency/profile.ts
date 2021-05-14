@@ -31,12 +31,40 @@ export default class Currency extends Command {
 		const { data } = entry, { pocket, vault, stats, items } = data;
 		const { parseTime, toRoman, progressBar } = ctx.client.util;
 
+		// calc the percents
+		function calc(number: number, base: number) {
+			switch(true) {
+				case number >= base * 0.99:
+					return 10;
+				case number >= base * 0.9:
+					return 9;
+				case number >= base * 0.8:
+					return 8;
+				case number >= base * 0.7:
+					return 7;
+				case number >= base * 0.6:
+					return 6;
+				case number >= base * 0.5:
+					return 5;
+				case number >= base * 0.4:
+					return 4;
+				case number >= base * 0.3:
+					return 3;
+				case number >= base * 0.2:
+					return 2;
+				case number >= base * 0.1:
+					return 1;
+				default:
+					return 0;
+			}
+		}
+
 		// Level
 		let level: string | number = (stats.xp / 1e3) > 0 ? Math.round(stats.xp / 1e3) : 0;
 		level = Math.min(Caps.MAX_LEVEL, level);
-		level = `**${level}**\n[${progressBar(Math.round(level / 100))}](https://google.com)`;
+		level = `**${level}**\n[${progressBar(calc(level, 1000))}](https://google.com)`;
 		// XP
-		let xp = `**${stats.xp}**\n[${progressBar(Math.round(stats.xp / 10000))}](https://google.com)`;
+		let xp = `**${stats.xp} / ${(Math.trunc(stats.xp / 100) * 100) + 1}**\n[${progressBar(calc(stats.xp, 10000))}](https://google.com)`;
 		// Coins
 		let coins = [
 			`**${pocket.toLocaleString()}** in pocket`,
@@ -46,7 +74,7 @@ export default class Currency extends Command {
 		// Multis
 		let multis = `**${ctx.client.db.currency.utils.calcMulti(ctx, data).total}** out of **${Caps.MAX_MULTI}** found`;
 		// Win rate
-		let winRate = `**${(stats.wins / (stats.wins + stats.loses)).toFixed(1)}%** win rate`;
+		let winRate = `**${(100 * (stats.wins / (stats.wins + stats.loses))).toFixed(1)}%** win rate`;
 		// Games Played
 		let gamesPlayed = [
 			`**${(stats.wins + stats.loses).toLocaleString()}** games`,
