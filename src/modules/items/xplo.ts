@@ -11,7 +11,7 @@ export default class PowerUp extends Item {
 			usable: true,
 			emoji: ':bomb:',
 			name: "Xplosive's Bomb",
-			cost: 100000,
+			cost: 1500000,
 			tier: 2,
 			info: {
 				short: 'Get sweet treats by giving a fuck about everything!',
@@ -37,13 +37,13 @@ export default class PowerUp extends Item {
 			const mods = this.client.handlers.item.modules.array().filter(i => !i.premium || i.cost <= 5e5);
 			const items: Slot[] = [{ amt: 1, item: this }];
 			type Slot = { amt?: number; item?: Item };
-			const coins = randomNumber(1, 10) * 1e6;
+			const coins = randomNumber(1, 100) * 1e3;
 			ctx.db.removeInv(this.id);
 
 			for (let e = 0; e < randomNumber(1, 3); e++) {
 				const filter = (m: Item) => !items.some((it) => it.item.id === m.id);
 				const item = randomInArray(mods.filter(i => !i.premium).filter(filter));
-				const amt = randomNumber(1, 10);
+				const amt = randomNumber(1, 5);
 				items.push({ amt, item });
 			}
 

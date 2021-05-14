@@ -12,7 +12,7 @@ export default class Flex extends Item {
 			usable: true,
 			emoji: ':baby_bottle:',
 			name: "Jenni's Piss",
-			cost: 1000,
+			cost: 10,
 			tier: 1,
 			info: {
 				short: 'Use it to surprise somebody!',

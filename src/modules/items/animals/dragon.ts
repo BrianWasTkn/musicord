@@ -13,7 +13,7 @@ export default class PowerUp extends Item {
 			name: "Lava's Dragon",
 			cost: 65000,
 			tier: 3,
-			checks: ['activeState'],
+			checks: ['presence'],
 			info: {
 				short: 'Grants you a great luck in rolling a dice whilst gambling!',
 				long:

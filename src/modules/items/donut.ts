@@ -11,7 +11,7 @@ export default class Flex extends Item {
 			usable: true,
 			emoji: ':doughnut:',
 			name: 'Donut Ring',
-			cost: 250e6,
+			cost: 5000000,
 			tier: 3,
 			info: {
 				short: 'They say this item is the key for a great relationship.',

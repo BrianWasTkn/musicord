@@ -309,30 +309,26 @@ export class ContextDatabase extends Base {
 
 	updateItems() {
 		const { util: { effects }, handlers: { item: handler } } = this.client;
-		const items = [...handler.modules.values()];
 		const call = () => new Effects();
 		const eff = call();
 
 		loop:
-		for (const item of items) {
+		for (const item of handler.modules.values()) {
 			const inv = item.findInv(this.data.items, item);
 			const trigger: { [it: string]: () => Effects } = {
 				brian: () => eff.addSlotJackpotOdd(5),
 				crazy: () => eff.addSlotJackpotOdd(5),
 				thicc: () => eff.addGambleWinnings(0.5),
 				thicm: () => eff.addBlackjackWinnings(0.5),
-				trophy: () => eff.addGambleWinnings(0.5)
-					.addBlackjackWinnings(0.5),
-				dragon: () => eff.addDiceRoll(1)
-					.addBlackjackWinnings(1)
-					.addGambleWinnings(1),
+				dragon: () => eff.addDiceRoll(1),
 			};
 
 			if (item.checks.includes('activeState') && inv.active) {
 				if (trigger[item.id]) trigger[item.id]();
-				if (Math.random() < 0.1 && item.id === 'dragon') inv.amount--;
 			} else if (item.checks.includes('time') && inv.expire > Date.now()) {
 				if (trigger[item.id]) trigger[item.id]();
+			} else if (item.checks.includes('presence')) { 
+				if (Math.random() < 0.1 && item.id === 'dragon') inv.amount--;
 			} else { continue loop; }
 
 			const temp = new Collection<string, Effects>();

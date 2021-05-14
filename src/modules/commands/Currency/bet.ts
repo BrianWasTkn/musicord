@@ -71,7 +71,7 @@ export default class Currency extends Command {
 		const iDiceEffs: Item[] = [];
 		let extraWngs: number = 0;
 		let dceRoll: number = 0;
-		for (const it of ['thicc', 'brian', 'dragon', 'trophy']) {
+		for (const it of ['thicc', 'brian', 'dragon']) {
 			const userEf = effects.get(ctx.author.id);
 			if (!userEf) {
 				const col = new Collection<string, Effects>().set(it, new Effects());
@@ -126,8 +126,7 @@ export default class Currency extends Command {
 			color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
 			description = [
 				`You won **${wngs.toLocaleString()}**\n`,
-				`**Percent Won** \`${perwn}%\`${extraWngs ? ` — \`(${Math.round(perwn - (extraWngs * 100))}% original)\`` : ''
-				}`,
+				`**Percent Won** ${perwn}%${extraWngs ? ` — (${Math.round(perwn - (extraWngs * 100))}% original)` : ''}`,
 				`You now have **${pocket.toLocaleString()}**`,
 			];
 		}

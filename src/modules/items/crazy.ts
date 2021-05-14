@@ -11,22 +11,22 @@ export default class PowerUp extends Item {
 			usable: true,
 			emoji: ':beers:',
 			name: "Crazy's Alcohol",
-			cost: 250000,
+			cost: 25000,
 			tier: 2,
 			checks: ['time'],
 			info: {
 				short:
 					'Grants you a great amount of luck while playing the slot machine!',
 				long:
-					"Gives you a 10% chance of getting jackpot on slots! Only lasts for 10 minutes since you're just a normie.",
+					"Gives you a 5% chance of getting jackpot on slots! Only lasts for 69 seconds.",
 			},
 		});
 	}
 
 	async use(ctx: Context): Promise<MessageOptions> {
 		const { parseTime } = ctx.client.util;
-		const time = 10 * 60 * 1000, expire = Date.now() + time;
+		const time = 69 * 1000, expire = Date.now() + time;
 		await ctx.db.updateInv(this.id, { expire }).removeInv(this.id).updateItems().save();
-		return { replyTo: ctx.id, content: `You now have a **10%** jackpot chance for ${parseTime(time / 1e3)}!` };
+		return { replyTo: ctx.id, content: `You now have a **15%** jackpot chance for ${parseTime(time / 1e3)}!` };
 	}
 }

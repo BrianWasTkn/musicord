@@ -17,7 +17,7 @@ export default class Powerflex extends Item {
 			info: {
 				short: 'Grants you a great amount of luck on gamble and slots!',
 				long:
-					'Gives up to 50% multiplier and a 5% jackpot chance in slots for 10 minutes.',
+					'Gives up to 50% multiplier and a 5% jackpot chance in slots for 5 minutes.',
 			},
 		});
 	}

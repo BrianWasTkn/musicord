@@ -89,7 +89,7 @@ export const utils: CurrencyUtil = {
 	const trophy = trophyItem.findInv(db.items);
 	multis++;
 	if (trophy.amount >= 1) {
-	  let m = 100/* * trophy.amount*/; total += m;
+	  let m = 30/* * trophy.amount*/; total += m;
 	  unlocked.push(`${trophyItem.name} — \`${m}%\``);
 	}
 	multis++;

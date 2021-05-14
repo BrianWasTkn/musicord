@@ -12,12 +12,12 @@ export default class PowerUp extends Item {
 			usable: true,
 			emoji: ':credit_card:',
 			name: "Porsche's Card",
-			cost: 600000,
+			cost: 150000,
 			tier: 3,
 			info: {
 				short: 'Expand your vault capacity for more coin space.',
 				long:
-					"Increases your vault capacity from 10K up to 30K coins or sell it for coins, it's your choice really.",
+					"Increases your vault capacity from 5K up to 25K coins or sell it for coins, it's your choice really.",
 			},
 		});
 	}
@@ -45,7 +45,7 @@ export default class PowerUp extends Item {
 		}
 
 		let gain: number[] | number;
-		gain = Array(choice).fill(null).map(() => util.randomNumber(1e4, 3e4)).reduce((p, c) => p + c);
+		gain = Array(choice).fill(null).map(() => util.randomNumber(5e3, 25e3)).reduce((p, c) => p + c);
 		const data = await ctx.db.expandSpace(gain).removeInv(this.id, choice)
 			.updateQuest({ cmd: ctx.client.handlers.command.modules.get('use'), count: gain })
 			.updateItems().save();

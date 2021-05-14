@@ -8,16 +8,15 @@ export default class Tool extends Item {
 			category: 'Tool',
 			sellable: false,
 			buyable: true,
-			premium: true,
+			premium: false,
 			usable: false,
 			emoji: ':crown:',
-			name: "Royal Crown",
-			cost: 5000,
+			name: "Crown",
+			cost: 20000000,
 			tier: 3,
-			checks: ['time'],
 			info: {
-				short: 'Wear this to enchant your robbing skills!',
-				long: 'Has a 100% chance of breaking someone\'s padlock!',
+				short: 'Gives you a bit of protection against pesky robbers!',
+				long: 'Gives you 10% steal shields against robbers.',
 			},
 		});
 	}

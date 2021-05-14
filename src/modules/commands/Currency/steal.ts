@@ -48,7 +48,7 @@ export default class Currency extends Command {
 		const hahayes = padMod.findInv(vicEntry.data.items);
 		let odds = ctx.client.util.randomNumber(1, 100);
 		if (hahayes.expire > Date.now()) {			
-			if (odds >= 60) {
+			if (odds >= 40) {
 				await vicEntry.updateInv(padMod.id, { active: false, expire: 0 }).save();
 				return { replyTo: ctx.id, content: `**${padMod.emoji} You broke their padlock!**\nGive one more attempt for a robbery!` };
 			}
