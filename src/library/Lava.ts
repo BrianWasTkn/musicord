@@ -118,7 +118,7 @@ export class Lava extends AkairoClient {
 
 	public addTypes() {
 		for (const arg of this.handlers.argument.modules.values()) {
-			this.handlers.command.resolver.addType(arg.id, arg.exec as (
+			this.handlers.command.resolver.addType(arg.id, arg.exec.bind(arg) as (
 				(m: Message, p: string) => any)
 			);
 		}

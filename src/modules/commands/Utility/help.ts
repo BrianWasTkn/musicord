@@ -50,7 +50,7 @@ export default class Utility extends Command {
 
 		return Object.entries(entries).map(([cat, cmds]) => ({
 			name: `${emojis[cat]} • ${cat} Commands`,
-			value: `\`${(this.handler.prefix as string[])[0]} help ${cat.toLowerCase()}\`\n[Hover for more info](https://google.com '${cmds.length} Commands')`,
+			value: `\`${(this.handler.prefix as string[])[0]} help ${cat.toLowerCase()}\`\n[Hover for info](https://google.com '${cmds.length} Commands')`,
 			inline: true,
 		}));
 	}
