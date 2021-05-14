@@ -17,9 +17,9 @@ export default class CommandListener extends Listener<CommandHandler<Command>> {
 			await this.client.channels.fetch('789692296094285825')
 		) as TextChannel;
 		const embed = this.client.util.embed()
-			.setDescription(`Command \`${cmd.aliases[0]}\` failed to run. The error has been reported to the bot owner and is pending for a fix. Please stand by.`)
-			.setTitle('Command Error', ctx.url).setColor('RED').setFooter(true, ctx.client.user.username, ctx.client.user.avatarURL())
-			.addField('Error Message', error.message, false);
+			.setDescription(`Command \`${cmd.aliases[0]}\` failed to run. The error has been reported to the bot owner and is pending for a fix. If you encounter any bugs or issues with the bot, please ping the owner for the bug. Thank you.`)
+			.setTitle('Command Error', ctx.url).setColor('BLUE').setFooter(true, ctx.client.user.username, ctx.client.user.avatarURL())
+			.addField('Error Message', '```js\n' + error.message + '\n```', false);
 
 		await ctx.send({ embed, replyTo: ctx.id });
 		embed.setColor('BLUE')
