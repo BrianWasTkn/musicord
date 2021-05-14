@@ -32,14 +32,14 @@ export default class Currency extends Command {
 	private get slotMachine() {
 		return {
 			broken_heart: [1, 3, false],
-			clown: [1, 5, false],
-			pizza: [1, 10, false],
+			clown: [1, 3, false],
+			pizza: [1, 15, false],
 			eggplant: [1, 15, false],
-			flushed: [1, 25, true],
-			star2: [1, 50, true],
-			fire: [2, 75, true],
-			four_leaf_clover: [3, 100, true],
-			kiss: [5, 150, true],
+			flushed: [1, 10, true],
+			star2: [1, 20, true],
+			fire: [2, 25, true],
+			four_leaf_clover: [2, 50, true],
+			kiss: [2, 100, true],
 		};
 	}
 
@@ -60,7 +60,7 @@ export default class Currency extends Command {
 		if (odds > 145 - oddRdce) {
 			return Array(3).fill(emoji);
 		}
-		if (odds > 120 - Math.floor(oddRdce / 2)) {
+		if (odds > 110 - Math.floor(oddRdce / 2)) {
 			const emjis = Array(3).fill(emoji);
 			const ind = randomNumber(1, emjis.length) - 1;
 			emjis[ind] = randomInArray(emojis.filter((e) => e !== emoji));

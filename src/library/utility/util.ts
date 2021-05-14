@@ -61,6 +61,12 @@ export class Util extends ClientUtil {
         return result;
     };
 
+    progressBar = (percent = 1) => {
+        const done = '■'.repeat(percent);
+        const not = '□'.repeat(10 - done.length);
+        return `${done}${not}`;
+    }
+
     /**
      * Checks if something is a valid number or not. 
     */

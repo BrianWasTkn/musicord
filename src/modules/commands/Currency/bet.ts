@@ -90,7 +90,7 @@ export default class Currency extends Command {
 		const rig = (a: number, b: number) => (a > b ? [b, a] : [a, b]);
 		let userD = util.randomNumber(1, 12);
 		let botD = util.randomNumber(1, 12);
-		if (Math.random() > 0.55) {
+		if (Math.random() > 0.65) {
 			[userD, botD] = rig(botD, userD);
 		} else {
 			[botD, userD] = rig(userD, botD);
