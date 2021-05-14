@@ -86,7 +86,7 @@ export default class Currency extends Command {
 					'Win Rate': winRate,
 					'Games Played': gamesPlayed.join('\n'),
 					'Gamble Stats': gambleStats.join('\n'),
-					'Active Items': activeItems.join('\n')
+					'Active Items': activeItems.join('\n') || 'No active items.'
 				}).map(([name, value]) => ({ name, value, inline: true }))
 			}
 		};
