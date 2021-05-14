@@ -60,7 +60,7 @@ export default class Currency extends Command {
 		}
 
 		// Level
-		let level: string | number = (stats.xp / 1e2) > 0 ? Math.round(stats.xp / 1e0) : 0;
+		let level: string | number = (stats.xp / 1e2) > 0 ? Math.round(stats.xp / 1e2) : 0;
 		let reusableLevel = level = Math.min(Caps.MAX_LEVEL, level);
 		level = `**${level}**\n[${progressBar(calc(level, 1000))}](https://google.com)`;
 		// XP

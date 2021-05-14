@@ -1,5 +1,6 @@
 import { MemberPlus, UserPlus } from '.';
 import { Command, Quest } from 'lib/objects';
+import { Currency } from 'lib/utility/constants';
 import { Effects } from 'lib/utility/effects';
 import { Lava } from 'lib/Lava';
 import config from 'config/index';
@@ -178,12 +179,12 @@ export class ContextDatabase extends Base {
 		return this;
 	}
 
-	calcSpace(offset: number = 55, boost: number = 1, limit: number = config.currency.maxSafeSpace) {
+	calcSpace(offset: number = 55, boost: number = 1, limit: number = Currency.MAX_SAFE_SPACE) {
 		if (!this.data) this._reportError();
 		const { randomNumber } = this.ctx.client.util;
 		const calc = (boosty: number) => Math.round(offset * (boosty / 2) + offset);
 		this.data.space = Math.min(Math.ceil(this.data.space + calc(boost)), limit);
-		this.data.stats.xp += randomNumber(1, 5);
+		this.data.stats.xp += randomNumber(1, 10);
 		return this;
 	}
 
