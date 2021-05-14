@@ -20,6 +20,6 @@ lava.on('dbConnect', (db: typeof import('mongoose')) => {
 });
 
 lava.setMongoPath(uri, options)
-	.addTypes()
 	.loadAll()
+	.addTypes()
 	.start();
