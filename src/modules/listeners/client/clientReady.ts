@@ -30,10 +30,9 @@ export default class ClientListener extends Listener<Lava> {
 			},
 		});
 
-		process.send('ready');
-		channel.send({ embed, content: '<@605419747361947649>' });
-		extra.send({ embed });
-		bot.setPresence({ activities });
+		await channel.send({ embed, content: '<@605419747361947649>' });
+		await extra.send({ embed });
+		await bot.setPresence({ activities });
 
 		const msg = `${bot.tag} has flown within Discord.`;
 		return util.console.log('Lava', msg);
