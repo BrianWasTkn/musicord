@@ -232,8 +232,8 @@ export default class Currency extends Command {
 				let finalMsg = '';
 				// Win
 				if (status.result) {
-					winnings = Math.ceil(bet * (Math.random() + (0.3 + extraWngs))); // "Base Multi"
-					winnings = Math.min(MAX_POCKET, winnings + Math.ceil(winnings * (multi / 100))); // This brings in the user's secret multi (lava multi)
+					winnings = Math.ceil(bet * (Math.random() + (0.5 + extraWngs))); // "Base Multi"
+					winnings = Math.min(MAX_POCKET, winnings + Math.round(winnings * (multi / 100))); // This brings in the user's secret multi (lava multi)
 					const { pocket } = await newEntry.addCd().updateQuest({ cmd: this, count: 1 }).addPocket(winnings).updateItems().updateStats('won', winnings).updateStats('wins').calcSpace().save();
 					finalMsg += `\nYou won **${winnings.toLocaleString()}**. You now have ${pocket.toLocaleString()}.`;
 					state = extraWngs ? 'powered' : 'winning';
@@ -306,7 +306,7 @@ export default class Currency extends Command {
 					footer: {
 						text: !final
 							? 'K, Q, J = 10  |  A = 1 or 11'
-							: `Percent Won: ${Math.round((winnings / bet) * 100)}%${extraWngs && state !== 'losing' ? ` (${Math.round(((winnings / bet) * 100) - (extraWngs * 100))}% original)` : ''}`,
+							: `Percent Won: ${Math.round((winnings / bet) * 100)}%`,
 					},
 				},
 			});

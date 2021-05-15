@@ -6,10 +6,6 @@
 import { MessageEmbed } from 'discord.js';
 
 export class Embed extends MessageEmbed {
-	public constructor(...data: ConstructorParameters<typeof MessageEmbed>) {
-		super(...data);
-	}
-
 	public setAuthor(name: any, icon: string = null, url: string = null) {
 		return super.setAuthor(name, icon, url);
 	}

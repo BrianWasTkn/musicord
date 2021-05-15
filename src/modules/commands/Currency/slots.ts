@@ -82,7 +82,7 @@ export default class Currency extends Command {
 		// solo wins
 		const sWins = slots.map(([k, v], i) => {
 			return i === slots.length - 1
-				? `・ :${k}: — \`x${v[slots.length - 1]}\``
+				? `・ :${k}: — \`x1\``
 				: undefined;
 		}).filter(Boolean);
 		const dWins = doubles.map(([k, v]) => {
@@ -164,7 +164,7 @@ export default class Currency extends Command {
 		// Slot Emojis
 		const emojis = Object.keys(this.slotMachine);
 		const order = this.roll(emojis, slots);
-		const outcome = `**>** :${order.join(':    :')}: **<**${iSlotEffs.length > 0 ? ` ${iSlotEffs.map(e => e.emoji).join(' ')}` : ''}`;
+		const outcome = `**>** :${order.join(':    :')}: **<**     ${iSlotEffs.length > 0 ? ` ${iSlotEffs.map(e => e.emoji).join(' ')}` : ''}`;
 		let { length, winnings } = this.calcWinnings(bet as number, order);
 
 		// Shit

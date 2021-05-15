@@ -112,11 +112,11 @@ export default class Currency extends Command {
 
 		let info: string[] = [];
 		info.push(
-			`**Item Price** — ${getIcon(query)} ${query.buyable ? buy.toLocaleString() : '**Not Purchaseable**'
+			`**BUY PRICE** — ${getIcon(query)} ${query.buyable ? buy.toLocaleString() : '**Not Purchaseable**'
 			}`
 		);
 		info.push(
-			`**Sell Price** — ${getIcon(query)} ${query.sellable ? sell.toLocaleString() : '**Not Sellable**'
+			`**SELL PRICE** — ${getIcon(query)} ${query.sellable ? sell.toLocaleString() : '**Not Sellable**'
 			}`
 		);
 

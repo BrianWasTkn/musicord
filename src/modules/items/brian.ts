@@ -24,7 +24,7 @@ export default class Powerflex extends Item {
 
 	async use(ctx: Context): Promise<MessageOptions> {
 		const { randomNumber, sleep, parseTime } = this.client.util;
-		const multi = randomNumber(10, 50), time = 10 * 60 * 1e3;
+		const multi = randomNumber(10, 50), time = 5 * 60 * 1e3;
 		const expire = Date.now() + time;
 
 		await ctx.db.updateInv(this.id, { multi, expire }).removeInv(this.id).updateItems().save();

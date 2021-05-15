@@ -34,7 +34,7 @@ export default class Currency extends Command {
 		
 		const emojis = ['first_place', 'second_place', 'third_place'];
 		const mjs = ['eggplant', 'skull', 'clown', 'kiss', 'alien'];
-		const msg = (await ctx.send({ replyTo: ctx.id, content: 'Fetching...' })) as Context;
+		await ctx.send({ replyTo: ctx.id, content: 'Fetching...' });
 		const docs = (await Mongo.models['currency'].find({})) as CurrencyProfile[];
 		
 		if (glob) {
@@ -56,7 +56,7 @@ export default class Currency extends Command {
 					}** — ${n.u.tag}`
 				);
 
-			await msg.edit({
+			await ctx.send({
 				embed: {
 					author: { name: 'richest discord players' },
 					description: rich.join('\n'),
@@ -83,7 +83,7 @@ export default class Currency extends Command {
 			pocket: d.pocket,
 		}));
 
-		await msg.edit({
+		await ctx.send({
 			embed: {
 				author: { name: 'richest players in this server' },
 				description: filt

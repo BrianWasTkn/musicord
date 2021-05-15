@@ -70,7 +70,7 @@ export class Util extends ClientUtil {
     /**
      * Checks if something is a valid number or not. 
     */
-    isNumber = (val: string | number): boolean => {
+    isNumber = (val: string | number): val is number => {
         return Boolean(Number(val));
     };
 

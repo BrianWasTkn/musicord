@@ -50,7 +50,7 @@ export default class Currency extends Command {
 		if (!amount && vault > 0) {
 			return { replyTo: ctx.id, content: 'you need to withdraw something' };
 		}
-		if (misc.beingHeisted) {
+		if (misc.beingHeisted && ctx.client.util.curHeist.get(ctx.guild.id)) {
 			return { replyTo: ctx.id, content: 'you\'re being heisted so you can\'t withdraw coins lmao' };
 		}
 		if (!Number.isInteger(Number(amount)) || amount < 1) {

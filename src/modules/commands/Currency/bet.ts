@@ -114,8 +114,8 @@ export default class Currency extends Command {
 				`You now have **${pocket.toLocaleString()}**`,
 			];
 		} else if (userD > botD) {
-			let wngs = Math.ceil(bet * (Math.random() + (0.3 + extraWngs)));
-			wngs = Math.min(MAX_WIN, wngs + Math.ceil(wngs * (multi / 100)));
+			let wngs = Math.ceil(bet * (Math.random() + (0.5 + extraWngs)));
+			wngs = Math.min(MAX_WIN, wngs + Math.round(wngs * (multi / 100)));
 			perwn = Math.round((wngs / bet) * 100);
 
 			const { pocket } = await userEntry.addCd().addPocket(wngs).updateItems()
@@ -125,8 +125,8 @@ export default class Currency extends Command {
 			identifier = Boolean(extraWngs) ? 'powered' : 'winning';
 			color = Boolean(extraWngs) ? 'BLUE' : 'GREEN';
 			description = [
-				`You won **${wngs.toLocaleString()}**\n`,
-				`**Percent Won** ${perwn}%${extraWngs ? ` — (${Math.round(perwn - (extraWngs * 100))}% original)` : ''}`,
+				`You won **${wngs.toLocaleString()}**`,
+				`**Multiplier** ${multi}% | **Percent of bet won** ${perwn}%\n`,
 				`You now have **${pocket.toLocaleString()}**`,
 			];
 		}

@@ -184,7 +184,7 @@ export class ContextDatabase extends Base {
 		const { randomNumber } = this.ctx.client.util;
 		const calc = (boosty: number) => Math.round(offset * (boosty / 2) + offset);
 		this.data.space = Math.min(Math.ceil(this.data.space + calc(boost)), limit);
-		this.data.stats.xp += randomNumber(1, 10);
+		this.data.stats.xp += randomNumber(1, 4);
 		return this;
 	}
 
@@ -324,19 +324,32 @@ export class ContextDatabase extends Base {
 				dragon: () => eff.addDiceRoll(1),
 			};
 
-			if (item.checks.includes('activeState') && inv.active) {
-				if (trigger[item.id]) trigger[item.id]();
-			} else if (item.checks.includes('time') && inv.expire > Date.now()) {
+			if (
+				(item.checks.includes('activeState') && inv.active) ||
+				(item.checks.includes('time') && inv.expire >= Date.now())
+			) {
 				if (trigger[item.id]) trigger[item.id]();
 			} else if (item.checks.includes('presence') && inv.amount >= 1) { 
-				if (Math.random() < 0.1 && item.id === 'dragon') inv.amount--;
+				if (Math.random() <= 0.1 && item.id === 'dragon') inv.amount--;
 			} else { continue loop; }
+
+			if (inv.expire < Date.now() || inv.amount <= 0) {
+				if (inv.multi >= 1) inv.multi = 0;
+				if (inv.active) inv.active = false;
+			}
 
 			const temp = new Collection<string, Effects>();
 			const { id } = this.ctx.author;
 			if (effects.has(id)) {
-				temp.set(item.id, call());
-				effects.get(id).set(item.id, eff);
+				const effs = effects.get(id);
+				if (effs.has(item.id) && (inv.expire < Date.now() || inv.amount <= 0)) {
+					if (inv.multi >= 1 && !inv.active) inv.multi = 0;
+					if (inv.active) inv.active = false;
+					effs.delete(item.id);
+				} else {
+					temp.set(item.id, call());
+					effects.get(id).set(item.id, eff);
+				}
 			} else {
 				const useref = effects.get(id);
 				if (!useref || useref.has(item.id)) {
