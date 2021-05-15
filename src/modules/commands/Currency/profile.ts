@@ -47,7 +47,7 @@ export default class Currency extends Command {
 		let reusableLevel = level = Math.min(Caps.MAX_LEVEL, level);
 		level = `**${level}**\n[${progressBar(calc(level, 1000))}](https://google.com)`;
 		// XP
-		let xp = `**${stats.xp} / ${(reusableLevel + 1) * 100}**\n[${progressBar(calc(Number(/\d\d$/gi.exec(level)[0]), 100))}](https://google.com)`;
+		let xp = `**${stats.xp} / ${(reusableLevel + 1) * 100}**\n[${progressBar(calc(Number(/\d\d$/gi.exec(level.toString())[0]), 100))}](https://google.com)`;
 		// Coins
 		let coins = [
 			`**${pocket.toLocaleString()}** in pocket`,
