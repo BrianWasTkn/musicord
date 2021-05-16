@@ -336,9 +336,8 @@ export class ContextDatabase extends Base {
 			};
 
 			if (item.checks.includes('time')) {
-				if (inv.expire >= Date.now()) {
-					if (trigger[item.id]) trigger[item.id]();
-					continue loop;
+				if (inv.expire >= Date.now() && typeof trigger[item.id] !== 'undefined') {
+					trigger[item.id]();
 				} else {
 					const params = { active: false, expire: 0, multi: 0 };
 					this.updateInv(inv.id, params);
@@ -371,7 +370,7 @@ export class ContextDatabase extends Base {
 				const useref = effects.get(id);
 				if (!useref || useref.has(item.id)) {
 					const meh = new Collection<string, Effects>();
-					meh.set(item.id, call());
+					meh.set(item.id, eff);
 					effects.set(id, meh);
 				}
 			}
