@@ -1,9 +1,9 @@
 import { Item } from 'lib/objects';
 
-export default class Flex extends Item {
+export default class Collectible extends Item {
 	constructor() {
 		super('herb', {
-			category: 'Flex',
+			category: 'Collectible',
 			sellable: false,
 			buyable: false,
 			usable: false,

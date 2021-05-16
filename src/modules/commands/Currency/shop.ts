@@ -35,8 +35,7 @@ export default class Currency extends Command {
 		if (typeof query === 'number') {
 			const { paginateArray, parseTime } = this.client.util;
 			const sItem = Handler.modules.get(Handler.sale.id);
-			const from = Date.now() - Handler.saleInterval;
-			const left = parseTime(Math.round(Handler.sale.lastSale - from) / 1e3);
+			const left = parseTime(Math.round(Date.now() - Handler.nextSale) / 1e3);
 
 			function displaySaleItem(it: string, discount: number) {
 				const item = Handler.modules.get(it);

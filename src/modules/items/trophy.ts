@@ -5,7 +5,7 @@ import { Item } from 'lib/objects';
 export default class Collectible extends Item {
 	constructor() {
 		super('trophy', {
-			category: 'Flex',
+			category: 'Collectible',
 			sellable: false,
 			buyable: true,
 			usable: true,

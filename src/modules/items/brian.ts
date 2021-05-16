@@ -2,10 +2,10 @@ import { Context } from 'lib/extensions';
 import { Item } from 'lib/objects';
 import { MessageOptions } from 'discord.js';
 
-export default class Powerflex extends Item {
+export default class PowerUp extends Item {
 	constructor() {
 		super('brian', {
-			category: 'Power-Flex',
+			category: 'Power-Up',
 			sellable: true,
 			buyable: true,
 			usable: true,

@@ -3,10 +3,10 @@ import { MessageOptions } from 'discord.js';
 import { UserPlus } from 'lib/extensions';
 import { Item } from 'lib/objects';
 
-export default class Flex extends Item {
+export default class Tool extends Item {
 	constructor() {
 		super('pee', {
-			category: 'Flex',
+			category: 'Tool',
 			sellable: true,
 			buyable: true,
 			usable: true,

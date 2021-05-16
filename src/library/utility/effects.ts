@@ -3,6 +3,8 @@
  * @author BrianWasTaken
 */
 
+import { Collection } from 'discord.js';
+
 interface EffectsConstructor {
 	bjWngs: number;
 	sOdds: number;

@@ -3,10 +3,10 @@ import { MessageOptions } from 'discord.js';
 import { Item } from 'lib/objects';
 import config from 'config/index';
 
-export default class PowerUp extends Item {
+export default class Tool extends Item {
 	constructor() {
 		super('porsche', {
-			category: 'Power-Up',
+			category: 'Tool',
 			sellable: true,
 			buyable: true,
 			usable: true,

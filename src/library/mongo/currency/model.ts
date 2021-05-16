@@ -9,7 +9,7 @@ import { Type } from '../Type';
 const CurrencySchema = new Schema({
   /* Basic Info */
   lastRan: Type(Number, false, Date.now()),
-  lastCmd: Type(String, false, 'command'),
+  lastCmd: Type(String, false, 'help'),
   cmdsRan: Type(Number, false, 0),
   userID: Type(String, true, '123'),
   pocket: Type(Number, false, 100000),

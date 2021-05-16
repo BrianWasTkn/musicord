@@ -2,10 +2,10 @@ import { Context } from 'lib/extensions';
 import { MessageOptions } from 'discord.js';
 import { Item } from 'lib/objects';
 
-export default class Tool extends Item {
+export default class Collectible extends Item {
 	constructor() {
 		super('crown', {
-			category: 'Tool',
+			category: 'Collectible',
 			sellable: false,
 			buyable: true,
 			premium: false,

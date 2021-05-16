@@ -26,9 +26,8 @@ export default class PowerUp extends Item {
 		const { parseTime } = ctx.client.util;
 		const time = 12 * 60 * 60 * 1000;
 		const expire = Date.now() + time;
-		const active = true;
 
-		await ctx.db.updateInv(this.id, { expire, active }).updateItems().save();
+		await ctx.db.updateInv(this.id, { expire, active: true }).updateItems().save();
 		return { content: `${this.emoji} Your dragon has been activated for **${parseTime(time / 1e3)}**, be careful when gambling!` };
 	}
 }

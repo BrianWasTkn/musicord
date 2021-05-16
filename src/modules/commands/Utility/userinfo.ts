@@ -21,8 +21,7 @@ export default class Util extends Command {
 	exec = async (ctx: Context<{ member: MemberPlus }>, userEntry: ContextDatabase): Promise<MessageOptions> => {
 		const { member: m } = ctx.args;
 		const { modules } = this.handler;
-		const isContext = ctx.author.id === m.user.id;
-		const entry = isContext ? userEntry : await ctx.db.fetch(m.user.id);
+		const entry = ctx.author.id === m.user.id ? userEntry : await ctx.db.fetch(m.user.id);
 		const { lastRan, cmdsRan, lastCmd } = entry.data;
 
 		return { embed: {

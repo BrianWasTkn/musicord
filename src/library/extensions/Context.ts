@@ -50,8 +50,8 @@ export class Context<Args extends {} = {}> extends Message {
 		return this.channel.send.call(this.channel, args, null);
 	}
 
-	embed(embed?: MessageEmbedOptions) {
-		return this.channel.send.call(this.channel, { embed }, {});
+	embed(embed?: MessageEmbedOptions, reply = false) {
+		return this.channel.send.call(this.channel, { embed }, { replyTo: reply ? this.id : null });
 	}
 
 	fetchMember(id: string = null, force = false, limit?: number) {
@@ -91,10 +91,9 @@ export class ContextDatabase extends Base {
 	}
 
 	private async init(userID: string, assign: boolean): Promise<this> {
-		const data: CurrencyProfile = await this.ctx.client.db.currency.fetch(userID);
+		const data = await this.ctx.client.db.currency.fetch(userID);
 		const temp = new ContextDB(this.ctx);
-		if (assign) this.data = data;
-		else temp.data = data;
+		(assign ? this : temp).data = data;
 		return assign ? this : temp as this;
 	}
 
@@ -102,18 +101,26 @@ export class ContextDatabase extends Base {
 		return this.init(id, assign);
 	}
 
+	//# Single-Return methods
+	hasInventoryItem(id: string) {
+		if (!this.data) this._reportError();
+		return !!this.data.items.find(i => i.id === id);
+	}
+
+	//# Loopable methods 
 	addCd(cmd = this.ctx.command, time?: number) {
 		if (!this.data) this._reportError();
 		if (this.client.isOwner(this.ctx.author.id)) return this;
 
-		const { cooldowns: cds } = this.data;
 		const expire = this.ctx.createdTimestamp + (typeof time !== 'undefined' ? time : cmd.cooldown);
-		const cd = cds.find(c => c.id === cmd.id);
+		const cd = this.data.cooldowns.find(c => c.id === cmd.id);
 		
-		if (!cd) cds.push({ expire, uses: 0, id: cmd.id });
-		if (cd.expire <= this.ctx.createdTimestamp) cd.expire = expire;
-		else cd.expire = expire;
+		if (!cd) {
+			this.data.cooldowns.push({ expire, uses: 0, id: cmd.id });
+			return this;
+		}
 
+		cd.expire = expire;
 		return this;
 	}
 
@@ -179,12 +186,19 @@ export class ContextDatabase extends Base {
 		return this;
 	}
 
+	calcXP(vaultOffset = 55, vaultLimit = Currency.MAX_SAFE_SPACE, xpLimit = Currency.MAX_LEVEL * 100) {
+		if (!this.data) this._reportError();
+		const calc = (b: number) => Math.round(vaultOffset * (b / 2) + vaultOffset);
+		this.data.space = Math.min(Math.trunc(this.data.space + calc(this.data.stats.prestige)), vaultLimit);
+		this.data.stats.xp = Math.min(xpLimit, this.data.stats.xp + this.client.util.randomNumber(1, 4));
+		return this;
+	}
+
 	calcSpace(offset: number = 55, boost: number = 1, limit: number = Currency.MAX_SAFE_SPACE) {
 		if (!this.data) this._reportError();
-		const { randomNumber } = this.ctx.client.util;
 		const calc = (boosty: number) => Math.round(offset * (boosty / 2) + offset);
 		this.data.space = Math.min(Math.ceil(this.data.space + calc(boost)), limit);
-		this.data.stats.xp += randomNumber(1, 4);
+		this.data.stats.xp += this.client.util.randomNumber(1, 4);
 		return this;
 	}
 
@@ -242,12 +256,9 @@ export class ContextDatabase extends Base {
 
 	stopQuest() {
 		if (!this.data) this._reportError();
-		const report = (m: string) => { throw new Error(m) };
-		if (!this.data.quest.id) report(`[${this.toString()}] No active quests.`);
-		this.data.quest.id = '';
-		this.data.quest.count = 0;
-		this.data.quest.type = '' as string;
-		this.data.quest.target = 0;
+		if (!this.data.quest.id) return this;
+		this.data.quest.count = this.data.quest.target = 0;
+		this.data.quest.id = this.data.quest.type = '';
 		return this;
 	}
 
@@ -324,32 +335,38 @@ export class ContextDatabase extends Base {
 				dragon: () => eff.addDiceRoll(1),
 			};
 
-			if (
-				(item.checks.includes('activeState') && inv.active) ||
-				(item.checks.includes('time') && inv.expire >= Date.now())
-			) {
-				if (trigger[item.id]) trigger[item.id]();
-			} else if (item.checks.includes('presence') && inv.amount >= 1) { 
-				if (Math.random() <= 0.1 && item.id === 'dragon') inv.amount--;
-			} else { continue loop; }
-
-			if (inv.expire < Date.now() || inv.amount <= 0) {
-				if (inv.multi >= 1) inv.multi = 0;
-				if (inv.active) inv.active = false;
+			if (item.checks.includes('time')) {
+				if (inv.expire >= Date.now()) {
+					if (trigger[item.id]) trigger[item.id]();
+					continue loop;
+				} else {
+					const params = { active: false, expire: 0, multi: 0 };
+					this.updateInv(inv.id, params);
+				}
+			}
+			if (item.checks.includes('presence') && inv.amount >= 1) {
+				// @TODO: presence method for items with 
+				// this check type and notify user it broke
+				
+				// Dragon
+				if (item.id === 'dragon') {
+					if (Math.random() <= 0.1) this.removeInv(item.id, 1);
+					else trigger[item.id]();
+				}
 			}
 
 			const temp = new Collection<string, Effects>();
 			const { id } = this.ctx.author;
 			if (effects.has(id)) {
 				const effs = effects.get(id);
-				if (effs.has(item.id) && (inv.expire < Date.now() || inv.amount <= 0)) {
-					if (inv.multi >= 1 && !inv.active) inv.multi = 0;
-					if (inv.active) inv.active = false;
-					effs.delete(item.id);
-				} else {
-					temp.set(item.id, call());
-					effects.get(id).set(item.id, eff);
-				}
+				temp.set(item.id, call());
+				effects.get(id).set(item.id, eff);
+
+				if ( // item checks if in inventory but amount is already 0
+					(item.checks.includes('presence') && inv.amount <= 0) ||
+					// item checks time but now > expire
+					(item.checks.includes('time') && Date.now() > inv.expire)
+				) { effects.get(id).delete(item.id); }
 			} else {
 				const useref = effects.get(id);
 				if (!useref || useref.has(item.id)) {
