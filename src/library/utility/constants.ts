@@ -41,8 +41,8 @@ export const Currency = {
 	MAX_BET: 75000,
 	MIN_BET: 10,
 	PRESTIGE: {
-		POCKET: 1000000,
-		LEVEL: 30
+		POCKET: 150000,
+		LEVEL: 15
 	},
 };
 
