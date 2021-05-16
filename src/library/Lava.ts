@@ -128,12 +128,13 @@ export class Lava extends AkairoClient {
 
 	public loadAll() {
 		const { listener, inhibitor, argument, lottery, command, spawn, quest, item } = this.handlers;
+		command.useListenerHandler(listener).useInhibitorHandler(inhibitor);
+		listener.setEmitters({ listener, lottery, command, spawn, quest, item });
+		
 		const onLoad = (mod: ModulePlus) => this.emit('moduleLoad', mod);
 		[listener, inhibitor, argument, command, spawn, quest, item]
 		.forEach(h => h.on('load', onLoad as ((m: AkairoModule) => boolean)).loadAll());
 
-		command.useListenerHandler(listener).useInhibitorHandler(inhibitor);
-		listener.setEmitters({ listener, inhibitor, lottery, command, spawn, quest, item });
 		return this;
 	}
 
