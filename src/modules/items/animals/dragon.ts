@@ -28,6 +28,6 @@ export default class PowerUp extends Item {
 		const expire = Date.now() + time;
 
 		await ctx.db.updateInv(this.id, { expire, active: true }).updateItems().save();
-		return { content: `${this.emoji} Your dragon has been activated for **${parseTime(time / 1e3)}**, be careful when gambling!` };
+		return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `${this.emoji} Your dragon has been activated for **${parseTime(time / 1e3)}**, be careful when gambling!` };
 	}
 }

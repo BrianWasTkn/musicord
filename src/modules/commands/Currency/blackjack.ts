@@ -63,7 +63,7 @@ export default class Currency extends Command {
 			}
 		})(bet);
 		if (!args.state) {
-			return { content: args.m, replyTo: ctx.id };
+			return { content: args.m, reply: { messageReference: ctx.id, failIfNotExists: false }, };
 		}
 
 		// Item Effects
@@ -212,7 +212,7 @@ export default class Currency extends Command {
 					await newEntry.addCd().removePocket(bet).calcSpace().updateItems().updateStats('lost', bet).updateStats('loses').save();
 					return {
 						content: `What the hell man, you don't have the coins to cover this bet anymore??? I'm keeping your bet since you tried to SCAM ME.`,
-						replyTo: ctx.id,
+						reply: { messageReference: ctx.id, failIfNotExists: false },
 					};
 				}
 				let finalMsg = '';
@@ -305,7 +305,7 @@ export default class Currency extends Command {
 				return {
 					content:
 						"You ended the game since you didn't respond. The dealer is keeping your money to deal with your bullcrap.",
-					replyTo: ctx.id,
+					reply: { messageReference: ctx.id, failIfNotExists: false },
 				};
 			}
 			switch (choice.content.toLowerCase().slice(0, 1)) {
@@ -321,7 +321,7 @@ export default class Currency extends Command {
 					return {
 						content:
 							'You ended the game. The dealer is keeping your money to deal with your bullcrap.',
-						replyTo: ctx.id,
+						reply: { messageReference: ctx.id, failIfNotExists: false },
 					};
 				default:
 					// You too, no space for you :P
@@ -329,7 +329,7 @@ export default class Currency extends Command {
 					return {
 						content:
 							'Ur an idiot you need to give a valid response. You lost your entire bet.',
-						replyTo: ctx.id,
+						reply: { messageReference: ctx.id, failIfNotExists: false },
 					};
 			}
 		};

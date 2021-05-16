@@ -64,7 +64,7 @@ export default class Currency extends Command {
 
 			const shop = paginateArray(items.sort(sort).map(displayItem), 5);
 			if (query > shop.length) {
-				return { replyTo: ctx.id, content: "That page doesn't even exist lol" };
+				return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: "That page doesn't even exist lol" };
 			}
 
 			return {
@@ -86,7 +86,7 @@ export default class Currency extends Command {
 		}
 
 		if (!query) {
-			return { replyTo: ctx.id, content: "**That item:** doesn't exist" };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: "**That item:** doesn't exist" };
 		}
 
 		const { data } = entry;

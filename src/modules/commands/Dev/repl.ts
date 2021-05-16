@@ -16,7 +16,7 @@ export default class Dev extends Command {
 	}
 
 	private async _collect(ctx: Context): Promise<Context> {
-		const collected = await ctx.awaitMessage(ctx.author.id, 6e4);
+		const collected = await ctx.awaitMessage(ctx.author.id, 6e4 * 5);
 		return [...collected.values()][0] as Context;
 	}
 

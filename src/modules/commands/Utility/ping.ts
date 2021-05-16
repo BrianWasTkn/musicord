@@ -14,7 +14,7 @@ export default class Util extends Command {
 	}
 
 	exec = (ctx: Context): MessageOptions => ({
-		replyTo: ctx.id, 
+		reply: { messageReference: ctx.id, failIfNotExists: false },
 		content: `**Ponge:** ${ctx.guild.shard.ping}ms`
 	});
 }

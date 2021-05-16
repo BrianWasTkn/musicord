@@ -24,7 +24,7 @@ export default class Spawn extends Command {
 
 		return {
 			content: `**${emojify(allowDM)} Spawn notifications are now \`${status(allowDM)}\`**`,
-			replyTo: ctx.id,
+			reply: { messageReference: ctx.id, failIfNotExists: false },
 		};
 	}
 }

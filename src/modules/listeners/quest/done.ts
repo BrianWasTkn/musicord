@@ -14,6 +14,6 @@ export default class QuestListener extends Listener<QuestHandler<Quest>> {
 		let content = `**${quest.emoji} Quest Finished!**`;
 		content += `\nYou successfully finished the **${quest.name}** quest.`;
 		content += `\nYou got **${coinR}** coins and **${itemR}** as your reward.`;
-		return ctx.send({ replyTo: ctx.id, content });
+		return ctx.send({ reply: { messageReference: ctx.id, failIfNotExists: false }, content });
 	}
 }

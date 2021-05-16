@@ -20,7 +20,7 @@ export default class Fun extends Command {
 
 		if (!me.marriage.id) {
 			return {
-				replyTo: ctx.id,
+				reply: { messageReference: ctx.id, failIfNotExists: false },
 				content: "You're not even married to somebody",
 			};
 		}
@@ -29,7 +29,7 @@ export default class Fun extends Command {
 		await ctx.send({ content: `Are you sure you about that? Type \`(y / n)\` in 30 seconds.` });
 		const resp = (await ctx.awaitMessage(ctx.author.id, 3e4)).first();
 		if (!resp || !['yes', 'y'].includes(resp.content.toLowerCase())) {
-			return { replyTo: ctx.id, content: 'Well ok then' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'Well ok then' };
 		}
 
 		const divEntry = await (new ContextDatabase(ctx)).fetch(husOrWif.id);
@@ -37,7 +37,7 @@ export default class Fun extends Command {
 		await meEntry.divorce().save();
 
 		return {
-			replyTo: ctx.id,
+			reply: { messageReference: ctx.id, failIfNotExists: false },
 			content: `**:white_check_mark: Divorce against ${husOrWif.tag} successful.**`,
 		};
 	}

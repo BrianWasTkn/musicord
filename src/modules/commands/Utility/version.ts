@@ -15,7 +15,7 @@ export default class Util extends Command {
 	}
 
 	exec = (ctx: Context): MessageOptions => ({
-		replyTo: ctx.id, 
+		reply: { messageReference: ctx.id, failIfNotExists: false },
 		content: `This instance of ${
 			ctx.client.application.name
 		} is running version \`${

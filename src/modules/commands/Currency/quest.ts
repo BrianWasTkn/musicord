@@ -62,7 +62,7 @@ export default class Currency extends Command {
 			);
 
 			if (query > quest.length) {
-				return { replyTo: ctx.id, content: `Page \`${query as number}\` doesn't exist.` };
+				return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `Page \`${query as number}\` doesn't exist.` };
 			}
 
 			return {
@@ -80,34 +80,34 @@ export default class Currency extends Command {
 		const { data } = userEntry;
 
 		if (!query) {
-			return { replyTo: ctx.id, content: "That isn't even a valid quest or page number bruh" };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: "That isn't even a valid quest or page number bruh" };
 		}
 
 		if (query instanceof Quest) {
 			const aq = data.quest;
-			if (mods.get(aq.id)) return { replyTo: ctx.id, content: "You can't enter a quest because you have an active one" };
+			if (mods.get(aq.id)) return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: "You can't enter a quest because you have an active one" };
 
 			const mod = query as Quest;
 			await userEntry.startQuest(mod.id, { target: mod.target[0], type: mod.target[2] }).save();
-			return { replyTo: ctx.id, content: `You're now doing the **${mod.emoji} ${mod.name}** quest!` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `You're now doing the **${mod.emoji} ${mod.name}** quest!` };
 		}
 
 		if (query === 'stop') {
 			const aq = data.quest;
-			if (!aq.id) return { content: "You don't have an active quest right now.", replyTo: ctx.id };
+			if (!aq.id) return { content: "You don't have an active quest right now.", reply: { messageReference: ctx.id, failIfNotExists: false }, };
 
 			const active = mods.get(aq.id);
 			await userEntry.stopQuest().save();
-			return { replyTo: ctx.id, content: `You stopped your **${active.emoji} ${active.name}** quest, thanks for nothing idiot.` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `You stopped your **${active.emoji} ${active.name}** quest, thanks for nothing idiot.` };
 		}
 
 		if (query === 'check') {
 			const aq = data.quest;
-			if (!aq.id) return { content: "You don't have an active quest right now.", replyTo: ctx.id };
+			if (!aq.id) return { content: "You don't have an active quest right now.", reply: { messageReference: ctx.id, failIfNotExists: false }, };
 
 			const mod = mods.get(aq.id);
 			return {
-				replyTo: ctx.id, embed: {
+				reply: { messageReference: ctx.id, failIfNotExists: false }, embed: {
 					color: 'ORANGE', title: `${mod.emoji} ${mod.name} — ${mod.rawDiff}`,
 					description: mod.info, fields: [{
 						value: `**${aq.count.toLocaleString()} / ${mod.target[0].toLocaleString()}**`,

@@ -27,10 +27,10 @@ export default class Util extends Command {
 
 		const reason = `Heist Lock — ${ctx.author.tag}`;
 		const owrite: PermissionOverwriteOption = { SEND_MESSAGES: null };
-		await (ctx.channel as TextChannel).updateOverwrite(role.id, owrite, reason);
+		await (ctx.channel as TextChannel).updateOverwrite(role.id, owrite, { reason });
 
 		return {
-			replyTo: ctx.id, embed: {
+			reply: { messageReference: ctx.id, failIfNotExists: false }, embed: {
 				description: `**Locked for ${role.toString()} role.**`,
 				title: `Channel Locked`, color: 'RED', footer: {
 					iconURL: ctx.guild.iconURL({ dynamic: true }),

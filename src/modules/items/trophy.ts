@@ -27,7 +27,7 @@ export default class Collectible extends Item {
 		const trophy = this.findInv(ctx.db.data.items, this);
 
 		return {
-			replyTo: ctx.id,
+			reply: { messageReference: ctx.id, failIfNotExists: false },
 			content: `**${this.emoji} What a flex!** Your trophy is shining on the VERY dark sky and the wolves are barking.${
 				trophy.amount >= 2 ? `\n**AND THEY HAVE ${trophy.amount} OF THEM WHAT A BADASS!**` : ''
 			}`

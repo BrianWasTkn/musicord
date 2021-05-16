@@ -23,14 +23,14 @@ export default class Currency extends Command {
 
 	async exec(ctx: Context<{ member: MemberPlus }>, userEntry: ContextDatabase): Promise<MessageOptions> {
 		if (!ctx.args.member) {
-			return { replyTo: ctx.id, content: `You need to heist someone!` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `You need to heist someone!` };
 		}
 		const { user } = ctx.args.member;
 		if (user.id === ctx.author.id) {
-			return { replyTo: ctx.id, content: `Bro you need to heist someone, not yourself dumbo` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `Bro you need to heist someone, not yourself dumbo` };
 		}
 		if (user.bot) {
-			return { replyTo: ctx.id, content: 'LOL imagine pestering bots, shut-' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'LOL imagine pestering bots, shut-' };
 		}
 
 		const vicEntry = await (new ContextDatabase(ctx)).fetch(user.id);
@@ -39,13 +39,13 @@ export default class Currency extends Command {
 		let min = 5000;
 
 		if (userCoins < min) {
-			return { replyTo: ctx.id, content: `You need ${min} coins to rob someone.` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `You need ${min} coins to rob someone.` };
 		}
 		if (vicCoins < min) {
-			return { replyTo: ctx.id, content: `The victim doesn't have ${min} coins in their vault bruh.` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `The victim doesn't have ${min} coins in their vault bruh.` };
 		}
 		if (ctx.client.util.curHeist.has(ctx.guild.id)) {
-			return { replyTo: ctx.id, content: `There's a heist going on this server right now.` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `There's a heist going on this server right now.` };
 		}
 
 		const padMod = ctx.client.handlers.item.modules.get('lock');
@@ -54,10 +54,10 @@ export default class Currency extends Command {
 		if (hahayes.expire > Date.now()) {			
 			if (odds >= 40) {
 				await vicEntry.updateInv(padMod.id, { active: false, expire: 0 }).save();
-				return { replyTo: ctx.id, content: `**${padMod.emoji} You broke their padlock!**\nGive one more attempt for a robbery!` };
+				return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `**${padMod.emoji} You broke their padlock!**\nGive one more attempt for a robbery!` };
 			}
 
-			return { replyTo: ctx.id, content: `${padMod.emoji} You almost broke their padlock! Give one more try.` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `${padMod.emoji} You almost broke their padlock! Give one more try.` };
 		}
 
 		await userEntry.addCd().save(true);

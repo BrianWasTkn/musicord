@@ -21,6 +21,6 @@ export default class Collectible extends Item {
 	}
 
 	use(ctx: Context): MessageOptions {
-		return { replyTo: ctx.id, content: `${this.emoji} You ate sum yummy donuts! Nom Omm Onm` };
+		return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `${this.emoji} You ate sum yummy donuts! Nom Omm Onm` };
 	}
 }

@@ -47,22 +47,22 @@ export default class Currency extends Command {
 		const { amount } = ctx.args;
 
 		if (!amount && pocket > 0) {
-			return { replyTo: ctx.id, content: 'you need to deposit something' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'you need to deposit something' };
 		}
 		if (!Number.isInteger(Number(amount)) || amount < 1) {
-			return { replyTo: ctx.id, content: 'it needs to be a whole number greater than 0' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'it needs to be a whole number greater than 0' };
 		}
 		if (pocket < 1) {
-			return { replyTo: ctx.id, content: 'u have nothing to deposit lmfao' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'u have nothing to deposit lmfao' };
 		}
 		if (amount > pocket) {
-			return { replyTo: ctx.id, content: `u only have **${pocket.toLocaleString()}** don't try and break me` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `u only have **${pocket.toLocaleString()}** don't try and break me` };
 		}
 		if (vault >= space) {
-			return { replyTo: ctx.id, content: 'u already have full bank stop pushing it through' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'u already have full bank stop pushing it through' };
 		}
 		if ((amount + vault > space) && amount !== pocket) {
-			return { replyTo: ctx.id, content: `you can only hold up to **${(space - vault).toLocaleString()}** right now. To hold more, use the bot more.` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `you can only hold up to **${(space - vault).toLocaleString()}** right now. To hold more, use the bot more.` };
 		}
 
 		const input = amount >= space - vault ? space - vault : amount;
@@ -70,7 +70,7 @@ export default class Currency extends Command {
 
 		return {
 			content: `**${input.toLocaleString()}** coins deposited. You now have **${nVault.toLocaleString()}** in your vault.`,
-			replyTo: ctx.id,
+			reply: { messageReference: ctx.id, failIfNotExists: false },
 		};
 	}
 }

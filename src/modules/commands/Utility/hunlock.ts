@@ -78,11 +78,11 @@ export default class Util extends Command {
 		await run(interval);
 		const reason = `Heist Unlock — ${msg.author.tag}`;
 		const perms: PermissionOverwriteOption = { SEND_MESSAGES: true };
-		(msg.channel as TextChannel).updateOverwrite(role.id, perms, reason);
+		(msg.channel as TextChannel).updateOverwrite(role.id, perms, { reason });
 		heists.set(msg.channel.id, role);
 
 		return {
-			replyTo: ctx.id, embed: {
+			reply: { messageReference: ctx.id, failIfNotExists: false }, embed: {
 				description: `**Unlocked for ${role.toString()} role.**`,
 				title: `Channel Unlocked`, color: 'GREEN', footer: {
 					text: ctx.guild.name,

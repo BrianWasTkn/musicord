@@ -21,7 +21,7 @@ export default class CommandListener extends Listener<CommandHandler<Command>> {
 			.setTitle('Command Error', ctx.url).setColor('BLUE').setFooter(true, ctx.client.user.username, ctx.client.user.avatarURL())
 			.addField('Error Message', '```js\n' + error.message + '\n```', false);
 
-		await ctx.send({ embed, replyTo: ctx.id });
+		await ctx.send({ embed, reply: { messageReference: ctx.id, failIfNotExists: false } });
 		embed.setColor('BLUE').setDescription(null)
 		.addField('Message Author', `${ctx.author.tag} (${ctx.author.id})`)
 		.addField('Invoking Guild', `${ctx.guild.name} (${ctx.guild.id})`);

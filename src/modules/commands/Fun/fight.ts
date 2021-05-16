@@ -34,13 +34,13 @@ export default class Fun extends Command {
 
 		// arg shits
 		if (!enemy) {
-			return { replyTo: ctx.id, content: "Lol imagine fighting with air, couldn't be me." };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: "Lol imagine fighting with air, couldn't be me." };
 		}
 		if (enemy.id === author.id) {
-			return { replyTo: ctx.id, content: 'Bruh are you fucking kidding me? Imagine fighting yourself. Type `pls selfharm` to continue.' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'Bruh are you fucking kidding me? Imagine fighting yourself. Type `pls selfharm` to continue.' };
 		}
 		if (enemy.bot) {
-			return { replyTo: ctx.id, content: "Please don't pester bots, they'll start invading us sige ka." };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: "Please don't pester bots, they'll start invading us sige ka." };
 		}
 
 		// Prepare
@@ -140,6 +140,6 @@ export default class Fun extends Command {
 			}
 		};
 
-		return { content: await play(), replyTo: ctx.id };
+		return { content: await play(), reply: { messageReference: ctx.id, failIfNotExists: false }, };
 	}
 }

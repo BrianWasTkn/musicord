@@ -42,7 +42,7 @@ export default class Currency extends Command {
 			if (amount > inv.amount) return MESSAGES.CANT_FOOL_ME;
 		}
 
-		if (check()) return { content: check() };
+		if (check()) return { content: check(), reply: { messageReference: ctx.id, failIfNotExists: false }, };
 		const { discount, id } = Items.sale;
 		const dPrice = Math.round(item.cost - item.cost * (Items.sale.discount / 1e2));
 		const sold = item.premium ? amount * (item.cost / 4) : item.id === id
@@ -57,7 +57,7 @@ export default class Currency extends Command {
 		.save();
 
 		return {
-			replyTo: ctx.id, embed: {
+			reply: { messageReference: ctx.id, failIfNotExists: false }, embed: {
 				author: { name: `Item "${item.name}" sold`, iconURL: ctx.author.avatarURL({ dynamic: true }) },
 				footer: { text: 'Thanks for stopping by!', iconURL: ctx.client.user.avatarURL() },
 				color: 'GREEN', description: MESSAGES.SELL_MSG(item.premium)

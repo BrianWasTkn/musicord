@@ -37,7 +37,7 @@ export default class Currency extends Command {
 						author: { name: ctx.client.user.username },
 						color: 'ORANGE',
 					},
-					replyTo: ctx.id,
+					reply: { messageReference: ctx.id, failIfNotExists: false },
 				};
 			case odds >= 0.5:
 				const won = util.randomNumber(10, 5000);
@@ -48,7 +48,7 @@ export default class Currency extends Command {
 						author: { name: 'Rich Ashley' },
 						color: 'ORANGE',
 					},
-					replyTo: ctx.id,
+					reply: { messageReference: ctx.id, failIfNotExists: false },
 				};
 			default:
 				await userEntry.addCd().save();
@@ -58,7 +58,7 @@ export default class Currency extends Command {
 						author: { name: ctx.client.user.username },
 						color: 'ORANGE',
 					},
-					replyTo: ctx.id,
+					reply: { messageReference: ctx.id, failIfNotExists: false },
 				};
 		}
 	}

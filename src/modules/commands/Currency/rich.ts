@@ -28,13 +28,13 @@ export default class Currency extends Command {
 			type: keyof CurrencyProfile;
 			isGlobal: boolean;
 		}>
-	): Promise<void> {
+	): Promise<MessageOptions> {
 		const { randomInArray } = ctx.client.util;
 		const { isGlobal: glob } = ctx.args;
 		
 		const emojis = ['first_place', 'second_place', 'third_place'];
 		const mjs = ['eggplant', 'skull', 'clown', 'kiss', 'alien'];
-		await ctx.send({ replyTo: ctx.id, content: 'Fetching...' });
+		await ctx.send({ reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'Fetching...' });
 		const docs = (await Mongo.models['currency'].find({})) as CurrencyProfile[];
 		
 		if (glob) {
@@ -56,8 +56,7 @@ export default class Currency extends Command {
 					}** — ${n.u.tag}`
 				);
 
-			await ctx.send({
-				embed: {
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, embed: {
 					author: { name: 'richest discord players' },
 					description: rich.join('\n'),
 					color: 'ORANGE',
@@ -66,9 +65,7 @@ export default class Currency extends Command {
 						text: ctx.client.user.username + ' — Showing Pockets',
 					},
 				},
-			});
-
-			return;
+			};
 		}
 
 		const idiots = [...ctx.guild.members.cache.values()].filter(({ user }) => !user.bot);
@@ -83,8 +80,8 @@ export default class Currency extends Command {
 			pocket: d.pocket,
 		}));
 
-		await ctx.send({
-			embed: {
+		return {
+			reply: { messageReference: ctx.id, failIfNotExists: false }, embed: {
 				author: { name: 'richest players in this server' },
 				description: filt
 					.map(
@@ -100,6 +97,6 @@ export default class Currency extends Command {
 					text: ctx.guild.name + ' — Showing Pockets',
 				},
 			},
-		});
+		};
 	}
 }

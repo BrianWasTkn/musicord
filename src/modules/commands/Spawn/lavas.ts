@@ -27,7 +27,7 @@ export default class Spawn extends Command {
 		const data = await fetch(user.id);
 
 		return {
-			replyTo: ctx.id, embed: {
+			reply: { messageReference: ctx.id, failIfNotExists: false }, embed: {
 				description: `**Total Events:** ${data.eventsJoined.toLocaleString()}\n**Unpaids:** ${data.unpaid.toLocaleString()}`,
 				footer: { text: `Payments may take long.`, icon_url: ctx.author.avatarURL({ dynamic: true }) },
 				title: `${user.username}'s unpaids`, color: 'RANDOM',

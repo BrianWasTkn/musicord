@@ -29,7 +29,7 @@ export default class Currency extends Command {
 		const { parseTime } = ctx.client.util, { item, times } = ctx.args;
 		const { data } = userEntry;
 		if (!item) {
-			return { replyTo: ctx.id, content: "This item doesn't exist :skull:" };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: "This item doesn't exist :skull:" };
 		}
 
 		const inv = item.findInv(data.items, item);
@@ -53,7 +53,7 @@ export default class Currency extends Command {
 		}
 
 		if (!check(inv).state) {
-			return { replyTo: ctx, content: check(inv).m };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: check(inv).m };
 		}
 
 		await userEntry.addCd().updateItems().save();

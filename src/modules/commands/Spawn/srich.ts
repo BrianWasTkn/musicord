@@ -19,7 +19,7 @@ export default class Spawn extends Command {
 	async exec(ctx: Context<{ count: number }>): Promise<MessageOptions> {
 		const emojis = ['first_place', 'second_place', 'third_place'];
 		const { count } = ctx.args; ctx.send({
-			replyTo: ctx.id, content: 'Fetching...'
+			reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'Fetching...'
 		});
 
 		const docs = (await Mongo.models['spawn-profile'].find({})) as SpawnDocument[];
@@ -34,7 +34,7 @@ export default class Spawn extends Command {
 		});
 
 		return {
-			replyTo: ctx.id, embed: {
+			reply: { messageReference: ctx.id, failIfNotExists: false }, embed: {
 				author: { name: 'top unpaids' },
 				description: rich.join('\n'),
 				color: 'ORANGE', footer: {

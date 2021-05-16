@@ -133,6 +133,6 @@ export default class Fun extends Command {
 		const change: PermissionOverwriteOption = { SEND_MESSAGES: bool };
 		const reason = `Spam Event — ${this.author.tag}}`;
 		const channel = this.channel as TextChannel;
-		return channel.updateOverwrite(this.guild.id, change, reason);
+		return channel.updateOverwrite(this.guild.id, change, { reason });
 	}
 }

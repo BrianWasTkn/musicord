@@ -30,10 +30,10 @@ export default class Currency extends Command {
 	): Promise<MessageOptions> {
 		const { amount, item, member } = ctx.args;
 		if (!amount || !item || !member) {
-			return { replyTo: ctx.id, content: `**Wrong Syntax bro**\n**Usage:** \`lava ${this.aliases[0]} <amount> <item> <@user>\`` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `**Wrong Syntax bro**\n**Usage:** \`lava ${this.aliases[0]} <amount> <item> <@user>\`` };
 		}
 		if (member.user.id === ctx.author.id) {
-			return { replyTo: ctx.id, content: 'Lol imagine gifting that to yourself dummy' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'Lol imagine gifting that to yourself dummy' };
 		}
 
 		const { maxInventory: cap } = config.currency;
@@ -44,20 +44,20 @@ export default class Currency extends Command {
 		const rInv = item.findInv(rData.items, item);
 
 		if (amount < 1) {
-			return { replyTo: ctx.id, content: `you can't gift negative amount of items smh` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `you can't gift negative amount of items smh` };
 		}
 		if (amount > uInv.amount) {
-			return { replyTo: ctx.id, content: `u only have ${uInv.amount.toLocaleString()} of this item` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `u only have ${uInv.amount.toLocaleString()} of this item` };
 		}
 		if (rInv > cap) {
-			return { replyTo: ctx.id, content: `they already have more than ${cap.toLocaleString()} of this item!` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `they already have more than ${cap.toLocaleString()} of this item!` };
 		}
 
 		await rEntry.addInv(item.id, amount).save();
 		await userEntry.updateQuest({ cmd: this, count: amount, item }).removeInv(item.id, amount).save(true);
 
 		return {
-			replyTo: ctx.id,
+			reply: { messageReference: ctx.id, failIfNotExists: false },
 			content: `You gave ${member.user.username} **${amount.toLocaleString()} ${item.emoji
 				} ${item.name}**${amount > 1 ? 's' : ''
 				}! They now have **${rInv.amount.toLocaleString()}** ${item.id}${rInv.amount > 1 ? 's' : ''

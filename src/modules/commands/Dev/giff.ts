@@ -32,7 +32,7 @@ export default class Currency extends Command {
 	): Promise<MessageOptions> {
 		const { amount, item, member } = ctx.args;
 		if (!amount || !item || !member) {
-			return { replyTo: ctx.id, content: `**Wrong Syntax bro**\n**Usage:** \`lava ${this.aliases[0]} <amount> <item> <@user>\`` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `**Wrong Syntax bro**\n**Usage:** \`lava ${this.aliases[0]} <amount> <item> <@user>\`` };
 		}
 
 		const { maxInventory: cap } = config.currency;

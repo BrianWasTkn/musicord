@@ -25,13 +25,13 @@ export default class Currency extends Command {
 		const { amount } = ctx.args;
 
 		if (!amount || amount < 1) {
-			return { content: 'it has to be a real number greater than 0 yeah?' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'it has to be a real number greater than 0 yeah?' };
 		}
 		if (amount > data.pocket) {
-			return { content: 'imagine burning money higher than your pocket lmao' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'imagine burning money higher than your pocket lmao' };
 		}
 
 		await userEntry.addCd().removePocket(amount).save();
-		return { content: `Burned **${amount.toLocaleString()}** coins from your pocket.` };
+		return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `Burned **${amount.toLocaleString()}** coins from your pocket.` };
 	}
 }

@@ -63,7 +63,7 @@ export default class Currency extends Command {
 			}
 		})(bet);
 		if (!args.state) {
-			return { content: args.m, replyTo: ctx.id };
+			return { content: args.m, reply: { messageReference: ctx.id, failIfNotExists: false }, };
 		}
 
 		// Item Effects

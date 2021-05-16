@@ -51,7 +51,7 @@ export abstract class Box extends Item {
 			return randomInArray(items);
 		};
 
-		await ctx.channel.send({ replyTo: ctx.id, content: `**${this.emoji} Opening your ${this.name}...**` })
+		await ctx.channel.send({ reply: { messageReference: ctx.id, failIfNotExists: false }, content: `**${this.emoji} Opening your ${this.name}...**` })
 		const tiers: { [t: string]: [number, number] } = { 1: [10, 100], 2: [10, 50], 3: [5, 10] };
 		const items: Item[] = [random(modules, i => i.cost >= 1e5)];
 		const amounts: number[] = [randomNumber.apply(null, tiers[items[0].tier] as [number, number])];
@@ -81,7 +81,7 @@ export abstract class Box extends Item {
 		Array(items.length).fill(null).forEach((_, i) => ctx.db.addInv(items[i].id, amounts[i]));
 		await ctx.db.removeInv(this.id).addPocket(coins).addPremiumKeys(Math.round(keys)).updateItems().save();
 		await sleep(randomNumber(2, 5) * 1e3);
-		return { replyTo: ctx.id, content: `**__${this.emoji} ${this.name} contents for ${ctx.author.username}__**\n${contents}` };
+		return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `**__${this.emoji} ${this.name} contents for ${ctx.author.username}__**\n${contents}` };
 	}
 }
 

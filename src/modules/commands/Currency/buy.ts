@@ -65,7 +65,7 @@ export default class Currency extends Command {
 			if ((item.premium ? data.prem : data.pocket) < (amount as number) * item.cost) return MESSAGES.NOT_BUYABLE_BULK;
 		}
 
-		if (check()) return { content: check() };
+		if (check()) return { content: check(), reply: { messageReference: ctx.id, failIfNotExists: false }, };
 		const { id, discount } = Items.sale;
 		const dPrice = Math.round(item.cost - item.cost * (discount / 1e2));
 		const paid = item.premium ? item.cost * (amount as number) : id === item.id
@@ -79,7 +79,7 @@ export default class Currency extends Command {
 		.addInv(item.id, Math.round(amount as number)).save(true);
 
 		return {
-			replyTo: ctx.id, embed: {
+			reply: { messageReference: ctx.id, failIfNotExists: false }, embed: {
 				author: { name: `Successful "${item.name}" purchase`, iconURL: ctx.author.avatarURL({ dynamic: true }) },
 				footer: { text: 'Thank you for your purchase!', iconURL: ctx.client.user.avatarURL() }, color: 'GREEN',
 				description: MESSAGES.BUY_MSG(item.premium)

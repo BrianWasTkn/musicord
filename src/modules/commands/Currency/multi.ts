@@ -35,7 +35,7 @@ export default class Currency extends Command {
 
 		const multis = util.paginateArray(multi.unlocked, 5);
 		if (page > multis.length) {
-			return { replyTo: ctx.id, content: "That page doesn't exist." };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: "That page doesn't exist." };
 		}
 
 		const embed: Embed = new Embed()

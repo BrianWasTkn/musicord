@@ -36,7 +36,7 @@ export default class Spawn extends Command {
 		const { amount, member } = ctx.args;
 		const { fetch } = ctx.client.db.spawns;
 		if (!amount || !member) {
-			return { replyTo: ctx.id, content: `**Wrong Syntax**\n**${
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `**Wrong Syntax**\n**${
 				(this.handler.prefix as string[])[0]
 			} ${this.aliases[0]} <amount> <@user>` };
 		}

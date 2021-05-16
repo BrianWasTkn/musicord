@@ -20,7 +20,7 @@ export default class Currency extends Command {
 		const inv = comp.findInv(entry.data.items, comp);
 
 		if (inv.amount < 1) {
-			return { replyTo: ctx.id, content: `LOL buy at least **1 ${comp.emoji} ${comp.name}** to post memes.` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `LOL buy at least **1 ${comp.emoji} ${comp.name}** to post memes.` };
 		}
 
 		return comp.use(ctx);

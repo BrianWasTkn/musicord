@@ -26,8 +26,8 @@ export default class PowerUp extends Item {
 		const xplo = super.findInv(ctx.db.data.items, this);
 
 		await ctx.send({
+			reply: { messageReference: ctx.id, failIfNotExists: false },
 			content: `**${this.emoji} Fusing your bomb...**`,
-			replyTo: ctx.id,
 		});
 
 		await sleep(randomNumber(1, 5) * 1e3);
@@ -54,7 +54,8 @@ export default class PowerUp extends Item {
 			items.forEach(({ amt, item }) => ctx.db.addInv(item.id, amt));
 			await ctx.db.addPocket(coins).updateItems().save();
 			return {
-				replyTo: ctx.id, content: `**__:slight_smile: Bomb contents for ${ctx.author.toString()}__**\n${[
+				reply: { messageReference: ctx.id, failIfNotExists: false },
+				content: `**__:slight_smile: Bomb contents for ${ctx.author.toString()}__**\n${[
 					`\`${coins.toLocaleString()} coins\``,
 					...its,
 				].join('\n')}`
@@ -66,7 +67,8 @@ export default class PowerUp extends Item {
 		const item = this.client.handlers.item.modules.get(inv.id);
 		await ctx.db.removePocket(ctx.db.data.pocket).removeInv(this.id).removeInv(item.id, super.findInv(ctx.db.data.items, item as Item).amount).updateItems().save();
 		return {
-			replyTo: ctx.id, content: `**__LMAO you died from the bomb!__**\nYou lost your WHOLE pocket and ALL your ${item.name.slice(
+			reply: { messageReference: ctx.id, failIfNotExists: false },
+			content: `**__LMAO you died from the bomb!__**\nYou lost your WHOLE pocket and ALL your ${item.name.slice(
 				0,
 				item.name.endsWith('y') ? -1 : undefined
 			)}${item.name.endsWith('y') ? 'ies' : 's'} from your inventory.`

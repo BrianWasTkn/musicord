@@ -45,20 +45,20 @@ export default class PowerUp extends Item {
 
 		const rep = (await ctx.awaitMessage(ctx.author.id, 15e3)).first();
 		if (!rep) {
-			return { replyTo: ctx.id, content: 'Imagine wasting 15 seconds of my bottime :rolling_eyes:' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'Imagine wasting 15 seconds of my bottime :rolling_eyes:' };
 		}
 		if (!things[rep.content.toLowerCase()]) {
-			return { replyTo: ctx.id, content: 'Stop giving me invalid options buddy >:(' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'Stop giving me invalid options buddy >:(' };
 		}
 
 		const karma = randomNumber(-1e4, 1e3);
 		if (karma <= 0) {
 			await entry.removeInv(this.id).updateItems().save();
-			return { replyTo: ctx.id, content: `Your meme got **${karma.toLocaleString()}** karmas and you broke your **${this.emoji} ${this.name}** lmao sucks to be you.` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `Your meme got **${karma.toLocaleString()}** karmas and you broke your **${this.emoji} ${this.name}** lmao sucks to be you.` };
 		}
 
 		const gain = karma * 2;
 		await entry.addPocket(gain).updateItems().save();
-		return { replyTo: ctx.id, content: `You got **__${gain.toLocaleString()} coins__** (${karma.toLocaleString()} karmas) from posting a ${things[rep.content.toLowerCase()].toLowerCase()} meme on reddit.` };
+		return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `You got **__${gain.toLocaleString()} coins__** (${karma.toLocaleString()} karmas) from posting a ${things[rep.content.toLowerCase()].toLowerCase()} meme on reddit.` };
 	}
 }

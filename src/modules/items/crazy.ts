@@ -27,6 +27,6 @@ export default class PowerUp extends Item {
 		const { parseTime } = ctx.client.util;
 		const time = 69 * 1000, expire = Date.now() + time;
 		await ctx.db.updateInv(this.id, { expire }).removeInv(this.id).updateItems().save();
-		return { replyTo: ctx.id, content: `You now have a **15%** jackpot chance for ${parseTime(time / 1e3)}!` };
+		return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `You now have a **15%** jackpot chance for ${parseTime(time / 1e3)}!` };
 	}
 }

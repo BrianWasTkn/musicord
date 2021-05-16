@@ -139,7 +139,7 @@ export default class Currency extends Command {
 			}
 		})(bet as number);
 		if (!args.state && bet !== 'table') {
-			return { content: args.m, replyTo: ctx.id };
+			return { content: args.m, reply: { messageReference: ctx.id, failIfNotExists: false }, };
 		}
 		if (bet === 'table') {
 			return this.table();

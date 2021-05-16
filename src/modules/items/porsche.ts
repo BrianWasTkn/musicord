@@ -38,10 +38,10 @@ export default class Tool extends Item {
 		if (!rep) return { content: 'lol bye, thanks for nothing.' };
 		let choice = Number(rep.content);
 		if (!Boolean(Number(rep.content)) || Number(rep.content) < 1) {
-			return { replyTo: ctx.id, content: 'Needs to be a real number more than 0 bruh' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'Needs to be a real number more than 0 bruh' };
 		}
 		if (choice > card.amount) {
-			return { replyTo: ctx.id, content: `Don't try and break me bish, you only have **${card.amount.toLocaleString()}** of these.` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `Don't try and break me bish, you only have **${card.amount.toLocaleString()}** of these.` };
 		}
 
 		let gain: number[] | number;
@@ -51,7 +51,7 @@ export default class Tool extends Item {
 			.updateItems().save();
 
 		return {
-			replyTo: ctx.id, content: `**You crafted __${choice.toLocaleString()
+			reply: { messageReference: ctx.id, failIfNotExists: false }, content: `**You crafted __${choice.toLocaleString()
 				}__ cards into your vault.**\nThis brings you to **${data.space.toLocaleString()
 				}** of total vault capacity, with **${gain.toLocaleString()
 				} (${Math.round(

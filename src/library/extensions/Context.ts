@@ -50,8 +50,8 @@ export class Context<Args extends {} = {}> extends Message {
 		return this.channel.send.call(this.channel, args, null);
 	}
 
-	embed(embed?: MessageEmbedOptions, reply = false) {
-		return this.channel.send.call(this.channel, { embed }, { replyTo: reply ? this.id : null });
+	embed(embed?: MessageEmbedOptions) {
+		return this.channel.send.call(this.channel, { embed }, undefined);
 	}
 
 	fetchMember(id: string = null, force = false, limit?: number) {

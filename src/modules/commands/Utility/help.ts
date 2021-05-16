@@ -89,7 +89,7 @@ export default class Utility extends Command {
 
 			// hide my control panel against normies owo
 			if (commands.length <= 0) {
-				return { replyTo: ctx.id, content: "Wew, all commands under that category are for my owners only." };
+				return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: "Wew, all commands under that category are for my owners only." };
 			}
 
 			return {

@@ -22,24 +22,24 @@ export default class Currency extends Command {
 		const { xp } = data.stats;
 
 		if (data.pocket < reqs.coins) {
-			return { replyTo: ctx.id, content: `You don't have enough coins to craft!` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `You don't have enough coins to craft!` };
 		}
 
-		await ctx.channel.send(`You have **:coin: ${data.pocket.toLocaleString()}** coins to craft **:key: ${Math.round(calcCoins(data.pocket)).toLocaleString()}** keys, how many keys do you wanna craft right now?`, { replyTo: ctx.id });
+		await ctx.channel.send(`You have **:coin: ${data.pocket.toLocaleString()}** coins to craft **:key: ${Math.round(calcCoins(data.pocket)).toLocaleString()}** keys, how many keys do you wanna craft right now?`, { reply: { messageReference: ctx.id, failIfNotExists: false }, });
 		const choice = (await ctx.awaitMessage()).first();
 		if (!choice) {
-			return { replyTo: ctx.id, content: 'imagine wasting my time :rolling_eyes:' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'imagine wasting my time :rolling_eyes:' };
 		}
 		if (!Number.isInteger(Number(choice.content)) || Number(choice.content) <= 0) {
-			return { replyTo: choice.id, content: 'it has to be a real number greater than 0 yeah?' };
+			return { reply: { messageReference: choice.id, failIfNotExists: false }, content: 'it has to be a real number greater than 0 yeah?' };
 		}
 
 		const nice = Number(choice.content);
 		if ((nice * reqs.coins) > data.pocket) {
-			return { replyTo: choice.id, content: `you can't craft keys more than what you actually can, buddy` };
+			return { reply: { messageReference: choice.id, failIfNotExists: false }, content: `you can't craft keys more than what you actually can, buddy` };
 		}
 
 		await userEntry.updateQuest({ cmd: this, count: nice }).addPremiumKeys(Math.round(nice)).removePocket(Math.round(nice * reqs.coins)).save();
-		return { replyTo: ctx.id, embed: { color: 'GOLD', description: `Successfully crafted **:coin: ${Math.round(nice * reqs.coins).toLocaleString()}** coins for **:key: ${Math.round(nice).toLocaleString()}** keys.` } };
+		return { reply: { messageReference: ctx.id, failIfNotExists: false }, embed: { color: 'GOLD', description: `Successfully crafted **:coin: ${Math.round(nice * reqs.coins).toLocaleString()}** coins for **:key: ${Math.round(nice).toLocaleString()}** keys.` } };
 	}
 }

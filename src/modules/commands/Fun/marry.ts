@@ -28,7 +28,7 @@ export default class Fun extends Command {
 		if (!someone) {
 			if (!me.marriage.id) {
 				return {
-					replyTo: ctx.id,
+					reply: { messageReference: ctx.id, failIfNotExists: false },
 					content: "You're not married to anyone right now.",
 				};
 			}
@@ -59,7 +59,7 @@ export default class Fun extends Command {
 
 		if (inv.amount < 1 || inv2.amount < 1) {
 			return {
-				replyTo: ctx.id,
+				reply: { messageReference: ctx.id, failIfNotExists: false },
 				content: `Both of you must have at least **1 ${Ring.emoji} ${Ring.name}** in your inventories!`,
 			};
 		}
@@ -69,16 +69,16 @@ export default class Fun extends Command {
 			})) as MemberPlus;
 
 			return {
-				replyTo: ctx.id,
+				reply: { messageReference: ctx.id, failIfNotExists: false },
 				content: `Sad to say but they're already married to **${marriedTo.user.tag}** bro :(`,
 			};
 		}
 		if (someone.user.bot) {
-			return { replyTo: ctx.id, content: 'Imagine marrying bots' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'Imagine marrying bots' };
 		}
 		if (ctx.author.id === someone.user.id) {
 			return {
-				replyTo: ctx.id,
+				reply: { messageReference: ctx.id, failIfNotExists: false },
 				content: "Lol imagine marrying yourself, couldn't be me honestly.",
 			};
 		}
@@ -93,7 +93,7 @@ export default class Fun extends Command {
 		await meEntry.marry(someone.user.id).removeInv(Ring.id).save();
 		// meEntry.updateQuest({ cmd: this, count: 1 }); 
 		return {
-			replyTo: ctx.id, content:
+			reply: { messageReference: ctx.id, failIfNotExists: false }, content:
 				`You're now married to ${someone.user.toString()} GGs! Type \`lava ${this.aliases[0]
 				}\` to see your marriage profile!`,
 		};

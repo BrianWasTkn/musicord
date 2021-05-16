@@ -27,6 +27,6 @@ export default class PowerUp extends Item {
 		const time = 5 * 60 * 1e3, expire = Date.now() + time;
 
 		await ctx.db.updateInv(this.id, { multi, expire }).removeInv(this.id).updateItems().save();
-		return { replyTo: ctx.id, content: `${this.emoji} Your coffee granted you a **${multi}% multiplier** valid for ${parseTime(time / 1e3)}!` };
+		return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `${this.emoji} Your coffee granted you a **${multi}% multiplier** valid for ${parseTime(time / 1e3)}!` };
 	}
 }

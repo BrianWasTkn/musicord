@@ -48,24 +48,24 @@ export default class Currency extends Command {
 		const { amount } = ctx.args;
 
 		if (!amount && vault > 0) {
-			return { replyTo: ctx.id, content: 'you need to withdraw something' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'you need to withdraw something' };
 		}
 		if (misc.beingHeisted && ctx.client.util.curHeist.get(ctx.guild.id)) {
-			return { replyTo: ctx.id, content: 'you\'re being heisted so you can\'t withdraw coins lmao' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'you\'re being heisted so you can\'t withdraw coins lmao' };
 		}
 		if (!Number.isInteger(Number(amount)) || amount < 1) {
-			return { replyTo: ctx.id, content: 'it needs to be a whole number greater than 0' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'it needs to be a whole number greater than 0' };
 		}
 		if (vault < 0) {
-			return { replyTo: ctx.id, content: 'u have nothing to withdraw LOL' };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'u have nothing to withdraw LOL' };
 		}
 		if (amount > vault) {
-			return { replyTo: ctx.id, content: `u only have **${vault.toLocaleString()}** don't try and break me` };
+			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `u only have **${vault.toLocaleString()}** don't try and break me` };
 		}
 
 		const { vault: n } = await userEntry.addCd().withdraw(Math.round(amount)).updateItems().save();
 		return {
-			replyTo: ctx.id,
+			reply: { messageReference: ctx.id, failIfNotExists: false },
 			content: `**${amount.toLocaleString()}** coins withdrawn. You now have **${n.toLocaleString()}** in your vault.`,
 		};
 	}
