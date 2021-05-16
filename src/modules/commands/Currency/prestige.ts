@@ -32,13 +32,13 @@ export default class Currency extends Command {
 
 		if (!Object.values(data).every(d => d >= 100)) {
 			return { reply: { messageReference: ctx.id }, embed: {
-				author: { name: `Prestige ${toRoman(next.prestige + 1)} Requirements` },
+				author: { name: `Prestige ${toRoman(next.prestige)} Requirements` },
 				color: 'RANDOM', description: `**Pocket Amount:** \`${
 					pocket.toLocaleString()
 				}/${next.pocket.toLocaleString()}\` \`(${
 					data.pocket
 				}%)\`\n**Levels Required:** \`${
-					(xp / 100).toLocaleString()
+					Number((xp / 100).toFixed(1)).toLocaleString()
 				}/${next.level.toLocaleString()}\` \`(${
 					data.level
 				}%)\``
