@@ -38,7 +38,7 @@ export default class Currency extends Command {
 				}/${next.pocket.toLocaleString()}\` \`(${
 					data.pocket
 				}%)\`\n**Levels Required:** \`${
-					Number((xp / 100).toFixed(1)).toLocaleString()
+					Math.trunc(xp / 100).toLocaleString()
 				}/${next.level.toLocaleString()}\` \`(${
 					data.level
 				}%)\``
