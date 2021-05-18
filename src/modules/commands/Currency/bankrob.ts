@@ -75,7 +75,7 @@ export default class Currency extends Command {
 		const onCollect = async (m: Context) => {
 			const heistEntry = await (new ContextDatabase(m)).fetch(m.author.id);
 			const remove = (id: string) => entries.delete(id);
-			entries.set(m.id, new Heist(ctx, heistEntry));
+			entries.set(m.id, new Heist(m, heistEntry));
 
 			if (entries.filter(e => e.ctx.author.id === m.author.id).size > 1) {
 				remove(m.id); return m.reply('You already joined bruh');
