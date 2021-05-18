@@ -335,8 +335,8 @@ export class ContextDatabase extends Base {
 			const trigger: { [it: string]: () => Effects } = {
 				brian: () => eff.addSlotJackpotOdd(5),
 				crazy: () => eff.addSlotJackpotOdd(5),
-				thicc: () => eff.addGambleWinnings(0.5),
-				thicm: () => eff.addBlackjackWinnings(0.5),
+				thicc: () => eff.addGambleWinnings(0.2),
+				thicm: () => eff.addBlackjackWinnings(0.2),
 				dragon: () => eff.addDiceRoll(1),
 			};
 

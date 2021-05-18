@@ -17,7 +17,7 @@ export default class PowerUp extends Item {
 			info: {
 				short:
 					'Blackjack rigged? Well if you want more coins, activate thicco mode.',
-				long: 'Gives you +50% winnings on blackjack for 10 minutes.',
+				long: 'Gives you +20% winnings on blackjack for 10 minutes.',
 			},
 		});
 	}

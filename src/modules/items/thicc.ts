@@ -16,7 +16,7 @@ export default class PowerUp extends Item {
 			checks: ['time'],
 			info: {
 				short: "Empower your gamble winnings with thicco's thiccnes.",
-				long: 'Gives you +50% winnings on gambling for roughly 10 minutes.',
+				long: 'Gives you +20% winnings on gambling for roughly 10 minutes.',
 			},
 		});
 	}
