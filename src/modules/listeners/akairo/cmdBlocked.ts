@@ -1,5 +1,7 @@
 import { ListenerHandler, CommandHandler, Command, Listener } from 'lib/objects';
+import { Constants } from 'discord-akairo';
 import { Context } from 'lib/extensions';
+const { BuiltInReasons } = Constants;
 
 export default class CommandListener extends Listener<CommandHandler<Command>> {
 	constructor() {
@@ -10,22 +12,22 @@ export default class CommandListener extends Listener<CommandHandler<Command>> {
 		});
 	}
 
-	exec(ctx: Context, cmd: Command, reason: string) {
-		function getReason(reason: string) {
-			switch (reason.toLowerCase()) {
-				case 'owner':
-					return "You're not my bot owner :P";
-				case 'blacklisted': 
-					return "You're blacklisted from the bot idiot";
-				case 'dm':
-					return 'Not usable in guilds sorry';
-				case 'guild':
-					return 'Not usable in DMs sorry';
-				default:
-					return "You can't use this command for no reason wtf";
-			}
+	public getReason(reason: string): string {
+		switch (reason.toLowerCase()) {
+			case BuiltInReasons.OWNER:
+				return "You're not my bot owner :P";
+			case BuiltInReasons.DM:
+				return 'Not usable in guilds sorry';
+			case BuiltInReasons.GUILD:
+				return 'Not usable in DMs sorry';
+			case 'blacklisted': 
+				return "You're blacklisted from the bot idiot";
+			default:
+				return "You can't use this command for no reason wtf";
 		}
+	}
 
-		return ctx.send({ content: getReason(reason) });
+	exec(ctx: Context, cmd: Command, reason: string) {
+		return ctx.send({ content: this.getReason(reason) });
 	}
 }

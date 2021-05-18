@@ -2,7 +2,8 @@
 node_modules
 build
 
-# Dotfiles
+# Shit
+rewrite
 .env
 
 # Tests

@@ -24,7 +24,7 @@ export default class CommandListener extends Listener<CommandHandler<Command>> {
 		return ctx.send({
 			embed: {
 				description: `You're currently on cooldown for the \`${id}\` command.\nYou can use this command in **${time}**\nYou only need to wait **${defCd}** by default!`,
-				title: 'Cool the f\*ck down', color: 'INDIGO', footer: {
+				title: 'hey chill', color: 'INDIGO', footer: {
 					text: this.client.user.username,
 					icon_url: this.client.user.avatarURL(),
 				},

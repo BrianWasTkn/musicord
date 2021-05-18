@@ -4,7 +4,7 @@
  * Some parts were taken from {@link https://dankmemer.lol/source Dank Memer} soo.
 */
 
-import { Effects, Embed, Console } from '.';
+import { Effects, Embed, Console, Race } from '.';
 import { Collection, Role } from 'discord.js';
 import { CommandQueue } from './queue';
 import { ClientUtil } from 'discord-akairo';
@@ -23,6 +23,7 @@ export class Util extends ClientUtil {
     public events: Collection<string, string>;
     public heists: Collection<string, Role>;
     public client: Lava;
+    public race: Collection<string, Collection<string, Race>>;
     public constructor(client: Lava) {
         super(client);
 

@@ -78,10 +78,10 @@ export class Context<Args extends {} = {}> extends Message {
 }
 
 export class ContextDatabase extends Base {
-	public client: Lava;
-	public saved: boolean;
+	public readonly client: Lava;
+	public readonly saved: boolean;
+	public readonly ctx: Context;
 	public data: CurrencyProfile;
-	public ctx: Context;
 
 	public constructor(ctx: Context) {
 		super(ctx.client);
@@ -99,6 +99,11 @@ export class ContextDatabase extends Base {
 
 	fetch(id = this.ctx.author.id, assign = true) {
 		return this.init(id, assign);
+	}
+
+	get banned() {
+		if (!this.data) this._reportError();
+		return this.data.banned;
 	}
 
 	//# Single-Return methods

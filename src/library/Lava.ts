@@ -109,6 +109,9 @@ export class Lava extends AkairoClient {
 			item: new ItemHandler<Item>(this, handlers.item),
 			lottery: new LotteryHandler(this),
 		};
+
+		this.once('dbConnect', db => this.util.console.log('Mongoose', `v${db.version} Connected!`));
+		this.on('moduleLoad', mod => this.util.console.log(mod.handler.constructor.name, `Loaded ${mod.id}`));
 	}
 
 	public setMongoPath(uri: string, options: ConnectOptions = {}) {
