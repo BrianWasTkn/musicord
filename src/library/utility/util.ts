@@ -4,8 +4,8 @@
  * Some parts were taken from {@link https://dankmemer.lol/source Dank Memer} soo.
 */
 
+import { Collection, Role, MessageCollector } from 'discord.js';
 import { Effects, Embed, Console, Race } from '.';
-import { Collection, Role } from 'discord.js';
 import { CommandQueue } from './queue';
 import { ClientUtil } from 'discord-akairo';
 import { COLORS } from './constants';
@@ -16,6 +16,7 @@ import chalk from 'chalk';
 import moment from 'moment';
 
 export class Util extends ClientUtil {
+    public currencyHeists: Collection<string, MessageCollector>;
     public cmdQueue: Collection<string, CommandQueue>;
     public curHeist: Collection<string, boolean>;
     public effects: Collection<string, Collection<string, Effects>>;

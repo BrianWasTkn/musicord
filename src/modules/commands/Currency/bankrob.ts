@@ -1,7 +1,7 @@
 import { Collection, Message, MessageOptions, CollectorFilter, MessageCollectorOptions } from 'discord.js';
 import { MemberPlus, Context, ContextDatabase } from 'lib/extensions';
-import { successMsgs, naniMsgs, failMsgs } from 'src/assets/arrays/bankrob.json';
 import { Command } from 'lib/objects';
+import { Heist } from 'lib/utility/heist';
 
 export default class Currency extends Command {
 	constructor() {
@@ -63,8 +63,9 @@ export default class Currency extends Command {
 		await userEntry.addCd().save(true);
 		await vicEntry.beingHeisted(true).save();
 		await ctx.send({ content: `**${ctx.author.username}** is starting a heist against **${user.username}**! Type \`JOIN HEIST\` to join in 60 seconds!` });
+		const entries = new Collection<string, Heist>([[ctx.author.id, new Heist(ctx, userEntry)]]);
 		ctx.client.util.curHeist.set(ctx.guild.id, true);
-		const entries = new Collection<string, Context>([[ctx.author.id, ctx]]);
+		
 		const options: MessageCollectorOptions = { max: Infinity, time: 6e4 };
 		const filter: CollectorFilter<[Context]> = m => m.content.toLowerCase() === 'join heist';
 		const collector = ctx.channel.createMessageCollector(filter as (
@@ -72,95 +73,71 @@ export default class Currency extends Command {
 		), options);
 
 		const onCollect = async (m: Context) => {
+			const heistEntry = await (new ContextDatabase(m)).fetch(m.author.id);
 			const remove = (id: string) => entries.delete(id);
-			entries.set(m.id, m);
-			if (entries.filter(e => e.author.id === m.author.id).size > 1) {
+			entries.set(m.id, new Heist(ctx, heistEntry));
+
+			if (entries.filter(e => e.ctx.author.id === m.author.id).size > 1) {
 				remove(m.id); return m.reply('You already joined bruh');
 			}
 			if (m.author.id === user.id) {
 				remove(m.id); return m.reply(`You ain't allowed to join because you're being heisted HAHAHAHA`);
 			}
-
-			const entry = await (new ContextDatabase(ctx)).fetch(m.author.id);
-			if (entry.data.pocket < min) {
+			if (heistEntry.data.pocket < min) {
 				remove(m.id); return m.reply(`You need ${min} coins to join LMAO`);
 			}
 
-			await entry.removePocket(min).save();
+			await heistEntry.removePocket(min).save();
 			return m.react('🏦');
 		};
 
-		const onEnd = async () => {
+		const onEnd = async (_: Collection<string, Context>, reason?: string) => {
 			const { randomNumber, randomInArray } = ctx.client.util;
-			const [ripMsg, niceMsg, nullMsg]: string[][] = [failMsgs, successMsgs, naniMsgs];
+			await vicEntry.beingHeisted(false).save();
 			const odds = () => randomNumber(1, 100);
-			// s - success; n - nothing; f - fail
-			const [s, n, f]: MemberPlus[][] = Array(3).fill([]);
-			vicEntry.beingHeisted(false);
 			ctx.client.util.curHeist.delete(ctx.guild.id);
-			if (entries.size <= 1) return ctx.reply('Well looks like you\'re alone.');
-			if (entries.size <= 5) vicCoins /= 2;
 
+			// Caught
+			if (reason === 'caught') {
+				return ctx.reply('Nice, heist cancelled because you got caught.');
+			}
+
+			// The host is heisting with dead souls
+			if (entries.size <= 1) {
+				return ctx.reply('Well looks like you\'re alone.');
+			};
+
+			// Random Amount (50% or 100%)
+			vicCoins = Math.round(randomInArray([vicCoins, vicCoins / 2]));
 			// end message
-			await ctx.send({
-				content: `\`${entries.size}\` people are teaming up against **${user.username}** for **${vicCoins.toLocaleString()}** coins...`
-			});
+			await ctx.reply(`\`${entries.size}\` people are teaming up against **${user.username}** for **${vicCoins.toLocaleString()}** coins...`);
 
-			// fail
-			if (odds() <= 10) {
-				await Promise.all([...entries.values()].map(async c => {
-					const data = await (new ContextDatabase(c)).fetch(c.author.id, false);
-					return data.removePocket(min).save();
-				}));
+			// Loop through all entries and randomly fine, win or die them. 
+			const results = await Promise.all([...entries.values()].map(entry => {
+				return {
+					1: entry.win(vicCoins -= randomNumber(1, vicCoins)),
+					2: entry.fine(randomNumber(1, entry.entry.data.pocket)),
+					3: entry.die()
+				}[randomNumber(1, 3)].entry.save()
+				.then((doc) => ({ doc, entry }));
+			}));
 
-				await vicEntry.addPocket(min * entries.size).save();
-				return ctx.send({ content: `**:skull: Everyone failed the heist!**\n**${entries.size}** people paid **${user.username}** \`${min}\` coins each for an unsuccessful robbery.` });
+			// Everyone Failed
+			if (results.every(r => r.entry.status === 'died')) {
+				await ctx.channel.send('**:skull: Everybody died LOL :skull:**');
+				return ctx.channel.send(results.map(r => `- ${r.entry.msg}`).join('\n'), { code: 'diff' })
 			}
 
-			// Odds for each individual idiots who spammed join heist
-			[...entries.values()].sort(() => Math.random() - 0.5).forEach(m => {
-				const chance = odds();
-				if (chance >= 60 && s.length <= 15) return s.push(m.member);
-				return (chance > 10 ? n : f).push(m.member);
-			});
-
-			// update their pocket values
-			const coins = Math.round(vicCoins / s.length);
-			await Promise.all([
-				...(s.map(async m => {
-					const enthree = await (new ContextDatabase(ctx)).fetch(m.user.id, false);
-					return enthree.addPocket(coins).save();
-				})), 
-				...(f.map(async m => {
-					const enthree = await (new ContextDatabase(ctx)).fetch(m.user.id, false);
-					return enthree.removePocket(enthree.data.pocket).save();
-				}))
-			]);
-
-			function replace<A extends MemberPlus[], S extends string, P extends string>(
-				arr: A, symb: S, placeholders: P[]
-			): P[] {
-				return arr.map(m => `${symb} ${randomInArray(placeholders)
-					.replace(/{user}/g, m.user.username)
-					.replace(/{got}/g, coins.toLocaleString())
-				}`) as P[];
-			}
-
-			// message mapping
-			const success = s.length >= 1 ? replace(s, '+', niceMsg) : [];
-			const nothing = n.length >= 1 ? replace(n, '#', nullMsg) : [];
-			const fail = f.length >= 1 ? replace(f, '-', ripMsg) : [];
-
-			// final
-			if (success.length >= 1) await vicEntry.withdraw(vicCoins).removePocket(vicCoins).save();
+			// The painful part of making this command
+			const diffSym = { 'fined': '#', 'died': '-', 'won': '+' };
+			const block = results.map(r => `${diffSym[r.entry.status]} ${r.entry.msg}`);
+			await vicEntry.withdraw(vicCoins).removePocket(vicCoins).save();
 			let content = `**Good job everybody!** We got a total of \`${vicCoins.toLocaleString()}\` coins!`;
-			content += `\n${'```diff'}\n${[...fail, ...nothing].sort(() => Math.random() - 0.5).join('\n')}\n${success.join('\n')}\n${'```'}`;
+			content += `\n${'```diff'}\n${block.sort(() => Math.random() - 0.5).join('\n')}\n${'```'}`;
 			return ctx.send({ content });
 		};
 
 		collector.on('collect', onCollect);
-		collector.on('end', onEnd as (
-			c: Collection<string, Message>, r?: string
-		) => any);
+		collector.on('end', onEnd as (c: Collection<string, Message>, r?: string) => any);
 	}
 }

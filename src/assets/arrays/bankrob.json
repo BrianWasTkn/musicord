@@ -1,18 +1,18 @@
 {
-	"successMsgs": [
+	"SUCCESS": [
 		"{user} got {got} coins",
 		"{user} escaped with {got} coins",
 		"{user} ate {got} coins",
 		"{user} said 1 + 1 is {got}",
 		"{user} bagged {got} coins"
 	],
-	"failMsgs": [
+	"FAIL": [
 		"{user} stepped on a landmine and died",
 		"{user} crashed their plane and died",
 		"{user} died from sinking on quicksand",
 		"{user} got poisoned by a python and died"
 	],
-	"naniMsgs": [
+	"FINE": [
 		"{user} danced with the fairy god mother",
 		"{user} bought McDonalds for {fine}",
 		"{user} got sucked from the black hole",

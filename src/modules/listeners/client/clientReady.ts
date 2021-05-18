@@ -30,7 +30,7 @@ export default class ClientListener extends Listener<Lava> {
 			},
 		});
 
-		await bot.setPresence({ activities });
+		await bot.setPresence({ status: 'online', activities });
 		await channel.send({ embed, content: '<@605419747361947649>' });
 		await extra.send({ embed });
 
