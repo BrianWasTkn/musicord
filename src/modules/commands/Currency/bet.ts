@@ -93,7 +93,7 @@ export default class Currency extends Command {
 		if (Math.random() > 0.65) {
 			[userD, botD] = rig(botD, userD);
 		} else {
-			[botD, userD] = rig(userD, botD);
+			[userD, botD] = rig(userD, botD);
 		}
 		userD += dceRoll;
 
