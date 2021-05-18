@@ -95,7 +95,7 @@ export default class Currency extends Command {
 		if (odds > 0.65) {
 			[botD, userD] = rig(botD, userD);
 		} else {
-			[botD, userD] = rig(userD, botD);
+			[userD, botD] = rig(botD, userD);
 		}
 		userD += dceRoll;
 
