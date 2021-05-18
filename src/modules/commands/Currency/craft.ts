@@ -15,7 +15,7 @@ export default class Currency extends Command {
 	}
 
 	async exec(ctx: Context, userEntry: ContextDatabase): Promise<MessageOptions> {
-		const reqs = { xp: 1000, coins: 100e6 };
+		const reqs = { xp: 100, coins: 1e6 };
 		const calcCoins = (m: number) => m / reqs.coins;
 		const calcXP = (m: number) => m / reqs.xp;
 		const { data } = userEntry;
