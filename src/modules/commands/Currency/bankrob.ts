@@ -139,5 +139,6 @@ export default class Currency extends Command {
 
 		collector.on('collect', onCollect);
 		collector.on('end', onEnd as (c: Collection<string, Message>, r?: string) => any);
+		ctx.client.util.currencyHeists.set(ctx.guild.id, collector);
 	}
 }
