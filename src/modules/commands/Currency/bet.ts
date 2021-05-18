@@ -90,10 +90,12 @@ export default class Currency extends Command {
 		const rig = (a: number, b: number) => (a > b ? [b, a] : [a, b]);
 		let userD = util.randomNumber(1, 12);
 		let botD = util.randomNumber(1, 12);
-		if (Math.random() > 0.65) {
-			[userD, botD] = rig(botD, userD);
+		let odds = Math.random();
+		ctx.reply(odds);
+		if (odds > 0.65) {
+			[botD, userD] = rig(botD, userD);
 		} else {
-			[userD, botD] = rig(userD, botD);
+			[botD, userD] = rig(userD, botD);
 		}
 		userD += dceRoll;
 
