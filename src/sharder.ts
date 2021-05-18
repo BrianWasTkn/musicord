@@ -9,9 +9,7 @@ export default new ShardingManager(join(__dirname, 'index'), {
 	respawn: true,
 }).on('shardCreate', shard => {
 	console.log(`[SHARDER] Shard ${shard.id} created.`);
-}).spawn();
-
-sharder
+}).spawn()
 .then(shards => {
 	return console.log(`[SHARDER] ${shards.size} shards connected.`)
 })
