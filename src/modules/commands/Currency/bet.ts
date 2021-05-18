@@ -91,7 +91,6 @@ export default class Currency extends Command {
 		let userD = util.randomNumber(1, 12);
 		let botD = util.randomNumber(1, 12);
 		let odds = Math.random();
-		ctx.reply(odds);
 		if (odds > 0.65) {
 			[botD, userD] = rig(botD, userD);
 		} else {
