@@ -6,7 +6,7 @@ export default class Easy extends Quest {
 			rewards: { coins: 1e4, item: [50, 'thicm'] },
 			target: [100000, 'sell', 'sellItem'],
 			difficulty: 'Easy',
-			info: 'Sell 100 pieces of any item type.',
+			info: 'Sell 100,000 pieces of any item type.',
 			name: 'Fuck It',
 		});
 	}
