@@ -25,7 +25,7 @@ export default class Currency extends Command {
 			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `You don't have enough coins to craft!` };
 		}
 
-		await ctx.channel.send(`You have **:coin: ${data.pocket.toLocaleString()}** coins to craft **:key: ${Math.round(calcCoins(data.pocket)).toLocaleString()}** keys, how many keys do you wanna craft right now?`, { reply: { messageReference: ctx.id, failIfNotExists: false }, });
+		await ctx.channel.send(`You have **:coin: ${data.pocket.toLocaleString()}** coins to craft **:key: ${Math.trunc(calcCoins(data.pocket)).toLocaleString()}** keys, how many keys do you wanna craft right now?`, { reply: { messageReference: ctx.id, failIfNotExists: false }, });
 		const choice = (await ctx.awaitMessage()).first();
 		if (!choice) {
 			return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: 'imagine wasting my time :rolling_eyes:' };
