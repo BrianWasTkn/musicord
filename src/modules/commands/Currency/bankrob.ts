@@ -114,11 +114,11 @@ export default class Currency extends Command {
 
 			// Loop through all entries and randomly fine, win or die them. 
 			const results = await Promise.all([...entries.values()].map(entry => {
-				return {
-					1: entry.win(vicCoins -= randomNumber(1, vicCoins)),
-					2: entry.fine(randomNumber(1, entry.entry.data.pocket)),
-					3: entry.die()
-				}[randomNumber(1, 3)].entry.save()
+				return [
+					entry.win(vicCoins -= randomNumber(1, vicCoins)),
+					entry.fine(randomNumber(1, entry.entry.data.pocket)),
+					entry.die()
+				][randomNumber(0, 2)].entry.save()
 				.then((doc) => ({ doc, entry }));
 			}));
 
