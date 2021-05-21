@@ -3,7 +3,7 @@
  * @author BrianWasTaken
 */
 
-import { AkairoHandler, AkairoModuleOptions, AkairoModule, AkairoClient, CommandDescription Category } from 'discord-akairo';
+import { AkairoHandler, AkairoModuleOptions, AkairoModule, AkairoClient, CommandDescription, Category } from 'discord-akairo';
 import { AbstractHandler, LavaClient } from '.';
 import { Collection } from 'discord.js';
 
