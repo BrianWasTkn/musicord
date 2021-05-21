@@ -1,7 +1,7 @@
 import { Message, Structures } from 'discord.js';
 import { LavaClient } from '../..';
 
-export class Context<Args extends {} = never> extends Message {
+export class Context<Args extends {} = {}> extends Message {
 	public client: LavaClient;
 	public args: Args = Object.create(null);
 
