@@ -1,7 +1,7 @@
 /// <reference path="../../../typings/mongo.currency.d.ts" />
 
 import { Schema, Model, model } from 'mongoose';
-import build from '..';
+import { Build as build } from '..';
 
 const CurrencySchema = new Schema({
 	props: {
