@@ -25,14 +25,21 @@ export default class Currency extends Command {
 			Vault: entry.props.vault.toLocaleString()
 		};
 
-		return { embed: {
-			author: { 
-				name: `${user.username}'s balance`, 
-				iconURL: user.avatarURL({ dynamic: true }) 
-			},
-			color: Math.random() * 0xffffff, 
-			description: Object.entries(balance)
-				.map(([f, v]) => `**${f}:** ${v}`).join('\n')
-		}};
+		return { 
+			content: 'Lava is being sanitized with more shit to come. Stay tuned!',
+			embed: {
+				author: { 
+					name: `${user.username}'s balance`, 
+					iconURL: user.avatarURL({ dynamic: true }) 
+				},
+				color: Math.random() * 0xffffff, 
+				description: Object.entries(balance)
+					.map(([f, v]) => `**${f}:** ${v}`).join('\n'),
+				footer: {
+					name: ctx.client.user.username,
+					icon_url: ctx.client.user.avatarURL()
+				}
+			}
+		};
 	};
 }
