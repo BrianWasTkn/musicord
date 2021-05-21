@@ -4,7 +4,10 @@ import { LavaClient, CommandHandler, ListenerHandler, Command, Listener } from '
 import { ClientOptions, Intents } from 'discord.js';
 import { join } from 'path';
 
-const bot = new LavaClient({ intents: Intents.ALL });
+const bot = new LavaClient({ 
+	ownerID: ['605419747361947649'],
+	intents: Intents.ALL 
+});
 
 bot.commandHandler = new CommandHandler(bot, { 
 	directory: join(__dirname, 'modules', 'commands'),
