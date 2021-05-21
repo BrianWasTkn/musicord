@@ -23,4 +23,9 @@ bot.listenerHandler = new ListenerHandler(bot, {
 	useNames: true,
 }).loadAll();
 
+bot.once('ready' () => {
+	bot.console.log('Client', `${bot.listenerHandler.modules.size} Listeners Loaded`);
+	bot.console.log('Client', `${bot.commandHandler.modules.size} Commands Loaded`);
+});
+
 bot.login(process.env.DISCORD_TOKEN);
