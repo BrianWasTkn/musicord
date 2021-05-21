@@ -25,7 +25,7 @@ export default class Currency extends Command {
 			color: Math.random() * 0xabcdef, description: Object.entries({
 				Pocket: props.pocket.toLocaleString(),
 				Vault: props.vault.toLocaleString()
-			}).map(([f, v]) => `**${f}:** ${v}`)
+			}).map(([f, v]) => `**${f}:** ${v}`).join('\n')
 		}};
 	};
 }
