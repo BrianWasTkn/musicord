@@ -1,3 +1,25 @@
+async function owa (o) {
+	const owo = {
+		cat: new Promise(res => setTimeout(() => res(o), o * 1e3)),
+		dog: new Promise(res => setTimeout(() => res(o * 5), o * 1e3)),
+	}
+
+	return console.log(await owo.cat);
+}
+
+owa(5)
+
+// console.log('breh');
+// setTimeout(() => console.log('owa owa'), 5e3);
+
+// const a = {
+// 	owo: 'uwu',
+// 	// owa: 'owa'
+// };
+
+// console.log(Object.assign({ 'owo': 'default owo', 'owa': 'def owa' }, a))
+
+
 // class Token {
 // 	constructor(type, value) {
 // 		return { type, value };
