@@ -75,7 +75,6 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
     }
 
     public async runCommand(context: Context, command: Command, args: any) {
-        console.log({ ctx: context.id, command: command.id, args });
         await this.commandQueue.wait(context.author.id);
     	if (command.typing) {
     		context.channel.startTyping();
@@ -86,7 +85,6 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
     		this.emit(CommandHandlerEvents.COMMAND_STARTED, context, command, args);
     		try {
     			const returned = await command.exec(context);
-                console.log(returned);
     			if (returned) await context.channel.send(returned);
     			this.emit(CommandHandlerEvents.COMMAND_FINISHED, context, command, args);
     		} catch(error) {
