@@ -3,11 +3,11 @@
  * @author BrianWasTaken
 */
 
-import { Constants, EmbedPlus, ItemEffects } from '..';
+import { Colors, EmbedPlus, ItemEffects } from '..';
 import { ClientUtil as OldClientUtil } from 'discord-akairo';
 import { LavaClient } from '.';
 
-export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil {
+export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil<Client> {
 	public client: Client;
 	public constructor(client: Client) {
 		super(client);
@@ -16,8 +16,8 @@ export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil
 	}
 
 	protected _patch() {
-		for (const color of Object.keys(Constants.Colors)) {
-            require('discord.js').Constants.Colors[color.toUpperCase()] = Constants.Colors[color];
+		for (const color of Object.keys(Colors)) {
+            require('discord.js').Constants.Colors[color.toUpperCase()] = Colors[color];
         }
 	}
 

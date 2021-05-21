@@ -69,4 +69,4 @@ const ItemMessages = {
 	CANT_FOOL_ME: (bleep: number) => `Hey you only have ${bleep} of these!`,
 }
 
-export const Constants = { Colors, Currency, GambleMessages, ItemMessages };
+export { Colors, Currency, GambleMessages, ItemMessages };
