@@ -1,14 +1,10 @@
 /**
- * Breh im tired of jsdoc-ing pls sand help
+ * Starting points. 
  * @author BrianWasTaken
 */
 
-export * from './akairo';
-export * from './console';
-export * from './constants';
-export * from './effects';
-export * from './embed';
-export * from './error';
-export * from './queue';
-export * from './util';
-export * from './race';
+export * from './LoggerService';
+export * from './CommandQueue';
+export * from './ItemEffects';
+export * from './EmbedPlus';
+export * from './Constants';
