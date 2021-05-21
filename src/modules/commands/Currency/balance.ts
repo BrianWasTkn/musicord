@@ -36,7 +36,7 @@ export default class Currency extends Command {
 				description: Object.entries(balance)
 					.map(([f, v]) => `**${f}:** ${v}`).join('\n'),
 				footer: {
-					name: ctx.client.user.username,
+					text: ctx.client.user.username,
 					icon_url: ctx.client.user.avatarURL()
 				}
 			}
