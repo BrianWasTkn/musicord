@@ -26,7 +26,7 @@ export default class Currency extends Command {
 		};
 
 		return { 
-			content: 'Lava is being sanitized for more shit to come. Your data won\'t be lost. Stay tuned!',
+			content: 'Lava is being sanitized for more shit to come. Your data is NOT lost. Stay tuned!',
 			embed: {
 				author: { 
 					name: `${user.username}'s balance`, 
