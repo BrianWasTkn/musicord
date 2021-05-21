@@ -9,6 +9,8 @@ import { Connect, Logger } from '..';
 import { AkairoClient } from 'discord-akairo';
 import MongoDB from 'mongoose';
 
+import '../discord/structures';
+
 export interface ClientConnectOptions {
 	auth: {
 		discord: string;
