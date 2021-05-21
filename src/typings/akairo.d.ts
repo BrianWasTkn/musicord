@@ -3,7 +3,23 @@
  * @author BrianWasTaken
 */
 
-import { AbstractModuleOptions, AbstractHandlerOptions, AbstractHandler, LavaClient, ClientUtil, EmbedPlus, ItemEffects } from 'rw/library';
+import { 
+	AbstractModuleOptions, 
+	AbstractHandlerOptions, 
+	ClientConnectOptions,
+	AbstractHandler, 
+	CommandHandler,
+	CommandQueue,
+	ItemEffects,
+	LavaClient, 
+	ClientUtil, 
+	EmbedPlus, 
+	Inhibitor,
+	Connect,
+	Console,
+	Context,
+	Logger,
+} from 'src/library';
 import { MessageOptions, Collection, Message } from 'discord.js';
 import { EventEmitter } from 'events';
 
@@ -11,7 +27,12 @@ declare module 'discord-akairo' {
 	type ArgumentTypeCaster = (message: Message, args: string) => PromiseUnion<any>;
 
 	interface AkairoClient {
+		connect(options: ClientConnectOptions): Promise<string>;
+		listenerHandler: ListenerHandler;
+		commandHandler: CommandHandler;
+		console: Console;
 		util: ClientUtil<this>;
+		db: Connector;
 	}
 	interface ClientUtil<Client> {
 		client: Client;
@@ -37,14 +58,16 @@ declare module 'discord-akairo' {
 	interface CommandHandlerOptions extends AkairoHandlerOptions {
 		useNames: boolean;
 	}
-	// interface CommandHandler {
-	// 	client: LavaClient;
-	// 	useNames: boolean;
+	interface CommandHandler {
+		client: LavaClient;
+		useNames: boolean;
+		commandQueue: CommandQueue;
 
-	// 	runPostTypeInhibitors: (message: Message, command: Command) => Promise<boolean>;
-	// 	runPermissionChecks: (message: Message, command: Command) => Promise<boolean>;
-	// 	checkCooldowns: (message: Message, command: Command) => Promise<boolean>;
-	// }
+		runPostTypeInhibitors(message: Context, command: Command): Promise<boolean>;
+		runPermissionChecks(message: Context, command: Command): Promise<boolean>;
+		checkCooldowns(message: Context, command: Command): Promise<boolean>;
+		runCommand(message: Context, command: Command, args: any): Promise<void>;
+	}
 	interface TypeResolver {
 		commandHandler: CommandHandler;
 		listenerHandler: ListenerHandler;

@@ -12,7 +12,7 @@ const stamp = () => moment().format('HH:mm:ss');
 export class Logger {
 	public static createInstance() {
 		return new this();
-$	}
+	}
 
 	public log(tag: string, msg: string) {
 		log(chalk.cyanBright(`[${stamp()} => ${tag}] ${msg}`));
