@@ -35,9 +35,12 @@ export class LavaClient extends AkairoClient {
 			mongo: process.env.MONGO_URI,
 		},
 		options = {
-			mongo: {}
+			mongo: {
+				useUnifiedTopology: true,
+				useNewUrlParser: true
+			}
 		}
-	}: ClientConnectOptions) {
+	}: ClientConnectOptions = {}) {
 		await MongoDB.connect(auth.mongo, options.mongo);
 		return super.login(auth.discord);
 	}

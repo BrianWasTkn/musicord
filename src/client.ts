@@ -28,4 +28,4 @@ bot.once('ready', () => {
 	bot.console.log('Client', `${bot.commandHandler.modules.size} Commands Loaded`);
 });
 
-bot.login(process.env.DISCORD_TOKEN);
+bot.connect();
