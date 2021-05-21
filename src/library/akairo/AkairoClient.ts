@@ -41,7 +41,8 @@ export class LavaClient extends AkairoClient {
 			}
 		}
 	}: ClientConnectOptions = {}) {
-		await MongoDB.connect(auth.mongo, options.mongo);
+		const db = await MongoDB.connect(auth.mongo, options.mongo);
+		this.console.log('Client', `Mongoose v${db.version}`);
 		return super.login(auth.discord);
 	}
 }
