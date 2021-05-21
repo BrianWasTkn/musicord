@@ -20,7 +20,7 @@
     "_moduleAliases": {
         "config": "./build/src/config",
         "lib": "./build/src/library",
-        "src": "./build/src"
+        "src": "./build"
     },
     "license": "MIT",
     "dependencies": {
