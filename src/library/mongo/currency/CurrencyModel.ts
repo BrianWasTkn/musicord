@@ -4,6 +4,7 @@ import { Schema, Model, model } from 'mongoose';
 import { Build as build } from '..';
 
 const CurrencySchema = new Schema({
+	_id: { type: String, required: true },
 	props: {
 		cooldowns: [{ 
 			expire: Number, 
