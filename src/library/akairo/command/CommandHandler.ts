@@ -35,7 +35,8 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
     public remove: (id: string) => Command;
 
     public async runPostTypeInhibitors(context: Context, command: Command): Promise<boolean> {
-    	if (command.ownerOnly) {
+    	console.log(context, command);
+        if (command.ownerOnly) {
         	const isOwner = this.client.isOwner(context.author);
 			if (!isOwner) {
 				this.emit(CommandHandlerEvents.COMMAND_BLOCKED, context, command, BuiltInReasons.OWNER);
