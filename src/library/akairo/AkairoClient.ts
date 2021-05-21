@@ -12,11 +12,11 @@ import MongoDB from 'mongoose';
 import '../discord/structures';
 
 export interface ClientConnectOptions {
-	auth: {
+	auth?: {
 		discord: string;
 		mongo: string;
 	};
-	options: {
+	options?: {
 		mongo: MongoDB.ConnectOptions,
 	}
 }
