@@ -35,7 +35,6 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
     public remove: (id: string) => Command;
 
     public async runPostTypeInhibitors(context: Context, command: Command): Promise<boolean> {
-    	console.log(context.id, command.id);
         if (command.ownerOnly) {
         	const isOwner = this.client.isOwner(context.author);
 			if (!isOwner) {
@@ -77,7 +76,7 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 
     public async runCommand(context: Context, command: Command, args: any) {
         console.log({ ctx: context.id, command: command.id, args });
-        // await this.commandQueue.wait(context.author.id);
+        await this.commandQueue.wait(context.author.id);
     	if (command.typing) {
     		context.channel.startTyping();
     	}
@@ -93,7 +92,7 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
     		} catch(error) {
     			this.emit('commandError', context, command, args, error);
     		} finally {
-                // this.commandQueue.next(context.author.id);
+                this.commandQueue.next(context.author.id);
             }
     	} finally {
     		if (command.typing) {
