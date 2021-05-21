@@ -5,8 +5,8 @@
 
 import { AbstractHandler, AbstractModuleOptions, LavaClient, InhibitorHandler, ListenerHandler } from '..';
 import { CommandHandler as OldCommandHandler, CommandHandlerOptions, Category, Constants } from 'discord-akairo';
+import { Context, CommandQueue } from '../..';
 import { Collection } from 'discord.js';
-import { Context } from '../..';
 import { Command } from '.';
 
 const { CommandHandlerEvents, BuiltInReasons } = Constants;
@@ -21,6 +21,8 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 	public useNames: boolean;
 	public modules: Collection<string, Command>;
 	public client: LavaClient;
+
+    public commandQueue: CommandQueue = new CommandQueue();
 	public constructor(client: LavaClient, options: CommandHandlerOptions) {
 		super(client, options);
 		this.useNames = options.useNames;
@@ -73,6 +75,7 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
     }
 
     public async runCommand(context: Context, command: Command, args: any) {
+        await this.commandQueue.wait(context.author.id);
     	if (command.typing) {
     		context.channel.startTyping();
     	}
@@ -85,7 +88,9 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
     			this.emit(CommandHandlerEvents.COMMAND_FINISHED, context, command, args);
     		} catch(error) {
     			this.emit('commandError', context, command, args, error);
-    		} finally {}
+    		} finally {
+                this.commandQueue.next(context.author.id);
+            }
     	} finally {
     		if (command.typing) {
     			context.channel.stopTyping();

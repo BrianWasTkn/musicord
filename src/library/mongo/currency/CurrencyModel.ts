@@ -1,7 +1,7 @@
-/// <reference path="../../../typings/mongoose.currency.d.ts" />
+/// <reference path="../../../typings/mongo.currency.d.ts" />
 
-import { Schema, Model } from 'mongoose';
-import build from '../SchemaBuilder';
+import { Schema, Model, model } from 'mongoose';
+import build from '..';
 
 const CurrencySchema = new Schema({
 	props: {
@@ -72,4 +72,4 @@ const CurrencySchema = new Schema({
 	}
 });
 
-export const CurrencyModel = model<Document<CurrencyData>>('currency', CurrencySchema);
+export const CurrencyModel = model<CurrencyData>('economy', CurrencySchema);

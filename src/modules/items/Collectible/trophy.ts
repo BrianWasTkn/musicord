@@ -1,4 +1,4 @@
-import { CollectibleItem } from 'rw/library';
+import { CollectibleItem } from 'src/library';
 
 export default class Collectible extends CollectibleItem {
 	public constructor() {

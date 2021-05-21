@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/mongo.currency.d.ts" />
 
-import { MongooseEndpoint } from '../MongooseEndpoint';
+import { MongooseEndpoint } from '..';
 import { CurrencyEntry } from '.';
 
 export class CurrencyEndpoint extends MongooseEndpoint<CurrencyData> {

@@ -14,7 +14,7 @@ declare module 'discord-akairo' {
 		util: ClientUtil<this>;
 	}
 	interface ClientUtil<Client> {
-		public client: Client;
+		client: Client;
 	}
 
 	interface InhibitorHandlerOptions extends AkairoHandlerOptions {
@@ -27,7 +27,7 @@ declare module 'discord-akairo' {
 	}
 
 	interface ListenerHandlerOptions extends AkairoHandlerOptions {
-		useNames: boolean;
+		useNames?: boolean;
 	}
 	interface ListenerHandler extends AkairoHandler {
 		client: LavaClient;

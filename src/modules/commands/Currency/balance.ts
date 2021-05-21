@@ -1,5 +1,5 @@
 import { MessageOptions, GuildMember } from 'discord.js';
-import { Command, Context } from 'rw/library';
+import { Command, Context } from 'src/library';
 
 export default class Currency extends Command {
 	public constructor() {

@@ -1,8 +1,12 @@
 {
     "name": "lava",
-    "version": "2.19.9",
+    "version": "3.0.01",
     "description": "A simple currency bot with database support.",
     "main": "build/src/index",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/BrianWasTaken/lava.git"
+    },
     "author": {
         "name": "BrianWasTaken",
         "discord": "JustBrian#9793",

@@ -1,4 +1,4 @@
-import { Command, Context } from 'rw/library';
+import { Command, Context } from 'src/library';
 import { MessageOptions } from 'discord.js';
 
 export default class Utility extends Command {

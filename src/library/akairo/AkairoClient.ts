@@ -3,11 +3,10 @@
  * @author BrianWasTaken
 */
 
+import { ClientUtil, CommandHandler, ListenerHandler, ItemHandler } from '.';
 import { ClientOptions, MessageOptions, TextChannel } from 'discord.js';
 import { Connect, Logger } from '..';
 import { AkairoClient } from 'discord-akairo';
-import { ClientUtil } from '.';
-
 import MongoDB from 'mongoose';
 
 export interface ClientConnectOptions {
@@ -24,6 +23,9 @@ export class LavaClient extends AkairoClient {
 	public console = Logger.createInstance();
 	public util = new ClientUtil(this);
 	public db = Connect(this);
+
+	public listenerHandler: ListenerHandler;
+	public commandHandler: CommandHandler;
 
 	public async connect({
 		auth = {

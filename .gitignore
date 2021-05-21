@@ -3,7 +3,8 @@ node_modules
 build
 
 # Shit
-rewrite
+source
+docs
 .env
 
 # Tests

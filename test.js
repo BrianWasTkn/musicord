@@ -1,13 +1,33 @@
-async function owa (o) {
-	const owo = {
-		cat: new Promise(res => setTimeout(() => res(o), o * 1e3)),
-		dog: new Promise(res => setTimeout(() => res(o * 5), o * 1e3)),
-	}
 
-	return console.log(await owo.cat);
-}
+// -------------------- node v14 -------------------------
 
-owa(5)
+console.time('e');
+await new Promise(res => setTimeout(res, 5e3));
+console.timeEnd('e');
+
+// import { Client, Intents } from 'discord.js';
+// const bot = new Client({ intents: Intents.ALL });
+
+// bot
+// 	.on('ready', () => console.log(bot.user))
+// 	.on('message', m => console.log(`${m.author.tag}: ${m.content}`))
+
+// const token = await bot.login('some token');
+// console.log(token);
+
+
+// -------------------- node v13 ------------------------
+
+// async function owa (o) {
+// 	const owo = {
+// 		cat: new Promise(res => setTimeout(() => res(o), o * 1e3)),
+// 		dog: new Promise(res => setTimeout(() => res(o * 5), o * 1e3)),
+// 	}
+
+// 	return console.log(await owo.cat);
+// }
+
+// owa(5)
 
 // console.log('breh');
 // setTimeout(() => console.log('owa owa'), 5e3);

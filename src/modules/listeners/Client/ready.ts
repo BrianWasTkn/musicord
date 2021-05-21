@@ -1,4 +1,4 @@
-import { Listener } from 'rw/library';
+import { Listener } from 'src/library';
 
 export default class Client extends Listener {
 	public constructor() {

@@ -4,7 +4,7 @@
  * User Entry
 */
 
-import { UserEntry } from '../UserEntry';
+import { UserEntry } from '..';
 
 export class CurrencyEntry extends UserEntry<CurrencyData> {
 	get props() {
