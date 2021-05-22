@@ -28,12 +28,10 @@ declare global {
 
 	interface InventorySlot {
 		consumed: number;
-		active: boolean;
 		expire: number;
 		amount: number;
 		multi: number;
 		id: string;
-		cd: number;
 	}
 
 	interface CooldownData {

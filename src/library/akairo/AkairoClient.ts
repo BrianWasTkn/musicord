@@ -28,6 +28,7 @@ export class LavaClient extends AkairoClient {
 
 	public listenerHandler: ListenerHandler;
 	public commandHandler: CommandHandler;
+	public itemHandler: ItemHandler;
 
 	public async connect({
 		auth = {

@@ -10,6 +10,9 @@ export class CollectibleItem extends Item {
 	}
 
 	public async use(ctx: Context, times: number): Promise<MessageOptions> {
-		return { content: 'noob.' };
+		const userEntry = await ctx.currency(ctx.author.id);
+		const thisItem = userEntry.findInventoryItem(this.id);
+
+		return { content: `**${this.info.emoji} WHAT A FLEX!**\nImagine having **${thisItem.owned.toLocaleString()}**, couldn't be me` };
 	}
 }

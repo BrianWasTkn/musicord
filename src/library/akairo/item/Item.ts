@@ -63,7 +63,7 @@ export class Item extends AbstractModule {
 			buyable: true,
 			retired: false,
 			premium: false,
-			usable: true,
+			usable: true
 		});
 
 		/**
@@ -76,10 +76,13 @@ export class Item extends AbstractModule {
 		});
 	}
 
-	private _assign<A, B>(o1: B, o2: A): A {
+	private _assign<A>(o1: A, o2: A): A {
 		return Object.assign(o2, o1);
 	}
 
+	/**
+	 * Main method to use items.
+	*/
 	public use(context: Context, times: number): PromiseUnion<MessageOptions>;
 	public use(context: Context, times: number): PromiseUnion<MessageOptions> {
 		return { reply: { messageReference: context.id, failIfNotExists: false }, embed: {

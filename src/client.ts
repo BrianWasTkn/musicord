@@ -9,19 +9,19 @@ const bot = new LavaClient({
 	intents: Intents.ALL 
 });
 
-bot.commandHandler = new CommandHandler(bot, { 
-	directory: join(__dirname, 'modules', 'commands'),
-	classToHandle: Command,
-	useNames: true,
-	prefix: ['lava'],
-}).loadAll();
-
 bot.listenerHandler = new ListenerHandler(bot, {
 	directory: join(__dirname, 'modules', 'listeners'),
 	automateCategories: true,
 	classToHandle: Listener,
 	useNames: true,
 }).loadAll();
+
+bot.commandHandler = new CommandHandler(bot, { 
+	directory: join(__dirname, 'modules', 'commands'),
+	classToHandle: Command,
+	useNames: true,
+	prefix: ['lava'],
+}).loadAll().useListenerHandler(bot.listenerHandler);
 
 bot.once('ready', () => {
 	bot.console.log('Client', `${bot.listenerHandler.modules.size} Listeners Loaded`);

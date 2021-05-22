@@ -8,6 +8,6 @@ export class CurrencyEndpoint extends MongooseEndpoint<CurrencyData> {
 		return this.model.findOne({ _id }).then(doc => {
 			if (!doc) return new this.model({ _id }).save();
 			return doc;
-		}).then(doc => new CurrencyEntry(doc));
+		}).then(doc => new CurrencyEntry(this.client, doc));
 	}
 }
