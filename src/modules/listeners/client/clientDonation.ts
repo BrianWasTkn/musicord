@@ -24,14 +24,19 @@ const qObj = {
 		Amount: 'How much coins you wanna sponsor?',
 		Requirement: 'What should be the requiement? Type none if none.',
 	},
+	nitro: {
+		'Type': 'What type of nitro? Is it nitro with boost or just classic?',
+		'Nitro Lasts for': 'How long does your nitro last?'
+	}
 };
 
 const roles = {
 	giveaway: '692892567787929691',
 	heist: '697007407011725312',
 	event: '697007407011725312',
+	nitro: '692892567787929691',
 };
-type DonationType = 'giveaway' | 'event' | 'heist';
+type DonationType = 'giveaway' | 'event' | 'heist' | 'nitro';
 
 async function handleDonation(
 	ctx: Context,
@@ -128,7 +133,13 @@ export default class ClientListener extends Listener<Lava> {
 	public async exec(ctx: Context): Promise<void | Context> {
 		if (ctx.channel.id !== '818667160918425630') return;
 
-		const haha: { [h: number]: DonationType } = { 1: 'giveaway', 2: 'heist', 3: 'event' };
+		const haha: { [h: number]: DonationType } = { 
+			1: 'giveaway', 
+			2: 'heist', 
+			3: 'event',
+			4: 'nitro'
+		};
+
 		const query = haha[Number(ctx.content)];
 		if (ctx.author.bot) return;
 		if (!query) return ctx.delete() as Promise<Context>;
