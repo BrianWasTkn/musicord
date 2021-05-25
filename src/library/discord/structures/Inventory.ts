@@ -1,5 +1,3 @@
-/// <reference path="../../../typings/mongo.currency.d.ts" />
-
 import { LavaClient } from '../..';
 import { Base } from 'discord.js';
 
@@ -10,8 +8,9 @@ export class Inventory extends Base {
 	public timesUsed: number;
 	public expiresAt: number;
 	public owned: number;
+	public level: number;
 	public id: string;
-	public constructor(client: LavaClient, data: InventorySlot) {
+	public constructor(client: LavaClient, data: CurrencyInventory) {
 		super(client);
 
 		/**
@@ -22,12 +21,12 @@ export class Inventory extends Base {
 		/**
 		 * Owned amount of this item.
 		*/
-		this.owned = data.amount;
+		this.owned = data.amount ?? 0;
 
 		/**
 		 * Expiration date of this item.
 		*/
-		this.expiresAt = data.expire;
+		this.expiresAt = data.expire ?? 0;
 
 		if ('multi' in data) {
 			/**
@@ -39,7 +38,12 @@ export class Inventory extends Base {
 		/**
 		 * How many times the user used this item.
 		*/
-		this.timesUsed = data.consumed;
+		this.timesUsed = data.uses ?? 0;
+
+		/**
+		 * The level upgrade of this item.
+		*/
+		this.level = data.level ?? 0;
 	}
 
 	/**

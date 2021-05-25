@@ -7,8 +7,8 @@ export class Context<Args extends {} = {}> extends Message {
 	public author: User;
 	public args: Args = Object.create(null);
 
-	public currency(id = this.author.id) {
-		return this.client.db.currency.fetch(id);
+	public get db() {
+		return this.client.db;
 	}
 }
 

@@ -1,19 +1,25 @@
-/// <reference path="../../../typings/mongo.currency.d.ts" />
-
 /**
- * User Entry
+ * User Entry to manage their currency bullshit.
+ * @author BrianWasTaken
 */
 
-import { Currency, Command, Inventory } from '../..';
+import { Currency, Command, Inventory, Cooldown } from '../..';
 import { Collection } from 'discord.js';
 import { UserEntry } from '..';
 
 export class CurrencyEntry extends UserEntry<CurrencyData> {
 	/**
-	 * Basic properties for their stupid data.
+	 * Basic properties for their datatards.
 	*/
 	get props() {
 		return this.data.props;
+	}
+
+	/**
+	 * Their prestige info.
+	*/
+	get prestige() {
+		return this.data.prestige;
 	}
 
 	/**
@@ -27,45 +33,44 @@ export class CurrencyEntry extends UserEntry<CurrencyData> {
 	 * Their trash inventory.
 	*/
 	get items() {
-		return this.data.props.items.reduce((coll, slot) => coll.set(slot.id, new Inventory(this.client, slot)), new Collection<string, Inventory>());
+		return this.data.items.reduce((coll, slot) => coll.set(slot.id, new Inventory(this.client, slot)), new Collection<string, Inventory>());
 	}
 
 	/**
 	 * Their cooldowns.
 	*/
 	get cooldowns() {
-		return this.data.props.cooldowns;
+		return this.data.cooldowns.reduce((coll, cd) => coll.set(cd.id, new Cooldown(this.client, cd)), new Collection<string, Cooldown>());
 	}
 
 	/**
-	 * Find a specific cooldown based from the id given.
-	 * @private
-	*/
-	private findCooldown(id: string) {
-		return this.data.props.cooldowns.find(i => i.id === id);
-	}
-
-	/**
-	 * Check if an item exists on their inventory.
+	 * Check if they have at least one of this item on their inventory.
 	*/
 	public hasInventoryItem(id: string) {
 		return this.items.get(id).isOwned();
 	}
 
 	/**
-	 * Add a cooldown to them.
+	 * Find an item from their inventory.
+	*/
+	public findInventoryItem(id: string) {
+		return this.items.get(id);
+	}
+
+	/**
+	 * Add a cooldown.
 	*/
 	addCooldown(id: string, time = 1000) {
 		if (this.client.isOwner(this.data._id)) return this;
 		const expire = Date.now() + time;
-		const cd = this.findCooldown(id);
+		const cd = this.cooldowns.get(id);
 
 		if (!cd) {
-			this.data.props.cooldowns.push({ expire, id });
+			this.data.cooldowns.push({ expire, id });
 			return this;
 		}
 
-		cd.expire = expire;
+		this.data.cooldowns.find(c => c.id === cd.id).expire = expire;
 		return this;
 	}
 
@@ -73,7 +78,7 @@ export class CurrencyEntry extends UserEntry<CurrencyData> {
 	 * Sweep all cooldowns.
 	*/
 	sweepCooldowns() {
-		this.data.props.cooldowns.map(cd => cd.expire = 0);
+		this.data.cooldowns.map(cd => cd.expire = 0);
 		return this;
 	}
 
@@ -123,19 +128,49 @@ export class CurrencyEntry extends UserEntry<CurrencyData> {
 	vault(amount: number) {
 		return {
 			withdraw: () => {
-				this.data.props.vault -= amount;
+				this.data.props.vault.amount -= amount;
 				this.data.props.pocket += amount;
 				return this;
 			},
 			deposit: () => {
-				this.data.props.vault += amount;
+				this.data.props.vault.amount += amount;
 				this.data.props.pocket -= amount;
 				return this;
 			},
 			expand: () => {
-				this.data.props.vault += amount;
+				this.data.props.vault.amount += amount;
 				return this;
 			},
+		}
+	}
+
+	/**
+	 * Manage their inventory.
+	*/
+	inventory(id: string) {
+		const thisItem = this.data.items.find(i => i.id === id);
+
+		return {
+			increment: (amount = 1) => {
+				thisItem.amount += amount;
+				return this;
+			},
+			decrement: (amount = 1) => {
+				thisItem.amount -= amount;
+				return this;
+			},
+			activate: (expire: number) => {
+				thisItem.expire = expire;
+				return this;
+			},
+			deactivate: () => {
+				thisItem.expire = 0;
+				return this;
+			},
+			setMulti: (multi: number) => {
+				thisItem.multi = multi;
+				return this;
+			}
 		}
 	}
 
@@ -147,13 +182,13 @@ export class CurrencyEntry extends UserEntry<CurrencyData> {
 			xp: (space = false) => {
 				const { randomNumber } = this.client.util;
 				// @TODO: modify "2" to be dependent on cheese for example.
-				this.data.upgrades.xp += randomNumber(1, 2);
+				this.data.props.xp += randomNumber(1, 2);
 				if (space) this.calc().space();
 				return this;
 			},
 			space: (os = 55) => {
-				const { prestige } = this.data.upgrades;
-				const amount = Math.ceil(os * (prestige / 2) + os);
+				const { level } = this.data.prestige;
+				const amount = Math.ceil(os * (level / 2) + os);
 				this.vault(amount).expand();
 				return this;
 			}
@@ -166,15 +201,15 @@ export class CurrencyEntry extends UserEntry<CurrencyData> {
 	daily() {
 		return {
 			addStreak: () => {
-				this.data.misc.daily.streak++;
+				this.data.daily.streak++;
 				return this;
 			},
 			resetStreak: () => {
-				this.data.misc.daily.streak = 1;
+				this.data.daily.streak = 1;
 				return this;
 			},
 			recordStreak: (stamp = Date.now()) => {
-				this.data.misc.daily.time = stamp;
+				this.data.daily.time = stamp;
 				return this;
 			}
 		}
@@ -183,22 +218,41 @@ export class CurrencyEntry extends UserEntry<CurrencyData> {
 	/**
 	 * Manage their gambling statfuckeries.
 	*/
-	stats(game: string, winsOrLoses: 'wins' | 'loses', wonOrLost: number) {
+	stats(game: string) {
+		const thisStat = this.data.gamble_stats.find(stat => stat.id === game);
 		return {
-			update: () => {
-				const thisStat = this.data.stats.find(stat => stat.id === game);
-				thisStat[winsOrLoses === 'wins' ? 'won' : 'lost'] += wonOrLost;
-				thisStat[winsOrLoses]++;
-				return this;
-			}
+			coins: (amount: number) => ({
+				lost: () => {
+					thisStat.won += amount;
+					return this;
+				},
+				won: () => {
+					thisStat.lost += amount;
+					return this;
+				}
+			}),
+			games: (inc = 1) => ({
+				loses: () => {
+					thisStat.loses += inc;
+					return this;
+				},
+				wins: (inc = 1) => {
+					thisStat.wins += inc;
+					return this;
+				}
+			})
 		}
 	}
 
 	/**
-	 * The final shitfuckery this entry needs to do after babysitting.
+	 * The final shitfuckery this entry needs to do after tolerating bot spammers.
 	*/
-	save() {
-		this.data.upgrades.xp = Math.min(this.data.upgrades.xp, Currency.MAX_LEVEL * 100);
+	save(runPostFunctions = true) {
+		if (runPostFunctions) {
+			this.data.props.xp = Math.min(this.data.props.xp, Currency.MAX_LEVEL * 100);
+			this.data.props.space = Math.min(this.data.props.space, Currency.MAX_SAFE_SPACE);
+		}
+
 		return super.save();
 	}
 }

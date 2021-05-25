@@ -7,37 +7,58 @@ import {
 	AbstractModuleOptions, 
 	AbstractHandlerOptions, 
 	ClientConnectOptions,
+	CurrencyEndpoint,
 	AbstractHandler, 
 	CommandHandler,
+	SpawnEndpoint,
 	CommandQueue,
 	ItemEffects,
+	ItemHandler,
 	LavaClient, 
 	ClientUtil, 
 	EmbedPlus, 
 	Inhibitor,
+	Endpoint,
 	Connect,
-	Console,
 	Context,
 	Logger,
 } from 'src/library';
-import { MessageOptions, Collection, Message } from 'discord.js';
-import { EventEmitter } from 'events';
+import { 
+	MessageOptions, 
+	Constructable,
+	Collection, 
+	Message, 
+} from 'discord.js';
+import { 
+	EventEmitter 
+} from 'events';
+import {
+	Document
+} from 'mongoose';
+
+interface ClientDB {
+	currency: CurrencyEndpoint;
+	spawn: SpawnEndpoint;
+}
 
 declare module 'discord-akairo' {
 	type ArgumentTypeCaster = (message: Message, args: string) => PromiseUnion<any>;
 
+	// Client
 	interface AkairoClient {
 		connect(options: ClientConnectOptions): Promise<string>;
 		listenerHandler: ListenerHandler;
 		commandHandler: CommandHandler;
-		console: Console;
+		itemHandler: ItemHandler;
+		console: Logger;
 		util: ClientUtil<this>;
-		db: Connector;
+		db: ClientDB;
 	}
 	interface ClientUtil<Client> {
 		client: Client;
 	}
 
+	// Inhibitor
 	interface InhibitorHandlerOptions extends AkairoHandlerOptions {
 		useNames: boolean;
 	}
@@ -47,6 +68,7 @@ declare module 'discord-akairo' {
 		useNames: boolean;
 	}
 
+	// Listener
 	interface ListenerHandlerOptions extends AkairoHandlerOptions {
 		useNames?: boolean;
 	}
@@ -55,6 +77,7 @@ declare module 'discord-akairo' {
 		useNames: boolean;
 	}
 
+	// Command
 	interface CommandHandlerOptions extends AkairoHandlerOptions {
 		useNames: boolean;
 	}
@@ -79,6 +102,7 @@ declare module 'discord-akairo' {
 		type(name: string): ArgumentTypeCaster;
 	}
 
+	// Listener
 	interface ListenerOptions extends AbstractModuleOptions {
 		name?: string;
 	}
@@ -88,6 +112,7 @@ declare module 'discord-akairo' {
 		name: string;
 	}
 
+	// Inhibitor
 	interface InhibitorOptions extends AbstractModuleOptions {
 		name?: string;
 	}
@@ -97,6 +122,7 @@ declare module 'discord-akairo' {
 		name: string;
 	}
 
+	// Command
 	interface ParsedComponentData {
 		command?: Command;
 	}

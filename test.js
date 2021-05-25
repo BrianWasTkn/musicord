@@ -1,9 +1,50 @@
+// const param = new URLSearchParams();
+// param.append('text', 'lol imagine');
+// console.log(JSON.stringify({
+// 	text: 'owo'
+// }).text)
 
-// -------------------- node v14 -------------------------
+// await import('dotenv').then(env => env.config());
+// import { MessageAttachment } from 'discord.js';
+// import fetch from 'node-fetch';
 
-console.time('e');
-await new Promise(res => setTimeout(res, 5e3));
-console.timeEnd('e');
+// const base = 'https://dankmemer.services/api';
+// const params = new URLSearchParams();
+// params.set('text', 'dank memer is the best owo');
+
+// const gen = await fetch(`${base}/changemymind`, {
+// 	method: "POST",
+// 	body: JSON.stringify({
+// 		text: 'owo'
+// 	}),
+// 	headers: {
+// 		Authorization: process.env.MEME_TOKEN,
+// 		'Content-Type': 'application/json'
+// 	}
+// }).then(async r => new MessageAttachment(await r.text(), 'hey girl welcome to me crib'));
+
+// console.log(gen)
+
+// console.log(JSON.stringify({ 'bruh': 5 }));
+
+// const body = {
+// 	text: 'dank memer is the best'
+// }
+// 
+// const changeMyMind = await fetch(`${base}`, { 
+// 	method: 'POST',
+// 	body: JSON.stringify(body),
+// 	headers: {
+// 		"Authorization": process.env.MEME_TOKEN,
+// 		"Content-Type": 'application/json'
+// 	}
+// }).then(async r => new MessageAttachment(await r.text()));
+//
+// console.log(changeMyMind);
+
+// console.time('e');
+// await new Promise(res => setTimeout(res, 5e3));
+// console.timeEnd('e');
 
 // import { Client, Intents } from 'discord.js';
 // const bot = new Client({ intents: Intents.ALL });

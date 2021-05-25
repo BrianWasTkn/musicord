@@ -1,13 +1,13 @@
-import { MessageOptions, GuildMember, MessageEmbedOptions } from 'discord.js';
+import { MessageOptions, GuildMember } from 'discord.js';
 import { Command, Context } from 'src/library';
 
-export default class Currency extends Command {
+export default class Spawn extends Command {
 	public constructor() {
-		super('balance', {
-			name: 'Balance',
+		super('unpaids', {
+			name: 'Unpaids',
 			channel: 'guild',
-			aliases: ['balance', 'bal', 'coins'],
-			category: 'Currency',
+			aliases: ['unpaids'],
+			category: 'Spawn',
 			clientPermissions: ['EMBED_LINKS'],
 			args: [{
 				id: 'member',
@@ -19,17 +19,16 @@ export default class Currency extends Command {
 
 	public async exec(ctx: Context<{ member: GuildMember }>): Promise<MessageOptions> {
 		const isContext = ctx.args.member.user.id === ctx.author.id;
-		const entry = await ctx.db.currency.fetch(ctx.args.member.user.id);
+		const entry = await ctx.spawn(ctx.args.member.user.id);
 		const balance = {
-			Keys: entry.props.prem.toLocaleString(),
-			Wallet: entry.props.pocket.toLocaleString(),
-			Bank: entry.props.vault.toLocaleString() + (isContext ? `/${entry.props.space.toLocaleString()}` : '')
+			'Remaining Unpaids': entry.props.balance.toLocaleString(),
+			'Events Joined': entry.props.joined_events.toLocaleString(),
 		};
 
 		return { 
-			embed: <MessageEmbedOptions> {
+			embed: {
 				author: { 
-					name: `Balance — ${ctx.args.member.user.username}`, 
+					name: `Unpaids — ${ctx.args.member.user.username}`, 
 					iconURL: ctx.args.member.user.avatarURL({ dynamic: true }) 
 				},
 				color: Math.random() * 0xffffff, 

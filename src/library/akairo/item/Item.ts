@@ -16,9 +16,9 @@ export interface ItemUpgrade {
 }
 
 export interface ItemInfo {
+	sellPrice: number;
+	buyPrice: number;
 	emoji: string;
-	sell: number;
-	buy: number;
 }
 
 export interface ItemConfig {
@@ -40,6 +40,7 @@ export interface ItemOptions extends AbstractModuleOptions {
 
 export class Item extends AbstractModule {
 	public description: ItemDescription;
+	public upgrades: ItemUpgrade[];
 	public handler: ItemHandler;
 	public config: ItemConfig;
 	public info: ItemInfo;
@@ -71,12 +72,22 @@ export class Item extends AbstractModule {
 		*/
 		this.info = this._assign(options.info, {
 			emoji: ':thinking:',
-			sell: 0.5,
-			buy: 100,
+			sellPrice: 0,
+			buyPrice: 1000000000,
 		});
+
+		/**
+		 * The upgrades for this item.
+		*/
+		this.upgrades = options.upgrades.map(up => this._assign(up, {
+			price: this.info.buyPrice,
+			emoji: this.info.emoji,
+			level: 0,
+			name: this.name,
+		}));
 	}
 
-	private _assign<A>(o1: A, o2: A): A {
+	private _assign<A>(o1: A, o2: Partial<A>): A {
 		return Object.assign(o2, o1);
 	}
 

@@ -3,7 +3,7 @@ import { LavaClient } from '..';
 import { UserEntry } from '.';
 import { Base } from 'discord.js';
 
-export class MongooseEndpoint<Doc extends Document = never> extends Base {
+export class Endpoint<Doc extends Document = never> extends Base {
 	public client: LavaClient;
 	public model: Model<Doc>;
 	public constructor(client: LavaClient, model: Model<Doc>) {
@@ -11,7 +11,7 @@ export class MongooseEndpoint<Doc extends Document = never> extends Base {
 		this.model = model;
 	}
 
-	async fetch(id: string): Promise<UserEntry<Doc>> {
+	public async fetch(id: string): Promise<UserEntry<Doc>> {
 		throw new Error(`[${this.constructor.name}] This method hasn't been implemented.`);
 	}
 }

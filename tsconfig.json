@@ -1,10 +1,10 @@
 {
-    "exclude": [
-        "node_modules",
-        "./node_modules",
-        "./node_modules/*",
-        "./node_modules/@types/node/index.d.ts"
-    ],
+    // "exclude": [
+    //     "node_modules",
+    //     "./node_modules",
+    //     "./node_modules/*",
+    //     "./node_modules/@types/node/index.d.ts"
+    // ],
     "compilerOptions": {
         "module": "CommonJS",
         "target": "ESNext",
@@ -15,15 +15,15 @@
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "experimentalDecorators": true,
+        "experimentalDecorators": false,
         "sourceMap": true,
         "baseUrl": ".",
-        "typeRoots": [
-            "./src/typings", 
-            "./node_modules/@types"
-        ],
         "paths": {
             "src/*": ["src/*"]
         },
+        "typeRoots": [
+            "./src/typings", 
+            "./node_modules/@types"
+        ]
     }
 }
