@@ -1,14 +1,18 @@
-import { Message, Structures } from 'discord.js';
-import { LavaClient } from '../..';
+import { LavaClient, CurrencyEndpoint, SpawnEndpoint } from '../..';
+import { Message, Structures, Base } from 'discord.js';
 import { User } from '.';
 
 export class Context<Args extends {} = {}> extends Message {
 	public client: LavaClient;
 	public author: User;
-	public args: Args = Object.create(null);
+	public args: Args;
 
-	public get db() {
-		return this.client.db;
+	public get currency(): CurrencyEndpoint {
+		return this.client.db.currency;
+	}
+
+	public get spawn(): SpawnEndpoint {
+		return this.client.db.spawn;
 	}
 }
 

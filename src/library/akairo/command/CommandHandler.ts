@@ -5,7 +5,7 @@
 
 import { AbstractHandler, AbstractModuleOptions, LavaClient, InhibitorHandler, ListenerHandler } from '..';
 import { CommandHandler as OldCommandHandler, CommandHandlerOptions, Category, Constants } from 'discord-akairo';
-import { Context, CommandQueue } from '../..';
+import { Context, CommandQueue, Cooldown } from '../..';
 import { Collection } from 'discord.js';
 import { Command } from '.';
 
@@ -18,13 +18,15 @@ const { CommandHandlerEvents, BuiltInReasons } = Constants;
 */
 export class CommandHandler extends OldCommandHandler implements AbstractHandler<Command> {
 	public categories: Collection<string, Category<string, Command>>;
-	public useNames: boolean;
 	public modules: Collection<string, Command>;
 	public client: LavaClient;
 
-    public commandQueue: CommandQueue = new CommandQueue();
+    public commandQueue: CommandQueue;
+	public useNames: boolean;
 	public constructor(client: LavaClient, options: CommandHandlerOptions) {
 		super(client, options);
+        
+        this.commandQueue = new CommandQueue();
 		this.useNames = options.useNames;
 	}
 
@@ -71,7 +73,34 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
     }
 
     public async checkCooldowns(context: Context, command: Command): Promise<boolean> {
-    	return super.runCooldowns(context, command); // for now
+        const ignorer = command.ignoreCooldown || this.ignoreCooldown;
+        const isIgnored = Array.isArray(ignorer)
+            ? ignorer.includes(context.author.id)
+            : typeof ignorer === 'function'
+                ? ignorer(context, command)
+                : context.author.id === ignorer;
+
+        if (isIgnored) return false;
+
+        const time = command.cooldown ?? this.defaultCooldown;
+        if (!time) return false;
+
+        const entry = await context.currency.fetch(context.author.id);
+        const expire = context.createdTimestamp + time;
+
+        let cooldown: CooldownData | Cooldown = entry.cooldowns.get(command.id);
+        if (!cooldown) {
+            entry.data.cooldowns.push({ id: command.id, expire });
+            cooldown = (await entry.data.save()).cooldowns.find(c => c.id === command.id);
+        }
+
+        const diff = (cooldown as CooldownData).expire - context.createdTimestamp;
+        if (diff > 0) {
+            this.emit(CommandHandlerEvents.COOLDOWN, context, command, diff);
+            return true;
+        }
+
+        return false;
     }
 
     public async runCommand(context: Context, command: Command, args: any) {

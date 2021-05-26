@@ -19,7 +19,7 @@ export default class Currency extends Command {
 
 	public async exec(ctx: Context<{ member: GuildMember }>): Promise<MessageOptions> {
 		const isContext = ctx.args.member.user.id === ctx.author.id;
-		const entry = await ctx.db.currency.fetch(ctx.args.member.user.id);
+		const entry = await ctx.currency.fetch(ctx.args.member.user.id);
 		const balance = {
 			Keys: entry.props.prem.toLocaleString(),
 			Wallet: entry.props.pocket.toLocaleString(),

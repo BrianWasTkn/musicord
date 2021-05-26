@@ -14,6 +14,6 @@ export class Imgen {
 				Authorization: process.env.MEME_TOKEN,
 				'Content-Type': 'application/json'
 			}
-		}).then(g => g.text());
+		}).then(g => g.buffer());
 	}
 }

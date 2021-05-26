@@ -10,6 +10,7 @@ export default class CurrencyCommand extends Command {
 			aliases: ['gamble', 'bet', 'roll'],
 			category: 'Currency',
 			clientPermissions: ['EMBED_LINKS'],
+			cooldown: 5000,
 			args: [{
 				id: 'amount',
 				type: Argument.union('number', 'string')
@@ -48,11 +49,11 @@ export default class CurrencyCommand extends Command {
 	}
 
 	public async exec(ctx: Context<{ amount: number | string }>): Promise<MessageOptions> {
-		const entry = await ctx.db.currency.fetch(ctx.author.id);
-		const args = this.getArgs(ctx, entry);
+		const entry = await ctx.currency.fetch(ctx.author.id);
+		const bet = this.getArgs(ctx, entry);
 		const multi = 100;
 
-		if (!args) {
+		if (!bet) {
 			return { 
 				content: 'You need something to bet!',
 				reply: { messageReference: ctx.id },
@@ -61,14 +62,56 @@ export default class CurrencyCommand extends Command {
 
 		const { userD, botD } = this.roll();
 		if (botD > userD || userD === botD) {
-			if (botD > userD) await entry.pocket(args as number).remove().save();
+			if (botD > userD) {
+				await entry.addCooldown(this.id, this.cooldown)
+					.pocket(bet as number).remove()
+					.calc().xp(true).calc().space()
+					.save();
+			}
+
 			return { embed: {
 				author: { name: `${ctx.author.username}'s gambling game` },
 				color: userD === botD ? 'YELLOW' : 'RED',
-				description: userD === botD ? 'You lost nothing!' : `You lost **${(args as number).toLocaleString()}** coins.`,
-				footer: { text: 'sucks to suck' }
+				description: `${
+					userD === botD 
+						? 'You lost nothing!' 
+						: `You lost **${
+							(bet as number).toLocaleString()
+						}** coins.`
+				}\n\nYou ${
+					userD === botD ? 'still' : 'now'
+				} have **${
+					entry.props.pocket.toLocaleString()
+				}** coins.`,
+				footer: { text: 'sucks to suck' },
+				fields: Object.entries({
+					[ctx.author.username]: `\`${userD}\``,
+					[ctx.client.user.username]: `\`${botD}\``
+				}).map(([name, value]) => ({ 
+					name, value, inline: true 
+				})),
 			}};
 		}
+
+		let winnings = Math.ceil(bet * (Math.random() + 0.3));
+		winnings = Math.min(Currency.MAX_WIN, winnings + Math.ceil(winnings * (multi / 100)));
+		await entry.addCooldown(this.id, this.cooldown).pocket(winnings).add().save();
+		
+		return { embed: {
+			author: { name: `${ctx.author.username}'s gambling game` },
+			color: 'GREEN', description: `You won **${
+				winnings.toLocaleString()
+			}** coins.\n**Multiplier** ${
+				multi.toLocaleString()
+			} | **Percent of bet won** ${
+				Math.round(winnings / bet).toLocaleString()
+			}%\n\nYou now have **${
+				entry.props.pocket.toLocaleString()
+			}** coins.`, fields: Object.entries({
+				[ctx.author.username]: `\`${userD}\``,
+				[ctx.client.user.username]: `\`${botD}\``
+			}).map(([name, value]) => ({ name, value, inline: true }))
+		}}
 	}
 
 	private roll() {

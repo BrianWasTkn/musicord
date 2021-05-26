@@ -3,8 +3,8 @@
  * @author BrianWasTaken
 */
 
+import { Connector, Logger, CurrencyEndpoint, SpawnEndpoint, Imgen } from '..';
 import { ClientUtil, CommandHandler, ListenerHandler, ItemHandler } from '.';
-import { Connect, Logger, CurrencyEndpoint, SpawnEndpoint } from '..';
 import { ClientOptions, MessageOptions, TextChannel } from 'discord.js';
 import { AkairoClient } from 'discord-akairo';
 import MongoDB from 'mongoose';
@@ -23,8 +23,9 @@ export interface ClientConnectOptions {
 
 export class LavaClient extends AkairoClient {
 	public console = Logger.createInstance();
+	public memer = new Imgen('https://dankmemer.services');
 	public util = new ClientUtil(this);
-	public db = Connect(this);
+	public db = new Connector(this);
 
 	public listenerHandler: ListenerHandler;
 	public commandHandler: CommandHandler;
