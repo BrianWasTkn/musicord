@@ -1,7 +1,6 @@
+import { LavaClient, Base } from '..';
 import { Document, Model } from 'mongoose';
-import { LavaClient } from '..';
 import { UserEntry } from '.';
-import { Base } from 'discord.js';
 
 /**
  * Our endpoint for all db collections.

@@ -1,6 +1,5 @@
-import { LavaClient } from '..';
+import { LavaClient, Base } from '..';
 import { Document } from 'mongoose';
-import { Base } from 'discord.js';
 
 /**
  * The main entry with sets of methods to apply changes on our data.

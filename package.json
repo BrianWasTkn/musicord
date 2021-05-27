@@ -1,9 +1,8 @@
 {
     "name": "lava",
-    "version": "3.0.01",
+    "version": "3.0.2-rewrite",
     "description": "A simple currency bot with database support.",
-    "main": "build/src/index",
-    "type": "module",
+    "main": "build/client",
     "repository": {
         "type": "git",
         "url": "https://github.com/BrianWasTaken/lava.git"
@@ -15,12 +14,10 @@
     },
     "scripts": {
         "build": "rimraf ./build && tsc --project tsconfig.json",
-        "start": "node ./build/src",
+        "start": "node ./build/client",
         "format": "prettier --write ."
     },
     "_moduleAliases": {
-        "config": "./build/src/config",
-        "lib": "./build/src/library",
         "src": "./build"
     },
     "license": "MIT",
@@ -29,7 +26,8 @@
         "discord-akairo": "^8.1.0",
         "discord-api-types": "^0.18.1",
         "discord.js": "github:discordjs/discord.js#master",
-        "dotenv": "^8.2.0",
+        "dotenv": "^8.6.0",
+        "erela.js": "^2.3.3",
         "module-alias": "^2.2.2",
         "moment": "^2.29.1",
         "mongoose": "^5.12.7",

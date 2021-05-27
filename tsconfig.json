@@ -1,29 +1,24 @@
 {
-    // "exclude": [
-    //     "node_modules",
-    //     "./node_modules",
-    //     "./node_modules/*",
-    //     "./node_modules/@types/node/index.d.ts"
-    // ],
-    "compilerOptions": {
-        "module": "CommonJS",
-        "target": "ESNext",
-        "outDir": "build",
-        "strict": true,
-        "strictNullChecks": false,
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "experimentalDecorators": false,
-        "sourceMap": true,
-        "baseUrl": ".",
-        "paths": {
-            "src/*": ["src/*"]
-        },
-        "typeRoots": [
-            "./src/typings", 
-            "./node_modules/@types"
-        ]
-    }
+	"compilerOptions": {
+		"module": "CommonJS",
+		"target": "ESNext",
+		"outDir": "build",
+		"strict": true,
+		"incremental": true,
+		"removeComments": true,
+		"strictNullChecks": false,
+		// "moduleResolution": "node", this fixes that awful caching
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"baseUrl": ".",
+		"paths": {
+			"src/*": ["src/*"]
+		},
+		"typeRoots": [
+			"./node_modules/@types",
+			"./src/typings"
+		]
+	}
 }

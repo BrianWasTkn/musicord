@@ -13,6 +13,10 @@ export class ItemEffects {
 	public vaultCap: number = 0;
 	public spaceCap: number = 0;
 
+	public static createInstance() {
+		return new this();
+	}
+
 	public addWinnings(type: 'bj' | 'gamble', amount: number) {
 		switch(type) {
 			case 'bj':

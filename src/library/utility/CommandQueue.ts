@@ -4,6 +4,9 @@
  * @author BrianWasTaken
 */
 
+/**
+ * Queue data for a command.
+*/
 interface QueueData {
 	promise: Promise<void>;
 	resolve: Function;

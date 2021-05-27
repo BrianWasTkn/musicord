@@ -29,7 +29,7 @@ export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil
 	/**
 	 * Construct an item effect. 
 	*/
-	effects = () => new ItemEffects();
+	effects = () => ItemEffects.createInstance();
 
 	/**
 	 * Divide the items of an array into chunks of arrays. 

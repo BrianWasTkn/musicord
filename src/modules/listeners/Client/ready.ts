@@ -1,6 +1,6 @@
 import { Listener } from 'src/library';
 
-export default class Client extends Listener {
+export default class ClientListener extends Listener {
 	public constructor() {
 		super('ready', {
 			category: 'Client',

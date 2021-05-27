@@ -3,6 +3,6 @@
  * @author BrianWasTaken
 */
 
-export * from './BotEndpoint';
-export * from './BotEntry';
-export * from './BotModel';
+export * from './LavaEndpoint';
+export * from './LavaEntry';
+export * from './LavaModel';

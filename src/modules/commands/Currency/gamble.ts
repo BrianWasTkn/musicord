@@ -63,8 +63,9 @@ export default class CurrencyCommand extends Command {
 		const { userD, botD } = this.roll();
 		if (botD > userD || userD === botD) {
 			if (botD > userD) {
-				await entry.addCooldown(this.id, this.cooldown)
-					.pocket(bet as number).remove()
+				await entry.pocket(bet as number).remove()
+					.stats(this.id).coins(bet).won()
+					.stats(this.id).games().loses()
 					.calc().xp(true).calc().space()
 					.save();
 			}
@@ -95,11 +96,12 @@ export default class CurrencyCommand extends Command {
 
 		let winnings = Math.ceil(bet * (Math.random() + 0.3));
 		winnings = Math.min(Currency.MAX_WIN, winnings + Math.ceil(winnings * (multi / 100)));
-		await entry.addCooldown(this.id, this.cooldown).pocket(winnings).add().save();
+		await entry.pocket(winnings).add().save();
 		
 		return { embed: {
 			author: { name: `${ctx.author.username}'s gambling game` },
-			color: 'GREEN', description: `You won **${
+			footer: { text: 'winner winner' }, color: 'GREEN', 
+			description: `You won **${
 				winnings.toLocaleString()
 			}** coins.\n**Multiplier** ${
 				multi.toLocaleString()

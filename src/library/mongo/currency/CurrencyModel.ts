@@ -10,8 +10,6 @@ const CurrencySchema = new Schema({
 	_id: { type: String, required: true },
 
 	props: {
-		blocked: build(Boolean, false),
-		banned: build(Boolean, false),
 		pocket: build(Number, 0),
 		vault: build(Number, 0),
 		space: build(Number, 0),
@@ -29,18 +27,12 @@ const CurrencySchema = new Schema({
 		id: build(String, 0)
 	}],
 
-	cooldowns: [{
-		id: build(Number, ''),
-		expire: build(Number, 0)
-	}],
-
 	prestige: {
 		level: build(Number, 0),
 		title: build(String, ''),
 		earned: {
 			multis: build(Number, 0),
 			coins: build(Number, 0),
-			items: build(Number, 0),
 		}
 	},
 
@@ -49,19 +41,7 @@ const CurrencySchema = new Schema({
 		count: build(Number, 0),
 	}],
 
-	daily: {
-		streak: build(Number, 0),
-		earned: build(Number, 0),
-		time: build(Number, Date.now())
-	},
-
-	settings: [{
-		id: build(String, ''),
-		enabled: build(Boolean, false),
-		cooldown: build(Number, 0)
-	}],
-
-	gamble_stats: [{
+	gamble: [{
 		id: build(String, 'gamble'),
 		wins: build(Number, 0),
 		loses: build(Number, 0),
@@ -71,22 +51,21 @@ const CurrencySchema = new Schema({
 
 	trade: [{
 		id: build(String, 'share'),
-		shared: build(Number, 0),
-		recieved: build(Number, 0),
+		in: build(Number, 0),
+		out: build(Number, 0),
 	}],
 
-	command: {
-		last_ran: build(Number, 0),
-		commands_ran: build(Number, 0),
-		last_command: build(String, 'help'),
+	daily: {
+		streak: build(Number, 0),
+		time: build(Number, Date.now())
 	},
 
 	rob: {
-		stolen: build(Number, 0),
-		fined: build(Number, 0),
 		wins: build(Number, 0),
-		loses: build(Number, 0),
+		fails: build(Number, 0),
+		fined: build(Number, 0),
+		stolen: build(Number, 0),
 	}
 });
 
-export const CurrencyModel = model<CurrencyData>('economy', CurrencySchema);
+export const CurrencyModel = model<CurrencyProfile>('economy', CurrencySchema);

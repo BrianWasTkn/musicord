@@ -1,16 +1,10 @@
 import { LavaClient } from '../..';
-import { Base } from 'discord.js';
+import { Base } from '.';
 
-export class Cooldown extends Base {
-	public client: LavaClient;
-
-	public multiplier: number;
-	public timesUsed: number;
+export class LavaCooldown extends Base {
 	public expiresAt: number;
-	public owned: number;
-	public level: number;
 	public id: string;
-	public constructor(client: LavaClient, data: CooldownData) {
+	public constructor(client: LavaClient, data: LavaCooldowns) {
 		super(client);
 
 		/**
@@ -25,7 +19,7 @@ export class Cooldown extends Base {
 	}
 
 	/**
-	 * Shortcut for returning the inventory item as an item module.
+	 * Shortcut for returning the cooldown as a command module.
 	*/
 	get command() {
 		return this.client.commandHandler.modules.get(this.id);

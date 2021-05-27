@@ -3,11 +3,11 @@
  * @author BrianWasTaken
 */
 
-import { Currency, Command, Inventory, Cooldown } from '../..';
+import { Currency, Command, Inventory } from '../..';
 import { Collection } from 'discord.js';
 import { UserEntry } from '..';
 
-export class CurrencyEntry extends UserEntry<CurrencyData> {
+export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/**
 	 * Basic properties for their datatards.
 	*/
@@ -23,24 +23,10 @@ export class CurrencyEntry extends UserEntry<CurrencyData> {
 	}
 
 	/**
-	 * Their setfuckeries.
-	*/
-	get settings() {
-		return this.data.settings;
-	}
-
-	/**
 	 * Their trash inventory.
 	*/
 	get items() {
 		return this.data.items.reduce((coll, slot) => coll.set(slot.id, new Inventory(this.client, slot)), new Collection<string, Inventory>());
-	}
-
-	/**
-	 * Their cooldowns.
-	*/
-	get cooldowns() {
-		return this.data.cooldowns.reduce((coll, cd) => coll.set(cd.id, new Cooldown(this.client, cd)), new Collection<string, Cooldown>());
 	}
 
 	/**
@@ -60,27 +46,27 @@ export class CurrencyEntry extends UserEntry<CurrencyData> {
 	/**
 	 * Add a cooldown.
 	*/
-	addCooldown(id: string, time = 1000) {
-		if (this.client.isOwner(this.data._id)) return this;
-		const expire = Date.now() + time;
-		const cd = this.cooldowns.get(id);
+	// addCooldown(id: string, time = 1000) {
+	// 	if (this.client.isOwner(this.data._id)) return this;
+	// 	const expire = Date.now() + time;
+	// 	const cd = this.cooldowns.get(id);
 
-		if (!cd) {
-			this.data.cooldowns.push({ expire, id });
-			return this;
-		}
+	// 	if (!cd) {
+	// 		this.data.cooldowns.push({ expire, id });
+	// 		return this;
+	// 	}
 
-		this.data.cooldowns.find(c => c.id === cd.id).expire = expire;
-		return this;
-	}
+	// 	this.data.cooldowns.find(c => c.id === cd.id).expire = expire;
+	// 	return this;
+	// }
 
 	/**
 	 * Sweep all cooldowns.
 	*/
-	sweepCooldowns() {
-		this.data.cooldowns.map(cd => cd.expire = 0);
-		return this;
-	}
+	// sweepCooldowns() {
+	// 	this.data.cooldowns.map(cd => cd.expire = 0);
+	// 	return this;
+	// }
 
 	/**
 	 * Manage their premium keytards.
@@ -219,7 +205,7 @@ export class CurrencyEntry extends UserEntry<CurrencyData> {
 	 * Manage their gambling statfuckeries.
 	*/
 	stats(game: string) {
-		const thisStat = this.data.gamble_stats.find(stat => stat.id === game);
+		const thisStat = this.data.gamble.find(stat => stat.id === game);
 		return {
 			coins: (amount: number) => ({
 				lost: () => {
@@ -236,7 +222,7 @@ export class CurrencyEntry extends UserEntry<CurrencyData> {
 					thisStat.loses += inc;
 					return this;
 				},
-				wins: (inc = 1) => {
+				wins: () => {
 					thisStat.wins += inc;
 					return this;
 				}

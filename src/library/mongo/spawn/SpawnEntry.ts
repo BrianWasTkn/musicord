@@ -5,12 +5,12 @@
 
 import { UserEntry } from '..';
 
-export class SpawnEntry extends UserEntry<SpawnData> {
+export class SpawnEntry extends UserEntry<SpawnDocument> {
 	/**
 	 * Basic props.
 	*/
 	get props() {
-		return this.data.props;
+		return this.data;
 	}
 
 	/**
@@ -19,11 +19,11 @@ export class SpawnEntry extends UserEntry<SpawnData> {
 	balance(amount: number) {
 		return {
 			add: () => {
-				this.data.props.balance += amount;
+				this.data.unpaids += amount;
 				return this;
 			},
 			remove: () => {
-				this.data.props.balance -= amount;
+				this.data.unpaids -= amount;
 				return this;
 			}
 		}
@@ -35,11 +35,11 @@ export class SpawnEntry extends UserEntry<SpawnData> {
 	joined(inc = 1) {
 		return {
 			increment: () => {
-				this.data.props.joined_events += inc;
+				this.data.joined += inc;
 				return this;
 			},
 			decrement: () => {
-				this.data.props.joined_events -= inc;
+				this.data.joined -= inc;
 				return this
 			}
 		}

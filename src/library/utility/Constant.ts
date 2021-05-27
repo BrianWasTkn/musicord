@@ -1,8 +1,11 @@
 /**
- * Literally all important things i don't wanna type as always :flushed:
+ * Literally all important things i don't wanna type as always :rolling_eyes:
  * @author BrianWasTaken
 */
 
+/**
+ * Colors for discord.js
+*/
 const Colors: { [color: string]: number } = {
 	RED: 0xf44336,
 	ORANGE: 0xff9800,
@@ -22,6 +25,9 @@ const Colors: { [color: string]: number } = {
 	DEEP_ORANGE: 0xff5722,
 };
 
+/**
+ * Gambling and other currency limits
+*/
 const Currency = {
 	MAX_SAFE_POCKET: 2e6,
 	MAX_SAFE_SPACE: 100e6,
@@ -39,6 +45,9 @@ const Currency = {
 	},
 };
 
+/**
+ * Gamble messages. 
+*/
 const GambleMessages = {
 	NO_ARGS: 'You need something to {do}!',
 	TOO_RICH: 'You are too rich to {do}!',
@@ -49,6 +58,9 @@ const GambleMessages = {
 	BET_HIGHER_POCKET: `You only have **{pocket}** lol don't try and lie to me hoe`,
 };
 
+/**
+ * Item messages.
+*/
 const ItemMessages = {
 	BUY_MSG: (premium = false) => `Successfully purchased **{amount} {emoji} {item}** and paid **:${premium ? 'key' : 'coin'}: {paid}** ${premium ? 'keys' : 'coins'}.`,
 	SELL_MSG: (premium = false) => `Successfully sold **{amount} {emoji} {item}** and got **:${premium ? 'key' : 'coin'}: {got}** ${premium ? 'keys' : 'coins'}.`,
@@ -66,7 +78,7 @@ const ItemMessages = {
 	NEED_TO_SELL: 'You need something to sell!',
 	NOT_SELLABLE: "You can't sell this item :thinking:",
 	SELLING_NONE: "You should sell something greater than 0",
-	CANT_FOOL_ME: (bleep: number) => `Hey you only have ${bleep} of these!`,
+	CANT_FOOL_ME: (that: number) => `Hey you only have ${that} of these!`,
 }
 
 export { Colors, Currency, GambleMessages, ItemMessages };

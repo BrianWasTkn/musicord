@@ -1,9 +1,7 @@
 import { LavaClient } from '../..';
-import { Base } from 'discord.js';
+import { Base } from '.';
 
 export class Inventory extends Base {
-	public client: LavaClient;
-
 	public multiplier: number;
 	public timesUsed: number;
 	public expiresAt: number;
@@ -54,7 +52,7 @@ export class Inventory extends Base {
 	}
 
 	/**
-	 * Check if it's "in" the inventory.
+	 * Check if they own at least one of this item.
 	*/
 	isOwned() {
 		return this.owned >= 1;
@@ -64,6 +62,6 @@ export class Inventory extends Base {
 	 * Check it's active state.
 	*/
 	isActive() {
-		return this.owned >= 1 && this.expiresAt > Date.now();
+		return this.isOwned() && this.expiresAt > Date.now();
 	}
 }

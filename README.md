@@ -11,24 +11,8 @@
 
 </div>
 
-## Features
-
-- **Currency** - A currency system (based on [Dank Memer](https://dankmemer.lol) discord bot)
-- **Spawner** - On-the-spot events to join and get some credits.
-- **Info** - Info commands, view such info about a discord snowflake.
-
-## Motivation
-Dank Memer. First of all, I'd like to thank [Melmsie](https://github.com/melmsie) for inspiring me as a beginner developer because of his passion with coding and breaking everything. I consider Lava as my first successful bot (or node app in general) and I say I've done very good.
-
-## Name Theory
-The name "Lava" originated for "flowing into your server needs" and I admit, that wasn't a very good description for this bot after all since it's just a currency bot with a few paint of moderation so yeah.
-
-## Self-Hosting
-
-Though the source code is visible here, please make sure you won't host a public version of this bot for you or with a certain group including you as an interest or for any other stuff. It's only intended for a private server at the moment and will change in the future.
-
 ## Versioning
-Lava uses semantic versioning with some bit of modifications:
+Lava uses semantic versioning with some additional bullshit:
 > **Major.Minor.Semi**
 - **Major** - Bot breaking updates, massive refactors, basically anything that leaves an empty hole within the bot or something that adds up to make my host exhausted.
 - **Minor** - New module added, a bit bot breaking, some small refactors and a large amount of bug fixes.

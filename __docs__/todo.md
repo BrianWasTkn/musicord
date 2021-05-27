@@ -23,7 +23,6 @@ Just a list of planned features basically for event and currency commands.
 - [x] **Fix Bot Latency**
 - [x] **Custom Handlers**
 - [x] **Custom Modules**
-- [ ] **Multiple DB Providers**
 - [x] **Better Logger**
 - [ ] **Open up a Circus**
 - [ ] **Blacklist Everyone**

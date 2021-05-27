@@ -1,8 +1,8 @@
 import { LavaClient, CurrencyEndpoint, SpawnEndpoint } from '../..';
-import { Message, Structures, Base } from 'discord.js';
-import { User } from '.';
+import { Message, Structures } from 'discord.js';
+import { User, Base } from '.';
 
-export class Context<Args extends {} = {}> extends Message {
+export class Context<Args extends {} = {}> extends Message implements Base {
 	public client: LavaClient;
 	public author: User;
 	public args: Args;

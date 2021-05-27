@@ -31,6 +31,7 @@ bot.commandHandler = new CommandHandler(bot, {
 	directory: join(__dirname, 'modules', 'commands'),
 	automateCategories: true,
 	classToHandle: Command,
+	handleEdits: true,
 	useNames: true,
 	prefix: ['lava'],
 }).loadAll().useListenerHandler(bot.listenerHandler);
