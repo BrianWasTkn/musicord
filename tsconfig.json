@@ -7,7 +7,7 @@
 		"incremental": true,
 		"removeComments": true,
 		"strictNullChecks": false,
-		// "moduleResolution": "node", this fixes that awful caching
+		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,

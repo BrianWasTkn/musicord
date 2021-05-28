@@ -7,7 +7,6 @@ export default class UtilityCommand extends Command {
 			name: 'Cooldowns',
 			channel: 'guild',
 			aliases: ['cooldowns', 'cds'],
-
 		});
 	}
 }

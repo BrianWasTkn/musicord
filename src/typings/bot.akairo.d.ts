@@ -85,7 +85,6 @@ declare module 'discord-akairo' {
 		client: LavaClient;
 		useNames: boolean;
 		commandQueue: CommandQueue;
-
 		runPostTypeInhibitors(message: Context, command: Command): Promise<boolean>;
 		runPermissionChecks(message: Context, command: Command): Promise<boolean>;
 		checkCooldowns(message: Context, command: Command): Promise<boolean>;

@@ -18,7 +18,9 @@ export interface AbstractHandlerOptions extends AkairoHandlerOptions {
 }
 
 export class AbstractHandler<Module extends AbstractModule = AbstractModule> extends AkairoHandler {
-	// Core Properties
+	/**
+	 * The collection of categories for this handler.
+	 */
 	public categories: Collection<string, Category<string, Module>>;
 	public modules: Collection<string, Module>;
 	public client: LavaClient;
