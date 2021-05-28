@@ -8,6 +8,10 @@
         "discord": "JustBrian#9793",
         "github": "https://github.com/BrianWasTaken"
     },
+    "engines": {
+        "npm": ">=7",
+        "node": ">=14.1"
+    },
     "scripts": {
         "build": "rimraf ./build && tsc --project tsconfig.json",
         "start": "node ./build/src",
