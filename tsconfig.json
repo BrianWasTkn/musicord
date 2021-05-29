@@ -19,15 +19,11 @@
         "sourceMap": true,
         "baseUrl": ".",
         "typeRoots": [
-            // "./rewrite/typings",
             "./src/typings", 
             "./node_modules/@types"
         ],
         "paths": {
-            "rw/*": ["rewrite/*"],
-            "src/*": ["src/*"],
-            "config/*": ["src/config/*"],
-            "lib/*": ["src/library/*"]
+            "src/*": ["src/*"]
         },
     }
 }
