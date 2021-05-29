@@ -18,8 +18,6 @@
         "format": "prettier --write ."
     },
     "_moduleAliases": {
-        "config": "./build/src/config",
-        "lib": "./build/src/library",
         "src": "./build/src"
     },
     "license": "MIT",
