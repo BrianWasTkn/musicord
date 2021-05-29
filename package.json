@@ -17,6 +17,10 @@
         "start": "node ./build/src",
         "format": "prettier --write ."
     },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/BrianWasTaken/lava"
+    },
     "_moduleAliases": {
         "src": "./build/src"
     },
