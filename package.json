@@ -4,7 +4,8 @@
   "description": "A multi-purpose discord bot.",
   "main": "dist/index.js",
   "scripts": {
-    "build": ""
+    "build": "tsc",
+    "start": "node dist"
   },
   "engines": {
     "node": ">=14",
