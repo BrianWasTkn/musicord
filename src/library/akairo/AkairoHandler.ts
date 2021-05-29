@@ -7,38 +7,51 @@ import { AkairoHandlerOptions, AkairoHandler, AkairoModule, Category, LoadPredic
 import { AbstractModule, LavaClient } from '.';
 import { Collection } from 'discord.js';
 
-/**
- * Object parameter to pass into our custom handler constructor. 
-*/
 export interface AbstractHandlerOptions extends AkairoHandlerOptions {
+}
+
+export declare interface AbstractHandler<Module extends AbstractModule = AbstractModule> extends AkairoHandler {
 	/**
-	 * Wether to use names, idk this is non sense tbh.
-	*/
-	useNames?: boolean;
+	 * The categories this handler load, containing a collection of modules.
+	 */
+	categories: Collection<string, Category<string, Module>>;
+	/**
+	 * The modules this handler hold.
+	 */
+	modules: Collection<string, Module>;
+	/**
+	 * The client for this handler.
+	 */
+	client: LavaClient;
 }
 
 export class AbstractHandler<Module extends AbstractModule = AbstractModule> extends AkairoHandler {
 	/**
-	 * The collection of categories for this handler.
+	 * Remove the module from our modules collection.
 	 */
-	public categories: Collection<string, Category<string, Module>>;
-	public modules: Collection<string, Module>;
-	public client: LavaClient;
-
-	// Extra Options
-	public useNames: boolean;
-	public constructor(client: LavaClient, options: AbstractHandlerOptions) {
-		super(client, options);
-		this.useNames = options.useNames;
-	}
-
-	// Typed Methods
-	public add: (filename: string) => Module;
-    public findCategory: (name: string) => Category<string, Module>;
-    public load: (thing: string | Function, isReload?: boolean) => Module;
-    public loadAll: (directory?: string, filter?: LoadPredicate) => this;
-    public reload: (id: string) => Module;
-    public reloadAll: () => this;
-    public remove: (id: string) => Module;
-    public removeAll: () => this;
+	public deregister: (mod: Module) => void;
+	/**
+	 * Find a category based from a given id.
+	 */
+	public findCategory: (name: string) => Category<string, Module>;
+	/**
+	 * Load a module.
+	 */
+	public load: (thing: string | Function, isReload?: boolean) => Module;
+	/**
+	 * Load all modules.
+	 */
+	public loadAll: (directory?: string, filter?: LoadPredicate) => this;
+	/**
+	 * Patch all properties for the module.
+	 */
+	public register: (mod: Module, filepath?: string) => void;
+	/**
+	 * Reload a module based from a given id.
+	 */
+	public reload: (id: string) => Module;
+	/**
+	 * Remove a module from our modules collection.
+	 */
+	public remove: (id: string) => Module;
 }

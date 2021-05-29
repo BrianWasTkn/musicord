@@ -5,11 +5,17 @@
 
 import { AbstractHandler, AbstractModuleOptions, LavaClient, InhibitorHandler, ListenerHandler } from '..';
 import { CommandHandler as OldCommandHandler, CommandHandlerOptions, Category, Constants } from 'discord-akairo';
-import { Context, CommandQueue, Cooldown } from '../..';
+import { Context, CommandQueue } from '../..';
 import { Collection } from 'discord.js';
 import { Command } from '.';
 
 const { CommandHandlerEvents, BuiltInReasons } = Constants;
+
+export declare interface CommandHandler extends OldCommandHandler {
+    categories: Collection<string, Category<string, Command>>;
+    modules: Collection<string, Command>;
+    client: LavaClient;
+}
 
 /**
  * Command Handler
@@ -17,18 +23,7 @@ const { CommandHandlerEvents, BuiltInReasons } = Constants;
  * @implements {AbstractHandler}
 */
 export class CommandHandler extends OldCommandHandler implements AbstractHandler<Command> {
-	public categories: Collection<string, Category<string, Command>>;
-	public modules: Collection<string, Command>;
-	public client: LavaClient;
-
-    public commandQueue: CommandQueue;
-	public useNames: boolean;
-	public constructor(client: LavaClient, options: CommandHandlerOptions) {
-		super(client, options);
-        
-        this.commandQueue = new CommandQueue();
-		this.useNames = options.useNames;
-	}
+    public commandQueue = new CommandQueue();
 
 	public add: (filename: string) => Command;
     public findCategory: (name: string) => Category<string, Command>;

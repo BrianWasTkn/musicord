@@ -24,7 +24,6 @@ bot.listenerHandler = new ListenerHandler(bot, {
 	directory: join(__dirname, 'modules', 'listeners'),
 	automateCategories: true,
 	classToHandle: Listener,
-	useNames: true,
 }).loadAll();
 
 bot.commandHandler = new CommandHandler(bot, { 
@@ -40,7 +39,6 @@ bot.itemHandler = new ItemHandler(bot, {
 	directory: join(__dirname, 'modules', 'items'),
 	automateCategories: true,
 	classToHandle: Item,
-	useNames: true,
 }).loadAll();
 
 bot.once('ready', () => {

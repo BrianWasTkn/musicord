@@ -81,20 +81,7 @@ export declare global {
 		/**
 		 * Last command they ran.
 		 */
-		last_cmd: number;
-		/**
-		 * The times they ran all commands.
-		 */
-		commands: {
-			/**
-			 * The id of the command.
-			 */
-			id: string;
-			/**
-			 * Amount of times they spammed the command.
-			 */
-			count: number;
-		}[];
+		last_cmd: string
 	}
 
 	/**

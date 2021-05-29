@@ -1,5 +1,5 @@
 /**
- * The model for our spawn plugin.
+ * The model for our spawn collection.
  * @author BrianWasTaken
 */
 

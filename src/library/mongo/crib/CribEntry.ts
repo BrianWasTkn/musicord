@@ -7,7 +7,7 @@ import { LavaCooldown, LavaSetting } from '../..';
 import { Collection } from 'discord.js';
 import { UserEntry } from '..';
 
-export class LavaEntry extends UserEntry<LavaProfile> {
+export class CribEntry extends UserEntry<CribProfile> {
 	get cooldowns() {
 		return this.data.cooldowns.reduce((col, cd) => col.set(cd.id, new LavaCooldown(this.client, cd)) , new Collection<string, LavaCooldown>());
 	}

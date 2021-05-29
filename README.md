@@ -14,15 +14,18 @@
 ## Versioning
 Lava uses semantic versioning with some additional bullshit:
 > **Major.Minor.Semi**
-- **Major** - Bot breaking updates, massive refactors, basically anything that leaves an empty hole within the bot or something that adds up to make my host exhausted.
+- **Major** - Bot breaking updates, massive refactors, basically anything that leaves an empty hole within the bot or something that adds a big portion within the bot.
 - **Minor** - New module added, a bit bot breaking, some small refactors and a large amount of bug fixes.
 - **Semi** - Small bug fixes, fix issues or exploits occuring within the bot.
 
 ## Requirements
-- Node.JS >=12.0.0
+- Node.JS >=14.0.0
+- NPM >=7.1
 - MongoDB Database
-- Discord Token
-- Git CLI
+- Discord Bot Token
+- Meme Imgen Token
+- Git CLI + Fork
+- Brain...
 
 ## Installation
 1. Clone this repository: `git clone https://github.com/BrianWasTaken/lava`

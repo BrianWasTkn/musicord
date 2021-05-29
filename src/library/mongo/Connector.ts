@@ -1,5 +1,6 @@
 import { CurrencyEndpoint, CurrencyModel } from '.';
 import { SpawnEndpoint, SpawnModel } from '.';
+import { LavaEndpoint, LavaModel } from '.';
 
 import { LavaClient, Base } from '..';
 
@@ -16,4 +17,9 @@ export class Connector extends Base {
 	 * Spawn Endpoint.
 	*/
 	public spawn = new SpawnEndpoint(this.client, SpawnModel);
+
+	/**
+	 * Lava Endpoint.
+	 */
+	public lava = new LavaEndpoint(this.client, LavaModel);
 }

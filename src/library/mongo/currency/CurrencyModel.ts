@@ -1,5 +1,5 @@
 /**
- * The model for our currency plugin.
+ * The model for our currency collection.
  * @author BrianWasTaken
 */
 

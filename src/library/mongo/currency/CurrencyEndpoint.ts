@@ -13,19 +13,18 @@ export class CurrencyEndpoint extends Endpoint<CurrencyProfile> {
 		const { modules } = this.client.itemHandler;
 
 		let missing = 0;
-		if (modules.size >= 1) {
-			for (const item of modules.values()) {
-				if (!doc.items.find(i => i.id === item.id)) {
-					doc.items.push({ id: item.id, ...this.defaultInventory });
-					missing++
-				}
+		if (modules.size < 1) return { doc, missing };
+		for (const item of modules.values()) {
+			if (!doc.items.find(i => i.id === item.id)) {
+				doc.items.push({ id: item.id, ...this.defaultInventory });
+				missing++;
 			}
 		}
 
 		return { doc, missing };
 	}
 
-	public get defaultInventory(): Omit<CurrencyInventory, 'id'> {
+	private get defaultInventory(): Omit<CurrencyInventory, 'id'> {
 		return {
 			amount: 0,
 			expire: 0,

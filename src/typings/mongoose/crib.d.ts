@@ -1,0 +1,52 @@
+/**
+ * Mongoose "memers.crib" collection.
+ */
+export declare global {
+	import { Document } from 'mongoose';
+
+	/**
+	 * Interfaced model for donations in Crib.
+	 */
+	interface CribProfile extends Document {
+		/**
+		 * The idiot who owns a ton of donations.
+		 */
+		_id: string;
+		/**
+		 * The array of donation craps.
+		 */
+		donations: CribDonation[];
+		/**
+		 * The booster shitshow.
+		 */
+		booster: CribBooster[];
+	}
+
+	/**
+	 * The donation data itself obviously what else?
+	 */
+	interface CribDonation {
+		/**
+		 * The id for this type of donation.
+		 */
+		id: 'default' | string;
+		/**
+		 * The amount they have donated for this type of donation.
+		 */
+		amount: number;
+	}
+
+	/**
+	 * The booster shitfuckery.
+	 */
+	interface CribBooster {
+		/**
+		 * The id of their custom role.
+		 */
+		role: string;
+		/**
+		 * The expiration date for this perk.
+		 */
+		expires: number;
+	}
+}
