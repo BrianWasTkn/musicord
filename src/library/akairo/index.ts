@@ -4,8 +4,10 @@
 */
 
 export * from './AkairoHandler';
+export * from './AkairoManager';
 export * from './AkairoModule';
 export * from './AkairoClient';
+export * from './AkairoPlugin';
 export * from './ClientUtil';
 
 export * from './inhibitor';

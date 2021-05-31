@@ -8,6 +8,10 @@ import { AbstractModule, LavaClient } from '.';
 import { Collection } from 'discord.js';
 
 export interface AbstractHandlerOptions extends AkairoHandlerOptions {
+	/**
+	 * Wether to emit all events for this handler.
+	 */
+	debug?: boolean;
 }
 
 export declare interface AbstractHandler<Module extends AbstractModule = AbstractModule> extends AkairoHandler {
@@ -23,35 +27,47 @@ export declare interface AbstractHandler<Module extends AbstractModule = Abstrac
 	 * The client for this handler.
 	 */
 	client: LavaClient;
-}
-
-export class AbstractHandler<Module extends AbstractModule = AbstractModule> extends AkairoHandler {
 	/**
 	 * Remove the module from our modules collection.
 	 */
-	public deregister: (mod: Module) => void;
+	deregister: (mod: Module) => void;
 	/**
 	 * Find a category based from a given id.
 	 */
-	public findCategory: (name: string) => Category<string, Module>;
+	findCategory: (name: string) => Category<string, Module>;
 	/**
 	 * Load a module.
 	 */
-	public load: (thing: string | Function, isReload?: boolean) => Module;
+	load: (thing: string | Function, isReload?: boolean) => Module;
 	/**
 	 * Load all modules.
 	 */
-	public loadAll: (directory?: string, filter?: LoadPredicate) => this;
+	loadAll: (directory?: string, filter?: LoadPredicate) => this;
 	/**
 	 * Patch all properties for the module.
 	 */
-	public register: (mod: Module, filepath?: string) => void;
+	register: (mod: Module, filepath?: string) => void;
 	/**
 	 * Reload a module based from a given id.
 	 */
-	public reload: (id: string) => Module;
+	reload: (id: string) => Module;
 	/**
 	 * Remove a module from our modules collection.
 	 */
-	public remove: (id: string) => Module;
+	remove: (id: string) => Module;
+}
+
+export class AbstractHandler<Module extends AbstractModule = AbstractModule> extends AkairoHandler {
+	public constructor(client: LavaClient, options: AbstractHandlerOptions) {
+		super(client, options);
+
+		if (options.debug ?? Boolean(process.env.DEV_MODE)) {
+			this.on('load', (mod: AkairoModule) => {
+				this.client.console.log('Akairo', `${options.classToHandle.name} "${mod.id}" loaded.`);
+			});
+			this.on('remove', (mod: AkairoModule) => {
+				this.client.console.log('Akairo', `${options.classToHandle.name} "${mod.id}" removed.`);
+			});
+		}
+	}
 }

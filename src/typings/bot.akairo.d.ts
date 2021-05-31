@@ -78,10 +78,10 @@ declare module 'discord-akairo' {
 	}
 
 	// Command
-	interface CommandHandlerOptions extends AkairoHandlerOptions {
+	interface CommanddHandlerOptions extends AkairoHandlerOptions {
 		useNames: boolean;
 	}
-	interface CommandHandler {
+	interface CommanddHandler {
 		client: LavaClient;
 		useNames: boolean;
 		commandQueue: CommandQueue;
@@ -122,19 +122,19 @@ declare module 'discord-akairo' {
 	}
 
 	// Command
-	interface ParsedComponentData {
+	interface ParseddComponentData {
 		command?: Command;
 	}
-	interface CommandDescription {
+	interface CommanddDescription {
 		examples: string[];
 		short: string;
 		long: string;
 	}
-	interface CommandOptions extends AbstractModuleOptions {
+	interface CommanddOptions extends AbstractModuleOptions {
 		description?: CommandDescription;
 		name?: string;
 	}
-	interface Command extends AkairoModule {
+	interface Commandd extends AkairoModule {
 		description: CommandDescription;
 		client: LavaClient;
 		name: string;

@@ -9,15 +9,22 @@ import { Collection, MessageOptions } from 'discord.js';
 import { InhibitorHandler } from '.';
 import { Context } from '../..';
 
-/**
- * Inhibitor
- * @extends {OldInhibitor}
- * @implements {AbstractModule}
-*/
+export declare interface Inhibitor extends OldInhibitor {
+	/**
+	 * The category this inhibitor belongs to.
+	 */
+	category: Category<string, this>;
+	/**
+	 * The handler who owns this inhibitor.
+	 */
+	handler: InhibitorHandler;
+	/**
+	 * The client instance.
+	 */
+	client: LavaClient;
+}
+
 export class Inhibitor extends OldInhibitor implements AbstractModule {
-	public category: Category<string, this>;
-	public handler: InhibitorHandler;
-	public client: LavaClient;
 	public name: string;
 	public constructor(id: string, options: InhibitorOptions) {
 		super(id, options);

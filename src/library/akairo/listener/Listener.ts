@@ -9,15 +9,22 @@ import { AbstractModule, LavaClient } from '..';
 import { ListenerHandler } from '.';
 import { Context } from '../..';
 
-/**
- * Listener
- * @extends {OldListener}
- * @implements {AbstractModule}
-*/
+export declare interface Listener extends OldListener {
+	/**
+	 * The category this listener belongs to.
+	 */
+	category: Category<string, this>;
+	/**
+	 * The handler who owns this listener.
+	 */
+	handler: ListenerHandler;
+	/**
+	 * The client instance.
+	 */
+	client: LavaClient;
+}
+
 export class Listener extends OldListener implements AbstractModule {
-	public category: Category<string, this>;
-	public handler: ListenerHandler;
-	public client: LavaClient;
 	public name: string;
 	public constructor(id: string, options: ListenerOptions) {
 		super(id, options);

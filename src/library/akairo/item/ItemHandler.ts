@@ -18,7 +18,7 @@ export class ItemHandler extends AbstractHandler<Item> {
 		this.client.once('ready', () => {
 			if (!this.modules.size) return;
 			this.setSaleItem();
-			return this.client.setInterval(this.setSaleItem, 60000);
+			this.client.setInterval(this.setSaleItem, 60000);
 		});
 	}
 

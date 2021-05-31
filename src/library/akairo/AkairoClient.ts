@@ -3,10 +3,11 @@
  * @author BrianWasTaken
 */
 
+import { ClientUtil, CommandHandler, ListenerHandler, ItemHandler, PluginManager } from '.';
 import { Connector, Logger, CurrencyEndpoint, SpawnEndpoint, Imgen } from '..';
-import { ClientUtil, CommandHandler, ListenerHandler, ItemHandler } from '.';
 import { ClientOptions, MessageOptions, TextChannel } from 'discord.js';
 import { AkairoClient } from 'discord-akairo';
+import { join } from 'path';
 import MongoDB from 'mongoose';
 
 import '../discord/structures';
@@ -22,15 +23,37 @@ export interface ClientConnectOptions {
 }
 
 export class LavaClient extends AkairoClient {
+	/**
+	 * Our fancy logger.
+	 */
 	public console = Logger.createInstance();
+	/**
+	 * Dank Memer imgen.
+	 */
 	public memer = new Imgen('https://dankmemer.services');
+	/**
+	 * Akairo client utils.
+	 */
 	public util = new ClientUtil(this);
+	/**
+	 * The db adapter.
+	 */
 	public db = new Connector(this);
-
+	/**
+	 * Our plugins.
+	 */
+	public plugins = new PluginManager(this, {
+		directory: join(__dirname, '..', '..', 'plugins')
+	});
+	/** @depracated */
 	public listenerHandler: ListenerHandler;
+	/** @depracated */
 	public commandHandler: CommandHandler;
+	/** @depracated */
 	public itemHandler: ItemHandler;
-
+	/**
+	 * Connect our bot to stuff we could connect to.
+	 */
 	public async connect({
 		auth = {
 			discord: process.env.DISCORD_TOKEN,
@@ -43,8 +66,16 @@ export class LavaClient extends AkairoClient {
 			}
 		}
 	}: ClientConnectOptions = {}) {
-		const db = await MongoDB.connect(auth.mongo, options.mongo);
-		this.console.log('Client', `Mongoose v${db.version}`);
-		return super.login(auth.discord);
+		try {
+			const db = await MongoDB.connect(auth.mongo, options.mongo);
+			this.console.log('Client', `Mongoose v${db.version}`);
+			try {
+				return super.login(auth.discord);
+			} catch(e) {
+				this.console.error('Client', e, true);
+			}
+		} catch(e) {
+			this.console.error('Mongo', e, true);
+		}
 	}
 }

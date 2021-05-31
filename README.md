@@ -1,6 +1,6 @@
 # Lava
 
-> A multi-purpose discord bot with database support.
+> A multi-purpose discord bot.
 
 <div align="center">
   
@@ -19,7 +19,7 @@ Lava uses semantic versioning with some additional bullshit:
 - **Semi** - Small bug fixes, fix issues or exploits occuring within the bot.
 
 ## Requirements
-- Node.JS >=14.0.0
+- Node >=14.0.0
 - NPM >=7.1
 - MongoDB Database
 - Discord Bot Token

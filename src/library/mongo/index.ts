@@ -6,6 +6,7 @@
 export * from './SchemaBuilder';
 export * from './UserEntry';
 export * from './Connector';
+export * from './Structure';
 export * from './Endpoint';
 
 export * from './currency';

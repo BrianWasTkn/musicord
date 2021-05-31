@@ -34,4 +34,4 @@ const LavaSchema = new Schema({
 	},
 });
 
-export const SpawnModel = model<LavaProfile>('lava', LavaSchema);
+export const LavaModel = model<LavaProfile>('lava', LavaSchema);

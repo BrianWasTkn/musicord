@@ -25,8 +25,8 @@ export class CollectibleItem extends Item {
 				buy: 1000000000,
 			},
 			description = {
-				short: 'A very unique collectible.',
-				long: 'Unknown collectible, keep it until it\'s exposure!'
+				short: 'A very unique and unknown collectible.',
+				long: 'Unknown collectible but keep it until it\'s exposure!'
 			}
 		} = options;
 

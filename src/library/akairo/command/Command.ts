@@ -9,22 +9,44 @@ import { AbstractModule, LavaClient } from '..';
 import { CommandHandler } from '.';
 import { Context } from '../..';
 
-/**
- * Command
- * @extends {OldCommand}
- * @implements {AbstractModule}
-*/
+export declare interface Command extends OldCommand {
+	/**
+	 * The category this command belongs to.
+	 */
+	category: Category<string, this>;
+	/**
+	 * The handler who owns this command.
+	 */
+	handler: CommandHandler;
+	/**
+	 * The client instance.
+	 */
+	client: LavaClient;
+	/**
+	 * The description of this command.
+	 */
+	description: CommandDescription;
+}
+
 export class Command extends OldCommand implements AbstractModule {
-	public description: CommandDescription;
-	public category: Category<string, this>;
-	public handler: CommandHandler;
-	public client: LavaClient;
+	/**
+	 * The name of this command.
+	 */
 	public name: string;
+
+	/**
+	 * Constructor for this command.
+	 */
 	public constructor(id: string, options: CommandOptions) {
 		super(id, options);
-		this.name = options.name;
+
+		/** @type {string} */
+		this.name = options.name ?? id.charAt(0).toUpperCase() + id.slice(1).toLowerCase();
 	}
 
+	/**
+	 * Method to run this command.
+	 */
 	public exec(context: Context, args?: any): PromiseUnion<MessageOptions> {
 		return super.exec(context, args);
 	}

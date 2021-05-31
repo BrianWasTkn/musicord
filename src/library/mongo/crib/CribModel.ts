@@ -20,4 +20,4 @@ const CribSchema = new Schema({
 	}
 });
 
-export const SpawnModel = model<CribProfile>('memers.crib', CribSchema);
+export const CribModel = model<CribProfile>('memers.crib', CribSchema);

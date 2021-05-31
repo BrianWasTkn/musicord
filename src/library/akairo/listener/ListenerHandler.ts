@@ -8,28 +8,43 @@ import { ListenerHandler as OldListenerHandler, Category } from 'discord-akairo'
 import { Collection } from 'discord.js';
 import { Listener } from '.';
 
-/**
- * Command Handler
- * @extends {OldCommandHandler}
- * @implements {AbstractHandler}
-*/
-export class ListenerHandler extends OldListenerHandler implements AbstractHandler<Listener> {
-	public categories: Collection<string, Category<string, Listener>>;
-	public useNames: boolean;
-	public modules: Collection<string, Listener>;
-	public client: LavaClient;
+export declare interface ListenerHandler extends OldListenerHandler {
+  /**
+   * All categories this listener handler hold.
+   */
+  categories: Collection<string, Category<string, Listener>>;
+  /**
+   * All listeners this handler hold.
+   */
+  modules: Collection<string, Listener>;
+  /**
+   * The client instance for this handler.
+   */
+  client: LavaClient;
+  /**
+   * Add a listener.
+   */
+  add: (filename: string) => Listener;
+  /**
+   * Find a category of commands.
+   */
+  findCategory: (name: string) => Category<string, Listener>;
+  /**
+   * Load a listener based from the file path or a class.
+   */
+  load: (thing: string | Function, isReload?: boolean) => Listener;
+  /**
+   * Reload a listener.
+   */
+  reload: (id: string) => Listener;
+  /**
+   * Remove a listener.
+   */
+  remove: (id: string) => Listener;
+}
 
+export class ListenerHandler extends OldListenerHandler implements AbstractHandler<Listener> {
 	public constructor(client: LavaClient, options: AbstractHandlerOptions) {
 		super(client, options);
-		this.useNames = options.useNames;
 	}
-	
-	public add: (filename: string) => Listener;
-    public findCategory: (name: string) => Category<string, Listener>;
-    public load: (thing: string | Function, isReload?: boolean) => Listener;
-    public loadAll: (directory?: string, filter?: import('discord-akairo').LoadPredicate) => this;
-    public reload: (id: string) => Listener;
-    public reloadAll: () => this;
-    public remove: (id: string) => Listener;
-    public removeAll: () => this;
 }

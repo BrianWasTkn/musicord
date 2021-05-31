@@ -1,6 +1,6 @@
 {
 	"name": "lava",
-	"version": "3.0.0-rewrite.01",
+	"version": "3.0.0-rewrite",
 	"description": "A multi-purpose discord bot.",
 	"main": "dist/index.js",
 	"scripts": {
@@ -14,7 +14,7 @@
 	},
 	"engines": {
 		"node": ">=14",
-		"npm": ">=7.1"
+		"npm": ">=7"
 	},
 	"keywords": [
 		"discord-akairo",
