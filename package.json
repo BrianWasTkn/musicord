@@ -9,8 +9,7 @@
         "github": "https://github.com/BrianWasTaken"
     },
     "engines": {
-        "node": "14.x",
-        "npm": "7.x"
+        "node": "14.x"
     },
     "scripts": {
         "build": "rimraf ./build && tsc --project tsconfig.json",
