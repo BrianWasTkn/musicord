@@ -8,7 +8,7 @@
     "start": "node dist"
   },
   "engines": {
-    "node": ">=14"
+    "node": "14"
   },
   "keywords": [
     "discord-akairo",
