@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.1",
-    "discord-akairo": "github:SkyblockDev/discord-akairo",
+    "discord-akairo": "github:SkyBlockDev/discord-akairo",
     "discord-api-types": "^0.18.1",
     "discord.js": "github:discordjs/discord.js#master",
     "dotenv": "^10.0.0",
