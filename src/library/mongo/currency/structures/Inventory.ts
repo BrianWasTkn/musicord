@@ -40,7 +40,7 @@ export class Inventory extends Structure {
 	}
 
 	get item() {
-		const plugin = this.client.plugins.plugins.get('Item');
+		const plugin = this.client.plugins.plugins.get('item');
 		return (plugin.handler as ItemHandler).modules.get(this.id);
 	}
 

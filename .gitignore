@@ -1,12 +1,6 @@
-# Node
+#
 node_modules
 build
+dist
 
-# Shit
-source
-docs
 .env
-
-# Tests
-index.js
-test.js
