@@ -5,5 +5,3 @@
 
 export * from './ItemHandler';
 export * from './Item';
-
-export * from './categories';

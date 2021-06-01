@@ -3,14 +3,11 @@
  * @author BrianWasTaken
 */
 
-export * from './CurrencyInventory';
+export * from './GuildMember';
+export * from './Structure';
+export * from './Message';
+export * from './User';
 
-export * from './LavaCooldowns';
-export * from './LavaSettings';
-
-export * from './DiscordMessage';
-export * from './DiscordUser';
-export * from './DiscordBase';
-
-import './DiscordMessage';
-import './DiscordUser';
+import './GuildMember';
+import './Message';
+import './User';

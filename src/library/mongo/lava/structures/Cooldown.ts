@@ -1,17 +1,19 @@
-import { LavaClient } from '../..';
-import { Base } from '.';
+import { LavaClient, Structure } from 'src/library';
 
-export class LavaCooldown extends Base {
+export class LavaCooldown extends Structure {
+	/**
+	 * Expiration time for this cooldown.
+	 */
 	public expiresAt: number;
+	/**
+	 * ID of this command.
+	 */
 	public id: string;
+	/**
+	 * Constructor for this bullshit.
+	 */
 	public constructor(client: LavaClient, data: LavaCooldowns) {
-		super(client);
-
-		/**
-		 * ID of this item.
-		*/
-		this.id = data.id;
-
+		super({ client, id: data.id });
 		/**
 		 * Expiration date of this item.
 		*/

@@ -15,13 +15,13 @@ export declare interface Plugin extends Base {
 }
 
 export class Plugin extends Base {
-	private _handler: PluginHandlerPredicate;
+	private readonly _handler: PluginHandlerPredicate;
 	public handler: AkairoHandler | AbstractHandler;
 	public name: string;
 	public id: string;
 	public constructor(name: Snowflake, handler: PluginHandlerPredicate) {
 		super(null);
-		this._handler = handler.bind(this);
+		Object.defineProperty(this, '_handler', { value: handler.bind(this) });
 		this.id = name.toLowerCase();
 		this.name = name;
 	}

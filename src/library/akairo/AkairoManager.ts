@@ -53,7 +53,7 @@ export class PluginManager extends EventEmitter {
 	 */
 	register(dir = this.directory) {
 		const plugins: Plugin[] = this.readSync(dir)
-			.map(e => require(e).default)
+			.map(e => require(e)?.default)
 			.filter(Boolean);
 
 		for (const plugin of plugins) {

@@ -1,6 +1,5 @@
-import { Item, ItemOptions } from '..';
+import { Context, Item, ItemOptions } from 'src/library';
 import { MessageOptions } from 'discord.js';
-import { Context } from '../../..';
 
 export interface CollectibleItemOptions extends ItemOptions {}
 
@@ -19,7 +18,7 @@ export class CollectibleItem extends Item {
 				usable: true
 			},
 			info = {
-				emoji: ':coin:',
+				emoji: ':thinking:',
 				name: 'Collectible Item',
 				sell: 0,
 				buy: 1000000000,

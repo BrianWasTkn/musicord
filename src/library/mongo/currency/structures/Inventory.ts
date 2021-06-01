@@ -1,13 +1,12 @@
-import { StructureOptions, Structure } from '../..';
-import { ItemHandler } from '../../..';
+import { ItemHandler, StructureOptions, Structure } from 'src/library';
 
 export class Inventory extends Structure {
 	/**
 	 * The expiring date for this bullshit.
 	 */
-	public expiresAt: number;
+	public expiration: number;
 	/**
-	 * The level of this egregious item.
+	 * The level of this sPEcIaL item.
 	 */
 	public level: number;
 	/**
@@ -29,18 +28,27 @@ export class Inventory extends Structure {
 	public constructor(options: StructureOptions, data: CurrencyInventory) {
 		super(options);
 		/** @type {number} */
-		this.expiresAt = data.expire > Date.now() ? data.expire : 0;
+		this.expiration = data.expire;
 		/** @type {number} */
 		this.level = data.level;
 		/** @type {number} */
-		this.multiplier = data.expire > Date.now() ? data.multi : 0;
+		this.multiplier = data.multi;
 		/** @type {number} */
-		this.owned = data.amount > 0 ? data.amount : 0;
+		this.owned = data.amount;
 		/** @type {number} */
 		this.timesUsed = data.uses;
 	}
 
 	get item() {
-		this
+		const plugin = this.client.plugins.plugins.get('Item');
+		return (plugin.handler as ItemHandler).modules.get(this.id);
+	}
+
+	isOwned() {
+		return this.owned > 0;
+	}
+
+	isActive() {
+		return this.isOwned() && this.expiration > Date.now();
 	}
 }

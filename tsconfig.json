@@ -1,8 +1,8 @@
 {
 	"compilerOptions": {
-		"module": "CommonJS",
-		"target": "ESNext",
-		"outDir": "build",
+		"module": "commonjs",
+		"target": "esnext",
+		"outDir": "dist",
 		"strict": true,
 		"incremental": true,
 		"removeComments": true,
