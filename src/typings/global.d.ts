@@ -20,16 +20,6 @@ export declare global {
 	type PartialUnion<T> = Partial<T> | T;
 
 	/**
-	 * Alias for ConstructorParameters.
-	*/
-	type ClassParam<T> = ConstructorParameters<typeof T>;
-
-	/**
-	 * Alias for Parameters.
-	*/
-	type Param<T> = Parameters<typeof T>;
-
-	/**
 	 * Cast a collection with a key string to value pair.
 	*/
 	type CollectionFlake<V> = Collection<Snowflake, V>;
