@@ -7,7 +7,6 @@ export default class ImageCommand extends Command {
 			name: 'Abandon',
 			channel: 'guild',
 			aliases: ['abandon'],
-			category: 'Image',
 			clientPermissions: ['ATTACH_FILES'],
 			args: [{
 				id: 'someone',
@@ -22,6 +21,6 @@ export default class ImageCommand extends Command {
 			avatars: [ctx.args.someone.user.avatarURL({ format: 'png', size: 1024 })]
 		});
 
-		return { reply: { messageReference: ctx.id }, files: [new MessageAttachment(generated, 'abandon')] };
+		return { reply: { messageReference: ctx.id }, files: [generated] };
 	}
 }

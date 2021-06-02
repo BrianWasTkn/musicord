@@ -25,7 +25,6 @@ export class Imgen {
 			},
 		})
 			.then(response => response.buffer())
-			.then(buffer => new MessageAttachment(buffer, endpoint))
 			.catch(error => Promise.reject(error));
 	}
 }

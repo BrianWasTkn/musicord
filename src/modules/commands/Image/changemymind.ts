@@ -22,6 +22,6 @@ export default class ImageCommand extends Command {
 			text: ctx.args.something
 		});
 
-		return { reply: { messageReference: ctx.id }, files: [new MessageAttachment(generated, 'abandon')] };
+		return { reply: { messageReference: ctx.id }, files: [generated] };
 	}
 }
