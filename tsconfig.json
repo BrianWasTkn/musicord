@@ -23,7 +23,8 @@
             "./node_modules/@types"
         ],
         "paths": {
-            "src/*": ["src/*"]
+            "src/*": ["src/*"],
+            "lib/*": ["src/library/*"]
         },
     }
 }
