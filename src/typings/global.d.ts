@@ -41,6 +41,6 @@ export declare global {
 		/** 
 		 * Logs to stdin.
 		*/
-		log(key: string, ...message: any[]): void;
+		log(tag: string, ...message: any[]): void;
 	}
 }

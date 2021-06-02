@@ -110,13 +110,13 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 				const entry = await context.lava.fetch(context.author.id);
 				const expire = context.createdTimestamp + time;
 
-				let cooldown: CooldownData | Cooldown = entry.cooldowns.get(command.id);
+				let cooldown: LavaCooldowns = entry.cooldowns.get(command.id);
 				if (!cooldown) {
 						entry.data.cooldowns.push({ id: command.id, expire });
 						cooldown = (await entry.data.save()).cooldowns.find(c => c.id === command.id);
 				}
 
-				const diff = (cooldown as CooldownData).expire - context.createdTimestamp;
+				const diff = (cooldown as LavaCooldowns).expire - context.createdTimestamp;
 				if (diff > 0) {
 						this.emit(CommandHandlerEvents.COOLDOWN, context, command, diff);
 						return true;
@@ -129,13 +129,13 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 		 * Run a command.
 		 */
 		public async runCommand(context: Context, command: Command, args: any) {
-				await this.commandQueue.wait(context.author.id);
+			await this.commandQueue.wait(context.author.id);
 			if (command.typing) {
 				context.channel.startTyping();
 			}
 
 			try {
-						context.args = args;
+				context.args = args;
 				this.emit(CommandHandlerEvents.COMMAND_STARTED, context, command, args);
 				try {
 					const returned = await command.exec(context);
@@ -144,8 +144,8 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 				} catch(error) {
 					this.emit('commandError', context, command, args, error);
 				} finally {
-								this.commandQueue.next(context.author.id);
-						}
+						this.commandQueue.next(context.author.id);
+					}
 			} finally {
 				if (command.typing) {
 					context.channel.stopTyping();

@@ -69,7 +69,7 @@ export class PluginManager extends EventEmitter {
 	/**
 	 * Load all plugins.
 	 */
-	load() {
+	loadAll() {
 		for (const plugin of Array.from(this.register().values())) {
 			if (plugin.handler) this.emit('load', plugin.load());
 		}

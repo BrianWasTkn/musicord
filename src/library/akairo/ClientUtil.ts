@@ -7,8 +7,11 @@ import { Colors, EmbedPlus, ItemEffects } from '..';
 import { ClientUtil as OldClientUtil } from 'discord-akairo';
 import { LavaClient } from '.';
 
-export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil<Client> {
-	public client: Client;
+export declare interface ClientUtil<Client extends LavaClient = never> extends OldCLientUtil {
+    client: Client;
+}
+
+export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil {
 	public constructor(client: Client) {
 		super(client);
 
@@ -31,6 +34,13 @@ export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil
 	*/
 	effects = () => ItemEffects.createInstance();
 
+    /**
+     * Deeply filter an array.
+     */
+    deepFilter = <T>(src: T[], filt: T[]): T[] => {
+        return src.filter(s => !filt.some(f => f === s));
+    }
+
 	/**
 	 * Divide the items of an array into chunks of arrays. 
 	 * {@link Source https://dankmemer.lol/source}
@@ -50,7 +60,7 @@ export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil
 	*/
 	progressBar = (percent = 1, filledChar = '■', emptyChar = '□') => {
         const done = filledChar.repeat(percent);
-        const not = emptyChar.repeat(10 - done.length);
+        const not = emptyChar.repeat(10 - percent);
         return `${done}${not}`;
     }
 
@@ -72,12 +82,12 @@ export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil
     /**
 	 * Generate a random decimal color. 
     */
-    randomColor = () => Math.random() * 0xffffff;
+    randomColor = (): number => Math.random() * 0xffffff;
 
     /**
 	 * Delay something for x time.
     */
-    sleep = (ms: number) => new Promise(resolve => setTimeout(() => resolve(ms), ms));
+    sleep = (ms: number): Promise<number> => new Promise(resolve => setTimeout(() => resolve(ms), ms));
 
     /**
 	 * Convert a number to roman numerals. 

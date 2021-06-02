@@ -2,7 +2,8 @@ import { CurrencyEndpoint, CurrencyModel } from '.';
 import { SpawnEndpoint, SpawnModel } from '.';
 import { LavaEndpoint, LavaModel } from '.';
 
-import { LavaClient, Base } from '..';
+import { LavaClient } from '..';
+import { Base } from 'discord.js';
 
 /**
  * Our connector for all collections.

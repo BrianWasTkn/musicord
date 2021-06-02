@@ -1,11 +1,11 @@
-import { LavaClient, Base } from '..';
+import { LavaClient, Structure } from '..';
 import { Document } from 'mongoose';
 
 /**
  * The main entry with sets of methods to apply changes on our data.
  * @abstract @extends {Base}
 */
-export abstract class UserEntry<Data extends Document> extends Base {
+export abstract class UserEntry<Data extends Document> extends Structure {
 	/**
 	 * The client instantiated this entry.
 	*/
@@ -20,7 +20,7 @@ export abstract class UserEntry<Data extends Document> extends Base {
 	 * The constructor for this entry.
 	*/
 	public constructor(client: LavaClient, data: Data) {
-		super(client);
+		super({ id: data._id, client });
 
 		/** @type {Data} */
 		this.data = data;

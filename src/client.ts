@@ -20,27 +20,6 @@ const bot = new LavaClient({
 	} 
 });
 
-bot.listenerHandler = new ListenerHandler(bot, {
-	directory: join(__dirname, 'modules', 'listeners'),
-	automateCategories: true,
-	classToHandle: Listener,
-}).loadAll();
-
-bot.commandHandler = new CommandHandler(bot, { 
-	directory: join(__dirname, 'modules', 'commands'),
-	automateCategories: true,
-	classToHandle: Command,
-	handleEdits: true,
-	useNames: true,
-	prefix: ['lava'],
-}).loadAll().useListenerHandler(bot.listenerHandler);
-
-bot.itemHandler = new ItemHandler(bot, {
-	directory: join(__dirname, 'modules', 'items'),
-	automateCategories: true,
-	classToHandle: Item,
-}).loadAll();
-
 bot.once('ready', () => {
 	const messages = [
 		`${bot.listenerHandler.modules.size} Listeners Loaded`,
@@ -51,4 +30,5 @@ bot.once('ready', () => {
 	for (const message of messages) bot.console.log('Client', message);
 });
 
+bot.plugins.loadAll();
 bot.connect();

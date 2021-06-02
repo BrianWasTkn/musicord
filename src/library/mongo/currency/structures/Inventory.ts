@@ -39,15 +39,24 @@ export class Inventory extends Structure {
 		this.timesUsed = data.uses;
 	}
 
+	/**
+	 * Shortcut for the item module.
+	 */
 	get item() {
-		const plugin = this.client.plugins.plugins.get('item');
-		return (plugin.handler as ItemHandler).modules.get(this.id);
+		const handler = this.client.plugins.plugins.get('item').handler as unknown;
+		return (handler as ItemHandler).modules.get(this.id);
 	}
 
+	/**
+	 * Check if they own this item.
+	 */
 	isOwned() {
 		return this.owned > 0;
 	}
 
+	/**
+	 * Check if they own this item and expiration date is ahead of now.
+	 */
 	isActive() {
 		return this.isOwned() && this.expiration > Date.now();
 	}

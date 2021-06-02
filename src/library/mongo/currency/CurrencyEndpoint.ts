@@ -1,36 +1,28 @@
-import { CurrencyEntry } from '.';
-import { Endpoint } from '..';
+import { Endpoint, ItemHandler, QuestHandler, CurrencyEntry, Quest } from 'src/library';
 
 export class CurrencyEndpoint extends Endpoint<CurrencyProfile> {
 	public async fetch(_id: string) {
 		return this.model.findOne({ _id }).then(data => {
-			const { missing, doc } = this.updateItems(data ?? new this.model({ _id }));
-			return missing >= 1 ? doc.save() : doc;
+			data = data ?? new this.model({ _id });
+			const items = this.checkOutdatedItems(data);
+			const quests = this.checkOutdatedQuests(data);
+
+			if (items.length >= 1) data.items.push(...items);
+			if (quests.length >= 1) data.quests.push(...quests);
+
+			return [items, quests].some(e => e.length > 0) ? data.save() : data;
 		}).then(doc => new CurrencyEntry(this.client, doc));
 	}
 
-	public updateItems(doc: CurrencyProfile): { doc: CurrencyProfile, missing: number } {
-		const { modules } = this.client.itemHandler;
-
-		let missing = 0;
-		if (modules.size < 1) return { doc, missing };
-		for (const item of modules.values()) {
-			if (!doc.items.find(i => i.id === item.id)) {
-				doc.items.push({ id: item.id, ...this.defaultInventory });
-				missing++;
-			}
-		}
-
-		return { doc, missing };
+	public checkOutdatedItems(doc: CurrencyProfile) {
+		const plugin = this.client.plugins.plugins.get('item');
+		const handler = plugin.handler as unknown as ItemHandler;
+		return handler.pushSlot(doc);
 	}
 
-	private get defaultInventory(): Omit<CurrencyInventory, 'id'> {
-		return {
-			amount: 0,
-			expire: 0,
-			level: 0,
-			multi: 0,
-			uses: 0,
-		};
+	public checkOutdatedQuests(doc: CurrencyProfile) {
+		const plugin = this.client.plugins.plugins.get('quest');
+		const handler = plugin.handler as unknown as QuestHandler;
+		return handler.pushSlot(doc);
 	}
 }

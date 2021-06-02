@@ -8,6 +8,7 @@ export default new Plugin(
 			classToHandle: Command,
 			commandUtil: true,
 			directory: join(__dirname, 'commands'),
+			handleEdits: true,
 			prefix: ['lava'],
 		}
 	)

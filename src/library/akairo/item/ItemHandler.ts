@@ -1,5 +1,4 @@
-import { AbstractHandlerOptions, AbstractHandler, LavaClient } from '..';
-import { Item } from '.';
+import { AbstractHandlerOptions, AbstractHandler, LavaClient, CurrencyEntry, Item } from 'src/library';
 
 export interface ItemSale {
 	discount: number;
@@ -31,5 +30,23 @@ export class ItemHandler extends AbstractHandler<Item> {
 		if (!this.sale.nextSale) nextSale = Date.now();
 		nextSale = nextSale += 60000;
 		return this.sale = { item, discount, nextSale };
+	}
+
+	public pushSlot(data: CurrencyProfile) {
+		let slots: CurrencyInventory[] = [];
+		for (const item of this.modules.values()) {
+			if (!data.items.find(i => i.id === item.id)) {
+				slots.push({
+					id: item.id,
+					amount: 0,
+					expire: 0,
+					level: 0,
+					multi: 0,
+					uses: 0
+				});
+			}
+		}
+
+		return slots
 	}
 }

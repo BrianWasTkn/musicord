@@ -94,7 +94,7 @@ export declare global {
 		 */
 		id: string;
 		/**
-		 * Amounto of skittles they have eaten.
+		 * Amount of skittles they have eaten.
 		 */
 		uses: number;
 		/**

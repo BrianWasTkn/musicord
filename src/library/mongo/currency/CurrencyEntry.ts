@@ -3,9 +3,8 @@
  * @author BrianWasTaken
 */
 
-import { Currency, Command, Inventory } from '../..';
+import { UserEntry, Currency, Inventory, Mission } from 'src/library';
 import { Collection } from 'discord.js';
-import { UserEntry } from '..';
 
 export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/**
@@ -26,7 +25,26 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	 * Their trash inventory.
 	*/
 	get items() {
-		return this.data.items.reduce((coll, slot) => coll.set(slot.id, new Inventory(this.client, slot)), new Collection<string, Inventory>());
+		return this.data.items.reduce((coll, slot) => 
+			coll.set(slot.id, new Inventory({
+				client: this.client,
+				id: slot.id
+			}, slot)), 
+			new Collection<string, Inventory>()
+		);
+	}
+
+	/**
+	 * Their quests.
+	 */
+	get quests() {
+		return this.data.quests.reduce((coll, slot) => 
+			coll.set(slot.id, new Mission({
+				client: this.client,
+				id: slot.id
+			}, slot)), 
+			new Collection<string, Mission>()
+		);
 	}
 
 	/**
@@ -37,10 +55,10 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	}
 
 	/**
-	 * Find an item from their inventory.
-	*/
-	public findInventoryItem(id: string) {
-		return this.items.get(id);
+	 * Check if a quest is has been completed.
+	 */
+	public isQuestFinished(id: string) {
+		return this.quests.get(id).isFinished();
 	}
 
 	/**
@@ -169,14 +187,12 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 				const { randomNumber } = this.client.util;
 				// @TODO: modify "2" to be dependent on cheese for example.
 				this.data.props.xp += randomNumber(1, 2);
-				if (space) this.calc().space();
-				return this;
+				return space ? this.calc().space() : this;
 			},
 			space: (os = 55) => {
 				const { level } = this.data.prestige;
 				const amount = Math.ceil(os * (level / 2) + os);
-				this.vault(amount).expand();
-				return this;
+				return this.vault(amount).expand();
 			}
 		}
 	}

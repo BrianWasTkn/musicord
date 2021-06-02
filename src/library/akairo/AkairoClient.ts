@@ -45,12 +45,6 @@ export class LavaClient extends AkairoClient {
 	public plugins = new PluginManager(this, {
 		directory: join(__dirname, '..', '..', 'plugins')
 	});
-	/** @depracated */
-	public listenerHandler: ListenerHandler;
-	/** @depracated */
-	public commandHandler: CommandHandler;
-	/** @depracated */
-	public itemHandler: ItemHandler;
 	/**
 	 * Connect our bot to stuff we could connect to.
 	 */

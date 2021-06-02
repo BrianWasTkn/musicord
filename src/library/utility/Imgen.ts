@@ -1,3 +1,4 @@
+import { MessageAttachment } from 'discord.js';
 import fetch from 'node-fetch';
 
 export class Imgen {
@@ -6,14 +7,25 @@ export class Imgen {
 		this.apiURL = apiURL;
 	}
 
-	generate(endpoint: string, body: any) {
+	private get token() {
+		return process.env.MEME_TOKEN;
+	}
+
+	generate(endpoint: string, body: {
+		text?: string;
+		avatars?: string[];
+	}) {
 		return fetch(`${this.apiURL}/${endpoint}`, {
 			body: JSON.stringify(body),
 			method: 'POST',
+			timeout: 1e4,
 			headers: {
-				Authorization: process.env.MEME_TOKEN,
+				Authorization: this.token,
 				'Content-Type': 'application/json'
-			}
-		}).then(g => g.buffer());
+			},
+		})
+			.then(response => response.buffer())
+			.then(buffer => new MessageAttachment(buffer, endpoint))
+			.catch(error => Promise.reject(error));
 	}
 }
