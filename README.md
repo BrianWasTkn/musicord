@@ -28,11 +28,11 @@ Lava uses semantic versioning with some additional bullshit:
 - Brain...
 
 ## Installation
-1. Clone this repository: `git clone https://github.com/BrianWasTaken/lava`
+1. Clone this repository: `git clone https://github.com/BrianWasTaken/lava.git`
 2. Install required dependencies: `npm install`
-3. Build typescript source files: `npm run build`
 4. Rename `.env-example` to `.env` and fill it in.
-4. Run the bot something: `npm run start`
+3. Build typescript source files: `npm run build`
+4. Run the bot something: `npm start`
 
 ## Acknowledgements
 
