@@ -7,7 +7,7 @@
 [![Support](https://img.shields.io/discord/691416705917779999?color=fb8b23&label=Support&style=for-the-badge)](https://discord.gg/memer)
 [![Stars](https://img.shields.io/github/stars/BrianWasTkn/lava?color=FB8B23&logo=github&style=for-the-badge)](.)
 
-[![big daddy](https://forthebadge.com/images/badges/made-with-typescript.svg)](https://typescriptlang.org)
+[![Typescript](https://forthebadge.com/images/badges/made-with-typescript.svg)](https://typescriptlang.org)
 
 </div>
 
@@ -36,12 +36,9 @@ Lava uses semantic versioning with some additional bullshit:
 
 ## Acknowledgements
 
-- **Dauntless#0711** - _slot machine function_ - [discord](https://discord.com/invite/Ha7pRB4)
+- **Dauntless#0711** - _slot machine mechanics_ - [discord](https://discord.com/invite/Ha7pRB4)
 - **Melmsie#0001** - _blackjack command_ - [source](https://blackjack.dankmemer.lol)
-- **Dank Memer v5** - _base currency commands_ - [source](https://dankmemer.lol/source)
-
-## Changelogs (>=2.18)
-> .
+- **Dank Memer v5** - _currency background_ - [source](https://dankmemer.lol/source)
 
 ## Author
 
