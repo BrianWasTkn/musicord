@@ -1,4 +1,4 @@
-import { CollectibleItem, Entity } from '../..';
+import { CollectibleItem, Entity } from 'plugins/item';
 
 export default class Collectible extends CollectibleItem {
 	public constructor() {

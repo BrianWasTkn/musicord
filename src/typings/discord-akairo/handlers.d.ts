@@ -17,7 +17,7 @@ declare module 'discord-akairo' {
 	import { 
 		LavaClient, AbstractHandler, CommandQueue, 
 		Context, AbstractModule, AbstractModuleOptions,
-	} from 'src/library';
+	} from 'lava/index';
 
 	import { MessageOptions } from 'discord.js';
 
@@ -166,7 +166,7 @@ declare module 'discord-akairo' {
  * Listener.
  */
 declare module 'discord-akairo' {
-	import { LavaClient, AbstractModuleOptions } from 'src/library';
+	import { LavaClient, AbstractModuleOptions } from 'lava/index';
 
 	interface Listener extends AkairoModule {
 		/**
@@ -198,7 +198,7 @@ declare module 'discord-akairo' {
  * Inhibitor.
  */
 declare module 'discord-akairo' {
-	import { LavaClient, AbstractModuleOptions, Context } from 'src/library';
+	import { LavaClient, AbstractModuleOptions, Context } from 'lava/index';
 
 	interface Inhibitor extends AkairoModule {
 		/**

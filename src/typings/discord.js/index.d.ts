@@ -1,5 +1,5 @@
 declare module 'discord.js' {
-	import { LavaClient } from 'src/library';
+	import { LavaClient } from 'lava/index';
 	
 	/**
 	 * Base structure for all structures.

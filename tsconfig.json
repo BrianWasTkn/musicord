@@ -14,7 +14,8 @@
 		"sourceMap": true,
 		"baseUrl": ".",
 		"paths": {
-			"src/*": ["src/*"]
+			"lava/*": ["src/library/*"],
+			"plugins/*": ["src/plugins/*"],
 		},
 		"typeRoots": [
 			"./node_modules/@types",

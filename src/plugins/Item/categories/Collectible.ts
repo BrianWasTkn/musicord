@@ -1,4 +1,4 @@
-import { Context, Item, ItemOptions } from 'src/library';
+import { Context, Item, ItemOptions } from 'lava/index';
 import { MessageOptions } from 'discord.js';
 
 export interface CollectibleItemOptions extends ItemOptions {}

@@ -1,4 +1,4 @@
-import { Plugin, CommandHandler, Command, LavaClient } from 'src/library';
+import { Plugin, CommandHandler, Command, LavaClient } from 'lava/index';
 import { join } from 'path';
 
 export default new Plugin(

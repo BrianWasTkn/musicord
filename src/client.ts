@@ -1,8 +1,8 @@
 import 'module-alias/register';
 import 'dotenv/config';
 
-import { LavaClient, CommandHandler, ListenerHandler, ItemHandler, Command, Listener, Item } from './library';
 import { ClientOptions, Intents } from 'discord.js';
+import { LavaClient } from 'lava/index';
 import { join } from 'path';
 
 const bot = new LavaClient({ 
@@ -20,9 +20,10 @@ const bot = new LavaClient({
 	} 
 });
 
-bot.once('ready', () => {	
-	for (const message of messages) bot.console.log('Client', message);
+bot.on('ready', () => {	
+	bot.console.log('Client', `${bot.user.tag} has logged in.`);
 });
+bot.on('debug', m => bot.console.log('Client', m));
 
 bot.plugins.loadAll();
 bot.connect();

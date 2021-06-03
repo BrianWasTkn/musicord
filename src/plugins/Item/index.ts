@@ -1,4 +1,4 @@
-import { Plugin, ItemHandler, Item, LavaClient } from 'src/library';
+import { Plugin, ItemHandler, Item, LavaClient } from 'lava/index';
 import { join } from 'path';
 
 export default new Plugin(
