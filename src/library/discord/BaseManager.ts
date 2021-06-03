@@ -1,9 +1,9 @@
-import { BaseManager, Snowflake, Constructable, Collection, Base } from 'discord.js';
+import { BaseManager, Constructable, Collection, Base } from 'discord.js';
 import { AbstractHandler, AbstractModule, LavaClient } from '..';
 
 export abstract class AbstractManager<
 	H extends AbstractHandler,
-	K extends Snowflake, 
+	K extends string, 
 	Holds extends AbstractModule | Base,
 	R extends (string | (AbstractModule | Base))
 > extends BaseManager<K, Holds, R> {

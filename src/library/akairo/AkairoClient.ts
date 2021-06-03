@@ -27,24 +27,29 @@ export class LavaClient extends AkairoClient {
 	 * Our fancy logger.
 	 */
 	public console = Logger.createInstance();
+	
 	/**
 	 * Dank Memer imgen.
 	 */
 	public memer = new Imgen('https://dankmemer.services');
+	
 	/**
 	 * Akairo client utils.
 	 */
 	public util = new ClientUtil(this);
+	
 	/**
 	 * The db adapter.
 	 */
 	public db = new Connector(this);
+	
 	/**
 	 * Our plugins.
 	 */
 	public plugins = new PluginManager(this, {
 		directory: join(__dirname, '..', '..', 'plugins')
 	});
+	
 	/**
 	 * Connect our bot to stuff we could connect to.
 	 */

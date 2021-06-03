@@ -20,13 +20,7 @@ const bot = new LavaClient({
 	} 
 });
 
-bot.once('ready', () => {
-	const messages = [
-		`${bot.listenerHandler.modules.size} Listeners Loaded`,
-		`${bot.commandHandler.modules.size} Commands Loaded`,
-		`${bot.itemHandler.modules.size} Items Loaded`,
-	];
-	
+bot.once('ready', () => {	
 	for (const message of messages) bot.console.log('Client', message);
 });
 

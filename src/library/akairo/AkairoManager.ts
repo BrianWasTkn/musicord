@@ -7,6 +7,9 @@ import path from 'path';
 import fs from 'fs';
 
 interface AkairoManagerOptions {
+	/**
+	 * The directory where all plugins are stored.
+	 */
 	directory: string;
 }
 

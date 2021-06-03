@@ -47,6 +47,6 @@ export class ItemHandler extends AbstractHandler<Item> {
 			}
 		}
 
-		return slots
+		return slots;
 	}
 }

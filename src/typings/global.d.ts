@@ -2,7 +2,7 @@
  * Global custom types.
 */
 export declare global {
-	import { Collection, Snowflake } from 'discord.js';
+	import { Collection } from 'discord.js';
 
 	/**
 	 * Cast a union type of a promise and a not.
@@ -22,7 +22,7 @@ export declare global {
 	/**
 	 * Cast a collection with a key string to value pair.
 	*/
-	type CollectionFlake<V> = Collection<Snowflake, V>;
+	type CollectionFlake<V> = Collection<string, V>;
 
 	/**
 	 * Custom console interface.

@@ -12,10 +12,6 @@ export interface AbstractModuleOptions extends AkairoModuleOptions {
 	 * The name for this module.
 	 */
 	name?: string;
-	/**
-	 * Description for this item.
-	 */
-	description?: string;
 }
 
 export declare interface AbstractModule extends AkairoModule {
@@ -47,7 +43,6 @@ export class AbstractModule extends AkairoModule {
 	 */
 	public constructor(id: string, options: AbstractModuleOptions) {
 		super(id, options);
-
 		/** @type {string} */
 		this.name = options.name;
 	}

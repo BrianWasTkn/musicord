@@ -1,4 +1,4 @@
-import { LavaClient, CurrencyEndpoint, SpawnEndpoint, LavaEndpoint } from '../..';
+import { LavaClient, CurrencyEndpoint, SpawnEndpoint, LavaEndpoint, CribEndpoint } from '../..';
 import { Message, Structures } from 'discord.js';
 import { UserPlus, Structure } from '.';
 
@@ -12,6 +12,7 @@ export class Context<Args extends {} = {}> extends Message implements Structure 
 	 * The command arguments.
 	 */
 	public args: Args = Object.create(null);
+
 	/**
 	 * Currency Endpoint shortcut.
 	 * * Inventory - Manage user inventories.
@@ -22,6 +23,7 @@ export class Context<Args extends {} = {}> extends Message implements Structure 
 	public get currency(): CurrencyEndpoint {
 		return this.client.db.currency;
 	}
+
 	/**
 	 * Spawn Endpoint shortcut.
 	 * * Events - Manage different event types.
@@ -29,6 +31,7 @@ export class Context<Args extends {} = {}> extends Message implements Structure 
 	public get spawn(): SpawnEndpoint {
 		return this.client.db.spawn;
 	}
+
 	/**
 	 * Lava Endpoint shortcut.
 	 * * Cooldowns - Manage command cooldowns.
@@ -36,6 +39,15 @@ export class Context<Args extends {} = {}> extends Message implements Structure 
 	 */
 	public get lava(): LavaEndpoint {
 		return this.client.db.lava;
+	}
+
+	/**
+	 * Crib Endpoint shortcut.
+	 * * Donations - Manage user donos.
+	 * * Boosts - Manage boost perks.
+	 */
+	public get crib(): CribEndpoint {
+		return this.client.db.crib;
 	}
 }
 

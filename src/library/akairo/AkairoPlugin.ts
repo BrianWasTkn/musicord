@@ -1,6 +1,6 @@
 import { AbstractHandler, AbstractModule, LavaClient } from '.';
 import { AkairoHandler, AkairoModule } from 'discord-akairo';
-import { Base, Snowflake } from 'discord.js';
+import { Base } from 'discord.js';
 
 /**
  * Initiator for our handlers for this plugin.
@@ -19,7 +19,7 @@ export class Plugin extends Base {
 	public handler: AkairoHandler | AbstractHandler;
 	public name: string;
 	public id: string;
-	public constructor(name: Snowflake, handler: PluginHandlerPredicate) {
+	public constructor(name: string, handler: PluginHandlerPredicate) {
 		super(null);
 		Object.defineProperty(this, '_handler', { value: handler.bind(this) });
 		this.id = name.toLowerCase();
