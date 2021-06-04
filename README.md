@@ -11,34 +11,11 @@
 
 </div>
 
-## Versioning
-Lava uses semantic versioning with some additional bullshit:
-> **Major.Minor.Semi**
-- **Major** - Bot breaking updates, massive refactors, basically anything that leaves an empty hole within the bot or something that adds a big portion within the bot.
-- **Minor** - New module added, a bit bot breaking, some small refactors and a large amount of bug fixes.
-- **Semi** - Small bug fixes, fix issues or exploits occuring within the bot.
-
-## Requirements
-- Node >=14.0.0
-- NPM >=7.1
-- MongoDB Database
-- Discord Bot Token
-- Meme Imgen Token
-- Git CLI + Fork
-- Brain...
-
-## Installation
-1. Clone this repository: `git clone https://github.com/BrianWasTaken/lava.git`
-2. Install required dependencies: `npm install`
-4. Rename `.env-example` to `.env` and fill it in.
-3. Build typescript source files: `npm run build`
-4. Run the bot something: `npm start`
-
 ## Acknowledgements
 
 - **Dauntless#0711** - _slot machine mechanics_ - [discord](https://discord.com/invite/Ha7pRB4)
 - **Melmsie#0001** - _blackjack command_ - [source](https://blackjack.dankmemer.lol)
-- **Dank Memer v5** - _currency background_ - [source](https://dankmemer.lol/source)
+- **Dank Memer v5** - _currency workaround_ - [source](https://dankmemer.lol/source)
 
 ## Author
 

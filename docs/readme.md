@@ -1,6 +1,23 @@
-# Lava
-This documentation provides essential information about the workaround for this workspace, and in any other parts of the bot, or for other purpose. The docs will cover (for the most part) all the bullshits connected, in and out of the box so let's assume you know meet the following criterias to familiarize yourself within lava:
+# Lava - Docs
+> Assuming you know what the heck js and ts is, and a background of what [discord-akairo](https://npmjs.com/package/discord-akairo) does in order to follow through without stuttering.
 
-- Lava, as you see is built with typescript. You statically type more code in development to reduce (un)expected errors in production. You should have at least a decent experience with that language so search typescript by yourself on the web because I'm lazy.
-- All things are imported from our `library` folder under `src` in our root. Instead of having to type the whole directory, we should use `src/library` to import anything inside from it.
-- Each Akairo handler **is plugged-in** meaning, we have a plugin for each handler so that we won't unload clustermods manually, instead, we would need to load a plugin all of that. What the fuck is this for honestly? I read this last bullet and I feel like I'm about to barf.
+## Requirements
+- **NodeJS 14** - Install the latest "recommended for most users" build of it.
+- **Mongo Database** - Ensure you have a URI of your database.
+- **Discord Token** - Get one from your applications dashboard.
+- **Meme API Key** - Request one from the memegods for image commands.
+
+## Installation
+1. Clone this repository: `git clone https://github.com/BrianWasTaken/lava.git`
+2. Install bot dependencies: `npm install`
+4. Rename `.env-example` to `.env` and fill it in.
+3. Build the source files: `npm run build`
+5. Run the bot: `npm start`
+
+## Versioning
+Lava uses semantic versioning with some additional bullshit:
+> **Major.Minor.Semi-Label**
+- **Major** - Bot breaking updates, massive refactors, basically anything that leaves an empty hole within the bot or something that adds a big portion of the bot.
+- **Minor** - New minor additions, minor refactors, huge bug fixes and any minor crap.
+- **Semi** - Small bug fixes, issues fixed or exploits patched occuring within the bot.
+- **OPTIONAL - Label** - Indicates the state of the current branch. Major, Minor and Semi pieces are frozen if this is specified.
