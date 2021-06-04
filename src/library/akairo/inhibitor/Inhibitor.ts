@@ -25,12 +25,22 @@ export declare interface Inhibitor extends OldInhibitor {
 }
 
 export class Inhibitor extends OldInhibitor implements AbstractModule {
+	/**
+	 * The name of this inhibitor.
+	 */
 	public name: string;
+
+	/**
+	 * Construct an inhibitor.
+	 */
 	public constructor(id: string, options: InhibitorOptions) {
 		super(id, options);
 		this.name = options.name;
 	}
 
+	/**
+	 * Main method to run this inhibitor.
+	 */
 	public exec(context: Context, command?: Command): PromiseUnion<boolean>;
 	public exec(context: Context, command?: Command): PromiseUnion<boolean> {
 		return super.exec(context, command);

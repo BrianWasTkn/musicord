@@ -47,6 +47,7 @@ const CurrencySchema = new Schema({
 		loses: build(Number, 0),
 		won: build(Number, 0),
 		lost: build(Number, 0),
+		streak: build(Number, 0),
 	}],
 
 	trade: [{

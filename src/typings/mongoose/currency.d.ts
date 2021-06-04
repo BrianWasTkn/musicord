@@ -180,6 +180,10 @@ export declare global {
 		 * Amount of times they lost.
 		 */
 		loses: number;
+		/**
+		 * Their win streak.
+		 */
+		streak: number;
 	}
 
 	/**

@@ -22,8 +22,9 @@ const bot = new LavaClient({
 
 bot.on('ready', () => {	
 	bot.console.log('Client', `${bot.user.tag} has logged in.`);
+}).on('debug', m => {
+	bot.console.debug('Client', m)
 });
-bot.on('debug', m => bot.console.log('Client', m));
 
 bot.plugins.loadAll();
 bot.connect();

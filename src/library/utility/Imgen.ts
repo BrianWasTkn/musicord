@@ -2,7 +2,13 @@ import { MessageAttachment } from 'discord.js';
 import fetch from 'node-fetch';
 
 export class Imgen {
+	/**
+	 * The fetch url.
+	 */
 	public apiURL: string;
+	/**
+	 * Construct dank memer's image generation.
+	 */
 	public constructor(apiURL: string) {
 		this.apiURL = apiURL;
 	}
@@ -11,6 +17,9 @@ export class Imgen {
 		return process.env.MEME_TOKEN;
 	}
 
+	/**
+	 * Generate an image from a certain endpoint.
+	 */
 	generate(endpoint: string, body: {
 		text?: string;
 		avatars?: string[];

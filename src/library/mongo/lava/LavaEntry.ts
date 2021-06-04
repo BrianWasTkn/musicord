@@ -8,12 +8,24 @@ import { Collection } from 'discord.js';
 import { UserEntry } from '..';
 
 export class LavaEntry extends UserEntry<LavaProfile> {
+	/**
+	 * The cooldowns for this entry.
+	 */
 	get cooldowns() {
-		return this.data.cooldowns.reduce((col, cd) => col.set(cd.id, new LavaCooldown(this.client, cd)) , new Collection<string, LavaCooldown>());
+		return this.data.cooldowns.reduce((col, cd) => 
+			col.set(cd.id, new LavaCooldown(this.client, cd)),
+			new Collection<string, LavaCooldown>()
+		);
 	}
 
+	/**
+	 * The settings.
+	 */
 	get settings() {
-		return this.data.settings.reduce((col, s) => col.set(s.id, new LavaSetting(this.client, s)) , new Collection<string, LavaSetting>());
+		return this.data.settings.reduce((col, s) => 
+			col.set(s.id, new LavaSetting(this.client, s)), 
+			new Collection<string, LavaSetting>()
+		);
 	}
 
 	updateSetting(setting: string, state: boolean, cooldown = 0) {
@@ -25,7 +37,9 @@ export class LavaEntry extends UserEntry<LavaProfile> {
 
 	updateCooldown(command: string, expire: number) {
 		const thisCooldown = this.data.cooldowns.find(cd => cd.id === command);
-		if (this.client.isOwner(this.data._id) || Boolean(process.env.DEV_MODE)) return this;
+		// @ts-ignore
+		const user = this.client.users.cache.get(this.data._id);
+		if (this.client.isOwner(user) || Boolean(process.env.DEV_MODE)) return this;
 		thisCooldown.expire = expire;
 		return this;
 	}

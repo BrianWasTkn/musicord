@@ -44,7 +44,10 @@ export declare interface InhibitorHandler extends OldInhibitorHandler {
 }
 
 export class InhibitorHandler extends OldInhibitorHandler implements AbstractHandler<Inhibitor> {
-	public constructor(client: LavaClient, options: AbstractHandlerOptions) {
+	/**
+   * Construct this inhibitor handler.
+   */
+  public constructor(client: LavaClient, options: AbstractHandlerOptions) {
 		super(client, options);
 	}
 }

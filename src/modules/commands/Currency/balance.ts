@@ -1,5 +1,5 @@
 import { MessageOptions, GuildMember, MessageEmbedOptions } from 'discord.js';
-import { Command, Context } from 'src/library';
+import { Command, Context } from 'lava/index';
 
 export default class Currency extends Command {
 	public constructor() {

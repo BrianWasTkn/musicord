@@ -7,7 +7,7 @@ export declare global {
 	/**
 	 * Interfaced model for a spawn document.
 	 */
-	interface SpawnDocument extends Document {
+	interface SpawnProfile extends Document {
 		/**
 		 * The id of the clown who owns this bullshit.
 		 */

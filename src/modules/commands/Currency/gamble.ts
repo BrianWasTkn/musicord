@@ -1,4 +1,4 @@
-import { Command, Context, CurrencyEntry, Currency } from 'src/library';
+import { Command, Context, CurrencyEntry, Currency } from 'lava/index';
 import { MessageOptions } from 'discord.js';
 import { Argument } from 'discord-akairo';
 

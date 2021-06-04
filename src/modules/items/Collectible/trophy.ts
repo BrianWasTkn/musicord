@@ -1,4 +1,4 @@
-import { CollectibleItem } from 'src/library';
+import { CollectibleItem } from 'lava/index';
 
 export default class Collectible extends CollectibleItem {
 	public constructor() {

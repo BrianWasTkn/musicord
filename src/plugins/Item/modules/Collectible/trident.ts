@@ -14,9 +14,9 @@ export default class Collectible extends CollectibleItem {
 				short: 'Increases your multipliers, shop discounts, steal shields and increase your gambling dice or just flex it against the poorest!'
 			},
 			upgrades: [
-				{ name: 'Trident', price: 150e6 }, 
-				{ name: 'Trident', price: 250e6 }, 
-				{ name: 'Neptune\'s Trident', price: 500e6 }
+				{ price: 150e6 }, 
+				{ price: 250e6 }, 
+				{ price: 500e6 }
 			]
 		});
 	}
@@ -26,7 +26,7 @@ export default class Collectible extends CollectibleItem {
 			multipliers: [3, 5, 10, 15],
 			discount: [3, 5, 10, 15],
 			shield: [3, 5, 10, 15],
-			dice: [1, 1, 1, 3],
+			dice: [1, 1, 1, 2],
 		};
 	}
 }

@@ -58,9 +58,11 @@ export declare interface AbstractHandler<Module extends AbstractModule = Abstrac
 }
 
 export class AbstractHandler<Module extends AbstractModule = AbstractModule> extends AkairoHandler {
+	/**
+	 * Constructor for this handler.
+	 */
 	public constructor(client: LavaClient, options: AbstractHandlerOptions) {
 		super(client, options);
-
 		if (options.debug ?? Boolean(process.env.DEV_MODE)) {
 			this.on('load', (mod: AkairoModule) => {
 				this.client.console.log('Akairo', `${options.classToHandle.name} "${mod.id}" loaded.`);

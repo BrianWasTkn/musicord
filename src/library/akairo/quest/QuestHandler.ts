@@ -2,6 +2,9 @@ import { AbstractHandler, AbstractHandlerOptions } from '..';
 import { Quest } from '.';
 
 export class QuestHandler extends AbstractHandler<Quest> {
+	/**
+	 * Update user's quest slots.
+	 */
 	public pushSlot(data: CurrencyProfile): CurrencyQuests[] {
 		const { deepFilter, randomInArray } = this.client.util;
 		let quests: CurrencyQuests[] = [];

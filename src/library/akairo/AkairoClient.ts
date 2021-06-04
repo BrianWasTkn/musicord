@@ -4,8 +4,8 @@
 */
 
 import { ClientUtil, CommandHandler, ListenerHandler, ItemHandler, PluginManager } from '.';
-import { Connector, Logger, CurrencyEndpoint, SpawnEndpoint, Imgen } from '..';
 import { ClientOptions, MessageOptions, TextChannel } from 'discord.js';
+import { Connector, Logger, Imgen } from '..';
 import { AkairoClient } from 'discord-akairo';
 import { join } from 'path';
 import MongoDB from 'mongoose';

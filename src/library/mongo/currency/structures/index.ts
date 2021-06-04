@@ -5,3 +5,5 @@
 
 export * from './Inventory';
 export * from './Quest';
+export * from './Stats';
+export * from './Trade';

@@ -1,4 +1,4 @@
-import { QuestHandler, StructureOptions, Structure } from 'src/library';
+import { QuestHandler, LavaClient, Structure } from 'lava/index';
 
 export class Mission extends Structure {
 	/**
@@ -8,17 +8,17 @@ export class Mission extends Structure {
 	/**
 	 * Constructor for this bs.
 	 */
-	public constructor(options: StructureOptions, data: Omit<CurrencyQuests, 'id'>) {
-		super(options);
+	public constructor(client: LavaClient, data: CurrencyQuests) {
+		super({ client, id: data.id });
 		/** @type {number} */
 		this.count = data.count;
 	}
 
 	/**
-	 * Shortcut for the quest module.
+	 * Shortcut to the quest module.
 	 */
-	get quest() {
-		const handler = this.client.plugins.plugins.get('quest').handler as unknown;
+	get module() {
+		const { handler } = this.client.plugins.plugins.get('command');
 		return (handler as QuestHandler).modules.get(this.id);
 	}
 
@@ -26,6 +26,6 @@ export class Mission extends Structure {
 	 * Check if the human who owns this quest already finished.
 	 */
 	isFinished() {
-		return this.count >= this.quest.target;
+		return this.count >= this.module.target;
 	}
 }

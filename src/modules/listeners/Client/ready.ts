@@ -1,4 +1,4 @@
-import { Listener } from 'src/library';
+import { Listener } from 'lava/index';
 
 export default class ClientListener extends Listener {
 	public constructor() {

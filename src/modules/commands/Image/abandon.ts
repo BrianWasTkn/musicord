@@ -1,5 +1,5 @@
 import { GuildMember, MessageOptions, MessageAttachment } from 'discord.js';
-import { Command, Context } from 'src/library';
+import { Command, Context } from 'lava/index';
 
 export default class ImageCommand extends Command {
 	public constructor() {

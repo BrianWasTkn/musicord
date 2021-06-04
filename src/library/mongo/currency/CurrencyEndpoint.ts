@@ -1,4 +1,4 @@
-import { Endpoint, ItemHandler, QuestHandler, CurrencyEntry, Quest } from 'src/library';
+import { Endpoint, ItemHandler, QuestHandler, CurrencyEntry, Quest } from 'lava/index';
 
 export class CurrencyEndpoint extends Endpoint<CurrencyProfile> {
 	public async fetch(_id: string) {

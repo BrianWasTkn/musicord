@@ -3,7 +3,7 @@
  * @author BrianWasTaken
 */
 
-import { UserEntry, Currency, Inventory, Mission } from 'src/library';
+import { UserEntry, Currency, Inventory, Mission, GambleStat, TradeStat } from 'lava/index';
 import { Collection } from 'discord.js';
 
 export class CurrencyEntry extends UserEntry<CurrencyProfile> {
@@ -26,10 +26,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	*/
 	get items() {
 		return this.data.items.reduce((coll, slot) => 
-			coll.set(slot.id, new Inventory({
-				client: this.client,
-				id: slot.id
-			}, slot)), 
+			coll.set(slot.id, new Inventory(this.client, slot)), 
 			new Collection<string, Inventory>()
 		);
 	}
@@ -39,12 +36,29 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	 */
 	get quests() {
 		return this.data.quests.reduce((coll, slot) => 
-			coll.set(slot.id, new Mission({
-				client: this.client,
-				id: slot.id
-			}, slot)), 
+			coll.set(slot.id, new Mission(this.client, slot)), 
 			new Collection<string, Mission>()
 		);
+	}
+
+	/**
+	 * Their gambling stats.
+	 */
+	get gamble() {
+		return this.data.gamble.reduce((coll, slot) => 
+			coll.set(slot.id, new GambleStat(this.client, slot)), 
+			new Collection<string, GambleStat>()
+		);
+	}
+
+	/**
+	 * Their trade stats.
+	 */
+	get trade() {
+		return this.data.trade.reduce((coll, slot) => 
+			coll.set(slot.id, new TradeStat(this.client, slot)), 
+			new Collection<string, TradeStat>()
+		)
 	}
 
 	/**
@@ -57,7 +71,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/**
 	 * Check if a quest is has been completed.
 	 */
-	public isQuestFinished(id: string) {
+	public isQuestDone(id: string) {
 		return this.quests.get(id).isFinished();
 	}
 
@@ -222,6 +236,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	*/
 	stats(game: string) {
 		const thisStat = this.data.gamble.find(stat => stat.id === game);
+
 		return {
 			coins: (amount: number) => ({
 				lost: () => {

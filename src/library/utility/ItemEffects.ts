@@ -13,10 +13,16 @@ export class ItemEffects {
 	public vaultCap: number = 0;
 	public spaceCap: number = 0;
 
+	/**
+	 * Again this is not jaba.
+	 */
 	public static createInstance() {
 		return new this();
 	}
 
+	/**
+	 * Increase winnings.
+	 */
 	public addWinnings(type: 'bj' | 'gamble', amount: number) {
 		switch(type) {
 			case 'bj':
@@ -30,6 +36,9 @@ export class ItemEffects {
 		}
 	}
 
+	/**
+	 * Add odds to win on slots/gamble.
+	 */
 	public addOdds(type: 'slots' | 'gamble', amount: number) {
 		switch(type) {
 			case 'slots':
@@ -43,11 +52,17 @@ export class ItemEffects {
 		}
 	}
 
+	/**
+	 * Add a shop discount whenever someone buys an item.
+	  */
 	public addDiscount(amount: number) {
 		this.shopDiscount += amount;
 		return this;
 	}
 
+	/**
+	 * Set the balance caps into something.
+	 */
 	public setCap(type: 'pocket' | 'vault' | 'space', amount: number) {
 		switch(type) {
 			case 'pocket':

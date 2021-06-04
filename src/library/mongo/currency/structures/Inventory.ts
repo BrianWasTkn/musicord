@@ -1,4 +1,4 @@
-import { ItemHandler, StructureOptions, Structure } from 'src/library';
+import { ItemHandler, LavaClient, Structure } from 'lava/index';
 
 export class Inventory extends Structure {
 	/**
@@ -25,8 +25,8 @@ export class Inventory extends Structure {
 	/**
 	 * The constructor for this bullshit.
 	 */
-	public constructor(options: StructureOptions, data: CurrencyInventory) {
-		super(options);
+	public constructor(client: LavaClient, data: CurrencyInventory) {
+		super({ client, id: data.id });
 		/** @type {number} */
 		this.expiration = data.expire;
 		/** @type {number} */
@@ -40,10 +40,10 @@ export class Inventory extends Structure {
 	}
 
 	/**
-	 * Shortcut for the item module.
+	 * Shortcut to the item module this item belongs to.
 	 */
-	get item() {
-		const handler = this.client.plugins.plugins.get('item').handler as unknown;
+	get module() {
+		const { handler } = this.client.plugins.plugins.get('item');
 		return (handler as ItemHandler).modules.get(this.id);
 	}
 

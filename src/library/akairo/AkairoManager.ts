@@ -62,6 +62,7 @@ export class PluginManager extends EventEmitter {
 		for (const plugin of plugins) {
 			if (plugin instanceof Plugin) {
 				plugin.client = this.client;
+				plugin.initHandler();
 				this.plugins.set(plugin.name, plugin);
 			}
 		}

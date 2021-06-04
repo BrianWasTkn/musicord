@@ -44,7 +44,10 @@ export declare interface ListenerHandler extends OldListenerHandler {
 }
 
 export class ListenerHandler extends OldListenerHandler implements AbstractHandler<Listener> {
-	public constructor(client: LavaClient, options: AbstractHandlerOptions) {
+	/**
+   * Construct a listener handler.
+   */
+  public constructor(client: LavaClient, options: AbstractHandlerOptions) {
 		super(client, options);
 	}
 }

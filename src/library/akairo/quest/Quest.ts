@@ -20,11 +20,30 @@ export interface QuestOptions extends AbstractModuleOptions {
 }
 
 export class Quest extends AbstractModule {
+	/**
+	 * The handler this quest module belongs to.
+	 */
 	public handler: QuestHandler;
+	/**
+	 * The command this quest is dependent from.
+	 */
 	public command: Command;
+	/**
+	 * The method of command interaction, idk.
+	 */
 	public method: string;
+	/**
+	 * The rewards for this quest.
+	 */
 	public rewards: QuestReward;
+	/**
+	 * The target amount for this quest.
+	 */
 	public target: number;
+
+	/**
+	 * Construct a quest.
+	 */
 	public constructor(id: string, options: QuestOptions) {
 		super(id, { name: options.name, category: options.category });
 

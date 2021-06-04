@@ -19,7 +19,7 @@ export declare global {
 		/**
 		 * The booster shitshow.
 		 */
-		booster: CribBooster[];
+		booster: CribBoost[];
 	}
 
 	/**
@@ -34,12 +34,16 @@ export declare global {
 		 * The amount they have donated for this type of donation.
 		 */
 		amount: number;
+		/**
+		 * Count of how many times they donated for this typeof dono.
+		 */
+		count: number;
 	}
 
 	/**
-	 * The booster shitfuckery.
+	 * The boost shitfuckery.
 	 */
-	interface CribBooster {
+	interface CribBoost {
 		/**
 		 * The id of their custom role.
 		 */

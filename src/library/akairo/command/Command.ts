@@ -35,7 +35,7 @@ export class Command extends OldCommand implements AbstractModule {
 	public name: string;
 
 	/**
-	 * Constructor for this command.
+	 * Construct a command.
 	 */
 	public constructor(id: string, options: CommandOptions) {
 		super(id, options);

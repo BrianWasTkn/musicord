@@ -4,10 +4,8 @@
 */
 
 import { Listener as OldListener, ListenerOptions, Category } from 'discord-akairo';
+import { AbstractModule, LavaClient, ListenerHandler } from 'lava/index';
 import { Collection, MessageOptions } from 'discord.js';
-import { AbstractModule, LavaClient } from '..';
-import { ListenerHandler } from '.';
-import { Context } from '../..';
 
 export declare interface Listener extends OldListener {
 	/**
@@ -25,7 +23,14 @@ export declare interface Listener extends OldListener {
 }
 
 export class Listener extends OldListener implements AbstractModule {
+	/**
+	 * The name of this listener.
+	 */
 	public name: string;
+
+	/**
+	 * Construct a listener.
+	 */
 	public constructor(id: string, options: ListenerOptions) {
 		super(id, options);
 		this.name = options.name;

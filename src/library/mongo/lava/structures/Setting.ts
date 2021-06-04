@@ -1,12 +1,22 @@
-import { LavaClient, Structure } from 'src/library';
+import { LavaClient, Structure } from 'lava/index';
 
 export class LavaSetting extends Structure {
+	/**
+	 * The possible cooldown for this setting.
+	 */
 	public cooldown: number;
+	/**
+	 * Wether this setting is enabled or not.
+	 */
 	public enabled: boolean;
-	public id: string;
-	public constructor(client: LavaClient, setting: LavaSettings) {
-		super({ client, id: setting.id });
-		this.enabled = setting.enabled;
-		this.cooldown = setting.cooldown ?? 0;
+	/**
+	 * Constructor for this setshit.
+	 */
+	public constructor(client: LavaClient, data: LavaSettings) {
+		super({ client, id: data.id });
+		/** @type {number} */
+		this.cooldown = data.cooldown ?? 0;
+		/** @type {number} */
+		this.enabled = data.enabled;
 	}
 }

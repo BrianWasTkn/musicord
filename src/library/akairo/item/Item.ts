@@ -35,7 +35,7 @@ export interface ItemUpgrade {
 	/**
 	 * The new name for this item.
 	 */
-	name: string;
+	name?: string;
 }
 
 export interface ItemInfo {
@@ -158,6 +158,21 @@ export abstract class Item extends AbstractModule {
 			premium: false,
 			usable: false
 		});
+
+		/**
+		 * Check it's retirement.
+		 */
+		if ('retired' in options.config) {
+			if (options.config.retired) {
+				this.config = {
+					...this.config,
+					showInInventory: false,
+					showInShop: false,
+					buyable: false,
+					usable: false
+				};
+			}
+		}
 
 		/**
 		 * What you see most in the shop.

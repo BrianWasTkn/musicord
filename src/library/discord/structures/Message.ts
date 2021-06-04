@@ -3,7 +3,13 @@ import { Message, Structures } from 'discord.js';
 import { UserPlus, Structure } from '.';
 
 export declare interface Context<Args extends {} = {}> extends Message {
+	/**
+	 * The client instance.
+	 */
 	client: LavaClient;
+	/**
+	 * The author.
+	 */
 	author: UserPlus;
 }
 

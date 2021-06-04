@@ -3,15 +3,21 @@
  * @author BrianWasTaken
 */
 
-import { MessageEmbed, StringResolvable } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 
 export class EmbedPlus extends MessageEmbed {
-	public setTitle(title: StringResolvable, url?: string) {
+	/**
+	 * Set the title of an embed.
+	 */
+	public setTitle(title: string, url?: string) {
 		if (typeof url !== 'undefined') super.setURL(url);
 		return super.setTitle(title);
 	}
 
-	public setFooter(text: StringResolvable, icon?: string, stamp?: Date) {
+	/**
+	 * Set a footer of an embed.
+	 */
+	public setFooter(text: string, icon?: string, stamp?: Date) {
 		if (stamp) super.setTimestamp(stamp);
 		return super.setFooter(text, icon);
 	}

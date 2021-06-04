@@ -37,7 +37,7 @@ export class AbstractModule extends AkairoModule {
 	public name: string;
 
 	/**
-	 * The construcotr for this module.
+	 * The constructor for this module.
 	 * @param {string} id the id of this module.
 	 * @param {AbstractModuleOptions} options the options for this module.
 	 */
