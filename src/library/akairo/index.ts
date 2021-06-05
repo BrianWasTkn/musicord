@@ -15,9 +15,9 @@ export * from './listener';
 export * from './command';
 
 export * from './argument';
-export * from './donation';
+// export * from './donation';
 export * from './setting';
 export * from './quest';
 export * from './spawn';
 export * from './item';
-export * from './job';
+// export * from './job';

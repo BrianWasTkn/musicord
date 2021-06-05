@@ -1,0 +1,55 @@
+import { TextChannel, MessageEmbedOptions } from 'discord.js';
+import { Listener } from 'lava/index';
+
+export default class extends Listener {
+	constructor() {
+		super('ready', {
+			category: 'Client',
+			emitter: 'client',
+			event: 'ready',
+			name: 'ready'
+		});
+	}
+
+	async exec() {
+		this.logReady();
+		await this.setPresence();
+		await this.sendReady();
+	}
+
+	logReady() {
+		const msg = `${this.client.user.tag} logged in.`;
+		return this.client.console.log('Client', msg);
+	}
+
+	async sendReady() {
+		const { client: bot } = this;
+		const channel = bot.channels.cache.get('789692296094285825') ?? await bot.channels.fetch('789692296094285825', true, true);
+		const app = bot.application ?? await bot.application.fetch();
+
+		await (channel as TextChannel).send({ 
+			embed: <MessageEmbedOptions> {
+				title: `${bot.user.username} — ready`,
+				color: bot.util.randomColor(),
+				description: 
+				`**Application Name:**\n${
+					app.name
+				}\n**Bot Username:**\n${
+					bot.user.username
+				}\n**Date Now:**${
+					new Date(bot.readyTimestamp).toDateString()
+				}`
+			}
+		});
+	}
+
+	async setPresence() {
+		await this.client.user.setPresence({
+			activities: [{
+				name: 'lava help',
+				type: 'LISTENING'
+			}],
+			status: 'online',
+		});
+	}
+}

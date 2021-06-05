@@ -39,9 +39,12 @@ export class Command extends OldCommand implements AbstractModule {
 	 */
 	public constructor(id: string, options: CommandOptions) {
 		super(id, options);
-
 		/** @type {string} */
 		this.name = options.name ?? id.charAt(0).toUpperCase() + id.slice(1).toLowerCase();
+		if ('ownerOnly' in options) {
+			/** @type {boolean} */
+			this.ownerOnly = Boolean(process.env.DEV_MODE) ? true : options.ownerOnly ?? false;
+		}
 	}
 
 	/**

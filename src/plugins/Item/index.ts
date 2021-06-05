@@ -6,7 +6,7 @@ export default new Plugin(
 		client, {
 			automateCategories: true,
 			classToHandle: Item,
-			directory: join(__dirname, 'items'),
+			directory: join(__dirname, 'modules'),
 		}
 	)
 );

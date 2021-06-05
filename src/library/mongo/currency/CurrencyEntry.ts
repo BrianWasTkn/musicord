@@ -100,6 +100,21 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	// 	return this;
 	// }
 
+	addProps(prop: keyof Omit<CurrencyProps, 'vault'>, amount: number) {
+		this.data.props[prop] += amount;
+		return this;
+	}
+
+	removeProps(prop: keyof Omit<CurrencyProps, 'vault'>, amount: number) {
+		this.data.props[prop] -= amount;
+		return this;
+	}
+
+	setProps(prop: keyof Omit<CurrencyProps, 'vault'>, amount: number) {
+		this.data.props[prop] = amount;
+		return this;
+	}
+
 	/**
 	 * Manage their premium keytards.
 	*/

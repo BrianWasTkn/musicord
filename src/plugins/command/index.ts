@@ -7,7 +7,7 @@ export default new Plugin(
 			automateCategories: true,
 			classToHandle: Command,
 			commandUtil: true,
-			directory: join(__dirname, 'commands'),
+			directory: join(__dirname, 'modules'),
 			handleEdits: true,
 			prefix: ['lava'],
 		}
