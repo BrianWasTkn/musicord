@@ -1,5 +1,6 @@
+import { LavaClient, AbstractHandler } from '..';
 import { Document, Model } from 'mongoose';
-import { LavaClient } from '..';
+import { AkairoHandler } from 'discord-akairo';
 import { UserEntry } from '.';
 import { Base } from 'discord.js';
 
@@ -25,7 +26,6 @@ export abstract class Endpoint<Doc extends Document = never> extends Base {
 	*/
 	public constructor(client: LavaClient, model: Model<Doc>) {
 		super(client);
-
 		/** @type {Model<Doc>} */
 		this.model = model;
 	}

@@ -1,5 +1,6 @@
 import { AbstractModuleOptions, AbstractModule, Command, CommandHandler } from '..';
-import { MessageOptions, EmojiResolvable } from 'discord.js';
+import { MessageOptions, EmojiResolvable, Collection } from 'discord.js';
+import { GuildMemberPlus } from 'lava/index';
 import { SpawnHandler } from '.';
 
 /**
@@ -10,6 +11,10 @@ export type SpawnTier = 'COMMON' | 'UNCOMMON' | 'SUPER' | 'GODLY';
  * How the spawn should handle messages/reactions.
  */
 export type SpawnMethod = 'message' | 'spam' | 'react';
+/**
+ * Collection of channel ids to collection of member IDs to spawn names.
+ */
+export type SpawnQueue = CollectionFlake<CollectionFlake<GuildMemberPlus>>;
 
 export interface SpawnDisplay {
 	description: string;
@@ -41,6 +46,7 @@ export class Spawn extends AbstractModule {
 	public handler: SpawnHandler;
 	public config: SpawnConfig;
 	public display: SpawnDisplay;
+	public queue: SpawnQueue;
 
 	/**
 	 * Construct a spawn.
@@ -49,5 +55,6 @@ export class Spawn extends AbstractModule {
 		super(id, { name: options.name, category: options.category });
 		this.config = options.config;
 		this.display = options.display;
+		this.queue = new Collection();
 	}
 }

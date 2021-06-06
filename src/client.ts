@@ -1,30 +1,18 @@
-import 'module-alias/register';
-import 'dotenv/config';
-
-import { ClientOptions, Intents } from 'discord.js';
 import { LavaClient } from 'lava/index';
-import { join } from 'path';
+import { Intents } from 'discord.js';
 
-const bot = new LavaClient({ 
+export default new LavaClient({ 
 	ownerID: ['605419747361947649'],
 	intents: Intents.ALL,
+	shards: 'auto',
 	messageCacheLifetime: 20,
 	messageCacheMaxSize: 100,
 	messageSweepInterval: 30,
 	presence: {
-		status: 'dnd',
-		activities: [
-			{ type: 'WATCHING', name: 'things load...' },
-			{ type: 'WATCHING', name: 'volcanos erupt...' }
-		]
+		status: 'idle',
+		activities: [{ 
+			type: 'WATCHING', 
+			name: 'things load...' 
+		}]
 	} 
 });
-
-bot.on('ready', () => {	
-	bot.console.log('Client', `${bot.user.tag} has logged in.`);
-}).on('debug', m => {
-	bot.console.debug('Client', m)
-});
-
-bot.plugins.loadAll();
-bot.connect();

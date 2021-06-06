@@ -6,7 +6,7 @@ import EventEmitter from 'events';
 import path from 'path';
 import fs from 'fs';
 
-interface AkairoManagerOptions {
+interface PluginManagerOptions {
 	/**
 	 * The directory where all plugins are stored.
 	 */
@@ -30,7 +30,7 @@ export class PluginManager extends EventEmitter {
 	/**
 	 * Constructor for this plugin manager.
 	 */
-	public constructor(client: LavaClient, options: AkairoManagerOptions) {
+	public constructor(client: LavaClient, options: PluginManagerOptions) {
 		super();
 		/** @type {LavaClient} */
 		this.client = client;

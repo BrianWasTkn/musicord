@@ -5,7 +5,7 @@
 
 import { UserEntry } from '..';
 
-export class SpawnEntry extends UserEntry<SpawnDocument> {
+export class SpawnEntry extends UserEntry<SpawnProfile> {
 	/**
 	 * Basic props.
 	*/

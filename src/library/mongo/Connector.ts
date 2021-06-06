@@ -3,6 +3,7 @@ import { SpawnEndpoint, SpawnModel } from '.';
 import { CribEndpoint, CribModel } from '.';
 import { LavaEndpoint, LavaModel } from '.';
 
+import { connect, ConnectOptions } from 'mongoose';
 import { LavaClient } from '..';
 import { Base } from 'discord.js';
 
@@ -36,4 +37,11 @@ export class Connector extends Base {
 	 * Spawn Endpoint.
 	*/
 	public spawn = new SpawnEndpoint(this.client, SpawnModel);
+
+	/**
+	 * Connect to mongodb.
+	 */
+	public connect(uri: string, options: ConnectOptions) {
+		return connect(uri, options);
+	}
 }

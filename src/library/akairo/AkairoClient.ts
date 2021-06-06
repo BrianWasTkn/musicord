@@ -3,7 +3,7 @@
  * @author BrianWasTaken
 */
 
-import { ClientUtil, CommandHandler, ListenerHandler, ItemHandler, PluginManager } from '.';
+import { ClientUtil, SpawnHandler, ArgumentHandler, QuestHandler, InhibitorHandler, SettingHandler, CommandHandler, ListenerHandler, ItemHandler, PluginManager } from '.';
 import { ClientOptions, MessageOptions, TextChannel } from 'discord.js';
 import { Connector, Logger, Imgen } from '..';
 import { AkairoClient } from 'discord-akairo';
@@ -11,16 +11,6 @@ import { join } from 'path';
 import MongoDB from 'mongoose';
 
 import '../discord/structures';
-
-export interface ClientConnectOptions {
-	auth?: {
-		discord: string;
-		mongo: string;
-	};
-	options?: {
-		mongo: MongoDB.ConnectOptions,
-	}
-}
 
 export class LavaClient extends AkairoClient {
 	/**
@@ -49,32 +39,45 @@ export class LavaClient extends AkairoClient {
 	public plugins = new PluginManager(this, {
 		directory: join(__dirname, '..', '..', 'plugins')
 	});
-	
+
 	/**
-	 * Connect our bot to stuff we could connect to.
+	 * Shortcut to our handlers from our plugins.
 	 */
-	public async connect({
-		auth = {
-			discord: process.env.DISCORD_TOKEN,
-			mongo: process.env.MONGO_URI,
-		},
-		options = {
-			mongo: {
-				useUnifiedTopology: true,
-				useNewUrlParser: true
-			}
-		}
-	}: ClientConnectOptions = {}) {
-		try {
-			const db = await MongoDB.connect(auth.mongo, options.mongo);
-			this.console.log('Client', `Mongoose v${db.version}`);
-			try {
-				return super.login(auth.discord);
-			} catch(e) {
-				this.console.error('Client', e, true);
-			}
-		} catch(e) {
-			this.console.error('Mongo', e, true);
-		}
+	public get handlers() {
+		const plugin = (id: string) => this.plugins.plugins.get(id).handler as unknown;
+		return {
+			/**
+			 * Command arguments.
+			 */
+			argument: plugin('argument') as ArgumentHandler,
+			/**
+			 * The butthole of this bot.
+			 */
+			command: plugin('command') as CommandHandler,
+			/**
+			 * The discord mod that bans every member on his server.
+			 */
+			inhibitor: plugin('inhibitor') as InhibitorHandler,
+			/**
+			 * The currency items.
+			 */
+			item: plugin('item') as ItemHandler,
+			/**
+			 * The listeners.
+			 */
+			listener: plugin('listener') as ListenerHandler,
+			/**
+			 * The ducking quests.
+			 */
+			quest: plugin('quest') as QuestHandler,
+			/**
+			 * The user settings.
+			 */
+			setting: plugin('setting') as SettingHandler,
+			/**
+			 * The spawners to make YOU bankrupt.
+			 */
+			spawn: plugin('spawn') as SpawnHandler
+		};
 	}
 }
