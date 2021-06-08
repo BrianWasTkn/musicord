@@ -1,6 +1,6 @@
-import { LavaClient, Structure, CommandHandler } from 'lava/index';
+import { LavaClient, Structure } from 'lava/index';
 
-export class LavaCooldown extends Structure {
+export class Cooldown extends Structure {
 	/**
 	 * Expiration time for this cooldown.
 	 */
@@ -20,8 +20,7 @@ export class LavaCooldown extends Structure {
 	 * Shortcut for returning the cooldown as a command module.
 	*/
 	get module() {
-		const { handler } = this.client.plugins.plugins.get('command');
-		return (handler as CommandHandler).modules.get(this.id);
+		return this.client.handlers.command.modules.get(this.id);
 	}
 
 	/**

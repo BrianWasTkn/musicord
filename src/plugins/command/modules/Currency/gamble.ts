@@ -85,7 +85,7 @@ export default class extends Command {
 			}};
 		}
 
-		let winnings = Math.ceil(bet * (Math.random() + 0.3));
+		let winnings = Math.ceil(bet * (Math.random() + 0.6));
 		winnings = Math.min(Currency.MAX_WIN, winnings + Math.ceil(winnings * (multi / 100)));
 		const { props } = await entry.addProps('pocket', winnings).save();
 
@@ -93,7 +93,7 @@ export default class extends Command {
 			author: { name: `${ctx.author.username}'s gambling game` },
 			color: 'GREEN', description: [
 				`You won **${winnings.toLocaleString()}** coins.`,
-				`**Multiplier** ${multi.toLocaleString()}% | **Percent of bet won** ${Math.round(winning / bet).toLocaleString()}%\n`,
+				`**Multiplier** ${multi.toLocaleString()}% | **Percent of bet won** ${Math.round(winnings / bet).toLocaleString()}%\n`,
 				`You now have **${props.pocket.toLocaleString()}** coins.`
 			].join('\n')
 		}}

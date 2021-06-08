@@ -3,5 +3,5 @@
  * @author BrianWasTaken
 */
 
-export * from './SettingHandler';
+export * from './Cooldown';
 export * from './Setting';

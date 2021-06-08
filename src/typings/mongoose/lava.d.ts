@@ -2,6 +2,7 @@
  * Mongoose "lava" collection.
  */
 export declare global {
+	import { Snowflake } from 'discord.js';
 	import { Document } from 'mongoose';
 
 	/**
@@ -11,7 +12,7 @@ export declare global {
 		/**
 		 * The user id who owns the inhibited command fuckeries.
 		 */
-		_id: string;
+		_id: string | Snowflake;
 		/**
 		 * The array of cooldowns for this user.
 		 */

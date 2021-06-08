@@ -5,7 +5,7 @@
 
 import { AbstractHandler, AbstractHandlerOptions, AbstractModuleOptions, LavaClient, InhibitorHandler, ListenerHandler } from '..';
 import { CommandHandler as OldCommandHandler, CommandHandlerOptions, Category, Constants } from 'discord-akairo';
-import { Context, CommandQueue } from '../..';
+import { Context, CommandQueue, Cooldown } from '../..';
 import { Collection } from 'discord.js';
 import { Command } from '.';
 
@@ -110,13 +110,13 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 		const entry = await context.lava.fetch(context.author.id);
 		const expire = context.createdTimestamp + time;
 
-		let cooldown: LavaCooldowns = entry.cooldowns.get(command.id);
+		let cooldown: LavaCooldowns | Cooldown = entry.cooldowns.get(command.id);
 		if (!cooldown) {
 			entry.data.cooldowns.push({ id: command.id, expire });
 			cooldown = (await entry.data.save()).cooldowns.find(c => c.id === command.id);
 		}
 
-		const diff = cooldown.expire - context.createdTimestamp;
+		const diff = (cooldown as LavaCooldowns).expire - context.createdTimestamp;
 		if (diff > 0) {
 			this.emit(CommandHandlerEvents.COOLDOWN, context, command, diff);
 			return true;
