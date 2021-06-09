@@ -7,7 +7,7 @@ export class SpawnHandler extends AbstractHandler<Spawn> {
 	/**
 	 * Map of channel cooldowns.
 	 */
-	public cooldowns: CollectionFlake<CollectionFlake<Context>>;
+	public cooldowns: CollectionFlake<CollectionFlake<Context>> = new Collection();
 	/**
 	 * Construct a spawn handler.
 	 */
