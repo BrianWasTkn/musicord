@@ -3,7 +3,7 @@
  * @author BrianWasTaken
 */
 
-import { Cooldown, UserSetting, UserEntry, UserDonation } from 'lava/index';
+import { Cooldown, UserSetting, UserEntry, GiveawayDonation } from 'lava/index';
 import { Collection } from 'discord.js';
 
 export class CribEntry extends UserEntry<CribProfile> {
@@ -13,8 +13,8 @@ export class CribEntry extends UserEntry<CribProfile> {
 
   get dono() {
     return this.data.donations.reduce((coll, slot) => 
-      coll.set(slot.id, new UserDonation(this.client, slot)), 
-      new Collection<string, UserDonation>()
+      coll.set(slot.id, new GiveawayDonation(this.client, slot)), 
+      new Collection<string, GiveawayDonation>()
     );
   }
 }

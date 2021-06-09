@@ -4,7 +4,7 @@ export class GiveawayDonation extends Structure {
 	/**
 	 * Amount of their donos.
 	 */
-	public amount: string;
+	public amount: number;
 	/**
 	 * Times they donated.
 	 */
@@ -14,7 +14,7 @@ export class GiveawayDonation extends Structure {
 	 */
 	public constructor(client: LavaClient, data: CribDonation) {
 		super({ client, id: data.id });
-		/** @type {string} */
+		/** @type {number} */
 		this.amount = data.amount;
 		/** @type {number} */
 		this.times = data.count;
