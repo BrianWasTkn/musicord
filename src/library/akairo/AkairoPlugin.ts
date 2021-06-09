@@ -21,7 +21,7 @@ export class Plugin extends Base {
 	/**
 	 * The binded abstract/akairohandler for this plugin.
 	 */
-	private _handler: PluginHandlerPredicate;
+	public _handler: PluginHandlerPredicate;
 	/**
 	 * The handler for this plugin.
 	 */
