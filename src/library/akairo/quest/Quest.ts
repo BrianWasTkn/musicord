@@ -52,8 +52,7 @@ export class Quest extends AbstractModule {
 	public constructor(id: string, options: QuestOptions) {
 		super(id, { name: options.name, category: options.category });
 
-		const commandPlugin = this.client.plugins.plugins.get('command');
-		this.command = (commandPlugin.handler as CommandHandler).modules.get(options.command);
+		this.command = options.command;
 		this.method = options.method ?? options.name;
 		this.rewards = options.rewards;
 		this.target = options.target;
