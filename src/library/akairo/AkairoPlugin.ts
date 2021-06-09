@@ -47,6 +47,13 @@ export class Plugin extends Base {
 	}
 
 	/**
+	 * Initiate the mother for this baby sucking bitch.
+	 */
+	public initClient(client: LavaClient) {
+		return this.client = client;
+	}
+
+	/**
 	 * Initiate the handler for this plugin.
 	 */
 	public initHandler() {
