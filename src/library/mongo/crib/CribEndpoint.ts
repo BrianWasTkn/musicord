@@ -1,26 +1,24 @@
-import { CribEntry } from '.';
-import { Endpoint } from '..';
+import { CribEntry, Endpoint, Donation } from 'lava/index';
 
 export class CribEndpoint extends Endpoint<CribProfile> {
 	public async fetch(_id: string) {
-		return this.model.findOne({ _id }).then(data => {
-			const { missing, doc } = this.pushDonos(data ?? new this.model({ _id }));
-			return missing >= 1 ? doc.save() : doc;
+		return this.model.findOne({ _id }).then(async data => {
+			const doc = data ?? await (new this.model({ _id })).save();
+			const donos = this.updateDonos(doc);
+
+			return [donos].some(s => s.length > 1) ? doc.save() : doc;
 		}).then(doc => new CribEntry(this.client, doc));
 	}
 
-	public pushDonos(doc: CribProfile) {
-		const { modules } = this.client.donationHandler;
-
-		let missing = 0;
-		if (modules.size < 1) return { doc, missing };
-		for (const dono of modules.values()) {
-			if (!doc.donations.find(i => i.id === dono.id)) {
-				doc.donations.push({ id: dono, amount: 0 });
-				missing++;
+	public updateDonos(doc: CribProfile) {
+		const updated: Donation[] = [];
+		for (const mod of this.client.handlers.donation.modules.values()) {
+			if (!doc.donations.find(i => i.id === mod.id)) {
+				doc.donations.push({ id: mod.id, amount: 0, count: 0 });
+				updated.push(mod);
 			}
 		}
 
-		return { doc, missing };
+		return updated;
 	}
 }
