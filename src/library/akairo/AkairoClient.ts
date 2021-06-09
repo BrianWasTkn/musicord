@@ -43,7 +43,7 @@ export class LavaClient extends AkairoClient {
 		this.plugins = new PluginManager(this, {
 			directory: join(__dirname, '..', '..', 'plugins')
 		}).loadAll();
-		console.log(this.handlers.argument.addTypes);
+		console.log(this.handlers);
 	}
 
 	/**
