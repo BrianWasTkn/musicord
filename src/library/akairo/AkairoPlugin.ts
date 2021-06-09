@@ -1,6 +1,5 @@
 import { AbstractHandler, AbstractModule, LavaClient } from '.';
 import { AkairoHandler, AkairoModule } from 'discord-akairo';
-import { Base } from 'discord.js';
 
 /**
  * Initiator for our handlers for this plugin.
@@ -10,14 +9,8 @@ type PluginHandlerPredicate = (
 	client: LavaClient
 ) => AbstractHandler | AkairoHandler;
 
-export declare interface Plugin extends Base {
-	/**
-	 * The client for this plugin.
-	 */
-	client: LavaClient;
-}
 
-export class Plugin extends Base {
+export class Plugin {
 	/**
 	 * The binded abstract/akairohandler for this plugin.
 	 */
@@ -26,6 +19,10 @@ export class Plugin extends Base {
 	 * The handler for this plugin.
 	 */
 	public handler: AkairoHandler | AbstractHandler;
+	/**
+	 * The client for this plugin.
+	 */
+	public client: LavaClient;
 	/**
 	 * The name of this plugin.
 	 */
@@ -39,10 +36,11 @@ export class Plugin extends Base {
 	 * Construct a plugin.
 	 */
 	public constructor(name: string, handler: PluginHandlerPredicate) {
-		super(null);
 		this._handler = handler.bind(this);
-		this.id = name.toLowerCase();
+		this.handler = null;
+		this.client = null;
 		this.name = name;
+		this.id = name.toLowerCase();
 	}
 
 	/**
