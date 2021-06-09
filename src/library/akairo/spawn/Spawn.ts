@@ -1,5 +1,6 @@
 import { AbstractModuleOptions, AbstractModule, Command, CommandHandler } from '..';
 import { MessageOptions, EmojiResolvable, Collection } from 'discord.js';
+import { GuildMemberPlus } from 'lava/discord';
 import { SpawnHandler } from '.';
 
 /**
