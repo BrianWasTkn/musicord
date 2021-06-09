@@ -282,7 +282,6 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	save(runPostFunctions = true) {
 		if (runPostFunctions) {
 			this.data.props.xp = Math.min(this.data.props.xp, Currency.MAX_LEVEL * 100);
-			this.data.props.space = Math.min(this.data.props.space, Currency.MAX_SAFE_SPACE);
 		}
 
 		return super.save();
