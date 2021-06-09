@@ -1,4 +1,4 @@
-import { ItemHandler, LavaClient, Structure } from 'lava/index';
+import { LavaClient, Structure } from 'lava/index';
 
 export class Inventory extends Structure {
 	/**
@@ -43,8 +43,7 @@ export class Inventory extends Structure {
 	 * Shortcut to the item module this item belongs to.
 	 */
 	get module() {
-		const { handler } = this.client.plugins.plugins.get('item');
-		return (handler as ItemHandler).modules.get(this.id);
+		return this.client.handlers.item.modules.get(this.id);
 	}
 
 	/**

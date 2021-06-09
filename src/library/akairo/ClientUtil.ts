@@ -7,7 +7,7 @@ import { Colors, EmbedPlus, ItemEffects } from '..';
 import { ClientUtil as OldClientUtil } from 'discord-akairo';
 import { LavaClient } from '.';
 
-export declare interface ClientUtil<Client extends LavaClient = never> extends OldCLientUtil {
+export declare interface ClientUtil<Client extends LavaClient = never> extends OldClientUtil {
 	/**
 	 * The client instance for this client util.
 	 */

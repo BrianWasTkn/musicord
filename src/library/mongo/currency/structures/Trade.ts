@@ -1,4 +1,4 @@
-import { LavaClient, Structure, CommandHandler } from 'lava/index';
+import { LavaClient, Structure } from 'lava/index';
 
 export class TradeStat extends Structure {
 	/**
@@ -24,7 +24,6 @@ export class TradeStat extends Structure {
 	 * Shortcut to the command module this trade stat belongs to.
 	 */
 	get module() {
-		const { handler } = this.client.plugins.plugins.get('command');
-		return (handler as CommandHandler).modules.get(this.id);
+		return this.client.handlers.command.modules.get(this.id);
 	}
 }

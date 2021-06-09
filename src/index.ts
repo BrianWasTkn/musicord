@@ -23,6 +23,11 @@ Lava.db.connect(process.env.MONGO_URI, {
 Lava.plugins.loadAll();
 
 /**
+ * Load command arguments.
+ */
+Lava.handlers.argument.addTypes();
+
+/**
  * Plug our bot in discord's butthole.
  */
 Lava.login(process.env.DISCORD_TOKEN);

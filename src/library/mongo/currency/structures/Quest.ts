@@ -1,4 +1,4 @@
-import { QuestHandler, LavaClient, Structure } from 'lava/index';
+import { LavaClient, Structure } from 'lava/index';
 
 export class Mission extends Structure {
 	/**
@@ -18,8 +18,7 @@ export class Mission extends Structure {
 	 * Shortcut to the quest module.
 	 */
 	get module() {
-		const { handler } = this.client.plugins.plugins.get('command');
-		return (handler as QuestHandler).modules.get(this.id);
+		return this.client.handlers.quest.modules.get(this.id);
 	}
 
 	/**

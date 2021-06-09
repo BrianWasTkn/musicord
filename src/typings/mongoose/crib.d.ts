@@ -19,7 +19,7 @@ export declare global {
 		/**
 		 * The booster shitshow.
 		 */
-		booster: CribBoost[];
+		booster: CribBoost;
 	}
 
 	/**

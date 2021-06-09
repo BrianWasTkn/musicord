@@ -1,22 +1,29 @@
 import { LavaClient, Structure } from 'lava/index';
 
-export class Donation extends Structure {
+export class GiveawayDonation extends Structure {
 	/**
 	 * Amount of their donos.
 	 */
-	public roleID: string;
+	public amount: string;
 	/**
 	 * Times they donated.
 	 */
-	public expiresAt: number;
+	public times: number;
 	/**
 	 * Constructor for this donation.
 	 */
-	public constructor(client: LavaClient, data: CribBoost) {
+	public constructor(client: LavaClient, data: CribDonation) {
 		super({ client, id: data.id });
 		/** @type {string} */
-		this.roleID = data.amount;
+		this.amount = data.amount;
 		/** @type {number} */
-		this.expiresAt = data.count;
+		this.times = data.count;
+	}
+
+	/**
+	 * The donation module.
+	 */
+	get module() {
+		return this.client.handlers.donation.modules.get(this.id);
 	}
 }

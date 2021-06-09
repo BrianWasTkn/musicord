@@ -3,7 +3,7 @@
  * @author BrianWasTaken
 */
 
-import { ClientUtil, SpawnHandler, ArgumentHandler, QuestHandler, InhibitorHandler, SettingHandler, CommandHandler, ListenerHandler, ItemHandler, PluginManager } from '.';
+import { ClientUtil, SpawnHandler, DonationHandler, ArgumentHandler, QuestHandler, InhibitorHandler, SettingHandler, CommandHandler, ListenerHandler, ItemHandler, PluginManager } from '.';
 import { ClientOptions, MessageOptions, TextChannel } from 'discord.js';
 import { Connector, Logger, Imgen } from '..';
 import { AkairoClient } from 'discord-akairo';
@@ -58,6 +58,10 @@ export class LavaClient extends AkairoClient {
 			 * The discord mod that bans every member on his server.
 			 */
 			inhibitor: plugin('inhibitor') as InhibitorHandler,
+			/**
+			 * That thing where panther spammed me weeks ago.
+			 */
+			donation: plugin('donation') as DonationHandler,
 			/**
 			 * The currency items.
 			 */

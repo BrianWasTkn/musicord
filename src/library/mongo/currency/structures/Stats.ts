@@ -1,4 +1,4 @@
-import { LavaClient, Structure, CommandHandler } from 'lava/index';
+import { LavaClient, Structure } from 'lava/index';
 
 export class GambleStat extends Structure {
 	/**
@@ -21,7 +21,7 @@ export class GambleStat extends Structure {
 	 * Constructor for this shitfuckery.
 	 */
 	public constructor(client: LavaClient, data: CurrencyGamble) {
-		super({ client, id: stat.id });
+		super({ client, id: data.id });
 		/** @type {number} */
 		this.won = data.won;
 		/** @type {number} */
@@ -36,8 +36,7 @@ export class GambleStat extends Structure {
 	 * Shortcut to the command module this stat holds from.
 	 */
 	get module() {
-		const { handler } = this.client.plugins.plugins.get('command');
-		return (handler as CommandHandler).modules.get(this.id);
+		return this.client.handlers.command.modules.get(this.id);
 	}
 
 	/**

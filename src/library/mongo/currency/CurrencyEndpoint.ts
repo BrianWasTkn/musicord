@@ -1,4 +1,4 @@
-import { Endpoint, ItemHandler, Item, CurrencyEntry } from 'lava/index';
+import { Endpoint, Item, CurrencyEntry } from 'lava/index';
 
 export class CurrencyEndpoint extends Endpoint<CurrencyProfile> {
 	public async fetch(_id: string) {
@@ -14,9 +14,8 @@ export class CurrencyEndpoint extends Endpoint<CurrencyProfile> {
 	 * Update user inventory.
 	 */
 	public updateItems(doc: CurrencyProfile) {
-		const { handler } = this.client.plugins.plugins.get('item');
 		const updated: Item[] = [];
-		for (const mod of (handler as unknown as ItemHandler).modules.values()) {
+		for (const mod of this.client.handlers.item.modules.values()) {
 			if (!doc.items.find(i => i.id === mod.id)) {
 				doc.items.push({ id: mod.id, amount: 0, uses: 0, expire: 0, level: 0, multi: 0 });
 				updated.push(mod);

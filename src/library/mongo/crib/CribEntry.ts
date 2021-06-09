@@ -3,10 +3,18 @@
  * @author BrianWasTaken
 */
 
-import { LavaCooldown, LavaSetting } from '../..';
+import { Cooldown, UserSetting, UserEntry, CribDonation } from 'lava/index';
 import { Collection } from 'discord.js';
-import { UserEntry } from '..';
 
 export class CribEntry extends UserEntry<CribProfile> {
-	
+	get booster() {
+    return this.data.booster;
+  }
+
+  get dono() {
+    return this.data.donations.reduce((coll, slot) => 
+      coll.set(slot.id, new CribDonation(this.client, slot)), 
+      new Collection<string, CribDonation>()
+    );
+  }
 }

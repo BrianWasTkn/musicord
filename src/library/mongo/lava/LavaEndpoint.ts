@@ -1,28 +1,24 @@
-import { LavaEntry } from '.';
-import { Endpoint } from '..';
+import { LavaEntry, Endpoint, Setting } from 'lava/index';
 
 export class LavaEndpoint extends Endpoint<LavaProfile> {
 	public async fetch(_id: string) {
-		return this.model.findOne({ _id }).then(data => {
-			const { missing, doc } = this.pushSettings(data ?? new this.model({ _id }));
-			return missing >= 1 ? doc.save() : doc;
+		return this.model.findOne({ _id }).then(async data => {
+			const doc = data ?? await (new this.model({ _id })).save();
+			const settings = this.updateSettings(doc);
+
+			return [settings].some(s => s.length > 1) ? doc.save() : doc;
 		}).then(doc => new LavaEntry(this.client, doc));
 	}
 
-	public pushSettings(doc: LavaProfile) {
-		const { modules } = this.client.settingHandler;
-
-		let missing = 0;
-		if (modules.size < 1) return { doc, missing };
-		for (const setting of modules.values()) {
-			if (!doc.settings.find(i => i.id === setting.id)) {
-				// @TODO: add default value for setting module. 
-				const { defaultState: enabled } = setting.config;
-				doc.settings.push({ id: setting.id, enabled, cooldown: 0 });
-				missing++;
+	public updateSettings(doc: LavaProfile) {
+		const updated: Setting[] = [];
+		for (const mod of this.client.handlers.setting.modules.values()) {
+			if (!doc.settings.find(i => i.id === mod.id)) {
+				doc.settings.push({ id: mod.id, amount: 0, uses: 0, expire: 0, level: 0, multi: 0 });
+				updated.push(mod);
 			}
 		}
 
-		return { doc, missing };
+		return updated;
 	}
 }
