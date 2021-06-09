@@ -45,8 +45,8 @@ export class PluginManager extends EventEmitter {
 	 */
 	readSync(dir: string) {
 		return fs.statSync(dir).isDirectory()
-			? [].concat(...fs.readdirSync(dir))
-				.map(d => path.join(dir, d))
+			? [].concat(...fs.readdirSync(dir)) // ['a', 'b']
+				.map(d => path.join(dir, d)) // ['path/to/a', 'path/to/b']
 				.filter(Boolean)
 			: undefined;
 	}
@@ -56,7 +56,7 @@ export class PluginManager extends EventEmitter {
 	 */
 	register(dir = this.directory) {
 		const plugins: Plugin[] = this.readSync(dir)
-			.map(e => require(e)?.default)
+			.map(e => require(e).default)
 			.filter(Boolean);
 
 		for (const plugin of plugins) {
