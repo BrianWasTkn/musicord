@@ -2,11 +2,10 @@
 	"name": "lava",
 	"version": "3.0.0-rewrite",
 	"description": "A multi-purpose discord bot.",
-	"main": "dist/index.js",
 	"scripts": {
 		"build": "rimraf ./dist && tsc --project tsconfig.json",
 		"format": "prettier --write .",
-		"start": "npm start"
+		"start": "node dist/index.js"
 	},
 	"repository": {
 		"type": "git",
