@@ -9,5 +9,8 @@ export abstract class Argument extends AbstractModule {
 	/**
 	 * Method to run this argument.
 	 */
-	public abstract exec(ctx: Context, args: string): PromiseUnion<any>;
+	public exec(ctx: Context, args: string): PromiseUnion<any>;
+	public exec(ctx: Context, args: string): PromiseUnion<any> {
+		return null;
+	}
 }
