@@ -18,11 +18,6 @@ Lava.db.connect(process.env.MONGO_URI, {
 });
 
 /**
- * Load all plugins.
- */
-Lava.plugins.loadAll();
-
-/**
  * Load command arguments.
  */
 Lava.handlers.argument.addTypes();

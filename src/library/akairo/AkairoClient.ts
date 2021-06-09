@@ -4,9 +4,9 @@
 */
 
 import { ClientUtil, SpawnHandler, DonationHandler, ArgumentHandler, QuestHandler, InhibitorHandler, SettingHandler, CommandHandler, ListenerHandler, ItemHandler, PluginManager } from '.';
-import { ClientOptions, MessageOptions, TextChannel } from 'discord.js';
+import { ClientOptions, MessageOptions, TextChannel, ClientOptions } from 'discord.js';
+import { AkairoClient, AkairoOptions } from 'discord-akairo';
 import { Connector, Logger, Imgen } from 'lava/index';
-import { AkairoClient } from 'discord-akairo';
 import { join } from 'path';
 import MongoDB from 'mongoose';
 
@@ -38,7 +38,7 @@ export class LavaClient extends AkairoClient {
 	 */
 	public plugins = new PluginManager(this, {
 		directory: join(__dirname, '..', '..', 'plugins')
-	});
+	}).loadAll();
 
 	/**
 	 * Shortcut to our handlers from our plugins.
