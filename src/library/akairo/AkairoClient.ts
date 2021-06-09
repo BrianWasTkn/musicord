@@ -44,7 +44,8 @@ export class LavaClient extends AkairoClient {
 	 * Shortcut to our handlers from our plugins.
 	 */
 	public get handlers() {
-		const plugin = (id: string) => this.plugins.plugins.get(id).handler as unknown;
+		const plugin = (id: string) => this.plugins.plugins?.get(id)?.handler as unknown;
+		
 		return {
 			/**
 			 * Command arguments.
