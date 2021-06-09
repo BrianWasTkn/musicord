@@ -45,7 +45,6 @@
 		"typescript": "^4.2.4"
 	},
 	"_moduleAliases": {
-		"lava": "./dist/library",
-		"plugins": "./dist/plugins"
+		"lava": "./dist/library"
 	}
 }
