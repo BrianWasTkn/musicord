@@ -1,0 +1,1 @@
+exports.a = class Alpha {}
