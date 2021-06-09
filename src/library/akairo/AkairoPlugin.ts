@@ -20,9 +20,8 @@ export declare interface Plugin extends Base {
 export class Plugin extends Base {
 	/**
 	 * The binded abstract/akairohandler for this plugin.
-	 * @private
 	 */
-	private readonly _handler: PluginHandlerPredicate;
+	private _handler: PluginHandlerPredicate;
 	/**
 	 * The handler for this plugin.
 	 */
@@ -41,7 +40,7 @@ export class Plugin extends Base {
 	 */
 	public constructor(name: string, handler: PluginHandlerPredicate) {
 		super(null);
-		Object.defineProperty(this, '_handler', { value: handler.bind(this) });
+		this._handler = handler.bind(this);
 		this.id = name.toLowerCase();
 		this.name = name;
 	}
