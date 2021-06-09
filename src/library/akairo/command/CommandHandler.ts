@@ -135,7 +135,7 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 		}
 
 		try {
-			Object.defineProperty(context, 'args', { value: args, writable: false });
+			context.args = args;
 			this.emit(CommandHandlerEvents.COMMAND_STARTED, context, command, args);
 			try {
 				const returned = await command.exec(context);
