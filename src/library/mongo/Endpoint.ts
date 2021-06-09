@@ -1,4 +1,4 @@
-import { LavaClient, AbstractHandler } from '..';
+import { LavaClient, AbstractHandler } from 'lava/akairo';
 import { Document, Model } from 'mongoose';
 import { AkairoHandler } from 'discord-akairo';
 import { UserEntry } from '.';

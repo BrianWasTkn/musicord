@@ -1,5 +1,5 @@
 import { Message, MessageCollector, ReactionCollector, CollectorFilter, Collection, TextChannel } from 'discord.js';
-import { AbstractHandler, AbstractHandlerOptions, LavaClient } from '..';
+import { AbstractHandler, AbstractHandlerOptions, LavaClient } from 'lava/akairo';
 import { Context, GuildMemberPlus } from 'lava/index';
 import { Spawn } from '.';
 

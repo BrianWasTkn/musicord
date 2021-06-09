@@ -3,7 +3,7 @@
  * @author BrianWasTaken
 */
 
-import { AbstractHandlerOptions, AbstractHandler, AbstractModuleOptions, LavaClient } from '..';
+import { AbstractHandlerOptions, AbstractHandler, AbstractModuleOptions, LavaClient } from 'lava/akairo';
 import { ListenerHandler as OldListenerHandler, Category } from 'discord-akairo';
 import { Collection } from 'discord.js';
 import { Listener } from '.';

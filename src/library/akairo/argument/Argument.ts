@@ -1,5 +1,6 @@
-import { AbstractModule, AbstractModuleOptions, Context } from 'lava/index';
+import { AbstractModule, AbstractModuleOptions, } from 'lava/akairo';
 import { ArgumentHandler } from '.';
+import { Context } from 'lava/discord';
 
 export abstract class Argument extends AbstractModule {
 	/**

@@ -1,5 +1,5 @@
 import { SpawnEntry } from '.';
-import { Endpoint } from '..';
+import { Endpoint } from 'lava/mongo';
 
 export class SpawnEndpoint extends Endpoint<SpawnProfile> {
 	public async fetch(_id: string) {

@@ -1,4 +1,4 @@
-import { AbstractHandlerOptions, AbstractHandler, LavaClient, CurrencyEntry, Item } from 'lava/index';
+import { AbstractHandlerOptions, AbstractHandler, LavaClient,, Item } from 'lava/akairo';
 
 export interface ItemSale {
 	/**

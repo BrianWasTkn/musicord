@@ -4,7 +4,7 @@ import { CribEndpoint, CribModel } from '.';
 import { LavaEndpoint, LavaModel } from '.';
 
 import { connect, ConnectOptions } from 'mongoose';
-import { LavaClient } from '..';
+import { LavaClient } from 'lava/akairo';
 import { Base } from 'discord.js';
 
 export declare interface Connector extends Base {

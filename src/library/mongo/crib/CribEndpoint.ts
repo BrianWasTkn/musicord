@@ -1,4 +1,5 @@
-import { CribEntry, Endpoint, Donation } from 'lava/index';
+import { CribEntry, Endpoint } from 'lava/mongo';
+import { Donation } from 'lava/akairo';
 
 export class CribEndpoint extends Endpoint<CribProfile> {
 	public async fetch(_id: string) {

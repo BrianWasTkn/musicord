@@ -1,4 +1,6 @@
-import { LavaEntry, Endpoint, Setting, Command } from 'lava/index';
+import { Command, Setting } from 'lava/akairo';
+import { LavaEntry } from '.';
+import { Endpoint } from 'lava/mongo';
 
 export class LavaEndpoint extends Endpoint<LavaProfile> {
 	public async fetch(_id: string) {

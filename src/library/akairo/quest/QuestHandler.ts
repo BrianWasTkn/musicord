@@ -1,7 +1,10 @@
-import { AbstractHandler, AbstractHandlerOptions } from '..';
+import { LavaClient, AbstractHandler, AbstractHandlerOptions } from 'lava/akairo';
 import { Quest } from '.';
 
 export class QuestHandler extends AbstractHandler<Quest> {
+	public constructor(client: LavaClient, options: AbstractHandlerOptions) {
+		super(client, options);
+	}
 	// /**
 	//  * Update user's quest slots.
 	//  */

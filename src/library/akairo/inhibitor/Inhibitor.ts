@@ -4,10 +4,10 @@
 */
 
 import { Inhibitor as OldInhibitor, InhibitorOptions, Category } from 'discord-akairo';
-import { AbstractModule, LavaClient, Command } from '..';
+import { AbstractModule, LavaClient, Command } from 'lava/akairo';
 import { Collection, MessageOptions } from 'discord.js';
 import { InhibitorHandler } from '.';
-import { Context } from '../..';
+import { Context } from 'lava/index';
 
 export declare interface Inhibitor extends OldInhibitor {
 	/**

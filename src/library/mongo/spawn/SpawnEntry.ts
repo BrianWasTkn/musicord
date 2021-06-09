@@ -3,7 +3,7 @@
  * @author BrianWasTaken
 */
 
-import { UserEntry } from '..';
+import { UserEntry } from 'lava/mongo';
 
 export class SpawnEntry extends UserEntry<SpawnProfile> {
 	/**

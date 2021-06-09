@@ -3,7 +3,7 @@
  * @author BrianWasTaken
 */
 
-import { Colors, EmbedPlus, ItemEffects } from '..';
+import { Colors, EmbedPlus, ItemEffects } from 'lava/index';
 import { ClientUtil as OldClientUtil } from 'discord-akairo';
 import { LavaClient } from '.';
 

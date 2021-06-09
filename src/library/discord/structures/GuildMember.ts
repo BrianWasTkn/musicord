@@ -1,5 +1,6 @@
-import { Structure, UserPlus, LavaClient } from 'lava/index';
 import { GuildMember, Structures } from 'discord.js';
+import { UserPlus, Structure } from '.';
+import { LavaClient } from 'lava/akairo';
 
 export declare interface GuildMemberPlus extends GuildMember {
 	/**

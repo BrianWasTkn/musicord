@@ -4,7 +4,7 @@
 */
 
 import { Listener as OldListener, ListenerOptions, Category } from 'discord-akairo';
-import { AbstractModule, LavaClient, ListenerHandler } from 'lava/index';
+import { AbstractModule, LavaClient, ListenerHandler } from 'lava/akairo';
 import { Collection, MessageOptions } from 'discord.js';
 
 export declare interface Listener extends OldListener {

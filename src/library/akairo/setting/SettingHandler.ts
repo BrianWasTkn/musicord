@@ -1,4 +1,4 @@
-import { LavaClient, AbstractHandler, AbstractHandlerOptions } from 'lava/index';
+import { LavaClient, AbstractHandler, AbstractHandlerOptions } from 'lava/akairo';
 import { Setting } from '.';
 
 export class SettingHandler extends AbstractHandler<Setting> {

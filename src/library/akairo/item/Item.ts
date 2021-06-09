@@ -3,10 +3,10 @@
  * @author BrianWasTaken
  */
 
-import { AbstractModuleOptions, AbstractModule } from '..';
+import { AbstractModuleOptions, AbstractModule } from 'lava/akairo';
 import { MessageOptions } from 'discord.js';
 import { ItemHandler } from '.';
-import { Context } from '../..'; 
+import { Context } from 'lava/index'; 
 
 export interface ItemDescription {
 	/**

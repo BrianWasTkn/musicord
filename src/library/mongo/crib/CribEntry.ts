@@ -3,7 +3,8 @@
  * @author BrianWasTaken
 */
 
-import { Cooldown, UserSetting, UserEntry, GiveawayDonation } from 'lava/index';
+import { UserSetting, UserEntry } from 'lava/mongo';
+import { GiveawayDonation } from '.';
 import { Collection } from 'discord.js';
 
 export class CribEntry extends UserEntry<CribProfile> {

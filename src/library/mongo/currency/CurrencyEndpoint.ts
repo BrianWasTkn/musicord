@@ -1,4 +1,5 @@
-import { Endpoint, Item, CurrencyEntry } from 'lava/index';
+import { Endpoint, CurrencyEntry } from 'lava/mongo';
+import { Item } from 'lava/akairo';
 
 export class CurrencyEndpoint extends Endpoint<CurrencyProfile> {
 	public async fetch(_id: string) {

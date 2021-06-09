@@ -1,5 +1,5 @@
 import { User, Structures } from 'discord.js';
-import { LavaClient } from '../..';
+import { LavaClient } from 'lava/akairo';
 import { Structure } from '.';
 
 export declare interface UserPlus extends User {

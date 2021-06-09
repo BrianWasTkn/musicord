@@ -1,4 +1,4 @@
-import { LavaClient } from '../..';
+import { LavaClient } from 'lava/akairo';
 import { Base } from 'discord.js';
 
 export interface StructureOptions {

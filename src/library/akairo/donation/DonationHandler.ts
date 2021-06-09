@@ -1,4 +1,4 @@
-import { LavaClient, AbstractHandler, AbstractHandlerOptions } from 'lava/index';
+import { LavaClient, AbstractHandler, AbstractHandlerOptions } from 'lava/akairo';
 import { Donation } from '.';
 import { Message } from 'discord.js';
 

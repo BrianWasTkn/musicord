@@ -1,6 +1,7 @@
-import { LavaClient, CurrencyEndpoint, SpawnEndpoint, LavaEndpoint, CribEndpoint } from '../..';
+import { CurrencyEndpoint, SpawnEndpoint, LavaEndpoint, CribEndpoint } from 'lava/mongo';
 import { Message, Structures } from 'discord.js';
 import { UserPlus, Structure } from '.';
+import { LavaClient } from 'lava/akairo';
 
 export declare interface Context<Args extends {} = {}> extends Message {
 	/**

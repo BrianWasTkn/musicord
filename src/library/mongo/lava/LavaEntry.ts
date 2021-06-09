@@ -6,7 +6,7 @@
 import { Cooldown, UserSetting } from '.';
 import { Collection } from 'discord.js';
 import { Snowflake } from 'discord.js';
-import { UserEntry } from '..';
+import { UserEntry } from 'lava/mongo';
 
 export class LavaEntry extends UserEntry<LavaProfile> {
 	/**

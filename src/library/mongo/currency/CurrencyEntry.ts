@@ -3,8 +3,10 @@
  * @author BrianWasTaken
 */
 
-import { UserEntry, Currency, Inventory, Mission, GambleStat, TradeStat } from 'lava/index';
+import { Inventory, Mission, GambleStat, TradeStat } from '.';
 import { Collection } from 'discord.js';
+import { UserEntry } from 'lava/mongo';
+import { Currency } from 'lava/utility';
 
 export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/**
@@ -74,31 +76,6 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	public isQuestDone(id: string) {
 		return this.quests.get(id).isFinished();
 	}
-
-	/**
-	 * Add a cooldown.
-	*/
-	// addCooldown(id: string, time = 1000) {
-	// 	if (this.client.isOwner(this.data._id)) return this;
-	// 	const expire = Date.now() + time;
-	// 	const cd = this.cooldowns.get(id);
-
-	// 	if (!cd) {
-	// 		this.data.cooldowns.push({ expire, id });
-	// 		return this;
-	// 	}
-
-	// 	this.data.cooldowns.find(c => c.id === cd.id).expire = expire;
-	// 	return this;
-	// }
-
-	/**
-	 * Sweep all cooldowns.
-	*/
-	// sweepCooldowns() {
-	// 	this.data.cooldowns.map(cd => cd.expire = 0);
-	// 	return this;
-	// }
 
 	addProps(prop: keyof Omit<CurrencyProps, 'vault'>, amount: number) {
 		this.data.props[prop] += amount;

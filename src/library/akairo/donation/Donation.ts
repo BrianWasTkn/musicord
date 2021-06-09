@@ -1,5 +1,6 @@
-import { AbstractModule, AbstractModuleOptions, Context } from 'lava/index';
+import { AbstractModule, AbstractModuleOptions } from 'lava/akairo';
 import { DonationHandler } from '.';
+import { Context } from 'lava/index';
 
 export abstract class Donation extends AbstractModule {
 	/**

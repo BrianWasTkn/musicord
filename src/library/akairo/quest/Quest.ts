@@ -1,4 +1,4 @@
-import { AbstractModuleOptions, AbstractModule, Command, CommandHandler } from '..';
+import { AbstractModuleOptions, AbstractModule, Command, CommandHandler } from 'lava/akairo';
 import { MessageOptions } from 'discord.js';
 import { QuestHandler } from '.';
 

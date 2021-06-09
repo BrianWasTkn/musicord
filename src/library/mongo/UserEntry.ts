@@ -1,4 +1,5 @@
-import { LavaClient, Structure } from '..';
+import { LavaClient } from 'lava/akairo';
+import { Structure } from 'lava/discord';
 import { Document } from 'mongoose';
 
 /**

@@ -5,9 +5,9 @@
 
 import { Command as OldCommand, CommandOptions, CommandDescription, Category } from 'discord-akairo';
 import { Collection, Message, MessageOptions } from 'discord.js';
-import { AbstractModule, LavaClient } from '..';
+import { AbstractModule, LavaClient } from 'lava/akairo';
 import { CommandHandler } from '.';
-import { Context } from '../..';
+import { Context } from 'lava/discord';
 
 export declare interface Command extends OldCommand {
 	/**

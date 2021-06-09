@@ -3,9 +3,9 @@
  * @author BrianWasTaken
 */
 
-import { AbstractHandler, AbstractHandlerOptions, AbstractModuleOptions, LavaClient, InhibitorHandler, ListenerHandler } from '..';
+import { AbstractHandler, AbstractHandlerOptions, AbstractModuleOptions, LavaClient, InhibitorHandler, ListenerHandler } from 'lava/akairo';
 import { CommandHandler as OldCommandHandler, CommandHandlerOptions, Category, Constants } from 'discord-akairo';
-import { Context, CommandQueue, Cooldown } from '../..';
+import { Context, CommandQueue, Cooldown } from 'lava/index';
 import { Collection } from 'discord.js';
 import { Command } from '.';
 
