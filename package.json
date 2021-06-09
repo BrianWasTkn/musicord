@@ -2,7 +2,6 @@
 	"name": "lava",
 	"version": "3.0.0-rewrite",
 	"description": "A multi-purpose discord bot.",
-	"type": "module",
 	"scripts": {
 		"build": "rimraf ./dist && tsc --project tsconfig.json",
 		"format": "prettier --write .",
