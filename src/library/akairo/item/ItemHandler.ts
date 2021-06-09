@@ -19,7 +19,7 @@ export class ItemHandler extends AbstractHandler<Item> {
 	/**
 	 * The sale item.
 	 */
-	public sale: ItemSale;
+	public sale: ItemSale = {};
 
 	/**
 	 * Construct an item handler.
