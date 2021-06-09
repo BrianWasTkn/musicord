@@ -4,15 +4,15 @@ export interface ItemSale {
 	/**
 	 * The discount from 1% to 65%
 	 */
-	discount: number;
+	discount?: number;
 	/**
 	 * The stamp when the next sale would be.
 	 */
-	nextSale: number;
+	nextSale?: number;
 	/**
 	 * The item on sale.
 	 */
-	item: Item;
+	item?: Item;
 }
 
 export class ItemHandler extends AbstractHandler<Item> {
