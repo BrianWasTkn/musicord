@@ -1,4 +1,4 @@
-import { AbstractModuleOptions, AbstractModule, Command, CommandHandler } from 'lava/akairo';
+import { AbstractModuleOptions, AbstractModule } from 'lava/akairo';
 import { MessageOptions } from 'discord.js';
 import { QuestHandler } from '.';
 
@@ -28,7 +28,7 @@ export class Quest extends AbstractModule {
 	/**
 	 * The command this quest is dependent from.
 	 */
-	public command: Command;
+	public command: string;
 	/**
 	 * The method of command interaction, idk.
 	 */
