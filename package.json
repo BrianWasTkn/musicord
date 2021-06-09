@@ -2,6 +2,7 @@
 	"name": "lava",
 	"version": "3.0.0-rewrite",
 	"description": "A multi-purpose discord bot.",
+	"type": "module",
 	"scripts": {
 		"build": "rimraf ./dist && tsc --project tsconfig.json",
 		"format": "prettier --write .",
@@ -45,6 +46,6 @@
 		"typescript": "^4.2.4"
 	},
 	"_moduleAliases": {
-		"lava": "./dist/library"
+		"lava": "dist/library"
 	}
 }
