@@ -9,5 +9,10 @@ export declare interface UserPlus extends User {
 	client: LavaClient;
 }
 
-export class UserPlus extends User implements Structure {}
-Structures.extend('User', () => User);
+export class UserPlus extends User implements Structure {
+	get animatedAvatar() {
+		return this.avatarURL({ dynamic: true });
+	}
+}
+
+Structures.extend('User', () => UserPlus);
