@@ -63,7 +63,7 @@ export class PluginManager extends EventEmitter {
 			if (plugin instanceof Plugin) {
 				plugin.initClient(this.client);
 				plugin.initHandler();
-				this.plugins.set(plugin.name, plugin);
+				this.plugins.set(plugin.id, plugin);
 			}
 		}
 
