@@ -14,9 +14,10 @@ interface QuestReward {
 
 export interface QuestOptions extends AbstractModuleOptions {
 	command: string;
-	method: string;
+	method?: string;
 	rewards: QuestReward;
 	target: number;
+	info: string;
 }
 
 export class Quest extends AbstractModule {
@@ -40,6 +41,10 @@ export class Quest extends AbstractModule {
 	 * The target amount for this quest.
 	 */
 	public target: number;
+	/**
+	 * The info of this quest.
+	 */
+	public info: string;
 
 	/**
 	 * Construct a quest.
@@ -49,9 +54,10 @@ export class Quest extends AbstractModule {
 
 		const commandPlugin = this.client.plugins.plugins.get('command');
 		this.command = (commandPlugin.handler as CommandHandler).modules.get(options.command);
-		this.method = String(options.method);
+		this.method = options.method ?? options.name;
 		this.rewards = options.rewards;
-		this.target = Number(options.target);
+		this.target = options.target;
+		this.info = options.info.replace(/{target}/g, this.target.toLocaleString());
 	}
 
 	private _assign<A>(o1: PartialUnion<A>, o2: A): A {

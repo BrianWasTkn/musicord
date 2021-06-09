@@ -211,7 +211,7 @@ declare module 'discord-akairo' {
 		exec(message: Context, command: Command): PromiseUnion<boolean>;
 	}
 
-	interface InhibitorOptions extends AkairoModule {
+	interface InhibitorOptions extends AbstractModuleOptions {
 		/**
 		 * The name for this inhibitor.
 		 */

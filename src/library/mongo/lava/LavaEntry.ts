@@ -3,7 +3,7 @@
  * @author BrianWasTaken
 */
 
-import { Cooldown, Setting } from '.';
+import { Cooldown, UserSetting } from '.';
 import { Collection } from 'discord.js';
 import { Snowflake } from 'discord.js';
 import { UserEntry } from '..';
@@ -24,9 +24,17 @@ export class LavaEntry extends UserEntry<LavaProfile> {
 	 */
 	get settings() {
 		return this.data.settings.reduce((col, s) => 
-			col.set(s.id, new Setting(this.client, s)), 
-			new Collection<string, Setting>()
+			col.set(s.id, new UserSetting(this.client, s)), 
+			new Collection<string, UserSetting>()
 		);
+	}
+
+	get blocked() {
+		return this.data.punishments.blocked;
+	}
+
+	get banned() {
+		return this.data.punishments.banned;
 	}
 
 	updateSetting(setting: string, state: boolean, cooldown = 0) {

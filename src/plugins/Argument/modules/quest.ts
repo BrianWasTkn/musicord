@@ -1,19 +1,19 @@
-import { Argument, Context, Item } from 'lava/index';
+import { Argument, Context, Quest } from 'lava/index';
 
 export default class extends Argument {
 	constructor() {
-		super('item', {
+		super('quest', {
 			category: 'Currency',
-			name: 'Item',
+			name: 'Quest',
 		});
 	}
 
-	exec(ctx: Context, args: string): Item {
+	exec(ctx: Context, args: string): Quest {
 		if (!args || args.length <= 2) return null;
-		const { modules } = ctx.client.handlers.item;
+		const { modules } = ctx.client.handlers.quest;
 		const mod = modules.get(args.toLowerCase());
 
-		let found: Item;
+		let found: Quest;
 		found = modules.find(mod => {
 			return mod.id.toLowerCase().includes(args.toLowerCase())
 			|| mod.name.toLowerCase().includes(args.toLowerCase());

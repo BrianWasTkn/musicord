@@ -1,6 +1,6 @@
 import { LavaClient, Structure } from 'lava/index';
 
-export class Setting extends Structure {
+export class UserSetting extends Structure {
 	/**
 	 * The possible cooldown for this setting.
 	 */

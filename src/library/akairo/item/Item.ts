@@ -162,16 +162,14 @@ export abstract class Item extends AbstractModule {
 		/**
 		 * Check it's retirement.
 		 */
-		if ('retired' in options.config) {
-			if (options.config.retired) {
-				this.config = {
-					...this.config,
-					showInInventory: false,
-					showInShop: false,
-					buyable: false,
-					usable: false
-				};
-			}
+		if (this.config.retired) {
+			this.config = {
+				...this.config,
+				showInInventory: false,
+				showInShop: false,
+				buyable: false,
+				usable: false
+			};
 		}
 
 		/**
