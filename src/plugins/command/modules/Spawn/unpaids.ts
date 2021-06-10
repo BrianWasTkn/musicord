@@ -16,8 +16,8 @@ export default class extends Command {
 		});
 	}
 
-	async exec(ctx: Context<{ member: GuildMemberPlus }>): Promise<MessageOptions> {
-		const entry = await ctx.spawn.fetch(ctx.args.member.user.id);
+	async exec(ctx: Context, args: { member: GuildMemberPlus }): Promise<MessageOptions> {
+		const entry = await ctx.spawn.fetch(args.member.user.id);
 		const balance = {
 			'Remaining Unpaids': entry.props.unpaids.toLocaleString(),
 			'Events Joined': entry.props.joined.toLocaleString(),
@@ -26,7 +26,7 @@ export default class extends Command {
 		return { 
 			embed: {
 				author: { 
-					name: `Spawn Balance — ${ctx.args.member.user.username}`, 
+					name: `Spawn Balance — ${args.member.user.username}`, 
 					iconURL: ctx.args.member.user.avatarURL({ dynamic: true }) 
 				},
 				color: ctx.client.util.randomColor(),

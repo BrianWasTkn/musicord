@@ -21,7 +21,7 @@ export default class extends Command {
 	exec(ctx: Context<{ text: string }>): Promise<MessageOptions> {
 		return ctx.client.memer.generate('changemymind', {
 			text: ctx.args.text
-		}).then(buffer => ({
+		}).then((buffer: Buffer) => ({
 			reply: { messageReference: ctx.id, failIfNotExists: false },
 			files: [buffer]
 		})).catch(e => ({

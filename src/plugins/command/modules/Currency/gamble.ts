@@ -40,7 +40,7 @@ export default class extends GambleCommand {
 		if (botD > userD || botD === userD) {
 			const { props } = await (botD === userD 
 				? entry.calc().xp(true)
-				: entry.removeProps('pocket', bet)
+				: entry.removePocket(bet)
 			).save();
 
 			return { embed: {
@@ -55,7 +55,7 @@ export default class extends GambleCommand {
 
 		const multi = entry.calcMulti(ctx).total;
 		const winnings = this.calcWinnings(multi, bet);
-		const { props } = await entry.addProps('pocket', winnings).save();
+		const { props } = await entry.addPocket(winnings).save();
 
 		return { embed: {
 			author: { name: `${ctx.author.username}'s gambling game` },

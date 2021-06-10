@@ -18,18 +18,21 @@ export default class extends Command {
 	}
 
 	async exec(ctx: Context, args: { member: GuildMemberPlus }): Promise<MessageOptions> {
-		const { pocket, vault, space } = await ctx.currency
-			.fetch(args.member.user.id).then(d => d.props);
+		const entry = await ctx.currency.fetch(args.member.user.id);
 		const { user } = args.member;
+
+		if (entry.props.pocket <= 0) {
+			await entry.addPocket(ctx.client.util.randomNumber(1, 5) * 1e6);
+		}
 
 		return { embed: <MessageEmbedOptions> {
 			title: `${user.username}'s balance`,
 			color: ctx.client.util.randomColor(),
 			description: Object.entries({
-				'Wallet': pocket.toLocaleString(),
-				'Bank': `${vault.amount.toLocaleString()}${
+				'Wallet': entry.props.pocket.toLocaleString(),
+				'Bank': `${entry.props.vault.amount.toLocaleString()}${
 					user.id === ctx.author.id
-						? `/${space.toLocaleString()}` 
+						? `/${entry.props.space.toLocaleString()}` 
 						: '' 
 				}`
 			})
