@@ -207,7 +207,7 @@ export abstract class Item extends AbstractModule {
 	/**
 	 * Main method to use items.
 	*/
-	public use(context: Context | Context<{ times: number }>): PromiseUnion<MessageOptions> {
+	public use(context: Context): PromiseUnion<MessageOptions> {
 		return { reply: { messageReference: context.id, failIfNotExists: false }, embed: {
 			description: 'Bob is currently building this item shush-',
 			title: `${this.info.emoji} ${this.name}`, color: 0xfafafa,
