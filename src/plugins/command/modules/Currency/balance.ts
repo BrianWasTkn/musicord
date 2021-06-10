@@ -22,7 +22,7 @@ export default class extends Command {
 		const { user } = args.member;
 
 		if (entry.props.pocket <= 0) {
-			await entry.addPocket(ctx.client.util.randomNumber(1, 5) * 1e6);
+			await entry.addPocket(ctx.client.util.randomNumber(1, 5) * 1e6).save();
 		}
 
 		return { embed: <MessageEmbedOptions> {
