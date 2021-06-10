@@ -1,7 +1,7 @@
 import { MessageOptions, MessageEmbedOptions } from 'discord.js';
 import { Command, Context, GuildMemberPlus } from 'lava/index';
 
-export default class CurrencyCommand extends Command {
+export default class extends Command {
 	constructor() {
 		super('balance', {
 			aliases: ['balance', 'bal'],
@@ -17,17 +17,17 @@ export default class CurrencyCommand extends Command {
 		});
 	}
 
-	async exec(ctx: Context<{ member: GuildMemberPlus }>): Promise<MessageOptions> {
+	async exec(ctx: Context, args: { member: GuildMemberPlus }): Promise<MessageOptions> {
 		const { pocket, vault, space } = await ctx.currency
-			.fetch(ctx.args.member.user.id).then(d => d.props);
-		const { user } = ctx.args.member;
+			.fetch(args.member.user.id).then(d => d.props);
+		const { user } = args.member;
 
 		return { embed: <MessageEmbedOptions> {
-			title: `${user.id}'s balance`,
+			title: `${user.username}'s balance`,
 			color: ctx.client.util.randomColor(),
 			description: Object.entries({
 				'Wallet': pocket.toLocaleString(),
-				'Bank': `${vault.toLocaleString()}${
+				'Bank': `${vault.amount.toLocaleString()}${
 					user.id === ctx.author.id
 						? `/${space.toLocaleString()}` 
 						: '' 

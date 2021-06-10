@@ -135,10 +135,9 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 		}
 
 		try {
-			context.args = args;
 			this.emit(CommandHandlerEvents.COMMAND_STARTED, context, command, args);
 			try {
-				const returned = await command.exec(context);
+				const returned = await command.exec(context, args);
 				if (returned) await context.channel.send(returned);
 				await context.lava.fetch(context.author.id).then(d => d.updateCommand(command.id).save(true));
 				this.emit(CommandHandlerEvents.COMMAND_FINISHED, context, command, args);

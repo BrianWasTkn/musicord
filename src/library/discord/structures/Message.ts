@@ -3,7 +3,7 @@ import { Message, Structures } from 'discord.js';
 import { UserPlus, Structure } from '.';
 import { LavaClient } from 'lava/akairo';
 
-export declare interface Context<Args extends {} = {}> extends Message {
+export declare interface Context extends Message {
 	/**
 	 * The client instance.
 	 */
@@ -14,12 +14,7 @@ export declare interface Context<Args extends {} = {}> extends Message {
 	author: UserPlus;
 }
 
-export class Context<Args extends {} = {}> extends Message implements Structure {
-	/**
-	 * The command arguments.
-	 */
-	public args: Args = Object.create(null);
-
+export class Context extends Message implements Structure {
 	/**
 	 * Currency Endpoint shortcut.
 	 * * Inventory - Manage user inventories.

@@ -39,8 +39,9 @@ const Currency = {
 	MAX_BET: 500000,
 	MIN_BET: 10,
 	PRESTIGE: {
+		MULTI_VALUE: 4,
 		POCKET: 250000,
-		LEVEL: 25
+		LEVEL: 25,
 	},
 };
 
@@ -48,12 +49,13 @@ const Currency = {
  * Gamble messages. 
 */
 const GambleMessages = {
+	IS_NAN: 'It needs to be a real number yeah?',
 	NO_ARGS: 'You need something to {do}!',
 	TOO_RICH: 'You are too rich to {do}!',
 	NO_COINS: 'You have no coins to {do} RIP',
 	BET_IS_NAN: 'It should be a positive number yeah?',
-	BET_IS_LOWER: `C'mon, you're not {do}ing lower than **${Currency.MIN_BET.toLocaleString()}** yeah?`,
-	BET_IS_HIGHER: `You can't {do} higher than **${Currency.MAX_BET.toLocaleString()}** coins >:(`,
+	BET_IS_LOWER: `You can't {do} lower than **${Currency.MIN_BET.toLocaleString()}**, sorry not sorry`,
+	BET_IS_HIGHER: `You can't {do} higher than **${Currency.MAX_BET.toLocaleString()}** coins :rage:`,
 	BET_HIGHER_POCKET: `You only have **{pocket}** lol don't try and lie to me hoe`,
 };
 

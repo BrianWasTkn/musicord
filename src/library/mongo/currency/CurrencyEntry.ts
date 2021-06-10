@@ -7,6 +7,7 @@ import { Inventory, Mission, GambleStat, TradeStat } from '.';
 import { Collection } from 'discord.js';
 import { UserEntry } from 'lava/mongo';
 import { Currency } from 'lava/utility';
+import { Context } from 'lava/discord';
 
 export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/**
@@ -77,18 +78,44 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		return this.quests.get(id).isFinished();
 	}
 
-	addProps(prop: keyof Omit<CurrencyProps, 'vault'>, amount: number) {
-		this.data.props[prop] += amount;
+	/**
+	 * Calc their multis.
+	 */
+	public calcMulti(ctx: Context) {
+		interface Unlocks {
+			name: string;
+			value: number;
+		};
+
+		let unlocked: Unlocks[] = [];
+		let total = 0;
+		// let all = 0; just do "unlocked/max_multi" on `lava multi` embed footer
+
+		const increment = (amount = 1) => total++;
+		const unlock = (name: string, value: number) => {
+			unlocked.push({ name, value });
+			total += value;
+			increment();
+		}
+
+		unlock('User Multipliers', this.props.multi);
+		if (ctx.guild.id === '691416705917779999') {
+			unlock(ctx.guild.name, 10);
+		}
+		if (ctx.member.roles.premiumSubscriberRole) {
+			unlock('Nitro Booster', 10);
+		}
+
+		return { unlocked, total };
+	}
+
+	addPocket(amount: number) {
+		this.data.props.pocket += amount;
 		return this;
 	}
 
-	removeProps(prop: keyof Omit<CurrencyProps, 'vault'>, amount: number) {
-		this.data.props[prop] -= amount;
-		return this;
-	}
-
-	setProps(prop: keyof Omit<CurrencyProps, 'vault'>, amount: number) {
-		this.data.props[prop] = amount;
+	removePocket(amount: number) {
+		this.data.props.pocket -= amount;
 		return this;
 	}
 

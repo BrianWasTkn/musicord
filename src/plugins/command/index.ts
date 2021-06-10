@@ -13,3 +13,5 @@ export default new Plugin(
 		}
 	)
 );
+
+export * from './categories';
