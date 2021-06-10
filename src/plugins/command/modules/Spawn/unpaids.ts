@@ -27,7 +27,7 @@ export default class extends Command {
 			embed: {
 				author: { 
 					name: `Spawn Balance — ${args.member.user.username}`, 
-					iconURL: ctx.args.member.user.avatarURL({ dynamic: true }) 
+					iconURL: args.member.user.avatarURL({ dynamic: true }) 
 				},
 				color: ctx.client.util.randomColor(),
 				description: Object.entries(balance).map(([f, v]) => `**${f}:** ${v}`).join('\n'),
