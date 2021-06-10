@@ -143,6 +143,7 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 				this.emit(CommandHandlerEvents.COMMAND_FINISHED, context, command, args);
 			} catch (error) {
 				this.emit('commandError', context, command, args, error);
+				console.error(error);
 			} finally {
 				this.commandQueue.next(context.author.id);
 			}
