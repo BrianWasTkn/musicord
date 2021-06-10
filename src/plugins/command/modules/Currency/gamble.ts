@@ -14,7 +14,7 @@ export default class extends GambleCommand {
 	async exec(ctx: Context, args: { amount: number | string }): Promise<MessageOptions> {
 		const entry = await ctx.currency.fetch(ctx.author.id);
 		const bet = this.parseArgs(ctx, args, entry);
-		if (bet == null) {
+		if (!bet) {
 			return { 
 				reply: { messageReference: ctx.id }, 
 				content: 'You need to bet something!' 
