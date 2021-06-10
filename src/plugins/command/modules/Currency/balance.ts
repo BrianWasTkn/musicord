@@ -31,7 +31,7 @@ export default class extends Command {
 			color: ctx.client.util.randomColor(),
 			description: Object.entries({
 				'Wallet': entry.props.pocket.toLocaleString(),
-				'Bank': `${entry.props.vault.amount.toLocaleString()}${
+				'Bank': `${entry.props.vault.toLocaleString()}${
 					user.id === ctx.author.id
 						? `/${entry.props.space.toLocaleString()}` 
 						: '' 
