@@ -29,6 +29,9 @@ const Colors: { [color: string]: number } = {
  * Gambling and other currency limits
 */
 const Currency = {
+	PRESTIGE_MULTI_VALUE: 2, 
+	PRESTIGE_POCKET_REQ: 250000,
+	PRESTIGE_LEVEL_REQ: 25,
 	MAX_SAFE_POCKET: 100e6,
 	MAX_INVENTORY: 100000,
 	MAX_PRESTIGE: 3000,
@@ -38,11 +41,6 @@ const Currency = {
 	MAX_WIN: 1650001,
 	MAX_BET: 500000,
 	MIN_BET: 10,
-	PRESTIGE: {
-		MULTI_VALUE: 4,
-		POCKET: 250000,
-		LEVEL: 25,
-	},
 };
 
 /**
@@ -50,13 +48,13 @@ const Currency = {
 */
 const GambleMessages = {
 	IS_NAN: 'It needs to be a real number yeah?',
-	NO_ARGS: 'You need something to {do}!',
-	TOO_RICH: 'You are too rich to {do}!',
-	NO_COINS: 'You have no coins to {do} RIP',
+	NO_ARGS: 'You need something to play!',
+	TOO_RICH: 'You are too rich to play!',
+	NO_COINS: 'You have no coins to play for RIP',
 	BET_IS_NAN: 'It should be a positive number yeah?',
-	BET_IS_LOWER: `You can't {do} lower than **${Currency.MIN_BET.toLocaleString()}**, sorry not sorry`,
-	BET_IS_HIGHER: `You can't {do} higher than **${Currency.MAX_BET.toLocaleString()}** coins :rage:`,
-	BET_HIGHER_POCKET: `You only have **{pocket}** lol don't try and lie to me hoe`,
+	BET_IS_LOWER: `You can't bet lower than **${Currency.MIN_BET.toLocaleString()}**, sorry not sorry`,
+	BET_IS_HIGHER: `You can't bet higher than **${Currency.MAX_BET.toLocaleString()}** coins :rage:`,
+	BET_HIGHER_POCKET: (pocket: number) => `You only have **${pocket.toLocaleString()}** coins lol don't try and lie to me hoe`,
 };
 
 /**
@@ -78,8 +76,8 @@ const ItemMessages = {
 	// Sell Command
 	NEED_TO_SELL: 'You need something to sell!',
 	NOT_SELLABLE: "You can't sell this item :thinking:",
-	SELLING_NONE: "You should sell something greater than 0",
-	CANT_FOOL_ME: (that: number) => `Hey you only have ${that} of these!`,
+	SELLING_NONE: "C'mon man, don't make yourself sell nothing.",
+	CANT_FOOL_ME: (thiss: number) => `Hey you only have ${thiss} of these!`,
 }
 
 export { Colors, Currency, GambleMessages, ItemMessages };

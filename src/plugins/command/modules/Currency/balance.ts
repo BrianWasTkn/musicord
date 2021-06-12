@@ -12,7 +12,7 @@ export default class extends Command {
 				id: 'member',
 				type: 'member',
 				default: (c: Context) => c.member,
-				description: 'The user you wanna check the balance for.',
+				description: 'The user you who you wanna check the balance.',
 			}]
 		});
 	}
@@ -21,6 +21,7 @@ export default class extends Command {
 		const entry = await ctx.currency.fetch(args.member.user.id);
 		const { user } = args.member;
 
+		// temporary coz testing owo
 		if (entry.props.pocket <= 0) {
 			await entry.addPocket(ctx.client.util.randomNumber(1, 5) * 1e6).save();
 		}
@@ -31,9 +32,9 @@ export default class extends Command {
 			color: ctx.client.util.randomColor(),
 			description: Object.entries({
 				'Wallet': entry.props.pocket.toLocaleString(),
-				'Bank': `${entry.props.vault.toLocaleString()}${
+				'Bank': `${entry.props.vault.toLocaleString()} ${
 					user.id === ctx.author.id
-						? `/${entry.props.space.toLocaleString()}` 
+						? `/ ${entry.props.space.toLocaleString()}` 
 						: '' 
 				}`
 			})

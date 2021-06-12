@@ -1,16 +1,21 @@
 import { Argument, CommandOptions } from 'discord-akairo';
 import { Currency, GambleMessages } from 'lava/utility';
 import { CurrencyEntry } from 'lava/mongo';
-import { Command } from 'lava/akairo';
 import { Context } from 'lava/discord';
+import { Command } from 'lava/akairo';
 
 export class GambleCommand extends Command {
 	constructor(id: string, options: CommandOptions) {
 		super(id, { 
-			cooldown: 5000,
 			category: 'Currency',
 			clientPermissions: ['EMBED_LINKS'],
-			args: [{ id: 'amount', type: Argument.union('number', 'string') }],
+			cooldown: 5000,
+			args: [
+				{ 
+					id: 'amount', 
+					type: Argument.union('number', 'string') 
+				}
+			], 
 			...options
 		});
 	}
@@ -22,6 +27,7 @@ export class GambleCommand extends Command {
 		const { amount } = args;
 
 		if (!amount) return null;
+
 		if (!isInteger(Number(amount))) {
 			switch((amount as string).toLowerCase()) {
 				case 'all':

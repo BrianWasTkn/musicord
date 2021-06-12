@@ -82,31 +82,23 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	 * Calc their multis.
 	 */
 	public calcMulti(ctx: Context) {
-		interface Unlocks {
-			name: string;
-			value: number;
-		};
-
-		let unlocked: Unlocks[] = [];
-		let total = 0;
-		// let all = 0; just do "unlocked/max_multi" on `lava multi` embed footer
-
-		const increment = (amount = 1) => total++;
+		const unlocked: { name: string, value: number }[] = [];
 		const unlock = (name: string, value: number) => {
-			unlocked.push({ name, value });
-			total += value;
-			increment();
+			return unlocked.push({ name, value });
 		}
 
+		// The permanent multis
 		unlock('User Multipliers', this.props.multi);
+		// Memers Crib
 		if (ctx.guild.id === '691416705917779999') {
 			unlock(ctx.guild.name, 10);
 		}
+		// Nitro Booster
 		if (ctx.member.roles.premiumSubscriberRole) {
 			unlock('Nitro Booster', 10);
 		}
 
-		return { unlocked, total };
+		return unlocked;
 	}
 
 	addPocket(amount: number) {

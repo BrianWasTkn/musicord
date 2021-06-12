@@ -44,7 +44,7 @@ export default class extends GambleCommand {
 			}});
 		}
 
-		const multi = entry.calcMulti(ctx).total;
+		const multi = entry.calcMulti(ctx).reduce((p, c) => c.total + p, 0);
 		const winnings = this.calcWinnings(multi, bet);
 		const { props } = await entry.addPocket(winnings).save();
 
