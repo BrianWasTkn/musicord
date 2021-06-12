@@ -27,7 +27,8 @@ Lava.handlers.argument.addTypes();
 /**
  * Command Handler
  */
-Lava.handlers.command.on('error', (ctx: Context, cmd: Command, args: any, error: Error) => {
+// @ts-ignore
+Lava.handlers.command.on('error', (error: Error, ctx: Context, cmd: Command) => {
   Lava.console.error('Command', error, true);
   return ctx.channel.send('Something wrong occured :c');
 })
