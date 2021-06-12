@@ -3,8 +3,8 @@
  * @author BrianWasTaken
 */
 
+import { Collection, Message, MessageOptions, MessageEmbedOptions, MessageEmbed } from 'discord.js';
 import { Command as OldCommand, CommandOptions, CommandDescription, Category } from 'discord-akairo';
-import { Collection, Message, MessageOptions } from 'discord.js';
 import { AbstractModule, LavaClient } from 'lava/akairo';
 import { CommandHandler } from '.';
 import { Context } from 'lava/discord';
@@ -50,7 +50,7 @@ export class Command extends OldCommand implements AbstractModule {
 	/**
 	 * Method to run this command.
 	 */
-	public exec(context: Context, args?: any): PromiseUnion<MessageOptions> {
+	public exec(context: Context, args?: any): PromiseUnion<any> {
 		return super.exec(context, args);
 	}
 }

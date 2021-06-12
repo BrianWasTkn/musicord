@@ -1,5 +1,5 @@
+import { MessageOptions, FileOptions } from 'discord.js';
 import { Command, Context } from 'lava/index';
-import { MessageOptions } from 'discord.js';
 
 export default class extends Command {
 	constructor() {

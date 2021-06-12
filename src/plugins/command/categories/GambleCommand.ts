@@ -37,7 +37,7 @@ export class GambleCommand extends Command {
 						const kay = (amount as string).replace(/k$/g, '');
 						return isInteger(kay) ? Number(kay) * 1e3 : null;
 					}
-					return null;
+					break;
 			}
 		}
 

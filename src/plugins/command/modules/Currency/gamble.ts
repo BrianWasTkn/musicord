@@ -11,29 +11,20 @@ export default class extends GambleCommand {
 		});
 	}
 
-	async exec(ctx: Context, args: { amount: number | string }): Promise<MessageOptions> {
+	async exec(ctx: Context, args: { amount: number | string }) {
 		const entry = await ctx.currency.fetch(ctx.author.id);
 		const bet = this.parseArgs(ctx, args, entry);
 		if (!bet) {
-			return { 
-				reply: { messageReference: ctx.id }, 
-				content: 'You need to bet something!' 
-			};
+			return ctx.reply('You need to bet something!');
 		}
 		if (typeof bet === 'string') {
-			return {
-				reply: { messageReference: ctx.id },
-				content: 'Needs to be a whole number yeah?'
-			};
+			return ctx.reply('Needs to be a whole number yeah?');
 		}
 
 		const state = this.checkArgs(bet, entry);
 		if (state.constructor === String) {
-			return { 
-				reply: { messageReference: ctx.id },
-				content: state.replace(/{do}/g, 'gamble')
-					.replace(/{pocket}/g, entry.props.pocket.toLocaleString())
-			};
+			const reply = state.replace(/{pocket}/g, entry.props.pocket.toLocaleString());
+			return ctx.reply(reply);
 		}
 
 		const { userD, botD } = this.roll();
@@ -43,28 +34,28 @@ export default class extends GambleCommand {
 				: entry.removePocket(bet)
 			).save();
 
-			return { embed: {
+			return ctx.channel.send({ embed: {
 				author: { name: `${ctx.author.username}'s gambling game` },
 				footer: { text: 'sucks to suck' }, color: userD === botD ? 'YELLOW' : 'RED', 
 				fields: this.displayField(ctx.author, userD, botD), description: [
 					`You lost ${botD === userD ? 'nothing!' : `**${bet.toLocaleString()}** coins.`}\n`,
 					`You ${botD === userD ? 'still' : 'now'} have **${props.pocket.toLocaleString()}** coins.`
 				].join('\n')
-			}};
+			}});
 		}
 
 		const multi = entry.calcMulti(ctx).total;
 		const winnings = this.calcWinnings(multi, bet);
 		const { props } = await entry.addPocket(winnings).save();
 
-		return { embed: {
+		return ctx.channel.send({ embed: {
 			author: { name: `${ctx.author.username}'s gambling game` },
 			footer: { text: 'winner winner' }, color: 'GREEN', description: [
 				`You won **${winnings.toLocaleString()}** coins.`,
 				`**Multiplier** ${multi.toLocaleString()}% | **Percent of bet won** ${Math.round(winnings / bet).toLocaleString()}%\n`,
 				`You now have **${props.pocket.toLocaleString()}** coins.`
 			].join('\n'), fields: this.displayField(ctx.author, userD, botD),
-		}}
+		}});
 	}
 
 	roll() {
