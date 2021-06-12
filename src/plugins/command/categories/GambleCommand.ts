@@ -59,13 +59,13 @@ export class GambleCommand extends Command {
 			case entry.props.pocket > Currency.MAX_POCKET:
 				return GambleMessages.TOO_RICH;
 			case bet > entry.props.pocket:
-				return GambleMessages.BET_HIGHER_POCKET;
+				return GambleMessages.BET_HIGHER_POCKET(entry.props.pocket);
 			case bet < Currency.MIN_BET:
 				return GambleMessages.BET_IS_LOWER;
 			case bet > Currency.MAX_BET:
 				return GambleMessages.BET_IS_HIGHER;
 			default:
-				return null;
+				return bet;
 		}
 	}
 

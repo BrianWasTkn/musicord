@@ -13,19 +13,13 @@ export default class extends GambleCommand {
 
 	async exec(ctx: Context, args: { amount: number | string }) {
 		const entry = await ctx.currency.fetch(ctx.author.id);
-		const bet = this.parseArgs(ctx, args, entry);
-		if (!bet) {
-			return ctx.reply('You need to bet something!');
-		}
-		if (typeof bet === 'string') {
-			return ctx.reply('Needs to be a whole number yeah?');
-		}
 
+		const bet = this.parseArgs(ctx, args, entry);
+		if (!bet) return ctx.reply('You need to bet something!');
+		if (typeof bet === 'string') return ctx.reply('Needs to be a whole number yeah?');
+		
 		const state = this.checkArgs(bet, entry);
-		if (state.constructor === String) {
-			const reply = state.replace(/{pocket}/g, entry.props.pocket.toLocaleString());
-			return ctx.reply(reply);
-		}
+		if (typeof state === 'string') return ctx.reply(state);
 
 		const { userD, botD } = this.roll();
 		if (botD > userD || botD === userD) {
@@ -44,7 +38,7 @@ export default class extends GambleCommand {
 			}});
 		}
 
-		const multi = entry.calcMulti(ctx).reduce((p, c) => c.total + p, 0);
+		const multi = entry.calcMulti(ctx).reduce((p, c) => c.value + p, 0);
 		const winnings = this.calcWinnings(multi, bet);
 		const { props } = await entry.addPocket(winnings).save();
 
