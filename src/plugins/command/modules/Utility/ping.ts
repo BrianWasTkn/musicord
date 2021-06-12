@@ -11,8 +11,7 @@ export default class Utility extends Command {
 		});
 	}
 
-	public exec = (ctx: Context): MessageOptions => ({
-		content: `**:ping_pong: Ponge:** \`${ctx.guild.shard.ping}ms\``,
-		reply: { messageReference: ctx.id, failIfNotExists: true },
+	public exec = (ctx: Context) => ctx.reply({
+		content: `**:ping_pong: Ponge:** \`${ctx.guild.shard.ping}ms\``
 	});
 }

@@ -17,7 +17,7 @@ export default class extends Command {
 		});
 	}
 
-	async exec(ctx: Context, args: { member: GuildMemberPlus }): Promise<MessageOptions> {
+	async exec(ctx: Context, args: { member: GuildMemberPlus }) {
 		const entry = await ctx.currency.fetch(args.member.user.id);
 		const { user } = args.member;
 
@@ -26,8 +26,7 @@ export default class extends Command {
 			await entry.addPocket(ctx.client.util.randomNumber(1, 5) * 1e6).save();
 		}
 
-		console.log(ctx.author.id, 'bruh')
-		return { embed: <MessageEmbedOptions> {
+		return ctx.channel.send({ embed: <MessageEmbedOptions> {
 			title: `${user.username}'s balance`,
 			color: ctx.client.util.randomColor(),
 			description: Object.entries({
@@ -40,6 +39,6 @@ export default class extends Command {
 			})
 				.map(([label, val]) => `**${label}:** ${val}`)
 				.join('\n')
-		}};
+		}});
 	}
 }
