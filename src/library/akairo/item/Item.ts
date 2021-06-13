@@ -126,9 +126,17 @@ export abstract class Item extends AbstractModule {
 	 */
 	public handler: ItemHandler;
 	/**
-	 * The shop info of this item.
+	 * The level 0 price of this item.
 	 */
-	public info: ItemInfo;
+	public price: number;
+	/**
+	 * The level 0 sell price of this item.
+	 */
+	public sell: number;
+	/**
+	 * The level 0 emoji of this item.
+	 */
+	public emoji: string;
 	/**
 	 * The upgrades of this item.
 	 */
@@ -173,14 +181,19 @@ export abstract class Item extends AbstractModule {
 		}
 
 		/**
-		 * What you see most in the shop.
-		*/
-		this.info = this._assign(options.info, {
-			emoji: ':thinking:',
-			name: 'Unknown Item',
-			sell: 0,
-			buy: 1,
-		});
+		 * The emoji of this item.
+		 */
+		this.emoji = options.info.emoji;
+
+		/**
+		 * The price of this item.
+		 */
+		this.price = options.info.buy;
+
+		/**
+		 * The sell price of this item.
+		 */
+		this.sell = options.info.buy * options.info.sell;
 
 		/**
 		 * The upgrades for this item.

@@ -5,8 +5,8 @@ export default class extends Command {
 	constructor() {
 		super('balance', {
 			aliases: ['balance', 'bal'],
-			description: 'Check yours or someone elses balance.',
 			clientPermissions: ['EMBED_LINKS'],
+			description: 'Check yours or someone elses balance.',
 			name: 'Balance',
 			args: [{
 				id: 'member',

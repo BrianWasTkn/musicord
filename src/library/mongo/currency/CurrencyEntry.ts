@@ -94,7 +94,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 			unlock(ctx.guild.name, 10);
 		}
 		// Nitro Booster
-		if (ctx.member.roles.premiumSubscriberRole) {
+		if (ctx.member.roles.premiumSubscriberRole?.id) {
 			unlock('Nitro Booster', 10);
 		}
 

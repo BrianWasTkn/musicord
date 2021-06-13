@@ -51,6 +51,13 @@ export class Context extends Message implements Structure {
 	public get crib(): CribEndpoint {
 		return this.client.db.crib;
 	}
+
+	/**
+	 * Await a single message from the idiots.
+	 */
+	public awaitMessage(userID = this.author.id, time = 30000) {
+		return this.channel.awaitMessages(m => m.author.id === this.author.id, { time }).then(col => col.first()) as Promise<this>;
+	}
 }
 
 Structures.extend('Message', () => Context)

@@ -2,6 +2,7 @@ import 'module-alias/register';
 import 'dotenv/config';
 
 import { Context, Command } from 'lava/index';
+import EventEmitter from 'events';
 import Lava from './client';
 
 /**
@@ -25,13 +26,9 @@ Lava.db.connect(process.env.MONGO_URI, {
 Lava.handlers.argument.addTypes();
 
 /**
- * Command Handler
+ * Set emitters.
  */
-// @ts-ignore
-Lava.handlers.command.on('error', (error: Error, ctx: Context, cmd: Command) => {
-  Lava.console.error('Command', error, true);
-  return ctx.channel.send('Something wrong occured :c');
-})
+Lava.handlers.listener.setEmitters(Lava.handlers);
 
 /**
  * Plug our bot in discord's butthole.
