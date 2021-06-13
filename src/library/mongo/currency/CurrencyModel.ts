@@ -16,7 +16,7 @@ const CurrencySchema = new Schema({
 		multi: {
 			base: build(Number, 3),
 			level_rewards: build(Number, 0),
-		}
+		},
 		prem: build(Number, 0),
 		xp: build(Number, 0),
 	},

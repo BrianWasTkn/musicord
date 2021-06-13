@@ -78,7 +78,6 @@ export default class extends Command {
 			.map(({ mod, owned, level }) => {
 				const { category, emoji, name, id } = mod;
 				return `**${emoji} ${name}** — ${owned.toLocaleString()}\n*LVL* \`${level}\`\n*ID* \`${id}\` — ${category.id}`
-			})
-		);
+			});
 	}
 }
