@@ -10,12 +10,8 @@ export default class extends Listener {
 		});
 	}
 
-	get titleCD() {
-		return ['Chill', 'Hold Up', 'Bruh calm down'];
-	}
-
 	exec(error: Error, ctx: Context, cmd: Command) {
-		console.error(error);
-		ctx.reply('Something wrong occured.');
+		this.client.console.error('Command', error, true);
+		ctx.reply('Something wrong occured :c');
 	}
 }

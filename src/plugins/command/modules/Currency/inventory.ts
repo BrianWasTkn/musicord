@@ -16,6 +16,7 @@ export default class extends Command {
 			args: [
 				{
 					id: 'member',
+					default: 1,
 					type: Argument.union('number', 'memberMention')
 				},
 				{
@@ -30,8 +31,8 @@ export default class extends Command {
 	resolveArgs(ctx: Context, args: InventoryArgs) {
 		const isMemberNumber = typeof args.member === 'number';
 		return <{ member: GuildMemberPlus, page: number }> {
-			member: isMemberNumber ? ctx.member : args.member,
-			page: isMemberNumber ? args.member : args.page
+			member: isMemberNumber ? ctx.member : (args.member ?? ctx.member),
+			page: isMemberNumber ? args.member : (args.page ?? 1)
 		}
 	}
 
