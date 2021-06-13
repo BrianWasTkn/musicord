@@ -200,10 +200,10 @@ export abstract class Item extends AbstractModule {
 		*/
 		this.upgrades = options.upgrades.map(
 			(up: ItemUpgrade, i: number) => this._assign(up, {
-				emoji: this.info.emoji,
+				emoji: this.emoji,
 				level: i + 1, // +1 because base item config is level 0
 				name: this.name,
-				price: this.info.buy,
+				price: this.buy,
 			})
 		);
 	}
@@ -223,7 +223,7 @@ export abstract class Item extends AbstractModule {
 	public use(context: Context): PromiseUnion<MessageOptions> {
 		return { reply: { messageReference: context.id, failIfNotExists: false }, embed: {
 			description: 'Bob is currently building this item shush-',
-			title: `${this.info.emoji} ${this.name}`, color: 0xfafafa,
+			title: `${this.emoji} ${this.name}`, color: 0xfafafa,
 		}};
 	}
 }

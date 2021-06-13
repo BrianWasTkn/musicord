@@ -24,10 +24,7 @@ export default class extends GambleCommand {
 
 		const { userD, botD } = this.roll();
 		if (botD > userD || botD === userD) {
-			const { props } = await (botD === userD 
-				? entry.calc().xp(true)
-				: entry.removePocket(bet)
-			).save();
+			const { props } = await entry.removePocket(botD === userD ? 0 : bet).save()
 
 			return ctx.channel.send({ embed: {
 				author: { name: `${ctx.author.username}'s gambling game` },
