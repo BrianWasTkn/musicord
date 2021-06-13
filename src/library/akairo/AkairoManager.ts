@@ -1,6 +1,6 @@
-import { LavaClient, Plugin, AbstractHandler } from '.';
-import { Collection, Constructable } from 'discord.js';
+import { LavaClient, Plugin, AbstractHandler, CommandHandler, ListenerHandler } from '.';
 import { AkairoHandler } from 'discord-akairo';
+import { Collection } from 'discord.js';
 
 import EventEmitter from 'events';
 import path from 'path';
@@ -77,6 +77,15 @@ export class PluginManager extends EventEmitter {
 		for (const plugin of Array.from(this.register().values())) {
 			if (plugin.handler) this.emit('load', plugin.load());
 		}
+
+		const plug = (id: string) => this.plugins.get(id).handler as unknown 
+		const listenerHandler = plug('listener') as ListenerHandler;
+		const commandHandler = plug('command') as CommandHandler;
+		commandHandler.useListenerHandler(listenerHandler);
+
+		const emitters: { [k: string]: EventEmitter } = {}; 
+		this.plugins.forEach((v, k) => emitters[k] = v.handler);
+		listenerHandler.setEmitters(emitters);
 
 		return this;
 	}
