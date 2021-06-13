@@ -75,7 +75,7 @@ export class PluginManager extends EventEmitter {
 	 */
 	loadAll() {
 		for (const plugin of Array.from(this.register().values())) {
-			if (plugin.handler) this.emit('load', plugin.load());
+			if (plugin.handler) this.emit('load', plugin);
 		}
 
 		const plug = (id: string) => this.plugins.get(id).handler as unknown 
@@ -87,6 +87,7 @@ export class PluginManager extends EventEmitter {
 		this.plugins.forEach((v, k) => emitters[k] = v.handler);
 		listenerHandler.setEmitters(emitters);
 
+		this.plugins.forEach(p => p.load());
 		return this;
 	}
 }
