@@ -15,5 +15,4 @@ Lava.db.connect(process.env.MONGO_URI, {
 });
 
 Lava.handlers.argument.addTypes();
-Lava.handlers.listener.setEmitters(Lava.handlers);
 Lava.login(process.env.DISCORD_TOKEN);
