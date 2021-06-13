@@ -44,7 +44,7 @@ export default class extends GambleCommand {
 			author: { name: `${ctx.author.username}'s gambling game` },
 			footer: { text: 'winner winner' }, color: 'GREEN', description: [
 				`You won **${winnings.toLocaleString()}** coins.`,
-				`**Multiplier** ${multi.toLocaleString()}% | **Percent of bet won** ${Math.round(winnings / bet).toLocaleString()}%\n`,
+				`**Multiplier** ${multi.toLocaleString()}% | **Percent of bet won** ${Math.round(winnings / bet * 100)}%\n`,
 				`You now have **${props.pocket.toLocaleString()}** coins.`
 			].join('\n'), fields: this.displayField(ctx.author, userD, botD),
 		}});

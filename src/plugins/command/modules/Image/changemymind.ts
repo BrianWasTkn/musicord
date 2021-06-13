@@ -18,14 +18,12 @@ export default class extends Command {
 		});
 	}
 
-	exec(ctx: Context, args: { text: string }): Promise<MessageOptions> {
+	exec(ctx: Context, args: { text: string }) {
 		return ctx.client.memer.generate('changemymind', {
 			text: args.text
-		}).then((buffer: Buffer) => ({
-			reply: { messageReference: ctx.id, failIfNotExists: false },
+		}).then((buffer: Buffer) => ctx.reply({
 			files: [buffer]
-		})).catch((e: Error) => ({
-			reply: { messageReference: ctx.id },
+		})).catch((e: Error) => ctx.reply({
 			content: e.message || 'Something went wrong.'
 		}));
 	}
