@@ -98,6 +98,10 @@ export declare global {
 		 */
 		blocked: boolean;
 		/**
+		 * The expiration for the punishment.
+		 */
+		expire: number;
+		/**
 		 * Amount of times they got punished.
 		 */
 		count: number;

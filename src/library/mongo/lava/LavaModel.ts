@@ -30,6 +30,7 @@ const LavaSchema = new Schema({
 	punishments: {
 		banned: build(Boolean, false),
 		blocked: build(Boolean, false),
+		expire: build(Number, 0),
 		count: build(Number, 0),
 	},
 });
