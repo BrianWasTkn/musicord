@@ -28,7 +28,9 @@ Lava.handlers.argument.addTypes();
 /**
  * Set emitters.
  */
-Lava.handlers.listener.setEmitters(Lava.handlers);
+Lava.handlers.listener.setEmitters({
+  command: Lava.handlers.command
+});
 
 /**
  * Plug our bot in discord's butthole.
