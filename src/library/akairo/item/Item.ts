@@ -203,7 +203,7 @@ export abstract class Item extends AbstractModule {
 				emoji: this.emoji,
 				level: i + 1, // +1 because base item config is level 0
 				name: this.name,
-				price: this.buy,
+				price: this.price,
 			})
 		);
 	}

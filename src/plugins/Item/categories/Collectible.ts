@@ -57,8 +57,8 @@ export abstract class CollectibleItem extends Item {
 			info = {
 				emoji: ':thinking:',
 				name: 'Collectible Item',
-				sell: 0,
-				buy: 1000000000,
+				sell: 0.1,
+				buy: 0,
 			},
 			description = {
 				short: 'A very unique and unknown collectible.',
@@ -74,6 +74,6 @@ export abstract class CollectibleItem extends Item {
 	 */
 	public async use(ctx: Context): Promise<MessageOptions> {
 		const thisItem = await ctx.currency.fetch(ctx.author.id).then(d => d.items.get(this.id));
-		return { reply: { messageReference: ctx.id }, content: `**${this.info.emoji} WHAT A FLEX!**\nImagine having **${thisItem.owned.toLocaleString()}**, couldn't be me` };
+		return { reply: { messageReference: ctx.id }, content: `**${this.emoji} WHAT A FLEX!**\nImagine having **${thisItem.owned.toLocaleString()}**, couldn't be me` };
 	}
 }
