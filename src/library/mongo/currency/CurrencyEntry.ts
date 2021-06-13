@@ -88,95 +88,109 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		}
 
 		// The permanent multis
-		unlock('User Multipliers', this.props.multi);
+		unlock('User Multipliers', this.props.multi.base);
+		// Level rewards multis
+		unlock('Level Rewards', this.props.multi.level_rewards);
+
 		// Memers Crib
 		if (ctx.guild.id === '691416705917779999') {
-			unlock(ctx.guild.name, 10);
+			unlock(ctx.guild.name, 5);
 		}
 		// Nitro Booster
 		if (ctx.member.roles.premiumSubscriberRole?.id) {
-			unlock('Nitro Booster', 10);
+			unlock('Nitro Booster', 1.5);
+		}
+		// Has 1 of every item
+		if (this.items.every(i => i.isOwned())) {
+			unlock('Item Collector', 2.5);
+		}
+		// Prestige multis
+		if (this.prestige.level >= 1) {
+			const multi = Currency.PRESTIGE_MULTI_VALUE * this.prestige.level;
+			unlock(`Prestige ${this.prestige.level}`, multi);
 		}
 
 		return unlocked;
 	}
 
-	addPocket(amount: number) {
-		this.data.props.pocket += amount;
-		return this;
-	}
-
-	removePocket(amount: number) {
-		this.data.props.pocket -= amount;
-		return this;
-	}
-
 	/**
-	 * Manage their premium keytards.
-	*/
-	keys(amount: number) {
+	 * Chained pocket manager.
+	 */
+	private pocket(amount: number) {
 		return {
-			add: () => {
-				this.data.props.prem += amount;
-				return this;
-			},
-			remove: () => {
-				this.data.props.prem -= amount;
-				return this;
-			},
-			set: () => {
-				this.data.props.prem = amount;
-				return this;
-			},
-		}
-	}
-
-	/**
-	 * Manage their pocket.
-	*/
-	pocket(amount: number) {
-		return {
-			add: () => {
+			inc: () => {
 				this.data.props.pocket += amount;
 				return this;
 			},
-			remove: () => {
+			dec: () => {
 				this.data.props.pocket -= amount;
 				return this;
 			},
 			set: () => {
 				this.data.props.pocket = amount;
 				return this;
-			},
-		};
+			}
+		}
 	}
 
 	/**
 	 * Manage their vault.
-	*/
-	vault(amount: number) {
+	 */
+	private vault(amount = 0) {
 		return {
-			withdraw: () => {
-				this.data.props.vault.amount -= amount;
+			withdraw: (vault = true) => {
 				this.data.props.pocket += amount;
+				if (vault) this.data.props.vault.amount -= amount;
 				return this;
 			},
-			deposit: () => {
+			deposit: (pocket = true) => {
 				this.data.props.vault.amount += amount;
-				this.data.props.pocket -= amount;
+				if (pocket) this.data.props.pocket -= amount;
 				return this;
 			},
 			expand: () => {
-				this.data.props.vault.amount += amount;
+				this.data.props.space += amount;
 				return this;
 			},
+			lock: () => {
+				this.data.props.vault.locked = true;
+				return this;
+			},
+			unlock: () => {
+				this.data.props.vault.locked = false;
+				return this;
+			},
+			set: () => {
+				this.data.props.vault.amount = amount;
+				return this;
+			}
+		}
+	}
+
+	/**
+	 * Manage their premium shits.
+	 */
+	private keys(amount: number) {
+		return {
+			inc: () => {
+				this.data.props.prem += amount;
+				return this;
+			},
+			dec: () => {
+				this.data.props.prem -= amount;
+				return this;
+			},
+			set: () => {
+				this.data.props.prem = amount;
+				return this;
+			}
 		}
 	}
 
 	/**
 	 * Manage their inventory.
 	*/
-	inventory(id: string) {
+	private inventory(id: string) {
 		const thisItem = this.data.items.find(i => i.id === id);
 
 		return {
@@ -199,6 +213,10 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 			setMulti: (multi: number) => {
 				thisItem.multi = multi;
 				return this;
+			},
+			upgrade: (level = thisItem.level + 1) => {
+				thisItem.level = level;
+				return this;
 			}
 		}
 	}
@@ -206,7 +224,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/**
 	 * Manage their xp.
 	*/
-	calc() {
+	private calc() {
 		return {
 			xp: (space = false) => {
 				const { randomNumber } = this.client.util;
@@ -225,7 +243,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/**
 	 * Manage their dailytards.
 	*/
-	daily() {
+	private daily() {
 		return {
 			addStreak: () => {
 				this.data.daily.streak++;
@@ -245,31 +263,112 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/**
 	 * Manage their gambling statfuckeries.
 	*/
-	stats(game: string) {
+	private stats(game: string) {
 		const thisStat = this.data.gamble.find(stat => stat.id === game);
 
 		return {
 			coins: (amount: number) => ({
-				lost: () => {
+				add: () => {
 					thisStat.won += amount;
 					return this;
 				},
-				won: () => {
+				sub: () => {
 					thisStat.lost += amount;
 					return this;
 				}
 			}),
-			games: (inc = 1) => ({
+			games: (amt = 1) => ({
 				loses: () => {
-					thisStat.loses += inc;
+					thisStat.loses += amt;
 					return this;
 				},
 				wins: () => {
-					thisStat.wins += inc;
+					thisStat.wins += amt;
 					return this;
 				}
 			})
 		}
+	}
+
+	/** Add coins to ur pocket */
+	addPocket(amount: number) {
+		return this.pocket(amount).inc();
+	}
+
+	/** Remove coins from pocket */
+	removePocket(amount: number) {
+		return this.pocket(amount).dec();
+	}
+
+	/** Add certain amount of keys */
+	addKeys(amount: number) {
+		return this.keys(amount).inc();
+	}
+
+	/** Remove amount of keys */
+	remKeys(amount: number) {
+		return this.keys(amount).dec();
+	}
+
+	/** Withdraw coins from ur vault */
+	withdraw(amount: number, removeVault = true) {
+		return this.vault(amount).withdraw(removeVault);
+	}
+
+	/** Deposit coins into your vault */
+	deposit(amount: number, removePocket = true) {
+		return this.vault(amount).deposit(removePocket);
+	}
+
+	/** Expand ur vault */
+	expandVault(amount: number) {
+		return this.vault(amount).expand();
+	}
+
+	/** Lock your vault */
+	lockVault() {
+		return this.vault().lock();
+	}
+
+	/** Unlock ur vault */
+	unlockVault() {
+		return this.vault().unlock();
+	}
+
+	/** Update a game stat */
+	updateStats(game: string, coins: number, isWin: boolean) {
+		const coin = this.stats(game).coins(coins);
+		const games = this.stats(game).games();
+		
+		if (isWin) {
+			games.wins();
+			coin.add();
+			return this;
+		}
+
+		games.loses();
+		coin.sub();
+		return this;
+	}
+
+	/** Increment the amount of stuff they own to an item */
+	addItem(id: string, amount = 1) {
+		return this.inventory(id).increment(amount);
+	}
+
+	/** Opposite of the thing above */
+	subItem(id: string, amount = 1) {
+		return this.inventory(id).decrement(amount);
+	}
+
+	/** Activate an item based on it's expiration date */
+	activateItem(id: string, expiration: number) {
+		return this.inventory(id).activate(expiration);
+	}
+
+	/** Deactivate an item */
+	deactivateItem(id: string) {
+		return this.inventory(id).deactivate();
 	}
 
 	/**

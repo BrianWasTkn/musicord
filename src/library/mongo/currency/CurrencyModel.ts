@@ -13,7 +13,10 @@ const CurrencySchema = new Schema({
 		pocket: build(Number, 0),
 		vault: build(Number, 0),
 		space: build(Number, 0),
-		multi: build(Number, 3),
+		multi: {
+			base: build(Number, 3),
+			level_rewards: build(Number, 0),
+		}
 		prem: build(Number, 0),
 		xp: build(Number, 0),
 	},

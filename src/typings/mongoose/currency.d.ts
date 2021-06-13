@@ -72,9 +72,18 @@ export declare global {
 		 */
 		space: number;
 		/**
-		 * Their base multipliers.
+		 * Their multipliers.
 		 */
-		multi: number;
+		multi: {
+			/**
+			 * Their level reward multis.
+			 */
+			level_rewards: number;
+			/**
+			 * Their base multis.
+			 */
+			base: number;
+		};
 		/**
 		 * Their premium keys.
 		 */
