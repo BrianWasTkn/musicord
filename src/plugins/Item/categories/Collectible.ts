@@ -57,7 +57,7 @@ export abstract class CollectibleItem extends Item {
 			info = {
 				emoji: ':thinking:',
 				name: 'Collectible Item',
-				sell: 0.1,
+				sell: 0.33,
 				buy: 0,
 			},
 			description = {

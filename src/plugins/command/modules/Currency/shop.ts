@@ -80,11 +80,11 @@ export default class extends Command {
 		const { query } = args;
 		const { sale } = handler;
 
-		if (!args.query) {
+		if (!query) {
 			return ctx.reply('That item doesn\'t exist tho');
 		}
 
-		const inventoryItem = entry.items.get(query.id)
+		const inventoryItem = entry.items.get(query.id);
 		const { owned, level } = inventoryItem;
 		const { buy, sell } = this.getPrices(query, sale, inventoryItem);
 
