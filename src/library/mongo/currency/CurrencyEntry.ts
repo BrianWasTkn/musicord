@@ -100,6 +100,14 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		if (ctx.member.roles.premiumSubscriberRole?.id) {
 			unlock('Nitro Booster', 1.5);
 		}
+		// Mastery 1 and up
+		if (ctx.member.roles.cache.has('794834783582421032')) {
+			unlock('Mastery Rank', 2);
+		}
+		// Mastery 10
+		if (ctx.member.roles.cache.has('794835005679206431')) {
+			unlock('Mastery Max', 5);
+		}
 		// Has 1 of every item
 		if (this.items.every(i => i.isOwned())) {
 			unlock('Item Collector', 2.5);

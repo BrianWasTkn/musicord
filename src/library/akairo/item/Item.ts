@@ -33,6 +33,10 @@ export interface ItemUpgrade {
 	 */
 	price: number;
 	/**
+	 * The new sell rate of this item.
+	 */
+	sell?: number;
+	/**
 	 * The new name for this item.
 	 */
 	name?: string;
@@ -132,7 +136,7 @@ export abstract class Item extends AbstractModule {
 	/**
 	 * The level 0 sell price of this item.
 	 */
-	public sell: number;
+	public sell: (price: number) => number;
 	/**
 	 * The level 0 emoji of this item.
 	 */
@@ -193,19 +197,26 @@ export abstract class Item extends AbstractModule {
 		/**
 		 * The sell price of this item.
 		 */
-		this.sell = options.info.buy * options.info.sell;
+		this.sell = (price: number) => price * options.info.sell;
 
 		/**
 		 * The upgrades for this item.
 		*/
-		this.upgrades = options.upgrades.map(
+		this.upgrades = [{
+			emoji: this.emoji,
+			level: 0,
+			name: this.name,
+			price: this.price,
+			sell: 0.33
+		}, ...options.upgrades.map(
 			(up: ItemUpgrade, i: number) => this._assign(up, {
 				emoji: this.emoji,
 				level: i + 1, // +1 because base item config is level 0
 				name: this.name,
 				price: this.price,
+				sell: 0.33
 			})
-		);
+		)];
 	}
 
 	/**

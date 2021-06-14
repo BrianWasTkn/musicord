@@ -12,15 +12,15 @@ export default class extends GambleCommand {
 
 	get slots() {
 		return {
-			broken_heart: 		[0.2, 1, false],
-			clown: 						[0.3, 1.15, false],
-			pizza: 						[0.4, 1.3, false],
-			eggplant: 				[0.5, 1.45, false],
-			flushed: 					[0.6, 1.6, true],
-			star2: 						[0.7, 1.75, true],
-			fire: 						[0.8, 1.9, true],
-			four_leaf_clover: [0.9, 2.1, true],
-			kiss: 						[1, 2.25, true],
+			broken_heart: 		[0.2, 1],
+			clown: 						[0.25, 1.15],
+			pizza: 						[0.3, 1.3],
+			eggplant: 				[0.35, 1.45],
+			flushed: 					[0.4, 1.6],
+			star2: 						[0.45, 1.75],
+			fire: 						[0.6, 1.9],
+			four_leaf_clover: [0.7, 2.1],
+			kiss: 						[0.8, 2.25],
 		}
 	}
 
@@ -32,7 +32,7 @@ export default class extends GambleCommand {
 		if (odds > 95) {
 			return Array(3).fill(first);
 		}
-		if (odds > 65) {
+		if (odds > 75) {
 			emojis = Array(3).fill(first);
 			const index = randomNumber(1, emojis.length) - 1;
 			const slots = Object.keys(this.slots);

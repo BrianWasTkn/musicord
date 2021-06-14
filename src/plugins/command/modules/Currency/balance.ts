@@ -1,5 +1,5 @@
+import { Command, Context, GuildMemberPlus, Currency } from 'lava/index';
 import { MessageOptions, MessageEmbedOptions } from 'discord.js';
-import { Command, Context, GuildMemberPlus } from 'lava/index';
 
 export default class extends Command {
 	constructor() {
@@ -31,11 +31,16 @@ export default class extends Command {
 			color: ctx.client.util.randomColor(),
 			description: Object.entries({
 				'Wallet': entry.props.pocket.toLocaleString(),
-				'Bank': `${entry.props.vault.toLocaleString()} ${
+				'Bank': `${entry.props.vault.toLocaleString()}${
 					user.id === ctx.author.id
-						? `/ ${entry.props.space.toLocaleString()}` 
+						? `/${entry.props.space.toLocaleString()}` 
 						: '' 
-				}`
+					}`,
+				'Items': `${
+						entry.items.reduce((p, c) => p + c.owned, 0).toLocaleString()
+					}/${
+						Currency.MAX_INVENTORY.toLocaleString()
+					}`
 			})
 				.map(([label, val]) => `**${label}:** ${val}`)
 				.join('\n')
