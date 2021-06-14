@@ -35,7 +35,8 @@ export default class extends GambleCommand {
 		if (odds > 65) {
 			emojis = Array(3).fill(first);
 			const index = randomNumber(1, emojis.length) - 1;
-			emojis[index] = randomInArray(emojis.filter(e => e !== first));
+			const slots = Object.keys(this.slots);
+			emojis[index] = randomInArray(slots.filter(e => e !== first));
 			return emojis;
 		}
 
@@ -61,7 +62,7 @@ export default class extends GambleCommand {
 		const slots = this.getSlots(Object.keys(this.slots));
 		const { winnings, length } = this.calcSlots(slots, bet, multi);
 
-		if ([1, 2].some(l => l !== length)) {
+		if ([1, 2].every(l => l !== length)) {
 			const { props } = await entry.removePocket(bet).save();
 			return ctx.channel.send({ embed: {
 				color: 'RED',
