@@ -57,7 +57,7 @@ export default class extends Command {
 
 		if (typeof args.query === 'number') {
 			const shop = paginateArray(items.sort((a, b) => b.price - a.price).map((i => this.displayItem(i, false, entry.items.get(i.id)))));
-			const left = parseTime((Date.now() - handler.sale.nextSale) / 1000);
+			const left = parseTime((handler.sale.nextSale - Date.now()) / 1000);
 			if (args.query > shop.length) {
 				return ctx.reply(`Page \`${args.query}\` doesn't exist.`);
 			}
