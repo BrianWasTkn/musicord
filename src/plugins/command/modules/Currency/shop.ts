@@ -34,10 +34,11 @@ export default class extends Command {
 		const cost = dItem.id === item.id ? this.calc(price, discount) : price;
 
 		if (saleNav) {
-			return `[${cost.toLocaleString()}](https://google.com) ( [***${discount}% OFF!***](https://discord.gg/memer) )`;
+			const off = `[${cost.toLocaleString()}](https://google.com) ( [***${discount}% OFF!***](https://discord.gg/memer) )`;
+			return `**${emoji} ${name}** — ${this.getIcon(dItem)} ${off}\n${description.long}`;
 		}
 
-		return `**${emoji} ${name} — ${this.getIcon(item)} [${cost.toLocaleString()}](https://google.com)\n${description.short}`;
+		return `**${emoji} ${name}** — ${this.getIcon(item)} [${cost.toLocaleString()}](https://google.com)\n${description.short}`;
 	}
 
 	getPrices(item: Item, sale: ItemSale, inv: Inventory) {
