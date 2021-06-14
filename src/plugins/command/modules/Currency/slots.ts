@@ -114,7 +114,7 @@ export default class extends GambleCommand {
 			const index = length === 1 ? 1 : 0;
 			const mult = multi[index] as number;
 			let winnings = Math.round(bet + (bet * mult));
-			winnings = winnings + (winnings * (multis / 10000)); 
+			winnings = winnings + Math.round(winnings * (multis / 10000)); 
 
 			return { length, winnings };
 		}
