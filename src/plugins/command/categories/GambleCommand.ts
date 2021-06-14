@@ -20,7 +20,7 @@ export class GambleCommand extends Command {
 		});
 	}
 
-	parseArgs(ctx: Context, args: { amount: string | number }, entry: CurrencyEntry): string | number {
+	parseArgs(ctx: Context, args: { amount: string | number }, entry: CurrencyEntry) {
 		const { MIN_BET, MAX_BET, MAX_POCKET } = Currency;
 		const { isInteger } = ctx.client.util;
 		const { pocket } = entry.props;
@@ -47,12 +47,12 @@ export class GambleCommand extends Command {
 			}
 		}
 
-		return parseFloat(amount as string) || args.amount;
+		return parseFloat(amount as string) || parseFloat(args.amount as string) || null;
 	}
 
 	checkArgs(bet: string | number, entry: CurrencyEntry) {
 		switch(true) {
-			case !Number.isInteger(Number(bet)):
+			case !Number.isInteger(Number(bet)) && entry.props.pocket > 0:
 				return GambleMessages.IS_NAN;
 			case entry.props.pocket <= 0:
 				return GambleMessages.NO_COINS;
@@ -65,7 +65,7 @@ export class GambleCommand extends Command {
 			case bet > Currency.MAX_BET:
 				return GambleMessages.BET_IS_HIGHER;
 			default:
-				return bet;
+				return bet as number;
 		}
 	}
 

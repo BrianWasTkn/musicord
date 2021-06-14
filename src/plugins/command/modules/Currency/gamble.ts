@@ -1,7 +1,7 @@
 import { Context, CurrencyEntry, Currency, UserPlus } from 'lava/index';
 import { MessageOptions, EmbedFieldData } from 'discord.js';
-import { Argument } from 'discord-akairo';
 import { GambleCommand } from '../..';
+import { Argument } from 'discord-akairo';
 
 export default class extends GambleCommand {
 	constructor() {
@@ -17,7 +17,6 @@ export default class extends GambleCommand {
 
 		const bet = this.parseArgs(ctx, args, entry);
 		if (!bet) return ctx.reply('You need to bet something!');
-		if (typeof bet === 'string') return ctx.reply('Needs to be a whole number yeah?');
 		
 		const state = this.checkArgs(bet, entry);
 		if (typeof state === 'string') return ctx.reply(state);
@@ -62,7 +61,7 @@ export default class extends GambleCommand {
 			return a > b ? [b, a] : [a, b];
 		}
 
-		if (Math.random() > 0.6) {
+		if (Math.random() > 0.65) {
 			[botD, userD] = rig(botD, userD);
 		} else {
 			[userD, botD] = rig(botD, userD);
