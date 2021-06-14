@@ -52,12 +52,12 @@ export class GambleCommand extends Command {
 
 	checkArgs(bet: string | number, entry: CurrencyEntry) {
 		switch(true) {
-			case !Number.isInteger(Number(bet)) && entry.props.pocket > 0:
-				return GambleMessages.IS_NAN;
 			case entry.props.pocket <= 0:
 				return GambleMessages.NO_COINS;
 			case entry.props.pocket > Currency.MAX_POCKET:
 				return GambleMessages.TOO_RICH;
+			case !Number.isInteger(Number(bet)):
+				return GambleMessages.IS_NAN;
 			case bet > entry.props.pocket:
 				return GambleMessages.BET_HIGHER_POCKET(entry.props.pocket);
 			case bet < Currency.MIN_BET:
