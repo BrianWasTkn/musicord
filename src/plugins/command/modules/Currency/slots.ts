@@ -70,10 +70,10 @@ export default class extends GambleCommand {
 				},
 				description: [
 					`You lost **${bet.toLocaleString()}** coins.\n`,
-					`You now have **${props.toLocaleString()}** coins.`
+					`You now have **${props.pocket.toLocaleString()}** coins.`
 				].join('\n'),
 				fields: [
-					{ name: 'Outcome', value: `**>** :${slots.join('    ')}: **<**` }
+					{ name: 'Outcome', value: `**>** :${slots.join(':    :')}: **<**` }
 				],
 				footer: {
 					text: 'sucks to suck'
@@ -93,7 +93,7 @@ export default class extends GambleCommand {
 				`You now have **${props.pocket.toLocaleString()}** coins.`
 			].join('\n'),
 			fields: [
-				{ name: 'Outcome', value: `**>** :${slots.join('    ')}: **<**` }
+				{ name: 'Outcome', value: `**>** :${slots.join(':    :')}: **<**` }
 			],
 			footer: {
 				text: 'winner winner'
