@@ -20,7 +20,7 @@ export default class extends Command {
 			author: { name: 'richest users in this server' },
 			color: 'BLUE', description: await this.top()
 				.then(docs => docs.map(doc => {
-					const user = ctx.client.users.cache.get(doc._id)?.tag ?? 'LOL WHO DIS';
+					const user = ctx.client.users.cache.get(doc.data.id)?.tag ?? 'LOL WHO DIS';
 					return `**:coin: ${doc.props.pocket}** — ${user}`;
 				}).join('\n'))
 		}});
