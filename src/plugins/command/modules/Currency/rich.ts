@@ -22,7 +22,7 @@ export default class extends Command {
 			color: 'ORANGE', description: await this.top()
 				.then(docs => docs.map((doc, i) => {
 					const user = ctx.client.users.cache.get(doc.data._id as Snowflake)?.tag ?? 'LOL WHO DIS';
-					const emoji = Array(3).fill('fire')[i + 1] ?? 'coin';
+					const emoji = Array(3).fill('fire')[i] ?? 'coin';
 					return `**:${emoji}: ${doc.props.pocket.toLocaleString()}** — ${user}`;
 				}).join('\n'))
 		}});
