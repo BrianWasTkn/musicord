@@ -7,7 +7,8 @@
  * Colors for discord.js
 */
 const Colors: { [color: string]: number } = {
-	RED: 0xf44336,
+	// RED: 0xf44336,
+	RED: 0xFF5050,
 	ORANGE: 0xff9800,
 	YELLOW: 0xffeb3b,
 	GREEN: 0x4caf50,
