@@ -91,7 +91,7 @@ export default class extends Listener {
 					await dm.send(question);
 					const donRes = (await dm.awaitMessages(m => m.author.id === ctx.author.id, { max: 1, time: 60000 })).first();
 
-					if (!donRes || firstRes.content === 'cancel') return false;
+					if (!donRes || donRes.content === 'cancel') return false;
 					res.set(questionsArr[currentIndex], donRes.content);
 					currentIndex++;
 
