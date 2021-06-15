@@ -54,6 +54,7 @@ export default class extends Listener {
 			giveaway: '692892567787929691',
 			heist: '697007407011725312',
 			event: '697007407011725312',
+			nitro: '692892567787929691',
 			donQ: '715507078860505091',
 		};
 	}
@@ -96,7 +97,7 @@ export default class extends Listener {
 					currentIndex++;
 
 					const next = questions[questionsArr[currentIndex]];
-					return next ? true : await collect(next);
+					return next ? await collect(next) : true;
 				};
 
 				const cols = await collect(questions[questionsArr[currentIndex]]);
