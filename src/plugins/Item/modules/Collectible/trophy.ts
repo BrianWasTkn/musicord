@@ -11,7 +11,7 @@ export default class Collectible extends CollectibleItem {
 			},
 			description: {
 				long: 'Embrace the powers of this trophy!',
-				short: 'Increases your multipliers or just flex it against the poorest!'
+				short: 'Increases your multipliers by 10% (does not stack) or just flex it against the poorest!'
 			},
 			upgrades: [
 				{ price: 45e6 }, 

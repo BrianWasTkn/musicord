@@ -10,8 +10,8 @@ export default class Collectible extends CollectibleItem {
 				sell: 0,
 			},
 			description: {
-				long: 'Embrace the powers of this ring!',
-				short: 'Increases your multipliers or just flex it against the poorest!'
+				long: 'They say this ring came from the gods of volcanos...',
+				short: 'Increases padlock protection!' // idea: increase some item powerups/protection
 			},
 			upgrades: [
 				{ price: 15e6 }, 

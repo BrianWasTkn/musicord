@@ -10,8 +10,8 @@ export default class Collectible extends CollectibleItem {
 				sell: 0,
 			},
 			description: {
-				long: 'Embrace the powers of this crown!',
-				short: 'Increases your multipliers or just flex it against the poorest!'
+				long: 'Only the richest of the richest can own this!',
+				short: 'Does nothing at the moment, coming soon!'
 			},
 			upgrades: [
 				{ price: 70e6 }, 

@@ -23,6 +23,7 @@ export class SpawnHandler extends AbstractHandler<Spawn> {
 				const spawn = randomInArray(this.modules.array());
 				const odds = randomNumber(1, 100);
 
+				if (ctx.author.bot || ctx.channel.type !== 'dm') return;
 				if (this.cooldowns.has(ctx.channel.id)) return;
 				if (spawn.queue.has(ctx.channel.id)) return;
 				if (odds < 100 - spawn.config.odds) return;

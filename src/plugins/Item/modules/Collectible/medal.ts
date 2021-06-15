@@ -10,8 +10,8 @@ export default class Collectible extends CollectibleItem {
 				sell: 0,
 			},
 			description: {
-				long: 'Embrace the powers of this medal!',
-				short: 'Increases your multipliers or just flex it against the poorest!'
+				long: 'Honorable item for honorable people!',
+				short: 'Grants a discount per item you buy, does not stack.'
 			},
 			upgrades: [
 				{ price: 25e6 }, 

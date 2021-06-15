@@ -10,8 +10,8 @@ export default class Collectible extends CollectibleItem {
 				sell: 0,
 			},
 			description: {
-				long: 'Embrace the powers of this gem!',
-				short: 'Increases your multipliers or just flex it against the poorest!'
+				long: 'Crystal clear gem from the past...',
+				short: 'Increase your luck on some commands!'
 			},
 			upgrades: [
 				{ price: 8e6 }, 

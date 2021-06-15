@@ -10,8 +10,8 @@ export default class Collectible extends CollectibleItem {
 				sell: 0,
 			},
 			description: {
-				long: 'Embrace the powers of this trophy!',
-				short: 'Increases your multipliers or just flex it against the poorest!'
+				long: 'A coin from the past...',
+				short: 'Gives you more payouts on gamble commands! Does not stack.'
 			},
 			upgrades: [
 				{ price: 2e6 }, 

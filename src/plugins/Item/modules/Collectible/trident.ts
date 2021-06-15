@@ -10,8 +10,8 @@ export default class Collectible extends CollectibleItem {
 				sell: 0,
 			},
 			description: {
-				long: 'Embrace the almighty powers of the trident!',
-				short: 'Increases your multipliers, shop discounts, steal shields and increase your gambling dice or just flex it against the poorest!'
+				long: 'Give yourself some barriers against pesky robbers!',
+				short: 'Give yourself a permanent steal shield! Does not stack but if you lose this, your steal shield will be taken away from you.'
 			},
 			upgrades: [
 				{ price: 100e6 }, 

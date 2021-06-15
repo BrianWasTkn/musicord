@@ -10,8 +10,8 @@ export default class Collectible extends CollectibleItem {
 				sell: 0,
 			},
 			description: {
-				long: 'Embrace the powers of this statue!',
-				short: 'Increases your multipliers or just flex it against the poorest!'
+				long: 'How tall can your statue get?',
+				short: 'The number of items you own this item represents a metric feet and a metric feet gives off 1% multi!'
 			},
 			upgrades: [
 				{ price: 150e6 }, 
@@ -23,7 +23,7 @@ export default class Collectible extends CollectibleItem {
 
 	get entity(): Entity {
 		return {
-			multipliers: [10, 15, 20, 30],
+			multipliers: [1, 2, 3, 5],
 		};
 	}
 }
