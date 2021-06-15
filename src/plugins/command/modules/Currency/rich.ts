@@ -12,7 +12,7 @@ export default class extends Command {
 
 	top(amount = 10) {
 		const docs = CurrencyModel.find({}).sort({ 'props.pocket': 'desc' }).exec();
-		return docs.then(docs => docs.map(doc => new CurrencyEntry(this.client, doc)));
+		return docs.then(docs => docs.map(doc => new CurrencyEntry(this.client, doc)).filter(doc => doc.props.pocket > 0).slice(0, amount));
 	}
 
 	async exec(ctx: Context) {		
@@ -20,8 +20,8 @@ export default class extends Command {
 			author: { name: 'richest users in this server' },
 			color: 'BLUE', description: await this.top()
 				.then(docs => docs.map(doc => {
-					const user = ctx.client.users.cache.get(doc.data.id)?.tag ?? 'LOL WHO DIS';
-					return `**:coin: ${doc.props.pocket}** — ${user}`;
+					const user = ctx.client.users.cache.get(doc.data._id)?.tag ?? 'LOL WHO DIS';
+					return `**:coin: ${doc.props.pocket.toLocaleString()}** — ${user}`;
 				}).join('\n'))
 		}});
 	}
