@@ -4,9 +4,9 @@ export default class Collectible extends CollectibleItem {
 	public constructor() {
 		super('trident', {
 			info: {
-				buy: 100e6,
+				buy: 80e6,
 				emoji: ':trident:',
-				name: 'Trident',
+				name: 'Neptune\'s Trident',
 				sell: 0,
 			},
 			description: {
@@ -14,9 +14,9 @@ export default class Collectible extends CollectibleItem {
 				short: 'Increases your multipliers, shop discounts, steal shields and increase your gambling dice or just flex it against the poorest!'
 			},
 			upgrades: [
-				{ price: 150e6 }, 
-				{ price: 250e6 }, 
-				{ price: 500e6 }
+				{ price: 100e6 }, 
+				{ price: 120e6 }, 
+				{ price: 150e6 }
 			]
 		});
 	}

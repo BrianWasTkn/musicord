@@ -43,7 +43,6 @@ export abstract class CollectibleItem extends Item {
 	 */
 	public constructor(id: string, options: Partial<Omit<CollectibleItemOptions, 'category'>>) {
 		const {
-			name,
 			upgrades,
 			config = {
 				showInInventory: true,
@@ -66,7 +65,7 @@ export abstract class CollectibleItem extends Item {
 			}
 		} = options;
 
-		super(id, { name, upgrades, config, info, description, category: 'Collectible' });
+		super(id, { upgrades, config, info, description, category: 'Collectible' });
 	}
 
 	/**

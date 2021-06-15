@@ -19,7 +19,7 @@ export default class extends Command {
 	async exec(ctx: Context) {		
 		return ctx.channel.send({ embed: {
 			author: { name: 'richest users in this server' },
-			color: 'BLUE', description: await this.top()
+			color: 'ORANGE', description: await this.top()
 				.then(docs => docs.map(doc => {
 					const user = ctx.client.users.cache.get(doc.data._id as Snowflake)?.tag ?? 'LOL WHO DIS';
 					return `**:coin: ${doc.props.pocket.toLocaleString()}** — ${user}`;

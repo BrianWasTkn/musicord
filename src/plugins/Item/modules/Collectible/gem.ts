@@ -2,21 +2,21 @@ import { CollectibleItem, Entity } from '../..';
 
 export default class Collectible extends CollectibleItem {
 	public constructor() {
-		super('trophy', {
+		super('gem', {
 			info: {
-				buy: 30e6,
-				emoji: ':trophy:',
-				name: 'Shiny Trophy',
+				buy: 5e6,
+				emoji: ':gem:',
+				name: 'Crystal Gem',
 				sell: 0,
 			},
 			description: {
-				long: 'Embrace the powers of this trophy!',
+				long: 'Embrace the powers of this gem!',
 				short: 'Increases your multipliers or just flex it against the poorest!'
 			},
 			upgrades: [
-				{ price: 45e6 }, 
-				{ price: 55e6 }, 
-				{ price: 70e6 }
+				{ price: 8e6 }, 
+				{ price: 11e6 }, 
+				{ price: 15e6 }
 			]
 		});
 	}
