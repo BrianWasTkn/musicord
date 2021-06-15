@@ -82,7 +82,7 @@ export default class extends Listener {
 				await dm.send(`**Welcome to our interactive donation menu!**\nI'll be asking you questions to assist you with your giveaway. You have 60 seconds for each question. Type \`cancel\` anytime to cancel. Type anything to continue.`)
 
 				const firstRes = (await dm.awaitMessages(m => m.author.id === ctx.author.id, { max: 1, time: 60000 })).first();
-				if (!firstRes?.content || firstRes.content === 'cancel') return dm.send('Your dono has been cancelled.');
+				if (!firstRes || firstRes.content === 'cancel') return dm.send('Your dono has been cancelled.');
 
 				const questionsArr = Object.keys(questions);
 				let currentIndex = 0;
@@ -91,7 +91,7 @@ export default class extends Listener {
 					await dm.send(question);
 					const donRes = (await dm.awaitMessages(m => m.author.id === ctx.author.id, { max: 1, time: 60000 })).first();
 
-					if (!donRes?.content || firstRes.content === 'cancel') return false;
+					if (!donRes || firstRes.content === 'cancel') return false;
 					res.set(questionsArr[currentIndex], donRes.content);
 					currentIndex++;
 
