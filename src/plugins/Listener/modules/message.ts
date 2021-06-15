@@ -123,7 +123,6 @@ export default class extends Listener {
 				await ctx.member.roles.add(this.roles.donQ);
 				return dm.send(`You now have access to ${donoChan.toString()} to let our staff handle your donation. Thanks!`);
 			} catch(error) {
-				console.log(error);
 				return dm.send({ embed: { 
 					color: 'RED', 
 					description: 'Something wrong occured :c'
