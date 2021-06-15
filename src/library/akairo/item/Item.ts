@@ -40,6 +40,10 @@ export interface ItemUpgrade {
 	 * The new name for this item.
 	 */
 	name?: string;
+	/**
+	 * Wether this item is premium for this level.
+	 */
+	premium?: boolean;
 }
 
 export interface ItemInfo {
@@ -207,14 +211,16 @@ export abstract class Item extends AbstractModule {
 			level: 0,
 			name: this.name,
 			price: this.price,
-			sell: 0.33
+			sell: 0.33,
+			premium: false
 		}, ...options.upgrades.map(
-			(up: ItemUpgrade, i: number) => this._assign(up, {
+			(up: ItemUpgrade, i: number, arr) => this._assign(up, {
 				emoji: this.emoji,
 				level: i + 1, // +1 because base item config is level 0
 				name: this.name,
 				price: this.price,
-				sell: 0.33
+				sell: 0.33,
+				premium: arr.length === 3
 			})
 		)];
 	}
