@@ -20,9 +20,10 @@ export default class extends Command {
 		return ctx.channel.send({ embed: {
 			author: { name: 'richest users in this server' },
 			color: 'ORANGE', description: await this.top()
-				.then(docs => docs.map(doc => {
+				.then(docs => docs.map((doc, i) => {
 					const user = ctx.client.users.cache.get(doc.data._id as Snowflake)?.tag ?? 'LOL WHO DIS';
-					return `**:coin: ${doc.props.pocket.toLocaleString()}** — ${user}`;
+					const emoji = Array(3).fill('fire')[i + 1] ?? 'coin';
+					return `**:${emoji}: ${doc.props.pocket.toLocaleString()}** — ${user}`;
 				}).join('\n'))
 		}});
 	}
