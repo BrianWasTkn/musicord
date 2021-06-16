@@ -41,11 +41,11 @@ export default class extends Command {
 		return `**${emoji} ${name}** — ${this.getIcon(item)} [${cost.toLocaleString()}](https://google.com)\n${shortInfo}`;
 	}
 
-	getPrices(item: Item, sale: ItemSale, inv: Inventory) {
-		const isSale = item.id === sale.item.id;
+	getPrices(item: Item, level: number) {
+		const isSale = item.id === item.handler.sale.item.id;
 		return {
-			sell: this.calc(item.sell(item.upgrades[inv.level].price), isSale ? sale.discount : 0),
-			buy: this.calc(item.upgrades[inv.level].price, isSale ? sale.discount : 0),
+			sell: this.calc(item.sell(item.upgrades[level].price), isSale ? item.handler.sale.discount : 0),
+			buy: this.calc(item.upgrades[level].price, isSale ? item.handler.sale.discount : 0),
 		}
 	}
 
@@ -85,12 +85,11 @@ export default class extends Command {
 			return ctx.reply('That item doesn\'t exist tho');
 		}
 
-		const inventoryItem = entry.items.get(query.id);
-		const { owned, level } = inventoryItem;
-		const { buy, sell } = this.getPrices(query, sale, inventoryItem);
+		const { owned, level } = entry.items.get(query.id);
+		const { buy, sell } = this.getPrices(query, level);
 
 		return ctx.channel.send({ embed: {
-			title: `${query.emoji} ${query.name}${owned > 0 ? `(${owned.toLocaleString()} owned)` : ''} — Level ${inventoryItem.level === query.upgrades.length ? `${inventoryItem.level} (Max)` : inventoryItem.level}`,
+			title: `${query.emoji} ${query.name}${owned > 0 ? `(${owned.toLocaleString()} owned)` : ''} — Level ${level === query.upgrades.length ? `${level} (Max)` : level}`,
 			color: 'RANDOM', description: [
 				`${query.longInfo}\n`, 
 				[
