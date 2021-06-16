@@ -60,7 +60,7 @@ export default class extends GambleCommand {
 			return a > b ? [b, a] : [a, b];
 		}
 
-		if (Math.random() > 0.7) {
+		if (Math.random() > 0.55) {
 			[botD, userD] = rig(botD, userD);
 		} else {
 			[userD, botD] = rig(botD, userD);
