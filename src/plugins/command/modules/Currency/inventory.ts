@@ -41,7 +41,7 @@ export default class extends Command {
 		const isContext = ctx.author.id === member.user.id;
 
 		const entry = await ctx.currency.fetch(member.user.id);
-		const inventory = ctx.client.util.paginateArray(this.mapItems(entry.items), 5);
+		const inventory = ctx.client.util.paginateArray(this.mapItems(entry.items));
 
 		if (inventory.length < 1) {
 			return ctx.reply(`${isContext ? 'You' : 'They'} don't have any items on ${isContext ? 'your' : 'their'} inventory!`);
@@ -71,6 +71,7 @@ export default class extends Command {
 	mapItems(items: CollectionFlake<Inventory>) {
 		return [...items.values()]
 			.filter(inv => inv.isOwned())
+			.filter(inv => inv.module.inventory)
 			.map(inv => ({ 
 				mod: inv.module, 
 				owned: inv.owned, 

@@ -19,7 +19,7 @@ export default class extends Command {
 	}
 
 	getIcon(item: Item) {
-		return item.config.premium ? ':key:' : ':coin:';
+		return item.premium ? ':key:' : ':coin:';
 	}
 
 	calc(price: number, discount: number) {
@@ -27,7 +27,7 @@ export default class extends Command {
 	}
 
 	displayItem(item: Item, saleNav: boolean, inv: Inventory) {
-		const { name, description, config, emoji } = item;
+		const { name, shortInfo, longInfo, emoji } = item;
 		const { discount, item: dItem } = item.handler.sale;
 
 		const price = item.upgrades[inv.level].price;
@@ -35,16 +35,16 @@ export default class extends Command {
 
 		if (saleNav) {
 			const off = `[${cost.toLocaleString()}](https://google.com) ( [***${discount}% OFF!***](https://discord.gg/memer) )`;
-			return `**${emoji} ${name}** — ${this.getIcon(dItem)} ${off}\n${description.long}`;
+			return `**${emoji} ${name}** — ${this.getIcon(dItem)} ${off}\n${longInfo}`;
 		}
 
-		return `**${emoji} ${name}** — ${this.getIcon(item)} [${cost.toLocaleString()}](https://google.com)\n${description.short}`;
+		return `**${emoji} ${name}** — ${this.getIcon(item)} [${cost.toLocaleString()}](https://google.com)\n${shortInfo}`;
 	}
 
 	getPrices(item: Item, sale: ItemSale, inv: Inventory) {
 		const isSale = item.id === sale.item.id;
 		return {
-			sell: this.calc(item.sell(item.upgrades[inv.level].sell), isSale ? sale.discount : 0),
+			sell: this.calc(item.sell(item.upgrades[inv.level].price), isSale ? sale.discount : 0),
 			buy: this.calc(item.upgrades[inv.level].price, isSale ? sale.discount : 0),
 		}
 	}
@@ -56,7 +56,7 @@ export default class extends Command {
 		const items = [...handler.modules.values()];
 
 		if (typeof args.query === 'number') {
-			const shop = paginateArray(items.sort((a, b) => b.price - a.price).map((i => this.displayItem(i, false, entry.items.get(i.id)))));
+			const shop = paginateArray(items.sort((a, b) => b.price - a.price).filter(i => i.shop).map(i => this.displayItem(i, false, entry.items.get(i.id))));
 			const left = parseTime((handler.sale.nextSale - Date.now()) / 1000);
 			if (args.query > shop.length) {
 				return ctx.reply(`Page \`${args.query}\` doesn't exist.`);
@@ -92,10 +92,10 @@ export default class extends Command {
 		return ctx.channel.send({ embed: {
 			title: `${query.emoji} ${query.name}${owned > 0 ? `(${owned.toLocaleString()} owned)` : ''}`,
 			color: 'RANDOM', description: [
-				`${query.description.long}\n`, 
+				`${query.longInfo}\n`, 
 				[
-					`**BUY** — ${query.config.buyable ? `${this.getIcon(query)} ${buy.toLocaleString()}` : '**Not Buyable**'}`,
-					`**SELL** — ${query.config.sellable ? `${this.getIcon(query)} ${sell.toLocaleString()}` : '**Not Sellable**'}`
+					`**BUY** — ${query.buyable ? `${this.getIcon(query)} ${buy.toLocaleString()}` : '**Not Buyable**'}`,
+					`**SELL** — ${query.sellable ? `${this.getIcon(query)} ${sell.toLocaleString()}` : '**Not Sellable**'}`
 				].join('\n')
 			].join('\n')
 		}})

@@ -8,7 +8,7 @@ import { MessageOptions } from 'discord.js';
 import { ItemHandler } from '.';
 import { Context } from 'lava/index'; 
 
-export interface ItemUpgrade extends Partial<Pick<ItemOptions, 'name' | 'price' | 'emoji' | 'premium' | 'shortInfo' | 'longInfo'>> {
+export interface ItemUpgrade extends Partial<Pick<ItemOptions, 'name' | 'price' | 'emoji' | 'sell' | 'premium' | 'shortInfo' | 'longInfo'>> {
 	/**
 	 * The level of this item.
 	 * Note: It's automatic, no need to implement this.
@@ -111,6 +111,9 @@ export abstract class Item extends AbstractModule {
 	/** The upgrades of this item */
 	public upgrades: ItemUpgrade[];
 
+	/** The handler this item belongs to. */
+	public handler: ItemHandler;
+
 	/**
 	 * The constructor for any item.
 	 */
@@ -118,7 +121,9 @@ export abstract class Item extends AbstractModule {
 		super(id, { name: options.name, category: options.category });
 		this.price = options.price;
 		this.emoji = options.emoji;
-		this.sell = (price: number) => price * options.sell;
+		this.sell = (price: number) => {
+			return Math.round(price * options.sell);
+		};
 
 		this.sale = options.sale;
 		this.inventory = options.inventory;
@@ -155,14 +160,16 @@ export abstract class Item extends AbstractModule {
 			level: 0,
 			name: this.name,
 			price: this.price,
-			premium: false
+			premium: false,
+			sell: 0.33,
 		}, ...options.upgrades.map(
 			(up: ItemUpgrade, i: number, arr) => this._assign(up, {
 				emoji: this.emoji,
 				level: i + 1,
 				name: this.name,
 				price: this.price,
-				premium: i === arr.length - 1
+				premium: i === arr.length - 1,
+				sell: 0.33
 			})
 		)];
 	}
