@@ -1,5 +1,5 @@
 /**
- * Our helper class for all item effects (including potions). 
+ * Our helper class for all item effects. 
  * @author BrianWasTaken
 */
 

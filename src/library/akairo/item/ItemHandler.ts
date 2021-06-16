@@ -1,4 +1,13 @@
 import { AbstractHandlerOptions, AbstractHandler, LavaClient, Item } from 'lava/akairo';
+import { Collection, Snowflake } from 'discord.js';
+import { ItemEffects } from 'lava/utility';
+
+export interface ItemHandlerOptions extends AbstractHandlerOptions {
+	/**
+	 * The sale interval in ms.
+	 */
+	saleInterval?: number;
+}
 
 export interface ItemSale {
 	/**
@@ -20,12 +29,22 @@ export class ItemHandler extends AbstractHandler<Item> {
 	 * The sale item.
 	 */
 	public sale: ItemSale = {};
+	/**
+	 * Item effects mapped from snowflake to item to effects.
+	 */
+	public effects: Collection<Snowflake, Collection<string, ItemEffects>> = new Collection();
+	/**
+	 * The sale interval
+	 */
+	public saleInterval: number;
 
 	/**
 	 * Construct an item handler.
 	 */
-	public constructor(client: LavaClient, options: AbstractHandlerOptions) {
+	public constructor(client: LavaClient, options: ItemHandlerOptions) {
 		super(client, options);
+		/** @type {number} */
+		this.saleInterval = options.saleInterval ?? 1000 * 60 * 15;
 
 		/**
 		 * Sale Item.
@@ -33,7 +52,7 @@ export class ItemHandler extends AbstractHandler<Item> {
 		this.client.once('ready', () => {
 			if (!this.modules.size) return;
 			this.setSaleItem();
-			setInterval(() => this.setSaleItem(), 1e3 * 5 * 60);
+			setInterval(() => this.setSaleItem(), this.saleInterval);
 		});
 	}
 
@@ -44,7 +63,7 @@ export class ItemHandler extends AbstractHandler<Item> {
 		const { randomInArray, randomNumber } = this.client.util;
 		const items = [...this.modules.values()].filter(i => !i.premium);
 		const item = randomInArray(items), discount = randomNumber(1, 100);
-		const nextSale = (this.sale.nextSale ?? Date.now()) + (1000 * 60 * 5);
+		const nextSale = (this.sale.nextSale ?? Date.now()) + this.saleInterval;
 		return this.sale = { item, discount, nextSale };
 	}
 }

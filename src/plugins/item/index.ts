@@ -7,8 +7,11 @@ export default new Plugin(
 			automateCategories: true,
 			classToHandle: Item,
 			directory: join(__dirname, 'modules'),
+			saleInterval: 1000 * 60 * 5,
 		}
 	)
 );
 
 export * from './categories/Collectible';
+export * from './categories/PowerUp';
+export * from './categories/Tool';

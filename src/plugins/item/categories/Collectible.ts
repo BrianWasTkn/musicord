@@ -1,4 +1,4 @@
-import { Context, Item, ItemOptions } from 'lava/index';
+import { Context, Item, ItemOptions, CurrencyEntry } from 'lava/index';
 import { MessageOptions } from 'discord.js';
 
 export interface CollectibleItemOptions extends Pick<ItemOptions, 'name' | 'price' | 'emoji' | 'shortInfo' | 'longInfo' | 'upgrades'> {
@@ -58,8 +58,8 @@ export abstract class CollectibleItem extends Item {
 	public constructor(id: string, options: CollectibleItemOptions) {
 		super(id, {
 			name: options.name,
-			price: options.price,
 			emoji: options.emoji,
+			price: options.price,
 			shortInfo: options.shortInfo,
 			longInfo: options.longInfo,
 			upgrades: options.upgrades,
@@ -82,8 +82,8 @@ export abstract class CollectibleItem extends Item {
 	/**
 	 * Method to use this collectible.
 	 */
-	public async use(ctx: Context): Promise<MessageOptions> {
-		const thisItem = await ctx.currency.fetch(ctx.author.id).then(d => d.items.get(this.id));
+	public use(ctx: Context, entry: CurrencyEntry): MessageOptions {
+		const thisItem = entry.items.get(this.id);
 		return { reply: { messageReference: ctx.id }, content: `**${this.emoji} WHAT A FLEX!**\nImagine having **${thisItem.owned.toLocaleString()}**, couldn't be me` };
 	}
 }

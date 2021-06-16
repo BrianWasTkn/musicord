@@ -379,6 +379,16 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		return this.inventory(id).deactivate();
 	}
 
+	/** Set the multi of an item */
+	setItemMulti(id: string, multi: number) {
+		return this.inventory(id).setMulti(multi);
+	}
+
+	/** Upgrade an item */
+	upgradeItem(id: string) {
+		return this.inventory(id).upgrade();
+	}
+
 	/**
 	 * The final shitfuckery this entry needs to do after tolerating bot spammers.
 	*/

@@ -27,8 +27,9 @@ export default class extends Command {
 	}
 
 	displayItem(item: Item, saleNav: boolean, inv: Inventory) {
-		const { name, shortInfo, longInfo, emoji } = item;
+		const { shortInfo, longInfo, emoji } = item;
 		const { discount, item: dItem } = item.handler.sale;
+		const name = item.upgrades[inv.level].name;
 
 		const price = item.upgrades[inv.level].price;
 		const cost = dItem.id === item.id ? this.calc(price, discount) : price;
@@ -86,10 +87,11 @@ export default class extends Command {
 		}
 
 		const { owned, level } = entry.items.get(query.id);
+		const { emoji, name } = query.upgrades[level];
 		const { buy, sell } = this.getPrices(query, level);
 
 		return ctx.channel.send({ embed: {
-			title: `${query.emoji} ${query.name}${owned > 0 ? `(${owned.toLocaleString()} owned)` : ''} — Level ${level === query.upgrades.length ? `${level} (Max)` : level}`,
+			title: `${emoji} ${name}${owned > 0 ? `(${owned.toLocaleString()} owned)` : ''} — Level ${level === query.upgrades.length ? `${level} (Max)` : level}`,
 			color: 'RANDOM', description: [
 				`${query.longInfo}\n`, 
 				[

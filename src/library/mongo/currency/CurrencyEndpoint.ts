@@ -16,7 +16,7 @@ export class CurrencyEndpoint extends Endpoint<CurrencyProfile> {
 	 */
 	public updateItems(doc: CurrencyProfile) {
 		const updated: Item[] = [];
-		for (const mod of this.client.handlers.item.modules.values()) {
+		for (const mod of this.client.handlers.item.modules.filter(i => i.push).values()) {
 			if (!doc.items.find(i => i.id === mod.id)) {
 				doc.items.push({ id: mod.id, amount: 0, uses: 0, expire: 0, level: 0, multi: 0 });
 				updated.push(mod);

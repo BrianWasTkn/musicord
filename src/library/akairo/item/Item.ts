@@ -4,9 +4,9 @@
  */
 
 import { AbstractModuleOptions, AbstractModule } from 'lava/akairo';
+import { Context, CurrencyEntry } from 'lava/index'; 
 import { MessageOptions } from 'discord.js';
 import { ItemHandler } from '.';
-import { Context } from 'lava/index'; 
 
 export interface ItemUpgrade extends Partial<Pick<ItemOptions, 'name' | 'price' | 'emoji' | 'sell' | 'premium' | 'shortInfo' | 'longInfo'>> {
 	/**
@@ -186,7 +186,7 @@ export abstract class Item extends AbstractModule {
 	/**
 	 * Main method to use items.
 	*/
-	public use(context: Context): PromiseUnion<MessageOptions> {
+	public use(context: Context, entry: CurrencyEntry, times = 1): PromiseUnion<MessageOptions> {
 		return { reply: { messageReference: context.id, failIfNotExists: false }, embed: {
 			description: 'Bob is currently building this item shush-',
 			title: `${this.emoji} ${this.name}`, color: 0xfafafa,
