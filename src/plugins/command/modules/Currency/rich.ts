@@ -22,10 +22,10 @@ export default class extends Command {
 	async exec(ctx: Context) {		
 		return ctx.channel.send({ embed: {
 			author: { name: 'richest users in this server' },
-			color: 'ORANGE', description: await this.top(ctx.guild.members.cache)
+			color: 'RED', description: await this.top(ctx.guild.members.cache)
 				.then(docs => docs.map((doc, i) => {
 					const user = ctx.client.users.cache.get(doc.data._id as Snowflake)?.tag ?? 'LOL WHO DIS';
-					const emoji = Array(3).fill('fire')[i] ?? 'coin';
+					const emoji = Array(3).fill('small_red_triangle')[i] ?? 'coin';
 					return `**:${emoji}: ${doc.props.pocket.toLocaleString()}** — ${user}`;
 				}).join('\n'))
 		}});
