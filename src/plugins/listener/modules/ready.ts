@@ -45,11 +45,8 @@ export default class extends Listener {
 
 	async setPresence() {
 		await this.client.user.setPresence({
-			activities: [{
-				name: 'lava help',
-				type: 'LISTENING'
-			}],
-			status: 'online',
+			activities: [{ name: 'Memers Crib', type: 'COMPETING' }],
+			status: process.env.DEV_MODE === 'true' ? 'dnd' : 'online'
 		});
 	}
 }

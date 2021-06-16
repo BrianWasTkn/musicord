@@ -15,35 +15,35 @@ export interface Entity {
 	/**
 	 * The additional dice roll on gambling.
 	 */
-	dice?: ArrayUnion<number>;
+	dice?: number[];
 	/**
 	 * The discount debuffed if they buy an item.
 	 */
-	discount?: ArrayUnion<number>;
+	discount?: number[];
 	/**
 	 * The possible rewarded multis if they own one of this.
 	 */
-	multipliers?: ArrayUnion<number>;
+	multipliers?: number[];
 	/**
 	 * The possible steal shields if they own this collectible.
 	 */
-	shield?: ArrayUnion<number>;
+	shield?: number[];
 	/**
 	 * The possible slot odd to hit a jackpot.
 	 */
-	slots?: ArrayUnion<number>;
+	slots?: number[];
 	/**
 	 * The rate between 1-500% of payouts on commands that gives you coins.
 	 */
-	payouts?: ArrayUnion<number>;
+	payouts?: number[];
 	/**
 	 * The possible xp boost between 50-1000% 
 	 */
-	xpBoost?: ArrayUnion<number>;
+	xpBoost?: number[];
 	/**
 	 * Increase odds of successful rob.
 	 */
-	rob?: ArrayUnion<number>;
+	rob?: number[];
 }
 
 export abstract class CollectibleItem extends Item {

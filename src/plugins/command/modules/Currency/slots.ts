@@ -12,15 +12,15 @@ export default class extends GambleCommand {
 
 	get slots() {
 		return {
-			broken_heart: 		[0.2, 1],
-			clown: 						[0.25, 1.15],
-			pizza: 						[0.3, 1.3],
-			eggplant: 				[0.35, 1.45],
-			flushed: 					[0.4, 1.6],
-			star2: 						[0.45, 1.75],
-			fire: 						[0.6, 1.9],
-			four_leaf_clover: [0.7, 2.1],
-			kiss: 						[0.8, 2.25],
+			broken_heart: 		[0.1, 1.5],
+			clown: 						[0.2, 1.6],
+			pizza: 						[0.3, 1.7],
+			eggplant: 				[0.4, 1.8],
+			flushed: 					[0.5, 1.9],
+			star2: 						[0.6, 2.0],
+			fire: 						[0.7, 2.1],
+			four_leaf_clover: [0.8, 2.2],
+			kiss: 						[0.9, 2.3],
 		}
 	}
 
@@ -53,8 +53,7 @@ export default class extends GambleCommand {
 		const entry = await ctx.currency.fetch(ctx.author.id);
 
 		const bet = this.parseArgs(ctx, args, entry);
-		if (!bet) return ctx.reply('You need to bet something!');
-		
+		if (typeof bet === 'string') return ctx.reply(bet);
 		const state = this.checkArgs(bet, entry);
 		if (typeof state === 'string') return ctx.reply(state);
 

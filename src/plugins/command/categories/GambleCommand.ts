@@ -43,7 +43,7 @@ export class GambleCommand extends Command {
 						const kay = (amount as string).replace(/k$/g, '');
 						return isInteger(kay) ? Number(kay) * 1e3 : null;
 					}
-					break;
+					return GambleMessages.IS_NAN;
 			}
 		}
 
@@ -56,8 +56,6 @@ export class GambleCommand extends Command {
 				return GambleMessages.NO_COINS;
 			case entry.props.pocket > Currency.MAX_POCKET:
 				return GambleMessages.TOO_RICH;
-			case !Number.isInteger(Number(bet)):
-				return GambleMessages.IS_NAN;
 			case bet > entry.props.pocket:
 				return GambleMessages.BET_HIGHER_POCKET(entry.props.pocket);
 			case bet < Currency.MIN_BET:

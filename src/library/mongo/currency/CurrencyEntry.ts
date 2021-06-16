@@ -4,9 +4,10 @@
 */
 
 import { Inventory, Mission, GambleStat, TradeStat } from '.';
-import { Collection } from 'discord.js';
+import { CollectibleItem, PowerUpItem } from 'lava/../plugins/item';
+import { Currency, ItemEffects } from 'lava/utility';
+import { Collection, Snowflake } from 'discord.js';
 import { UserEntry } from 'lava/mongo';
-import { Currency } from 'lava/utility';
 import { Context } from 'lava/discord';
 
 export class CurrencyEntry extends UserEntry<CurrencyProfile> {
@@ -94,28 +95,46 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 
 		// Memers Crib
 		if (ctx.guild.id === '691416705917779999') {
-			unlock(ctx.guild.name, 5);
+			unlock(ctx.guild.name, 2.5);
 		}
 		// Nitro Booster
 		if (ctx.member.roles.premiumSubscriberRole?.id) {
-			unlock('Nitro Booster', 1.5);
+			unlock('Nitro Booster', 15);
 		}
 		// Mastery 1 and up
 		if (ctx.member.roles.cache.has('794834783582421032')) {
-			unlock('Mastery Rank', 2);
-		}
-		// Mastery 10
-		if (ctx.member.roles.cache.has('794835005679206431')) {
-			unlock('Mastery Max', 5);
+			unlock('Crib Mastery Rank', 1.5);
 		}
 		// Has 1 of every item
 		if (this.items.every(i => i.isOwned())) {
-			unlock('Item Collector', 2.5);
+			unlock('Item Collector', 1.5);
+		}
+		// Item Effects
+		if (this.items.some(i => i.multiplier >= 1)) {
+			this.items.filter(i => i.isOwned()).forEach(i => {
+				if (i.isActive() && i.multiplier >= 1) {
+					return unlock(i.module.name, i.multiplier);
+				} 
+			});
+		}
+		// Mastery 10
+		if (ctx.member.roles.cache.has('794835005679206431')) {
+			unlock('Crib Mastery Max', 10);
 		}
 		// Prestige multis
 		if (this.prestige.level >= 1) {
 			const multi = Currency.PRESTIGE_MULTI_VALUE * this.prestige.level;
 			unlock(`Prestige ${this.prestige.level}`, multi);
+		}
+		// Collectible Items
+		const collectibles = this.items.map(i => i.module).filter(i => i.category.id === 'Collectible') as CollectibleItem[];
+		if (collectibles.length >= 1) {
+			collectibles.filter(c => c.entities.multipliers).forEach(c => {
+				const inv = this.items.get(c.id);
+				if (inv.multiplier && inv.isOwned()) {
+					return unlock(c.name, c.entities.multipliers[inv.level] ?? 0);
+				}
+			});
 		}
 
 		return unlocked;
@@ -233,14 +252,17 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	 * Manage their xp.
 	*/
 	private calc() {
+		const maxLevel = Currency.MAX_LEVEL * 100;
+
 		return {
-			xp: (space = false) => {
+			xp: (space = false, additional = 1) => {
+				if (this.data.props.xp > maxLevel) return this;
 				const { randomNumber } = this.client.util;
-				// @TODO: modify "2" to be dependent on cheese for example.
-				this.data.props.xp += randomNumber(1, 2);
+				this.data.props.xp += randomNumber(0, 1 + additional);
 				return space ? this.calc().space() : this;
 			},
 			space: (os = 55) => {
+				if (this.data.props.xp > maxLevel) return this;
 				const { level } = this.data.prestige;
 				const amount = Math.ceil(os * (level / 2) + os);
 				return this.vault(amount).expand();
@@ -359,6 +381,30 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		return this;
 	}
 
+	/** Update their item effects */
+	updateEffects() {
+		const { effects, modules } = this.client.handlers.item;
+		const userID = this.data._id as Snowflake;
+		const itemMap = new Collection<string, ItemEffects>();
+		this.items.filter(i => i.isActive()).forEach(i => {
+			const instance = this.client.util.effects();
+			return itemMap.set(i.module.id, instance);
+		});
+
+		const userEffects = effects.set(userID, itemMap).get(userID);
+		if (userEffects.size < 1) return this;
+
+		for (const item of modules.array() as PowerUpItem[]) {
+			if (item.category.id === 'Power-Up') {
+				const inv = this.items.get(item.id);
+				const eff = userEffects.get(inv.id);
+				item.effect(eff, this);
+			}
+		}
+
+		return this;
+	}
+
 	/** Increment the amount of stuff they own to an item */
 	addItem(id: string, amount = 1) {
 		return this.inventory(id).increment(amount);
@@ -392,9 +438,10 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/**
 	 * The final shitfuckery this entry needs to do after tolerating bot spammers.
 	*/
-	save(runPostFunctions = true) {
-		if (runPostFunctions) {
-			this.data.props.xp = Math.min(this.data.props.xp, Currency.MAX_LEVEL * 100);
+	save(runPost = true) {
+		if (runPost) {
+			this.calc().xp(true);
+			this.updateEffects();
 		}
 
 		return super.save();

@@ -1,4 +1,4 @@
-import { Context, CurrencyEntry } from 'lava/index';
+import { Context, CurrencyEntry, ItemEffects } from 'lava/index';
 import { PowerUpItem } from '../..';
 
 export default class extends PowerUpItem {
@@ -17,6 +17,10 @@ export default class extends PowerUpItem {
 				{ price: 10000, duration: 1000 * 60 * 10 },
 			]
 		});
+	}
+
+	effect(effects: ItemEffects, entry: CurrencyEntry) {
+		return effects.setMulti(entry.items.get(this.id).multiplier);
 	}
 
 	async exec(ctx: Context, entry: CurrencyEntry) {

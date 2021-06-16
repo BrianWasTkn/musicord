@@ -16,8 +16,7 @@ export default class extends GambleCommand {
 		const entry = await ctx.currency.fetch(ctx.author.id);
 
 		const bet = this.parseArgs(ctx, args, entry);
-		if (!bet) return ctx.reply('You need to bet something!');
-		
+		if (typeof bet === 'string') return ctx.reply(bet);
 		const state = this.checkArgs(bet, entry);
 		if (typeof state === 'string') return ctx.reply(state);
 

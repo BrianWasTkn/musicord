@@ -23,7 +23,7 @@ export default class extends Command {
 
 		// temporary coz testing owo
 		if (entry.props.pocket <= 0) {
-			await entry.addPocket(ctx.client.util.randomNumber(1, 5) * 1e6).save();
+			await entry.addPocket(Currency.MAX_BET).save(false);
 		}
 
 		return ctx.channel.send({ embed: <MessageEmbedOptions> {
@@ -31,7 +31,7 @@ export default class extends Command {
 			color: ctx.client.util.randomColor(),
 			description: Object.entries({
 				'Wallet': entry.props.pocket.toLocaleString(),
-				'Bank': `${entry.props.vault.toLocaleString()}${
+				'Bank': `${entry.props.vault.amount.toLocaleString()}${
 					user.id === ctx.author.id
 						? `/${entry.props.space.toLocaleString()}` 
 						: '' 
@@ -39,7 +39,7 @@ export default class extends Command {
 				'Items': `${
 						entry.items.reduce((p, c) => p + c.owned, 0).toLocaleString()
 					}/${
-						Currency.MAX_INVENTORY.toLocaleString()
+						this.client.handlers.item.modules.size.toLocaleString()
 					}`
 			})
 				.map(([label, val]) => `**${label}:** ${val}`)

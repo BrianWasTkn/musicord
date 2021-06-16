@@ -1,4 +1,4 @@
-import { Item, ItemOptions, ItemUpgrade, Context, CurrencyEntry } from 'lava/index';
+import { Item, ItemOptions, ItemUpgrade, Context, CurrencyEntry, ItemEffects } from 'lava/index';
 
 export interface PowerUpItemOptions extends Pick<ItemOptions, 'name' | 'price' | 'emoji' | 'shortInfo' | 'longInfo'>  {
 	/**
@@ -67,7 +67,9 @@ export abstract class PowerUpItem extends Item {
 		this.checks = options.checks;
 	}
 
-	getDuration(entry: CurrencyEntry) {
+	public abstract effect(effects: ItemEffects, entry?: CurrencyEntry): ItemEffects;
+
+	public getDuration(entry: CurrencyEntry) {
 		return this.duration(entry.items.get(this.id).level);
 	}
 }
