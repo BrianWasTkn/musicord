@@ -11,7 +11,10 @@ const CurrencySchema = new Schema({
 
 	props: {
 		pocket: build(Number, 0),
-		vault: build(Number, 0),
+		vault: {
+			value: build(Number, 0),
+			locked: build(Boolean, false),
+		},
 		space: build(Number, 0),
 		multi: {
 			base: build(Number, 3),
