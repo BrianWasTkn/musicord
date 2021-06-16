@@ -9,8 +9,8 @@ export default class extends PowerUpItem {
 			price: 2000,
 			checks: 'time',
 			duration: 1000 * 60,
-			shortInfo: 'Permanent XP points what?',
-			longInfo: 'Yes you got that right, i\'ll be granting you more xp points you earn per command!',
+			shortInfo: 'Increase your lactose by eating cheese!',
+			longInfo: 'Have a temporary chance of dropping keys and grab them? Wow okay.',
 			upgrades: [
 				{ price: 3000, duration: 1000 * 60 * 3 },
 				{ price: 5000, duration: 1000 * 60 * 5 },

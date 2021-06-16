@@ -7,7 +7,7 @@ export default class extends PowerUpItem {
 			name: 'Brian\'s Wine',
 			emoji: ':wine:',
 			price: 2000,
-			checks: 'time',
+			checks: 'inventory',
 			duration: 1000 * 60,
 			shortInfo: 'Simply hack into your dice...',
 			longInfo: 'Drink for temporary dice hax!',
