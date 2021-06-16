@@ -90,7 +90,7 @@ export default class extends Command {
 		const { buy, sell } = this.getPrices(query, sale, inventoryItem);
 
 		return ctx.channel.send({ embed: {
-			title: `${query.emoji} ${query.name}${owned > 0 ? `(${owned.toLocaleString()} owned)` : ''}`,
+			title: `${query.emoji} ${query.name}${owned > 0 ? `(${owned.toLocaleString()} owned)` : ''} — Level ${inventoryItem.level === query.upgrades.length ? `${inventoryItem.level} (Max)` : inventoryItem.level}`,
 			color: 'RANDOM', description: [
 				`${query.longInfo}\n`, 
 				[
