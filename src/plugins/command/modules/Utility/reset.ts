@@ -32,7 +32,7 @@ export default class extends Command {
 		}
 
 		if (args.all && ctx.client.isOwner(ctx.author)) {
-			await ctx.client.db.currency.model.deleteMany();
+			await ctx.client.db.currency.model.deleteMany({});
 		} else {
 			await data.delete();
 		}
