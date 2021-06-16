@@ -8,200 +8,144 @@ import { MessageOptions } from 'discord.js';
 import { ItemHandler } from '.';
 import { Context } from 'lava/index'; 
 
-export interface ItemDescription {
-	/**
-	 * The description to display in the shop menu.
-	 */
-	short?: string;
-	/**
-	 * The description to display when viewing this item.
-	 */
-	long?: string;
-}
-
-export interface ItemUpgrade {
-	/**
-	 * The new emoji for this item.
-	 */
-	emoji?: string;
+export interface ItemUpgrade extends Partial<Pick<ItemOptions, 'name' | 'price' | 'emoji' | 'premium' | 'shortInfo' | 'longInfo'>> {
 	/**
 	 * The level of this item.
+	 * Note: It's automatic, no need to implement this.
 	 */
 	level?: number;
-	/**
-	 * The new price of this item.
-	 */
-	price: number;
-	/**
-	 * The new sell rate of this item.
-	 */
-	sell?: number;
-	/**
-	 * The new name for this item.
-	 */
-	name?: string;
-	/**
-	 * Wether this item is premium for this level.
-	 */
-	premium?: boolean;
 }
 
-export interface ItemInfo {
-	/**
-	 * The cost of this item for level 0
-	 */
-	buy: number;
-	/**
-	 * The sell rate from 0.01 to 1 for level 0.
-	 */
-	sell: number;
-	/**
-	 * The emoji for this item for level 0.
-	 */
-	emoji: string;
-	/**
-	 * The name for this item for level 0.
-	 */
+export interface ItemOptions extends AbstractModuleOptions {
+	/** The name of this item */
 	name: string;
-}
+	/** The price of this item for level 0 */
+	price: number;
+	/** The emoji of this item for level 0 */
+	emoji: string;
+	/** The sell rate of this item, fixed rate */
+	sell: number;
 
-export interface ItemConfig {
-	/**
-	 * Wether to show this item in user inventory.
-	 */
-	showInInventory?: boolean;
-	/**
-	 * Wether to show this item on the shop.
-	 */
-	showInShop?: boolean;
-	/**
-	 * Wether this item is sellble or not.
-	 */
-	sellable?: boolean;
-	/**
-	 * Wether this item is buyable from the shop or not.
-	 */
-	buyable?: boolean;
+	/** Wether this item shouldn't be on sale */
+	sale: boolean;
+	/** Wether this item should be in your inventory */
+	inventory: boolean;
+	/** Wether this item should be in shop */
+	shop: boolean;
+	/** Wether this item is buyable from the shop */
+	buyable: boolean;
+	/** Wether this item is tradeable using `lava gift` */
+	giftable: boolean;
+	/** Wether you can sell this item or not */
+	sellable: boolean;
+	/** Wether you're allowed to use this or not */
+	usable: boolean;
+	/** Wether to auto update user inventory if this item is new */
+	push: boolean;
+	/** The premium state of this item. Note that price will be divided by 1000. */
+	premium?: boolean;
 	/**
 	 * Wether this item has been retired.
 	 * config properties overriden by this option:
 	 * * showInInventory = false
 	 * * showInShop = false
 	 * * buyable = false
+	 * * giftable = false
 	 * * usable = false
+	 * * sellable = false
 	 */
 	retired?: boolean;
-	/**
-	 * Wether this item should be bought with keys or not.
-	 */
-	premium?: boolean;
-	/**
-	 * Wether this item is usable.
-	 */
-	usable?: boolean;
-}
 
-export interface ItemOptions extends AbstractModuleOptions {
-	/**
-	 * The description of this item.
-	 */
-	description: ItemDescription;
-	/**
-	 * The upgrades for this item.
-	 */
+	/** The shop display info of this item */
+	shortInfo?: string;
+	/** The long description of this item */
+	longInfo?: string;
+
+	/** The upgrades of this item */
 	upgrades: ItemUpgrade[];
-	/**
-	 * The shop config for this item.
-	 */
-	config: ItemConfig;
-	/**
-	 * The basic info about this item.
-	 */
-	info: ItemInfo;
 }
 
 export abstract class Item extends AbstractModule {
-	/**
-	 * The shop config for this item.
-	 */
-	public config: ItemConfig;
-	/**
-	 * The description for this item.
-	 */
-	public description: ItemDescription;
-	/**
-	 * The handler this item beholds.
-	 */
-	public handler: ItemHandler;
-	/**
-	 * The level 0 price of this item.
-	 */
+	/** The price of this item for level 0 */
 	public price: number;
-	/**
-	 * The level 0 sell price of this item.
-	 */
-	public sell: (price: number) => number;
-	/**
-	 * The level 0 emoji of this item.
-	 */
+	/** The emoji of this item for level 0 */
 	public emoji: string;
+	/** The sell rate of this item, fixed rate */
+	public sell: (price: number) => number;
+
+	/** Wether this item shouldn't be on sale */
+	public sale: boolean;
+	/** Wether this item should be in your inventory */
+	public inventory: boolean;
+	/** Wether this item should be in shop */
+	public shop: boolean;
+	/** Wether this item is buyable from the shop */
+	public buyable: boolean;
+	/** Wether this item is tradeable using `lava gift` */
+	public giftable: boolean;
+	/** Wether you can sell this item or not */
+	public sellable: boolean;
+	/** Wether you're allowed to use this or not */
+	public usable: boolean;
+	/** Wether to auto update user inventory if this item is new */
+	public push: boolean;
+	/** The premium state of this item. Note that price will be divided by 1000. */
+	public premium?: boolean;
 	/**
-	 * The upgrades of this item.
+	 * Wether this item has been retired.
+	 * config properties overriden by this option:
+	 * * showInInventory = false
+	 * * showInShop = false
+	 * * buyable = false
+	 * * giftable = false
+	 * * usable = false
+	 * * sellable = false
 	 */
+	public retired?: boolean;
+
+	/** The shop display info of this item */
+	public shortInfo: string;
+	/** The long description of this item */
+	public longInfo: string;
+
+	/** The upgrades of this item */
 	public upgrades: ItemUpgrade[];
+
 	/**
 	 * The constructor for any item.
 	 */
 	public constructor(id: string, options: Partial<ItemOptions>) {
-		super(id, { name: options.info.name, category: options.category });
-		/**
-		 * Description for this item.
-		*/
-		this.description = this._assign(options.description, {
-			short: 'An unknown item.',
-			long: 'No description.',
-		});
+		super(id, { name: options.name, category: options.category });
+		this.price = options.price;
+		this.emoji = options.emoji;
+		this.sell = (price: number) => price * options.sell;
 
-		/**
-		 * Configuration of this item.
-		*/
-		this.config = this._assign(options.config, {
-			showInInventory: false,
-			showInShop: false,
-			sellable: false,
-			buyable: false,
-			retired: false,
-			premium: false,
-			usable: false
-		});
+		this.sale = options.sale;
+		this.inventory = options.inventory;
+		this.shop = options.shop;
+		this.buyable = options.buyable;
+		this.giftable = options.giftable;
+		this.sellable = options.sellable;
+		this.usable = options.usable;
+		this.push = options.push;
+		this.premium = options.premium ?? false;
+		this.retired = options.retired ?? false;
 
-		/**
-		 * Check it's retirement.
-		 */
-		if (this.config.retired) {
-			this.config = {
-				...this.config,
-				showInInventory: false,
-				showInShop: false,
-				buyable: false,
-				usable: false
-			};
+		this.shortInfo = options.shortInfo;
+		this.longInfo = options.longInfo;
+
+		if (this.premium) {
+			this.price /= 1000;
 		}
 
-		/**
-		 * The emoji of this item.
-		 */
-		this.emoji = options.info.emoji;
-
-		/**
-		 * The price of this item.
-		 */
-		this.price = options.info.buy;
-
-		/**
-		 * The sell price of this item.
-		 */
-		this.sell = (price: number) => price * options.info.sell;
+		if (this.retired) {
+			this.inventory = false;
+			this.shop = false;
+			this.buyable = false;
+			this.giftable = false;
+			this.usable = false;
+			this.sellable = false;
+		}
 
 		/**
 		 * The upgrades for this item.
@@ -211,16 +155,14 @@ export abstract class Item extends AbstractModule {
 			level: 0,
 			name: this.name,
 			price: this.price,
-			sell: 0.33,
 			premium: false
 		}, ...options.upgrades.map(
 			(up: ItemUpgrade, i: number, arr) => this._assign(up, {
 				emoji: this.emoji,
-				level: i + 1, // +1 because base item config is level 0
+				level: i + 1,
 				name: this.name,
 				price: this.price,
-				sell: 0.33,
-				premium: arr.length === 3
+				premium: i === arr.length - 1
 			})
 		)];
 	}
@@ -230,7 +172,7 @@ export abstract class Item extends AbstractModule {
 	 * @private
 	 * @returns {object} the object
 	 */
-	private _assign<A>(o1: PartialUnion<A>, o2: A): A {
+	private _assign<A>(o1: A, o2: Partial<A>): A {
 		return Object.assign(o2, o1);
 	}
 

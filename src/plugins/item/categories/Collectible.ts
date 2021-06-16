@@ -1,7 +1,12 @@
 import { Context, Item, ItemOptions } from 'lava/index';
 import { MessageOptions } from 'discord.js';
 
-export interface CollectibleItemOptions extends ItemOptions {}
+export interface CollectibleItemOptions extends Pick<ItemOptions, 'name' | 'price' | 'emoji' | 'shortInfo' | 'longInfo' | 'upgrades'> {
+	/**
+	 * The entities aka "perks" of this collectible.
+	 */
+	entities?: Entity;
+}
 
 /**
  * The perks aka "entities" for this collectible.
@@ -28,44 +33,50 @@ export interface Entity {
 	 */
 	slots?: ArrayUnion<number>;
 	/**
-	 * The additional winnings for all gambling games, except slots.
+	 * The rate between 1-500% of payouts on commands that gives you coins.
 	 */
-	winnings?: ArrayUnion<number>;
+	payouts?: ArrayUnion<number>;
+	/**
+	 * The possible xp boost between 50-1000% 
+	 */
+	xpBoost?: ArrayUnion<number>;
+	/**
+	 * Increase odds of successful rob.
+	 */
+	rob?: ArrayUnion<number>;
 }
 
 export abstract class CollectibleItem extends Item {
 	/**
 	 * Possible perks if they own this collectible.
 	 */
-	public abstract get entity(): Entity;
+	public entities: Entity;
+
 	/**
 	 * Constructor for this goldshit.
 	 */
-	public constructor(id: string, options: Partial<Omit<CollectibleItemOptions, 'category'>>) {
-		const {
-			upgrades,
-			config = {
-				showInInventory: true,
-				showInShop: true,
-				sellable: false,
-				buyable: true,
-				premium: false,
-				retired: false,
-				usable: true
-			},
-			info = {
-				emoji: ':thinking:',
-				name: 'Collectible Item',
-				sell: 0.33,
-				buy: 0,
-			},
-			description = {
-				short: 'A very unique and unknown collectible.',
-				long: 'High-value collectible for rich dudes.'
-			}
-		} = options;
+	public constructor(id: string, options: CollectibleItemOptions) {
+		super(id, {
+			name: options.name,
+			price: options.price,
+			emoji: options.emoji,
+			shortInfo: options.shortInfo,
+			longInfo: options.longInfo,
+			upgrades: options.upgrades,
+			sale: true,
+			inventory: true,
+			shop: true,
+			buyable: true,
+			giftable: true,
+			sellable: false,
+			usable: true,
+			push: true,
+			premium: false,
+			retired: false,
+			category: 'Collectible'
+		});
 
-		super(id, { upgrades, config, info, description, category: 'Collectible' });
+		this.entities = options.entities;
 	}
 
 	/**
