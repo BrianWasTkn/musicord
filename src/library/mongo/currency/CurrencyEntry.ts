@@ -99,7 +99,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		}
 		// Nitro Booster
 		if (ctx.member.roles.premiumSubscriberRole?.id) {
-			unlock('Nitro Booster', 15);
+			unlock('Nitro Booster', 5);
 		}
 		// Mastery 1 and up
 		if (ctx.member.roles.cache.has('794834783582421032')) {
@@ -119,7 +119,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		}
 		// Mastery 10
 		if (ctx.member.roles.cache.has('794835005679206431')) {
-			unlock('Crib Mastery Max', 10);
+			unlock('Crib Mastery Max', 5);
 		}
 		// Prestige multis
 		if (this.prestige.level >= 1) {
