@@ -7,11 +7,19 @@ export default class extends Command {
 			clientPermissions: ['EMBED_LINKS'],
 			cooldown: 1000 * 60 * 60,
 			description: 'Reset your currency data.',
-			name: 'Reset'
+			name: 'Reset',
+			args: [
+				{
+					id: 'all',
+					match: 'flag',
+					flag: '--all',
+					default: null
+				}
+			]
 		});
 	}
 
-	async exec(ctx: Context) {
+	async exec(ctx: Context, args: { all: string; }) {
 		const { data } = await ctx.currency.fetch(ctx.author.id);
 
 		await ctx.reply({ embed: { color: 'RED', description: 'Are u sure you wanna reset rn?' } });
@@ -23,7 +31,12 @@ export default class extends Command {
 			return prompt1.reply({ embed: { color: 'INDIGO', description: 'Okay then.' } });
 		}
 
-		await data.delete();
+		if (args.all && ctx.client.isOwner(ctx.author)) {
+			await ctx.client.db.currency.model.deleteMany();
+		} else {
+			await data.delete();
+		}
+
 		return ctx.reply({ embed: { color: 'GREEN', description: 'Ok ur data has been deleted, enjoy the new life kid' } });
 	}
 }
