@@ -33,6 +33,10 @@ export class Command extends OldCommand implements AbstractModule {
 	 * The name of this command.
 	 */
 	public name: string;
+	/**
+	 * Wether to show this command in help command.
+	 */
+	public help: boolean;
 
 	/**
 	 * Construct a command.
@@ -41,6 +45,8 @@ export class Command extends OldCommand implements AbstractModule {
 		super(id, options);
 		/** @type {string} */
 		this.name = options.name ?? id.charAt(0).toUpperCase() + id.slice(1).toLowerCase();
+		/** @type {boolean} */
+		this.help = options.help ?? true;
 		if (process.env.DEV_MODE === 'true') {
 			/** @type {boolean} */
 			this.ownerOnly = true;

@@ -27,9 +27,16 @@ export abstract class UserEntry<Data extends Document> {
 	}
 
 	/**
+	 * Test for callbacks
+	 */
+	public callback(predicate: (entry: this) => this) {
+		return predicate(this);
+	}
+
+	/**
 	 * Save all changes of the data from this entry.
 	*/
-	public save(): Promise<Data> {
-		return this.data.save();
+	public save(): Promise<this> {
+		return this.data.save().then(() => this);
 	}
 }

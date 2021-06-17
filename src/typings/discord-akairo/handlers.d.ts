@@ -84,6 +84,10 @@ declare module 'discord-akairo' {
 		 * The optional name for this command.
 		 */
 		name?: string;
+		/**
+		 * Wether to show this command in the help menu.
+		 */
+		help?: boolean;
 	}
 
 	/**

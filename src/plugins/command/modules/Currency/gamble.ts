@@ -20,17 +20,23 @@ export default class extends GambleCommand {
 		const state = this.checkArgs(bet, entry);
 		if (typeof state === 'string') return ctx.reply(state);
 
-		const { userD, botD } = this.roll();
+		const { userD, botD } = this.roll(false);
 		if (botD > userD || botD === userD) {
 			const { props } = await entry.removePocket(botD === userD ? 0 : bet).save()
-
+			
 			return ctx.channel.send({ embed: {
-				author: { name: `${ctx.author.username}'s gambling game` },
-				footer: { text: 'sucks to suck' }, color: userD === botD ? 'YELLOW' : 'RED', 
-				fields: this.displayField(ctx.author, userD, botD), description: [
+				author: { 
+					name: `${ctx.author.username}'s gambling game` 
+				},
+				color: userD === botD ? 'YELLOW' : 'RED', 
+				description: [
 					`You lost ${botD === userD ? 'nothing!' : `**${bet.toLocaleString()}** coins.`}\n`,
 					`You ${botD === userD ? 'still' : 'now'} have **${props.pocket.toLocaleString()}** coins.`
-				].join('\n')
+				].join('\n'),
+				fields: this.displayField(ctx.author, userD, botD), 
+				footer: { 
+					text: 'sucks to suck' 
+				}, 
 			}});
 		}
 
@@ -48,7 +54,7 @@ export default class extends GambleCommand {
 		}});
 	}
 
-	roll() {
+	roll(rig = true, add = 0) {
 		const { randomNumber } = this.client.util;
 		let userD = randomNumber(1, 12);
 		let botD = randomNumber(1, 12);
@@ -56,17 +62,19 @@ export default class extends GambleCommand {
 		/**
 		 * Rig the dice because why not >:)
 		 */
-		function rig(a: number, b: number) {
+		function set(a: number, b: number) {
 			return a > b ? [b, a] : [a, b];
 		}
 
-		if (Math.random() > 0.55) {
-			[botD, userD] = rig(botD, userD);
-		} else {
-			[userD, botD] = rig(botD, userD);
+		if (rig) {
+			if (Math.random() > 0.5) {
+				[botD, userD] = set(botD, userD);
+			} else {
+				[userD, botD] = set(botD, userD);
+			}
 		}
 
-		return { userD, botD };
+		return { botD, userD: userD + add };
 	}
 
 	displayField(user: UserPlus, userD: number, botD: number): EmbedFieldData[] {
