@@ -11,12 +11,11 @@ export default class extends Command {
 	}
 
 	*args() {
-		const sub1: string = yield [
-			['ping', 'pang', 'p']
+		const sub: string = yield [
+			['ping']
 		];
-		console.log(sub1)
 
-		return Flag.continue(sub1);
+		return sub ? Flag.continue(sub) : null;
 	}
 
 	exec(ctx: Context, args: any) {
