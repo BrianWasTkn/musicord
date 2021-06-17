@@ -79,7 +79,7 @@ export default class extends Command {
 				})
 			},
 			color: 'GREEN',
-			description: ItemMessages.SELL_MSG(args.item, args.amount),
+			description: ItemMessages.SELL_MSG(args.item, price, args.amount),
 			footer: {
 				text: 'Thanks for stopping by!'
 			}
