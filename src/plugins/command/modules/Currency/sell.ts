@@ -63,7 +63,7 @@ export default class extends Command {
 
 		const inventory = entry.items.get(args.item.id);
 		let price = this.getSell(args.item, inventory.level);
-		price = Math.round(price);
+		price = Math.round(price) * Math.trunc(args.amount);
 
 		await (args.item.premium 
 			? entry.addKeys(price) 
