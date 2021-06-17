@@ -63,7 +63,7 @@ export default class extends Command {
 				}
 			],
 			footer: {
-				text: `Page ${page} of ${inventory.length}`
+				text: `Owned Items — Page ${page} of ${inventory.length}`
 			}
 		}});
 	}
