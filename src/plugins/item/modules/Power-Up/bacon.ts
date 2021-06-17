@@ -1,12 +1,12 @@
 import { Context, CurrencyEntry, ItemEffects } from 'lava/index';
 import { PowerUpItem } from '../..';
 
-export default class extends PowerUpItem {
+export default class PowerUp extends PowerUpItem {
 	constructor() {
 		super('bacon', {
 			name: 'Bacon',
 			emoji: ':bacon:',
-			price: 2000,
+			price: 22000,
 			checks: 'time',
 			duration: 1000 * 60,
 			shortInfo: 'More ching chings!',

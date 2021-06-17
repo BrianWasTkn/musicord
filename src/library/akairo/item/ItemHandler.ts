@@ -61,8 +61,9 @@ export class ItemHandler extends AbstractHandler<Item> {
 	 */
 	private setSaleItem(): ItemSale {
 		const { randomInArray, randomNumber } = this.client.util;
-		const items = [...this.modules.values()].filter(i => !i.premium);
-		const item = randomInArray(items), discount = randomNumber(1, 100);
+		const items = [...this.modules.values()];
+		const discount = randomNumber(1, 100);
+		const item = randomInArray(items);
 		const nextSale = (this.sale.nextSale ?? Date.now()) + this.saleInterval;
 		return this.sale = { item, discount, nextSale };
 	}

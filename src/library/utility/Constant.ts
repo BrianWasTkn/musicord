@@ -3,6 +3,8 @@
  * @author BrianWasTaken
 */
 
+import { Item } from 'lava/index';
+
 /**
  * Colors for discord.js
 */
@@ -62,8 +64,8 @@ const GambleMessages = {
  * Item messages.
 */
 const ItemMessages = {
-	BUY_MSG: (premium = false) => `Successfully purchased **{amount} {emoji} {item}** and paid **:${premium ? 'key' : 'coin'}: {paid}** ${premium ? 'keys' : 'coins'}.`,
-	SELL_MSG: (premium = false) => `Successfully sold **{amount} {emoji} {item}** and got **:${premium ? 'key' : 'coin'}: {got}** ${premium ? 'keys' : 'coins'}.`,
+	BUY_MSG: (item: Item, amount: number) => `Successfully purchased **${amount} ${item.emoji} ${item.name}** and paid **:${item.premium ? 'key' : 'coin'}: {paid}** ${item.premium ? 'keys' : 'coins'}.`,
+	SELL_MSG: (item: Item, amount: number) => `Successfully sold **${amount} ${item.emoji} ${item.name}** and got **:${item.premium ? 'key' : 'coin'}: {got}** ${item.premium ? 'keys' : 'coins'}.`,
 
 	// Buy Command
 	AMOUNT_CAP: `R u really going to buy more than ${Currency.MAX_INVENTORY.toLocaleString()} of these?`,
@@ -71,7 +73,7 @@ const ItemMessages = {
 	BROKE_TO_BUY: "You don't have enough coins to buy this item!",
 	NOT_BUYABLE: "You can't buy this item :thinking:",
 	NOT_BUYABLE_BULK: "You don't have enough coins to buy this item for bulk!",
-	AMOUNT_BELOW_ONE: 'Your buy amount has to be a real number greater than 0',
+	AMOUNT_BELOW_ONE: 'Your amount has to be a real number greater than 0',
 	INVENTORY_IS_FULL: `You already have more than ${Currency.MAX_INVENTORY.toLocaleString()} of this item!`,
 
 	// Sell Command
