@@ -131,7 +131,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		if (collectibles.length >= 1) {
 			collectibles.filter(c => c.entities.multipliers).forEach(c => {
 				const inv = this.items.get(c.id);
-				if (inv.multiplier && inv.isOwned()) {
+				if (inv.isOwned()) {
 					return unlock(c.name, c.entities.multipliers[inv.level] ?? 0);
 				}
 			});
