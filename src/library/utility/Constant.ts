@@ -64,8 +64,8 @@ const GambleMessages = {
  * Item messages.
 */
 const ItemMessages = {
-	BUY_MSG: (item: Item, paid: number, amount: number) => `Successfully purchased **${amount} ${item.emoji} ${item.name}** and paid **:${item.premium ? 'key' : 'coin'}: ${paid}** ${item.premium ? 'keys' : 'coins'}.`,
-	SELL_MSG: (item: Item, got: number, amount: number) => `Successfully sold **${amount} ${item.emoji} ${item.name}** and got **:${item.premium ? 'key' : 'coin'}: ${got}** ${item.premium ? 'keys' : 'coins'}.`,
+	BUY_MSG: (item: Item, paid: number, amount: number) => `Successfully purchased **${amount.toLocaleString()} ${item.emoji} ${item.name}** and paid **:${item.premium ? 'key' : 'coin'}: ${paid.toLocaleString()}** ${item.premium ? 'keys' : 'coins'}.`,
+	SELL_MSG: (item: Item, got: number, amount: number) => `Successfully sold **${amount.toLocaleString()} ${item.emoji} ${item.name}** and got **:${item.premium ? 'key' : 'coin'}: ${got.toLocaleString()}** ${item.premium ? 'keys' : 'coins'}.`,
 
 	// Buy Command
 	AMOUNT_CAP: `R u really going to buy more than ${Currency.MAX_INVENTORY.toLocaleString()} of these?`,
