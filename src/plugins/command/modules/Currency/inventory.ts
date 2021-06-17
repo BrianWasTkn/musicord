@@ -79,8 +79,8 @@ export default class extends Command {
 			}))
 			.map(({ mod, owned, level }) => {
 				const { category, emoji, name, id, upgrades } = mod;
-				const state = upgrades.length === level ? `${upgrades.length - level} more` : 'MAX';
-				return `**${emoji} ${name}** — ${owned.toLocaleString()}\n\n*ID* \`${id}\` — ${category.id}\n*LEVEl* \`${level}\` — \`${state}\``
+				const state = upgrades.length === level ? '`MAX LEVEL`' : `${upgrades.length - level} more`;
+				return `**${emoji} ${name}** — ${owned.toLocaleString()}\n*ID* \`${id}\` — ${category.id}\n*LVL* \`${level}\` — ${state}`
 			});
 	}
 }
