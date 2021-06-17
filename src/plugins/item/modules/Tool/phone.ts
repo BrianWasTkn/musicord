@@ -5,7 +5,7 @@ export default class Tool extends ToolItem {
 	constructor() {
 		super('phone', {
 			name: 'Smort Phone',
-			emoji: ':smartphone:',
+			emoji: ':mobile_phone:',
 			price: 6000,
 			shortInfo: 'High-tech phone for bastards!',
 			longInfo: 'Contact anyone using your phone, anywhere!'
