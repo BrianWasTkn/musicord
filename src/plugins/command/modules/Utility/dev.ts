@@ -10,7 +10,7 @@ export default class extends Command {
 		});
 	}
 
-	*args() {
+	*args(ctx: Context) {
 		const sub: string = yield [
 			['ping']
 		];

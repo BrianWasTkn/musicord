@@ -59,7 +59,7 @@ export default class extends Command {
 			fields: [
 				{
 					name: 'Owned Items',
-					value: inventory[page - 1].join('\n')
+					value: inventory[page - 1].join('\n\n')
 				}
 			],
 			footer: {
@@ -78,8 +78,9 @@ export default class extends Command {
 				level: inv.level 
 			}))
 			.map(({ mod, owned, level }) => {
-				const { category, emoji, name, id } = mod;
-				return `**${emoji} ${name}** — ${owned.toLocaleString()}\n*LVL* \`${level}\`\n*ID* \`${id}\` — ${category.id}`
+				const { category, emoji, name, id, upgrades } = mod;
+				const state = upgrades.length === level ? `${upgrades.length - level} more` : 'MAX';
+				return `**${emoji} ${name}** — ${owned.toLocaleString()}\n\n*ID* \`${id}\` — ${category.id}\n*LEVEl* \`${level}\` — \`${state}\``
 			});
 	}
 }
