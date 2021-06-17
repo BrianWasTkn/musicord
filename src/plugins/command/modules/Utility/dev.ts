@@ -14,6 +14,7 @@ export default class extends Command {
 		const sub1: string = yield [
 			['ping', 'pang', 'p']
 		];
+		console.log(sub1)
 
 		return Flag.continue(sub1);
 	}
