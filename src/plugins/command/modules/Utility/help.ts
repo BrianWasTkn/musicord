@@ -18,7 +18,7 @@ export default class extends Command {
 		});
 	}
 
-	exec(ctx: Context, { query }: { query: Command }) {
+	async exec(ctx: Context, { query }: { query: Command }) {
 		try {
 			const dm = await ctx.author.createDM();
 			return dm.send('help');
