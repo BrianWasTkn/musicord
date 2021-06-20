@@ -12,10 +12,9 @@ export default class extends Command {
 	}
 
 	top(members: Collection<Snowflake, GuildMember>, amount = 10) {
-		const docs = CurrencyModel.find({}).sort({ 'props.pocket': 'desc' }).exec();
+		const docs = CurrencyModel.find({ 'props.pocket': { $gte: 1 } }).sort({ 'props.pocket': 'desc' }).exec();
 		return docs.then(docs => docs.map(doc => new CurrencyEntry(this.client, doc))
 			.filter(doc => members.has(doc.data._id as Snowflake))
-			.filter(doc => doc.props.pocket > 0)
 			.slice(0, amount));
 	}
 
@@ -26,7 +25,7 @@ export default class extends Command {
 				.then(docs => docs.map((doc, i) => {
 					const user = ctx.client.users.cache.get(doc.data._id as Snowflake)?.tag ?? 'LOL WHO DIS';
 					const emoji = Array(3).fill('coin')[i] ?? 'small_red_triangle';
-					return `**:${emoji}: ${doc.props.pocket.toLocaleString()}** — ${user}`;
+					return `**:${emoji}: ${doc.props.pocket.toLocaleString()}** - ${user}`;
 				}).join('\n'))
 		}});
 	}
