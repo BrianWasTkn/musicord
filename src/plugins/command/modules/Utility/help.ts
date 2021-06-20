@@ -19,6 +19,15 @@ export default class extends Command {
 	}
 
 	exec(ctx: Context, { query }: { query: Command }) {
+		try {
+			const dm = await ctx.author.createDM();
+			return dm.send('help');
+		} catch {
+			return ctx.reply('Please open your DMs!');
+		}
+	}
+
+	execc(ctx: Context, { query }: { query: Command }) {
 		if (query instanceof Command) {
 			return ctx.channel.send({ embed: {
 				title: `${query.name} Command`,
