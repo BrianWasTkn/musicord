@@ -5,10 +5,10 @@ export default class Tool extends ToolItem {
 	constructor() {
 		super('totem', {
 			name: 'Totem of Hearts',
-			emoji: ':credit_card:',
+			emoji: ':heart:',
 			price: 10000,
-			shortInfo: 'They say this item gives you nine lives and up...',
-			longInfo: 'Equip to not die and lose any cluster of your progress!'
+			shortInfo: 'They say this item gives you a chance to dodge death...',
+			longInfo: 'Equip to prevent dying and not lose any cluster of your progress!'
 		});
 	}
 
