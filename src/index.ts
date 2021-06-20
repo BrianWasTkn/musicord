@@ -1,8 +1,6 @@
 import 'module-alias/register';
 import 'dotenv/config';
 
-import { Context, Command } from 'lava/index';
-import EventEmitter from 'events';
 import Lava from './client';
 
 Lava.on('debug', m => {

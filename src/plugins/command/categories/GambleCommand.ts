@@ -21,7 +21,7 @@ export class GambleCommand extends Command {
 	}
 
 	parseArgs(ctx: Context, args: { amount: string | number }, entry: CurrencyEntry) {
-		const { MIN_BET, MAX_BET, MAX_POCKET } = Currency;
+		const { MIN_BET, MAX_BET } = Currency;
 		const { isInteger } = ctx.client.util;
 		const { pocket } = entry.props;
 		const { amount } = args;
@@ -65,6 +65,10 @@ export class GambleCommand extends Command {
 			default:
 				return bet as number;
 		}
+	}
+
+	calcMulti(ctx: Context, entry: CurrencyEntry) {
+		return entry.calcMulti(ctx).reduce((p, c) => c.value + p, 0);
 	}
 
 	calcWinnings(multi: number, bet: number) {

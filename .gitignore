@@ -1,4 +1,4 @@
-#
+# stuff
 node_modules
 build
 dist
@@ -6,3 +6,4 @@ dist
 .env
 test.js
 ./test/
+.vscode

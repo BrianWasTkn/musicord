@@ -1,7 +1,6 @@
-import { Context, CurrencyEntry, Currency, UserPlus } from 'lava/index';
-import { MessageOptions, EmbedFieldData } from 'discord.js';
+import { Context, UserPlus } from 'lava/index';
+import { EmbedFieldData } from 'discord.js';
 import { GambleCommand } from '../..';
-import { Argument } from 'discord-akairo';
 
 export default class extends GambleCommand {
 	constructor() {
@@ -23,35 +22,39 @@ export default class extends GambleCommand {
 		const { userD, botD } = this.roll(false);
 		if (botD > userD || botD === userD) {
 			const { props } = await entry.removePocket(botD === userD ? 0 : bet).save()
-			
-			return ctx.channel.send({ embed: {
-				author: { 
-					name: `${ctx.author.username}'s gambling game` 
-				},
-				color: userD === botD ? 'YELLOW' : 'RED', 
-				description: [
-					`You lost ${botD === userD ? 'nothing!' : `**${bet.toLocaleString()}** coins.`}\n`,
-					`You ${botD === userD ? 'still' : 'now'} have **${props.pocket.toLocaleString()}** coins.`
-				].join('\n'),
-				fields: this.displayField(ctx.author, userD, botD), 
-				footer: { 
-					text: 'sucks to suck' 
-				}, 
-			}});
+
+			return ctx.channel.send({
+				embed: {
+					author: {
+						name: `${ctx.author.username}'s gambling game`
+					},
+					color: userD === botD ? 'YELLOW' : 'RED',
+					description: [
+						`You lost ${botD === userD ? 'nothing!' : `**${bet.toLocaleString()}** coins.`}\n`,
+						`You ${botD === userD ? 'still' : 'now'} have **${props.pocket.toLocaleString()}** coins.`
+					].join('\n'),
+					fields: this.displayField(ctx.author, userD, botD),
+					footer: {
+						text: 'sucks to suck'
+					},
+				}
+			});
 		}
 
 		const multi = entry.calcMulti(ctx).reduce((p, c) => c.value + p, 0);
 		const winnings = this.calcWinnings(multi, bet);
 		const { props } = await entry.addPocket(winnings).save();
 
-		return ctx.channel.send({ embed: {
-			author: { name: `${ctx.author.username}'s gambling game` },
-			footer: { text: 'winner winner' }, color: 'GREEN', description: [
-				`You won **${winnings.toLocaleString()}** coins.`,
-				`**Multiplier** ${multi.toLocaleString()}% | **Percent of bet won** ${Math.round(winnings / bet * 100)}%\n`,
-				`You now have **${props.pocket.toLocaleString()}** coins.`
-			].join('\n'), fields: this.displayField(ctx.author, userD, botD),
-		}});
+		return ctx.channel.send({
+			embed: {
+				author: { name: `${ctx.author.username}'s gambling game` },
+				footer: { text: 'winner winner' }, color: 'GREEN', description: [
+					`You won **${winnings.toLocaleString()}** coins.`,
+					`**Multiplier** ${multi.toLocaleString()}% | **Percent of bet won** ${Math.round(winnings / bet * 100)}%\n`,
+					`You now have **${props.pocket.toLocaleString()}** coins.`
+				].join('\n'), fields: this.displayField(ctx.author, userD, botD),
+			}
+		});
 	}
 
 	roll(rig = true, add = 0) {

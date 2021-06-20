@@ -1,5 +1,5 @@
 import { Command, Context, GuildMemberPlus, Currency } from 'lava/index';
-import { MessageOptions, MessageEmbedOptions } from 'discord.js';
+import { MessageEmbedOptions } from 'discord.js';
 
 export default class extends Command {
 	constructor() {
@@ -26,24 +26,22 @@ export default class extends Command {
 			await entry.addPocket(Currency.MAX_BET).save(false);
 		}
 
-		return ctx.channel.send({ embed: <MessageEmbedOptions> {
-			title: `${user.username}'s balance`,
-			color: ctx.client.util.randomColor(),
-			description: Object.entries({
-				'Wallet': entry.props.pocket.toLocaleString(),
-				'Bank': `${entry.props.vault.amount.toLocaleString()}${
-					user.id === ctx.author.id
-						? `/${entry.props.space.toLocaleString()}` 
-						: '' 
-					}`,
-				'Items': `${
-						entry.items.reduce((p, c) => p + c.owned, 0).toLocaleString()
-					}/${
-						this.client.handlers.item.modules.size.toLocaleString()
-					}`
-			})
-				.map(([label, val]) => `**${label}:** ${val}`)
-				.join('\n')
-		}});
+		return ctx.channel.send({
+			embed: <MessageEmbedOptions>{
+				title: `${user.username}'s balance`,
+				color: ctx.client.util.randomColor(),
+				description: Object.entries({
+					'Wallet': entry.props.pocket.toLocaleString(),
+					'Bank': `${entry.props.vault.amount.toLocaleString()}${user.id === ctx.author.id
+							? `/${entry.props.space.toLocaleString()}`
+							: ''
+						}`,
+					'Items': `${entry.items.size.toLocaleString()}/${this.client.handlers.item.modules.size.toLocaleString()
+						}`
+				})
+					.map(([label, val]) => `**${label}:** ${val}`)
+					.join('\n')
+			}
+		});
 	}
 }

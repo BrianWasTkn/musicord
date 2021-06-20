@@ -12,15 +12,15 @@ export default class extends GambleCommand {
 
 	get slots() {
 		return {
-			broken_heart: 		[0.1, 1.5],
-			clown: 						[0.2, 1.6],
-			eggplant: 				[0.3, 1.7],
-			pizza:		 				[0.4, 1.8],
-			flushed: 					[0.5, 1.9],
-			star2: 						[0.6, 2.0],
-			kiss: 						[0.7, 2.1],
+			broken_heart: [0.1, 1.5],
+			clown: [0.2, 1.6],
+			eggplant: [0.3, 1.7],
+			pizza: [0.4, 1.8],
+			flushed: [0.5, 1.9],
+			star2: [0.6, 2.0],
+			kiss: [0.7, 2.1],
 			four_leaf_clover: [0.8, 2.2],
-			fire: 						[0.9, 2.3],
+			fire: [0.9, 2.3],
 		}
 	}
 
@@ -57,48 +57,52 @@ export default class extends GambleCommand {
 		const state = this.checkArgs(bet, entry);
 		if (typeof state === 'string') return ctx.reply(state);
 
-		const multi = entry.calcMulti(ctx).reduce((p, c) => c.value + p, 0);
+		const multi = this.calcMulti(ctx, entry);
 		const slots = this.getSlots(Object.keys(this.slots));
 		const { winnings, length } = this.calcSlots(slots, bet, multi);
 
 		if ([1, 2].every(l => l !== length)) {
 			const { props } = await entry.removePocket(bet).save();
-			return ctx.channel.send({ embed: {
-				color: 'RED',
+			return ctx.channel.send({
+				embed: {
+					color: 'RED',
+					author: {
+						name: `${ctx.author.username}'s slot machine`,
+					},
+					description: [
+						`You lost **${bet.toLocaleString()}** coins.\n`,
+						`You now have **${props.pocket.toLocaleString()}** coins.`
+					].join('\n'),
+					fields: [
+						{ name: 'Outcome', value: `**>** :${slots.join(':    :')}: **<**` }
+					],
+					footer: {
+						text: 'sucks to suck'
+					}
+				}
+			});
+		}
+
+		const { props } = await entry.addPocket(winnings).save();
+		return ctx.channel.send({
+			embed: {
+				color: length === 1 ? 'GOLD' : 'GREEN',
 				author: {
 					name: `${ctx.author.username}'s slot machine`,
 				},
 				description: [
-					`You lost **${bet.toLocaleString()}** coins.\n`,
+					`You won **${winnings.toLocaleString()}** coins.`,
+					`**Multiplier** ${multi}% | **Percent of bet won** ${Math.round(winnings / bet * 100)}%\n`,
 					`You now have **${props.pocket.toLocaleString()}** coins.`
 				].join('\n'),
 				fields: [
 					{ name: 'Outcome', value: `**>** :${slots.join(':    :')}: **<**` }
 				],
 				footer: {
-					text: 'sucks to suck'
+					text: 'winner winner'
 				}
-			}});
-		}
-
-		const { props } = await entry.addPocket(winnings).save();
-		return ctx.channel.send({ embed: {
-			color: length === 1 ? 'GOLD' : 'GREEN',
-			author: {
-				name: `${ctx.author.username}'s slot machine`,
-			},
-			description: [
-				`You won **${winnings.toLocaleString()}** coins.`,
-				`**Multiplier** ${multi}% | **Percent of bet won** ${Math.round(winnings / bet * 100)}%\n`,
-				`You now have **${props.pocket.toLocaleString()}** coins.`
-			].join('\n'),
-			fields: [
-				{ name: 'Outcome', value: `**>** :${slots.join(':    :')}: **<**` }
-			],
-			footer: {
-				text: 'winner winner'
 			}
-		}})
+		})
 	}
 
 	calcSlots(slots: string[], bet: number, multis: number) {
@@ -106,14 +110,14 @@ export default class extends GambleCommand {
 		const emojis = Object.keys(this.slots);
 
 		const length = slots.filter((e, i, arr) => arr.indexOf(e) === i).length;
-		const rates = rate.map((r, i, arr) => arr[emojis.indexOf(slots[i])]).filter(Boolean);
+		const rates = rate.map((_, i, arr) => arr[emojis.indexOf(slots[i])]).filter(Boolean);
 		const multi = rates.filter((r, i, arr) => arr.indexOf(r) !== i)[0];
 
 		if ([1, 2].some(l => length === l)) {
 			const index = length === 1 ? 1 : 0;
 			const mult = multi[index] as number;
 			let winnings = Math.round(bet + (bet * mult));
-			winnings = winnings + Math.round(winnings * (multis / 10000)); 
+			winnings = winnings + Math.round(winnings * (multis / 10000));
 
 			return { length, winnings };
 		}
