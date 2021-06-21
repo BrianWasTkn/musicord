@@ -4,7 +4,7 @@ import { Role } from 'discord.js';
 export default class extends SubCommand {
 	constructor() {
 		super('dump', {
-			aliases: ['dump', 'dump'],
+			aliases: ['dump'],
 			description: 'View the list of people who has a specific role.',
 			parent: 'staff',
 			usage: '{command} <role_name>',
