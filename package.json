@@ -1,6 +1,6 @@
 {
 	"name": "lava",
-	"version": "3.0.6",
+	"version": "3.0.7",
 	"private": true,
 	"description": "A multi-purpose discord bot.",
 	"scripts": {
