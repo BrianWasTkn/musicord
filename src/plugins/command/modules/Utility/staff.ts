@@ -7,7 +7,7 @@ export default class extends Command {
 			aliases: ['staff', 's'],
 			description: 'Get yo ash up and spam deez commands owo',
 			name: 'Staph',
-			usage: '{command} you dont need docs for dis'
+			usage: '{command} --demote me'
 		});
 	}
 
