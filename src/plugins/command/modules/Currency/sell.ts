@@ -9,6 +9,7 @@ export default class extends Command {
 	constructor() {
 		super('sell', {
 			aliases: ['sell'],
+			category: 'Currency',
 			clientPermissions: ['EMBED_LINKS'],
 			description: 'Sell something to the shop!',
 			name: 'Sell',

@@ -4,6 +4,7 @@ export default class extends Command {
 	constructor() {
 		super('reset', {
 			aliases: ['reset'],
+			category: 'Utility',
 			clientPermissions: ['EMBED_LINKS'],
 			cooldown: 1000 * 60 * 60,
 			description: 'Reset your currency data.',

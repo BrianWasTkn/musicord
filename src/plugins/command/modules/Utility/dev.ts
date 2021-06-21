@@ -5,6 +5,7 @@ export default class extends Command {
 	constructor() {
 		super('dev', {
 			aliases: ['dev', 'd'],
+			category: 'Utility',
 			description: 'Dev tools for you fools',
 			name: 'Dev',
 			usage: '{command} u dont need docs for dis'

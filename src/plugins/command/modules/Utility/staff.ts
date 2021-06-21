@@ -5,6 +5,7 @@ export default class extends Command {
 	constructor() {
 		super('staff', {
 			aliases: ['staff', 's'],
+			category: 'Utility',
 			description: 'Get yo ash up and spam deez commands owo',
 			name: 'Staph',
 			usage: '{command} --demote me'

@@ -5,6 +5,7 @@ export default class extends GambleCommand {
 	constructor() {
 		super('slots', {
 			aliases: ['slotmachine', 'slots'],
+			category: 'Currency',
 			description: 'Spin the slot machine to have a chance to win a jackpot!',
 			name: 'Slots',
 		});
@@ -32,7 +33,7 @@ export default class extends GambleCommand {
 		if (odds > 95) {
 			return Array(3).fill(first);
 		}
-		if (odds > 60) {
+		if (odds > 55) {
 			emojis = Array(3).fill(first);
 			const index = randomNumber(1, emojis.length) - 1;
 			const slots = Object.keys(this.slots);

@@ -5,6 +5,7 @@ export default class extends Command {
 	constructor() {
 		super('shop', {
 			aliases: ['shop', 'store'],
+			category: 'Currency',
 			clientPermissions: ['EMBED_LINKS'],
 			description: 'Check the shop items!',
 			name: 'Shop',

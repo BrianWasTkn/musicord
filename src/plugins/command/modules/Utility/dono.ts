@@ -5,6 +5,7 @@ export default class extends Command {
 	constructor() {
 		super('dono', {
 			aliases: ['dono', 'n'],
+			category: 'Utility',
 			description: 'Manage giveaway and other server donations.',
 			name: 'Dono',
 			usage: '{command} breh'

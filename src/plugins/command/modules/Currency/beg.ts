@@ -24,6 +24,7 @@ export default class extends Command {
     constructor() {
         super('beg', {
             aliases: ['beg', 'gimme'],
+            category: 'Currency',
             clientPermissions: ['EMBED_LINKS'],
             cooldown: 1000 * 30,
             description: 'Extract small amount of coins to start!',

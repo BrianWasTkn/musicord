@@ -5,6 +5,7 @@ export default class extends Command {
 	constructor() {
 		super('rich', {
 			aliases: ['rich'],
+			category: 'Currency',
 			clientPermissions: ['EMBED_LINKS'],
 			description: 'View the top rich users of currency.',
 			name: 'Rich'

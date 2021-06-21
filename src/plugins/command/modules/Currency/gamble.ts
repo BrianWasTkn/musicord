@@ -6,6 +6,7 @@ export default class extends GambleCommand {
 	constructor() {
 		super('gamble', {
 			aliases: ['gamble', 'bet', 'roll'],
+			category: 'Currency',
 			description: 'Take your chances by rolling a dice! Warning, I\'m very good at stealing your coins.',
 			name: 'Gamble',
 		});
@@ -70,7 +71,7 @@ export default class extends GambleCommand {
 		}
 
 		if (rig) {
-			if (Math.random() > 0.5) {
+			if (Math.random() > 0.55) {
 				[botD, userD] = set(botD, userD);
 			} else {
 				[userD, botD] = set(botD, userD);
