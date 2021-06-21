@@ -23,7 +23,9 @@ export default class extends Command {
 			const dm = await ctx.author.createDM();
 			return dm.send('help');
 		} catch {
-			return ctx.reply('Please open your DMs!');
+			const reply = await ctx.reply('Please open your DMs!');
+			await ctx.client.util.sleep(5000);
+			return reply.delete();
 		}
 	}
 

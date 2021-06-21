@@ -1,6 +1,6 @@
 {
 	"name": "lava",
-	"version": "3.0.4",
+	"version": "3.0.5",
 	"description": "A multi-purpose discord bot.",
 	"scripts": {
 		"build": "rimraf ./dist && tsc --project tsconfig.json",
