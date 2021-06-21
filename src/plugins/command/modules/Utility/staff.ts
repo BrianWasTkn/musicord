@@ -1,4 +1,4 @@
-import { Command, Context, SubCommand } from 'lava/index';
+import { Command, Context } from 'lava/index';
 import { Flag } from 'discord-akairo';
 
 export default class extends Command {

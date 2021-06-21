@@ -5,15 +5,16 @@ export default class extends Command {
 	constructor() {
 		super('dev', {
 			aliases: ['dev', 'd'],
-			description: 'joe mama',
-			name: 'Joe Mama',
+			description: 'Dev tools for you fools',
+			name: 'Dev',
+			usage: '{command} u dont need docs for dis'
 		});
 	}
 
 	*args(ctx: Context) {
-		const sub: string = yield [
-			['ping']
-		];
+		const { modules } = ctx.client.handlers.command;
+		const subs = this.subCommands.filter(c => c.parent === this.id);
+		const sub: string = yield [...subs.map(s => [s.id])];
 
 		return sub ? Flag.continue(sub) : null;
 	}
