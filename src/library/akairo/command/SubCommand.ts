@@ -3,7 +3,7 @@
  */
 
 import { CommandOptions } from 'discord-akairo';
-import { Command } from '.';
+import { Command } from './Command';
 
 interface SubCommandOptions extends CommandOptions {
 	/**
