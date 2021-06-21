@@ -5,6 +5,7 @@
 
 import { Colors, EmbedPlus, ItemEffects } from 'lava/index';
 import { ClientUtil as OldClientUtil } from 'discord-akairo';
+import { Snowflake, Collection } from 'discord.js';
 import { LavaClient } from '.';
 
 export declare interface ClientUtil<Client extends LavaClient = never> extends OldClientUtil {
@@ -14,10 +15,32 @@ export declare interface ClientUtil<Client extends LavaClient = never> extends O
 	client: Client;
 }
 
+export interface HeistQueue {
+	/** The channel ID */
+	channel: Snowflake;
+	/** The host user ID */
+	host: Snowflake;
+}
+
+export interface BankRob {
+	/** The victim */
+	victim: Snowflake;
+	/** The host */
+	host: Snowflake;
+}
+
 export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil {
+	/**
+	 * The heist events mapped from guild id to heist queue.
+	 */
+	public heistEvents: Collection<Snowflake, HeistQueue>;
+	/**
+	 * The currency bankrobs.
+	 */
+	public bankrobs: BankRob;
+
 	public constructor(client: Client) {
 		super(client);
-
 		client.once('ready', this._patch.bind(this));
 	}
 
@@ -25,6 +48,9 @@ export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil
 		for (const color of Object.keys(Colors)) {
 			require('discord.js').Constants.Colors[color.toUpperCase()] = Colors[color];
 		}
+
+		this.heistEvents = new Collection();
+		this.bankrobs = Object.create(null);
 	}
 
 	/**

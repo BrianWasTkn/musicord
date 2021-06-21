@@ -4,7 +4,7 @@ import { join } from 'path';
 export default new Plugin(
 	'Command', (client: LavaClient) => new CommandHandler(
 		client, {
-			automateCategories: true,
+			automateCategories: false,
 			classToHandle: Command,
 			commandUtil: true,
 			directory: join(__dirname, 'modules'),

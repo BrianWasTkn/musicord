@@ -88,6 +88,14 @@ declare module 'discord-akairo' {
 		 * Wether to show this command in the help menu.
 		 */
 		help?: boolean;
+		/**
+		 * Type of this command. Defaults to 'command' 
+		 */
+		type?: 'subcommand' | 'command';
+		/**
+		 * Usage of this command.
+		 */
+		usage?: string;
 	}
 
 	/**

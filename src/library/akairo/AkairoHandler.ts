@@ -63,13 +63,10 @@ export class AbstractHandler<Module extends AbstractModule = AbstractModule> ext
 	 */
 	public constructor(client: LavaClient, options: AbstractHandlerOptions) {
 		super(client, options);
-		if (options.debug ?? Boolean(process.env.DEV_MODE)) {
-			this.on('load', (mod: AkairoModule) => {
-				this.client.console.log('Akairo', `${options.classToHandle.name} "${mod.id}" loaded.`);
-			});
-			this.on('remove', (mod: AkairoModule) => {
-				this.client.console.log('Akairo', `${options.classToHandle.name} "${mod.id}" removed.`);
-			});
+		if (options.debug ?? process.env.DEV_MODE === 'true') {
+			const listen = (message: string) => this.client.console.log('Akairo', message);
+			this.on('load', (mod: AkairoModule) => listen(`${options.classToHandle.name} "${mod.id}" loaded.`));
+			this.on('remove', (mod: AkairoModule) => listen(`${options.classToHandle.name} "${mod.id}" removed.`));
 		}
 	}
 }
