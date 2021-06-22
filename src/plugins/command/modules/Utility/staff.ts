@@ -12,11 +12,12 @@ export default class extends Command {
 		});
 	}
 
-	*args(ctx: Context) {
+	*args(ctx: Context, ...args: any) {
 		const { modules } = ctx.client.handlers.command;
 		const subs = this.subCommands.filter(c => c.parent === this.id);
 		const sub: string = yield [...subs.map(s => [s.id])];
 
+		console.log(args);
 		return sub ? Flag.continue(sub) : null;
 	}
 
