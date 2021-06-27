@@ -2,7 +2,7 @@
 node_modules
 build
 dist
-./src/framework
+./src/framework/
 
 .env
 test.js
