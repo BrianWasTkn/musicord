@@ -88,9 +88,7 @@ export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil
 	 * Create a simple progress bar.
 	*/
 	progressBar = (percent = 1, filledChar = '■', emptyChar = '□') => {
-		const done = filledChar.repeat(percent);
-		const not = emptyChar.repeat(10 - percent);
-		return `${done}${not}`;
+		return `${filledChar.repeat(percent)}${emptyChar.repeat(10 - percent)}`;
 	}
 
 	/**
@@ -102,6 +100,20 @@ export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil
 	 * Pick a random item from the array.
 	*/
 	randomInArray = <T>(array: T[]): T => array[Math.floor(Math.random() * array.length)];
+
+	/**
+	 * Pick random items from the array.
+	 */
+	randomsInArray = <T>(array: T[], amount = 1): T[] => {
+		const randoms: T[] = [];
+
+		array.forEach((_, i, a) => {
+			const random = this.randomInArray(this.deepFilter(a, randoms));
+			randoms.push(random);
+		});
+
+		return randoms.slice(0, amount);
+	}
 
 	/**
 	 * Generate a random number between 2 numbers. 
@@ -122,13 +134,13 @@ export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil
 	 * Convert a number to roman numerals. 
 	*/
 	romanize = (int: number): string => {
-		let keys = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'],
+		let romans = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'],
 			values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1],
 			roman = '',
 			index = 0;
 
-		while (index < keys.length) {
-			roman += keys[index].repeat(int / values[index]);
+		while (index < romans.length) {
+			roman += romans[index].repeat(int / values[index]);
 			int %= values[index]; index++;
 		}
 

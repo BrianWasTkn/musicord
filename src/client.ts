@@ -9,7 +9,7 @@ export default new LavaClient({
 	messageCacheMaxSize: 100,
 	messageSweepInterval: 30,
 	allowedMentions: {
-		repliedUser: true
+		repliedUser: true,
 	},
 	presence: {
 		status: 'idle',
