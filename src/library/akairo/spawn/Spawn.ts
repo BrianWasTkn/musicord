@@ -14,7 +14,7 @@ export type SpawnMethod = 'message' | 'spam' | 'react';
 /**
  * Collection of channel ids to collection of member IDs to spawn names.
  */
-export type SpawnQueue = CollectionFlake<CollectionFlake<GuildMemberPlus>>;
+export type SpawnQueue = CollectionPlus<CollectionPlus<GuildMemberPlus>>;
 
 export interface SpawnDisplay {
 	description: string;

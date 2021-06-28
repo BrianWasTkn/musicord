@@ -25,7 +25,7 @@ export class PluginManager extends EventEmitter {
 	/**
 	 * The collection of plugins.
 	 */
-	public plugins: CollectionFlake<Plugin>;
+	public plugins: CollectionPlus<Plugin>;
 
 	/**
 	 * Constructor for this plugin manager.

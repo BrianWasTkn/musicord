@@ -22,7 +22,7 @@ export declare global {
 	/**
 	 * Cast a collection with a key string to value pair.
 	*/
-	type CollectionFlake<V> = Collection<string, V>;
+	type CollectionPlus<V> = Collection<string, V>;
 
 	/**
 	 * Custom console interface.

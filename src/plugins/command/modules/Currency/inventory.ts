@@ -71,7 +71,7 @@ export default class extends Command {
 		});
 	}
 
-	mapItems(items: CollectionFlake<Inventory>) {
+	mapItems(items: CollectionPlus<Inventory>) {
 		return [...items.values()]
 			.filter(inv => inv.isOwned())
 			.filter(inv => inv.module.inventory)

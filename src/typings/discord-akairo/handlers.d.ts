@@ -154,7 +154,7 @@ declare module 'discord-akairo' {
 		/**
 		 * The collection of types to be used in command arguments.
 		 */
-		types: CollectionFlake<ArgumentTypeCaster>;
+		types: CollectionPlus<ArgumentTypeCaster>;
 		/**
 		 * Adds built in types from akairo.
 		 */

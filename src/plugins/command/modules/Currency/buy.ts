@@ -35,7 +35,7 @@ export default class extends Command {
 		}
 
 		const inv = entry.items.get(item.id);
-		const cost = this.getCost(item, inv.level);
+		const cost = item.upgrade(entry).price;
 		const pocket = entry.props.pocket;
 
 		if (!item.buyable) {
@@ -65,7 +65,7 @@ export default class extends Command {
 
 		const { amount, item } = args;
 		const { price } = await args.item
-			.buy(entry, amount);
+			.buyItem(entry, amount);
 
 		return ctx.reply({ embed: {
 			author: {
