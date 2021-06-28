@@ -198,46 +198,52 @@ export abstract class Item extends AbstractModule {
 	/**
 	 * Simple method to buy this item from the shop.
 	 */
-	public buy(entry: CurrencyEntry, amount: number) {
-		const { buy, sell } = this.getSaleAmounts(entry);
-		const newPrice = Math.round(buy) * Math.trunc(amount);
+	public buyItem(entry: CurrencyEntry, amount: number) {
+		const { cost, sell } = this.sales(entry);
+		const newPrice = Math.round(cost) * Math.trunc(amount);
 		return (this.premium ? entry.remKeys(newPrice) : entry.removePocket(newPrice))
-			.addItem(this.id, amount).save().then(this.getUpgrade);
+			.addItem(this.id, amount).save().then(this.upgrade);
 	}
 
 	/**
 	 * Simple method to sell this item to the shop.
 	 */
 	public sellItem(entry: CurrencyEntry, amount: number) {
-		const { buy, sell } = this.getSaleAmounts(entry);
-		const newPrice = Math.round(buy * sell) * Math.trunc(amount);
+		const { cost, sell } = this.sales(entry);
+		const newPrice = Math.round(cost * sell) * Math.trunc(amount);
 		return (this.premium ? entry.addKeys(newPrice) : entry.addPocket(newPrice))
-			.subItem(this.id, amount).save().then(this.getUpgrade);
+			.subItem(this.id, amount).save().then(this.upgrade);
 	}
 
 	/**
-	 * Get the upgraded version of this item.
-	 * - Includes saled amount.
+	 * Get the upgrade of this item.
 	 */
-	public getUpgrade(entry: CurrencyEntry): ItemUpgrade {
-		const { discount, item } = this.handler.sale;
-		const { level } = entry.items.get(this.id);
-		
-		return this.upgrades[level];
+	public get upgrade() {
+		return (entry: CurrencyEntry) => {
+			const { discount, item } = this.handler.sale;
+			const { level } = entry.items.get(this.id);
+			
+			return this.upgrades[level];
+		};
 	}
 
 	/**
-	 * Get the sale info if this item is on sale.
+	 * Get the sale of this item.
 	 */
-	public getSaleAmounts(entry: CurrencyEntry) {
+	public get sales() {
 		const { discount, item } = this.handler.sale;
-		const { price, sell } = this.getUpgrade(entry);
-		const calc = (p: number) => this.calcDiscount(p, discount);
+		const calc = (amount: number) => {
+			return this.calcDiscount(amount, discount);
+		};
 
-		return item.id === this.id ? {
-			sell: calc(price * sell),
-			buy: calc(price)
-		} : null;
+		return (entry: CurrencyEntry) => {
+			const { price, sell } = this.upgrade(entry);
+			return item.id === this.id ? {
+				sell: calc(price * sell),
+				cost: calc(price),
+				item: this,
+			} : {};
+		}
 	}
 
 	/**
