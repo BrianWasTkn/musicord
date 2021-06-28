@@ -34,11 +34,7 @@ export declare global {
 	/**
 	 * The cooldown data owo
 	 */
-	interface LavaCooldowns {
-		/**
-		 * The command id.
-		 */
-		id: string;
+	interface LavaCooldowns extends DataSlot {
 		/**
 		 * The expiration timestamp.
 		 */
@@ -48,11 +44,7 @@ export declare global {
 	/**
 	 * The final shitshow.
 	 */
-	interface LavaSettings {
-		/**
-		 * The id for this setting.
-		 */
-		id: string;
+	interface LavaSettings extends DataSlot {
 		/**
 		 * State wether it's enabled or not.
 		 */

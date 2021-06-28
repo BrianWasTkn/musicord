@@ -25,6 +25,10 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		return this.data.prestige;
 	}
 
+	get shit() {
+		return super.map('items', Inventory);
+	}
+
 	/**
 	 * Their trash inventory.
 	*/

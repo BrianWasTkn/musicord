@@ -3,7 +3,7 @@ import { Base } from 'discord.js';
 
 export interface StructureOptions {
 	/**
-	 * The client - hint: typing this shit is actually getting very annoying.
+	 * The client - note: typing this shit is actually getting very annoying.
 	 */
 	client: LavaClient;
 	/**

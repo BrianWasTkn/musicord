@@ -25,11 +25,7 @@ export declare global {
 	/**
 	 * The donation data itself obviously what else?
 	 */
-	interface CribDonation {
-		/**
-		 * The id for this type of donation.
-		 */
-		id: 'default' | string;
+	interface CribDonation extends DataSlot {
 		/**
 		 * The amount they have donated for this type of donation.
 		 */

@@ -97,11 +97,7 @@ export declare global {
 	/**
 	 * Their silly little items they think they're rich.
 	 */
-	interface CurrencyInventory {
-		/**
-		 * The id of this item
-		 */
-		id: string;
+	interface CurrencyInventory extends DataSlot {
 		/**
 		 * Amount of skittles they have eaten.
 		 */
@@ -154,11 +150,7 @@ export declare global {
 	/**
 	 * Their quests.
 	 */
-	interface CurrencyQuests {
-		/**
-		 * ID of the quest.
-		 */
-		id: string;
+	interface CurrencyQuests extends DataSlot {
 		/**
 		 * Amount completed.
 		 */
@@ -168,11 +160,7 @@ export declare global {
 	/**
 	 * Their gambling stats.
 	 */
-	interface CurrencyGamble {
-		/**
-		 * ID of the command.
-		 */
-		id: string;
+	interface CurrencyGamble extends DataSlot {
 		/**
 		 * Total coins they won.
 		 */
@@ -198,11 +186,7 @@ export declare global {
 	/**
 	 * Their sharing stats. Hey look it's satan claus!
 	 */
-	interface CurrencyTrade {
-		/**
-		 * ID of this command.
-		 */
-		id: string;
+	interface CurrencyTrade extends DataSlot {
 		/**
 		 * Coins/Items recieved.
 		 */

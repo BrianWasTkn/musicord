@@ -19,7 +19,7 @@ export declare interface Connector extends Base {
 */
 export class Connector extends Base {
 	/**
-	 * Spawn Endpoint.
+	 * Crib Endpoint.
 	*/
 	public crib = new CribEndpoint(this.client, CribModel);
 

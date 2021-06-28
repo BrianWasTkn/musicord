@@ -103,7 +103,7 @@ export class LavaEntry extends UserEntry<LavaProfile> {
 	}
 
 	/** Blacklist them temporarily */
-	blacklist(duration = 1000 * 60) {
+	blacklist(duration: number) {
 		return this.punish(duration).blacklist();
 	}
 
