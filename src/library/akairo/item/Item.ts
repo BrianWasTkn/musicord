@@ -71,7 +71,7 @@ export abstract class Item extends AbstractModule {
 	/** The emoji of this item for level 0 */
 	public emoji: string;
 	/** The sell rate of this item, fixed rate */
-	public sell: (price: number) => number;
+	public sell: number;
 
 	/** Wether this item shouldn't be on sale */
 	public sale: boolean;
@@ -121,9 +121,7 @@ export abstract class Item extends AbstractModule {
 		super(id, { name: options.name, category: options.category });
 		this.price = options.price;
 		this.emoji = options.emoji;
-		this.sell = (price: number) => {
-			return Math.round(price * options.sell);
-		};
+		this.sell = options.sell;
 
 		this.sale = options.sale;
 		this.inventory = options.inventory;
@@ -161,7 +159,9 @@ export abstract class Item extends AbstractModule {
 			name: this.name,
 			price: this.price,
 			premium: false,
-			sell: 0.33,
+			sell: 0,
+			longInfo: this.longInfo,
+			shortInfo: this.shortInfo
 		}, ...options.upgrades.map(
 			(up: ItemUpgrade, i: number, arr) => this._assign(up, {
 				emoji: this.emoji,
@@ -169,7 +169,9 @@ export abstract class Item extends AbstractModule {
 				name: this.name,
 				price: this.price,
 				premium: i === arr.length - 1,
-				sell: 0.33
+				sell: 0,
+				longInfo: this.longInfo,
+				shortInfo: this.shortInfo
 			})
 		)];
 	}
@@ -188,8 +190,60 @@ export abstract class Item extends AbstractModule {
 	*/
 	public use(context: Context, entry: CurrencyEntry, times = 1): PromiseUnion<MessageOptions> {
 		return { reply: { messageReference: context.id, failIfNotExists: false }, embed: {
-			description: 'Bob is currently building this item shush-',
+			description: 'Used your item, now what?',
 			title: `${this.emoji} ${this.name}`, color: 0xfafafa,
 		}};
+	}
+
+	/**
+	 * Simple method to buy this item from the shop.
+	 */
+	public buy(entry: CurrencyEntry, amount: number) {
+		const { buy, sell } = this.getSaleAmounts(entry);
+		const newPrice = Math.round(buy) * Math.trunc(amount);
+		return (this.premium ? entry.remKeys(newPrice) : entry.removePocket(newPrice))
+			.addItem(this.id, amount).save().then(this.getUpgrade);
+	}
+
+	/**
+	 * Simple method to sell this item to the shop.
+	 */
+	public sellItem(entry: CurrencyEntry, amount: number) {
+		const { buy, sell } = this.getSaleAmounts(entry);
+		const newPrice = Math.round(buy * sell) * Math.trunc(amount);
+		return (this.premium ? entry.addKeys(newPrice) : entry.addPocket(newPrice))
+			.subItem(this.id, amount).save().then(this.getUpgrade);
+	}
+
+	/**
+	 * Get the upgraded version of this item.
+	 * - Includes saled amount.
+	 */
+	public getUpgrade(entry: CurrencyEntry): ItemUpgrade {
+		const { discount, item } = this.handler.sale;
+		const { level } = entry.items.get(this.id);
+		
+		return this.upgrades[level];
+	}
+
+	/**
+	 * Get the sale info if this item is on sale.
+	 */
+	public getSaleAmounts(entry: CurrencyEntry) {
+		const { discount, item } = this.handler.sale;
+		const { price, sell } = this.getUpgrade(entry);
+		const calc = (p: number) => this.calcDiscount(p, discount);
+
+		return item.id === this.id ? {
+			sell: calc(price * sell),
+			buy: calc(price)
+		} : null;
+	}
+
+	/**
+	 * Calc discount for shit.
+	 */
+	public calcDiscount(amount: number, discount: number) {
+		return amount - (amount * (discount / 100));
 	}
 }

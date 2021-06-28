@@ -33,7 +33,7 @@ export abstract class ToolItem extends Item {
 			price: options.price,
 			shortInfo: options.shortInfo,
 			longInfo: options.longInfo,
-			upgrades: options.upgrades ?? [],
+			upgrades: options.upgrades?.map(up => ({ sell: 0.66, ...up })) ?? [],
 			sell: 0.66,
 			sale: true,
 			inventory: true,

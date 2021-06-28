@@ -62,7 +62,7 @@ export abstract class CollectibleItem extends Item {
 			price: options.price,
 			shortInfo: options.shortInfo,
 			longInfo: options.longInfo,
-			upgrades: options.upgrades,
+			upgrades: options.upgrades?.map(up => ({ sell: 0, ...up })) ?? [],
 			sale: true,
 			inventory: true,
 			shop: true,

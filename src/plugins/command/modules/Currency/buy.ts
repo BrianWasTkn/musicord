@@ -28,24 +28,16 @@ export default class extends Command {
 		});
 	}
 
-	getCost(item: Item, level: number) {
-		const { sale: { item: sale, discount } } = item.handler;
-		const { id } = item;
-
-		const price = item.upgrades[level].price;
-		const discPrice = price - (price * (discount / 100));
-		return sale.id === item.id ? discPrice : price;
-	}
-
 	check(entry: CurrencyEntry, args: BuyArgs) {
 		const { amount, item } = args;
-
-		const inv = entry.items.get(item.id);
-		const { pocket } = entry.props;
-
 		if (!item) {
 			return ItemMessages.NEED_TO_BUY;
 		}
+
+		const inv = entry.items.get(item.id);
+		const cost = this.getCost(item, inv.level);
+		const pocket = entry.props.pocket;
+
 		if (!item.buyable) {
 			return ItemMessages.NOT_BUYABLE;
 		}
@@ -58,8 +50,6 @@ export default class extends Command {
 		if (amount < 1) {
 			return ItemMessages.AMOUNT_BELOW_ONE;
 		}
-
-		const cost = this.getCost(item, inv.level);
 		if (amount > 1 && pocket < cost * amount) {
 			return ItemMessages.NOT_BUYABLE_BULK;
 		}
@@ -73,15 +63,9 @@ export default class extends Command {
 		const check = this.check(entry, args);
 		if (check) return ctx.reply(check);
 
-		const inventory = entry.items.get(args.item.id);
-		let price = this.getCost(args.item, inventory.level);
-		price = Math.round(price) * Math.trunc(args.amount);
-
-		await (args.item.premium 
-			? entry.remKeys(price) 
-		: entry.removePocket(price))
-			.addItem(args.item.id, args.amount)
-			.save();
+		const { amount, item } = args;
+		const { price } = await args.item
+			.buy(entry, amount);
 
 		return ctx.reply({ embed: {
 			author: {
@@ -91,7 +75,7 @@ export default class extends Command {
 				})
 			},
 			color: 'GREEN',
-			description: ItemMessages.BUY_MSG(args.item, price, args.amount),
+			description: ItemMessages.BUY_MSG(item, price, amount),
 			footer: {
 				text: 'Thanks for your purchase!'
 			}

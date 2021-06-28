@@ -48,7 +48,7 @@ export abstract class PowerUpItem extends Item {
 			price: options.price,
 			shortInfo: options.shortInfo,
 			longInfo: options.longInfo,
-			upgrades: options.upgrades,
+			upgrades: options.upgrades?.map(up => ({ sell: 0.33, ...up })) ?? [],
 			sell: 0.33,
 			sale: true,
 			inventory: true,

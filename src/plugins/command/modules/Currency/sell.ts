@@ -28,15 +28,6 @@ export default class extends Command {
 		});
 	}
 
-	getSell(item: Item, level: number) {
-		const { sale: { item: sale, discount } } = item.handler;
-		const { id } = item;
-
-		const price = item.sell(item.upgrades[level].price);
-		const discPrice = price - (price * (discount / 100));
-		return sale.id === item.id ? discPrice : price;
-	}
-
 	check(entry: CurrencyEntry, args: SellArgs) {
 		const { amount, item } = args;
 
@@ -62,15 +53,9 @@ export default class extends Command {
 		const check = this.check(entry, args);
 		if (check) return ctx.reply(check);
 
-		const inventory = entry.items.get(args.item.id);
-		let price = this.getSell(args.item, inventory.level);
-		price = Math.round(price) * Math.trunc(args.amount);
-
-		await (args.item.premium 
-			? entry.addKeys(price) 
-		: entry.addPocket(price))
-			.subItem(args.item.id, args.amount)
-			.save();
+		const { amount, item } = args;
+		const { sell } = await args.item
+			.sellItem(entry, amount);
 
 		return ctx.reply({ embed: {
 			author: {
@@ -80,7 +65,7 @@ export default class extends Command {
 				})
 			},
 			color: 'GREEN',
-			description: ItemMessages.SELL_MSG(args.item, price, args.amount),
+			description: ItemMessages.SELL_MSG(item, price, amount),
 			footer: {
 				text: 'Thanks for stopping by!'
 			}

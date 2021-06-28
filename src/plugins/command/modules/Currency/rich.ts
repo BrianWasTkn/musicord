@@ -14,9 +14,11 @@ export default class extends Command {
 
 	top(members: Collection<Snowflake, GuildMember>, amount = 10) {
 		const docs = CurrencyModel.find({ 'props.pocket': { $gte: 1 } }).sort({ 'props.pocket': 'desc' }).exec();
-		return docs.then(docs => docs.map(doc => new CurrencyEntry(this.client, doc))
-			.filter(doc => members.has(doc.data._id as Snowflake))
-			.slice(0, amount));
+		return docs.then(docs => 
+			docs.map(doc => new CurrencyEntry(this.client, doc))
+				.filter(doc => members.has(doc.data._id as Snowflake))
+				.slice(0, amount)
+		);
 	}
 
 	async exec(ctx: Context) {		
