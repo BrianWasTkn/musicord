@@ -21,6 +21,7 @@ export default class extends SubCommand {
 
 	async exec(ctx: Context, { msg }: { msg: string }) {
 		const role = ctx.guild.roles.cache.get('704013651887128707');
+		await ctx.delete();
 		return await ctx.channel.send({ content: role.toString(), embed: {
 			footer: {
 				text: ctx.author.username,
