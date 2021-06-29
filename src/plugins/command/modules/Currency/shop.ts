@@ -26,7 +26,7 @@ export default class extends Command {
 	displayItem(item: Item, invs: CollectionPlus<Inventory>, saleNav = false) {
 		const { shortInfo, longInfo, emoji } = item;
 		const { discount, item: saleItem } = item.handler.sale;
-		const { price, icon } = item.getUpgrade(invs.get(item.id));
+		const { name, price, icon } = item.getUpgrade(invs.get(item.id));
 		const saleInv = invs.get(saleItem.id);
 
 		if (saleNav) {
