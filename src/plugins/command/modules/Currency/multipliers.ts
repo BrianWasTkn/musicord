@@ -1,4 +1,4 @@
-import { Command, Context } from 'lava/index';
+import { Command, Context, Currency } from 'lava/index';
 
 export default class extends Command {
 	constructor() {
@@ -20,7 +20,7 @@ export default class extends Command {
 	async exec(ctx: Context, { page }: { page: number }) {
 		const multis = await ctx.currency.fetch(ctx.author.id).then(d => d.calcMulti(ctx));
 		const pages = ctx.client.util.paginateArray(
-			multis.map(({ name, value }) => `${name} (${value}%)`
+			multis.map(({ name, value }) => `${name} (\`+${value}%\`)`
 		));
 
 		if (!pages[page]) {
@@ -29,11 +29,10 @@ export default class extends Command {
 
 		return ctx.channel.send({ embed: {
 			author: { name: `${ctx.author.username}'s Multipliers` },
-			fields: [
-				{
-					name: `Total Multi: ${multis}`
-				}
-			]
+			color: 'BLURPLE', fields: [{
+				name: `Total Multi: ${multis.reduce((p, c) => p + c.value, 0)}% (max of ${Currency.MAX_MULTI}%)`,
+				value: pages[page - 1].join('\n')
+			}]
 		}})
 	}
 }

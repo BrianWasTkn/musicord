@@ -53,7 +53,7 @@ export default class extends Command {
 		if (check) return ctx.reply(check);
 
 		const { amount, item } = args;
-		const { sell } = await args.item
+		const { price, sell } = await args.item
 			.sellItem(entry, amount);
 
 		return ctx.reply({ embed: {
@@ -64,7 +64,7 @@ export default class extends Command {
 				})
 			},
 			color: 'GREEN',
-			description: ItemMessages.SELL_MSG(item, price, amount),
+			description: ItemMessages.SELL_MSG(item, price * sell, amount),
 			footer: {
 				text: 'Thanks for stopping by!'
 			}
