@@ -18,18 +18,7 @@ export default class extends Command {
 		});
 	}
 
-	async exec(ctx: Context, { query }: { query: Command }) {
-		try {
-			const dm = await ctx.author.createDM();
-			return dm.send('help');
-		} catch {
-			const reply = await ctx.reply('Please open your DMs!');
-			await ctx.client.util.sleep(5000);
-			return reply.delete();
-		}
-	}
-
-	execc(ctx: Context, { query }: { query: Command }) {
+	exec(ctx: Context, { query }: { query: Command }) {
 		if (query instanceof Command) {
 			return ctx.channel.send({ embed: {
 				title: `${query.name} Command`,

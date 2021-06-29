@@ -5,9 +5,8 @@ export default class Utility extends Command {
 	public constructor() {
 		super('ping', {
 			name: 'Ping',
-			channel: 'guild',
 			aliases: ['ping', 'pong'],
-			category: 'Utility',
+			description: 'Ping me i ping you, lets ping each other :smirk:'
 		});
 	}
 

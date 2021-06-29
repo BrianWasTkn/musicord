@@ -6,7 +6,6 @@ export default class extends GambleCommand {
 	constructor() {
 		super('gamble', {
 			aliases: ['gamble', 'bet', 'roll'],
-			category: 'Currency',
 			description: 'Take your chances by rolling a dice! Warning, I\'m very good at stealing your coins.',
 			name: 'Gamble',
 		});

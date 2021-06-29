@@ -4,7 +4,6 @@ export default class extends Command {
 	constructor() {
 		super('reset', {
 			aliases: ['reset'],
-			category: 'Utility',
 			clientPermissions: ['EMBED_LINKS'],
 			cooldown: 1000 * 60 * 60,
 			description: 'Reset your currency data.',
@@ -14,13 +13,13 @@ export default class extends Command {
 					id: 'all',
 					match: 'flag',
 					flag: '--all',
-					default: null
+					default: false
 				}
 			]
 		});
 	}
 
-	async exec(ctx: Context, args: { all: string; }) {
+	async exec(ctx: Context, args: { all: boolean; }) {
 		const { data } = await ctx.currency.fetch(ctx.author.id);
 
 		await ctx.reply({ embed: { color: 'RED', description: 'Are u sure you wanna reset rn?' } });

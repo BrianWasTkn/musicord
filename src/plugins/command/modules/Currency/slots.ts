@@ -5,7 +5,6 @@ export default class extends GambleCommand {
 	constructor() {
 		super('slots', {
 			aliases: ['slotmachine', 'slots'],
-			category: 'Currency',
 			description: 'Spin the slot machine to have a chance to win a jackpot!',
 			name: 'Slots',
 		});

@@ -10,7 +10,6 @@ export default class extends Command {
 	constructor() {
 		super('inventory', {
 			aliases: ['inventory', 'items', 'inv'],
-			category: 'Currency',
 			clientPermissions: ['EMBED_LINKS'],
 			description: 'View all items you own.',
 			name: 'Inventory',
