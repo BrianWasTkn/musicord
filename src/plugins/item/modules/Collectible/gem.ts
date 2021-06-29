@@ -6,8 +6,8 @@ export default class Collectible extends CollectibleItem {
 			name: 'Crystal Gem',
 			emoji: ':gem:',
 			price: 5e6,
-			shortInfo: 'A little gambling boost and that\'s fine yeah?',
-			longInfo: 'Gives you a boost in your gambling payouts for more ching ching :money_mouth:',
+			shortInfo: 'A little gambling boost yeah?',
+			longInfo: 'Gives you a boost in your gambling multipliers for more ching ching :money_mouth:',
 			upgrades: [
 				{ price: 8e6 }, 
 				{ price: 11e6 }, 

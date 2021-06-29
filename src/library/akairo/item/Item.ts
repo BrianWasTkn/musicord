@@ -4,7 +4,7 @@
  */
 
 import { AbstractModuleOptions, AbstractModule } from 'lava/akairo';
-import { Context, CurrencyEntry } from 'lava/index'; 
+import { Context, CurrencyEntry, Inventory } from 'lava/index'; 
 import { MessageOptions } from 'discord.js';
 import { ItemHandler } from '.';
 
@@ -94,12 +94,13 @@ export abstract class Item extends AbstractModule {
 	/**
 	 * Wether this item has been retired.
 	 * config properties overriden by this option:
-	 * * showInInventory = false
-	 * * showInShop = false
+	 * * inventory = false
+	 * * shop = false
 	 * * buyable = false
 	 * * giftable = false
 	 * * usable = false
 	 * * sellable = false
+	 * * sale = false
 	 */
 	public retired?: boolean;
 
@@ -137,11 +138,8 @@ export abstract class Item extends AbstractModule {
 		this.shortInfo = options.shortInfo;
 		this.longInfo = options.longInfo;
 
-		if (this.premium) {
-			this.price /= 1000;
-		}
-
 		if (this.retired) {
+			this.sale = false;
 			this.inventory = false;
 			this.shop = false;
 			this.buyable = false;
@@ -150,27 +148,24 @@ export abstract class Item extends AbstractModule {
 			this.sellable = false;
 		}
 
-		/**
-		 * The upgrades for this item.
-		*/
 		this.upgrades = [{
 			emoji: this.emoji,
 			level: 0,
+			longInfo: this.longInfo,
 			name: this.name,
 			price: this.price,
 			premium: false,
 			sell: 0,
-			longInfo: this.longInfo,
 			shortInfo: this.shortInfo
-		}, ...options.upgrades.map(
-			(up: ItemUpgrade, i: number, arr) => this._assign(up, {
+		}, ...options.upgrades.map((up: ItemUpgrade, i: number, arr) => 
+			this._assign(up, {
 				emoji: this.emoji,
 				level: i + 1,
+				longInfo: this.longInfo,
 				name: this.name,
 				price: this.price,
-				premium: i === arr.length - 1,
+				premium: false,
 				sell: 0,
-				longInfo: this.longInfo,
 				shortInfo: this.shortInfo
 			})
 		)];
@@ -199,51 +194,57 @@ export abstract class Item extends AbstractModule {
 	 * Simple method to buy this item from the shop.
 	 */
 	public buyItem(entry: CurrencyEntry, amount: number) {
-		const { cost, sell } = this.sales(entry);
-		const newPrice = Math.round(cost) * Math.trunc(amount);
-		return (this.premium ? entry.remKeys(newPrice) : entry.removePocket(newPrice))
-			.addItem(this.id, amount).save().then(this.upgrade);
+		const inventory = entry.items.get(this.id);
+		const { cost, sell } = this.getSale(inventory);
+		const p = Math.round(cost) * Math.trunc(amount);
+		
+		return (this.premium ? entry.remKeys(p) : entry.removePocket(p))
+			.addItem(this.id, amount).save()
+			.then(() => this.getUpgrade(inventory));
 	}
 
 	/**
 	 * Simple method to sell this item to the shop.
 	 */
 	public sellItem(entry: CurrencyEntry, amount: number) {
-		const { cost, sell } = this.sales(entry);
-		const newPrice = Math.round(cost * sell) * Math.trunc(amount);
-		return (this.premium ? entry.addKeys(newPrice) : entry.addPocket(newPrice))
-			.subItem(this.id, amount).save().then(this.upgrade);
+		const inventory = entry.items.get(this.id);
+		const { cost, sell } = this.getSale(inventory);
+		const p = Math.round(cost * sell) * Math.trunc(amount);
+
+		return (this.premium ? entry.addKeys(p) : entry.addPocket(p))
+			.subItem(this.id, amount).save()
+			.then(() => this.getUpgrade(inventory));
 	}
 
 	/**
 	 * Get the upgrade of this item.
 	 */
-	public get upgrade() {
-		return (entry: CurrencyEntry) => {
-			const { discount, item } = this.handler.sale;
-			const { level } = entry.items.get(this.id);
-			
-			return this.upgrades[level];
-		};
+	public getUpgrade({ level }: Inventory) {
+		const { discount, item } = this.handler.sale;
+		const upgrade = this.upgrades[level];	
+
+		const icon = upgrade.premium ? ':key:' : ':coin:';	
+		const price = item.id === this.id ? this.calcDiscount(upgrade.price, discount) : upgrade.price;
+
+		return { ...upgrade, price, icon };
 	}
 
 	/**
 	 * Get the sale of this item.
 	 */
-	public get sales() {
+	public getSale(inv: Inventory) {
 		const { discount, item } = this.handler.sale;
 		const calc = (amount: number) => {
-			return this.calcDiscount(amount, discount);
+			return item.id === this.id 
+				? this.calcDiscount(amount, discount) 
+				: amount;
 		};
 
-		return (entry: CurrencyEntry) => {
-			const { price, sell } = this.upgrade(entry);
-			return item.id === this.id ? {
-				sell: calc(price * sell),
-				cost: calc(price),
-				item: this,
-			} : {};
-		}
+		const { price, sell } = this.getUpgrade(inv);
+		return {
+			sell: calc(price * sell),
+			cost: calc(price),
+		};
 	}
 
 	/**

@@ -7,7 +7,7 @@ export default class Collectible extends CollectibleItem {
 			emoji: ':trophy:',
 			price: 30e6,
 			shortInfo: 'Embrace the powers of the almighty trophy!',
-			longInfo: 'A good amount of gambling boost is good yeah?',
+			longInfo: 'A great amount of gambling multiplier boost!',
 			upgrades: [
 				{ price: 45e6 }, 
 				{ price: 55e6 }, 

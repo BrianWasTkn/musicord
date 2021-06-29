@@ -6,8 +6,8 @@ export default class Collectible extends CollectibleItem {
 			name: 'Fist Statue',
 			emoji: ':fist:',
 			price: 100e6,
-				shortInfo: 'How tall can this statue get?',
-				longInfo: 'More steal barriers, more multipliers, even your dice counts! Wow this item is epic.',
+				shortInfo: 'How tall can YOUR statue get?',
+				longInfo: 'More steal barriers, more multipliers, even your dice counts! THIS ITEM IS EVERYTHING!',
 			upgrades: [
 				{ price: 150e6 }, 
 				{ price: 250e6 }, 

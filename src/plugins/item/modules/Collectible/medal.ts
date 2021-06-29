@@ -6,7 +6,7 @@ export default class Collectible extends CollectibleItem {
 			name: 'Medal of Honor',
 			emoji: ':medal:',
 			price: 15e6,
-			shortInfo: 'Honorable item for honorable people!',
+			shortInfo: 'Barriers and barriers...',
 			longInfo: 'Grants you a steal barrier to decrease coins being robbed from you!',
 			upgrades: [
 				{ price: 25e6 }, 

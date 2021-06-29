@@ -19,36 +19,22 @@ export default class extends Command {
 		});
 	}
 
-	getIcon(item: Item) {
-		return item.premium ? ':key:' : ':coin:';
+	getIcon(item: Item, inv: Inventory) {
+		return item.upgrades[inv.level].premium ? ':key:' : ':coin:';
 	}
 
-	calc(price: number, discount: number) {
-		return price - (price * (discount / 100));
-	}
-
-	displayItem(item: Item, saleNav: boolean, inv: Inventory) {
+	displayItem(item: Item, invs: CollectionPlus<Inventory>, saleNav = false) {
 		const { shortInfo, longInfo, emoji } = item;
-		const { discount, item: dItem } = item.handler.sale;
-		const name = item.upgrades[inv.level].name;
-
-		const price = item.upgrades[inv.level].price;
-		const cost = dItem.id === item.id ? this.calc(price, discount) : price;
+		const { discount, item: saleItem } = item.handler.sale;
+		const { price, icon } = item.getUpgrade(invs.get(item.id));
+		const saleInv = invs.get(saleItem.id);
 
 		if (saleNav) {
-			const off = `[${cost.toLocaleString()}](https://google.com) ( [***${discount}% OFF!***](https://discord.gg/memer) )`;
-			return `**${emoji} ${name}** — ${this.getIcon(dItem)} ${off}\n${longInfo}`;
+			const off = `[${price.toLocaleString()}](https://google.com) ( [***${discount}% OFF!***](https://discord.gg/memer) )`;
+			return `**${emoji} ${name}** — ${this.getIcon(saleItem, saleInv)} ${off}\n${longInfo}`;
 		}
 
-		return `**${emoji} ${name}** — ${this.getIcon(item)} [${cost.toLocaleString()}](https://google.com)\n${shortInfo}`;
-	}
-
-	getPrices(item: Item, level: number) {
-		const isSale = item.id === item.handler.sale.item.id;
-		return {
-			sell: this.calc(item.sell(item.upgrades[level].price), isSale ? item.handler.sale.discount : 0),
-			buy: this.calc(item.upgrades[level].price, isSale ? item.handler.sale.discount : 0),
-		}
+		return `**${emoji} ${name}** — ${icon} [${price.toLocaleString()}](https://google.com)\n${shortInfo}`;
 	}
 
 	async exec(ctx: Context, args: { query: number | Item }) {
@@ -58,7 +44,7 @@ export default class extends Command {
 		const items = [...handler.modules.values()];
 
 		if (typeof args.query === 'number') {
-			const shop = paginateArray(items.sort((a, b) => b.price - a.price).filter(i => i.shop).map(i => this.displayItem(i, false, entry.items.get(i.id))));
+			const shop = paginateArray(items.sort((a, b) => b.price - a.price).filter(i => i.shop).map(i => this.displayItem(i, entry.items)));
 			const left = parseTime((handler.sale.nextSale - Date.now()) / 1000);
 			if (args.query > shop.length) {
 				return ctx.reply(`Page \`${args.query}\` doesn't exist.`);
@@ -70,7 +56,7 @@ export default class extends Command {
 				}, fields: [
 					{
 						name: `**__LIGHTNING SALE__** (resets in ${left})`,
-						value: this.displayItem(handler.sale.item, true, entry.items.get(handler.sale.item.id))
+						value: this.displayItem(handler.sale.item, entry.items, true)
 					},
 					{
 						name: 'Shop Items',
@@ -87,17 +73,19 @@ export default class extends Command {
 			return ctx.reply('That item doesn\'t exist tho');
 		}
 
-		const { owned, level } = entry.items.get(query.id);
+		const thisLevel = entry.items.get(query.id);
+		const icon = this.getIcon(query, thisLevel);
+		const { owned, level } = thisLevel;
 		const { emoji, name } = query.upgrades[level];
-		const { buy, sell } = this.getPrices(query, level);
+		const { cost, sell } = query.getSale(thisLevel);
 
 		return ctx.channel.send({ embed: {
-			title: `${emoji} ${name}${owned > 0 ? ` (${owned.toLocaleString()} owned)` : ''} — Level ${level === query.upgrades.length ? `${level} (Max)` : level}`,
+			title: `${emoji} ${name} - Level ${level === query.upgrades.length ? `${level} (Max)` : level} ${owned > 0 ? `- (${owned.toLocaleString()} owned)` : ''}`,
 			color: 'RANDOM', description: [
 				`${query.longInfo}\n`, 
 				[
-					`**BUY** — ${query.buyable ? `${this.getIcon(query)} ${buy.toLocaleString()}` : '**Not Buyable**'}`,
-					`**SELL** — ${query.sellable ? `${this.getIcon(query)} ${sell.toLocaleString()}` : '**Not Sellable**'}`
+					`**BUY** — ${query.buyable ? `${icon} ${cost.toLocaleString()}` : '**Not Buyable**'}`,
+					`**SELL** — ${query.sellable ? `${icon} ${sell.toLocaleString()}` : '**Not Sellable**'}`
 				].join('\n')
 			].join('\n')
 		}})

@@ -6,7 +6,7 @@ export default class Collectible extends CollectibleItem {
 			name: 'Shiny Coin',
 			emoji: ':coin:',
 			price: 2e6,
-			shortInfo: 'A coin from the coing gods of the past.',
+			shortInfo: 'A valuable coin from gods of the past.',
 			longInfo: 'More ching ching in gambling, they say.',
 			upgrades: [
 				{ price: 2e6 }, 

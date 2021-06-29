@@ -104,7 +104,7 @@ const beg = (client: LavaClient): BegData[] => [
             max: 10000,
             min: 1000
         }
-    }
+    },
     {
         odds: 0.4,
         person: 'Dua L',

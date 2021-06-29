@@ -6,7 +6,7 @@ export default class Collectible extends CollectibleItem {
 			name: 'Neptune\'s Trident',
 			emoji: ':trident:',
 			price: 80e6,
-			shortInfo: 'Are you ready for ultimate grinding?',
+			shortInfo: 'Ready for ultimate grinding?',
 			longInfo: 'Grants you a great amount of XP boost NO ONE could ever get!',
 			upgrades: [
 				{ price: 100e6 }, 

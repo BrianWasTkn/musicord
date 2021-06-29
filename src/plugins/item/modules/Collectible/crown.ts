@@ -6,7 +6,7 @@ export default class Collectible extends CollectibleItem {
 			name: 'Royal Crown',
 			emoji: ':crown:',
 			price: 50e6,
-			shortInfo: 'They say you\'re a VIP of this shop...',
+			shortInfo: 'You\'re the VIP of this shop...',
 			longInfo: 'Wearing this crown gives you a certain percentage of discount whenever you buy something!',
 			upgrades: [
 				{ price: 70e6 }, 
