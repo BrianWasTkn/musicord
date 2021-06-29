@@ -80,7 +80,7 @@ export default class extends Command {
 		const { cost, sell } = query.getSale(thisLevel);
 
 		return ctx.channel.send({ embed: {
-			title: `${emoji} ${name} - Level ${level === query.upgrades.length ? `${level} (Max)` : level} ${owned > 0 ? `- (${owned.toLocaleString()} owned)` : ''}`,
+			title: `${emoji} ${name} - Level ${level === query.upgrades.length ? `${level} (Max)` : level} ${owned > 0 ? `- ${owned.toLocaleString()} owned` : ''}`,
 			color: 'RANDOM', description: [
 				`${query.longInfo}\n`, 
 				[

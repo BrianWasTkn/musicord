@@ -74,7 +74,7 @@ export default class extends Command {
 				})
 			},
 			color: 'GREEN',
-			description: ItemMessages.BUY_MSG(item, price, amount),
+			description: ItemMessages.BUY_MSG(item, price * amount, amount),
 			footer: {
 				text: 'Thanks for your purchase!'
 			}
