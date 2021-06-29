@@ -6,6 +6,7 @@ export default class extends SubCommand {
 			aliases: ['gping', 'gp'],
 			clientPermissions: ['MENTION_EVERYONE'],
 			description: 'Ping the Giveaway Ping role.',
+			name: 'Giveaway Ping',
 			parent: 'staff',
 			usage: '{command} [msg]',
 			args: [

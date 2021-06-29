@@ -6,6 +6,7 @@ export default class extends SubCommand {
 			aliases: ['pping', 'pp'],
 			clientPermissions: ['MENTION_EVERYONE'],
 			description: 'Ping the Partnership Ping role.',
+			name: 'Partner Ping',
 			parent: 'staff',
 			usage: '{command} [msg]',
 			args: [
@@ -29,7 +30,7 @@ export default class extends SubCommand {
 			},
 			description: msg,
 			color: 'GREEN',
-			title: ':tada: Giveaway Time :tada:'
+			title: ':handshake: Partners :handshake:'
 		}});
 	}
 }

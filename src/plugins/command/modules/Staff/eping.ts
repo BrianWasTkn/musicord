@@ -6,6 +6,7 @@ export default class extends SubCommand {
 			aliases: ['eping', 'ep'],
 			clientPermissions: ['MENTION_EVERYONE'],
 			description: 'Ping the Event Ping role.',
+			name: 'Event Ping',
 			parent: 'staff',
 			usage: '{command} [msg]',
 			args: [
