@@ -20,6 +20,15 @@ export default class extends SubCommand {
 	}
 
 	async exec(ctx: Context, { msg }: { msg: string }) {
-		return await ctx.channel.send(`Your message: ${msg}`);
+		const role = ctx.guild.roles.cache.get('704013651887128707');
+		return await ctx.channel.send({ content: role.toString(), embed: {
+			footer: {
+				text: ctx.author.username,
+				iconURL: ctx.author.avatarURL({ dynamic: true })
+			},
+			description: msg,
+			color: 'BLUE',
+			title: ':tada: Event Time :tada:'
+		}});
 	}
 }

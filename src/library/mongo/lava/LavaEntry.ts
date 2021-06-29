@@ -61,8 +61,8 @@ export class LavaEntry extends UserEntry<LavaProfile> {
 				this.data.commands.spams += amt;
 				return this;
 			},
-			inc: (amount = 1) => {
-				this.data.commands.commands_ran += amount;
+			inc: () => {
+				this.data.commands.commands_ran++;
 				return this;
 			},
 			record: () => {
