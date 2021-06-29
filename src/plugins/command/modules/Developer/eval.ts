@@ -22,7 +22,7 @@ export default class extends Command {
 		return `${'```'}${lang}\n${code}\n${'```'}`;
 	}
 
-	exec(ctx: Context, args: { code: string }) {
+	async exec(ctx: Context, args: { code: string }) {
 		const { code } = args;
 		if (!code) return;
 
