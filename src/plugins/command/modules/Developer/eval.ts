@@ -30,7 +30,7 @@ export default class extends Command {
 		let before: number, evaled: string, time: number, type: string, token: RegExp;
 
 		before = Date.now();
-		try { evaled = eval(isPromise ? `(async() => {${code}})()` : code); }
+		try { evaled = await eval(isPromise ? `(async() => {${code}})()` : code); }
 		catch(error) { evaled = error.message ?? 'Unknown Error'; }
 		time = Date.now() - before;
 		type = typeof evaled;

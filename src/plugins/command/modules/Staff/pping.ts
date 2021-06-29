@@ -12,6 +12,7 @@ export default class extends SubCommand {
 				{
 					id: 'msg',
 					type: 'string',
+					match: 'rest',
 					default: 'Try this server!'
 				}
 			]

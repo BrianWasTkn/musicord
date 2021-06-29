@@ -90,6 +90,11 @@ export class LavaEntry extends UserEntry<LavaProfile> {
 		return this;
 	}
 
+	/** Update command records */
+	updateCommand(command: string) {
+		return this.command(command).record();
+	}
+
 	/** Add spam count for spamfucks */
 	addSpam() {
 		return this.command().spam();
@@ -97,9 +102,7 @@ export class LavaEntry extends UserEntry<LavaProfile> {
 
 	/** Add command usage */
 	addUsage(id: string) {
-		const thisCommand = this.command(id);
-		thisCommand.inc();
-		return thisCommand.record();
+		return this.command(id).inc();
 	}
 
 	/** Blacklist them temporarily */

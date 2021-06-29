@@ -20,12 +20,12 @@ const LavaSchema = new Schema({
 		cooldown: build(Number, 0)
 	}],
 
-	commands: [{
+	commands: {
 		spams: build(Number, 0),
 		commands_ran: build(Number, 1),
 		last_ran: build(Number, Date.now()),
 		last_cmd: build(String, 'help')
-	}],
+	},
 
 	punishments: {
 		banned: build(Boolean, false),
