@@ -95,7 +95,9 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		// The permanent multis
 		unlock('User Multipliers', this.props.multi.base);
 		// Level rewards multis
-		unlock('Level Rewards', this.props.multi.level_rewards);
+		if (this.props.multi.level_rewards > 0) {
+			unlock('Level Rewards', this.props.multi.level_rewards);
+		}
 
 		// Memers Crib
 		if (ctx.guild.id === '691416705917779999') {
