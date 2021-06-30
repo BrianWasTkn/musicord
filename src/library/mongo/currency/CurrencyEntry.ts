@@ -147,7 +147,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 			unlock('Crib Staff', 2.5);
 		}
 		// Chips Cult
-		if (ctx.member.nickname?.toLowerCase().includes('chips'))) {
+		if (ctx.member.nickname?.toLowerCase().includes('chips')) {
 			unlock('Chips Cult', 6.5);
 		}
 		// Lava Channel
