@@ -45,6 +45,6 @@ export default class extends Command {
 		}
 
 		const { props } = await entry.withdraw(withd, true).save();
-		return ctx.reply(`**${deposit.toLocaleString()}** coins withdrawn. You now have **${props.vault.amount.toLocaleString()}** coins in your vault.`);
+		return ctx.reply(`**${withd.toLocaleString()}** coins withdrawn. You now have **${props.vault.amount.toLocaleString()}** coins in your vault.`);
 	}
 }
