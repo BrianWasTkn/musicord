@@ -101,7 +101,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 
 		// Memers Crib
 		if (ctx.guild.id === '691416705917779999') {
-			unlock(ctx.guild.name, 2.5);
+			unlock(ctx.guild.name, 10);
 		}
 		// Nitro Booster
 		if (ctx.member.roles.premiumSubscriberRole?.id) {
@@ -109,11 +109,11 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		}
 		// Mastery 1 and up
 		if (ctx.member.roles.cache.has('794834783582421032')) {
-			unlock('Crib Mastery Rank', 1.5);
+			unlock('Crib Mastery Rank', 3.5);
 		}
 		// Has 1 of every item
 		if (this.items.every(i => i.isOwned())) {
-			unlock('Item Collector', 1.5);
+			unlock('Item Collector', 2.5);
 		}
 		// Item Effects
 		if (this.items.some(i => i.multiplier >= 1)) {
@@ -125,7 +125,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		}
 		// Mastery 10
 		if (ctx.member.roles.cache.has('794835005679206431')) {
-			unlock('Crib Mastery Max', 5);
+			unlock('Crib Mastery Max', 2.5);
 		}
 		// Prestige multis
 		if (this.prestige.level >= 1) {
@@ -141,6 +141,18 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 					return unlock(c.name, c.entities.multipliers[inv.level] ?? 0);
 				}
 			});
+		}
+		// Memers Crib Staff
+		if (ctx.member.roles.cache.has('692941106475958363')) {
+			unlock('Crib Staff', 2.5);
+		}
+		// Chips Cult
+		if (ctx.member.nickname?.toLowerCase().includes('chips'))) {
+			unlock('Chips Cult', 6.5);
+		}
+		// Lava Channel
+		if (ctx.channel.name?.toLowerCase().includes('lava')) {
+			unlock('Lava Channel', 25);
 		}
 
 		return unlocked;
