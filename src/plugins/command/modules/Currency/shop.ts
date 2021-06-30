@@ -73,19 +73,16 @@ export default class extends Command {
 			return ctx.reply('That item doesn\'t exist tho');
 		}
 
-		const thisLevel = entry.items.get(query.id);
-		const icon = this.getIcon(query, thisLevel);
-		const { owned, level } = thisLevel;
-		const { emoji, name } = query.upgrades[level];
-		const { cost, sell } = query.getSale(thisLevel);
+		const { price, sell, emoji, name, icon, longInfo } = query.getUpgrade(entry.items.get(query.id));
+		const { owned, level } = entry.items.get(query.id);
 
 		return ctx.channel.send({ embed: {
 			title: `${emoji} ${name} - Level ${level === query.upgrades.length ? `${level} (Max)` : level} ${owned > 0 ? `- ${owned.toLocaleString()} owned` : ''}`,
 			color: 'RANDOM', description: [
-				`${query.longInfo}\n`, 
+				`${longInfo}\n`, 
 				[
-					`**BUY** — ${query.buyable ? `${icon} ${cost.toLocaleString()}` : '**Not Buyable**'}`,
-					`**SELL** — ${query.sellable ? `${icon} ${sell.toLocaleString()}` : '**Not Sellable**'}`
+					`**BUY** — ${query.buyable ? `${icon} ${price.toLocaleString()}` : '**Not Buyable**'}`,
+					`**SELL** — ${query.sellable ? `${icon} ${(price * sell).toLocaleString()}` : '**Not Sellable**'}`
 				].join('\n')
 			].join('\n')
 		}})

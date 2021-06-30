@@ -195,8 +195,8 @@ export abstract class Item extends AbstractModule {
 	 */
 	public buyItem(entry: CurrencyEntry, amount: number) {
 		const inventory = entry.items.get(this.id);
-		const { cost, sell } = this.getSale(inventory);
-		const p = Math.round(cost) * Math.trunc(amount);
+		const { price, sell } = this.getUpgrade(inventory);
+		const p = Math.round(price) * Math.trunc(amount);
 		
 		return (this.premium ? entry.remKeys(p) : entry.removePocket(p))
 			.addItem(this.id, amount).save()
@@ -208,8 +208,8 @@ export abstract class Item extends AbstractModule {
 	 */
 	public sellItem(entry: CurrencyEntry, amount: number) {
 		const inventory = entry.items.get(this.id);
-		const { cost, sell } = this.getSale(inventory);
-		const p = Math.round(cost * sell) * Math.trunc(amount);
+		const { price, sell } = this.getUpgrade(inventory);
+		const p = Math.round(price * sell) * Math.trunc(amount);
 
 		return (this.premium ? entry.addKeys(p) : entry.addPocket(p))
 			.subItem(this.id, amount).save()
