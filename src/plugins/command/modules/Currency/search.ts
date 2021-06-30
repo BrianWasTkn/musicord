@@ -57,8 +57,8 @@ export default class extends Command {
 	async exec(ctx: Context) {
 		const { randomsInArray } = ctx.client.util;
 		const entry = await ctx.currency.fetch(ctx.author.id);
-		const searchables = randomsInArray(this.search, 3);
-		const places = searchables.map(s => s.place);
+		const places = randomsInArray(this.search.map(s => s.place), 3);
+		const searchables = places.map(s => this.search.find(ss => ss.place === s));
 
 		await ctx.reply(`**Where do you want to search?**\nPick one from the list below.\n\`${places.join('`, `')}\``);
 		const choice = await ctx.awaitMessage();
