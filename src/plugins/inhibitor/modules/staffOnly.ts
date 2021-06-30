@@ -11,7 +11,6 @@ export default class extends Inhibitor {
 	}
 
 	exec(ctx: Context, cmd: Command): boolean {
-		console.log(cmd.id);
-		return !ctx.member.roles.cache.has('692941106475958363') && cmd.staffOnly;
+		return !ctx.member.roles.cache.has('692941106475958363') && cmd?.staffOnly;
 	}
 }
