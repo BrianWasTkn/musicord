@@ -97,7 +97,7 @@ const search = (client: LavaClient): SearchData[] => [
 		minCoins: 1000,
 		successMsg: w => `You smell but here's **${w.toLocaleString()}** coins ig`,
 		death: {
-			msg: 'You ate a rotten banana and went to the hospital.',
+			msg: 'You ate a rotten banana and went to the hospital but you were dead on arrival.',
 			odds: 5,
 		},
 	},
@@ -112,6 +112,32 @@ const search = (client: LavaClient): SearchData[] => [
 		maxCoins: 100000,
 		minCoins: 20000,
 		items: ['bacon'],
-		successMsg: w => `We wanna make u rich here so here's ${w.toLocaleString()} bits, enjoy :)`,
+		successMsg: w => `We wanna make u rich here so here's **${w.toLocaleString()}** bits, enjoy :)`,
+	},
+	{
+		place: 'mars',
+		maxCoins: 10000,
+		minCoins: 100,
+		successMsg: w => `I suffocated for **${w.toLocaleString()}** coins.`
+	},
+	{
+		place: 'discord',
+		maxCoins: 10000,
+		minCoins: 1000,
+		successMsg: w => `You typed \`lava gimme\` in the chats and got **${w.toLocaleString()}** coins`,
+		death: {
+			msg: 'You got banned from your favorite server, you died.',
+			odds: 10,
+		}
+	},
+	{
+		place: 'club',
+		maxCoins: 20000,
+		minCoins: 5000,
+		successMsg: w => `Wow you danced for **${w.toLocaleString()}** coins`,
+		death: {
+			msg: 'Being drunk is bad and bad leads to death, you died.',
+			odds: 25
+		}
 	}
 ]

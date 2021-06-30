@@ -155,7 +155,7 @@ export abstract class Item extends AbstractModule {
 			name: this.name,
 			price: this.price,
 			premium: false,
-			sell: 0,
+			sell: options.sell,
 			shortInfo: this.shortInfo
 		}, ...options.upgrades.map((up: ItemUpgrade, i: number, arr) => 
 			this._assign(up, {
@@ -165,7 +165,7 @@ export abstract class Item extends AbstractModule {
 				name: this.name,
 				price: this.price,
 				premium: false,
-				sell: 0,
+				sell: options.sell,
 				shortInfo: this.shortInfo
 			})
 		)];
