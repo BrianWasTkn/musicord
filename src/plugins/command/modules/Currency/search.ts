@@ -73,7 +73,7 @@ export default class extends Command {
 		const nice = await this.searchPlace(searched, entry, multi);
 
 		if (!nice) {
-			return ctx.channel.send({ embed: {
+			return ctx.reply({ embed: {
 				author: { name: getHeader(), iconURL: ctx.author.avatarURL({ dynamic: true }) },
 				description: searched.death.msg,
 				footer: { text: 'Lol u died' },
@@ -81,7 +81,7 @@ export default class extends Command {
 			}});
 		}
 
-		return ctx.channel.send({ embed: {
+		return ctx.reply({ embed: {
 			description: `${searched.successMsg(nice.coinsWon)}${nice.itemGot ? `\nand **1 ${nice.itemGot.module.emoji} ${nice.itemGot.module.name}** wow you're very lucky!` : ''}`,
 			footer: { text: `Multiplier: +${multi}% (${nice.coinsRaw.toLocaleString()})` },
 			author: { name: getHeader(), iconURL: ctx.author.avatarURL({ dynamic: true }) },
