@@ -23,13 +23,13 @@ export default class extends Command {
 			multis.map(({ name, value }) => `${name} (\`+${value}%\`)`
 		));
 
-		if (!pages[page]) {
+		if (!pages[page - 1]) {
 			return ctx.reply(`Page \`${page}\` doesn't exist.`);
 		}
 
 		return ctx.channel.send({ embed: {
-			author: { name: `${ctx.author.username}'s Multipliers` },
-			footer: { text: `Page ${page} of ${pages.length}` },
+			author: { name: `${ctx.author.username}'s Multipliers`, iconURL: ctx.author.avatarURL({ dynamic: true }) },
+			footer: { text: `${multis.length} Active — Page ${page} of ${pages.length}` },
 			color: 'BLURPLE', fields: [{
 				name: `Total Multi: ${multis.reduce((p, c) => p + c.value, 0)}% (max of ${Currency.MAX_MULTI}%)`,
 				value: pages[page - 1].join('\n')
