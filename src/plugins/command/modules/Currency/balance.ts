@@ -36,7 +36,7 @@ export default class extends Command {
 							? `/${entry.props.space.toLocaleString()}`
 							: ''
 						}`,
-					'Items': `${entry.items.size.toLocaleString()}/${this.client.handlers.item.modules.size.toLocaleString()
+					'Items': `${entry.items.filter(i => i.owned > 0).size.toLocaleString()}/${this.client.handlers.item.modules.size.toLocaleString()
 						}`
 				})
 					.map(([label, val]) => `**${label}:** ${val}`)
