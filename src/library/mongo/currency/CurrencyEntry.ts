@@ -4,9 +4,9 @@
 */
 
 import { Inventory, Mission, GambleStat, TradeStat } from '.';
+import { Collection, Snowflake, TextChannel } from 'discord.js';
 import { CollectibleItem, PowerUpItem } from 'lava/../plugins/item';
 import { Currency, ItemEffects } from 'lava/utility';
-import { Collection, Snowflake } from 'discord.js';
 import { UserEntry } from 'lava/mongo';
 import { Context } from 'lava/discord';
 
@@ -151,7 +151,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 			unlock('Chips Cult', 6.5);
 		}
 		// Lava Channel
-		if (ctx.channel.name?.toLowerCase().includes('lava')) {
+		if ((ctx.channel as TextChannel).name.toLowerCase().includes('lava')) {
 			unlock('Lava Channel', 25);
 		}
 
