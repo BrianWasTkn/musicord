@@ -7,6 +7,7 @@ export default class extends SubCommand {
 			clientPermissions: ['MANAGE_ROLES'],
 			description: 'Add or remove the heist sponsor role.',
 			parent: 'staff',
+			staffOnly: true,
 			usage: '{command} [some1]',
 			args: [
 				{

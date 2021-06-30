@@ -45,6 +45,10 @@ export class Command extends OldCommand implements AbstractModule {
 	 * Usage of this command.
 	 */
 	public usage: string;
+	/**
+	 * Wether this command is staff only.
+	 */
+	public staffOnly: boolean;
 
 	/**
 	 * Construct a command.
@@ -59,6 +63,8 @@ export class Command extends OldCommand implements AbstractModule {
 		this.type = options.type ?? 'command';
 		/** @type {string} */
 		this.usage = (options.usage ?? '{command}').replace('{command}', this.aliases[0]);
+		/** @type {boolean} */
+		this.staffOnly = options.staffOnly ?? false;
 		if (process.env.DEV_MODE === 'true') {
 			/** @type {boolean} */
 			this.ownerOnly = true;

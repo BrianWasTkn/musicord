@@ -96,6 +96,10 @@ declare module 'discord-akairo' {
 		 * Usage of this command.
 		 */
 		usage?: string;
+		/**
+		 * Wether this command is for staffs only.
+		 */
+		staffOnly?: boolean;
 	}
 
 	/**

@@ -8,6 +8,7 @@ export default class extends SubCommand {
 			description: 'Ping the Partnership Ping role.',
 			name: 'Partner Ping',
 			parent: 'staff',
+			staffOnly: true,
 			usage: '{command} [msg]',
 			args: [
 				{
@@ -23,14 +24,20 @@ export default class extends SubCommand {
 	async exec(ctx: Context, { msg }: { msg: string }) {
 		const role = ctx.guild.roles.cache.get('857158450890801152');
 		await ctx.delete();
-		return await ctx.channel.send({ content: role.toString(), embed: {
-			footer: {
-				text: ctx.author.username,
-				iconURL: ctx.author.avatarURL({ dynamic: true })
+		return await ctx.channel.send({ 
+			content: role.toString(), 
+			allowedMentions: {
+				roles: [role.id]
 			},
-			description: msg,
-			color: 'GREEN',
-			title: ':handshake: Partners :handshake:'
-		}});
+			embed: {
+				footer: {
+					text: ctx.author.username,
+					iconURL: ctx.author.avatarURL({ dynamic: true })
+				},
+				description: msg,
+				color: 'GREEN',
+				title: ':handshake: Partners :handshake:'
+			}
+		});
 	}
 }

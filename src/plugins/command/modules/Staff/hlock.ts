@@ -7,6 +7,7 @@ export default class extends SubCommand {
 			clientPermissions: ['MANAGE_CHANNELS'],
 			description: 'Lock the heist channel.',
 			parent: 'staff',
+			staffOnly: true,
 			usage: '{command} [timeout=0]',
 			args: [
 				{

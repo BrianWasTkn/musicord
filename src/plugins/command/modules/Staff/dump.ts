@@ -7,6 +7,7 @@ export default class extends SubCommand {
 			aliases: ['dump'],
 			description: 'View the list of people who has a specific role.',
 			parent: 'staff',
+			staffOnly: true,
 			usage: '{command} <role_name>',
 			args: [
 				{
