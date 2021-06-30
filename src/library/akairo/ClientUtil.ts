@@ -108,7 +108,7 @@ export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil
 		const randoms: T[] = [];
 
 		array.forEach((_, i, a) => {
-			const random = this.randomInArray(this.deepFilter(a, randoms));
+			const random = this.randomInArray(this.deepFilter(array, randoms));
 			randoms.push(random);
 		});
 

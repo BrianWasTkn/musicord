@@ -60,7 +60,7 @@ export default class extends Command {
 		const searchables = randomsInArray(this.search, 3);
 		const places = searchables.map(s => s.place);
 
-		await ctx.channel.send(`**Where do you want to search?**\nPick one from the list below.\n\`${places.join('`, `')}\``);
+		await ctx.reply(`**Where do you want to search?**\nPick one from the list below.\n\`${places.join('`, `')}\``);
 		const choice = await ctx.awaitMessage();
 
 		if (!choice || !choice.content || !places.some(p => choice.content.toLowerCase() === p)) {
