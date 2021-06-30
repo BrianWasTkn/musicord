@@ -1,5 +1,5 @@
+import { Context, Currency } from 'lava/index';
 import { GambleCommand } from '../..';
-import { Context } from 'lava/index';
 
 export default class extends GambleCommand {
 	constructor() {
@@ -118,6 +118,7 @@ export default class extends GambleCommand {
 			const mult = multi[index] as number;
 			let winnings = Math.round(bet + (bet * mult));
 			winnings = winnings + Math.round(winnings * (multis / 10000));
+			winnings = Math.min(Currency.MAX_WIN, winnings + Math.ceil(winnings * (multis / 100)));
 
 			return { length, winnings };
 		}
