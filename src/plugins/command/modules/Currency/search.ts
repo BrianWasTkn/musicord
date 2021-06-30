@@ -41,7 +41,7 @@ export default class extends Command {
 		const { minCoins, maxCoins, death, items } = search;
 		const { randomNumber, randomInArray } = entry.client.util;
 		const coins = randomNumber(minCoins, maxCoins);
-		const item = randomInArray(items);
+		const item = randomInArray(items ?? []);
 
 		const isDead = death ? death.odds > randomNumber(1, 100) : false;
 		if (isDead) return entry.kill().save().then(() => false);
@@ -57,8 +57,8 @@ export default class extends Command {
 	async exec(ctx: Context) {
 		const { randomsInArray } = ctx.client.util;
 		const entry = await ctx.currency.fetch(ctx.author.id);
-		const places = randomsInArray(this.search.map(s => s.place), 3);
-		const searchables = places.map(s => this.search.find(ss => ss.place === s));
+		const searchables = randomsInArray(this.search, 3);
+		const places = searchables.map(s => s.place);
 
 		await ctx.reply(`**Where do you want to search?**\nPick one from the list below.\n\`${places.join('`, `')}\``);
 		const choice = await ctx.awaitMessage();
