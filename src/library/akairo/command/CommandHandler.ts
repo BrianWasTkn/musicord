@@ -104,19 +104,14 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 
 		if (isIgnored) return false;
 
-		const time = command.cooldown ?? this.defaultCooldown;
+		const time = command.cooldown != null ? command.cooldown : this.defaultCooldown;
 		if (!time) return false;
 
 		const entry = await context.lava.fetch(context.author.id);
 		const expire = context.createdTimestamp + time;
 
-		let cooldown: LavaCooldowns | Cooldown = entry.cooldowns.get(command.id);
-		if (!cooldown) {
-			entry.data.cooldowns.push({ id: command.id, expire });
-			cooldown = (await entry.data.save()).cooldowns.find(c => c.id === command.id);
-		}
-
-		const diff = (cooldown as LavaCooldowns).expire - context.createdTimestamp;
+		const cooldown: Cooldown = entry.cooldowns.get(command.id);
+		const diff = cooldown.expiresAt - context.createdTimestamp;
 		if (diff > 0) {
 			this.emit(CommandHandlerEvents.COOLDOWN, context, command, diff);
 			return true;

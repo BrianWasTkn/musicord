@@ -261,7 +261,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		const maxLevel = Currency.MAX_LEVEL * 100;
 
 		return {
-			xp: (space = false, additional = 1) => {
+			xp: (space = false, additional = 0) => {
 				if (this.data.props.xp > maxLevel) return this;
 				const { randomNumber } = this.client.util;
 				this.data.props.xp += randomNumber(0, 1 + additional);
@@ -327,12 +327,14 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	}
 
 	/** Add coins to ur pocket */
-	addPocket(amount: number) {
+	addPocket(amount: number, isShare = false) {
+		// if (isShare) 
 		return this.pocket(amount).inc();
 	}
 
 	/** Remove coins from pocket */
-	removePocket(amount: number) {
+	removePocket(amount: number, isShare = false) {
+		// if (isShare) 
 		return this.pocket(amount).dec();
 	}
 
@@ -371,7 +373,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		return this.vault().unlock();
 	}
 
-	/** Update a game stat */
+	/** Update a gambling game stat */
 	updateStats(game: string, coins: number, isWin: boolean) {
 		const coin = this.stats(game).coins(coins);
 		const games = this.stats(game).games();
@@ -439,6 +441,18 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/** Upgrade an item */
 	upgradeItem(id: string) {
 		return this.inventory(id).upgrade();
+	}
+
+	/** Kill them */
+	kill() {
+		const { randomNumber } = this.client.util;
+		const { pocket } = this.data.props;
+
+		const item = this.items.filter(i => i.isOwned()).random() ?? null;
+		const amount = item ? randomNumber(1, item.owned) : 0;
+		if (item) this.inventory(item.module.id).decrement(amount);
+
+		return this.pocket(pocket > 0 ? randomNumber(1, pocket) : 0).dec();
 	}
 
 	/**

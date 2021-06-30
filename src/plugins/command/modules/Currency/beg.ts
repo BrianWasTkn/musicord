@@ -52,7 +52,7 @@ export default class extends Command {
     getFailMsg(ctx: Context, { coins, person, msgs }: BegData): MessageEmbedOptions {
         return {
             author: { name: typeof person === 'function' ? person(ctx) : person },
-            footer: { text: 'Lol imagine begging' },
+            footer: { text: 'Imagine begogng lol' },
             description: `"${msgs.fail}"`,
             color: 'RED',
         };
@@ -93,15 +93,15 @@ const beg = (client: LavaClient): BegData[] => [
         },
     },
     {
-        odds: 0.5,
-        person: 'Elon Mask',
+        odds: 0.7,
+        person: 'Elon Musk',
         msgs: {
             success: w => `Ok im rich so ima give u **${w.toLocaleString()}** coins`,
             fail: 'Go back to ur poorhole and beg to someone else'
         },
         coins: {
-            max: 10000,
-            min: 1000
+            max: 50000,
+            min: 10000
         }
     },
     {
@@ -112,8 +112,8 @@ const beg = (client: LavaClient): BegData[] => [
             fail: 'Don\'t show up, don\'t beg now'
         },
         coins: {
-            max: 6500,
-            min: 650
+            max: 40000,
+            min: 400
         }
     },
     {
@@ -126,6 +126,18 @@ const beg = (client: LavaClient): BegData[] => [
         coins: {
             max: 100000,
             min: 10000
+        }
+    },
+    {
+        odds: 0.9,
+        person: 'You in a parallel universe',
+        msgs: {
+            success: w => `I can give myself **${w.toLocaleString()}** coins what?`,
+            fail: 'Begone thot',
+        },
+        coins: {
+            max: 500000,
+            min: 1000
         }
     }
 ];
