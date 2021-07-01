@@ -1,17 +1,19 @@
-import { Context, Item, ItemOptions, ItemAssets, ItemConfig, CurrencyEntry } from 'lava/index';
+import { Context, Item, ItemOptions, ItemAssets, ItemUpgrade, ItemConfig, CurrencyEntry } from 'lava/index';
 import { MessageOptions } from 'discord.js';
 
 export type CollectibleItemAssets = Omit<ItemAssets, 'sellRate'>;
 
 export type CollectibleItemConfig = Pick<ItemConfig, 'push' | 'retired'>;
 
-export interface CollectibleItemOptions extends Omit<ItemOptions, 'assets' | 'config'> {
+export interface CollectibleItemOptions extends Omit<ItemOptions, 'assets' | 'config' | 'upgrades'> {
 	/** The basic info about this collectible. */ 
 	assets: CollectibleItemAssets;
 	/** The config for this collectible. */
 	config?: CollectibleItemConfig;
 	/** The perks of this collectible. */
 	entities?: CollectibleEntity;
+	/** The upgrades of this goldshit. */
+	upgrades: Partial<ItemUpgrade>[];
 }
 
 export interface CollectibleEntity {

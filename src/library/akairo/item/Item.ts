@@ -73,7 +73,7 @@ export interface ItemOptions {
 	/** The config for the shitshow. */
 	config: ItemConfig;
 	/** The upgrades of this item */
-	upgrades: ItemUpgrade[];
+	upgrades: Partial<ItemUpgrade>[];
 }
 
 export abstract class Item extends AbstractModule {
@@ -122,7 +122,7 @@ export abstract class Item extends AbstractModule {
 	public retired: boolean;
 
 	/** The upgrades of this item */
-	public upgrades: ItemUpgrade[];
+	public upgrades: Partial<ItemUpgrade>[];
 
 	/**
 	 * The constructor for any item.
@@ -166,7 +166,7 @@ export abstract class Item extends AbstractModule {
 			info: this.info,
 			premium: this.premium,
 			intro: this.intro
-		}, ...options.upgrades.map((up: ItemUpgrade, i: number, arr) => 
+		}, ...options.upgrades.map((up, i, arr) => 
 			this._assign(up, {
 				level: i + 1,
 				name: this.name,

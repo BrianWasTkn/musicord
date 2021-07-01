@@ -16,7 +16,7 @@ export interface PowerItemOptions extends Omit<ItemOptions, 'assets' | 'config' 
 	/** The basic info about this item. */ 
 	assets: PowerItemAssets;
 	/** The config for this power-up. */
-	config?: Partial<PowerItemConfig>;
+	config?: PowerItemConfig;
 	/** The upgrades of this power-up. */
 	upgrades: PowerItemUpgrades[];
 }
