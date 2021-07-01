@@ -53,8 +53,7 @@ export default class extends Command {
 		if (check) return ctx.reply(check);
 
 		const { amount, item } = args;
-		const { price, sell } = await args.item
-			.sellItem(entry, amount);
+		const { price, sell } = await item.sell(entry, amount);
 
 		return ctx.reply({ embed: {
 			author: {

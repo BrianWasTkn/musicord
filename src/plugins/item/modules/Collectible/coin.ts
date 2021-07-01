@@ -1,13 +1,15 @@
-import { CollectibleItem, Entity } from '../..';
+import { CollectibleItem } from '../..';
 
 export default class Collectible extends CollectibleItem {
 	public constructor() {
 		super('coin', {
-			name: 'Shiny Coin',
-			emoji: ':coin:',
-			price: 2e6,
-			shortInfo: 'A valuable coin from gods of the past.',
-			longInfo: 'More ching ching in gambling, they say.',
+			assets: {
+				name: 'Shiny Coin',
+				emoji: ':coin:',
+				price: 2e6,
+				intro: 'A valuable coin from gods of the past.',
+				info: 'More ching ching in gambling, they say'
+			},
 			upgrades: [
 				{ price: 2e6 }, 
 				{ price: 3e6 }, 

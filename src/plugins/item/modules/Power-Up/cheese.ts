@@ -4,13 +4,16 @@ import { PowerUpItem } from '../..';
 export default class PowerUp extends PowerUpItem {
 	constructor() {
 		super('cheese', {
-			name: 'Luca\'s Cheese',
-			emoji: ':cheese:',
-			price: 45000,
-			checks: 'time',
-			duration: 1000 * 60,
-			shortInfo: 'Increase your lactose by eating cheese!',
-			longInfo: 'Have a temporary chance of dropping keys and grab them? Wow okay.',
+			assets: {
+				name: 'Luca\'s Cheese',
+				emoji: ':cheese:',
+				price: 45000,
+				intro: 'Increase your lactose by eating cheese!',
+				info: 'Have a temporary chance of dropping keys and grab them? Wow okay.',
+			},
+			config: {
+				duration: 1000 * 60,
+			},
 			upgrades: [
 				{ price: 3000, duration: 1000 * 60 * 3 },
 				{ price: 5000, duration: 1000 * 60 * 5 },

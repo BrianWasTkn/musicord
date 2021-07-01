@@ -1,13 +1,15 @@
-import { CollectibleItem, Entity } from '../..';
+import { CollectibleItem } from '../..';
 
 export default class Collectible extends CollectibleItem {
 	public constructor() {
 		super('trophy', {
-			name: 'Shiny Trophy',
-			emoji: ':trophy:',
-			price: 30e6,
-			shortInfo: 'Embrace the powers of the almighty trophy!',
-			longInfo: 'A great amount of gambling multiplier boost!',
+			assets: {
+				name: 'Shiny Trophy',
+				emoji: ':trophy:',
+				price: 30e6,
+				intro: 'Embrace the powers of the almighty trophy!',
+				info: 'A great amount of gambling multiplier boost!',
+			},
 			upgrades: [
 				{ price: 45e6 }, 
 				{ price: 55e6 }, 

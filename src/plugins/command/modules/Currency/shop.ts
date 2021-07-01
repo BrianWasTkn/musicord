@@ -24,17 +24,17 @@ export default class extends Command {
 	}
 
 	displayItem(item: Item, invs: CollectionPlus<Inventory>, saleNav = false) {
-		const { shortInfo, longInfo, emoji } = item;
+		const { intro, info, emoji } = item;
 		const { discount, item: saleItem } = item.handler.sale;
 		const { name, price, icon } = item.getUpgrade(invs.get(item.id));
 		const saleInv = invs.get(saleItem.id);
 
 		if (saleNav) {
 			const off = `[${price.toLocaleString()}](https://google.com) ( [***${discount}% OFF!***](https://discord.gg/memer) )`;
-			return `**${emoji} ${name}** — ${this.getIcon(saleItem, saleInv)} ${off}\n${longInfo}`;
+			return `**${emoji} ${name}** — ${this.getIcon(saleItem, saleInv)} ${off}\n${info}`;
 		}
 
-		return `**${emoji} ${name}** — ${icon} [${price.toLocaleString()}](https://google.com)\n${shortInfo}`;
+		return `**${emoji} ${name}** — ${icon} [${price.toLocaleString()}](https://google.com)\n${intro}`;
 	}
 
 	async exec(ctx: Context, args: { query: number | Item }) {
@@ -73,16 +73,16 @@ export default class extends Command {
 			return ctx.reply('That item doesn\'t exist tho');
 		}
 
-		const { price, sell, emoji, name, icon, longInfo } = query.getUpgrade(entry.items.get(query.id));
+		const { price, sellRate, emoji, name, icon, info } = query.getUpgrade(entry.items.get(query.id));
 		const { owned, level } = entry.items.get(query.id);
 
 		return ctx.channel.send({ embed: {
-			title: `${emoji} ${name} - Level ${level === query.upgrades.length ? `${level} (Max)` : level} ${owned > 0 ? `- ${owned.toLocaleString()} owned` : ''}`,
+			title: `${emoji} ${name} — Level ${level === query.upgrades.length ? `${level} (Max)` : level} ${owned > 0 ? `— ${owned.toLocaleString()} owned` : ''}`,
 			color: 'RANDOM', description: [
-				`${longInfo}\n`, 
+				`${info}\n`, 
 				[
 					`**BUY** — ${query.buyable ? `${icon} ${price.toLocaleString()}` : '**Not Buyable**'}`,
-					`**SELL** — ${query.sellable ? `${icon} ${(price * sell).toLocaleString()}` : '**Not Sellable**'}`
+					`**SELL** — ${query.sellable ? `${icon} ${Math.round(price * sellRate).toLocaleString()}` : '**Not Sellable**'}`
 				].join('\n')
 			].join('\n')
 		}})

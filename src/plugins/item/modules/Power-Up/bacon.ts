@@ -4,13 +4,16 @@ import { PowerUpItem } from '../..';
 export default class PowerUp extends PowerUpItem {
 	constructor() {
 		super('bacon', {
-			name: 'Bacon',
-			emoji: ':bacon:',
-			price: 22000,
-			checks: 'time',
-			duration: 1000 * 60,
-			shortInfo: 'More ching chings!',
-			longInfo: 'Eat it for temporary multipliers!',
+			assets: {
+				name: 'Bacon',
+				emoji: ':bacon:',
+				price: 22000,
+				intro: 'More ching chings!',
+				info: 'Eat it for temporary multipliers',
+			},
+			config: {
+				duration: 1000 * 60,
+			},
 			upgrades: [
 				{ price: 3000, duration: 1000 * 60 * 3 },
 				{ price: 5000, duration: 1000 * 60 * 5 },

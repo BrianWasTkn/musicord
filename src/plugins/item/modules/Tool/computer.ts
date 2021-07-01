@@ -4,11 +4,13 @@ import { ToolItem } from '../..';
 export default class Tool extends ToolItem {
 	constructor() {
 		super('computer', {
-			name: 'Prob\'s Computer',
-			emoji: ':computer:',
-			price: 4000,
-			shortInfo: 'An item from a redditor.',
-			longInfo: 'Post specific type of memes on reddit!'
+			assets: {
+				name: 'Prob\'s Computer',
+				emoji: ':computer:',
+				price: 4000,
+				intro: 'An item from a redditor.',
+				info: 'Post specific type of memes on reddit!'
+			}
 		});
 	}
 

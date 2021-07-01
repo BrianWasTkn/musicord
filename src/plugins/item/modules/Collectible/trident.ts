@@ -1,13 +1,15 @@
-import { CollectibleItem, Entity } from '../..';
+import { CollectibleItem } from '../..';
 
 export default class Collectible extends CollectibleItem {
 	public constructor() {
 		super('trident', {
-			name: 'Neptune\'s Trident',
-			emoji: ':trident:',
-			price: 80e6,
-			shortInfo: 'Ready for ultimate grinding?',
-			longInfo: 'Grants you a great amount of XP boost NO ONE could ever get!',
+			assets: {
+				name: 'Neptune\'s Trident',
+				emoji: ':trident:',
+				price: 80e6,
+				intro: 'Ready for ultimate grinding?',
+				info: 'Grants you a great amount of XP boost NO ONE could ever get!',
+			},
 			upgrades: [
 				{ price: 100e6 }, 
 				{ price: 120e6 }, 

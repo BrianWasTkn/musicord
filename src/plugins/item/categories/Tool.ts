@@ -1,51 +1,63 @@
-import { Item, ItemOptions, ItemUpgrade, Context, CurrencyEntry, ItemEffects } from 'lava/index';
+import { Item, ItemOptions, ItemUpgrade, ItemConfig, ItemAssets, Inventory, Context, CurrencyEntry, ItemEffects } from 'lava/index';
 
-export interface ToolItemOptions extends Pick<ItemOptions, 'name' | 'price' | 'emoji' | 'shortInfo' | 'longInfo'>  {
-	/**
-	 * The type of check this item should be checked from for expiration.
-	 * * inventory - it's presence in user inventory
-	 * * time - it's expiration date
-	 */
-	checks?: PowerUpItemCheck;
-	/**
-	 * The item upgrades of this tool.
-	 */
-	upgrades?: ItemUpgrade[];
+export type ToolItemAssets = Omit<ItemAssets, 'sellRate'>;
+
+export interface ToolItemConfig extends Pick<ItemConfig, 'premium' | 'push' | 'retired'> {
+	/** The default duration of this tool. */
+	duration?: number;
 }
 
-type PowerUpItemCheck = 'inventory' | 'time';
+export interface ToolItemUpgrades extends Partial<ItemUpgrade> {
+	/** The new duration of this item for this level. */
+	duration?: number;
+}
+
+export interface ToolItemOptions extends Omit<ItemOptions, 'assets' | 'config' | 'upgrades'> {
+	/** The basic info about this item. */ 
+	assets: ToolItemAssets;
+	/** The config for this tool. */
+	config?: ToolItemConfig;
+	/** The upgrades of this tool. */
+	upgrades?: ToolItemUpgrades[];
+}
 
 export abstract class ToolItem extends Item {
-	/**
-	 * The type of check this item should be checked from for expiration.
-	 * * inventory - it's presence in user inventory
-	 * * time - it's expiration date
-	 */
-	public checks: PowerUpItemCheck;
+	/** The duration of this tool. */
+	public duration: number;
 
 	/**
 	 * Construct a tool item.
 	 */
 	public constructor(id: string, options: ToolItemOptions) {
+		const { assets, config, upgrades } = options;
 		super(id, {
-			name: options.name,
-			emoji: options.emoji,
-			price: options.price,
-			shortInfo: options.shortInfo,
-			longInfo: options.longInfo,
-			upgrades: options.upgrades?.map(up => ({ sell: 0.66, ...up })) ?? [],
-			sell: 0.66,
-			sale: true,
-			inventory: true,
-			shop: true,
-			buyable: true,
-			giftable: true,
-			sellable: true,
-			usable: true,
-			push: true,
-			premium: false,
-			retired: false,
-			category: 'Tool'
+			assets: {
+				sellRate: 0.2,
+				category: 'Tool',
+				...assets
+			},
+			config: {
+				buyable: true,
+				sellable: true,
+				usable: true,
+				giftable: true,
+				shop: true,
+				sale: true,
+				inventory: true,
+				...config
+			},
+			upgrades: options.upgrades?.map(up => ({ 
+				sell: 0.1, 
+				...up 
+			})) ?? [],
 		});
+	}
+
+	public getUpgrade(thisInv: Inventory) {
+		return super.getUpgrade(thisInv) as ReturnType<Item['getUpgrade']> & ToolItemUpgrades;
+	}
+
+	public getDuration(entry: CurrencyEntry) {
+		return this.getUpgrade(entry.items.get(this.id)).duration;
 	}
 }

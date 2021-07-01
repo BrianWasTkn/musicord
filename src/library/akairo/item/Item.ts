@@ -8,91 +8,54 @@ import { Context, CurrencyEntry, Inventory } from 'lava/index';
 import { MessageOptions } from 'discord.js';
 import { ItemHandler } from '.';
 
-export interface ItemUpgrade extends Partial<Pick<ItemOptions, 'name' | 'price' | 'emoji' | 'sell' | 'premium' | 'shortInfo' | 'longInfo'>> {
+export interface ItemUpgrade extends ItemAssets {
 	/**
 	 * The level of this item.
 	 * Note: It's automatic, no need to implement this.
 	 */
 	level?: number;
-}
-
-export interface ItemOptions extends AbstractModuleOptions {
-	/** The name of this item */
-	name: string;
-	/** The price of this item for level 0 */
-	price: number;
-	/** The emoji of this item for level 0 */
-	emoji: string;
-	/** The sell rate of this item, fixed rate */
-	sell: number;
-
-	/** Wether this item shouldn't be on sale */
-	sale: boolean;
-	/** Wether this item should be in your inventory */
-	inventory: boolean;
-	/** Wether this item should be in shop */
-	shop: boolean;
-	/** Wether this item is buyable from the shop */
-	buyable: boolean;
-	/** Wether this item is tradeable using `lava gift` */
-	giftable: boolean;
-	/** Wether you can sell this item or not */
-	sellable: boolean;
-	/** Wether you're allowed to use this or not */
-	usable: boolean;
-	/** Wether to auto update user inventory if this item is new */
-	push: boolean;
-	/** The premium state of this item. Note that price will be divided by 1000. */
-	premium?: boolean;
 	/**
-	 * Wether this item has been retired.
-	 * config properties overriden by this option:
-	 * * showInInventory = false
-	 * * showInShop = false
-	 * * buyable = false
-	 * * giftable = false
-	 * * usable = false
-	 * * sellable = false
+	 * Wether this item is premium in this level.
 	 */
-	retired?: boolean;
-
-	/** The shop display info of this item */
-	shortInfo?: string;
-	/** The long description of this item */
-	longInfo?: string;
-
-	/** The upgrades of this item */
-	upgrades: ItemUpgrade[];
+	premium?: boolean;
 }
 
-export abstract class Item extends AbstractModule {
-	/** The price of this item for level 0 */
-	public price: number;
-	/** The emoji of this item for level 0 */
-	public emoji: string;
-	/** The sell rate of this item, fixed rate */
-	public sell: number;
+export interface ItemAssets extends AbstractModuleOptions {
+	/** The name of this item. */
+	name: string;
+	/** The default price. */
+	price: number;
+	/** The sell rate from 0.01 to 1. */
+	sellRate: number;
+	/** The emoji of this item. */
+	emoji: string;
+	/** The short display info in shop. */
+	intro: string;
+	/** The long info of this item. */
+	info: string;
+}
 
-	/** Wether this item shouldn't be on sale */
-	public sale: boolean;
-	/** Wether this item should be in your inventory */
-	public inventory: boolean;
-	/** Wether this item should be in shop */
-	public shop: boolean;
-	/** Wether this item is buyable from the shop */
-	public buyable: boolean;
-	/** Wether this item is tradeable using `lava gift` */
-	public giftable: boolean;
-	/** Wether you can sell this item or not */
-	public sellable: boolean;
-	/** Wether you're allowed to use this or not */
-	public usable: boolean;
-	/** Wether to auto update user inventory if this item is new */
-	public push: boolean;
-	/** The premium state of this item. Note that price will be divided by 1000. */
-	public premium?: boolean;
+export interface ItemConfig {
+	/** If item is premium by default. */
+	premium?: boolean;
+	/** Allow users to buy this item or not. */
+	buyable: boolean;
+	/** Allow users to sell this item to shop or not. */
+	sellable: boolean;
+	/** Allow users to use this item. */
+	usable: boolean;
+	/** Wether this item is giftable or not. */
+	giftable: boolean;
+	/** Wether to show this shit in the shop or not. */
+	shop: boolean;
+	/** Wether to allow this item to be on sale or not. */
+	sale: boolean;
+	/** Wether to show this item in user inventory or not. */
+	inventory: boolean;
+	/** Wether to auto-push this item in your user's currency data or not. */
+	push: boolean;
 	/**
-	 * Wether this item has been retired.
+	 * Wether this item has been retired or not.
 	 * config properties overriden by this option:
 	 * * inventory = false
 	 * * shop = false
@@ -100,73 +63,119 @@ export abstract class Item extends AbstractModule {
 	 * * giftable = false
 	 * * usable = false
 	 * * sellable = false
-	 * * sale = false
 	 */
-	public retired?: boolean;
+	retired?: boolean;
+}
 
-	/** The shop display info of this item */
-	public shortInfo: string;
-	/** The long description of this item */
-	public longInfo: string;
+export interface ItemOptions {
+	/** The basic shitfuckery of this item. */
+	assets: ItemAssets;
+	/** The config for the shitshow. */
+	config: ItemConfig;
+	/** The upgrades of this item */
+	upgrades: Partial<ItemUpgrade>[];
+}
+
+export abstract class Item extends AbstractModule {
+	/** The handler this item belongs to. */
+	public handler: ItemHandler;
+
+	/** The default price. */
+	public price: number;
+	/** The sell rate from 0.01 to 1. */
+	public sellRate: number;
+	/** The emoji of this item. */
+	public emoji: string;
+	/** The short display info in shop. */
+	public intro: string;
+	/** The long info of this item. */
+	public info: string;
+
+	/** If item is premium by default. */
+	public premium: boolean;
+	/** Allow users to buy this item or not. */
+	public buyable: boolean;
+	/** Allow users to sell this item to shop or not. */
+	public sellable: boolean;
+	/** Allow users to use this item. */
+	public usable: boolean;
+	/** Wether this item is giftable or not. */
+	public giftable: boolean;
+	/** Wether to show this shit in the shop or not. */
+	public shop: boolean;
+	/** Wether to allow this item to be on sale or not. */
+	public sale: boolean;
+	/** Wether to show this item in user inventory or not. */
+	public inventory: boolean;
+	/** Wether to auto-push this item in your user's currency data or not. */
+	public push: boolean;
+	/**
+	 * Wether this item has been retired or not.
+	 * config properties overriden by this option:
+	 * * inventory = false
+	 * * shop = false
+	 * * buyable = false
+	 * * giftable = false
+	 * * usable = false
+	 * * sellable = false
+	 */
+	public retired: boolean;
 
 	/** The upgrades of this item */
 	public upgrades: ItemUpgrade[];
-
-	/** The handler this item belongs to. */
-	public handler: ItemHandler;
 
 	/**
 	 * The constructor for any item.
 	 */
 	public constructor(id: string, options: Partial<ItemOptions>) {
-		super(id, { name: options.name, category: options.category });
-		this.price = options.price;
-		this.emoji = options.emoji;
-		this.sell = options.sell;
+		const { assets, config } = options;
+		super(id, { name: assets.name, category: assets.category });
+		this.price = assets.price;
+		this.emoji = assets.emoji;
+		this.sellRate = assets.sellRate;
+		this.intro = assets.intro;
+		this.info = assets.info;
 
-		this.sale = options.sale;
-		this.inventory = options.inventory;
-		this.shop = options.shop;
-		this.buyable = options.buyable;
-		this.giftable = options.giftable;
-		this.sellable = options.sellable;
-		this.usable = options.usable;
-		this.push = options.push;
-		this.premium = options.premium ?? false;
-		this.retired = options.retired ?? false;
+		this.premium = config.premium ?? false;
+		this.buyable = config.buyable;
+		this.sellable = config.sellable;
+		this.usable = config.usable;
+		this.giftable = config.giftable;
+		this.shop = config.shop;
+		this.sale = config.sale;
+		this.inventory = config.inventory;
+		this.push = config.push;
+		this.retired = config.retired ?? false;
 
-		this.shortInfo = options.shortInfo;
-		this.longInfo = options.longInfo;
-
-		if (this.retired) {
+		if (config.retired) {
+			this.buyable = false;
+			this.sellable = false;
+			this.usable = false;
+			this.giftable = false;
+			this.shop = false;
 			this.sale = false;
 			this.inventory = false;
-			this.shop = false;
-			this.buyable = false;
-			this.giftable = false;
-			this.usable = false;
-			this.sellable = false;
 		}
 
 		this.upgrades = [{
-			emoji: this.emoji,
 			level: 0,
-			longInfo: this.longInfo,
 			name: this.name,
 			price: this.price,
-			premium: false,
-			sell: options.sell,
-			shortInfo: this.shortInfo
+			emoji: this.emoji,
+			sellRate: this.sellRate,
+			info: this.info,
+			premium: this.premium,
+			intro: this.intro
 		}, ...options.upgrades.map((up: ItemUpgrade, i: number, arr) => 
 			this._assign(up, {
-				emoji: this.emoji,
 				level: i + 1,
-				longInfo: this.longInfo,
 				name: this.name,
 				price: this.price,
-				premium: false,
-				sell: options.sell,
-				shortInfo: this.shortInfo
+				emoji: this.emoji,
+				sellRate: this.sellRate,
+				info: this.info,
+				premium: this.premium,
+				intro: this.intro
 			})
 		)];
 	}
@@ -193,12 +202,12 @@ export abstract class Item extends AbstractModule {
 	/**
 	 * Simple method to buy this item from the shop.
 	 */
-	public buyItem(entry: CurrencyEntry, amount: number) {
+	public buy(entry: CurrencyEntry, amount: number) {
 		const inventory = entry.items.get(this.id);
-		const { price, sell } = this.getUpgrade(inventory);
+		const { price, sellRate, premium } = this.getUpgrade(inventory);
 		const p = Math.round(price) * Math.trunc(amount);
 		
-		return (this.premium ? entry.remKeys(p) : entry.removePocket(p))
+		return (premium ? entry.remKeys(p) : entry.removePocket(p))
 			.addItem(this.id, amount).save()
 			.then(() => this.getUpgrade(inventory));
 	}
@@ -206,12 +215,12 @@ export abstract class Item extends AbstractModule {
 	/**
 	 * Simple method to sell this item to the shop.
 	 */
-	public sellItem(entry: CurrencyEntry, amount: number) {
+	public sell(entry: CurrencyEntry, amount: number) {
 		const inventory = entry.items.get(this.id);
-		const { price, sell } = this.getUpgrade(inventory);
-		const p = Math.round(price * sell) * Math.trunc(amount);
+		const { price, sellRate, premium } = this.getUpgrade(inventory);
+		const p = Math.round(price * sellRate) * Math.trunc(amount);
 
-		return (this.premium ? entry.addKeys(p) : entry.addPocket(p))
+		return (premium ? entry.addKeys(p) : entry.addPocket(p))
 			.subItem(this.id, amount).save()
 			.then(() => this.getUpgrade(inventory));
 	}
@@ -240,9 +249,9 @@ export abstract class Item extends AbstractModule {
 				: amount;
 		};
 
-		const { price, sell } = this.getUpgrade(inv);
+		const { price, sellRate } = this.getUpgrade(inv);
 		return {
-			sell: calc(price * sell),
+			sell: calc(price * sellRate),
 			cost: calc(price),
 		};
 	}

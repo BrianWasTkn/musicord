@@ -1,75 +1,70 @@
-import { Item, ItemOptions, ItemUpgrade, Context, CurrencyEntry, ItemEffects } from 'lava/index';
+import { Item, ItemOptions, ItemAssets, ItemConfig, ItemUpgrade, Context, CurrencyEntry, ItemEffects, Inventory } from 'lava/index';
 
-export interface PowerUpItemOptions extends Pick<ItemOptions, 'name' | 'price' | 'emoji' | 'shortInfo' | 'longInfo'>  {
-	/**
-	 * The type of check this item should be checked from for expiration.
-	 * * inventory - it's presence in user inventory
-	 * * time - it's expiration date
-	 */
-	checks: PowerUpItemCheck;
-	/**
-	 * The duration of this item.
-	 */
-	duration?: number;
-	/**
-	 * The upgrades of this powerup.
-	 */
-	upgrades: PowerUpItemUpgrades[];
-}
+export type PowerItemAssets = Omit<ItemAssets, 'sellRate'>;
 
-export interface PowerUpItemUpgrades extends Partial<ItemUpgrade> {
-	/**
-	 * The duration of this item for this level.
-	 */
+export interface PowerItemConfig extends Pick<ItemConfig, 'premium' | 'push' | 'retired'> {
+	/** The default duration of this power-up. */
 	duration?: number;
 }
 
-type PowerUpItemCheck = 'inventory' | 'time';
+export interface PowerItemUpgrades extends Partial<ItemUpgrade> {
+	/** The new duration of this item for this level. */
+	duration?: number;
+}
+
+export interface PowerItemOptions extends Omit<ItemOptions, 'assets' | 'config' | 'upgrades'> {
+	/** The basic info about this item. */ 
+	assets: PowerItemAssets;
+	/** The config for this power-up. */
+	config?: Partial<PowerItemConfig>;
+	/** The upgrades of this power-up. */
+	upgrades: PowerItemUpgrades[];
+}
 
 export abstract class PowerUpItem extends Item {
-	/**
-	 * The type of check this item should be checked from for expiration.
-	 * * inventory - it's presence in user inventory
-	 * * time - it's expiration date
-	 */
-	public checks: PowerUpItemCheck;
-	/**
-	 * The duration of this item.
-	 */
-	public duration: (level: number) => number;
+	/** The duration of this power-up. */
+	public duration: number;
 
 	/**
 	 * Construct this powershit.
 	 */
-	public constructor(id: string, options: PowerUpItemOptions) {
+	public constructor(id: string, options: PowerItemOptions) {
+		const { assets, config, upgrades } = options;
 		super(id, {
-			name: options.name,
-			emoji: options.emoji,
-			price: options.price,
-			shortInfo: options.shortInfo,
-			longInfo: options.longInfo,
-			upgrades: options.upgrades?.map(up => ({ sell: 0.1, ...up })) ?? [],
-			sell: 0.33,
-			sale: true,
-			inventory: true,
-			shop: true,
-			buyable: true,
-			giftable: true,
-			sellable: true,
-			usable: true,
-			push: true,
-			premium: false,
-			retired: false,
-			category: 'Power-Up'
+			assets: {
+				sellRate: 0.2,
+				category: 'Power-Up',
+				...assets
+			},
+			config: {
+				premium: false,
+				buyable: true,
+				sellable: true,
+				usable: true,
+				giftable: true,
+				shop: true,
+				sale: true,
+				inventory: true,
+				...config
+			},
+			upgrades: options.upgrades?.map(up => ({ 
+				sell: 0.2, 
+				...up 
+			})) ?? [],
 		});
 
-		this.duration = (level: number) => options.duration ?? 0;
-		this.checks = options.checks;
+		this.duration = config.duration ?? 0;
 	}
 
-	public abstract effect(effects: ItemEffects, entry?: CurrencyEntry): ItemEffects;
+	public effect(effects: ItemEffects, entry?: CurrencyEntry): ItemEffects {
+		return effects;
+	}
+
+	public getUpgrade(thisInv: Inventory) {
+		return super.getUpgrade(thisInv) as ReturnType<Item['getUpgrade']> & PowerItemUpgrades;
+	}
 
 	public getDuration(entry: CurrencyEntry) {
-		return this.duration(entry.items.get(this.id).level);
+		return this.getUpgrade(entry.items.get(this.id)).duration;
 	}
 }

@@ -4,13 +4,16 @@ import { PowerUpItem } from '../..';
 export default class PowerUp extends PowerUpItem {
 	constructor() {
 		super('beer', {
-			name: 'Crazy\'s Beer',
-			emoji: ':beers:',
-			price: 35000,
-			checks: 'time',
-			duration: 1000 * 60,
-			shortInfo: 'Slots rig eh? One time solution!',
-			longInfo: 'Drink for temporarily high jackpots on slots!',
+			assets: {
+				name: 'Crazy\'s Beer',
+				emoji: ':beers:',
+				price: 35000,
+				intro: 'Slots rig eh? One time solution!',
+				info: 'Drink for temporarily high jackpots on slots!',
+			},
+			config: {
+				duration: 1000 * 60,
+			},
 			upgrades: [
 				{ price: 3000, duration: 1000 * 60 * 3 },
 				{ price: 5000, duration: 1000 * 60 * 5 },

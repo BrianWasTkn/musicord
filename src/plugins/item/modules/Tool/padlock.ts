@@ -4,11 +4,13 @@ import { ToolItem } from '../..';
 export default class Tool extends ToolItem {
 	constructor() {
 		super('padlock', {
-			name: 'Padlock',
-			emoji: ':lock:',
-			price: 3000,
-			shortInfo: 'Secure your coins!',
-			longInfo: 'Protect yourself from pesky robbers.'
+			assets: {
+				name: 'Padlock',
+				emoji: ':lock:',
+				price: 3000,
+				intro: 'Secure your coins!',
+				info: 'Protect yourself from pesky robbers.'
+			}
 		});
 	}
 
