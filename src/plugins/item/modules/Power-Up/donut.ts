@@ -7,17 +7,17 @@ export default class PowerUp extends PowerUpItem {
 			assets: {
 				name: 'Bob\'s Donut',
 				emoji: ':doughnut:',
-				price: 30000,
+				price: 20000,
 				intro: 'Coin madness!',
-				info: 'Temporarily increase coin payouts for all coin gaining commands!',	
+				info: 'Temporarily increase coin payouts for gambling commands!',	
 			},
 			config: {
-				duration: 1000 * 60,
+				duration: 1000 * 60 * 60 * 10,
 			},
 			upgrades: [
-				{ price: 3000, duration: 1000 * 60 * 3 },
-				{ price: 5000, duration: 1000 * 60 * 5 },
-				{ price: 10000, duration: 1000 * 60 * 10 },
+				{ price: 23000, duration: 1000 * 60 * 60 * 15 },
+				{ price: 27000, duration: 1000 * 60 * 60 * 30 },
+				{ price: 35000, duration: 1000 * 60 * 60 * 45 },
 			]
 		});
 	}

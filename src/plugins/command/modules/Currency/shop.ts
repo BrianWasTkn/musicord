@@ -77,7 +77,7 @@ export default class extends Command {
 		const { owned, level } = entry.items.get(query.id);
 
 		return ctx.channel.send({ embed: {
-			title: `${emoji} ${name} — Level ${level === query.upgrades.length ? `${level} (Max)` : level} ${owned > 0 ? `— ${owned.toLocaleString()} owned` : ''}`,
+			title: `${emoji} ${name}${owned > 0 ? ` (${owned.toLocaleString()} owned)` : ''} — Level ${level === query.upgrades.length ? `${level} (Max)` : level}`,
 			color: 'RANDOM', description: [
 				`${info}\n`, 
 				[

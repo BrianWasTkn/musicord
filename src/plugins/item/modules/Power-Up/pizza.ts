@@ -12,12 +12,12 @@ export default class PowerUp extends PowerUpItem {
 				info: 'Exp-erience the real meaning of grinding!',
 			},
 			config: {
-				duration: 1000 * 60,
+				duration: 1000 * 60 * 60 * 5,
 			},
 			upgrades: [
-				{ price: 3000, duration: 1000 * 60 * 3 },
-				{ price: 5000, duration: 1000 * 60 * 5 },
-				{ price: 10000, duration: 1000 * 60 * 10 },
+				{ price: 165000, duration: 1000 * 60 * 60 * 10 },
+				{ price: 225000, duration: 1000 * 60 * 60 * 20 },
+				{ price: 320000, duration: 1000 * 60 * 60 * 45 },
 			]
 		});
 	}

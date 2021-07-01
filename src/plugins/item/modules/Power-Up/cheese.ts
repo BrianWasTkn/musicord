@@ -7,23 +7,16 @@ export default class PowerUp extends PowerUpItem {
 			assets: {
 				name: 'Luca\'s Cheese',
 				emoji: ':cheese:',
-				price: 45000,
-				intro: 'Increase your lactose by eating cheese!',
-				info: 'Have a temporary chance of dropping keys and grab them? Wow okay.',
-			},
-			config: {
-				duration: 1000 * 60,
+				price: 10000,
+				intro: 'Lactose for bits?',
+				info: 'Give yourself tiny bits of permanent multipliers!',
 			},
 			upgrades: [
-				{ price: 3000, duration: 1000 * 60 * 3 },
-				{ price: 5000, duration: 1000 * 60 * 5 },
-				{ price: 10000, duration: 1000 * 60 * 10 },
+				{ price: 15000 },
+				{ price: 25000 },
+				{ price: 50000 },
 			]
 		});
-	}
-
-	effect(effects: ItemEffects, entry: CurrencyEntry) {
-		return effects.setLuck('keyDrop', 10);
 	}
 
 	async exec(ctx: Context, entry: CurrencyEntry) {

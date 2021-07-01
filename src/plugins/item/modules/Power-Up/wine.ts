@@ -7,17 +7,17 @@ export default class PowerUp extends PowerUpItem {
 			assets: {
 				name: 'Brian\'s Wine',
 				emoji: ':wine_glass:',
-				price: 65000,
+				price: 35000,
 				intro: 'Simply hack into your dice...',
 				info: 'Drink for temporary dice hax!',
 			},
 			config: {
-				duration: 1000 * 60,
+				duration: 1000 * 60 * 60 * 10,
 			},
 			upgrades: [
-				{ price: 3000, duration: 1000 * 60 * 3 },
-				{ price: 5000, duration: 1000 * 60 * 5 },
-				{ price: 10000, duration: 1000 * 60 * 10 },
+				{ price: 37500, duration: 1000 * 60 * 60 * 15 },
+				{ price: 42000, duration: 1000 * 60 * 60 * 30 },
+				{ price: 50000, duration: 1000 * 60 * 60 * 45 },
 			]
 		});
 	}

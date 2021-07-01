@@ -12,12 +12,12 @@ export default class PowerUp extends PowerUpItem {
 				info: 'Multis multis and multis for few hours!',
 			},
 			config: {
-				duration: 1000 * 60,
+				duration: 1000 * 60 * 60 * 60,
 			},
 			upgrades: [
-				{ price: 3000, duration: 1000 * 60 * 60 * 3 },
-				{ price: 5000, duration: 1000 * 60 * 60 * 5 },
-				{ price: 10000, duration: 1000 * 60 *  60 * 10 },
+				{ price: 30000, duration: 1000 * 60 * 60 * 60 * 3 },
+				{ price: 50000, duration: 1000 * 60 * 60 * 60 * 6 },
+				{ price: 75000, duration: 1000 * 60 * 60 * 60 * 12 },
 			]
 		});
 	}
