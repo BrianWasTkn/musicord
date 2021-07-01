@@ -73,7 +73,7 @@ export interface ItemOptions {
 	/** The config for the shitshow. */
 	config: ItemConfig;
 	/** The upgrades of this item */
-	upgrades: Partial<ItemUpgrade>[];
+	upgrades: ItemUpgrade[];
 }
 
 export abstract class Item extends AbstractModule {
