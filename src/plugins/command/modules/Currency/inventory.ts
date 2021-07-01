@@ -80,7 +80,8 @@ export default class extends Command {
 				level: inv.level
 			}))
 			.map(({ mod, owned, level }) => {
-				const { category, emoji, name, id, upgrades } = mod;
+				const { category, id, upgrades } = mod;
+				const { emoji, name } = mod.getUpgrade(items.get(mod.id));
 				const state = upgrades.length - 1 === level ? '`MAX LEVEL`' : `${upgrades.length - 1 - level} more`;
 				return `**${emoji} ${name}** — ${owned.toLocaleString()}\n*ID* \`${id}\` — ${category.id}\n*LVL* \`${level}\` — ${state}`
 			});

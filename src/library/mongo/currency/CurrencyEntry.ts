@@ -385,6 +385,21 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		return this.vault().unlock();
 	}
 
+	/** Record ur daily */
+	recordDailyStreak() {
+		return this.daily().recordStreak();
+	}
+
+	/** Add ur daily streak */
+	addDailyStreak() {
+		return this.daily().addStreak();
+	}
+
+	/** reset idk im tired writing this */
+	resetDailyStreak() {
+		return this.daily().resetStreak();
+	}
+
 	/** Update a gambling game stat */
 	updateStats(game: string, coins: number, isWin: boolean) {
 		const coin = this.stats(game).coins(coins);

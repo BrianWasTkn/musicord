@@ -11,20 +11,18 @@ export default class extends Command {
 			args: [
 				{ 
 					id: 'text', 
-					type: 'string', 
+					match: 'rest', 
 					default: 'You need some text idiot.' 
 				},
 			],
 		});
 	}
 
-	exec(ctx: Context, args: { text: string }) {
-		return ctx.client.memer.generate('changemymind', {
-			text: args.text
-		}).then((buffer: Buffer) => ctx.reply({
-			files: [buffer]
-		})).catch((e: Error) => ctx.reply({
-			content: e.message || 'Something went wrong.'
-		}));
+	async exec(ctx: Context, { text }: { text: string }) {
+		const params = new URLSearchParams();
+		params.set('text', text);
+		
+		return ctx.client.memer.generate('changemymind', params, 'gif')
+			.then(g => ctx.channel.send(g));
 	}
 }

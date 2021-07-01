@@ -48,7 +48,7 @@ export default class extends Command {
 
 		if (item) entry.addItem(item);
 		return entry.addPocket(coins).save().then(() => ({
-			itemGot: (randomNumber(1, 100) < 10) && item ? entry.items.get(item) : null,
+			itemGot: (randomNumber(1, 100) < 30) && item ? entry.items.get(item) : null,
 			coinsWon: Math.round(coins + (coins * (multi / 100))),
 			coinsRaw: coins
 		}));
@@ -60,7 +60,7 @@ export default class extends Command {
 		const searchables = randomsInArray(this.search, 3);
 		const places = searchables.map(s => s.place);
 
-		await ctx.reply(`**Where do you want to search?**\nPick one from the list below.\n\`${places.join('`, `')}\``);
+		await ctx.reply(`**Where do you want to search?**\nPick one from the list below.\n\`${places.join('`,   `')}\``);
 		const choice = await ctx.awaitMessage();
 
 		if (!choice || !choice.content || !places.some(p => choice.content.toLowerCase() === p)) {
@@ -83,7 +83,7 @@ export default class extends Command {
 
 		return ctx.reply({ embed: {
 			description: `${searched.successMsg(nice.coinsWon)}${nice.itemGot ? `\nand **1 ${nice.itemGot.module.emoji} ${nice.itemGot.module.name}** wow you're very lucky!` : ''}`,
-			footer: { text: `Multiplier: +${multi}% (${nice.coinsRaw.toLocaleString()})` },
+			footer: { text: `Multiplier bONUS: +${multi}% ( ${nice.coinsRaw.toLocaleString()} )` },
 			author: { name: getHeader(), iconURL: ctx.author.avatarURL({ dynamic: true }) },
 			color: 'GREEN'
 		}});
@@ -93,40 +93,46 @@ export default class extends Command {
 const search = (client: LavaClient): SearchData[] => [
 	{
 		place: 'dustbin',
-		maxCoins: 5000,
-		minCoins: 1000,
+		maxCoins: 50000,
+		minCoins: 10000,
 		successMsg: w => `You smell but here's **${w.toLocaleString()}** coins ig`,
 		death: {
 			msg: 'You ate a rotten banana and went to the hospital but you were dead on arrival.',
-			odds: 5,
+			odds: 10,
 		},
 	},
 	{
 		place: 'air',
-		maxCoins: 25000,
-		minCoins: 3000,
+		maxCoins: 65000,
+		minCoins: 25000,
 		successMsg: w => `How the heck you got **${w.toLocaleString()}** coins from air?`,
+		death: {
+			msg: 'You caught the coronavirus and you died.',
+			odds: 15
+		}
 	},
 	{
 		place: 'memers crib',
-		maxCoins: 100000,
-		minCoins: 20000,
-		items: ['bacon'],
+		maxCoins: 1000000,
+		minCoins: 200000,
+		items: ['gem', 'trophy', 'pizza', 'wine', 'card'],
 		successMsg: w => `We wanna make u rich here so here's **${w.toLocaleString()}** bits, enjoy :)`,
 	},
 	{
 		place: 'mars',
-		maxCoins: 10000,
-		minCoins: 100,
-		successMsg: w => `I suffocated for **${w.toLocaleString()}** coins.`
+		maxCoins: 1000000,
+		minCoins: 50000,
+		items: ['bacon'],
+		successMsg: w => `You suffocated for **${w.toLocaleString()}** coins.`
 	},
 	{
 		place: 'discord',
-		maxCoins: 10000,
-		minCoins: 1000,
+		maxCoins: 100000,
+		minCoins: 10000,
+		items: ['coin'],
 		successMsg: w => `You typed \`lava gimme\` in the chats and got **${w.toLocaleString()}** coins`,
 		death: {
-			msg: 'You got banned from your favorite server, you died.',
+			msg: 'You got banned from your favorite server.',
 			odds: 10,
 		}
 	},
@@ -134,10 +140,37 @@ const search = (client: LavaClient): SearchData[] => [
 		place: 'club',
 		maxCoins: 20000,
 		minCoins: 5000,
+		items: ['beer', 'alcohol', 'soda'],
 		successMsg: w => `Wow you danced for **${w.toLocaleString()}** coins`,
 		death: {
 			msg: 'Being drunk is bad and bad leads to death, you died.',
 			odds: 25
+		}
+	},
+	{
+		place: 'tree',
+		maxCoins: 30000,
+		minCoins: 5000,
+		items: ['gem'],
+		successMsg: w => `Wtf who left **${w.toLocaleString()}** coins up this tree?`,
+		death: {
+			msg: 'You fell off and got a fracture in ur head, u died upon hospital arrival',
+			odds: 10
+		}
+	},
+	{
+		place: 'space',
+		maxCoins: 5000000,
+		minCoins: 100000,
+		items: ['medal', 'cheese', 'taco'],
+		successMsg: w => `Wow you dodged the space debris, you got **${w.toLocaleString()}** ggs`,
+		death: {
+			odds: 60,
+			msg: client.util.randomInArray([
+				'You got sucked from the blackhole.',
+				'The star burnt you and your soul.',
+				'Sadly you didn\'t dodged the debris, too late.'
+			])
 		}
 	}
 ]

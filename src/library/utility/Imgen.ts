@@ -20,20 +20,14 @@ export class Imgen {
 	/**
 	 * Generate an image from a certain endpoint.
 	 */
-	generate(endpoint: string, body: {
-		text?: string;
-		avatars?: string[];
-	}) {
-		return fetch(`${this.apiURL}/${endpoint}`, {
-			body: JSON.stringify(body),
-			method: 'POST',
-			timeout: 1e4,
+	generate(endpoint: string, args: URLSearchParams, ext: 'gif' | 'png') {
+		return fetch(`${this.apiURL}/api/${endpoint}?${args.toString()}`, {
+			method: 'GET',
 			headers: {
 				Authorization: this.token,
-				'Content-Type': 'application/json'
 			},
 		})
-			.then(response => response.buffer())
-			.catch(error => Promise.reject(error));
+			.then(response => response.body)
+			.then(body => new MessageAttachment(body, `${endpoint}.${ext}`));
 	}
 }

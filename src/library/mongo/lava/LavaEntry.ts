@@ -7,6 +7,7 @@ import { Cooldown, UserSetting } from '.';
 import { Collection } from 'discord.js';
 import { Snowflake } from 'discord.js';
 import { UserEntry } from 'lava/mongo';
+import { Command } from 'lava/akairo';
 
 export class LavaEntry extends UserEntry<LavaProfile> {
 	/** Wether they are blacklisted from the bot or not */
@@ -93,6 +94,11 @@ export class LavaEntry extends UserEntry<LavaProfile> {
 	/** Update command records */
 	updateCommand(command: string) {
 		return this.command(command).record();
+	}
+
+	/** Add cooldown */
+	addCooldown(command: Command) {
+		return this.updateCooldown(command.id, Date.now() + (command.cooldown ?? 1000));
 	}
 
 	/** Add spam count for spamfucks */
