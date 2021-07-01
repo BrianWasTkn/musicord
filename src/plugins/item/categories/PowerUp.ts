@@ -53,7 +53,7 @@ export abstract class PowerUpItem extends Item {
 			})) ?? [],
 		});
 
-		this.duration = config.duration ?? 0;
+		this.duration = config?.duration ?? 0;
 	}
 
 	public effect(effects: ItemEffects, entry?: CurrencyEntry): ItemEffects {
