@@ -30,12 +30,13 @@ export default class extends Command {
 	check(entry: CurrencyEntry, args: SellArgs) {
 		const { amount, item } = args;
 
-		const inv = entry.items.get(item.id);
-		const { pocket } = entry.props;
-
 		if (!item) {
 			return ItemMessages.NEED_TO_SELL;
 		}
+		
+		const inv = entry.items.get(item.id);
+		const { pocket } = entry.props;
+
 		if (!item.sellable) {
 			return ItemMessages.NOT_SELLABLE;
 		}
