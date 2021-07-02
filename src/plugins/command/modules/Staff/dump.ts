@@ -18,7 +18,7 @@ export default class extends SubCommand {
 		});
 	}
 
-	exec(ctx: Context, { role }: { role: Role }) {
+	async exec(ctx: Context, { role }: { role: Role }) {
 		if (!role || role.members.size < 1) {
 			await ctx.reply('No members to dump.');
 			return false;

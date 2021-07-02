@@ -26,7 +26,8 @@ export default class extends Command {
 	async exec(ctx: Context, { amount }: { amount: number | string }) {
 		const entry = await ctx.currency.fetch(ctx.author.id);
 		if (amount === 'invalid') {
-			return ctx.reply('U need to deposit something lol');
+			return ctx.reply('U need to deposit something lol')
+				.then(() => false);
 		}
 
 		const { pocket, vault, space } = entry.props;

@@ -36,6 +36,6 @@ export default class extends Command {
 					icon_url: ctx.client.user.avatarURL()
 				}
 			}
-		});
+		}).then(() => false);
 	};
 }

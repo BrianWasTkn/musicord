@@ -64,7 +64,7 @@ export default class extends Command {
 		const choice = await ctx.awaitMessage();
 
 		if (!choice || !choice.content || !places.some(p => choice.content.toLowerCase() === p)) {
-			return ctx.reply('Imagine not picking the right place, idiot.');
+			return ctx.reply('Imagine not picking the right place, idiot.').then(() => false);
 		}
 
 		const searched = searchables.find(s => choice.content.toLowerCase() === s.place);

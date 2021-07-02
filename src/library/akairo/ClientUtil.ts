@@ -3,9 +3,9 @@
  * @author BrianWasTaken
 */
 
-import { Colors, EmbedPlus, ItemEffects } from 'lava/index';
 import { ClientUtil as OldClientUtil } from 'discord-akairo';
 import { Snowflake, Collection } from 'discord.js';
+import { Colors, ItemEffects } from 'lava/index';
 import { LavaClient } from '.';
 
 export declare interface ClientUtil<Client extends LavaClient = never> extends OldClientUtil {
@@ -52,12 +52,7 @@ export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil
 		this.heistEvents = new Collection();
 		this.bankrobs = Object.create(null);
 	}
-
-	/**
-	 * Construct an embed.
-	*/
-	embed = (...args: ConstructorParameters<typeof EmbedPlus>) => new EmbedPlus(...args);
-
+	
 	/**
 	 * Construct an item effect. 
 	*/
