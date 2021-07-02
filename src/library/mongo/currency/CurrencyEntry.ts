@@ -443,7 +443,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		const amount = item ? randomNumber(1, item.owned) : 0;
 		if (item) this.inventory(item.module.id).decrement(amount);
 
-		return this.pocket(pocket > 0 ? randomNumber(1, pocket) : 0).dec();
+		return this.pocket(pocket > 0 ? pocket : 0).dec();
 	}
 
 	/**

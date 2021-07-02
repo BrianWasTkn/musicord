@@ -25,6 +25,20 @@ export default class extends Command {
 		if (entry.props.pocket <= 0) {
 			await entry.addPocket(Currency.MAX_BET).save(false);
 		}
+		if (user.id === ctx.author.id && entry.props.pocket >= Currency.MAX_SAFE_POCKET) {
+			await ctx.channel.send(`Hey! It looks like you have over **${Currency.MAX_SAFE_POCKET.toLocaleString()} coins** in your pocket, would you like to set me your pocket to that cap right now?`);
+			const choice = await ctx.awaitMessage();
+			if (!choice || !choice.content) {
+				await ctx.reply('respond with yes or no bruh, try again.');
+				return false;
+			}
+			if (choice.content.toLowerCase().slice(0, 1) === 'n') {
+				await ctx.reply('ok then, dont expect any info about ur balance');
+				return false;
+			}
+
+			await entry.removePocket(entry.props.pocket).addPocket(Currency.MAX_SAFE_POCKET).save();
+		}
 
 		return ctx.channel.send({
 			embed: <MessageEmbedOptions>{

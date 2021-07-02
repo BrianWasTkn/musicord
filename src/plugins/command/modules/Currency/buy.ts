@@ -44,7 +44,7 @@ export default class extends Command {
 		if (inv.owned >= Currency.MAX_INVENTORY) {
 			return ItemMessages.INVENTORY_IS_FULL;
 		}
-		if (amount > Currency.MAX_INVENTORY) {
+		if (amount > Currency.MAX_INVENTORY - inv.owned) {
 			return ItemMessages.AMOUNT_CAP;
 		}
 		if (amount < 1) {
