@@ -67,8 +67,9 @@ export class GambleCommand extends Command {
 		}
 	}
 
-	calcMulti(ctx: Context, entry: CurrencyEntry) {
-		return entry.calcMulti(ctx).unlocked.reduce((p, c) => c.value + p, 0);
+	calcMulti(ctx: Context, entry: CurrencyEntry, cap = true) {
+		const multis = entry.calcMulti(ctx).unlocked.reduce((p, c) => c.value + p, 0);
+		return cap ? Math.min(Currency.MAX_MULTI, multis) : multis;
 	}
 
 	calcWinnings(multi: number, bet: number) {
