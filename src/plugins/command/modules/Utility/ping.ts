@@ -12,5 +12,5 @@ export default class Utility extends Command {
 
 	public exec = (ctx: Context) => ctx.reply({
 		content: `**:ping_pong: Ponge:** \`${ctx.guild.shard.ping}ms\``
-	});
+	}).then(() => false);
 }

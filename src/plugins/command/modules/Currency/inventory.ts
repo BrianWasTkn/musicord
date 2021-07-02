@@ -44,10 +44,10 @@ export default class extends Command {
 		const inventory = ctx.client.util.paginateArray(this.mapItems(entry.items));
 
 		if (inventory.length < 1) {
-			return ctx.reply(`${isContext ? 'You' : 'They'} don't have any items on ${isContext ? 'your' : 'their'} inventory!`);
+			return ctx.reply(`${isContext ? 'You' : 'They'} don't have any items on ${isContext ? 'your' : 'their'} inventory!`).then(() => false);
 		}
 		if (page > inventory.length) {
-			return ctx.reply(`Page \`${page}\` doesn't exist.`);
+			return ctx.reply(`Page \`${page}\` doesn't exist.`).then(() => false);
 		}
 
 		return ctx.channel.send({
@@ -67,7 +67,7 @@ export default class extends Command {
 					text: `Owned Items — Page ${page} of ${inventory.length}`
 				}
 			}
-		});
+		}).then(() => false);
 	}
 
 	mapItems(items: CollectionPlus<Inventory>) {

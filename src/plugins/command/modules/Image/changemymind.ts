@@ -18,11 +18,12 @@ export default class extends Command {
 		});
 	}
 
-	async exec(ctx: Context, { text }: { text: string }) {
+	exec(ctx: Context, { text }: { text: string }) {
 		const params = new URLSearchParams();
 		params.set('text', text);
 		
 		return ctx.client.memer.generate('changemymind', params, 'gif')
-			.then(g => ctx.channel.send(g));
+			.then(g => ctx.channel.send(g))
+			.then(() => false);
 	}
 }

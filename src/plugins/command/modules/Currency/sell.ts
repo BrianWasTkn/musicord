@@ -10,6 +10,7 @@ export default class extends Command {
 		super('sell', {
 			aliases: ['sell'],
 			clientPermissions: ['EMBED_LINKS'],
+			cooldown: 1000 * 10,
 			description: 'Sell something to the shop!',
 			name: 'Sell',
 			args: [
@@ -51,7 +52,7 @@ export default class extends Command {
 	async exec(ctx: Context, args: SellArgs) {
 		const entry = await ctx.currency.fetch(ctx.author.id);
 		const check = this.check(entry, args);
-		if (check) return ctx.reply(check);
+		if (check) return ctx.reply(check).then(() => false);
 
 		const { amount, item } = args;
 		const { price, sellRate } = await item.sell(entry, amount);
@@ -68,6 +69,6 @@ export default class extends Command {
 			footer: {
 				text: 'Thanks for stopping by!'
 			}
-		}});
+		}}).then(() => false);
 	}
 }

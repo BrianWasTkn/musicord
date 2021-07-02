@@ -98,7 +98,7 @@ export class LavaEntry extends UserEntry<LavaProfile> {
 
 	/** Add cooldown */
 	addCooldown(command: Command) {
-		return this.updateCooldown(command.id, Date.now() + (command.cooldown ?? 1000));
+		return this.updateCooldown(command.id, Date.now() + command.cooldown);
 	}
 
 	/** Add spam count for spamfucks */

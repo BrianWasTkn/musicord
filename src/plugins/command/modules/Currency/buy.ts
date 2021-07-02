@@ -10,6 +10,7 @@ export default class extends Command {
 		super('buy', {
 			aliases: ['buy', 'purchase'],
 			clientPermissions: ['EMBED_LINKS'],
+			cooldown: 1000 * 10,
 			description: 'Buy something from the shop!',
 			name: 'Buy',
 			args: [
@@ -60,7 +61,7 @@ export default class extends Command {
 	async exec(ctx: Context, args: BuyArgs) {
 		const entry = await ctx.currency.fetch(ctx.author.id);
 		const check = this.check(entry, args);
-		if (check) return ctx.reply(check);
+		if (check) return ctx.reply(check).then(() => false);
 
 		const { amount, item } = args;
 		const { price } = await item.buy(entry, amount);
@@ -77,6 +78,6 @@ export default class extends Command {
 			footer: {
 				text: 'Thanks for your purchase!'
 			}
-		}});
+		}}).then(() => false);
 	}
 }

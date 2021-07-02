@@ -15,9 +15,9 @@ export default class extends GambleCommand {
 		const entry = await ctx.currency.fetch(ctx.author.id);
 
 		const bet = this.parseArgs(ctx, args, entry);
-		if (typeof bet === 'string') return ctx.reply(bet);
+		if (typeof bet === 'string') return ctx.reply(bet).then(() => false);
 		const state = this.checkArgs(bet, entry);
-		if (typeof state === 'string') return ctx.reply(state);
+		if (typeof state === 'string') return ctx.reply(state).then(() => false);
 
 		const { userD, botD } = this.roll(false);
 		if (botD > userD || botD === userD) {
@@ -38,7 +38,7 @@ export default class extends GambleCommand {
 						text: 'sucks to suck'
 					},
 				}
-			});
+			}).then(() => true);
 		}
 
 		const multi = this.calcMulti(ctx, entry);
@@ -54,7 +54,7 @@ export default class extends GambleCommand {
 					`You now have **${props.pocket.toLocaleString()}** coins.`
 				].join('\n'), fields: this.displayField(ctx.author, userD, botD),
 			}
-		});
+		}).then(() => true);
 	}
 
 	roll(rig = true, add = 0) {

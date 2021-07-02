@@ -50,7 +50,7 @@ declare module 'discord-akairo' {
 		/**
 		 * Method to run this command.
 		 */
-		exec(message: Context, args: any): PromiseUnion<MessageOptions>;
+		exec(message: Context, args: any): PromiseUnion<boolean>;
 	}
 
 	/**

@@ -20,6 +20,7 @@ export default class extends SubCommand {
 	}
 
 	async exec(ctx: Context, { some1 }: { some1: GuildMemberPlus }) {
-		return await ctx.channel.send(`${some1.user.tag} - events chan access`);
+		await ctx.channel.send(`${some1.user.tag} - events chan access`);
+		return false;
 	}
 }

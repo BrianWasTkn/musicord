@@ -47,7 +47,7 @@ export default class extends Command {
 			const shop = paginateArray(items.sort((a, b) => b.price - a.price).filter(i => i.shop).map(i => this.displayItem(i, entry.items)));
 			const left = parseTime((handler.sale.nextSale - Date.now()) / 1000);
 			if (args.query > shop.length) {
-				return ctx.reply(`Page \`${args.query}\` doesn't exist.`);
+				return ctx.reply(`Page \`${args.query}\` doesn't exist.`).then(() => false);
 			}
 
 			return ctx.channel.send({ embed: {
@@ -63,14 +63,14 @@ export default class extends Command {
 						value: shop[args.query - 1].join('\n\n')
 					}
 				]
-			}});
+			}}).then(() => false);
 		}
 
 		const { query } = args;
 		const { sale } = handler;
 
 		if (!query) {
-			return ctx.reply('That item doesn\'t exist tho');
+			return ctx.reply('That item doesn\'t exist tho').then(() => false);
 		}
 
 		const { price, sellRate, emoji, name, icon, info } = query.getUpgrade(entry.items.get(query.id));
@@ -85,6 +85,6 @@ export default class extends Command {
 					`**SELL** — ${query.sellable ? `${icon} ${Math.round(price * sellRate).toLocaleString()}` : '**Not Sellable**'}`
 				].join('\n')
 			].join('\n')
-		}})
+		}}).then(() => false);
 	}
 }

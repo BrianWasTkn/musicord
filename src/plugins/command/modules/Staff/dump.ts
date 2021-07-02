@@ -20,10 +20,12 @@ export default class extends SubCommand {
 
 	exec(ctx: Context, { role }: { role: Role }) {
 		if (!role || role.members.size < 1) {
-			return ctx.reply('No members to dump.');
+			await ctx.reply('No members to dump.');
+			return false;
 		}
 
 		const idiots = role.members.map(member => `${member.user.tag} (${member.user.id})`);
-		return ctx.channel.send(idiots.join('\n'));
+		await ctx.channel.send(idiots.join('\n'));
+		return false;
 	}
 }

@@ -38,6 +38,6 @@ export default class extends SubCommand {
 				color: 'BLUE',
 				title: ':tada: Event Time :tada:'
 			}
-		});
+		}).then(() => false);
 	}
 }

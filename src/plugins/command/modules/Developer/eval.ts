@@ -47,6 +47,6 @@ export default class extends Command {
 				name: 'Latency',
 				value: this.codeblock(type),
 			}],
-		}});
+		}}).then(() => false);
 	}
 }

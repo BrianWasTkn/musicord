@@ -38,6 +38,6 @@ export default class extends SubCommand {
 				color: 'GREEN',
 				title: ':handshake: Partners :handshake:'
 			}
-		});
+		}).then(() => false);
 	}
 }

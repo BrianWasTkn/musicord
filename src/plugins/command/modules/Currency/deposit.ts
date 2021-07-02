@@ -32,23 +32,23 @@ export default class extends Command {
 		const { pocket, vault, space } = entry.props;
 		const { dep, all } = this.parseArgs(amount, entry);
 		if (pocket < 1) {
-			return ctx.reply('U have nothing to deposit lol');
+			return ctx.reply('U have nothing to deposit lol').then(() => false);
 		}
 		if (dep < 1) {
-			return ctx.reply('Needs to be a whole number greater than 0');
+			return ctx.reply('Needs to be a whole number greater than 0').then(() => false);
 		}
 		if (dep > pocket) {
-			return ctx.reply(`U only have **${pocket.toLocaleString()}** coins lol don't lie to me hoe`);
+			return ctx.reply(`U only have **${pocket.toLocaleString()}** coins lol don't lie to me hoe`).then(() => false);
 		}
 		if (vault.amount >= space && all) {
-			return ctx.reply('U already have full bank!');
+			return ctx.reply('U already have full bank!').then(() => false);
 		}
 		if ((dep > space - vault.amount) && !all && dep > space) {
-			return ctx.reply(`You can only hold **${space.toLocaleString()}** coins right now. To hold more, use the bot more.`);
+			return ctx.reply(`You can only hold **${space.toLocaleString()}** coins right now. To hold more, use the bot more.`).then(() => false);
 		}
 
 		const deposit = dep >= space - vault.amount ? space - vault.amount : dep;
 		const { props } = await entry.deposit(deposit, true).save();
-		return ctx.reply(`**${deposit.toLocaleString()}** coins deposited. You now have **${props.vault.amount.toLocaleString()}** coins in your vault.`);
+		return ctx.reply(`**${deposit.toLocaleString()}** coins deposited. You now have **${props.vault.amount.toLocaleString()}** coins in your vault.`).then(() => false);
 	}
 }

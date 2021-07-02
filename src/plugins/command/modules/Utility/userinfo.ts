@@ -36,6 +36,6 @@ export default class extends Command {
 				{ name: 'Nickname', value: nickname ?? 'No Nickname here', inline: true },
 				{ name: 'Last Command ran', value: data.data.commands.last_cmd, inline: true }
 			]
-		}});
+		}}).then(() => false);
 	}
 } 

@@ -32,19 +32,19 @@ export default class extends Command {
 		const { pocket, vault, space } = entry.props;
 		const withd = this.parseArgs(amount, entry);
 		if (vault.locked) {
-			return ctx.reply("You're being heisted so you can't withdraw lol");
+			return ctx.reply("You're being heisted so you can't withdraw lol").then(() => false);
 		}
 		if (vault.amount < 1) {
-			return ctx.reply('You have nothing to withdraw?');
+			return ctx.reply('You have nothing to withdraw?').then(() => false);
 		}
 		if (withd < 1) {
-			return ctx.reply('Needs to be a whole number greater than 0');
+			return ctx.reply('Needs to be a whole number greater than 0').then(() => false);
 		}
 		if (withd > vault.amount) {
-			return ctx.reply(`U only have **${vault.amount.toLocaleString()}** coins in your vault tf u on?`);
+			return ctx.reply(`U only have **${vault.amount.toLocaleString()}** coins in your vault tf u on?`).then(() => false);
 		}
 
 		const { props } = await entry.withdraw(withd, true).save();
-		return ctx.reply(`**${withd.toLocaleString()}** coins withdrawn. You now have **${props.vault.amount.toLocaleString()}** coins in your vault.`);
+		return ctx.reply(`**${withd.toLocaleString()}** coins withdrawn. You now have **${props.vault.amount.toLocaleString()}** coins in your vault.`).then(() => false);
 	}
 }

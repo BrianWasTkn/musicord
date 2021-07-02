@@ -32,7 +32,7 @@ export default class extends GambleCommand {
 		if (odds > 95) {
 			return Array(3).fill(first);
 		}
-		if (odds > 55) {
+		if (odds > 65) {
 			emojis = Array(3).fill(first);
 			const index = randomNumber(1, emojis.length) - 1;
 			const slots = Object.keys(this.slots);
@@ -53,9 +53,9 @@ export default class extends GambleCommand {
 		const entry = await ctx.currency.fetch(ctx.author.id);
 
 		const bet = this.parseArgs(ctx, args, entry);
-		if (typeof bet === 'string') return ctx.reply(bet);
+		if (typeof bet === 'string') return ctx.reply(bet).then(() => false);
 		const state = this.checkArgs(bet, entry);
-		if (typeof state === 'string') return ctx.reply(state);
+		if (typeof state === 'string') return ctx.reply(state).then(() => false);
 
 		const multi = this.calcMulti(ctx, entry);
 		const slots = this.getSlots(Object.keys(this.slots));
@@ -80,7 +80,7 @@ export default class extends GambleCommand {
 						text: 'sucks to suck'
 					}
 				}
-			});
+			}).then(() => true);
 		}
 
 		const { props } = await entry.addPocket(winnings).save();
@@ -102,7 +102,7 @@ export default class extends GambleCommand {
 					text: 'winner winner'
 				}
 			}
-		})
+		}).then(() => true);
 	}
 
 	calcSlots(slots: string[], bet: number, multis: number) {

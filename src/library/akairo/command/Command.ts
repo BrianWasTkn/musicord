@@ -73,8 +73,9 @@ export class Command extends OldCommand implements AbstractModule {
 
 	/**
 	 * Method to run this command.
+	 * Return `true` to add cooldown, `false` otherwise.
 	 */
-	public exec(context: Context, args?: any): PromiseUnion<any> {
+	public exec(context: Context, args?: any): PromiseUnion<boolean> {
 		return super.exec(context, args);
 	}
 

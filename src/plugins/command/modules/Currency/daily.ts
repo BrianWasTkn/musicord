@@ -34,6 +34,6 @@ export default class extends Command {
 			footer: {
 				text: `Streak: ${streak} days ${(streak > 1 ? `(+${streakBonus.toLocaleString()} bonus)` : '')}`,
 			},
-		}})
+		}}).then(() => true);
 	}
 }

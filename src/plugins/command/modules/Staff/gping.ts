@@ -38,6 +38,6 @@ export default class extends SubCommand {
 				color: 'GOLD',
 				title: ':tada: Giveaway Time :tada:'
 			}
-		});
+		}).then(() => false);
 	}
 }

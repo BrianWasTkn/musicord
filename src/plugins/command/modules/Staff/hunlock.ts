@@ -20,6 +20,7 @@ export default class extends SubCommand {
 	}
 
 	async exec(ctx: Context, { tout }: { tout: number }) {
-		return await ctx.channel.send(`Unlocking in: ${tout} seconds`);
+		await ctx.channel.send(`Unlocking in: ${tout} seconds`);
+		return false;
 	}
 }

@@ -22,14 +22,14 @@ export default class extends Command {
 		if (query instanceof Command) {
 			return ctx.channel.send({ embed: {
 				title: `${query.name} Command`,
-				color: ctx.guild.me.roles.highest.color,
+				color: ctx.guild.me.roles.highest?.color,
 				fields: [
 					{ name: 'Description', value: query.description as unknown as string ?? 'No description provided.' },
 					{ name: 'Triggers', value: `\`${query.aliases.join('`, `')}\`` },
 					{ name: 'Cooldown', value: `Normie: ${ctx.client.util.parseTime(query.cooldown / 1000, true)}` },
 					{ name: 'Permissions', value: `\`${['SEND_MESSAGES'].concat(query.userPermissions as string[] ?? []).join('\n')}\`` }
 				]
-			}});
+			}}).then(() => false);
 		}
 
 		return ctx.channel.send({ embed: {
@@ -48,6 +48,6 @@ export default class extends Command {
 				text: `${this.handler.modules.size.toLocaleString()} Total Commands`,
 				iconURL: ctx.client.user.avatarURL()
 			}
-		}});
+		}}).then(() => false);
 	} 
 }

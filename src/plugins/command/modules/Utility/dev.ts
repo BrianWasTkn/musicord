@@ -22,6 +22,6 @@ export default class extends Command {
 
 	exec(ctx: Context, args: any) {
 		ctx.client.console.log('Client', args);
-		return ctx.reply('what');
+		return ctx.reply('what').then(() => false);
 	}
 }

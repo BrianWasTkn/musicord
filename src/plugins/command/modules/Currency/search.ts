@@ -78,7 +78,7 @@ export default class extends Command {
 				description: searched.death.msg,
 				footer: { text: 'Lol u died' },
 				color: 'RED',
-			}});
+			}}).then(() => true);
 		}
 
 		return ctx.reply({ embed: {
@@ -86,7 +86,7 @@ export default class extends Command {
 			footer: { text: `Multiplier Bonus: +${multi}% (${nice.coinsRaw.toLocaleString()} coins)` },
 			author: { name: getHeader(), iconURL: ctx.author.avatarURL({ dynamic: true }) },
 			color: 'GREEN'
-		}});
+		}}).then(() => true);
 	}
 }
 

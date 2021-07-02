@@ -64,10 +64,11 @@ export default class extends Command {
 
         if (Math.random() > beg.odds) {
             await entry.addPocket(this.getWon(beg.coins)).save();
-            return ctx.reply({ embed: this.getSuccessMsg(ctx, beg) });
+            await ctx.reply({ embed: this.getSuccessMsg(ctx, beg) });
+            return true;
         }
 
-        return ctx.reply({ embed: this.getFailMsg(ctx, beg) });
+        return ctx.reply({ embed: this.getFailMsg(ctx, beg) }).then(() => true);
     }
 }
 

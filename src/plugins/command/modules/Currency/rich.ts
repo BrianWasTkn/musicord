@@ -30,6 +30,6 @@ export default class extends Command {
 					const emoji = Array(3).fill('coin')[i] ?? 'small_red_triangle';
 					return `**:${emoji}: ${doc.props.pocket.toLocaleString()}** - ${user}`;
 				}).join('\n')),
-		}});
+		}}).then(() => false);
 	}
 }

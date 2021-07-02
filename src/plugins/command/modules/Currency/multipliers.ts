@@ -24,7 +24,7 @@ export default class extends Command {
 		));
 
 		if (!pages[page - 1]) {
-			return ctx.reply(`Page \`${page}\` doesn't exist.`);
+			return ctx.reply(`Page \`${page}\` doesn't exist.`).then(() => false);
 		}
 
 		return ctx.channel.send({ embed: {
@@ -34,6 +34,6 @@ export default class extends Command {
 				name: `Total Multi: ${multis.unlocked.reduce((p, c) => p + c.value, 0)}% (max of ${Currency.MAX_MULTI}%)`,
 				value: pages[page - 1].join('\n')
 			}],
-		}})
+		}}).then(() => false);
 	}
 }
