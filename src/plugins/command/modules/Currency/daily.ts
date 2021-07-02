@@ -5,6 +5,7 @@ export default class extends Command {
 		super('daily', {
 			aliases: ['daily', '24hr'],
 			clientPermissions: ['EMBED_LINKS'],
+			cooldown: 1000 * 60 * 60 * 24,
 			description: 'Claim your daily coins and items!',
 			name: 'Daily'
 		});

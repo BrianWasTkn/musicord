@@ -18,8 +18,8 @@ export default class extends Command {
 	}
 
 	async exec(ctx: Context, { item }: { item: Item }) {
-		const choice = await ctx.awaitMessage();
 		await ctx.channel.send(`What item do u wanna upgrade?`);
+		const choice = await ctx.awaitMessage();
 		if (!choice || !choice.content) {
 			await ctx.reply('ok no then weirdo');
 			return false;
