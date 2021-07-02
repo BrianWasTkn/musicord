@@ -103,7 +103,7 @@ export declare global {
 		 */
 		uses: number;
 		/**
-		 * The multipliers of this item for a period of time only.
+		 * The multipliers of this item.
 		 */
 		multi: number;
 		/**

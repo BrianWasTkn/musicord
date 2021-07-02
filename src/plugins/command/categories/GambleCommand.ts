@@ -68,7 +68,7 @@ export class GambleCommand extends Command {
 	}
 
 	calcMulti(ctx: Context, entry: CurrencyEntry) {
-		return entry.calcMulti(ctx).reduce((p, c) => c.value + p, 0);
+		return entry.calcMulti(ctx).unlocked.reduce((p, c) => c.value + p, 0);
 	}
 
 	calcWinnings(multi: number, bet: number) {

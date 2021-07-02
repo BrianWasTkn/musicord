@@ -25,48 +25,32 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		return this.data.prestige;
 	}
 
-	get shit() {
-		return super.map('items', Inventory);
-	}
-
 	/**
 	 * Their trash inventory.
 	*/
 	get items() {
-		return this.data.items.reduce((coll, slot) => 
-			coll.set(slot.id, new Inventory(this.client, slot)), 
-			new Collection<string, Inventory>()
-		);
+		return super.map('items', Inventory);
 	}
 
 	/**
 	 * Their quests.
 	 */
 	get quests() {
-		return this.data.quests.reduce((coll, slot) => 
-			coll.set(slot.id, new Mission(this.client, slot)), 
-			new Collection<string, Mission>()
-		);
+		return super.map('quests', Mission);
 	}
 
 	/**
 	 * Their gambling stats.
 	 */
 	get gamble() {
-		return this.data.gamble.reduce((coll, slot) => 
-			coll.set(slot.id, new GambleStat(this.client, slot)), 
-			new Collection<string, GambleStat>()
-		);
+		return super.map('gamble', GambleStat);
 	}
 
 	/**
 	 * Their trade stats.
 	 */
 	get trade() {
-		return this.data.trade.reduce((coll, slot) => 
-			coll.set(slot.id, new TradeStat(this.client, slot)), 
-			new Collection<string, TradeStat>()
-		)
+		return super.map('trade', TradeStat);
 	}
 
 	/**
@@ -88,74 +72,54 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	 */
 	public calcMulti(ctx: Context) {
 		const unlocked: { name: string, value: number }[] = [];
-		const unlock = (name: string, value: number) => {
-			return unlocked.push({ name, value });
+		const all: { name: string, value: number }[] = [];
+		const unlock = (name: string, value: number, truthy: boolean) => {
+			const fml = { name, value };
+			if (truthy) unlocked.push(fml);
+			return all.push(fml);
 		}
 
 		// The permanent multis
-		unlock('User Multipliers', this.props.multi.base);
+		unlock('User Multipliers', this.props.multi.base, true);
 		// Level rewards multis
-		if (this.props.multi.level_rewards > 0) {
-			unlock('Level Rewards', this.props.multi.level_rewards);
-		}
-
+		unlock('Level Rewards', this.props.multi.level_rewards, this.props.multi.level_rewards > 0);
 		// Memers Crib
-		if (ctx.guild.id === '691416705917779999') {
-			unlock(ctx.guild.name, 10);
-		}
+		unlock(ctx.guild.name, 10, ctx.guild.id === '691416705917779999');
 		// Nitro Booster
-		if (ctx.member.roles.premiumSubscriberRole?.id) {
-			unlock('Nitro Booster', 5);
-		}
+		unlock('Nitro Booster', 5, !!ctx.member.roles.premiumSubscriberRole?.id);
 		// Mastery 1 and up
-		if (ctx.member.roles.cache.has('794834783582421032')) {
-			unlock('Crib Mastery Rank', 3.5);
-		}
+		unlock('Crib Mastery Rank', 3, ctx.member.roles.cache.has('794834783582421032'));
 		// Has 1 of every item
-		if (this.items.every(i => i.isOwned())) {
-			unlock('Item Collector', 2.5);
-		}
+		unlock('Item Collector', 2, this.items.every(i => i.isOwned()));
+
 		// Item Effects
-		if (this.items.some(i => i.multiplier >= 1)) {
-			this.items.filter(i => i.isOwned()).forEach(i => {
-				if (i.isActive() && i.multiplier >= 1) {
-					return unlock(i.module.name, i.multiplier);
-				} 
-			});
-		}
+		this.items.filter(i => i.isOwned() && i.multiplier > 0).forEach(i => {
+			return unlock(i.module.name, i.multiplier, i.isActive() && i.multiplier >= 1);
+		});
+
 		// Mastery 10
-		if (ctx.member.roles.cache.has('794835005679206431')) {
-			unlock('Crib Mastery Max', 2.5);
-		}
+		unlock('Crib Mastery Max', 2, ctx.member.roles.cache.has('794835005679206431'));
 		// Prestige multis
-		if (this.prestige.level >= 1) {
-			const multi = Currency.PRESTIGE_MULTI_VALUE * this.prestige.level;
-			unlock(`Prestige ${this.prestige.level}`, multi);
-		}
+		const prestigeMulti = Currency.PRESTIGE_MULTI_VALUE * this.prestige.level;
+		unlock(`Prestige ${this.prestige.level}`, prestigeMulti, this.prestige.level >= 1);
+		
 		// Collectible Items
 		const collectibles = this.items.map(i => i.module).filter(i => i.category.id === 'Collectible') as CollectibleItem[];
 		if (collectibles.length >= 1) {
 			collectibles.filter(c => c.entities.multipliers).forEach(c => {
 				const inv = this.items.get(c.id);
-				if (inv.isOwned()) {
-					return unlock(c.name, c.entities.multipliers[inv.level] ?? 0);
-				}
+				return unlock(c.name, c.entities.multipliers[inv.level] ?? 0, inv.isOwned());
 			});
 		}
-		// Memers Crib Staff
-		if (ctx.member.roles.cache.has('692941106475958363')) {
-			unlock('Crib Staff', 2.5);
-		}
-		// Chips Cult
-		if (ctx.member.nickname?.toLowerCase().includes('chips')) {
-			unlock('Chips Cult', 6.5);
-		}
-		// Lava Channel
-		if ((ctx.channel as TextChannel).name.toLowerCase().includes('lava')) {
-			unlock('Lava Channel', 25);
-		}
 
-		return unlocked;
+		// Memers Crib Staff
+		unlock('Crib Staff', 2, ctx.member.roles.cache.has('692941106475958363'));
+		// Chips Cult
+		unlock('Chips Cult', 6, ctx.member.nickname?.toLowerCase().includes('chips'));
+		// Lava Channel
+		unlock('Lava Channel', 25, (ctx.channel as TextChannel).name.toLowerCase().includes('lava'));
+
+		return { unlocked, all };
 	}
 
 	/**

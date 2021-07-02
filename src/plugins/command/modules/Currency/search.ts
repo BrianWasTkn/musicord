@@ -69,7 +69,7 @@ export default class extends Command {
 
 		const searched = searchables.find(s => choice.content.toLowerCase() === s.place);
 		const getHeader = () => `${ctx.author.username} searched the ${searched.place.toUpperCase()}`;
-		const multi = entry.calcMulti(ctx).reduce((p, c) => p + c.value, 0);
+		const multi = entry.calcMulti(ctx).unlocked.reduce((p, c) => p + c.value, 0);
 		const nice = await this.searchPlace(searched, entry, multi);
 
 		if (!nice) {
@@ -83,7 +83,7 @@ export default class extends Command {
 
 		return ctx.reply({ embed: {
 			description: `${searched.successMsg(nice.coinsWon)}${nice.itemGot ? `\nand **1 ${nice.itemGot.module.emoji} ${nice.itemGot.module.name}** wow you're very lucky!` : ''}`,
-			footer: { text: `Multiplier bONUS: +${multi}% ( ${nice.coinsRaw.toLocaleString()} )` },
+			footer: { text: `Multiplier Bonus: +${multi}% (${nice.coinsRaw.toLocaleString()} coins)` },
 			author: { name: getHeader(), iconURL: ctx.author.avatarURL({ dynamic: true }) },
 			color: 'GREEN'
 		}});
