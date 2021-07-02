@@ -83,4 +83,14 @@ const ItemMessages = {
 	CANT_FOOL_ME: (thiss: number) => `Hey you only have ${thiss} of these!`,
 }
 
-export { Colors, Currency, GambleMessages, ItemMessages };
+/**
+ * Dank Memer old emojis.
+ */
+const Emojis = {
+	SQUARE_RED: '<:memerRed:729863510716317776>',
+	SQUARE_BLUE: '<:memerBlue:729863510330310727>',
+	SQUARE_GOLD: '<:memerGold:753138901169995797>',
+	SQUARE_GREEN: '<:memerGreen:729863510296887398>',
+};
+
+export { Emojis, Colors, Currency, GambleMessages, ItemMessages };

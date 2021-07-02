@@ -12,9 +12,6 @@ export class ItemEffects {
 	public luck = 0;
 	public dice = 0;
 
-	/**
-	 * Again this is not jaba.
-	 */
 	public static createInstance() {
 		return new this();
 	}

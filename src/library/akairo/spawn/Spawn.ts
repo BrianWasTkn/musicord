@@ -18,7 +18,6 @@ export type SpawnQueue = CollectionPlus<CollectionPlus<GuildMemberPlus>>;
 
 export interface SpawnDisplay {
 	description: string;
-	emoji: string;
 	strings: string[];
 	tier: SpawnTier;
 	title: string;

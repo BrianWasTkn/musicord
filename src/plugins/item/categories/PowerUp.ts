@@ -32,7 +32,7 @@ export abstract class PowerUpItem extends Item {
 		const { assets, config, upgrades } = options;
 		super(id, {
 			assets: {
-				sellRate: 0.2,
+				sellRate: 0.1,
 				category: 'Power-Up',
 				...assets
 			},
@@ -48,7 +48,7 @@ export abstract class PowerUpItem extends Item {
 				...config
 			},
 			upgrades: options.upgrades?.map(up => ({ 
-				sell: 0.2, 
+				sell: 0.1, 
 				...up 
 			})) ?? [],
 		});

@@ -11,24 +11,32 @@ export interface ItemHandlerOptions extends AbstractHandlerOptions {
 
 export interface ItemSale {
 	/**
-	 * The discount from 1% to 65%
+	 * The discount from 1% to 100%
 	 */
-	discount?: number;
+	discount: number;
 	/**
 	 * The stamp when the next sale would be.
 	 */
-	nextSale?: number;
+	nextSale: number;
+	/**
+	 * The stamp when it was on sale.
+	 */
+	stamp: number;
 	/**
 	 * The item on sale.
 	 */
-	item?: Item;
+	item: Item;
 }
 
 export class ItemHandler extends AbstractHandler<Item> {
 	/**
 	 * The sale item.
 	 */
-	public sale: ItemSale = {};
+	public sale: ItemSale = Object.create(null);
+	/**
+	 * Previous sales.
+	 */
+	public sales: ItemSale[] = [];
 	/**
 	 * Item effects mapped from snowflake to item to effects.
 	 */
@@ -60,11 +68,13 @@ export class ItemHandler extends AbstractHandler<Item> {
 	 * Sets the sale item.
 	 */
 	private setSaleItem(): ItemSale {
-		const { randomInArray, randomNumber } = this.client.util;
-		const items = [...this.modules.values()].filter(i => !i.retired);
-		const discount = randomNumber(1, 100);
-		const item = randomInArray(items);
-		const nextSale = (this.sale.nextSale ?? Date.now()) + this.saleInterval;
-		return this.sale = { item, discount, nextSale };
+		this.sales.unshift(this.sale);
+
+		return this.sale = { 
+			item: this.client.util.randomInArray([...this.modules.values()].filter(i => !i.retired)), 
+			nextSale: (this.sale.nextSale ?? Date.now()) + this.saleInterval, 
+			discount: this.client.util.randomNumber(1, 100), 
+			stamp: Date.now() 
+		};
 	}
 }

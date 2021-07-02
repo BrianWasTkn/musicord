@@ -1,17 +1,14 @@
-import { Spawn, SpawnDisplay } from 'lava/index';
-
-const display: SpawnDisplay = {
-	description: 'The idiots are in need of milk!',
-	title: 'Memers Crib',
-	emoji: ':thinking:',
-	strings: ['bruh'],
-	tier: 'COMMON'
-}
+import { Spawn } from 'lava/index';
 
 export default class extends Spawn {
 	constructor() {
 		super('crib', {
-			display, 
+			display: {
+				description: 'The babies are in need of milk!',
+				title: 'Memers Crib',
+				strings: ['bruh'],
+				tier: 'COMMON'
+			}, 
 			config: {
 				enabled: true,
 				method: 'message',

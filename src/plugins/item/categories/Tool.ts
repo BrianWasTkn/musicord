@@ -32,7 +32,7 @@ export abstract class ToolItem extends Item {
 		const { assets, config, upgrades } = options;
 		super(id, {
 			assets: {
-				sellRate: 0.2,
+				sellRate: 0.1,
 				category: 'Tool',
 				...assets
 			},
