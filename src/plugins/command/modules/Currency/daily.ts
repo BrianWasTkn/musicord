@@ -24,7 +24,7 @@ export default class extends Command {
 
 		const baseCoins = 10000;
 		const streakBonus = Math.round(0.3 * (baseCoins * streak));
-		const won = streak > 1 ? streakBonus : baseCoins;
+		const won = streak > 1 ? baseCoins + streakBonus : baseCoins;
 		await entry.addPocket(won).recordDailyStreak().save();
 
 		return ctx.channel.send({ embed: {
@@ -32,7 +32,7 @@ export default class extends Command {
 			description: `**${won.toLocaleString()}** were placed in your pocket.`,
 			color: 'BLUE',
 			footer: {
-				text: `Streak: ${streak} days ${(streak > 1 ? `( +${streakBonus.toLocaleString()} )` : '')}`,
+				text: `Streak: ${streak} days ${(streak > 1 ? `(+${streakBonus.toLocaleString()} bonus)` : '')}`,
 			},
 		}})
 	}
