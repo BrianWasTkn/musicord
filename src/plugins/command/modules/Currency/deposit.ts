@@ -40,10 +40,10 @@ export default class extends Command {
 		if (dep > pocket) {
 			return ctx.reply(`U only have **${pocket.toLocaleString()}** coins lol don't lie to me hoe`);
 		}
-		if (vault.amount >= space) {
+		if (vault.amount >= space && all) {
 			return ctx.reply('U already have full bank!');
 		}
-		if ((dep > space - vault.amount) && !all) {
+		if ((dep > space - vault.amount) && !all && dep > space) {
 			return ctx.reply(`You can only hold **${space.toLocaleString()}** coins right now. To hold more, use the bot more.`);
 		}
 

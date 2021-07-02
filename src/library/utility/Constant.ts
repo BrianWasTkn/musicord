@@ -32,7 +32,7 @@ const Colors: { [color: string]: number } = {
  * Gambling and other currency limits
 */
 const Currency = {
-	PRESTIGE_MULTI_VALUE: 2, 
+	PRESTIGE_MULTI_VALUE: 5, 
 	PRESTIGE_POCKET_REQ: 250000,
 	PRESTIGE_LEVEL_REQ: 25,
 	MAX_SAFE_POCKET: 100e6,
