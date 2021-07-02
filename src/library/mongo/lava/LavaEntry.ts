@@ -86,7 +86,7 @@ export class LavaEntry extends UserEntry<LavaProfile> {
 	updateCooldown(command: string, expire: number) {
 		const thisCooldown = this.data.cooldowns.find(cd => cd.id === command);
 		const user = this.client.users.cache.get(this.data._id as Snowflake);
-		if (this.client.isOwner(user) || Boolean(process.env.DEV_MODE)) return this;
+		if (this.client.isOwner(user) || process.env.DEV_MODE === 'true') return this;
 		thisCooldown.expire = expire;
 		return this;
 	}

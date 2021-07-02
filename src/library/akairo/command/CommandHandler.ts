@@ -133,12 +133,11 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 			this.emit(CommandHandlerEvents.COMMAND_STARTED, context, command, args);
 			try {
 				const returned = await command.exec(context, args);
-				await context.lava.fetch(context.author.id).then(d => {
-					return (returned ? d.addCooldown(command) : d)
-						.updateCommand(command.id)
-						.addUsage(command.id)
-						.save();
-				});
+				const lava = await context.lava.fetch(context.author.id)
+				if (returned) lava.addCooldown(command);
+				await lava.updateCommand(command.id)
+					.addUsage(command.id)
+					.save();
 
 				this.emit(CommandHandlerEvents.COMMAND_FINISHED, context, command, args);
 			} catch (error) {
