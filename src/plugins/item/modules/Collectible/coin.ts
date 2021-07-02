@@ -10,6 +10,9 @@ export default class Collectible extends CollectibleItem {
 				intro: 'A valuable coin from gods of the past.',
 				info: 'More ching ching in gambling, they say'
 			},
+			config: {
+				push: true,
+			},
 			upgrades: [
 				{ price: 2e6 }, 
 				{ price: 3e6 }, 

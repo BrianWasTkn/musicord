@@ -10,6 +10,9 @@ export default class Collectible extends CollectibleItem {
 				intro: 'A little gambling boost yeah?',
 				info: 'Gives you a boost in your gambling multipliers for more ching ching :money_mouth:',
 			},
+			config: {
+				push: true,
+			},
 			upgrades: [
 				{ price: 8e6 }, 
 				{ price: 11e6 }, 

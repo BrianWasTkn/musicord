@@ -10,6 +10,9 @@ export default class Collectible extends CollectibleItem {
 				intro: 'How tall can YOUR statue get?',
 				info: 'More steal barriers, more multipliers, even your dice counts! THIS ITEM IS EVERYTHING!',
 			},
+			config: {
+				push: true,
+			},
 			upgrades: [
 				{ price: 150e6 }, 
 				{ price: 250e6 }, 

@@ -10,6 +10,9 @@ export default class Collectible extends CollectibleItem {
 				intro: 'Embrace the powers of the almighty trophy!',
 				info: 'A great amount of gambling multiplier boost!',
 			},
+			config: {
+				push: true,
+			},
 			upgrades: [
 				{ price: 45e6 }, 
 				{ price: 55e6 }, 

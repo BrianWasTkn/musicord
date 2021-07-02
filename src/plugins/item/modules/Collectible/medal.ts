@@ -10,6 +10,9 @@ export default class Collectible extends CollectibleItem {
 				intro: 'Barriers and barriers...',
 				info: 'Grants you a steal barrier to decrease coins being robbed from you!',
 			},
+			config: {
+				push: true,
+			},
 			upgrades: [
 				{ price: 25e6 }, 
 				{ price: 30e6 }, 

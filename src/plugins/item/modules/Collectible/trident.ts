@@ -10,6 +10,9 @@ export default class Collectible extends CollectibleItem {
 				intro: 'Ready for ultimate grinding?',
 				info: 'Grants you a great amount of XP boost NO ONE could ever get!',
 			},
+			config: {
+				push: true,
+			},
 			upgrades: [
 				{ price: 100e6 }, 
 				{ price: 120e6 }, 

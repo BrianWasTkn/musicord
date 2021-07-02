@@ -10,7 +10,10 @@ export default class Tool extends ToolItem {
 				price: 10000,
 				intro: 'They say this item gives you a chance to dodge death...',
 				info: 'Equip to prevent dying and not lose any cluster of your progress!'
-			}
+			},
+			config: {
+				push: true,
+			},
 		});
 	}
 

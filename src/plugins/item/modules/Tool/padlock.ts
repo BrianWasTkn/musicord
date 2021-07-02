@@ -10,7 +10,10 @@ export default class Tool extends ToolItem {
 				price: 3000,
 				intro: 'Secure your coins!',
 				info: 'Protect yourself from pesky robbers.'
-			}
+			},
+			config: {
+				push: true,
+			},
 		});
 	}
 

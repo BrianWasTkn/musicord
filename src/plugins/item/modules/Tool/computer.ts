@@ -10,7 +10,10 @@ export default class Tool extends ToolItem {
 				price: 4000,
 				intro: 'An item from a redditor.',
 				info: 'Post specific type of memes on reddit!'
-			}
+			},
+			config: {
+				push: true,
+			},
 		});
 	}
 

@@ -10,6 +10,9 @@ export default class Collectible extends CollectibleItem {
 				intro: 'Slots rig eh? You found your solution!',
 				info: 'Grants you good amount of luck on slots and a flex against normies!',
 			},
+			config: {
+				push: true,
+			},
 			upgrades: [
 				{ price: 15e6 }, 
 				{ price: 20e6 }, 

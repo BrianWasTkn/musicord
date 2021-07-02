@@ -11,6 +11,9 @@ export default class Tool extends ToolItem {
 				intro: 'High-tech phone for bastards!',
 				info: 'Contact anyone using your phone, anywhere!'
 			},
+			config: {
+				push: true,
+			},
 		});
 	}
 
