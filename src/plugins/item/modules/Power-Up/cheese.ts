@@ -11,6 +11,9 @@ export default class PowerUp extends PowerUpItem {
 				intro: 'Lactose for bits?',
 				info: 'Give yourself tiny bits of permanent multipliers!',
 			},
+			config: {
+				push: true
+			},
 			upgrades: [
 				{ price: 15000 },
 				{ price: 25000 },

@@ -11,6 +11,9 @@ export default class Tool extends PowerUpItem {
 				intro: 'Do you need coin space?',
 				info: 'Gives you 1000-5000 coins of expanded storage!'
 			},
+			config: {
+				push: true
+			},
 			upgrades: [
 				{
 					price: 18000,

@@ -45,12 +45,13 @@ export default class extends Command {
 
 		const isDead = death ? death.odds > randomNumber(1, 100) : false;
 		if (isDead) return entry.kill().save().then(() => false);
-
 		if (item) entry.addItem(item);
-		return entry.addPocket(coins).save().then(() => ({
+
+		const won = Math.round(coins + (coins * (multi / 100)));
+		return entry.addPocket(won).save().then(() => ({
 			itemGot: (randomNumber(1, 100) < 30) && item ? entry.items.get(item) : null,
-			coinsWon: Math.round(coins + (coins * (multi / 100))),
-			coinsRaw: coins
+			coinsRaw: coins,
+			coinsWon: won,
 		}));
 	}
 
