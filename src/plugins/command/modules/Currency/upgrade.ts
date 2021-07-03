@@ -19,8 +19,8 @@ export default class extends Command {
 
 	async exec(ctx: Context, { item }: { item: Item }) {
 		const entry = await ctx.currency.fetch(ctx.author.id);
-		const isMax = item.upgrades.length - 1 === inv.level;
 		const inv = entry.items.get(item.id);
+		const isMax = item.upgrades.length - 1 === inv.level;
 
 		if (inv.upgrade.upgrade > (item.premium ? entry.props.prem : entry.props.pocket)) {
 			const { upgrade, icon, premium } = inv.upgrade;
@@ -40,7 +40,7 @@ export default class extends Command {
 			return ctx.reply({ embed: { description: 'ok then.' }}).then(() => false);
 		}
 
-		const newInv = await entry.upgradeItem(item.id).save().then(e => e.items.get(item.id));
+		const newInv = await entry.removePocket(inv.upgrade.upgrade).upgradeItem(item.id).save().then(e => e.items.get(item.id));
 		return ctx.reply({ embed: {
 			color: 'BLUE', author: { 
 				name: `${inv.upgrade.name} reached ${
