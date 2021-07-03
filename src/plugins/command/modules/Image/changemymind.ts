@@ -1,10 +1,10 @@
-import { MessageOptions, FileOptions } from 'discord.js';
 import { Command, Context } from 'lava/index';
+import { MessageOptions } from 'discord.js';
 
 export default class extends Command {
 	constructor() {
 		super('changemymind', {
-			aliases: ['changemymind'],
+			aliases: ['changemymind', 'cmm'],
 			channel: 'guild',
 			clientPermissions: ['ATTACH_FILES'],
 			name: 'Change My Mind',
@@ -22,7 +22,7 @@ export default class extends Command {
 		const params = new URLSearchParams();
 		params.set('text', text);
 		
-		return ctx.client.memer.generate('changemymind', params, 'gif')
+		return ctx.client.memer.generate('changemymind', params, 'png')
 			.then(g => ctx.channel.send(g))
 			.then(() => false);
 	}

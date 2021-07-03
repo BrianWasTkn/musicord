@@ -80,10 +80,10 @@ export default class extends GambleCommand {
 		return { botD, userD: userD + add };
 	}
 
-	displayField(user: UserPlus, userD: number, botD: number): EmbedFieldData[] {
+	displayField({ username, client }: UserPlus, userD: number, botD: number): EmbedFieldData[] {
 		const fields = {
-			[user.username]: `Rolled a \`${userD}\``,
-			[user.client.user.username]: `Rolled a \`${botD}\``
+			[username]: `Rolled a \`${userD}\``,
+			[client.user.username]: `Rolled a \`${botD}\``
 		};
 
 		return Object.entries(fields).map(([name, value]) => ({ inline: true, name, value }));
