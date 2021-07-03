@@ -52,7 +52,7 @@ export default class extends Command {
     getFailMsg(ctx: Context, { coins, person, msgs }: BegData): MessageEmbedOptions {
         return {
             author: { name: typeof person === 'function' ? person(ctx) : person },
-            footer: { text: 'Imagine begogng lol' },
+            footer: { text: 'Imagine begging lol' },
             description: `"${msgs.fail}"`,
             color: 'RED',
         };
