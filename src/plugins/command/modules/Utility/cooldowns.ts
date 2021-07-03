@@ -40,7 +40,7 @@ export default class extends Command {
 			author: { name: `${member.user.username}'s cooldowns` },
 			color: 'ORANGE', description: entry.cooldowns
 				.filter(cd => cd.isActive())
-				.map(this.calc)
+				.map(cd => this.calc(cd.expiresAt))
 				.join('\n') ?? 'No active cooldowns.'
 		}}).then(() => false);
 	}
