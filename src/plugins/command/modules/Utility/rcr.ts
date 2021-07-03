@@ -16,7 +16,7 @@ export default class extends Command {
 		let fColor = ctx.client.util.randomColor();
 
 		const prompt = async (color: number): Promise<boolean | Function> => {
-			await ctx.channel.send({ embed: { color, description: 'Do you like this color? Type `(y / n)` only.' }});
+			await ctx.reply({ embed: { color, description: 'Do you like this color? Type `(y / n)` only.' }});
 			const choice = await ctx.awaitMessage();
 			switch(choice.content.toLowerCase().slice(0, 1)) {
 				case 'n':
@@ -29,7 +29,8 @@ export default class extends Command {
 		};
 
 		await prompt(fColor);
-		return ctx.channel.send({ embed: {
+		await role.edit({ color: fColor });
+		return ctx.reply({ embed: {
 			description: `Ok, color changed. Enjoy!`,
 			color: fColor,
 		}}).then(() => true);
