@@ -36,15 +36,18 @@ export default class extends Command {
         return beg(this.client);
     }
 
-    getWon(coins: BegCoins) {
+    getWon(coins: BegCoins, multi: number) {
         const { min, max } = coins;
-        return this.client.util.randomNumber(min, max);
+        const raw = this.client.util.randomNumber(min, max);
+        const won = raw + (raw * (multi / 100));
+        return { raw, won };
     }
 
-    getSuccessMsg(ctx: Context, { coins, person, msgs }: BegData): MessageEmbedOptions {
+    getSuccessMsg(ctx: Context, { coins, person, msgs }: BegData, { multi, raw, won }: { multi: number, raw: number, won: number; }): MessageEmbedOptions {
         return {
             author: { name: typeof person === 'function' ? person(ctx) : person },
-            description: `"${msgs.success(this.getWon(coins))}"`,
+            footer: { text: `Multiplier Bonus: +${multi}% (${raw.toLocaleString()} coins)` },
+            description: `"${msgs.success(won)}"`,
             color: 'GREEN'
         };
     }
@@ -61,10 +64,12 @@ export default class extends Command {
     async exec(ctx: Context) {
         const entry = await ctx.currency.fetch(ctx.author.id);
         const beg = ctx.client.util.randomInArray(this.beg);
+        const multi = entry.calcMulti(ctx).unlocked.reduce((p, c) => p + c.value, 0);
 
         if (Math.random() > beg.odds) {
-            await entry.addPocket(this.getWon(beg.coins)).save();
-            await ctx.reply({ embed: this.getSuccessMsg(ctx, beg) });
+            const { raw, won } = this.getWon(beg.coins, multi);
+            await entry.addPocket(won).save();
+            await ctx.reply({ embed: this.getSuccessMsg(ctx, beg, { multi, raw, won }) });
             return true;
         }
 

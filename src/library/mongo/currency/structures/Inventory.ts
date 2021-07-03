@@ -47,6 +47,13 @@ export class Inventory extends Structure {
 	}
 
 	/**
+	 * Shortcut to this item's upgrade.
+	 */
+	get upgrade() {
+		return this.module.getUpgrade(this);
+	}
+
+	/**
 	 * Check if they own this item.
 	 */
 	isOwned() {

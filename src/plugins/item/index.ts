@@ -7,7 +7,7 @@ export default new Plugin(
 			automateCategories: true,
 			classToHandle: Item,
 			directory: join(__dirname, 'modules'),
-			saleInterval: 1000 * 60 * 5,
+			saleInterval: 1000 * 60 * 15,
 		}
 	)
 );

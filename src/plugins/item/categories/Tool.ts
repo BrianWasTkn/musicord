@@ -1,6 +1,6 @@
 import { Item, ItemOptions, ItemUpgrade, ItemConfig, ItemAssets, Inventory, Context, CurrencyEntry, ItemEffects } from 'lava/index';
 
-export type ToolItemAssets = Omit<ItemAssets, 'sellRate'>;
+export type ToolItemAssets = Omit<ItemAssets, 'sellRate' | 'upgrade'>;
 
 export interface ToolItemConfig extends Pick<ItemConfig, 'premium' | 'push' | 'retired'> {
 	/** The default duration of this tool. */
@@ -33,6 +33,7 @@ export abstract class ToolItem extends Item {
 		super(id, {
 			assets: {
 				sellRate: 0.1,
+				upgrade: 1e6,
 				category: 'Tool',
 				...assets
 			},

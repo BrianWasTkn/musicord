@@ -27,6 +27,8 @@ export interface ItemAssets extends AbstractModuleOptions {
 	price: number;
 	/** The sell rate from 0.01 to 1. */
 	sellRate: number;
+	/** The upgrade price of this item. */
+	upgrade: number;
 	/** The emoji of this item. */
 	emoji: string;
 	/** The short display info in shop. */
@@ -84,6 +86,8 @@ export abstract class Item extends AbstractModule {
 	public price: number;
 	/** The sell rate from 0.01 to 1. */
 	public sellRate: number;
+	/** The upgrade price of this item. */
+	public upgrade: number;
 	/** The emoji of this item. */
 	public emoji: string;
 	/** The short display info in shop. */
@@ -133,6 +137,7 @@ export abstract class Item extends AbstractModule {
 		this.price = assets.price;
 		this.emoji = assets.emoji;
 		this.sellRate = assets.sellRate;
+		this.upgrade = assets.upgrade;
 		this.intro = assets.intro;
 		this.info = assets.info;
 
@@ -163,6 +168,7 @@ export abstract class Item extends AbstractModule {
 			price: this.price,
 			emoji: this.emoji,
 			sellRate: this.sellRate,
+			upgrade: this.upgrade,
 			info: this.info,
 			premium: this.premium,
 			intro: this.intro
@@ -173,6 +179,7 @@ export abstract class Item extends AbstractModule {
 				price: this.price,
 				emoji: this.emoji,
 				sellRate: this.sellRate,
+				upgrade: this.upgrade,
 				info: this.info,
 				premium: this.premium,
 				intro: this.intro
@@ -260,6 +267,6 @@ export abstract class Item extends AbstractModule {
 	 * Calc discount for shit.
 	 */
 	public calcDiscount(amount: number, discount: number) {
-		return amount - (amount * (discount / 100));
+		return Math.round(amount - (amount * (discount / 100)));
 	}
 }

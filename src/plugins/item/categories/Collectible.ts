@@ -1,7 +1,7 @@
 import { Context, Item, ItemOptions, ItemAssets, ItemUpgrade, ItemConfig, CurrencyEntry } from 'lava/index';
 import { MessageOptions } from 'discord.js';
 
-export type CollectibleItemAssets = Omit<ItemAssets, 'sellRate'>;
+export type CollectibleItemAssets = Omit<ItemAssets, 'sellRate' | 'upgrade'>;
 
 export type CollectibleItemConfig = Pick<ItemConfig, 'push' | 'retired'>;
 
@@ -47,6 +47,7 @@ export abstract class CollectibleItem extends Item {
 		super(id, {
 			assets: {
 				sellRate: 0.33,
+				upgrade: 100e6,
 				category: 'Collectible',
 				...assets
 			},

@@ -26,7 +26,7 @@ export default class extends Command {
 	displayItem(item: Item, invs: CollectionPlus<Inventory>, saleNav = false) {
 		const { intro, info, emoji } = item;
 		const { discount, item: saleItem } = item.handler.sale;
-		const { name, price, icon } = item.getUpgrade(invs.get(item.id));
+		const { name, price, icon } = invs.get(item.id).upgrade;
 		const saleInv = invs.get(saleItem.id);
 
 		if (saleNav) {
@@ -73,7 +73,7 @@ export default class extends Command {
 			return ctx.reply('That item doesn\'t exist tho').then(() => false);
 		}
 
-		const { price, sellRate, emoji, name, icon, info } = query.getUpgrade(entry.items.get(query.id));
+		const { price, sellRate, emoji, name, icon, info } = entry.items.get(query.id).upgrade;
 		const { owned, level } = entry.items.get(query.id);
 
 		return ctx.channel.send({ embed: {

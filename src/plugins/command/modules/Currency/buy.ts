@@ -35,7 +35,7 @@ export default class extends Command {
 		}
 
 		const inv = entry.items.get(item.id);
-		const cost = item.getUpgrade(inv).price;
+		const cost = inv.upgrade.price;
 		const pocket = entry.props.pocket;
 
 		if (!item.buyable) {

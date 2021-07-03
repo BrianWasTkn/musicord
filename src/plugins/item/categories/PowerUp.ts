@@ -1,6 +1,6 @@
 import { Item, ItemOptions, ItemAssets, ItemConfig, ItemUpgrade, Context, CurrencyEntry, ItemEffects, Inventory } from 'lava/index';
 
-export type PowerItemAssets = Omit<ItemAssets, 'sellRate'>;
+export type PowerItemAssets = Omit<ItemAssets, 'sellRate' | 'upgrade'>;
 
 export interface PowerItemConfig extends Pick<ItemConfig, 'premium' | 'push' | 'retired'> {
 	/** The default duration of this power-up. */
@@ -33,6 +33,7 @@ export abstract class PowerUpItem extends Item {
 		super(id, {
 			assets: {
 				sellRate: 0.1,
+				upgrade: 10e6,
 				category: 'Power-Up',
 				...assets
 			},

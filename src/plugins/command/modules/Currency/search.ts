@@ -17,6 +17,9 @@ interface SearchResult { // this is not google LOL
 	coinsWon: number;
 	coinsRaw: number;
 	itemGot: Inventory;
+	possibleItemLost: Inventory;
+	itemLostAmount: number;
+	state: boolean;
 }
 
 export default class extends Command {
@@ -37,21 +40,35 @@ export default class extends Command {
 	 * Process the search stuff.
 	 * Returns `false` if dead, an object otherwise.
 	 */
-	searchPlace(search: SearchData, entry: CurrencyEntry, multi: number): Promise<false | SearchResult> {
+	searchPlace(search: SearchData, entry: CurrencyEntry, multi: number): Promise<SearchResult> {
 		const { minCoins, maxCoins, death, items } = search;
 		const { randomNumber, randomInArray } = entry.client.util;
 		const coins = randomNumber(minCoins, maxCoins);
 		const item = randomInArray(items ?? []);
 
 		const isDead = death ? death.odds > randomNumber(1, 100) : false;
-		if (isDead) return entry.kill().save().then(() => false);
-		if (item) entry.addItem(item);
+		const pil = entry.items.filter(i => i.isOwned()).random() ?? null;
+		const ila = pil ? randomNumber(1, pil.owned) : 0;
+		if (isDead) {
+			return entry.kill(pil.id, ila).save().then(() => ({
+				itemGot: null,
+				coinsRaw: 0,
+				coinsWon: 0,
+				possibleItemLost: pil,
+				itemLostAmount: ila,
+				state: false
+			}));
+		}
 
+		if (item) entry.addItem(item);
 		const won = Math.round(coins + (coins * (multi / 100)));
 		return entry.addPocket(won).save().then(() => ({
 			itemGot: (randomNumber(1, 100) < 30) && item ? entry.items.get(item) : null,
 			coinsRaw: coins,
 			coinsWon: won,
+			possibleItemLost: null,
+			itemLostAmount: null,
+			state: true
 		}));
 	}
 
@@ -61,7 +78,7 @@ export default class extends Command {
 		const searchables = randomsInArray(this.search, 3);
 		const places = searchables.map(s => s.place);
 
-		await ctx.reply(`**Where do you want to search?**\nPick one from the list below.\n\`${places.join('`,   `')}\``);
+		await ctx.reply(`**Where do you want to search?**\nPick one from the list below.\n\`${places.join('`, `')}\``);
 		const choice = await ctx.awaitMessage();
 
 		if (!choice || !choice.content || !places.some(p => choice.content.toLowerCase() === p)) {
@@ -73,10 +90,16 @@ export default class extends Command {
 		const multi = entry.calcMulti(ctx).unlocked.reduce((p, c) => p + c.value, 0);
 		const nice = await this.searchPlace(searched, entry, multi);
 
-		if (!nice) {
+		if (!nice.state) {
+			const item = nice.possibleItemLost;
+			const lost = nice.itemLostAmount;
+			const pocket = entry.props.pocket;
+
+			const sampleText = `And u lost **${pocket.toLocaleString()} coins** ${item ? `and **${lost.toLocaleString()} ${item.upgrade.emoji} ${item.upgrade.name}** RIP LOL!` : 'RIP!'}`
+			
 			return ctx.reply({ embed: {
 				author: { name: getHeader(), iconURL: ctx.author.avatarURL({ dynamic: true }) },
-				description: searched.death.msg,
+				description: `${searched.death.msg}\n${sampleText}`,
 				footer: { text: 'Lol u died' },
 				color: 'RED',
 			}}).then(() => true);
@@ -130,7 +153,7 @@ const search = (client: LavaClient): SearchData[] => [
 		place: 'discord',
 		maxCoins: 100000,
 		minCoins: 10000,
-		items: ['coin'],
+		items: ['coin', 'phone', 'computer'],
 		successMsg: w => `You typed \`lava gimme\` in the chats and got **${w.toLocaleString()}** coins`,
 		death: {
 			msg: 'You got banned from your favorite server.',
@@ -141,7 +164,7 @@ const search = (client: LavaClient): SearchData[] => [
 		place: 'club',
 		maxCoins: 20000,
 		minCoins: 5000,
-		items: ['beer', 'alcohol', 'soda'],
+		items: ['beer', 'alcohol', 'soda', 'wine'],
 		successMsg: w => `Wow you danced for **${w.toLocaleString()}** coins`,
 		death: {
 			msg: 'Being drunk is bad and bad leads to death, you died.',
@@ -152,7 +175,7 @@ const search = (client: LavaClient): SearchData[] => [
 		place: 'tree',
 		maxCoins: 30000,
 		minCoins: 5000,
-		items: ['gem'],
+		items: ['gem', 'donut'],
 		successMsg: w => `Wtf who left **${w.toLocaleString()}** coins up this tree?`,
 		death: {
 			msg: 'You fell off and got a fracture in ur head, u died upon hospital arrival',
@@ -163,7 +186,7 @@ const search = (client: LavaClient): SearchData[] => [
 		place: 'space',
 		maxCoins: 5000000,
 		minCoins: 100000,
-		items: ['medal', 'cheese', 'taco'],
+		items: ['medal', 'cheese', 'taco', 'totem'],
 		successMsg: w => `Wow you dodged the space debris, you got **${w.toLocaleString()}** ggs`,
 		death: {
 			odds: 60,

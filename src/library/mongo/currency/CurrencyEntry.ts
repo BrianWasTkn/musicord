@@ -116,6 +116,8 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		unlock('Crib Staff', 2, ctx.member.roles.cache.has('692941106475958363'));
 		// Chips Cult
 		unlock('Chips Cult', 6, ctx.member.nickname?.toLowerCase().includes('chips'));
+		// Probber Culy
+		unlock('Probber Cult', 6, ctx.member.nickname?.toLowerCase().includes('probber'));
 		// Lava Channel
 		unlock('Lava Channel', 25, (ctx.channel as TextChannel).name.toLowerCase().includes('lava'));
 
@@ -435,13 +437,13 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	}
 
 	/** Kill them */
-	kill() {
+	kill(itemLost?: string, itemLostAmount?: number) {
 		const { randomNumber } = this.client.util;
 		const { pocket } = this.data.props;
 
-		const item = this.items.filter(i => i.isOwned()).random() ?? null;
-		const amount = item ? randomNumber(1, item.owned) : 0;
-		if (item) this.inventory(item.module.id).decrement(amount);
+		const item = this.items.find(i => i.id === itemLost) ?? null;
+		const amount = itemLost ? itemLostAmount : 0;
+		if (itemLost) this.inventory(item.module.id).decrement(amount);
 
 		return this.pocket(pocket > 0 ? pocket : 0).dec();
 	}

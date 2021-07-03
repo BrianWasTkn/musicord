@@ -29,21 +29,13 @@ export interface ItemSale {
 }
 
 export class ItemHandler extends AbstractHandler<Item> {
-	/**
-	 * The sale item.
-	 */
+	/** The sale item. */
 	public sale: ItemSale = Object.create(null);
-	/**
-	 * Previous sales.
-	 */
+	/** Previous sales. */
 	public sales: ItemSale[] = [];
-	/**
-	 * Item effects mapped from snowflake to item to effects.
-	 */
+	/** Item effects mapped from snowflake to item to effects. */
 	public effects: Collection<Snowflake, Collection<string, ItemEffects>> = new Collection();
-	/**
-	 * The sale interval
-	 */
+	/** The sale interval */
 	public saleInterval: number;
 
 	/**
