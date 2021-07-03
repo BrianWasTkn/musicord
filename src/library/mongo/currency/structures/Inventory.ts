@@ -66,4 +66,11 @@ export class Inventory extends Structure {
 	isActive() {
 		return this.isOwned() && this.expiration > Date.now();
 	}
+
+	/**
+	 * Check if they already maxed this item.
+	 */
+	isMaxLevel() {
+		return this.upgrade.level === this.module.upgrades[this.upgrade.level].level;
+	}
 }

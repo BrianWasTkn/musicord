@@ -90,7 +90,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		// Mastery 1 and up
 		unlock('Crib Mastery Rank', 3, ctx.member.roles.cache.has('794834783582421032'));
 		// Has 1 of every item
-		unlock('Item Collector', 2, this.items.every(i => i.isOwned()));
+		unlock('Item Collector', this.items.size, this.items.every(i => i.isOwned()));
 
 		// Item Effects
 		this.items.filter(i => i.isOwned() && i.multiplier > 0).forEach(i => {
@@ -120,6 +120,8 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		unlock('Probber Cult', 6, ctx.member.nickname?.toLowerCase().includes('probber'));
 		// Lava Channel
 		unlock('Lava Channel', 25, (ctx.channel as TextChannel).name.toLowerCase().includes('lava'));
+		// Maxed All Items
+		unlock('Powered Items', 10, this.items.every(i => i.isMaxLevel()));
 
 		return { unlocked, all };
 	}
