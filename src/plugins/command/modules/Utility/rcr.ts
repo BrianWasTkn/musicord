@@ -20,19 +20,18 @@ export default class extends Command {
 			const choice = await ctx.awaitMessage();
 			switch(choice.content.toLowerCase().slice(0, 1)) {
 				case 'n':
-					const newColor = ctx.client.util.randomColor();
-					return prompt(newColor);
+					return prompt(ctx.client.util.randomColor());
 				case 'y':
 				default:
 					return color;
 			}
 		};
 
-		const newColor = await prompt(fColor);
+		const newColor = await prompt(color);
 		await rcr.edit({ color: newColor });
 		return ctx.reply({ embed: {
 			description: `Ok, color changed. Enjoy!`,
-			color: fColor,
+			color: newColor,
 		}}).then(() => true);
 	}
 }
