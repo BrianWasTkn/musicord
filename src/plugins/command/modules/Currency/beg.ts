@@ -39,7 +39,7 @@ export default class extends Command {
     getWon(coins: BegCoins, multi: number) {
         const { min, max } = coins;
         const raw = this.client.util.randomNumber(min, max);
-        const won = raw + (raw * (multi / 100));
+        const won = Math.round(raw + (raw * (multi / 100)));
         return { raw, won };
     }
 
