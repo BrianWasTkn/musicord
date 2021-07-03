@@ -22,18 +22,12 @@ export class LavaEntry extends UserEntry<LavaProfile> {
 
 	/** User cooldowns mapped from command id to cooldown */
 	get cooldowns() {
-		return this.data.cooldowns.reduce((col, cd) => 
-			col.set(cd.id, new Cooldown(this.client, cd)),
-			new Collection<string, Cooldown>()
-		);
+		return super.map('cooldowns', Cooldown);
 	}
 
 	/** User settings mapped from setting id to setting */
 	get settings() {
-		return this.data.settings.reduce((col, s) => 
-			col.set(s.id, new UserSetting(this.client, s)), 
-			new Collection<string, UserSetting>()
-		);
+		return super.map('settings', UserSetting);
 	}
 
 	/** Bot bans and blacklist methods */

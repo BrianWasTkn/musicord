@@ -15,10 +15,7 @@ export class CribEntry extends UserEntry<CribProfile> {
 
   /** Their donos in memers crib */
   get dono() {
-    return this.data.donations.reduce((coll, slot) => 
-      coll.set(slot.id, new GiveawayDonation(this.client, slot)), 
-      new Collection<string, GiveawayDonation>()
-    );
+    return super.map('donations', GiveawayDonation);
   }
 
   /** Manage user donos */
