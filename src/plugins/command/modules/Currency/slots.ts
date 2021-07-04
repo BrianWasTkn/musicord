@@ -29,7 +29,7 @@ export default class extends GambleCommand {
 		const first = randomInArray(emojis);
 		const odds = randomNumber(1, 100);
 
-		if (odds > 95) {
+		if (odds > 97) {
 			return Array(3).fill(first);
 		}
 		if (odds > 80) {
@@ -91,7 +91,7 @@ export default class extends GambleCommand {
 				description: [
 					`**>** :${slots.join(':    :')}: **<**\n`,
 					`You won **${winnings.toLocaleString()}** coins.`,
-					`**Multiplier** \`${multi}%x\``,
+					`**Multiplier** \`${Math.floor(winnings / bet)}%x\``,
 					`You now have **${props.pocket.toLocaleString()}** coins.`
 				].join('\n'),
 				footer: {
