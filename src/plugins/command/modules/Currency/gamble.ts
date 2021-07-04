@@ -26,12 +26,14 @@ export default class extends GambleCommand {
 			return ctx.channel.send({
 				embed: {
 					author: {
-						name: `${ctx.author.username}'s gambling game`
+						name: `${ctx.author.username}'s ${userD === botD ? 'tie' : 'losing'} gambling game`
 					},
 					color: userD === botD ? 'YELLOW' : 'RED',
 					description: [
 						`You lost ${botD === userD ? 'nothing!' : `**${bet.toLocaleString()}** coins.`}\n`,
-						`You ${botD === userD ? 'still' : 'now'} have **${props.pocket.toLocaleString()}** coins.`
+						botD === userD 
+							? `You have **${props.pocket.toLocaleString()}** coins` 
+							: `**New Balance:** **${props.pocket.toLocaleString()}** coins` 
 					].join('\n'),
 					fields: this.displayField(ctx.author, userD, botD),
 					footer: {
@@ -47,11 +49,11 @@ export default class extends GambleCommand {
 
 		return ctx.channel.send({
 			embed: {
-				author: { name: `${ctx.author.username}'s gambling game` },
+				author: { name: `${ctx.author.username}'s winning gambling game` },
 				footer: { text: 'winner winner' }, color: 'GREEN', description: [
-					`You won **${winnings.toLocaleString()}** coins.`,
-					`**Multiplier** ${multi.toLocaleString()}% | **Percent of bet won** ${Math.round(winnings / bet * 100)}%\n`,
-					`You now have **${props.pocket.toLocaleString()}** coins.`
+					`You won **${winnings.toLocaleString()}** coins.\n`,
+					`**Percent Won:** ${Math.round(winnings / bet * 100)}%`,
+					`**New Balance:** ${props.pocket.toLocaleString()} coins`
 				].join('\n'), fields: this.displayField(ctx.author, userD, botD),
 			}
 		}).then(() => true);

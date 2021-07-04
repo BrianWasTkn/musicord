@@ -12,15 +12,15 @@ export default class extends GambleCommand {
 
 	get slots() {
 		return {
-			broken_heart: [0.1, 1.5],
-			clown: [0.2, 1.6],
-			eggplant: [0.3, 1.7],
-			pizza: [0.4, 1.8],
-			flushed: [0.5, 1.9],
-			star2: [0.6, 2.0],
-			kiss: [0.7, 2.1],
-			four_leaf_clover: [0.8, 2.2],
-			fire: [0.9, 2.3],
+			broken_heart: [1.1, 1.5],
+			clown: [1.2, 1.6],
+			eggplant: [1.3, 1.7],
+			pizza: [1.4, 1.8],
+			flushed: [1.5, 1.9],
+			star2: [1.6, 2.0],
+			kiss: [1.7, 2.1],
+			four_leaf_clover: [1.8, 2.2],
+			fire: [1.9, 2.3],
 		}
 	}
 
@@ -32,7 +32,7 @@ export default class extends GambleCommand {
 		if (odds > 95) {
 			return Array(3).fill(first);
 		}
-		if (odds > 65) {
+		if (odds > 80) {
 			emojis = Array(3).fill(first);
 			const index = randomNumber(1, emojis.length) - 1;
 			const slots = Object.keys(this.slots);
@@ -70,12 +70,10 @@ export default class extends GambleCommand {
 						name: `${ctx.author.username}'s slot machine`,
 					},
 					description: [
-						`You lost **${bet.toLocaleString()}** coins.\n`,
+						`**>** :${slots.join(':    :')}: **<**\n`,
+						`You lost **${bet.toLocaleString()}** coins.`,
 						`You now have **${props.pocket.toLocaleString()}** coins.`
 					].join('\n'),
-					fields: [
-						{ name: 'Outcome', value: `**>** :${slots.join(':    :')}: **<**` }
-					],
 					footer: {
 						text: 'sucks to suck'
 					}
@@ -91,13 +89,11 @@ export default class extends GambleCommand {
 					name: `${ctx.author.username}'s slot machine`,
 				},
 				description: [
+					`**>** :${slots.join(':    :')}: **<**\n`,
 					`You won **${winnings.toLocaleString()}** coins.`,
-					`**Multiplier** ${multi}% | **Percent of bet won** ${Math.round(winnings / bet * 100)}%\n`,
+					`**Multiplier** \`${multi}%x\``,
 					`You now have **${props.pocket.toLocaleString()}** coins.`
 				].join('\n'),
-				fields: [
-					{ name: 'Outcome', value: `**>** :${slots.join(':    :')}: **<**` }
-				],
 				footer: {
 					text: 'winner winner'
 				}
@@ -116,9 +112,10 @@ export default class extends GambleCommand {
 		if ([1, 2].some(l => length === l)) {
 			const index = length === 1 ? 1 : 0;
 			const mult = multi[index] as number;
-			let winnings = Math.round(bet + (bet * mult));
-			winnings = winnings + Math.round(winnings * (multis / 10000));
-			winnings = Math.min(Currency.MAX_WIN, winnings + Math.ceil(winnings * (multis / 100)));
+			const winnings = bet * mult;
+			// let winnings = Math.round(bet + (bet * mult));
+			// winnings = winnings + Math.round(winnings * (multis / 10000));
+			// winnings = Math.min(Currency.MAX_WIN, winnings + Math.ceil(winnings * (multis / 100)));
 
 			return { length, winnings };
 		}

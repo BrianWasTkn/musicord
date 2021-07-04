@@ -65,7 +65,7 @@ export class ItemHandler extends AbstractHandler<Item> {
 		return this.sale = { 
 			item: this.client.util.randomInArray([...this.modules.values()].filter(i => !i.retired)), 
 			nextSale: (this.sale.nextSale ?? Date.now()) + this.saleInterval, 
-			discount: this.client.util.randomNumber(1, 100), 
+			discount: this.client.util.randomNumber(1, 99), 
 			stamp: Date.now() 
 		};
 	}

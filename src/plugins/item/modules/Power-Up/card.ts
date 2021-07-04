@@ -49,7 +49,7 @@ export default class Tool extends PowerUpItem {
 		}
 
 		const gained = Array(Number(choice.content)).fill(null).map(() => randomNumber(1000, this.thresholds[level])).reduce((p, c) => p + c, 0);
-		const space = await entry.expandVault(gained).save(false).then(e => e.props.space);
+		const space = await entry.subItem(this.id, Number(choice.content)).expandVault(gained).save(false).then(e => e.props.space);
 		return ctx.reply(`**You swiped __${
 			Number(choice.content).toLocaleString()
 		}__ cards into your bank.**\nThis brings you to **${
