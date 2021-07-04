@@ -21,10 +21,6 @@ export default class extends Command {
 		const entry = await ctx.currency.fetch(args.member.user.id);
 		const { user } = args.member;
 
-		// temporary coz testing owo
-		if (entry.props.pocket <= 0) {
-			await entry.addPocket(Currency.MAX_BET).save(false);
-		}
 		if (user.id === ctx.author.id && entry.props.pocket >= Currency.MAX_SAFE_POCKET) {
 			await ctx.channel.send(`Hey! It looks like you have over **${Currency.MAX_SAFE_POCKET.toLocaleString()} coins** in your pocket, would you like to set me your pocket to that cap right now?`);
 			const choice = await ctx.awaitMessage();
