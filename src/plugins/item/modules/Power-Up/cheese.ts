@@ -22,7 +22,7 @@ export default class PowerUp extends PowerUpItem {
 		});
 	}
 
-	async exec(ctx: Context, entry: CurrencyEntry) {
+	async use(ctx: Context, entry: CurrencyEntry) {
 		
 	}
 }

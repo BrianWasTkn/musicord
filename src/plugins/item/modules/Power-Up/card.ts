@@ -35,7 +35,7 @@ export default class Tool extends PowerUpItem {
 		return [5e3, 7e3, 10e3, 20e3];
 	}
 
-	async exec(ctx: Context, entry: CurrencyEntry) {
+	async use(ctx: Context, entry: CurrencyEntry) {
 		const { randomNumber, isInteger } = ctx.client.util;
 		const { owned, level } = entry.items.get(this.id);
 

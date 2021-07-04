@@ -26,7 +26,7 @@ export default class Tool extends ToolItem {
 		};
 	}
 
-	async exec(ctx: Context, entry: CurrencyEntry) {
+	async use(ctx: Context, entry: CurrencyEntry) {
 		const [k, v] = [Object.keys(this.options), Object.values(this.options)];
 		const options = Array(k.length).fill(null).map((_, i) => `**\`${k[i]}\` ■ ${v[i]} Meme**`);
 		await ctx.channel.send(`**__${ctx.author} What type of meme?__**\n${options.join('\n')}`);

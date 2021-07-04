@@ -27,7 +27,7 @@ export default class PowerUp extends PowerUpItem {
 		return effects.setPayouts(10);
 	}
 
-	async exec(ctx: Context, entry: CurrencyEntry) {
+	async use(ctx: Context, entry: CurrencyEntry) {
 		
 	}
 }

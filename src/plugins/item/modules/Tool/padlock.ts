@@ -17,7 +17,7 @@ export default class Tool extends ToolItem {
 		});
 	}
 
-	async exec(ctx: Context, entry: CurrencyEntry) {
+	async use(ctx: Context, entry: CurrencyEntry) {
 		const { parseTime, randomNumber } = ctx.client.util;
 		const duration = 1000 * 60 * 60;
 		const expire = Date.now() + duration;
