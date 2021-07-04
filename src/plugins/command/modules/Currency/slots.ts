@@ -11,17 +11,17 @@ export default class extends GambleCommand {
 	}
 
 	get slots() {
-		return {
-			broken_heart: [1, 10],
-			clown: [1, 10],
-			eggplant: [1, 10],
-			pizza: [2, 25],
-			flushed: [2, 25],
-			star2: [3, 50],
-			kiss: [3, 50],
-			four_leaf_clover: [4, 100],
-			fire: [4, 100],
-		}
+		return (multi: number) => ({
+			coin: [1, 10],
+			gem: [1, 10],
+			medal: [2, 25],
+			ring: [2, 25],
+			trophy: [3, 50],
+			crown: [3, 50],
+			trident: [4, 100],
+			fist: [4, 100],
+			fire: [multi, multi * 2],
+		});
 	}
 
 	getSlots(emojis: string[]) {
@@ -58,7 +58,7 @@ export default class extends GambleCommand {
 		if (typeof state === 'string') return ctx.reply(state).then(() => false);
 
 		const multi = this.calcMulti(ctx, entry);
-		const slots = this.getSlots(Object.keys(this.slots));
+		const slots = this.getSlots(Object.keys(this.slots(multi)));
 		const { winnings, length } = this.calcSlots(slots, bet, multi);
 
 		if ([1, 2].every(l => l !== length)) {
@@ -102,8 +102,8 @@ export default class extends GambleCommand {
 	}
 
 	calcSlots(slots: string[], bet: number, multis: number) {
-		const rate = Object.values(this.slots);
-		const emojis = Object.keys(this.slots);
+		const rate = Object.values(this.slots(multis));
+		const emojis = Object.keys(this.slots(multis));
 
 		const length = slots.filter((e, i, arr) => arr.indexOf(e) === i).length;
 		const rates = rate.map((_, i, arr) => arr[emojis.indexOf(slots[i])]).filter(Boolean);

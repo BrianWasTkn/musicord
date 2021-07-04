@@ -33,7 +33,7 @@ export default class extends GambleCommand {
 						`You lost ${botD === userD ? 'nothing!' : `**${bet.toLocaleString()}** coins.`}\n`,
 						botD === userD 
 							? `You have **${props.pocket.toLocaleString()}** coins` 
-							: `**New Balance:** **${props.pocket.toLocaleString()}** coins` 
+							: `**New Balance:** **${props.pocket.toLocaleString()}**` 
 					].join('\n'),
 					fields: this.displayField(ctx.author, userD, botD),
 					footer: {
@@ -53,7 +53,7 @@ export default class extends GambleCommand {
 				footer: { text: 'winner winner' }, color: 'GREEN', description: [
 					`You won **${winnings.toLocaleString()}** coins.\n`,
 					`**Percent Won:** ${Math.round(winnings / bet * 100)}%`,
-					`**New Balance:** ${props.pocket.toLocaleString()} coins`
+					`**New Balance:** ${props.pocket.toLocaleString()}`
 				].join('\n'), fields: this.displayField(ctx.author, userD, botD),
 			}
 		}).then(() => true);
@@ -72,7 +72,7 @@ export default class extends GambleCommand {
 		}
 
 		if (rig) {
-			if (Math.random() > 0.55) {
+			if (Math.random() > 0.35) {
 				[botD, userD] = set(botD, userD);
 			} else {
 				[userD, botD] = set(botD, userD);
