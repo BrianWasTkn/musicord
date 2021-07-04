@@ -12,10 +12,10 @@ export default class extends Command {
 	}
 
 	async exec(ctx: Context) {
-		const rcr = ctx.guild.roles.cache.get('716344676634066964');
+		const rcr = await ctx.guild.roles.fetch('716344676634066964');
 		const color = ctx.client.util.randomColor();
 
-		const prompt = async (color: number): Promise<boolean | Function> => {
+		const prompt = async (color: number): Promise<number | Function> => {
 			await ctx.reply({ embed: { color, description: 'Do you like this color? Type `(y / n)` only.' }});
 			const choice = await ctx.awaitMessage();
 			switch(choice.content.toLowerCase().slice(0, 1)) {
@@ -27,7 +27,7 @@ export default class extends Command {
 			}
 		};
 
-		const newColor = await prompt(color);
+		const newColor = await prompt(color) as number;
 		await rcr.edit({ color: newColor });
 		return ctx.reply({ embed: {
 			description: `Ok, color changed. Enjoy!`,
