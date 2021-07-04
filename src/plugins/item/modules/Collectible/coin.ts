@@ -4,7 +4,7 @@ export default class Collectible extends CollectibleItem {
 	public constructor() {
 		super('coin', {
 			assets: {
-				name: 'Shiny Coin',
+				name: 'Lava Coin',
 				emoji: ':coin:',
 				price: 2e6,
 				intro: 'A valuable coin from gods of the past.',
@@ -19,7 +19,7 @@ export default class Collectible extends CollectibleItem {
 				{ price: 8e6 }
 			],
 			entities: {
-				payouts: [5, 6, 8, 10]
+				payouts: [5, 10, 25, 50]
 			}
 		});
 	}

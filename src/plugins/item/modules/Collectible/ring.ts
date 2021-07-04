@@ -4,7 +4,7 @@ export default class Collectible extends CollectibleItem {
 	public constructor() {
 		super('ring', {
 			assets: {
-				name: 'Shiny Ring',
+				name: 'Fabled Ring',
 				emoji: ':ring:',
 				price: 10e6,
 				intro: 'Slots rig eh? You found your solution!',

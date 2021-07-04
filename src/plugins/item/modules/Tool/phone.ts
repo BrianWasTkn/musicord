@@ -18,6 +18,6 @@ export default class Tool extends ToolItem {
 	}
 
 	async exec(ctx: Context, entry: CurrencyEntry) {
-		
+		return ctx.reply('Your phone is currently off.'); // Prompt `y / n` for 1000 coins to turn it on.
 	}
 }

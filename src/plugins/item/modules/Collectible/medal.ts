@@ -4,7 +4,7 @@ export default class Collectible extends CollectibleItem {
 	public constructor() {
 		super('medal', {
 			assets: {
-				name: 'Medal of Honor',
+				name: 'Gold Medal',
 				emoji: ':medal:',
 				price: 15e6,
 				intro: 'Barriers and barriers...',
@@ -19,7 +19,7 @@ export default class Collectible extends CollectibleItem {
 				{ price: 45e6 }
 			],
 			entities: {
-				shield: [5, 8, 12, 20]
+				shield: [10, 15, 30, 45]
 			}
 		});
 	}
