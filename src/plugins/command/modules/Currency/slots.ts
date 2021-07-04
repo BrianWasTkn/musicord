@@ -12,15 +12,15 @@ export default class extends GambleCommand {
 
 	get slots() {
 		return {
-			broken_heart: [1.1, 1.5],
-			clown: [1.2, 1.6],
-			eggplant: [1.3, 1.7],
-			pizza: [1.4, 1.8],
-			flushed: [1.5, 1.9],
-			star2: [1.6, 2.0],
-			kiss: [1.7, 2.1],
-			four_leaf_clover: [1.8, 2.2],
-			fire: [1.9, 2.3],
+			broken_heart: [1, 10],
+			clown: [1, 10],
+			eggplant: [1, 10],
+			pizza: [2, 25],
+			flushed: [2, 25],
+			star2: [3, 50],
+			kiss: [3, 50],
+			four_leaf_clover: [4, 100],
+			fire: [4, 100],
 		}
 	}
 
@@ -91,7 +91,7 @@ export default class extends GambleCommand {
 				description: [
 					`**>** :${slots.join(':    :')}: **<**\n`,
 					`You won **${winnings.toLocaleString()}** coins.`,
-					`**Multiplier** \`${Math.floor(winnings / bet)}%x\``,
+					`**Multiplier** \`${Math.floor(winnings / bet)}x\``,
 					`You now have **${props.pocket.toLocaleString()}** coins.`
 				].join('\n'),
 				footer: {
