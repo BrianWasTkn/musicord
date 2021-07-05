@@ -52,7 +52,7 @@ export default class extends Command {
 
 		const tax = 0.05;
 		const paid = Math.round(amount - amount * tax);
-		const taxed = Math.round((amount * tax) / (amount / 10));
+		const taxed = Math.round((amount * (tax * 10)) / (amount / 10));
 
 		const pocket = await entry.removePocket(amount).save().then(p => p.props.pocket);
 		const pocket2 = await entry2.addPocket(paid).save(false).then(p => p.props.pocket);
