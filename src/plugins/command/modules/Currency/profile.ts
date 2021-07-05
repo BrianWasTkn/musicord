@@ -60,12 +60,12 @@ export default class extends Command {
 				{
 					name: 'Level',
 					inline: true,
-					value: `\`${this.getLevel(exp).toLocaleString()}\`\n${levelBar}`,
+					value: `**\`${this.getLevel(exp).toLocaleString()}\`\n${levelBar}**`,
 				},
 				{
 					name: 'Experience',
 					inline: true,
-					value: `\`${exp.toLocaleString()}/${this.getNext(exp).xp.toLocaleString()}\`\n${xpBar}`
+					value: `**\`${exp.toLocaleString()}/${this.getNext(exp).xp.toLocaleString()}\`\n${xpBar}**`
 				}
 			]
 		}}).then(() => false);
