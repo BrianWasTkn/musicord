@@ -25,7 +25,7 @@ export default class extends Listener {
 	async sendReady() {
 		const { client: bot } = this;
 		const channel = bot.channels.cache.get('789692296094285825') ?? await bot.channels.fetch('789692296094285825', true, true);
-		const app = bot.application ?? await bot.application.fetch();
+		const app = await bot.application.fetch();
 
 		await (channel as TextChannel).send({ 
 			embed: <MessageEmbedOptions> {
@@ -36,7 +36,7 @@ export default class extends Listener {
 					app.name
 				}\n**Bot Username:**\n${
 					bot.user.username
-				}\n**Date Now:**${
+				}\n**Date Now:\n**${
 					new Date(bot.readyTimestamp).toDateString()
 				}`
 			}

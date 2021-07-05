@@ -27,7 +27,7 @@ export default class extends Command {
 		super('search', {
 			aliases: ['search', 'scout'],
 			clientPermissions: ['EMBED_LINKS'],
-			cooldown: 1000 * 30,
+			cooldown: 1000 * 10,
 			description: 'Search for coins on some places to either get some or die!',
 		});
 	}
