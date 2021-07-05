@@ -33,7 +33,7 @@ export default class extends GambleCommand {
 						`You lost ${botD === userD ? 'nothing!' : `**${bet.toLocaleString()}** coins.`}\n`,
 						botD === userD 
 							? `You have **${props.pocket.toLocaleString()}** coins` 
-							: `**New Balance:** **${props.pocket.toLocaleString()}**` 
+							: `**New Balance:** ${props.pocket.toLocaleString()}` 
 					].join('\n'),
 					fields: this.displayField(ctx.author, userD, botD),
 					footer: {

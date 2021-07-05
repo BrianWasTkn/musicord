@@ -397,12 +397,10 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		const userEffects = effects.set(userID, itemMap).get(userID);
 		if (userEffects.size < 1) return this;
 
-		for (const item of modules.array() as PowerUpItem[]) {
-			if (item.category.id === 'Power-Up') {
-				const inv = this.items.get(item.id);
-				const eff = userEffects.get(inv.id);
-				item.effect(eff, this);
-			}
+		for (const item of modules.filter(i => i.category.id === 'Power-Up').array() as PowerUpItem[]) {
+			const inv = this.items.get(item.id);
+			const eff = userEffects.get(inv.id);
+			item.effect(eff, this);
 		}
 
 		return this;

@@ -88,12 +88,12 @@ export default class extends Command {
 		const searched = searchables.find(s => choice.content.toLowerCase() === s.place);
 		const getHeader = () => `${ctx.author.username} searched the ${searched.place.toUpperCase()}`;
 		const multi = entry.calcMulti(ctx).unlocked.reduce((p, c) => p + c.value, 0);
+		const pocket = entry.props.pocket;
 		const nice = await this.searchPlace(searched, entry, multi);
 
 		if (!nice.state) {
 			const item = nice.possibleItemLost;
 			const lost = nice.itemLostAmount;
-			const pocket = entry.props.pocket;
 
 			const sampleText = `And u lost **${pocket.toLocaleString()} coins** ${item ? `and **${lost.toLocaleString()} ${item.upgrade.emoji} ${item.upgrade.name}** RIP LOL!` : 'RIP!'}`
 			
@@ -196,5 +196,5 @@ const search = (client: LavaClient): SearchData[] => [
 				'Sadly you didn\'t dodged the debris, too late.'
 			])
 		}
-	}
+	},
 ]
