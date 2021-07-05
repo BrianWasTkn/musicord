@@ -59,7 +59,7 @@ export default class extends Command {
 
 		return ctx.reply(`You gave ${member.user.username
 			} **${paid.toLocaleString()
-			}** coins after a **${tax
+			}** coins after a **${taxed
 			}%** tax. They now have **${pocket2.toLocaleString()
 			}** coins while you have **${pocket.toLocaleString()
 			}** coins left.
