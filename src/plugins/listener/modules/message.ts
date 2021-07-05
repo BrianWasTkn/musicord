@@ -51,18 +51,18 @@ export default class extends Listener {
 
 	get roles() {
 		return <{ [role: string]: Snowflake }> {
-			giveaway: '692892567787929691',
-			heist: '697007407011725312',
-			event: '697007407011725312',
-			nitro: '692892567787929691',
-			donQ: '715507078860505091',
+			giveaway: '801996041217376266',
+			heist: '801996041217376266',
+			event: '801996041217376266',
+			nitro: '801996041217376266',
+			donQ: '801996041217376266',
 		};
 	}
 
 	get channels() {
 		return {
-			donation: '818667160918425630',
-			donationCmds: '691596367776186379',
+			donation: '824944685344751616',
+			donationCmds: '824213887004049458',
 		}
 	}
 
