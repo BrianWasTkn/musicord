@@ -48,8 +48,8 @@ export default class extends Command {
 
 		const exp = await ctx.currency.fetch(ctx.author.id).then(p => p.props.xp);
 		const bars = this.getBarValues(exp, this.getLevel(exp))(this.getNext(exp).level);
-		const levelBar = `[${progressBar(bars.level)}](https://discord.gg/invite/memer)`;
-		const xpBar = `[${progressBar(bars.xp)}](https://discord.gg/invite/memer)`;
+		const levelBar = `[${progressBar(bars.level / 10)}](https://discord.gg/invite/memer)`;
+		const xpBar = `[${progressBar(bars.xp / 10)}](https://discord.gg/invite/memer)`;
 
 		return ctx.channel.send({ embed: {
 			author: { 
