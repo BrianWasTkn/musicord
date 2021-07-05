@@ -45,7 +45,7 @@ export default class extends Listener {
 
 	async setPresence() {
 		await this.client.user.setPresence({
-			activities: [{ name: 'LOL Bot, type: 'COMPETING' }],
+			activities: [{ name: 'LOL Bot', type: 'COMPETING' }],
 			status: process.env.DEV_MODE === 'true' ? 'dnd' : 'online'
 		});
 	}
