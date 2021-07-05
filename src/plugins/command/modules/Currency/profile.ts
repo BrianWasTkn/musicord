@@ -46,7 +46,7 @@ export default class extends Command {
 	async exec(ctx: Context, { member }: { member: GuildMemberPlus }) {
 		const { progressBar } = ctx.client.util;
 
-		const exp = await ctx.currency.fetch(ctx.author.id).then(p => p.props.xp);
+		const exp = await ctx.currency.fetch(member.user.id).then(p => p.props.xp);
 		const bars = this.getBarValues(exp, this.getLevel(exp))(this.getNext(exp).level);
 		const levelBar = `[${progressBar(bars.level / 10)}](https://discord.gg/invite/memer)`;
 		const xpBar = `[${progressBar(bars.xp / 10)}](https://discord.gg/invite/memer)`;
