@@ -27,8 +27,8 @@ export default class extends Command {
 
 	getBarValues(xp: number, level: number) {
 		return (nextLevel: number) => ({
+			level: (XP_COST - ((nextLevel * XP_COST) - xp)) / (XP_COST / 10),
 			xp: (XP_COST - (nextLevel - xp)) / (XP_COST / 10),
-			level: (XP_COST - ((nextLevel * XP_COST) - xp)) / (XP_COST / 10)
 		});
 	}
 
