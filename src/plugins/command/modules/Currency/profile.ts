@@ -22,7 +22,7 @@ export default class extends Command {
 	}
 
 	getNextLevel(xp: number) {
-		return Math.min(this.getLevel(xp) + 1), MAX_LEVEL);
+		return Math.min(this.getLevel(xp) + 1, MAX_LEVEL);
 	}
 
 	getBarValues(xp: number, level: number) {
