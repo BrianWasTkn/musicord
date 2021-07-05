@@ -44,6 +44,7 @@ const Currency = {
 	MAX_WIN: 1600001,
 	MAX_BET: 500000,
 	MIN_BET: 10,
+	XP_COST: 100,
 };
 
 /**
