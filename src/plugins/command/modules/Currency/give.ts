@@ -55,12 +55,12 @@ export default class extends Command {
 		const taxed = Math.round((amount * tax) / (amount / 10));
 
 		const pocket = await entry.removePocket(amount).save().then(p => p.props.pocket);
-		const pocket1 = await entry1.addPocket(paid).save(false).then(p => p.props.pocket);
+		const pocket2 = await entry2.addPocket(paid).save(false).then(p => p.props.pocket);
 
 		return ctx.reply(`You gave ${member.user.username
 			} **${paid.toLocaleString()
 			}** coins after a **${tax
-			}%** tax. They now have **${pocket1.toLocaleString()
+			}%** tax. They now have **${pocket2.toLocaleString()
 			}** coins while you have **${pocket.toLocaleString()
 			}** coins left.
 		`).then(() => true);
