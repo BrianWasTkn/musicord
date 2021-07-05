@@ -21,7 +21,7 @@ export default class extends Listener {
 			case BuiltInReasons.OWNER:
 				return 'Only my "owners" can run dis';
 			case 'blacklist':
-				return "U can't use the bot, 2badfor2 you";
+				return "U can't use the bot, 2badfor you";
 			case 'staff':
 				return 'Only the "staffs" can run dis';
 			default:

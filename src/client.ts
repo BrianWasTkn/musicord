@@ -2,7 +2,7 @@ import { LavaClient } from 'lava/index';
 import { Intents } from 'discord.js';
 
 export default new LavaClient({ 
-	ownerID: ['605419747361947649'],
+	ownerID: ['627321330655821834'],
 	intents: Intents.ALL,
 	shards: 'auto',
 	messageCacheLifetime: 20,
@@ -15,7 +15,7 @@ export default new LavaClient({
 		status: 'idle',
 		activities: [{ 
 			type: 'WATCHING', 
-			name: 'things load...' 
+			name: 'LOL Bot' 
 		}]
 	} 
 });
