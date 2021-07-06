@@ -116,12 +116,14 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		unlock('Crib Staff', 2, ctx.member.roles.cache.has('692941106475958363'));
 		// Chips Cult
 		unlock('Chips Cult', 6, ctx.member.nickname?.toLowerCase().includes('chips'));
-		// Probber Culy
+		// Probber Cult
 		unlock('Probber Cult', 6, ctx.member.nickname?.toLowerCase().includes('probber'));
 		// Lava Channel
 		unlock('Lava Channel', 25, (ctx.channel as TextChannel).name.toLowerCase().includes('lava'));
 		// Maxed All Items
 		unlock('Maxed All Items', 10, this.items.every(i => i.isMaxLevel()));
+		// 10x of Max Inventory
+		unlock('Item Collector Plus', this.items.size * 2, this.items.filter(i => i.owned >= Currency.MAX_INVENTORY).size >= 10);
 
 		return { unlocked, all };
 	}
@@ -238,13 +240,13 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	 * Manage their xp.
 	*/
 	private calc() {
-		const maxLevel = Currency.MAX_LEVEL * 100;
+		const maxLevel = Currency.MAX_LEVEL * Currency.XP_COST;
 
 		return {
 			xp: (space = false, additional = 0) => {
 				if (this.data.props.xp > maxLevel) return this;
 				const { randomNumber } = this.client.util;
-				this.data.props.xp += randomNumber(0, 1 + additional);
+				this.data.props.xp += randomNumber(1, 3 + additional);
 				return space ? this.calc().space() : this;
 			},
 			space: (os = 55) => {

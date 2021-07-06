@@ -17,55 +17,48 @@ export default class extends Command {
 		});
 	}
 
-	getNextXP(xp: number) {
-		return Math.min((this.getLevel(xp) + 1) * XP_COST, MAX_LEVEL * XP_COST);
-	}
-
-	getNextLevel(xp: number) {
-		return Math.min(this.getLevel(xp) + 1, MAX_LEVEL);
-	}
-
-	getBarValues(xp: number, level: number) {
-		return (nextLevel: number) => ({
-			level: (XP_COST - ((nextLevel * XP_COST) - xp)) / (XP_COST / 10),
-			xp: (XP_COST - (nextLevel - xp)) / (XP_COST / 10),
+	get xp() {
+		return (xp: number) => ({
+			next: Math.min((Math.trunc(xp / XP_COST) + 1) * XP_COST, MAX_LEVEL * XP_COST),
+			barable: Math.round((XP_COST - (this.xp(xp).next - xp)) / (XP_COST / 10)),
+			bar: this.client.util.progressBar(this.xp(xp).barValue),
 		});
 	}
 
-	getNext(xp: number) {
-		return {
-			level: this.getNextLevel(this.getLevel(xp)),
-			xp: this.getNextXP(xp)
-		};
-	}
-
-	getLevel(xp: number) {
-		return Math.trunc(xp / XP_COST);
+	get level() {
+		return (xp: number, level: number) => ({
+			next: Math.min(level + 1, MAX_LEVEL),
+			barable: Math.round((XP_COST - ((this.level(xp, level).next * XP_COST) - xp)) / (XP_COST / 10)),
+			bar: this.client.util.progressBar(this.level(xp, level).barable)
+		})
 	}
 
 	async exec(ctx: Context, { member }: { member: GuildMemberPlus }) {
 		const { progressBar } = ctx.client.util;
 
 		const exp = await ctx.currency.fetch(member.user.id).then(p => p.props.xp);
-		const bars = this.getBarValues(exp, this.getLevel(exp))(this.getNext(exp).level);
-		const levelBar = `[${progressBar(bars.level / 10)}](https://discord.gg/invite/memer)`;
-		const xpBar = `[${progressBar(bars.xp / 10)}](https://discord.gg/invite/memer)`;
+		const level = Math.trunc(xp / XP_COST);
+		const levels = this.level(xp, level);
+		const xps = this.xp(exp);
+
+		const levelBar = `[${progressBar(levels.bar)}](https://discord.gg/invite/memer)`;
+		const xpBar = `[${progressBar(xps.bar)}](https://discord.gg/invite/memer)`;
 
 		return ctx.channel.send({ embed: {
 			author: { 
 				name: `${member.user.username}'s profile`, 
 				iconURL: member.user.avatarURL({ dynamic: true }) 
 			}, 
-			fields: [
+			color: 'BLURPLE', fields: [
 				{
 					name: 'Level',
 					inline: true,
-					value: `**\`${this.getLevel(exp).toLocaleString()}\`\n${levelBar}**`,
+					value: `**\`${level.toLocaleString()}\`\n${levelBar}**`,
 				},
 				{
 					name: 'Experience',
 					inline: true,
-					value: `**\`${exp.toLocaleString()}/${this.getNext(exp).xp.toLocaleString()}\`\n${xpBar}**`
+					value: `**\`${exp.toLocaleString()}/${xps.next.toLocaleString()}\`\n${xpBar}**`
 				}
 			]
 		}}).then(() => false);
