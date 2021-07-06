@@ -1,13 +1,20 @@
 import { Constructable, Collection } from 'discord.js';
+import { EventEmitter } from 'events';
 import { LavaClient } from 'lava/akairo';
 import { Structure } from 'lava/index';
 import { Document } from 'mongoose';
+import { Endpoint } from '.';
 
 /**
  * The main entry with sets of methods to apply changes on our data.
  * @abstract @extends {Base}
 */
-export abstract class UserEntry<Data extends Document> {
+export abstract class UserEntry<Data extends Document> extends EventEmitter {
+	/**
+	 * The endpoint who owns this entry.
+	 */
+	public endpoint: Endpoint<Data>;
+
 	/**
 	 * The client instantiated this entry.
 	*/
@@ -21,9 +28,12 @@ export abstract class UserEntry<Data extends Document> {
 	/**
 	 * The constructor for this entry.
 	*/
-	public constructor(client: LavaClient, data: Data) {
+	public constructor(endpoint: Endpoint<Data>, data: Data) {
+		super();
+		/** @type {Endpoint} */
+		this.endpoint = endpoint;
 		/** @type {LavaClient} */
-		this.client = client;
+		this.client = endpoint.client;
 		/** @type {Data} */
 		this.data = data;
 	}

@@ -214,7 +214,7 @@ export abstract class Item extends AbstractModule {
 		const { price, sellRate, premium } = this.getUpgrade(inventory);
 		const p = Math.round(price) * Math.trunc(amount);
 		
-		return (premium ? entry.remKeys(p) : entry.removePocket(p))
+		return (premium ? entry.subKeys(p) : entry.removePocket(p))
 			.addItem(this.id, amount).save()
 			.then(() => this.getUpgrade(inventory));
 	}

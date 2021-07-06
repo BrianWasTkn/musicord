@@ -47,7 +47,7 @@ export default class extends Command {
 		const item = randomInArray(items ?? []);
 
 		const isDead = death ? death.odds > randomNumber(1, 100) : false;
-		const pil = entry.items.filter(i => i.isOwned()).random() ?? null;
+		const pil = entry.props.items.filter(i => i.isOwned()).random() ?? null;
 		const ila = pil ? randomNumber(1, pil.owned) : 0;
 		if (isDead) {
 			return entry.kill(pil.id, ila).save().then(() => ({
@@ -95,7 +95,7 @@ export default class extends Command {
 			const item = nice.possibleItemLost;
 			const lost = nice.itemLostAmount;
 
-			const sampleText = `And u lost **${pocket.toLocaleString()} coins** ${item ? `and **${lost.toLocaleString()} ${item.upgrade.emoji} ${item.upgrade.name}** RIP LOL!` : 'RIP!'}`
+			const sampleText = `You lost **${pocket.toLocaleString()} coins** ${item ? `and **${lost.toLocaleString()} ${item.upgrade.emoji} ${item.upgrade.name}** RIP LOL!` : 'RIP!'}`
 			
 			return ctx.reply({ embed: {
 				author: { name: getHeader(), iconURL: ctx.author.avatarURL({ dynamic: true }) },

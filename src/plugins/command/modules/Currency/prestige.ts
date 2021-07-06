@@ -26,7 +26,7 @@ export default class extends Command {
 
 	async exec(ctx: Context) {
 		const entry = await ctx.currency.fetch(ctx.author.id);
-		const prestige = entry.prestige.level;
+		const prestige = entry.props.prestige.level;
 		const { pocket, xp } = entry.props;
 
 		const current = {

@@ -1,4 +1,4 @@
-import { Context, Item, ItemOptions, ItemAssets, ItemUpgrade, ItemConfig, CurrencyEntry } from 'lava/index';
+import { Context, Item, ItemOptions, ItemAssets, ItemUpgrade, ItemConfig, ItemEntities, CurrencyEntry } from 'lava/index';
 import { MessageOptions } from 'discord.js';
 
 export type CollectibleItemAssets = Omit<ItemAssets, 'sellRate' | 'upgrade'>;
@@ -11,29 +11,14 @@ export interface CollectibleItemOptions extends Omit<ItemOptions, 'assets' | 'co
 	/** The config for this collectible. */
 	config: CollectibleItemConfig;
 	/** The perks of this collectible. */
-	entities: Partial<CollectibleEntity>;
+	entities: Partial<ItemEntities>;
 	/** The upgrades of this goldshit. */
 	upgrades: Partial<ItemUpgrade>[];
 }
 
-export interface CollectibleEntity {
-	/** The discount whenever they buy an item. */
-	discount: number[];
-	/** The possible rewarded multis if they own one of this. */
-	multipliers: number[];
-	/** The possible steal shields they'll get if they own this collectible. */
-	shield: number[];
-	/** The rate between 1-100% for more payouts on multiplier-based gambling commands. */
-	payouts: number[];
-	/** The possible xp boost between 10-100% */
-	xpBoost: number[];
-	/** Increase odds in some commands.*/
-	luck: number[];
-}
-
 export abstract class CollectibleItem extends Item {
 	/** Possible perks if they own this collectible. */
-	public entities: CollectibleEntity;
+	public entities: ItemEntities;
 
 	/**
 	 * Constructor for this goldshit.

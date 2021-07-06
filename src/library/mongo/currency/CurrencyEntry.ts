@@ -11,60 +11,29 @@ import { UserEntry } from 'lava/mongo';
 import { Context } from 'lava/discord';
 
 export class CurrencyEntry extends UserEntry<CurrencyProfile> {
-	/**
-	 * Basic properties for their datatards.
-	*/
+	/** The basics of their mongo profile. */
 	get props() {
-		return this.data.props;
+		return {
+			raw: this.data.props,
+			prestige: this.data.prestige,
+			items: super.map('items', Inventory),
+			quests: super.map('quests', Mission),
+			gambles: super.map('gamble', GambleStat),
+			trades: super.map('trade', TradeStat),
+			...this.data.props
+		};
 	}
 
-	/**
-	 * Their prestige info.
-	*/
-	get prestige() {
-		return this.data.prestige;
-	}
-
-	/**
-	 * Their trash inventory.
-	*/
-	get items() {
-		return super.map('items', Inventory);
-	}
-
-	/**
-	 * Their quests.
-	 */
-	get quests() {
-		return super.map('quests', Mission);
-	}
-
-	/**
-	 * Their gambling stats.
-	 */
-	get gamble() {
-		return super.map('gamble', GambleStat);
-	}
-
-	/**
-	 * Their trade stats.
-	 */
-	get trade() {
-		return super.map('trade', TradeStat);
-	}
-
-	/**
-	 * Check if they have at least one of this item on their inventory.
-	*/
+	/** Check if they own this item in their inventory. */
 	public hasInventoryItem(id: string) {
-		return this.items.get(id).isOwned();
+		return this.props.items.get(id).isOwned();
 	}
 
 	/**
 	 * Check if a quest is has been completed.
 	 */
 	public isQuestDone(id: string) {
-		return this.quests.get(id).isFinished();
+		return this.props.quests.get(id).isFinished();
 	}
 
 	/**
@@ -90,24 +59,24 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		// Mastery 1 and up
 		unlock('Crib Mastery Rank', 3, ctx.member.roles.cache.has('794834783582421032'));
 		// Has 1 of every item
-		unlock('Item Collector', this.items.size, this.items.every(i => i.isOwned()));
+		unlock('Item Collector', this.props.items.size, this.props.items.every(i => i.isOwned()));
 
 		// Item Effects
-		this.items.filter(i => i.isOwned() && i.multiplier > 0).forEach(i => {
+		this.props.items.filter(i => i.isActive() && i.multiplier > 0).forEach(i => {
 			return unlock(i.module.name, i.multiplier, i.isActive() && i.multiplier >= 1);
 		});
 
 		// Mastery 10
 		unlock('Crib Mastery Max', 5, ctx.member.roles.cache.has('794835005679206431'));
 		// Prestige multis
-		const prestigeMulti = Currency.PRESTIGE_MULTI_VALUE * this.prestige.level;
-		unlock(`Prestige ${this.prestige.level}`, prestigeMulti, this.prestige.level >= 1);
+		const prestigeMulti = Currency.PRESTIGE_MULTI_VALUE * this.props.prestige.level;
+		unlock(`Prestige ${this.props.prestige.level}`, prestigeMulti, this.props.prestige.level >= 1);
 		
 		// Collectible Items
-		const collectibles = this.items.map(i => i.module).filter(i => i.category.id === 'Collectible') as CollectibleItem[];
+		const collectibles = this.props.items.map(i => i.module).filter(i => i.category.id === 'Collectible') as CollectibleItem[];
 		if (collectibles.length >= 1) {
 			collectibles.filter(c => c.entities.multipliers).forEach(c => {
-				const inv = this.items.get(c.id);
+				const inv = this.props.items.get(c.id);
 				return unlock(c.name, c.entities.multipliers[inv.level] ?? 0, inv.isOwned());
 			});
 		}
@@ -121,9 +90,9 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		// Lava Channel
 		unlock('Lava Channel', 25, (ctx.channel as TextChannel).name.toLowerCase().includes('lava'));
 		// Maxed All Items
-		unlock('Maxed All Items', 15, this.items.every(i => i.isMaxLevel()));
+		unlock('Maxed All Items', 15, this.props.items.every(i => i.isMaxLevel()));
 		// 10x of Max Inventory
-		unlock('Item Collector Plus', this.items.size * 2, this.items.filter(i => i.owned >= Currency.MAX_INVENTORY).size >= 10);
+		unlock('Item Collector Plus', this.props.items.size * 2, this.props.items.filter(i => i.owned >= Currency.MAX_INVENTORY).size >= 10);
 
 		return { unlocked, all };
 	}
@@ -246,7 +215,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 			xp: (space = false, additional = 0) => {
 				if (this.data.props.xp > maxLevel) return this;
 				const { randomNumber } = this.client.util;
-				this.data.props.xp += randomNumber(1, 3 + additional);
+				this.data.props.xp += randomNumber(1, 1 + additional);
 				return space ? this.calc().space() : this;
 			},
 			space: (os = 55) => {
@@ -316,8 +285,13 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 
 	/** Remove coins from pocket */
 	removePocket(amount: number, isShare = false) {
-		// if (isShare) 
+		// if (isShare) this.data.share.out += amount;
 		return this.pocket(amount).dec();
+	}
+
+	/** Set their pocket to whatever the fuck amount you want. */
+	setPocket(amount: number) {
+		return this.pocket(amount).set();
 	}
 
 	/** Add certain amount of keys */
@@ -326,8 +300,13 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	}
 
 	/** Remove amount of keys */
-	remKeys(amount: number) {
+	subKeys(amount: number) {
 		return this.keys(amount).dec();
+	}
+
+	/** Set amount of keys */
+	setKeys(amount: number) {
+		return this.keys(amount).set();
 	}
 
 	/** Withdraw coins from ur vault */
@@ -353,6 +332,11 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/** Unlock ur vault */
 	unlockVault() {
 		return this.vault().unlock();
+	}
+
+	/** Set ur vault to some amount u want */
+	setVault(amount: number) {
+		return this.vault(amount).set()
 	}
 
 	/** Record ur daily */
@@ -391,7 +375,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		const { effects, modules } = this.client.handlers.item;
 		const userID = this.data._id as Snowflake;
 		const itemMap = new Collection<string, ItemEffects>();
-		this.items.filter(i => i.isActive()).forEach(i => {
+		this.props.items.filter(i => i.isActive()).forEach(i => {
 			const instance = this.client.util.effects();
 			return itemMap.set(i.module.id, instance);
 		});
@@ -400,7 +384,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		if (userEffects.size < 1) return this;
 
 		for (const item of modules.filter(i => i.category.id === 'Power-Up').array() as PowerUpItem[]) {
-			const eff = userEffects.get(this.items.get(item.id).id);
+			const eff = userEffects.get(this.props.items.get(item.id).id);
 			item.effect(eff, this);
 		}
 
@@ -437,14 +421,20 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		return this.inventory(id).upgrade();
 	}
 
+	/** Set inventory */
+	setItems(queries: { id: string, amount: number }[]) {
+		this.props.items.forEach(i => this.inventory(i.id).decrement(i.owned));
+		queries.forEach(q => this.inventory(q.id).increment(q.amount));
+		return this;
+	}
+
 	/** Kill them */
 	kill(itemLost?: string, itemLostAmount?: number) {
 		const { randomNumber } = this.client.util;
 		const { pocket } = this.data.props;
 
-		const item = this.items.find(i => i.id === itemLost) ?? null;
-		const amount = itemLost ? itemLostAmount : 0;
-		if (itemLost) this.inventory(item.module.id).decrement(amount);
+		const item = this.props.items.find(i => i.id === itemLost) ?? null;
+		if (itemLost) this.inventory(item.module.id).decrement(itemLost ? itemLostAmount : 0);
 
 		return this.pocket(pocket > 0 ? pocket : 0).dec();
 	}

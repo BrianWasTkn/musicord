@@ -24,7 +24,7 @@ export default class PowerUp extends PowerUpItem {
 	}
 
 	effect(effects: ItemEffects, entry: CurrencyEntry) {
-		return effects.setMulti(entry.items.get(this.id).multiplier); // multi for luck between 0 and 100
+		return effects.rob(entry.props.items.get(this.id).multiplier); // multi for luck between 0 and 100
 	}
 
 	async use(ctx: Context, entry: CurrencyEntry) {

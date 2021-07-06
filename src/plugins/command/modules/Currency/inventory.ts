@@ -41,7 +41,7 @@ export default class extends Command {
 		const isContext = ctx.author.id === member.user.id;
 
 		const entry = await ctx.currency.fetch(member.user.id);
-		const inventory = ctx.client.util.paginateArray(this.mapItems(entry.items));
+		const inventory = ctx.client.util.paginateArray(this.mapItems(entry.props.items));
 
 		if (inventory.length < 1) {
 			return ctx.reply(`${isContext ? 'You' : 'They'} don't have any items on ${isContext ? 'your' : 'their'} inventory!`).then(() => false);

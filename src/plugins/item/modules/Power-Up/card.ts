@@ -37,7 +37,7 @@ export default class Tool extends PowerUpItem {
 
 	async use(ctx: Context, entry: CurrencyEntry) {
 		const { randomNumber, isInteger } = ctx.client.util;
-		const { owned, level } = entry.items.get(this.id);
+		const { owned, level } = entry.props.items.get(this.id);
 
 		await ctx.reply(`You have **${owned.toLocaleString()} cards** to swipe right now, how many of it do you wanna swipe?`);
 		const choice = await ctx.awaitMessage(ctx.author.id, 15000);

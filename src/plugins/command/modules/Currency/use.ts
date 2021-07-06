@@ -21,7 +21,7 @@ export default class extends Command {
 			return ctx.reply(`You need to use something!`).then(() => false);
 		}
 
-		const inv = entry.items.get(item.id);
+		const inv = entry.props.items.get(item.id);
 		if (!inv.isOwned()) {
 			return ctx.reply("You don't own this item!").then(() => false);
 		}

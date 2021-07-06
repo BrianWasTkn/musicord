@@ -3,14 +3,12 @@ import { LavaEntry } from '.';
 import { Endpoint } from 'lava/mongo';
 
 export class LavaEndpoint extends Endpoint<LavaProfile> {
-	public async fetch(_id: string) {
+	public fetch(_id: string): Promise<LavaEntry> {
 		return this.model.findOne({ _id }).then(async data => {
 			const doc = data ?? await (new this.model({ _id })).save();
-			const cooldowns = this.updateCooldowns(doc);
-			const settings = this.updateSettings(doc);
-
-			return [settings, cooldowns].some(s => s.length > 1) ? doc.save() : doc;
-		}).then(doc => new LavaEntry(this.client, doc));
+			const pushed = [this.updateCooldowns(doc), this.updateSettings(doc)];
+			return pushed.some(s => s.length > 1) ? doc.save() : doc;
+		}).then(doc => new LavaEntry(this, doc));
 	}
 
 	public updateSettings(doc: LavaProfile) {

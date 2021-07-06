@@ -33,5 +33,5 @@ export abstract class Endpoint<Doc extends Document = never> extends Base {
 	/**
 	 * Fetch a document from the model of this endpoint based from the given id.
 	*/
-	public abstract fetch(id: string): Promise<UserEntry<Doc>>;
+	public abstract fetch(_id: string): Promise<UserEntry<Doc>>;
 }

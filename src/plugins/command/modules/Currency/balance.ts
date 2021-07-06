@@ -28,12 +28,12 @@ export default class extends Command {
 				await ctx.reply('respond with yes or no bruh, try again.');
 				return false;
 			}
-			if (choice.content.toLowerCase().slice(0, 1) === 'n') {
+			if (choice.content.toLowerCase().slice(0, 1) !== 'y') {
 				await ctx.reply('ok then, dont expect any info about ur balance');
 				return false;
 			}
 
-			await entry.removePocket(entry.props.pocket).addPocket(Currency.MAX_SAFE_POCKET).save();
+			await entry.setPocket(Currency.MAX_SAFE_POCKET).save();
 		}
 
 		return ctx.channel.send({
@@ -46,7 +46,7 @@ export default class extends Command {
 							? `/${entry.props.space.toLocaleString()}`
 							: ''
 						}`,
-					'Items': `${entry.items.filter(i => i.owned > 0).size.toLocaleString()}/${this.client.handlers.item.modules.size.toLocaleString()
+					'Items': `${entry.props.items.filter(i => i.owned > 0).size.toLocaleString()}/${this.client.handlers.item.modules.size.toLocaleString()
 						}`
 				})
 					.map(([label, val]) => `**${label}:** ${val}`)

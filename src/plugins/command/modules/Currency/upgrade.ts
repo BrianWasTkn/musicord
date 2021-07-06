@@ -21,7 +21,7 @@ export default class extends Command {
 		const entry = await ctx.currency.fetch(ctx.author.id);
 		if (!item) return ctx.reply('You need to upgrade something!').then(() => false);
 
-		const inv = entry.items.get(item.id);
+		const inv = entry.props.items.get(item.id);
 		const isMax = inv.isMaxLevel();
 		const { upgrade, icon, premium } = inv.upgrade;
 		const e = premium ? 'keys' : 'coins';

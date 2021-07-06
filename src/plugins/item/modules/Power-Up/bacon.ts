@@ -24,7 +24,7 @@ export default class PowerUp extends PowerUpItem {
 	}
 
 	effect(effects: ItemEffects, entry: CurrencyEntry) {
-		return effects.setMulti(entry.items.get(this.id).multiplier);
+		return effects.multi(entry.props.items.get(this.id).multiplier);
 	}
 
 	async use(ctx: Context, entry: CurrencyEntry) {

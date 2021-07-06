@@ -32,7 +32,8 @@ export default class extends Command {
 	async exec(ctx: Context, { member }: { member: GuildMemberPlus }) {
 		const { progressBar } = ctx.client.util;
 
-		const exp = await ctx.currency.fetch(member.user.id).then(p => p.props.xp);
+		const entry = await ctx.currency.fetch(member.user.id);
+		const exp = entry.props.xp;
 		const level = Math.trunc(exp / XP_COST);
 		const levels = this.level(exp, level);
 		const xps = this.xp(exp);
@@ -49,12 +50,21 @@ export default class extends Command {
 				{
 					name: 'Level',
 					inline: true,
-					value: `**\`${level.toLocaleString()}/${MAX_LEVEL.toLocaleString()}\`**\n${levelBar}`,
+					value: `**\`${level.toLocaleString()}\`**\n${levelBar}`,
 				},
 				{
 					name: 'Experience',
 					inline: true,
 					value: `**\`${exp.toLocaleString()}/${xps.next.toLocaleString()}\`**\n${xpBar}`
+				},
+				{
+					name: 'Coins',
+					inline: true,
+					value: [
+						`**Wallet:** ${entry.props.pocket.toLocaleString()}`,
+						`**Bank:** ${entry.props.vault.amount.toLocaleString()}`,
+						`**Multi:** ${entry.calcMulti(ctx).unlocked.reduce((p, c) => p + c.value, 0)}%`
+					].join('\n')
 				}
 			]
 		}}).then(() => false);

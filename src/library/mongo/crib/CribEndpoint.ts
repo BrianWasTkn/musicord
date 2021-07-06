@@ -2,13 +2,12 @@ import { CribEntry, Endpoint } from 'lava/mongo';
 import { Donation } from 'lava/akairo';
 
 export class CribEndpoint extends Endpoint<CribProfile> {
-	public async fetch(_id: string) {
+	public fetch(_id: string): Promise<CribEntry> {
 		return this.model.findOne({ _id }).then(async data => {
 			const doc = data ?? await (new this.model({ _id })).save();
-			const donos = this.updateDonos(doc);
-
-			return [donos].some(s => s.length > 1) ? doc.save() : doc;
-		}).then(doc => new CribEntry(this.client, doc));
+			const pushed = [this.updateDonos(doc)];
+			return pushed.some(s => s.length > 1) ? doc.save() : doc;
+		}).then(doc => new CribEntry(this, doc));
 	}
 
 	public updateDonos(doc: CribProfile) {

@@ -24,7 +24,7 @@ export default class PowerUp extends PowerUpItem {
 	}
 
 	effect(effects: ItemEffects, entry: CurrencyEntry) {
-		return effects.setLuck('def', 5);
+		return effects.luck(5);
 	}
 
 	async use(ctx: Context, entry: CurrencyEntry) {
