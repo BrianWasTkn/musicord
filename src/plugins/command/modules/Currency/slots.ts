@@ -62,7 +62,7 @@ export default class extends GambleCommand {
 		const { winnings, length } = this.calcSlots(slots, bet, multi);
 
 		if ([1, 2].every(l => l !== length)) {
-			const { props } = await entry.removePocket(bet).save();
+			const { props } = await entry.removePocket(bet).updateStats(this.id, bet, false).save();
 			return ctx.channel.send({
 				embed: {
 					color: 'RED',
@@ -81,7 +81,7 @@ export default class extends GambleCommand {
 			}).then(() => true);
 		}
 
-		const { props } = await entry.addPocket(winnings).save();
+		const { props } = await entry.addPocket(winnings).updateStats(this.id, winnings, true).save();
 		return ctx.channel.send({
 			embed: {
 				color: length === 1 ? 'GOLD' : 'GREEN',

@@ -1,6 +1,11 @@
 import { Command, Context, GuildMemberPlus, Currency } from 'lava/index';
 const { MAX_LEVEL, XP_COST } = Currency;
 
+interface ProfileArgs {
+	member: GuildMemberPlus;
+	gamble: boolean;
+}
+
 export default class extends Command {
 	constructor() {
 		super('profile', {
@@ -12,6 +17,12 @@ export default class extends Command {
 					id: 'member',
 					type: 'member',
 					default: (c: Context) => c.member
+				},
+				{
+					id: 'gamble',
+					match: 'flag',
+					flag: ['--gamble'],
+					default: false
 				}
 			]
 		});
@@ -29,10 +40,39 @@ export default class extends Command {
 		return { next, barable, bar: this.client.util.progressBar(barable) };
 	}
 
-	async exec(ctx: Context, { member }: { member: GuildMemberPlus }) {
+	async exec(ctx: Context, { member, gamble }: ProfileArgs) {
 		const { progressBar } = ctx.client.util;
 
 		const entry = await ctx.currency.fetch(member.user.id);
+
+		if (gamble) {
+			const loses = entry.props.gambles.reduce((a, c) => a + c.loses, 0);
+			const wins = entry.props.gambles.reduce((a, c) => a + c.wins, 0);
+			const won = entry.props.gambles.reduce((a, c) => a + c.won, 0);
+			const lost = entry.props.gambles.reduce((a, c) => a + c.lost, 0);
+
+			return ctx.channel.send({ embed: {
+				author: { name: `${member.user.username}'s gambling stats` },
+				color: 'GREEN', fields: [...entry.props.gambles.map(g => ({
+					inline: true, name: `${g.id.toUpperCase()} (${(g.wins + g.loses).toLocaleString()})`,
+					value: [
+						`**Won:** ${g.won.toLocaleString()}`,
+						`**Lost:** ${g.lost.toLocaleString()}`,
+						`**Net:** ${(g.won - g.lost).toLocaleString()}`,
+						`**Win:** ${Math.round(100 * (g.wins / (g.wins + g.loses))).toLocaleString()}`,
+					].join('\n')
+				})), {
+					inline: true, name: `TOTAL (${(loses + wins).toLocaleString()})`,
+					value: [
+						`**Won:** ${won.toLocaleString()}`,
+						`**Lost:** ${lost.toLocaleString()}`,
+						`**Net:** ${(won - lost).toLocaleString()}`,
+						`**Win:** ${Math.round(100 * (wins / (wins + loses))).toLocaleString()}`,
+					].join('\n')
+				}]
+			}}).then(() => false);
+		}
+
 		const exp = entry.props.xp;
 		const level = Math.trunc(exp / XP_COST);
 		const levels = this.level(exp, level);

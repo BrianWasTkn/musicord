@@ -148,7 +148,7 @@ export default class extends GambleCommand {
 			if (status.constructor === Object) {
 				const newEntry = await ctx.currency.fetch(ctx.author.id); // ugh don't really know else how to do this thanks to reversal
 				if (bet > newEntry.props.pocket) {
-					await newEntry.removePocket(bet).save();
+					await newEntry.removePocket(bet).updateStats(this.id, bet, false).save();
 					return ctx.reply(`What the hell man, you don't have the coins to cover this bet anymore??? I'm keeping your bet since you tried to SCAM ME.`).then(() => true);
 				}
 				let finalMsg = '';
@@ -156,7 +156,7 @@ export default class extends GambleCommand {
 				if (status.result) {
 					const multi = newEntry.calcMulti(ctx).unlocked.reduce((p, c) => p + c.value, 0);
 					winnings = this.calcWinnings(multi, bet);
-					const pocket = await newEntry.addPocket(winnings).save().then(d => d.props.pocket);
+					const pocket = await newEntry.addPocket(winnings).updateStats(this.id, winnings, true).save().then(d => d.props.pocket);
 					finalMsg += `\nYou won **${winnings.toLocaleString()}**. You now have ${pocket.toLocaleString()}.`;
 					state = 'winning';
 				} else {
@@ -167,7 +167,7 @@ export default class extends GambleCommand {
 						state = 'tie';
 					} else {
 						// Loss
-						const { pocket } = await newEntry.removePocket(bet).save().then(d => d.props);
+						const { pocket } = await newEntry.removePocket(bet).updateStats(this.id, bet, false).save().then(d => d.props);
 						finalMsg += `\nYou lost **${Number(bet).toLocaleString()}**. You now have ${pocket.toLocaleString()}.`;
 						state = 'losing';
 					}
@@ -235,7 +235,7 @@ export default class extends GambleCommand {
 			const choice = await ctx.awaitMessage();
 			if (!choice) {
 				// No bank space for you bitch
-				await entry.removePocket(bet).save();
+				await entry.removePocket(bet).updateStats(this.id, bet, false).save();
 				return ctx.reply("You ended the game since you didn't respond. The dealer is keeping your money to deal with your bullcrap.").then(() => true);
 			}
 			switch (choice.content.toLowerCase().slice(0, 1)) {
@@ -247,11 +247,11 @@ export default class extends GambleCommand {
 					return dealersTurn(stood);
 				case 'e':
 					// You too, no space for you :P
-					await entry.removePocket(bet).save();
+					await entry.removePocket(bet).updateStats(this.id, bet, false).save();
 					return ctx.reply('You ended the game. The dealer is keeping your money to deal with your bullcrap.').then(() => true);
 				default:
 					// You too, no space for you :P
-					await entry.removePocket(bet).save();
+					await entry.removePocket(bet).updateStats(this.id, bet, false).save();
 					return ctx.reply('Ur an idiot you need to give a valid response. You lost your entire bet.').then(() => true);
 			}
 		};

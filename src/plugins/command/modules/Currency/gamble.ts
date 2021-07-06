@@ -21,7 +21,9 @@ export default class extends GambleCommand {
 
 		const { userD, botD } = this.roll(true);
 		if (botD > userD || botD === userD) {
-			const { props } = await entry.removePocket(botD === userD ? 0 : bet).save()
+			const lost = botD === userD ? 0 : bet;
+			if (botD > userD) entry.updateStats(this.id, lost, false);
+			const props = await entry.removePocket(lost).save().then(d => d.props);
 
 			return ctx.channel.send({
 				embed: {
@@ -46,7 +48,7 @@ export default class extends GambleCommand {
 
 		const multi = this.calcMulti(ctx, entry);
 		const winnings = this.calcWinnings(multi, bet);
-		const { props } = await entry.addPocket(winnings).save();
+		const { props } = await entry.addPocket(winnings).updateStats(this.id, winnings, true).save();
 
 		return ctx.channel.send({
 			embed: {
