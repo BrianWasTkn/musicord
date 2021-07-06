@@ -2,7 +2,7 @@ import { Item, ItemOptions, ItemUpgrade, ItemConfig, ItemAssets, Inventory, Cont
 
 export type ToolItemAssets = Omit<ItemAssets, 'sellRate' | 'upgrade'>;
 
-export interface ToolItemConfig extends Pick<ItemConfig, 'premium' | 'push' | 'retired'> {
+export interface ToolItemConfig extends Pick<ItemConfig, 'premium' | 'usable' | 'push' | 'retired'> {
 	/** The default duration of this tool. */
 	duration?: number;
 }

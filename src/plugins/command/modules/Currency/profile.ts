@@ -49,7 +49,7 @@ export default class extends Command {
 				{
 					name: 'Level',
 					inline: true,
-					value: `**\`${level.toLocaleString()}\`**\n${levelBar}`,
+					value: `**\`${level.toLocaleString()}/${MAX_LEVEL.toLocaleString()}\`**\n${levelBar}`,
 				},
 				{
 					name: 'Experience',

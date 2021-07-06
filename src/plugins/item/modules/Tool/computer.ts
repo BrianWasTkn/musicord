@@ -12,6 +12,7 @@ export default class Tool extends ToolItem {
 				info: 'Post specific type of memes on reddit!'
 			},
 			config: {
+				usable: false,
 				push: true,
 			},
 		});
