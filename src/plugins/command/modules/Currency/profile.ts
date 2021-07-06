@@ -18,19 +18,15 @@ export default class extends Command {
 	}
 
 	xp(xp: number): { next: number, barable: number, bar: string; } {
-		return {
-			next: Math.min((Math.trunc(xp / XP_COST) + 1) * XP_COST, MAX_LEVEL * XP_COST),
-			barable: Math.round((XP_COST - (this.xp(xp).next - xp)) / (XP_COST / 10)),
-			bar: this.client.util.progressBar(this.xp(xp).barable),
-		};
+		const next = Math.min((Math.trunc(xp / XP_COST) + 1) * XP_COST, MAX_LEVEL * XP_COST);
+		const barable = Math.round((XP_COST - (next - xp)) / (XP_COST / 10));
+		return { next, barable, bar: this.client.util.progressBar(barable) };
 	}
 
 	level(xp: number, level: number): { next: number, barable: number, bar: string; } {
-		return {
-			next: Math.min(level + 1, MAX_LEVEL),
-			barable: Math.round((XP_COST - ((this.level(xp, level).next * XP_COST) - xp)) / (XP_COST / 10)),
-			bar: this.client.util.progressBar(this.level(xp, level).barable)
-		};
+		const next = Math.min(level + 1, MAX_LEVEL);
+		const barable = Math.round((XP_COST - ((next * XP_COST) - xp)) / (XP_COST / 10));
+		return { next, barable, bar: this.client.util.progressBar(barable) };
 	}
 
 	async exec(ctx: Context, { member }: { member: GuildMemberPlus }) {
