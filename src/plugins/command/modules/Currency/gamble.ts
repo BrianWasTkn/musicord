@@ -72,7 +72,7 @@ export default class extends GambleCommand {
 		}
 
 		if (rig) {
-			if (Math.random() > 0.35) {
+			if (Math.random() > 0.45) {
 				[botD, userD] = set(botD, userD);
 			} else {
 				[userD, botD] = set(botD, userD);
