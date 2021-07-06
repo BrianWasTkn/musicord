@@ -373,21 +373,17 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/** Update their item effects */
 	updateEffects() {
 		const { effects, modules } = this.client.handlers.item;
-		const userID = this.data._id as Snowflake;
 		const itemMap = new Collection<string, ItemEffects>();
-		this.props.items.filter(i => i.isActive()).forEach(i => {
+		const userID = this.data._id as Snowflake;
+
+		const powerUps = modules.filter(i => i.category.id === 'Power-Up').array() as PowerUpItem[];
+		this.props.items.filter(i => i.module.id === 'Power-Up' && i.isActive()).forEach(i => {
 			const instance = this.client.util.effects();
-			return itemMap.set(i.module.id, instance);
+			const mod = i.module as PowerUpItem;
+			return itemMap.set(mod.id, mod.effect(instance, this));
 		});
 
-		const userEffects = effects.set(userID, itemMap).get(userID);
-		if (userEffects.size < 1) return this;
-
-		for (const item of modules.filter(i => i.category.id === 'Power-Up').array() as PowerUpItem[]) {
-			const eff = userEffects.get(this.props.items.get(item.id).id);
-			item.effect(eff, this);
-		}
-
+		effects.set(userID, itemMap);
 		return this;
 	}
 
