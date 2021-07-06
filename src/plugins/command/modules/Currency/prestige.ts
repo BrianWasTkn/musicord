@@ -43,7 +43,7 @@ export default class extends Command {
 				color: 'RANDOM', description: [
 					`**Pocket Amount:** \`${entry.props.pocket.toLocaleString()}/${next.pocket.toLocaleString()}\` \`(${current.pocket}%)\``,
 					`**Levels Required:** \`${Math.trunc(entry.props.xp / XP_COST).toLocaleString()}/${next.level.toLocaleString()}\` \`(${current.level}%)\``,
-				]
+				].join('\n')
 			}}).then(() => false);
 		}
 
