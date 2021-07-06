@@ -26,23 +26,25 @@ export default class extends Command {
 
 	async exec(ctx: Context) {
 		const entry = await ctx.currency.fetch(ctx.author.id);
+		const prestige = entry.prestige.level;
+		const { pocket, xp } = entry.props;
 
 		const current = {
-			pocket: Number((entry.props.pocket / Math.min(PRESTIGE_LEVEL_CAP * PRESTIGE_POCKET_REQ, PRESTIGE_POCKET_REQ * entry.prestige.level)).toFixed(1)),
-			level: Number(((entry.props.xp / XP_COST) / Math.min(PRESTIGE_LEVEL_CAP * PRESTIGE_LEVEL_REQ, PRESTIGE_LEVEL_REQ * entry.prestige.level)).toFixed(1))
+			pocket: Number((pocket / Math.min(PRESTIGE_LEVEL_CAP * PRESTIGE_POCKET_REQ, PRESTIGE_POCKET_REQ * prestige)).toFixed(1)),
+			level: Number(((xp / XP_COST) / Math.min(PRESTIGE_LEVEL_CAP * PRESTIGE_LEVEL_REQ, PRESTIGE_LEVEL_REQ * prestige)).toFixed(1))
 		};
 		const next = {
-			prestige: entry.prestige.level + 1,
-			pocket: (entry.prestige.level + 1) * PRESTIGE_POCKET_REQ,
-			level: (entry.prestige.level + 1) * PRESTIGE_LEVEL_REQ,
+			prestige: prestige + 1,
+			pocket: (prestige + 1) * PRESTIGE_POCKET_REQ,
+			level: (prestige + 1) * PRESTIGE_LEVEL_REQ,
 		};
 
 		if (!Object.values(current).every(c => c >= 100)) {
 			return ctx.reply({ embed: {
-				author: { name: `Prestige ${ctx.client.util.toRoman(next.prestige)} Requirements` },
+				author: { name: `Prestige ${ctx.client.util.romanize(next.prestige)} Requirements` },
 				color: 'RANDOM', description: [
-					`**Pocket Amount:** \`${entry.props.pocket.toLocaleString()}/${next.pocket.toLocaleString()}\` \`(${current.pocket}%)\``,
-					`**Levels Required:** \`${Math.trunc(entry.props.xp / XP_COST).toLocaleString()}/${next.level.toLocaleString()}\` \`(${current.level}%)\``,
+					`**Pocket Amount:** \`${pocket.toLocaleString()}/${next.pocket.toLocaleString()}\` \`(${current.pocket}%)\``,
+					`**Levels Required:** \`${Math.trunc(xp / XP_COST).toLocaleString()}/${next.level.toLocaleString()}\` \`(${current.level}%)\``,
 				].join('\n')
 			}}).then(() => false);
 		}

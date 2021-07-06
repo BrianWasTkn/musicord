@@ -2,7 +2,7 @@ import { Item, ItemOptions, ItemAssets, ItemConfig, ItemUpgrade, Context, Curren
 
 export type PowerItemAssets = Omit<ItemAssets, 'sellRate' | 'upgrade'>;
 
-export interface PowerItemConfig extends Pick<ItemConfig, 'premium' | 'push' | 'retired'> {
+export interface PowerItemConfig extends Omit<ItemConfig, 'premium'> {
 	/** The default duration of this power-up. */
 	duration?: number;
 }
@@ -16,9 +16,9 @@ export interface PowerItemOptions extends Omit<ItemOptions, 'assets' | 'config' 
 	/** The basic info about this item. */ 
 	assets: PowerItemAssets;
 	/** The config for this power-up. */
-	config?: PowerItemConfig;
+	config: PowerItemConfig;
 	/** The upgrades of this power-up. */
-	upgrades: PowerItemUpgrades[];
+	upgrades?: PowerItemUpgrades[];
 }
 
 export abstract class PowerUpItem extends Item {
@@ -39,19 +39,9 @@ export abstract class PowerUpItem extends Item {
 			},
 			config: {
 				premium: false,
-				buyable: true,
-				sellable: true,
-				usable: true,
-				giftable: true,
-				shop: true,
-				sale: true,
-				inventory: true,
 				...config
 			},
-			upgrades: options.upgrades?.map(up => ({ 
-				sell: 0.1, 
-				...up 
-			})) ?? [],
+			upgrades: options.upgrades?.map(up => ({ sell: 0.1, ...up })) ?? [],
 		});
 
 		this.duration = config?.duration ?? 0;
@@ -66,6 +56,6 @@ export abstract class PowerUpItem extends Item {
 	}
 
 	public getDuration(entry: CurrencyEntry) {
-		return this.getUpgrade(entry.items.get(this.id)).duration;
+		return this.getUpgrade(entry.items.get(this.id)).duration ?? 0;
 	}
 }

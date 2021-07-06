@@ -2,7 +2,7 @@ import { Item, ItemOptions, ItemUpgrade, ItemConfig, ItemAssets, Inventory, Cont
 
 export type ToolItemAssets = Omit<ItemAssets, 'sellRate' | 'upgrade'>;
 
-export interface ToolItemConfig extends Pick<ItemConfig, 'premium' | 'usable' | 'push' | 'retired'> {
+export interface ToolItemConfig extends Omit<ItemConfig, 'premium'> {
 	/** The default duration of this tool. */
 	duration?: number;
 }
@@ -16,7 +16,7 @@ export interface ToolItemOptions extends Omit<ItemOptions, 'assets' | 'config' |
 	/** The basic info about this item. */ 
 	assets: ToolItemAssets;
 	/** The config for this tool. */
-	config?: ToolItemConfig;
+	config: ToolItemConfig;
 	/** The upgrades of this tool. */
 	upgrades?: ToolItemUpgrades[];
 }
@@ -47,10 +47,7 @@ export abstract class ToolItem extends Item {
 				inventory: true,
 				...config
 			},
-			upgrades: options.upgrades?.map(up => ({ 
-				sell: 0.1, 
-				...up 
-			})) ?? [],
+			upgrades: options.upgrades?.map(up => ({ sell: 0.1, ...up })) ?? [],
 		});
 	}
 
@@ -59,6 +56,6 @@ export abstract class ToolItem extends Item {
 	}
 
 	public getDuration(entry: CurrencyEntry) {
-		return this.getUpgrade(entry.items.get(this.id)).duration;
+		return this.getUpgrade(entry.items.get(this.id)).duration ?? 0;
 	}
 }
