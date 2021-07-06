@@ -46,8 +46,8 @@ export abstract class CollectibleItem extends Item {
 	/**
 	 * Method to use this collectible.
 	 */
-	public use(ctx: Context, entry: CurrencyEntry): MessageOptions {
-		const thisItem = entry.items.get(this.id);
-		return { reply: { messageReference: ctx.id }, content: `**${this.emoji} WHAT A FLEX!**\nImagine having **${thisItem.owned.toLocaleString()}**, couldn't be me` };
+	public use(ctx: Context, entry: CurrencyEntry) {
+		const thisItem = entry.props.items.get(this.id);
+		return ctx.reply(`**${this.emoji} WHAT A FLEX!**\nImagine having **${thisItem.owned.toLocaleString()}**, couldn't be me`);
 	}
 }

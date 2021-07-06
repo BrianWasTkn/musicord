@@ -63,7 +63,7 @@ export default class extends Command {
 		if (item) entry.addItem(item);
 		const won = Math.round(coins + (coins * (multi / 100)));
 		return entry.addPocket(won).save().then(() => ({
-			itemGot: (randomNumber(1, 100) < 30) && item ? entry.items.get(item) : null,
+			itemGot: (randomNumber(1, 100) < 30) && item ? entry.props.items.get(item) : null,
 			coinsRaw: coins,
 			coinsWon: won,
 			possibleItemLost: null,

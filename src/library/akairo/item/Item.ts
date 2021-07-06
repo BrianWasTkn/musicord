@@ -210,7 +210,7 @@ export abstract class Item extends AbstractModule {
 	 * Simple method to buy this item from the shop.
 	 */
 	public buy(entry: CurrencyEntry, amount: number) {
-		const inventory = entry.items.get(this.id);
+		const inventory = entry.props.items.get(this.id);
 		const { price, sellRate, premium } = this.getUpgrade(inventory);
 		const p = Math.round(price) * Math.trunc(amount);
 		
@@ -223,7 +223,7 @@ export abstract class Item extends AbstractModule {
 	 * Simple method to sell this item to the shop.
 	 */
 	public sell(entry: CurrencyEntry, amount: number) {
-		const inventory = entry.items.get(this.id);
+		const inventory = entry.props.items.get(this.id);
 		const { price, sellRate, premium } = this.getUpgrade(inventory);
 		const p = Math.round(price * sellRate) * Math.trunc(amount);
 

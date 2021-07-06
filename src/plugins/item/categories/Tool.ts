@@ -56,6 +56,6 @@ export abstract class ToolItem extends Item {
 	}
 
 	public getDuration(entry: CurrencyEntry) {
-		return this.getUpgrade(entry.items.get(this.id)).duration ?? 0;
+		return this.getUpgrade(entry.props.items.get(this.id)).duration ?? 0;
 	}
 }

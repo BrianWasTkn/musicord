@@ -42,7 +42,7 @@ export default class extends Command {
 			return ctx.reply({ embed: { color: 'INDIGO', description: 'ok then.' }}).then(() => false);
 		}
 
-		const newInv = await entry.removePocket(inv.upgrade.upgrade).upgradeItem(item.id).save().then(e => e.items.get(item.id));
+		const newInv = await entry.removePocket(inv.upgrade.upgrade).upgradeItem(item.id).save().then(e => e.props.items.get(item.id));
 		return ctx.reply({ embed: {
 			color: 'GREEN', author: { 
 				name: `${inv.upgrade.name} finally reached ${
