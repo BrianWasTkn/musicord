@@ -21,7 +21,7 @@ export default class extends Command {
 		return {
 			next: Math.min((Math.trunc(xp / XP_COST) + 1) * XP_COST, MAX_LEVEL * XP_COST),
 			barable: Math.round((XP_COST - (this.xp(xp).next - xp)) / (XP_COST / 10)),
-			bar: this.client.util.progressBar(this.xp(xp).barValue),
+			bar: this.client.util.progressBar(this.xp(xp).barable),
 		};
 	}
 
@@ -41,8 +41,8 @@ export default class extends Command {
 		const levels = this.level(exp, level);
 		const xps = this.xp(exp);
 
-		const levelBar = `[${progressBar(levels.bar)}](https://discord.gg/invite/memer)`;
-		const xpBar = `[${progressBar(xps.bar)}](https://discord.gg/invite/memer)`;
+		const levelBar = `[${levels.bar}](https://discord.gg/invite/memer)`;
+		const xpBar = `[${xps.bar}](https://discord.gg/invite/memer)`;
 
 		return ctx.channel.send({ embed: {
 			author: { 
