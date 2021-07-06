@@ -26,7 +26,8 @@ export default class extends GambleCommand {
 			return ctx.channel.send({
 				embed: {
 					author: {
-						name: `${ctx.author.username}'s ${userD === botD ? 'tie' : 'losing'} gambling game`
+						name: `${ctx.author.username}'s ${userD === botD ? 'tie' : 'losing'} gambling game`,
+						iconURL: ctx.author.avatarURL({ dynamic: true })
 					},
 					color: userD === botD ? 'YELLOW' : 'RED',
 					description: [
@@ -49,7 +50,10 @@ export default class extends GambleCommand {
 
 		return ctx.channel.send({
 			embed: {
-				author: { name: `${ctx.author.username}'s winning gambling game` },
+				author: { 
+					name: `${ctx.author.username}'s winning gambling game`,
+					iconURL: ctx.author.avatarURL({ dynamic: true })
+				},
 				footer: { text: 'winner winner' }, color: 'GREEN', description: [
 					`You won **${winnings.toLocaleString()}** coins.\n`,
 					`**Percent Won:** ${Math.round(winnings / bet * 100)}%`,
