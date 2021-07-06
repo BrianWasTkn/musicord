@@ -84,9 +84,9 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		// Level rewards multis
 		unlock('Level Rewards', this.props.multi.level_rewards, this.props.multi.level_rewards > 0);
 		// Memers Crib
-		unlock(ctx.guild.name, 10, ctx.guild.id === '691416705917779999');
+		unlock(ctx.guild.name, 25, ctx.guild.id === '691416705917779999');
 		// Nitro Booster
-		unlock('Nitro Booster', 5, !!ctx.member.roles.premiumSubscriberRole?.id);
+		unlock('Nitro Booster', 10, !!ctx.member.roles.premiumSubscriberRole?.id);
 		// Mastery 1 and up
 		unlock('Crib Mastery Rank', 3, ctx.member.roles.cache.has('794834783582421032'));
 		// Has 1 of every item
@@ -98,7 +98,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		});
 
 		// Mastery 10
-		unlock('Crib Mastery Max', 2, ctx.member.roles.cache.has('794835005679206431'));
+		unlock('Crib Mastery Max', 5, ctx.member.roles.cache.has('794835005679206431'));
 		// Prestige multis
 		const prestigeMulti = Currency.PRESTIGE_MULTI_VALUE * this.prestige.level;
 		unlock(`Prestige ${this.prestige.level}`, prestigeMulti, this.prestige.level >= 1);
@@ -113,7 +113,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		}
 
 		// Memers Crib Staff
-		unlock('Crib Staff', 2, ctx.member.roles.cache.has('692941106475958363'));
+		unlock('Crib Staff', -1, ctx.member.roles.cache.has('692941106475958363'));
 		// Chips Cult
 		unlock('Chips Cult', 6, ctx.member.nickname?.toLowerCase().includes('chips'));
 		// Probber Cult
@@ -121,7 +121,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		// Lava Channel
 		unlock('Lava Channel', 25, (ctx.channel as TextChannel).name.toLowerCase().includes('lava'));
 		// Maxed All Items
-		unlock('Maxed All Items', 10, this.items.every(i => i.isMaxLevel()));
+		unlock('Maxed All Items', 15, this.items.every(i => i.isMaxLevel()));
 		// 10x of Max Inventory
 		unlock('Item Collector Plus', this.items.size * 2, this.items.filter(i => i.owned >= Currency.MAX_INVENTORY).size >= 10);
 
