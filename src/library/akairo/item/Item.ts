@@ -5,7 +5,7 @@
 
 import { AbstractModuleOptions, AbstractModule } from 'lava/akairo';
 import { Context, CurrencyEntry, Inventory } from 'lava/index'; 
-import { MessageOptions } from 'discord.js';
+import { MessageOptions, MessageEmbed } from 'discord.js';
 import { ItemHandler } from '.';
 
 export interface ItemUpgrade extends ItemAssets {
@@ -261,6 +261,13 @@ export abstract class Item extends AbstractModule {
 			sell: calc(price * sellRate),
 			cost: calc(price),
 		};
+	}
+
+	/**
+	 * Design the shop info embed.
+	 */
+	public getEmbed<Embed extends MessageEmbed>(embed: Embed): Embed {
+		return embed;
 	}
 
 	/**

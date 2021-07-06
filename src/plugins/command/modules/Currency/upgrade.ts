@@ -46,7 +46,7 @@ export default class extends Command {
 		return ctx.reply({ embed: {
 			color: 'GREEN', author: { 
 				name: `${inv.upgrade.name} finally reached ${
-					isMax ? 'max level' : `level ${newInv.level}`
+					newInv.isMaxLevel() ? 'MAX LEVEL' : `Level ${newInv.level}`
 				}!`,
 				iconURL: ctx.author.avatarURL({ 
 					dynamic: true 

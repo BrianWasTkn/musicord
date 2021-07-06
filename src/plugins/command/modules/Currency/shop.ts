@@ -76,15 +76,17 @@ export default class extends Command {
 		const { price, sellRate, emoji, name, icon, info } = entry.props.items.get(query.id).upgrade;
 		const { owned, level } = entry.props.items.get(query.id);
 
-		return ctx.channel.send({ embed: {
-			title: `${emoji} ${name}${owned > 0 ? ` (${owned.toLocaleString()} owned)` : ''} — Level ${level === query.upgrades.length - 1 ? `${level} (Max)` : level}`,
-			color: 'RANDOM', description: [
-				`${info}\n`, 
-				[
-					`**BUY** — ${query.buyable ? `${icon} ${price.toLocaleString()}` : '**Not Buyable**'}`,
-					`**SELL** — ${query.sellable ? `${icon} ${Math.round(price * sellRate).toLocaleString()}` : '**Not Sellable**'}`
+		return ctx.channel.send({ 
+			embed: query.getEmbed(this.client.util.embed({
+				title: `${emoji} ${name}${owned > 0 ? ` (${owned.toLocaleString()} owned)` : ''} — Level ${level === query.upgrades.length - 1 ? `${level} (Max)` : level}`,
+				color: 'RANDOM', 
+				description: [
+					`${info}\n`, [
+						`**BUY** — ${query.buyable ? `${icon} ${price.toLocaleString()}` : '**Not Buyable**'}`,
+						`**SELL** — ${query.sellable ?	 `${icon} ${Math.round(price * sellRate).toLocaleString()}` : '**Not Sellable**'}`
+					].join('\n')
 				].join('\n')
-			].join('\n')
-		}}).then(() => false);
+			}))
+		}).then(() => false);
 	}
 }
