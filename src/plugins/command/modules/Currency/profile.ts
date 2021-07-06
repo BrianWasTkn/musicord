@@ -49,12 +49,12 @@ export default class extends Command {
 				{
 					name: 'Level',
 					inline: true,
-					value: `**\`${level.toLocaleString()}\`\n${levelBar}**`,
+					value: `**\`${level.toLocaleString()}\`**\n${levelBar}`,
 				},
 				{
 					name: 'Experience',
 					inline: true,
-					value: `**\`${exp.toLocaleString()}/${xps.next.toLocaleString()}\`\n${xpBar}**`
+					value: `**\`${exp.toLocaleString()}/${xps.next.toLocaleString()}\`**\n${xpBar}`
 				}
 			]
 		}}).then(() => false);
