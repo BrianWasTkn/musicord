@@ -1,6 +1,6 @@
 import { Command, Context } from 'lava/index';
 
-export default class Currency extends Command {
+export default class extends Command {
 	constructor() {
 		super('postmeme', {
 			aliases: ['postmeme', 'pm'],
@@ -10,7 +10,7 @@ export default class Currency extends Command {
 		});
 	}
 
-	async exec(ctx: Context, entry: ContextDatabase) {
+	async exec(ctx: Context) {
 		const entry = await ctx.currency.fetch(ctx.author.id);
 		const comp = entry.items.get('computer');
 
@@ -18,6 +18,6 @@ export default class Currency extends Command {
 			return ctx.reply(`LOL buy at least **1 ${comp.emoji} ${comp.name}** to post memes.`).then(() => false);
 		}
 
-		return comp.module.use(ctx);
+		return comp.module.use(ctx).then(() => true);
 	}
 }
