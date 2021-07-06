@@ -12,7 +12,7 @@ import { Context } from 'lava/discord';
 
 export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/** The basics of their mongo profile. */
-	get props() {
+	public get props() {
 		return {
 			raw: this.data.props,
 			prestige: this.data.prestige,
@@ -22,6 +22,15 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 			trades: super.map('trade', TradeStat),
 			...this.data.props
 		};
+	}
+
+	/** The active items. */
+	public get actives() {
+		let thisEffects = this.client.handlers.item.effects.get(this.data._id as Snowflake);
+		if (!thisEffects) thisEffects = this.updateEffects().client.handlers.item.effects.get(this.data._id as Snowflake);
+		
+		const actives = this.props.items.filter(i => i.isActive());
+		return actives.map(a => ({ item: a, effects: thisEffects.get(a.id) }));
 	}
 
 	/** Check if they own this item in their inventory. */

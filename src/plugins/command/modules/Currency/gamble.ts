@@ -19,7 +19,7 @@ export default class extends GambleCommand {
 		const state = this.checkArgs(bet, entry);
 		if (typeof state === 'string') return ctx.reply(state).then(() => false);
 
-		const { userD, botD } = this.roll(false);
+		const { userD, botD } = this.roll(true);
 		if (botD > userD || botD === userD) {
 			const { props } = await entry.removePocket(botD === userD ? 0 : bet).save()
 
