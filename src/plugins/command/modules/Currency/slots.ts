@@ -20,7 +20,7 @@ export default class extends GambleCommand {
 			crown: [3, 50],
 			trident: [4, 100],
 			fist: [4, 100],
-			fire: [multi, multi * 2],
+			fire: [multi, multi * 3],
 		});
 	}
 
@@ -32,7 +32,7 @@ export default class extends GambleCommand {
 		if (odds > 95) {
 			return Array(3).fill(first);
 		}
-		if (odds > 75) {
+		if (odds > 85) {
 			emojis = Array(3).fill(first);
 			const index = randomNumber(1, emojis.length) - 1;
 			const slots = Object.keys(this.slots(multi));
