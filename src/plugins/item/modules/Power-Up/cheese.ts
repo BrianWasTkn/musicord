@@ -9,7 +9,7 @@ export default class PowerUp extends PowerUpItem {
 				emoji: ':cheese:',
 				price: 10000,
 				intro: 'Lactose for bits?',
-				info: 'Give yourself tiny bits of permanent multipliers!',
+				info: 'Give yourself some bits of xp boost!',
 			},
 			config: {
 				push: true
@@ -20,6 +20,10 @@ export default class PowerUp extends PowerUpItem {
 				{ price: 50000 },
 			]
 		});
+	}
+
+	effect(effects: ItemEffects, entry: CurrencyEntry) {
+		return effects.setXPBoost(10);
 	}
 
 	async use(ctx: Context, entry: CurrencyEntry) {

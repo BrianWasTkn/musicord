@@ -8,7 +8,7 @@ export default class PowerUp extends PowerUpItem {
 				name: 'Crazy Dave\'s Taco',
 				emoji: ':taco:',
 				price: 25000,
-				intro: 'More gambling shinanigans.',
+				intro: 'Crazy for multipliers huh?',
 				info: 'Multis multis and multis for few hours!',
 			},
 			config: {

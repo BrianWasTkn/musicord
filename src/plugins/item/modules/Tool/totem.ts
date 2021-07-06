@@ -8,7 +8,7 @@ export default class Tool extends ToolItem {
 				name: 'Totem of Hearts',
 				emoji: ':heart:',
 				price: 10000,
-				intro: 'They say this item gives you a chance to dodge death...',
+				intro: 'Death dodger?',
 				info: 'Equip to prevent dying and not lose any cluster of your progress!'
 			},
 			config: {

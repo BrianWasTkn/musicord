@@ -5,8 +5,8 @@ export default class PowerUp extends PowerUpItem {
 	constructor() {
 		super('soda', {
 			assets: {
-				name: 'Coke',
-				emoji: ':coke:',
+				name: 'Lemon Soda',
+				emoji: ':tropical_drink:',
 				price: 20000,
 				intro: 'Premium shit droppin\' baby!',
 				info: 'Temporarily increase your potential in dropping keys when you use commands!',

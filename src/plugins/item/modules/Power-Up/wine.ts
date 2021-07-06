@@ -5,11 +5,11 @@ export default class PowerUp extends PowerUpItem {
 	constructor() {
 		super('wine', {
 			assets: {
-				name: 'Brian\'s Wine',
+				name: 'Red Wine',
 				emoji: ':wine_glass:',
 				price: 35000,
-				intro: 'Simply hack into your dice...',
-				info: 'Drink for temporary dice hax!',
+				intro: 'Just luck!',
+				info: 'Good luck on any kind of robberies, no negative bullshit included!',
 			},
 			config: {
 				duration: 1000 * 60 * 60 * 10,

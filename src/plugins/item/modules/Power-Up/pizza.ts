@@ -5,11 +5,11 @@ export default class PowerUp extends PowerUpItem {
 	constructor() {
 		super('pizza', {
 			assets: {
-				name: 'TJ\'s Pizza',
+				name: 'Pizza Hut',
 				emoji: ':pizza:',
 				price: 125000,
 				intro: 'Yummy experience orbs...',
-				info: 'Exp-erience the real meaning of grinding!',
+				info: 'Eat a pizza for xp to grind!',
 			},
 			config: {
 				duration: 1000 * 60 * 60 * 5,

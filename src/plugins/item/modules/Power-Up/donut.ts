@@ -9,7 +9,7 @@ export default class PowerUp extends PowerUpItem {
 				emoji: ':doughnut:',
 				price: 20000,
 				intro: 'Coin madness!',
-				info: 'Temporarily increase coin payouts for gambling commands!',	
+				info: 'Temporarily increase coin payouts in multiplier-based gambling commands!',	
 			},
 			config: {
 				duration: 1000 * 60 * 60 * 10,

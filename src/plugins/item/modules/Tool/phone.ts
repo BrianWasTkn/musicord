@@ -5,10 +5,10 @@ export default class Tool extends ToolItem {
 	constructor() {
 		super('phone', {
 			assets: {
-				name: 'Smort Phone',
+				name: 'Smart Phone',
 				emoji: ':mobile_phone:',
 				price: 6000,
-				intro: 'High-tech phone for bastards!',
+				intro: 'iPhone 13 release when?',
 				info: 'Contact anyone using your phone, anywhere!'
 			},
 			config: {

@@ -9,7 +9,7 @@ export default class Tool extends ToolItem {
 				emoji: ':lock:',
 				price: 3000,
 				intro: 'Secure your coins!',
-				info: 'Protect yourself from pesky robbers. Breaks away after some time.'
+				info: 'Almost full protection from the pesky robbers!'
 			},
 			config: {
 				usable: true,
