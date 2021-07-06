@@ -9,7 +9,7 @@ export class GambleCommand extends Command {
 		super(id, { 
 			category: 'Currency',
 			clientPermissions: ['EMBED_LINKS'],
-			cooldown: 1000,
+			cooldown: 500,
 			args: [
 				{ 
 					id: 'amount', 
