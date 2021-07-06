@@ -17,28 +17,28 @@ export default class extends Command {
 		});
 	}
 
-	get xp() {
-		return (xp: number) => ({
+	xp(xp: number) {
+		return {
 			next: Math.min((Math.trunc(xp / XP_COST) + 1) * XP_COST, MAX_LEVEL * XP_COST),
 			barable: Math.round((XP_COST - (this.xp(xp).next - xp)) / (XP_COST / 10)),
 			bar: this.client.util.progressBar(this.xp(xp).barValue),
-		});
+		};
 	}
 
-	get level() {
-		return (xp: number, level: number) => ({
+	level(xp: number, level: number) {
+		return {
 			next: Math.min(level + 1, MAX_LEVEL),
 			barable: Math.round((XP_COST - ((this.level(xp, level).next * XP_COST) - xp)) / (XP_COST / 10)),
 			bar: this.client.util.progressBar(this.level(xp, level).barable)
-		})
+		};
 	}
 
 	async exec(ctx: Context, { member }: { member: GuildMemberPlus }) {
 		const { progressBar } = ctx.client.util;
 
 		const exp = await ctx.currency.fetch(member.user.id).then(p => p.props.xp);
-		const level = Math.trunc(xp / XP_COST);
-		const levels = this.level(xp, level);
+		const level = Math.trunc(exp / XP_COST);
+		const levels = this.level(exp, level);
 		const xps = this.xp(exp);
 
 		const levelBar = `[${progressBar(levels.bar)}](https://discord.gg/invite/memer)`;
