@@ -22,7 +22,7 @@ export default class extends Command {
 		if (!item) return ctx.reply('You need to upgrade something!').then(() => false);
 
 		const inv = entry.items.get(item.id);
-		const isMax = item.upgrades.length - 1 === inv.level;
+		const isMax = inv.isMaxLevel();
 		const { upgrade, icon, premium } = inv.upgrade;
 		const e = premium ? 'keys' : 'coins';
 

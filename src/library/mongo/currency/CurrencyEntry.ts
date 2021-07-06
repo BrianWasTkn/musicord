@@ -121,7 +121,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		// Lava Channel
 		unlock('Lava Channel', 25, (ctx.channel as TextChannel).name.toLowerCase().includes('lava'));
 		// Maxed All Items
-		unlock('Powered Items', 10, this.items.every(i => i.isMaxLevel()));
+		unlock('Maxed All Items', 10, this.items.every(i => i.isMaxLevel()));
 
 		return { unlocked, all };
 	}

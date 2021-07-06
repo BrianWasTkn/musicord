@@ -71,6 +71,6 @@ export class Inventory extends Structure {
 	 * Check if they already maxed this item.
 	 */
 	isMaxLevel() {
-		return this.upgrade.level === this.module.upgrades.length;
+		return this.upgrade.level === this.module.upgrades.length - 1;
 	}
 }
