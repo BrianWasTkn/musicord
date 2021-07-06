@@ -15,9 +15,9 @@ export default class extends Command {
 		const comp = entry.items.get('computer');
 
 		if (comp.owned < 1) {
-			return ctx.reply(`LOL buy at least **1 ${comp.emoji} ${comp.name}** to post memes.`).then(() => false);
+			return ctx.reply(`LOL buy at least **1 ${comp.module.emoji} ${comp.module.name}** to post memes.`).then(() => false);
 		}
 
-		return comp.module.use(ctx).then(() => true);
+		return comp.module.use(ctx, entry).then(() => true);
 	}
 }
