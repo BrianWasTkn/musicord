@@ -12,6 +12,7 @@ export default class Tool extends ToolItem {
 				info: 'Equip to prevent dying and not lose any cluster of your progress!'
 			},
 			config: {
+				usable: true,
 				push: true,
 			},
 		});

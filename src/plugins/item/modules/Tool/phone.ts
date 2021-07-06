@@ -12,6 +12,7 @@ export default class Tool extends ToolItem {
 				info: 'Contact anyone using your phone, anywhere!'
 			},
 			config: {
+				usable: true,
 				push: true,
 			},
 		});
