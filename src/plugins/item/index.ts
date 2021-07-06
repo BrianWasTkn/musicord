@@ -6,6 +6,7 @@ export default new Plugin(
 		client, {
 			automateCategories: true,
 			classToHandle: Item,
+			debug: true,
 			directory: join(__dirname, 'modules'),
 			saleInterval: 1000 * 60 * 15,
 		}
