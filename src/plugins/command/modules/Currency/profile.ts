@@ -17,7 +17,7 @@ export default class extends Command {
 		});
 	}
 
-	xp(xp: number) {
+	xp(xp: number): { next: number, barable: number, bar: string; } {
 		return {
 			next: Math.min((Math.trunc(xp / XP_COST) + 1) * XP_COST, MAX_LEVEL * XP_COST),
 			barable: Math.round((XP_COST - (this.xp(xp).next - xp)) / (XP_COST / 10)),
@@ -25,7 +25,7 @@ export default class extends Command {
 		};
 	}
 
-	level(xp: number, level: number) {
+	level(xp: number, level: number): { next: number, barable: number, bar: string; } {
 		return {
 			next: Math.min(level + 1, MAX_LEVEL),
 			barable: Math.round((XP_COST - ((this.level(xp, level).next * XP_COST) - xp)) / (XP_COST / 10)),
