@@ -32,7 +32,7 @@ export default class extends GambleCommand {
 		if (odds > 97) {
 			return Array(3).fill(first);
 		}
-		if (odds > 90) {
+		if (odds > 85) {
 			emojis = Array(3).fill(first);
 			const index = randomNumber(1, emojis.length) - 1;
 			const slots = Object.keys(this.slots(multi));
