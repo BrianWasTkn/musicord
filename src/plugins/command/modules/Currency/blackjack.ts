@@ -180,7 +180,7 @@ export default class extends GambleCommand {
 				content: !final
 					? `${first ? 'What do you want to do?\n' : ''
 					}Type \`h\` to **hit**, type \`s\` to **stand**, or type \`e\` to **end** the game.`
-					: '',
+					: null,
 				embed: {
 					author: {
 						name: `${ctx.author.username}'s${state ? ` ${state} ` : ' '
