@@ -41,11 +41,11 @@ export default class extends Command {
 
 		if (!Object.values(current).every(c => c >= 100)) {
 			return ctx.reply({ embed: {
-				author: { name: `Prestige ${ctx.client.util.romanize(next.prestige)} Requirements` },
+				author: { name: `Prestige ${next.prestige} Requirements for ${ctx.author.username}` },
 				color: 'RANDOM', description: [
-					`**Pocket Amount:** \`${pocket.toLocaleString()}/${next.pocket.toLocaleString()}\` \`(${current.pocket}%)\``,
-					`**Levels Required:** \`${Math.trunc(xp / XP_COST).toLocaleString()}/${next.level.toLocaleString()}\` \`(${current.level}%)\``,
-				].join('\n')
+					`**Pocket Amount**: \`${pocket.toLocaleString()}/${next.pocket.toLocaleString()}\` \`(${current.pocket}%)\``,
+					`**Levels Required**: \`${Math.trunc(xp / XP_COST).toLocaleString()}/${next.level.toLocaleString()}\` \`(${current.level}%)\``,
+				].join('\n'), footer: { text: 'Imagine thinking you can prestige already' }
 			}}).then(() => false);
 		}
 

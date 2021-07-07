@@ -21,9 +21,8 @@ export default class extends Command {
 				{
 					id: 'gamble',
 					match: 'flag',
-					type: 'boolean',
 					flag: ['--gamble'],
-					default: false
+					default: null
 				}
 			]
 		});

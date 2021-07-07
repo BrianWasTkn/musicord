@@ -23,7 +23,7 @@ export default class extends Command {
 			description: `**${won.toLocaleString()} coins** were placed in your pocket.`,
 			color: 'BLUE',
 			footer: {
-				text: `Multiplier Bonus: +${multi}% (+${(won - raw).toLocaleString()} bonus)}`,
+				text: `Multiplier Bonus: +${multi}% (+${(won - raw).toLocaleString()} bonus)`,
 			},
 		}}).then(() => true);
 	}
