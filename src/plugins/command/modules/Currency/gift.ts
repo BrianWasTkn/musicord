@@ -51,7 +51,7 @@ export default class extends Command {
 		if (amount > inv.owned) {
 			return ctx.reply(`You only have ${inv.owned.toLocaleString()} of this don't try and lie to me.`).then(() => false);
 		}
-		if (amount > MAX_INVENTORY - inv.owned) {
+		if (amount > MAX_INVENTORY - inv2.owned) {
 			return ctx.reply(`Hey! They already have over ${MAX_INVENTORY.toLocaleString()} of this item. That's the cap.`).then(() => false);
 		}
 
