@@ -21,6 +21,7 @@ export default class extends Command {
 				{
 					id: 'gamble',
 					match: 'flag',
+					type: 'boolean',
 					flag: ['--gamble'],
 					default: false
 				}
@@ -56,18 +57,18 @@ export default class extends Command {
 				color: 'GREEN', fields: [...entry.props.gambles.map(g => ({
 					inline: true, name: `${g.id.toUpperCase()} (${(g.wins + g.loses).toLocaleString()})`,
 					value: [
-						`**Won:** ${g.won.toLocaleString()}`,
-						`**Lost:** ${g.lost.toLocaleString()}`,
-						`**Net:** ${(g.won - g.lost).toLocaleString()}`,
-						`**Win:** ${Math.round(100 * (g.wins / (g.wins + g.loses))).toLocaleString()}`,
+						`Won: ${g.won.toLocaleString()}`,
+						`Lost: ${g.lost.toLocaleString()}`,
+						`Net: ${(g.won - g.lost).toLocaleString()}`,
+						`Win: ${Math.round(100 * (g.wins / (g.wins + g.loses))).toLocaleString()}%`,
 					].join('\n')
 				})), {
 					inline: true, name: `TOTAL (${(loses + wins).toLocaleString()})`,
 					value: [
-						`**Won:** ${won.toLocaleString()}`,
-						`**Lost:** ${lost.toLocaleString()}`,
-						`**Net:** ${(won - lost).toLocaleString()}`,
-						`**Win:** ${Math.round(100 * (wins / (wins + loses))).toLocaleString()}`,
+						`Won: ${won.toLocaleString()}`,
+						`Lost: ${lost.toLocaleString()}`,
+						`Net: ${(won - lost).toLocaleString()}`,
+						`Win: ${Math.round(100 * (wins / (wins + loses))).toLocaleString()}%`,
 					].join('\n')
 				}]
 			}}).then(() => false);
