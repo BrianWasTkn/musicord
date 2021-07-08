@@ -13,6 +13,7 @@ const CribSchema = new Schema({
 		id: build(String, 'default'),
 		amount: build(Number, 0),
 		count: build(Number, 0),
+		donations: [Number]
 	}],
 
 	booster: {

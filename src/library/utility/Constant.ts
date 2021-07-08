@@ -49,6 +49,14 @@ const Currency = {
 };
 
 /**
+ * Spawner stuff.
+ */
+const Spawner = {
+	UNPAIDS_CAP: 100000,
+	COOLDOWN: 60000,
+};
+
+/**
  * Gamble messages. 
 */
 const GambleMessages = {
@@ -95,4 +103,4 @@ const Emojis = {
 	SQUARE_GREEN: '<:memerGreen:729863510296887398>',
 };
 
-export { Emojis, Colors, Currency, GambleMessages, ItemMessages };
+export { Emojis, Colors, Currency, Spawner, GambleMessages, ItemMessages };

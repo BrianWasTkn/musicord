@@ -14,7 +14,7 @@ export class CribEndpoint extends Endpoint<CribProfile> {
 		const updated: Donation[] = [];
 		for (const mod of this.client.handlers.donation.modules.values()) {
 			if (!doc.donations.find(i => i.id === mod.id)) {
-				doc.donations.push({ id: mod.id, amount: 0, count: 0 });
+				doc.donations.push({ id: mod.id, amount: 0, count: 0, donations: [] });
 				updated.push(mod);
 			}
 		}
