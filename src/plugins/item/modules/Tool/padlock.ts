@@ -28,7 +28,7 @@ export default class Tool extends ToolItem {
 		return ctx.reply({ embed: {
 			description: `Your ${this.id} will automatically break in ${parseTime(duration / 1000)}`,
 			color: 'YELLOW', author: { name: `You activated your ${this.name}!` },
-			footer: { text: `Coin Bonus: ${won.toLocaleString()}` }
+			footer: { text: `Coin Bonus: +${won.toLocaleString()} coins` }
 		}});
 	}
 }

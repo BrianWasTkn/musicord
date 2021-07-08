@@ -22,7 +22,7 @@ export default class extends Command {
 				{
 					id: 'gamble',
 					match: 'flag',
-					flag: ['--gamble', '-a'],
+					flag: ['--gamble', '-g'],
 					default: null
 				},
 				{
@@ -83,7 +83,7 @@ export default class extends Command {
 		if (active) {
 			const actives = entry.actives.map(active => {
 				const { emoji, name } = active.item.upgrade;
-				const expireMS = Date.now() - active.item.expiration;
+				const expireMS = active.item.expiration - Date.now();
 				const time = ctx.client.util.parseTime(Math.round(expireMS), true);
 				return `**${emoji} ${name}** expires in ${time}`;
 			});
