@@ -3,7 +3,7 @@ import { Quest } from 'lava/index';
 export default class extends Quest {
 	constructor() {
 		super('buy', {
-			name: 'Buy It',
+			name: 'Shop Boogaloo',
 			method: 'buy',
 			command: 'buy',
 			target: 1,
