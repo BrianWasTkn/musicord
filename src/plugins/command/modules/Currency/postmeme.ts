@@ -14,7 +14,7 @@ export default class extends Command {
 		const entry = await ctx.currency.fetch(ctx.author.id);
 		const comp = entry.props.items.get('computer');
 
-		if (comp.isOwned()) {
+		if (!comp.isOwned()) {
 			return ctx.reply(`You need **1 ${comp.module.emoji} ${comp.module.name}** to post memes.`).then(() => false);
 		}
 
