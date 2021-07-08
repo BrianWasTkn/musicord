@@ -12,13 +12,13 @@ export default class PowerUp extends PowerUpItem {
 				info: 'Temporarily increase your potential in dropping keys when you use commands!',
 			},
 			config: {
-				duration: 1000 * 60 * 60 * 5,
+				duration: 1000 * 60 * 5,
 				push: true
 			},
 			upgrades: [
-				{ price: 28000, duration: 1000 * 60 * 60 * 7 },
-				{ price: 40000, duration: 1000 * 60 * 60 * 10 },
-				{ price: 60000, duration: 1000 * 60 * 60 * 15 },
+				{ price: 28000, duration: 1000 * 60 * 7 },
+				{ price: 40000, duration: 1000 * 60 * 10 },
+				{ price: 60000, duration: 1000 * 60 * 15 },
 			]
 		});
 	}
@@ -28,6 +28,16 @@ export default class PowerUp extends PowerUpItem {
 	}
 
 	async use(ctx: Context, entry: CurrencyEntry) {
-		
+		const { parseTime, randomNumber } = ctx.client.util;
+		const duration = this.getDuration(entry);
+		const expire = Date.now() + duration;
+		const won = randomNumber(100, 1000);
+
+		await entry.addPocket(won).activateItem(this.id, expire).save();
+		return ctx.reply({ embed: {
+			description: `Your ${this.id} will begone in ${parseTime(duration / 1000)}`,
+			color: 'FUCHSIA', author: { name: `You activated your ${this.name}!` },
+			footer: { text: `Coin Bonus: +${won.toLocaleString()} coins` }
+		}});
 	}
 }

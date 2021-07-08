@@ -12,13 +12,13 @@ export default class PowerUp extends PowerUpItem {
 				info: 'Multis multis and multis for few hours!',
 			},
 			config: {
-				duration: 1000 * 60 * 60 * 60,
+				duration: 1000 * 60 * 60,
 				push: true
 			},
 			upgrades: [
-				{ price: 30000, duration: 1000 * 60 * 60 * 60 * 3 },
-				{ price: 50000, duration: 1000 * 60 * 60 * 60 * 6 },
-				{ price: 75000, duration: 1000 * 60 * 60 * 60 * 12 },
+				{ price: 30000, duration: 1000 * 60 * 60 * 3 },
+				{ price: 50000, duration: 1000 * 60 * 60 * 6 },
+				{ price: 75000, duration: 1000 * 60 * 60 * 12 },
 			]
 		});
 	}
@@ -28,6 +28,17 @@ export default class PowerUp extends PowerUpItem {
 	}
 
 	async use(ctx: Context, entry: CurrencyEntry) {
-		
+		const { parseTime, randomNumber } = ctx.client.util;
+		const duration = this.getDuration(entry);
+		const expire = Date.now() + duration;
+		const won = randomNumber(100, 1000);
+		const multi = 15;
+
+		await entry.addPocket(won).setItemMulti(this.id, multi).activateItem(this.id, expire).save();
+		return ctx.reply({ embed: {
+			description: `Your ${this.id} will begone in ${parseTime(duration / 1000)}`,
+			color: 'FUCHSIA', author: { name: `You activated your ${this.name}!` },
+			footer: { text: `Coin Bonus: +${won.toLocaleString()} coins` }
+		}});
 	}
 }

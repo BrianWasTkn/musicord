@@ -84,7 +84,7 @@ export default class extends Command {
 			const actives = entry.actives.map(active => {
 				const { emoji, name } = active.item.upgrade;
 				const expireMS = active.item.expiration - Date.now();
-				const time = ctx.client.util.parseTime(Math.round(expireMS), true);
+				const time = ctx.client.util.parseTime(Math.round(expireMS / 1e3), true);
 				return `**${emoji} ${name}** expires in ${time}`;
 			});
 

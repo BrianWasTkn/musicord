@@ -64,14 +64,14 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		// Memers Crib
 		unlock(ctx.guild.name, 25, ctx.guild.id === '691416705917779999');
 		// Nitro Booster
-		unlock('Nitro Booster', 10, !!ctx.member.roles.premiumSubscriberRole?.id);
+		unlock('Nitro Booster', 15, !!ctx.member.roles.premiumSubscriberRole?.id);
 		// Mastery 1 and up
-		unlock('Crib Mastery Rank', 3, ctx.member.roles.cache.has('794834783582421032'));
+		unlock('Crib Mastery Rank', 6, ctx.member.roles.cache.has('794834783582421032'));
 		// Has 1 of every item
 		unlock('Item Collector', this.props.items.size, this.props.items.every(i => i.isOwned()));
 
 		// Item Effects
-		this.props.items.filter(i => i.isActive() && i.multiplier > 0).forEach(i => {
+		this.props.items.forEach(i => {
 			return unlock(i.module.name, i.multiplier, i.isActive() && i.multiplier >= 1);
 		});
 
@@ -102,6 +102,10 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		unlock('Maxed All Items', 15, this.props.items.every(i => i.isMaxLevel()));
 		// 10x of Max Inventory
 		unlock('Item Collector Plus', this.props.items.size * 2, this.props.items.filter(i => i.owned >= Currency.MAX_INVENTORY).size >= 10);
+		// 1T Space
+		unlock('Billion Storage', 10, this.props.space >= 1000e6);
+		// 1T Space
+		unlock('Trillion Storage', 20, this.props.space >= 1e12);
 
 		return { unlocked, all };
 	}
