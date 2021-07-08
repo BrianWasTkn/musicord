@@ -23,7 +23,7 @@ export interface PowerItemOptions extends Omit<ItemOptions, 'assets' | 'config' 
 
 export abstract class PowerUpItem extends Item {
 	/** The duration of this power-up. */
-	public duration: number;
+	public duration: number[];
 
 	/**
 	 * Construct this powershit.
@@ -44,7 +44,7 @@ export abstract class PowerUpItem extends Item {
 			upgrades: options.upgrades?.map(up => ({ sell: 0.1, ...up })) ?? [],
 		});
 
-		this.duration = config?.duration ?? 0;
+		this.duration = [config.duration, ...options.upgrades.map(up => up.duration ?? config.duration ?? 0)];
 	}
 
 	public effect(effects: ItemEffects, entry?: CurrencyEntry): ItemEffects {
@@ -52,7 +52,7 @@ export abstract class PowerUpItem extends Item {
 	}
 
 	public getUpgrade(thisInv: Inventory) {
-		return super.getUpgrade(thisInv) as ReturnType<Item['getUpgrade']> & PowerItemUpgrades;
+		return { ...super.getUpgrade(thisInv), duration: this.duration[thisInv.level] } as ReturnType<Item['getUpgrade']> & PowerItemUpgrades;
 	}
 
 	public getDuration(entry: CurrencyEntry) {
