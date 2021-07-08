@@ -74,7 +74,7 @@ export class Command extends OldCommand implements AbstractModule {
 	/**
 	 * Make use of currency events.
 	 */
-	public async before(ctx: Context) {
+	public async event(ctx: Context) {
 		if (this.category.id !== 'Currency') return;
 		if (this.handler.events.get(ctx.channel.id)) return;
 

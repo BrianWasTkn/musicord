@@ -223,6 +223,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	*/
 	private calc() {
 		const maxLevel = Currency.MAX_LEVEL * Currency.XP_COST;
+		// const xpBoosts = this.actives.find(i => i.effects.entities.xpBoost.length > 0); 
 
 		return {
 			xp: (space = false, additional = 0) => {
