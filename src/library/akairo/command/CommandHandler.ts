@@ -112,7 +112,7 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 
 		const cooldown: Cooldown = entry.cooldowns.get(command.id);
 		const diff = cooldown.expiresAt - context.createdTimestamp;
-		if (diff > 0) {
+		if (diff >= 1) {
 			this.emit(CommandHandlerEvents.COOLDOWN, context, command, diff);
 			return true;
 		}

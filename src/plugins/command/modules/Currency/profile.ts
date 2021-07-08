@@ -91,7 +91,7 @@ export default class extends Command {
 			return ctx.channel.send({ embed: {
 				author: { name: `${member.user.username}'s active items` },
 				color: 'BLUE', description: actives.length > 0 ? actives.join('\n') : `No active items.`
-			}})
+			}}).then(() => false);
 		}
 
 		const exp = entry.props.xp;
