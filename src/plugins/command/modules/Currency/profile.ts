@@ -4,6 +4,7 @@ const { MAX_LEVEL, XP_COST } = Currency;
 interface ProfileArgs {
 	member: GuildMemberPlus;
 	gamble: boolean;
+	active: boolean;
 }
 
 export default class extends Command {
@@ -21,7 +22,13 @@ export default class extends Command {
 				{
 					id: 'gamble',
 					match: 'flag',
-					flag: ['--gamble'],
+					flag: ['--gamble', '-a'],
+					default: null
+				},
+				{
+					id: 'active',
+					match: 'flag',
+					flag: ['--active', '-a'],
 					default: null
 				}
 			]
@@ -40,7 +47,7 @@ export default class extends Command {
 		return { next, barable, bar: this.client.util.progressBar(barable) };
 	}
 
-	async exec(ctx: Context, { member, gamble }: ProfileArgs) {
+	async exec(ctx: Context, { member, gamble, active }: ProfileArgs) {
 		const { progressBar } = ctx.client.util;
 
 		const entry = await ctx.currency.fetch(member.user.id);
@@ -71,6 +78,20 @@ export default class extends Command {
 					].join('\n')
 				}]
 			}}).then(() => false);
+		}
+
+		if (active) {
+			const actives = entry.actives.map(active => {
+				const { emoji, name } = active.item.upgrade;
+				const expireMS = Date.now() - active.item.expiration;
+				const time = ctx.client.util.parseTime(Math.round(expireMS), true);
+				return `**${emoji} ${name}** expires in ${time}`;
+			});
+
+			return ctx.channel.send({ embed: {
+				author: { name: `${member.user.username}'s active items` },
+				color: 'BLUE', description: actives.length > 0 ? actives.join('\n') : `No active items.`
+			}})
 		}
 
 		const exp = entry.props.xp;

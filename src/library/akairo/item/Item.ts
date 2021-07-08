@@ -144,7 +144,7 @@ export abstract class Item extends AbstractModule {
 		this.premium = config.premium ?? false;
 		this.buyable = config.buyable ?? true;
 		this.sellable = config.sellable ?? true;
-		this.usable = config.usable ?? false;
+		this.usable = config.usable ?? true;
 		this.giftable = config.giftable ?? true;
 		this.shop = config.shop ?? true;
 		this.sale = config.sale ?? true;

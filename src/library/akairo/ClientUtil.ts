@@ -210,10 +210,6 @@ export class ClientUtil<Client extends LavaClient = never> extends OldClientUtil
 		}
 
 		const filtered = timeStr.filter(ts => !ts.startsWith('0'));
-		return filtered.length >= 2
-			? filtered.join(' and ')
-			: filtered.length >= 3
-				? and(filtered).join(', ')
-				: filtered.join(', ');
+		return filtered.length > 1 ? and(filtered).join(', ') : filtered[0];
 	}
 }

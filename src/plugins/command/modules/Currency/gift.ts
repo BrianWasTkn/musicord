@@ -42,6 +42,9 @@ export default class extends Command {
 		if (amount < 1 || !ctx.client.util.isInteger(amount) || amount !== Math.trunc(amount)) {
 			return ctx.reply(`It needs to be a whole number greater than 0 yeah?`).then(() => false);
 		}
+		if (!item.giftable) {
+			return ctx.reply(`You can't gift this item :thinking:`).then(() => false);
+		}
 
 		const entry = await ctx.currency.fetch(ctx.author.id);
 		const entry2 = await ctx.currency.fetch(member.user.id);
@@ -51,7 +54,7 @@ export default class extends Command {
 		if (amount > inv.owned) {
 			return ctx.reply(`You only have ${inv.owned.toLocaleString()} of this don't try and lie to me.`).then(() => false);
 		}
-		if (amount > MAX_INVENTORY - inv2.owned) {
+		if (MAX_INVENTORY <= inv2.owned) {
 			return ctx.reply(`Hey! They already have over ${MAX_INVENTORY.toLocaleString()} of this item. That's the cap.`).then(() => false);
 		}
 
