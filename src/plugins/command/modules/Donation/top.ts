@@ -27,7 +27,7 @@ export default class extends Command {
 		const docs = await ctx.crib.model.find({}).exec().then(d => d.map(e => new CribEntry(ctx.crib, e)));
 		const pages = ctx.client.util.paginateArray(docs.filter(d => {
 			return ctx.guild.members.cache.has(d.data._id as Snowflake);
-		}).sort((a, b) => {
+		}).filter(d => d.donos.get(event.id).amount > 0).sort((a, b) => {
 			const x = a.donos.get(event.id);
 			const y = b.donos.get(event.id);
 			return y.amount - x.amount;
@@ -36,7 +36,7 @@ export default class extends Command {
 			const emoji = Array(3).fill('moneybag')[i] ?? 'small_red_triangle';
 			const dono = d.donos.get(event.id);
 			return `**:${emoji}: ${dono.amount.toLocaleString()}** - ${user.user.tag ?? 'Unknown User'}`;
-		}));
+		}), 10);
 
 		if (!pages[page - 1]) {
 			return ctx.reply(`Page \`${page}\` doesn't exist.`).then(() => false);
@@ -49,9 +49,6 @@ export default class extends Command {
 			},
 			color: 'BLUE',
 			description: pages[page - 1].join('\n'),
-			footer: {
-				text: `Page ${page} of ${pages.length}`
-			}
 		}}).then(() => false);
 	}
 }

@@ -31,7 +31,7 @@ export default class extends Command {
 			value: [
 				`Donations Recorded: **${d.records.length.toLocaleString()}**`,
 				`Amount Donated: **${d.amount.toLocaleString()}**`,
-				`Highest Donation: **${d.records.sort((a, b) => b - a)[0].toLocaleString()}**`
+				`Highest Donation: **${(d.records.sort((a, b) => b - a) ?? [0])[0].toLocaleString()}**`
 			].join('\n')
 		})), 1);
 
@@ -39,7 +39,7 @@ export default class extends Command {
 			return ctx.reply(`Page \`${page}\` doesn't exist.`).then(() => false);
 		}
 
-		const recorded = entry.donos.reduce((p, c) => p + c.records.length , 0);
+		const recorded = entry.donos.reduce((p, c) => p + c.records.length, 0);
 		const donated = entry.donos.reduce((p, c) => p + c.amount, 0);
 
 		return ctx.channel.send({ embed: {
