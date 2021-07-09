@@ -1,5 +1,6 @@
 import { Endpoint, UserEntry, CurrencyEntry } from 'lava/mongo';
 import { Item, Command } from 'lava/akairo';
+import { Snowflake } from 'discord.js';
 import { UserPlus } from 'lava/discord';
 
 export interface CurrencyEndpointEvents {
