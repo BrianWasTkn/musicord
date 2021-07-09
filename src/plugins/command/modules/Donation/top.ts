@@ -1,4 +1,4 @@
-import { Command, Context, Donation } from 'lava/index';
+import { Command, Context, Donation, CribEntry } from 'lava/index';
 import { Snowflake } from 'discord.js';
 
 export default class extends Command {
