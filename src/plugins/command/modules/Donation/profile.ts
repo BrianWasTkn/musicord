@@ -25,13 +25,13 @@ export default class extends Command {
 	}
 
 	async exec(ctx: Context, { member, page }: { member: GuildMemberPlus, page: number; }) {
-		const entry = await ctx.crib.fetch(ctx.author.id);
+		const entry = await ctx.crib.fetch(member.user.id);
 		const pages = ctx.client.util.paginateArray(entry.donos.map(d => ({
 			name: `${d.module.name} Donations`,
 			value: [
 				`Donations Recorded: **${d.records.length.toLocaleString()}**`,
 				`Amount Donated: **${d.amount.toLocaleString()}**`,
-				`Average Donation: **${Math.round(d.records.reduce((p, r) => p + r, 0) / d.records.length).toLocaleString()}`
+				`Average Donation: **${Math.round(d.records.reduce((p, r) => p + r, 0) / d.records.length).toLocaleString()}**`
 			].join('\n')
 		})), 1);
 
@@ -44,7 +44,7 @@ export default class extends Command {
 				name: `${member.user.username}'s donations`,
 				iconURL: member.user.avatarURL({ dynamic: true })
 			},
-			color: member.roles.highest.color ?? 'BLUE',
+			color: 'BLUE',
 			fields: pages[page - 1],
 			footer: {
 				text: `Page ${page} of ${pages.length}`
