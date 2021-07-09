@@ -9,17 +9,15 @@ export default class extends Command {
 			staffOnly: true,
 			args: [
 				{
-					id: 'member',
-					type: 'member',
-					default: (c: Context) => c.member,
-					unordered: true,
-				},
-				{
 					id: 'page',
 					type: 'number',
 					default: 1,
-					unordered: true,
 				}
+				{
+					id: 'member',
+					type: 'member',
+					default: (c: Context) => c.member,
+				},
 			]
 		});
 	}
