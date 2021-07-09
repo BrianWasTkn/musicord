@@ -31,7 +31,7 @@ export default class extends Command {
 			value: [
 				`Donations Recorded: **${d.records.length.toLocaleString()}**`,
 				`Amount Donated: **${d.amount.toLocaleString()}**`,
-				`Average Donation: **${Math.round(d.records.reduce((p, r) => p + r, 0) / d.records.length).toLocaleString()}**`
+				`Highest Donation: **${d.records.sort((a, b) => b - a)[0].toLocaleString()}**`
 			].join('\n')
 		})), 1);
 
@@ -39,13 +39,25 @@ export default class extends Command {
 			return ctx.reply(`Page \`${page}\` doesn't exist.`).then(() => false);
 		}
 
+		const recorded = entry.donos.reduce((p, c) => p + c.records.length , 0);
+		const donated = entry.donos.reduce((p, c) => p + c.amount, 0);
+
 		return ctx.channel.send({ embed: {
 			author: {
 				name: `${member.user.username}'s donations`,
 				iconURL: member.user.avatarURL({ dynamic: true })
 			},
 			color: 'BLUE',
-			fields: pages[page - 1],
+			fields: [
+				{
+					name: 'Total Donations',
+					value: [
+						`Donations Recorded: **${recorded.toLocaleString()}**`,
+						`Amount Donated: **${donated.toLocaleString()}**`,
+					],
+				},
+				...pages[page - 1]
+			],
 			footer: {
 				text: `Page ${page} of ${pages.length}`
 			}

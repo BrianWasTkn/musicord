@@ -27,6 +27,10 @@ export default class extends Command {
 		const docs = await ctx.crib.model.find({}).exec().then(d => d.map(e => new CribEntry(ctx.crib, e)));
 		const pages = ctx.client.util.paginateArray(docs.filter(d => {
 			return ctx.guild.members.cache.has(d.data._id as Snowflake);
+		}).sort((a, b) => {
+			const x = a.donos.get(event.id);
+			const y = b.donos.get(event.id);
+			return y.amount - x.amount;
 		}).map((d, i) => {
 			const user = ctx.guild.members.cache.get(d.data._id as Snowflake);
 			const emoji = Array(3).fill('moneybag')[i] ?? 'small_red_triangle';
