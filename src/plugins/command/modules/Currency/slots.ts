@@ -20,12 +20,12 @@ export default class extends GambleCommand {
 			crown: [10, 100],
 			trident: [10, 100],
 			fist: [10, 100],
-			fire: [multi, multi * 3],
+			fire: [multi, multi * 2],
 		});
 	}
 
 	getSlots(emojis: string[], multi: number) {
-		const { randomInArray, randomNumber, deepFilter } = this.client.util;
+		const { randomInArray, randomsInArray, randomNumber, deepFilter } = this.client.util;
 		const first = randomInArray(emojis);
 		const odds = randomNumber(1, 100);
 
@@ -33,20 +33,10 @@ export default class extends GambleCommand {
 			return Array(3).fill(first);
 		}
 		if (odds > 90) {
-			emojis = Array(3).fill(first);
-			const index = randomNumber(1, emojis.length) - 1;
-			const slots = Object.keys(this.slots(multi));
-			emojis[index] = randomInArray(slots.filter(e => e !== first));
-			return emojis;
+			return [...randomsInArray(emojis), first].sort(() => Math.random() * 0.5);
 		}
 
-		let second: string;
-		const map = (_: string, index: number) => {
-			if (index === 0) return second = randomInArray(deepFilter(emojis, [first]));
-			return randomInArray(deepFilter(emojis, [first, second]));
-		}
-
-		return [first, ...Array(2).fill(first).map(map)];
+		return randomsInArray(emojis, 3);
 	}
 
 	async exec(ctx: Context, args: { amount: string | number }) {

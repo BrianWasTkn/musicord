@@ -126,6 +126,15 @@ export default class extends Command {
 						`**Bank:** ${entry.props.vault.amount.toLocaleString()}`,
 						`**Multi:** ${entry.calcMulti(ctx).unlocked.reduce((p, c) => p + c.value, 0)}%`
 					].join('\n')
+				},
+				{
+					name: 'Inventory',
+					inline: true,
+					value: `\`${entry.props.items.filter(i => i.isOwned()).size}\` items (${
+						entry.props.items.reduce((p, i) => i.owned + p, 0).toLocaleString()
+					} total) worth \`${
+						entry.props.items.reduce((p, i) => p + (i.owned * i.upgrade.price), 0).toLocaleString()
+					}\` coins`,
 				}
 			]
 		}}).then(() => false);
