@@ -26,12 +26,12 @@ export default class extends Command {
 	async exec(ctx: Context, { event, page }: { event: Donation, page: number; }) {
 		const docs = await ctx.crib.model.find({}).exec().then(d => d.map(e => new CribEntry(ctx.crib.model, e)));
 		const pages = ctx.client.util.paginateArray(docs.filter(d => {
-			return ctx.guild.members.cache.has(d._id as Snowflake);
+			return ctx.guild.members.cache.has(d.data._id as Snowflake);
 		}).map((d, i) => {
-			const user = ctx.guild.members.cache.get(d._id as Snowflake);
+			const user = ctx.guild.members.cache.get(d.data._id as Snowflake);
 			const emoji = Array(3).fill('moneybag')[i] ?? 'small_red_triangle';
 			const dono = d.donos.get(event.id);
-			return `**:${emoji}: **${dono.amount.toLocaleString()}** - ${user.tag ?? 'Unknown User'}`;
+			return `**:${emoji}: **${dono.amount.toLocaleString()}** - ${user.user.tag ?? 'Unknown User'}`;
 		}));
 
 		if (!pages[page - 1]) {
