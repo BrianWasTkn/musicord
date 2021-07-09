@@ -12,15 +12,15 @@ export default class extends GambleCommand {
 
 	get slots() {
 		return (multi: number) => ({
-			coin: [5, 50],
-			gem: [5, 50],
-			medal: [5, 50],
-			ring: [5, 50],
-			trophy: [10, 100],
-			crown: [10, 100],
-			trident: [10, 100],
-			fist: [10, 100],
-			fire: [multi, multi * 2],
+			coin: [25, 50],
+			gem: [25, 50],
+			medal: [25, 50],
+			ring: [25, 50],
+			trophy: [50, 100],
+			crown: [50, 100],
+			trident: [50, 100],
+			fist: [50, 100],
+			fire: [multi * 5, multi * 10],
 		});
 	}
 
@@ -85,7 +85,7 @@ export default class extends GambleCommand {
 					`You now have **${props.pocket.toLocaleString()}**.`
 				].join('\n'),
 				footer: {
-					text: 'winner winner'
+					text: length === 1 ? 'poggers' : 'winner winner'
 				}
 			}
 		}).then(() => true);
