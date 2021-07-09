@@ -9,9 +9,10 @@ export default class Tool extends ToolItem {
 				emoji: ':lock:',
 				price: 3000,
 				intro: 'Secure your coins!',
-				info: 'Protect yourself from pesky robbers. Breaks away after some time.'
+				info: 'Almost full protection from the pesky robbers!'
 			},
 			config: {
+				usable: true,
 				push: true,
 			},
 		});
@@ -27,7 +28,7 @@ export default class Tool extends ToolItem {
 		return ctx.reply({ embed: {
 			description: `Your ${this.id} will automatically break in ${parseTime(duration / 1000)}`,
 			color: 'YELLOW', author: { name: `You activated your ${this.name}!` },
-			footer: { text: `Coin Bonus: ${won.toLocaleString()}` }
+			footer: { text: `Coin Bonus: +${won.toLocaleString()} coins` }
 		}});
 	}
 }

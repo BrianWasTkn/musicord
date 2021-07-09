@@ -3,7 +3,12 @@
  * @author BrianWasTaken
 */
 
-import { UserEntry } from 'lava/mongo';
+import { UserEntry, SpawnEndpoint } from 'lava/mongo';
+
+export declare interface SpawnEntry extends UserEntry<SpawnProfile> {
+  /** The endpoint of this entry. */
+  endpoint: SpawnEndpoint;
+} 
 
 export class SpawnEntry extends UserEntry<SpawnProfile> {
 	/**
@@ -16,7 +21,7 @@ export class SpawnEntry extends UserEntry<SpawnProfile> {
 	/**
 	 * Manage their unpaids.
 	*/
-	balance(amount: number) {
+	private balance(amount: number) {
 		return {
 			add: () => {
 				this.data.unpaids += amount;
@@ -32,7 +37,7 @@ export class SpawnEntry extends UserEntry<SpawnProfile> {
 	/**
 	 * Manage their joined events.
 	*/
-	joined(inc = 1) {
+	private joined(inc = 1) {
 		return {
 			increment: () => {
 				this.data.joined += inc;

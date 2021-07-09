@@ -21,8 +21,8 @@ export default class extends Command {
 		const entry = await ctx.currency.fetch(ctx.author.id);
 		if (!item) return ctx.reply('You need to upgrade something!').then(() => false);
 
-		const inv = entry.items.get(item.id);
-		const isMax = item.upgrades.length - 1 === inv.level;
+		const inv = entry.props.items.get(item.id);
+		const isMax = inv.isMaxLevel();
 		const { upgrade, icon, premium } = inv.upgrade;
 		const e = premium ? 'keys' : 'coins';
 
@@ -42,11 +42,11 @@ export default class extends Command {
 			return ctx.reply({ embed: { color: 'INDIGO', description: 'ok then.' }}).then(() => false);
 		}
 
-		const newInv = await entry.removePocket(inv.upgrade.upgrade).upgradeItem(item.id).save().then(e => e.items.get(item.id));
+		const newInv = await entry.removePocket(inv.upgrade.upgrade).upgradeItem(item.id).save().then(e => e.props.items.get(item.id));
 		return ctx.reply({ embed: {
 			color: 'GREEN', author: { 
 				name: `${inv.upgrade.name} finally reached ${
-					isMax ? 'max level' : `level ${newInv.level}`
+					newInv.isMaxLevel() ? 'MAX LEVEL' : `Level ${newInv.level}`
 				}!`,
 				iconURL: ctx.author.avatarURL({ 
 					dynamic: true 

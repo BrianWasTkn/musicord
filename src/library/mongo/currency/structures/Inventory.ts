@@ -61,16 +61,16 @@ export class Inventory extends Structure {
 	}
 
 	/**
-	 * Check if they own this item and expiration date is ahead of now.
+	 * Check if expiration date is ahead of now.
 	 */
 	isActive() {
-		return this.isOwned() && this.expiration > Date.now();
+		return this.expiration > Date.now();
 	}
 
 	/**
 	 * Check if they already maxed this item.
 	 */
 	isMaxLevel() {
-		return this.upgrade.level === this.module.upgrades[this.upgrade.level].level;
+		return this.upgrade.level === this.module.upgrades.length - 1;
 	}
 }

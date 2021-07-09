@@ -1,6 +1,6 @@
 import { Message, MessageCollector, ReactionCollector, CollectorFilter, Collection, TextChannel } from 'discord.js';
 import { AbstractHandler, AbstractHandlerOptions, LavaClient } from 'lava/akairo';
-import { Context, GuildMemberPlus } from 'lava/index';
+import { Context, GuildMemberPlus, Spawner } from 'lava/index';
 import { Spawn } from '.';
 
 export class SpawnHandler extends AbstractHandler<Spawn> {
@@ -47,7 +47,7 @@ export class SpawnHandler extends AbstractHandler<Spawn> {
 				const string = this.client.util.randomInArray(spawn.display.strings);
 				const filter: CollectorFilter<[Context]> = async m => {
 					// Check if they don't hit the cap
-					return (await m.spawn.fetch(m.author.id)).props.unpaids <= 10e6
+					return (await m.spawn.fetch(m.author.id)).props.unpaids <= Spawner.UNPAIDS_CAP
 						// Check if the spawn is spammable or spammablen't
 						&& (spawn.config.method === 'spam' ? true : !channelQueue.has(m.member.user.id))
 						// The string to type obviously

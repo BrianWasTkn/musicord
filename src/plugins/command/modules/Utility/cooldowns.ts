@@ -36,12 +36,13 @@ export default class extends Command {
 
 	async exec(ctx: Context, { member }: { member: GuildMemberPlus }) {
 		const entry = await ctx.lava.fetch(ctx.author.id);
+		const cooldowns = entry.cooldowns
+			.filter(cd => cd.isActive())
+			.map(cd => this.calc(cd.expiresAt).join(':'));
+
 		return ctx.channel.send({ embed: {
 			author: { name: `${member.user.username}'s cooldowns` },
-			color: 'ORANGE', description: entry.cooldowns
-				.filter(cd => cd.isActive())
-				.map(cd => this.calc(cd.expiresAt))
-				.join('\n') ?? 'No active cooldowns.'
+			color: 'ORANGE', description: cooldowns.length > 0 ? cooldowns.join('\n') : 'No active cooldowns.'
 		}}).then(() => false);
 	}
 }

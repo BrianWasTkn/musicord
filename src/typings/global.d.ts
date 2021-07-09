@@ -33,4 +33,19 @@ export declare global {
 		*/
 		log(tag: string, ...message: any[]): void;
 	}
+
+	/**
+	 * Custom overrides/additions for NodeJS.
+	 */
+	namespace NodeJS {
+		/**
+		 * Process Environments.
+		 */
+		interface ProcessEnv {
+			DISCORD_TOKEN: string;
+			MEME_TOKEN: string;
+			MONGO_URI: string;
+			DEV_MODE: string;
+		}
+	}
 }

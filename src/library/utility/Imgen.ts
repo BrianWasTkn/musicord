@@ -6,6 +6,7 @@ export class Imgen {
 	 * The fetch url.
 	 */
 	public apiURL: string;
+
 	/**
 	 * Construct dank memer's image generation.
 	 */

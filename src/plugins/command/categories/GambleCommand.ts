@@ -9,7 +9,7 @@ export class GambleCommand extends Command {
 		super(id, { 
 			category: 'Currency',
 			clientPermissions: ['EMBED_LINKS'],
-			cooldown: 1000,
+			cooldown: 500,
 			args: [
 				{ 
 					id: 'amount', 
@@ -73,7 +73,7 @@ export class GambleCommand extends Command {
 	}
 
 	calcWinnings(multi: number, bet: number) {
-		const winnings = Math.ceil(bet * (Math.random() + 0.2));
+		const winnings = Math.ceil(bet * (Math.random() * 2));
 		return Math.min(Currency.MAX_WIN, winnings + Math.ceil(winnings * (multi / 100)));
 	}
 }

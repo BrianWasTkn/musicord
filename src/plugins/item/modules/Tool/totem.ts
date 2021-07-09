@@ -8,10 +8,11 @@ export default class Tool extends ToolItem {
 				name: 'Totem of Hearts',
 				emoji: ':heart:',
 				price: 10000,
-				intro: 'They say this item gives you a chance to dodge death...',
+				intro: 'Death dodger?',
 				info: 'Equip to prevent dying and not lose any cluster of your progress!'
 			},
 			config: {
+				usable: true,
 				push: true,
 			},
 		});
@@ -27,7 +28,7 @@ export default class Tool extends ToolItem {
 		return ctx.reply({ embed: {
 			description: `Your ${this.id} will stop beating in ${parseTime(duration / 1000)}`,
 			color: 'FUCHSIA', author: { name: `You activated your ${this.name}!` },
-			footer: { text: `Coin Bonus: ${won.toLocaleString()}` }
+			footer: { text: `Coin Bonus: +${won.toLocaleString()} coins` }
 		}});
 	}
 }

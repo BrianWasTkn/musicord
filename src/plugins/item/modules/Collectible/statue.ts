@@ -20,7 +20,7 @@ export default class Collectible extends CollectibleItem {
 			],
 			entities: {
 				multipliers: [10, 20, 30, 40],
-				xpBoost: [100, 150, 250, 500],
+				xpBoost: [10, 20, 50, 100],
 				shield: [10, 15, 30, 50],
 			}
 		});

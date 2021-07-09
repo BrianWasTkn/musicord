@@ -9,16 +9,13 @@ import chalk from 'chalk';
 /**
  * Log bs into your console.
  */
-const log = (...args: any[]) => console.log(...args);
+const log = (...args: Parameters<Console['log']>) => console.log(...args);
 /**
  * Create a stamp.
  */
 const stamp = () => moment().format('HH:mm:ss');
 
 export class Logger {
-	/**
-	 * THIS IS NOT JAVA! It's just so good.
-	 */
 	public static createInstance() {
 		return new this();
 	}

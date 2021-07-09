@@ -19,4 +19,11 @@ export class UserSetting extends Structure {
 		/** @type {number} */
 		this.enabled = data.enabled;
 	}
+
+	/**
+	 * Just a shortcut, nothin' special.
+	 */
+	get module() {
+		return this.client.handlers.setting.modules.get(this.id);
+	}
 }

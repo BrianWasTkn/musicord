@@ -3,20 +3,29 @@ import { MessageOptions } from 'discord.js';
 import { QuestHandler } from '.';
 
 interface QuestRewardItem {
+	/** The amount of items. */
 	amount: number; 
+	/** The item id. */
 	item: string;
 }
 
 interface QuestReward {
+	/** The coins they get when they finish this. */
 	coins: number;
+	/** The items they get when they finish. */
 	item: QuestRewardItem;
 }
 
 export interface QuestOptions extends AbstractModuleOptions {
+	/** The command ID where this quest belongs to. */
 	command: string;
+	/** The element of the command to increment the count. */
 	method?: string;
+	/** The rewards they get. */
 	rewards: QuestReward;
+	/** The target amount. */
 	target: number;
+	/** Short description. */
 	info: string;
 }
 
@@ -51,11 +60,15 @@ export class Quest extends AbstractModule {
 	 */
 	public constructor(id: string, options: QuestOptions) {
 		super(id, { name: options.name, category: options.category });
-
+		/** @type {string} */
 		this.command = options.command;
+		/** @type {string} */
 		this.method = options.method ?? options.name;
+		/** @type {QuestReward} */
 		this.rewards = options.rewards;
+		/** @type {number} */
 		this.target = options.target;
+		/** @type {string} */
 		this.info = options.info.replace(/{target}/g, this.target.toLocaleString());
 	}
 

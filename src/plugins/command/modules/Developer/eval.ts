@@ -44,7 +44,7 @@ export default class extends Command {
 			description: this.codeblock(evaled),
 			footer: { text: `Latency: ${time}ms` },
 			fields: [{
-				name: 'Latency',
+				name: 'Return Type',
 				value: this.codeblock(type),
 			}],
 		}}).then(() => false);

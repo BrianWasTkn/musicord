@@ -1,21 +1,41 @@
 import { CribEntry, Endpoint } from 'lava/mongo';
+import { UserPlus } from 'lava/discord';
 import { Donation } from 'lava/akairo';
 
+export interface CribEndpointEvents {
+	/** Emitted on profile creation. */
+	create: [entry: CribEntry, user: UserPlus];
+	/** Emitted when a dono is added.  */
+	donoAdd: [entry: CribEntry, user: UserPlus, args: { author: UserPlus; amount: number; }];
+	/** Emitted when a dono is removed. */
+	donoRemove: [entry: CribEntry, user: UserPlus, args: { author: UserPlus; amount: number }];
+}
+
 export class CribEndpoint extends Endpoint<CribProfile> {
-	public async fetch(_id: string) {
+	/** 
+	 * Listen for currency events. 
+	 */
+	public on: <K extends keyof CribEndpointEvents>(event: K, listener: (...args: CribEndpointEvents[K]) => Awaited<void>) => this;
+
+	/**
+	 * Fetch smth form the db.
+	 */
+	public fetch(_id: string): Promise<CribEntry> {
 		return this.model.findOne({ _id }).then(async data => {
 			const doc = data ?? await (new this.model({ _id })).save();
-			const donos = this.updateDonos(doc);
-
-			return [donos].some(s => s.length > 1) ? doc.save() : doc;
-		}).then(doc => new CribEntry(this.client, doc));
+			const pushed = [this.updateDonos(doc)];
+			return pushed.some(s => s.length > 1) ? doc.save() : doc;
+		}).then(doc => new CribEntry(this, doc));
 	}
 
+	/**
+	 * Push all donos.
+	 */
 	public updateDonos(doc: CribProfile) {
 		const updated: Donation[] = [];
 		for (const mod of this.client.handlers.donation.modules.values()) {
 			if (!doc.donations.find(i => i.id === mod.id)) {
-				doc.donations.push({ id: mod.id, amount: 0, count: 0 });
+				doc.donations.push({ id: mod.id, amount: 0, count: 0, donations: [] });
 				updated.push(mod);
 			}
 		}

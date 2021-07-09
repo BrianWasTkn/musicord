@@ -5,7 +5,7 @@
 
 import { AbstractModuleOptions, AbstractModule } from 'lava/akairo';
 import { Context, CurrencyEntry, Inventory } from 'lava/index'; 
-import { MessageOptions } from 'discord.js';
+import { MessageOptions, MessageEmbed } from 'discord.js';
 import { ItemHandler } from '.';
 
 export interface ItemUpgrade extends ItemAssets {
@@ -15,7 +15,7 @@ export interface ItemUpgrade extends ItemAssets {
 	 */
 	level?: number;
 	/**
-	 * Wether this item is premium in this level.
+	 * Wether this item is premium for this level.
 	 */
 	premium?: boolean;
 }
@@ -26,7 +26,7 @@ export interface ItemAssets extends AbstractModuleOptions {
 	/** The default price. */
 	price: number;
 	/** The sell rate from 0.01 to 1. */
-	sellRate: number;
+	sellRate?: number;
 	/** The upgrade price of this item. */
 	upgrade: number;
 	/** The emoji of this item. */
@@ -41,21 +41,21 @@ export interface ItemConfig {
 	/** If item is premium by default. */
 	premium?: boolean;
 	/** Allow users to buy this item or not. */
-	buyable: boolean;
+	buyable?: boolean;
 	/** Allow users to sell this item to shop or not. */
-	sellable: boolean;
+	sellable?: boolean;
 	/** Allow users to use this item. */
-	usable: boolean;
+	usable?: boolean;
 	/** Wether this item is giftable or not. */
-	giftable: boolean;
+	giftable?: boolean;
 	/** Wether to show this shit in the shop or not. */
-	shop: boolean;
+	shop?: boolean;
 	/** Wether to allow this item to be on sale or not. */
-	sale: boolean;
+	sale?: boolean;
 	/** Wether to show this item in user inventory or not. */
-	inventory: boolean;
+	inventory?: boolean;
 	/** Wether to auto-push this item in your user's currency data or not. */
-	push: boolean;
+	push?: boolean;
 	/**
 	 * Wether this item has been retired or not.
 	 * config properties overriden by this option:
@@ -136,20 +136,20 @@ export abstract class Item extends AbstractModule {
 		super(id, { name: assets.name, category: assets.category });
 		this.price = assets.price;
 		this.emoji = assets.emoji;
-		this.sellRate = assets.sellRate;
+		this.sellRate = assets.sellRate ?? 0;
 		this.upgrade = assets.upgrade;
 		this.intro = assets.intro;
 		this.info = assets.info;
 
 		this.premium = config.premium ?? false;
-		this.buyable = config.buyable;
-		this.sellable = config.sellable;
-		this.usable = config.usable;
-		this.giftable = config.giftable;
-		this.shop = config.shop;
-		this.sale = config.sale;
-		this.inventory = config.inventory;
-		this.push = config.push;
+		this.buyable = config.buyable ?? true;
+		this.sellable = config.sellable ?? true;
+		this.usable = config.usable ?? true;
+		this.giftable = config.giftable ?? true;
+		this.shop = config.shop ?? true;
+		this.sale = config.sale ?? true;
+		this.inventory = config.inventory ?? true;
+		this.push = config.push ?? true;
 		this.retired = config.retired ?? false;
 
 		if (config.retired) {
@@ -210,11 +210,11 @@ export abstract class Item extends AbstractModule {
 	 * Simple method to buy this item from the shop.
 	 */
 	public buy(entry: CurrencyEntry, amount: number) {
-		const inventory = entry.items.get(this.id);
+		const inventory = entry.props.items.get(this.id);
 		const { price, sellRate, premium } = this.getUpgrade(inventory);
 		const p = Math.round(price) * Math.trunc(amount);
 		
-		return (premium ? entry.remKeys(p) : entry.removePocket(p))
+		return (premium ? entry.subKeys(p) : entry.removePocket(p))
 			.addItem(this.id, amount).save()
 			.then(() => this.getUpgrade(inventory));
 	}
@@ -223,7 +223,7 @@ export abstract class Item extends AbstractModule {
 	 * Simple method to sell this item to the shop.
 	 */
 	public sell(entry: CurrencyEntry, amount: number) {
-		const inventory = entry.items.get(this.id);
+		const inventory = entry.props.items.get(this.id);
 		const { price, sellRate, premium } = this.getUpgrade(inventory);
 		const p = Math.round(price * sellRate) * Math.trunc(amount);
 
@@ -261,6 +261,13 @@ export abstract class Item extends AbstractModule {
 			sell: calc(price * sellRate),
 			cost: calc(price),
 		};
+	}
+
+	/**
+	 * Design the shop info embed.
+	 */
+	public getEmbed<Embed extends MessageEmbed>(embed: Embed): Embed {
+		return embed;
 	}
 
 	/**

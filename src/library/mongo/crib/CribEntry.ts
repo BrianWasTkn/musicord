@@ -3,9 +3,14 @@
  * @author BrianWasTaken
 */
 
-import { UserSetting, UserEntry } from 'lava/mongo';
+import { UserSetting, UserEntry, CribEndpoint } from 'lava/mongo';
 import { GiveawayDonation } from '.';
 import { Collection } from 'discord.js';
+
+export declare interface CribEntry extends UserEntry<CribProfile> {
+  /** The endpoint of this entry. */
+  endpoint: CribEndpoint;
+} 
 
 export class CribEntry extends UserEntry<CribProfile> {
   /** Their booster shit */
@@ -14,7 +19,7 @@ export class CribEntry extends UserEntry<CribProfile> {
   }
 
   /** Their donos in memers crib */
-  get dono() {
+  get donos() {
     return super.map('donations', GiveawayDonation);
   }
 
@@ -23,8 +28,9 @@ export class CribEntry extends UserEntry<CribProfile> {
     const thisDono = this.data.donations.find(d => d.id === id);
 
     return {
-      add: (count: boolean) => {
+      add: (count: boolean, push = true) => {
         if (count) thisDono.count++;
+        if (push) thisDono.donations.push(amount);
         thisDono.amount += amount;
         return this;
       },
@@ -70,12 +76,12 @@ export class CribEntry extends UserEntry<CribProfile> {
   }
 
   /** Add donos */
-  addDono(id: string, amount: number, count = true) {
-    return this.donation(id, amount).add(count);
+  addDono(id: string, amount: number, count = true, push = true) {
+    return this.donation(id, amount).add(count, push);
   }
 
   /** Remove donos */
-  remDono(id: string, amount: number) {
+  subDono(id: string, amount: number) {
     return this.donation(id, amount).sub();
   }
 }

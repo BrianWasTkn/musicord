@@ -33,6 +33,7 @@ export class Listener extends OldListener implements AbstractModule {
 	 */
 	public constructor(id: string, options: ListenerOptions) {
 		super(id, options);
+		/** @type {string} */
 		this.name = options.name;
 	}
 }

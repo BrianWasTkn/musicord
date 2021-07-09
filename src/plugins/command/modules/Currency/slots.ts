@@ -12,41 +12,32 @@ export default class extends GambleCommand {
 
 	get slots() {
 		return (multi: number) => ({
-			coin: [1, 10],
-			gem: [1, 10],
-			medal: [2, 25],
-			ring: [2, 25],
-			trophy: [3, 50],
-			crown: [3, 50],
-			trident: [4, 100],
-			fist: [4, 100],
-			fire: [multi, multi * 2],
+			coin: [25, 50],
+			gem: [25, 50],
+			medal: [25, 50],
+			ring: [25, 50],
+			trophy: [50, 100],
+			crown: [50, 100],
+			trident: [50, 100],
+			fist: [50, 100],
+			fire: [multi * 5, multi * 10],
 		});
 	}
 
 	getSlots(emojis: string[], multi: number) {
-		const { randomInArray, randomNumber, deepFilter } = this.client.util;
+		const { randomInArray, randomsInArray, randomNumber, deepFilter } = this.client.util;
 		const first = randomInArray(emojis);
 		const odds = randomNumber(1, 100);
 
-		if (odds > 95) {
+		if (odds > 97) {
 			return Array(3).fill(first);
 		}
-		if (odds > 70) {
-			emojis = Array(3).fill(first);
-			const index = randomNumber(1, emojis.length) - 1;
-			const slots = Object.keys(this.slots(multi));
-			emojis[index] = randomInArray(slots.filter(e => e !== first));
-			return emojis;
+		if (odds > 90) {
+			return [randomInArray(deepFilter(emojis, [first])), first, first]
+				.sort(() => Math.random() * 0.5);
 		}
 
-		let second: string;
-		const map = (_: string, index: number) => {
-			if (index === 0) return second = randomInArray(deepFilter(emojis, [first]));
-			return randomInArray(deepFilter(emojis, [first, second]));
-		}
-
-		return [first, ...Array(2).fill(first).map(map)];
+		return randomsInArray(emojis, 3);
 	}
 
 	async exec(ctx: Context, args: { amount: string | number }) {
@@ -62,7 +53,7 @@ export default class extends GambleCommand {
 		const { winnings, length } = this.calcSlots(slots, bet, multi);
 
 		if ([1, 2].every(l => l !== length)) {
-			const { props } = await entry.removePocket(bet).save();
+			const { props } = await entry.removePocket(bet).updateStats(this.id, bet, false).save();
 			return ctx.channel.send({
 				embed: {
 					color: 'RED',
@@ -71,8 +62,8 @@ export default class extends GambleCommand {
 					},
 					description: [
 						`**>** :${slots.join(':    :')}: **<**\n`,
-						`You lost **${bet.toLocaleString()}** coins.`,
-						`You now have **${props.pocket.toLocaleString()}** coins.`
+						`You lost **${bet.toLocaleString()}**.`,
+						`You now have **${props.pocket.toLocaleString()}**.`
 					].join('\n'),
 					footer: {
 						text: 'sucks to suck'
@@ -81,7 +72,7 @@ export default class extends GambleCommand {
 			}).then(() => true);
 		}
 
-		const { props } = await entry.addPocket(winnings).save();
+		const { props } = await entry.addPocket(winnings).updateStats(this.id, winnings, true).save();
 		return ctx.channel.send({
 			embed: {
 				color: length === 1 ? 'GOLD' : 'GREEN',
@@ -90,12 +81,12 @@ export default class extends GambleCommand {
 				},
 				description: [
 					`**>** :${slots.join(':    :')}: **<**\n`,
-					`You won **${winnings.toLocaleString()}** coins.`,
+					`You won **${winnings.toLocaleString()}**.`,
 					`**Multiplier** \`${Math.floor(winnings / bet)}x\``,
-					`You now have **${props.pocket.toLocaleString()}** coins.`
+					`You now have **${props.pocket.toLocaleString()}**.`
 				].join('\n'),
 				footer: {
-					text: 'winner winner'
+					text: length === 1 ? 'poggers' : 'winner winner'
 				}
 			}
 		}).then(() => true);

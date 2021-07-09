@@ -35,15 +35,25 @@ const Currency = {
 	PRESTIGE_MULTI_VALUE: 5, 
 	PRESTIGE_POCKET_REQ: 250000,
 	PRESTIGE_LEVEL_REQ: 25,
+	PRESTIGE_LEVEL_CAP: 10,
 	MAX_SAFE_POCKET: 1000e6,
 	MAX_INVENTORY: 100000,
 	MAX_PRESTIGE: 3000,
 	MAX_POCKET: 100000000,
 	MAX_LEVEL: 1000,
-	MAX_MULTI: 100,
-	MAX_WIN: 1600001,
+	MAX_MULTI: 200,
+	MAX_WIN: 2600001,
 	MAX_BET: 500000,
 	MIN_BET: 10,
+	XP_COST: 100,
+};
+
+/**
+ * Spawner stuff.
+ */
+const Spawner = {
+	UNPAIDS_CAP: 100000,
+	COOLDOWN: 60000,
 };
 
 /**
@@ -93,4 +103,4 @@ const Emojis = {
 	SQUARE_GREEN: '<:memerGreen:729863510296887398>',
 };
 
-export { Emojis, Colors, Currency, GambleMessages, ItemMessages };
+export { Emojis, Colors, Currency, Spawner, GambleMessages, ItemMessages };

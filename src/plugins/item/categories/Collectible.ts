@@ -1,43 +1,24 @@
-import { Context, Item, ItemOptions, ItemAssets, ItemUpgrade, ItemConfig, CurrencyEntry } from 'lava/index';
+import { Context, Item, ItemOptions, ItemAssets, ItemUpgrade, ItemConfig, ItemEntities, CurrencyEntry } from 'lava/index';
 import { MessageOptions } from 'discord.js';
 
 export type CollectibleItemAssets = Omit<ItemAssets, 'sellRate' | 'upgrade'>;
 
-export type CollectibleItemConfig = Pick<ItemConfig, 'push' | 'retired'>;
+export type CollectibleItemConfig = Omit<ItemConfig, 'premium' | 'sellable'>;
 
 export interface CollectibleItemOptions extends Omit<ItemOptions, 'assets' | 'config' | 'upgrades'> {
 	/** The basic info about this collectible. */ 
 	assets: CollectibleItemAssets;
 	/** The config for this collectible. */
-	config?: CollectibleItemConfig;
+	config: CollectibleItemConfig;
 	/** The perks of this collectible. */
-	entities?: CollectibleEntity;
+	entities: Partial<ItemEntities>;
 	/** The upgrades of this goldshit. */
 	upgrades: Partial<ItemUpgrade>[];
 }
 
-export interface CollectibleEntity {
-	/** The additional dice roll on gambling. */
-	dice?: number[];
-	/** The discount debuffed if they buy an item. */
-	discount?: number[];
-	/** The possible rewarded multis if they own one of this. */
-	multipliers?: number[];
-	/** The possible steal shields if they own this collectible. */
-	shield?: number[];
-	/** The possible slot odd to hit a jackpot. */
-	slots?: number[];
-	/** The rate between 1-500% of payouts on commands that gives you coins. */
-	payouts?: number[];
-	/** The possible xp boost between 50-1000% */
-	xpBoost?: number[];
-	/** Increase odds of successful rob.*/
-	rob?: number[];
-}
-
 export abstract class CollectibleItem extends Item {
 	/** Possible perks if they own this collectible. */
-	public entities: CollectibleEntity;
+	public entities: ItemEntities;
 
 	/**
 	 * Constructor for this goldshit.
@@ -46,26 +27,17 @@ export abstract class CollectibleItem extends Item {
 		const { assets, config, upgrades, entities } = options;
 		super(id, {
 			assets: {
-				sellRate: 0.33,
+				sellRate: 0,
 				upgrade: 100e6,
 				category: 'Collectible',
 				...assets
 			},
 			config: {
 				premium: false,
-				buyable: true,
 				sellable: false,
-				usable: true,
-				giftable: true,
-				shop: true,
-				sale: true,
-				inventory: true,
 				...config
 			},
-			upgrades: options.upgrades?.map(up => ({ 
-				sellRate: 0.33, 
-				...up 
-			})) ?? [],
+			upgrades: options.upgrades.map(up => ({ sellRate: 0, ...up })) ?? [],
 		});
 
 		this.entities = options.entities ?? Object.create(null);
@@ -74,8 +46,8 @@ export abstract class CollectibleItem extends Item {
 	/**
 	 * Method to use this collectible.
 	 */
-	public use(ctx: Context, entry: CurrencyEntry): MessageOptions {
-		const thisItem = entry.items.get(this.id);
-		return { reply: { messageReference: ctx.id }, content: `**${this.emoji} WHAT A FLEX!**\nImagine having **${thisItem.owned.toLocaleString()}**, couldn't be me` };
+	public use(ctx: Context, entry: CurrencyEntry) {
+		const thisItem = entry.props.items.get(this.id);
+		return ctx.reply(`**${this.emoji} WHAT A FLEX!**\nImagine having **${thisItem.owned.toLocaleString()}**, couldn't be me`);
 	}
 }
