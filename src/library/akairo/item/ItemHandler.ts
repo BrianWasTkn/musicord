@@ -34,7 +34,7 @@ export class ItemHandler extends AbstractHandler<Item> {
 	/** Previous sales. */
 	public sales: ItemSale[] = [];
 	/** Item effects mapped from snowflake to item to effects. */
-	public effects: Collection<Snowflake, Collection<string, ItemEffects>> = new Collection();
+	public effects: Collection<string, ItemEffects> = new Collection();
 	/** The sale interval */
 	public saleInterval: number;
 
