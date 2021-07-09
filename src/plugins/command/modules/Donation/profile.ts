@@ -31,7 +31,7 @@ export default class extends Command {
 			value: [
 				`Donations Recorded: **${d.records.length.toLocaleString()}**`,
 				`Amount Donated: **${d.amount.toLocaleString()}**`,
-				`Highest Donation: **${(d.records.sort((a, b) => b - a) ?? [0])[0].toLocaleString()}**`
+				`Highest Donation: **${(d.records.sort((a, b) => b - a)[0] ?? 0).toLocaleString()}**`
 			].join('\n')
 		})), 1);
 
