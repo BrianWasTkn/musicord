@@ -64,19 +64,19 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		// Memers Crib
 		unlock(ctx.guild.name, 25, ctx.guild.id === '691416705917779999');
 		// Nitro Booster
-		unlock('Nitro Booster', 15, !!ctx.member.roles.premiumSubscriberRole?.id);
+		unlock('Nitro Booster', 25, !!ctx.member.roles.premiumSubscriberRole?.id);
 		// Mastery 1 and up
-		unlock('Crib Mastery Rank', 6, ctx.member.roles.cache.has('794834783582421032'));
+		unlock('Crib Mastery Rank', 10, ctx.member.roles.cache.has('794834783582421032'));
 		// Has 1 of every item
 		unlock('Item Collector', this.props.items.size, this.props.items.every(i => i.isOwned()));
 
 		// Item Effects
-		this.props.items.forEach(i => {
+		this.props.items.filter(i => i.module.category.id === 'Power-Up').forEach(i => {
 			return unlock(i.module.name, i.multiplier, i.isActive() && i.multiplier >= 1);
 		});
 
 		// Mastery 10
-		unlock('Crib Mastery Max', 5, ctx.member.roles.cache.has('794835005679206431'));
+		unlock('Crib Mastery Max', 25, ctx.member.roles.cache.has('794835005679206431'));
 		// Prestige multis
 		const prestigeMulti = Currency.PRESTIGE_MULTI_VALUE * this.props.prestige.level;
 		unlock(`Prestige ${this.props.prestige.level}`, prestigeMulti, this.props.prestige.level >= 1);
@@ -93,19 +93,23 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		// Memers Crib Staff
 		unlock('Crib Staff', -1, ctx.member.roles.cache.has('692941106475958363'));
 		// Chips Cult
-		unlock('Chips Cult', 6, ctx.member.nickname?.toLowerCase().includes('chips'));
+		unlock('Chips Cult', 5, ctx.member.nickname?.toLowerCase().includes('chips'));
 		// Probber Cult
-		unlock('Probber Cult', 6, ctx.member.nickname?.toLowerCase().includes('probber'));
+		unlock('Probber Cult', 5, ctx.member.nickname?.toLowerCase().includes('probber'));
 		// Lava Channel
 		unlock('Lava Channel', 25, (ctx.channel as TextChannel).name.toLowerCase().includes('lava'));
 		// Maxed All Items
-		unlock('Maxed All Items', 15, this.props.items.every(i => i.isMaxLevel()));
+		unlock('Maxed All Items', 5, this.props.items.every(i => i.isMaxLevel()));
 		// 10x of Max Inventory
 		unlock('Item Collector Plus', this.props.items.size * 2, this.props.items.filter(i => i.owned >= Currency.MAX_INVENTORY).size >= 10);
+		// 1B Space
+		unlock('Billion Storage', 25, this.props.space >= 1e9);
 		// 1T Space
-		unlock('Billion Storage', 10, this.props.space >= 1000e6);
-		// 1T Space
-		unlock('Trillion Storage', 20, this.props.space >= 1e12);
+		unlock('Trillion Storage', 25, this.props.space >= 1e12);
+		// 1Q Space
+		unlock('Quadrillion Storage', 25, this.props.space >= 1e15);
+		// Prestige 10s
+		unlock(`Prestige ${this.props.prestige.level}`, 5, this.props.prestige.level % 10 === 0);
 
 		return { unlocked, all };
 	}

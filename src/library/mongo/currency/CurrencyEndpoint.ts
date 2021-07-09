@@ -1,7 +1,27 @@
-import { Endpoint, CurrencyEntry } from 'lava/mongo';
+import { Endpoint, UserEntry, CurrencyEntry } from 'lava/mongo';
 import { Item, Command } from 'lava/akairo';
+import { UserPlus } from 'lava/discord';
+
+export interface CurrencyEndpointEvents {
+	/** Emitted on profile creation. */
+	create: [entry: CurrencyEntry, user: UserPlus];
+	/** Emitted when a user dies.  */
+	death: [entry: CurrencyEntry, user: UserPlus, args: { item: Item; amount: number; coins: number; }];
+	/** Emitted when someone shares coins.  */
+	coinShare: [entry: CurrencyEntry, user: UserPlus, args: { sharer: UserPlus; coins: number; }];
+	/** Emitted when someone gifts items. */
+	itemGift: [entry: CurrencyEntry, user: UserPlus, args: { gifter: UserPlus; amount: number }];
+}
 
 export class CurrencyEndpoint extends Endpoint<CurrencyProfile> {
+	/** 
+	 * Listen for currency events. 
+	 */
+	public on: <K extends keyof CurrencyEndpointEvents>(event: K, listener: (...args: CurrencyEndpointEvents[K]) => Awaited<void>) => this;
+
+	/** 
+	 * Fetch something from the db. 
+	 */
 	public fetch(_id: string): Promise<CurrencyEntry> {
 		return this.model.findOne({ _id }).then(async data => {
 			const doc = data ?? await (new this.model({ _id })).save();

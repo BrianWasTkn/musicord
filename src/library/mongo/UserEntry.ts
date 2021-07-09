@@ -9,7 +9,7 @@ import { Endpoint } from '.';
  * The main entry with sets of methods to apply changes on our data.
  * @abstract @extends {Base}
 */
-export abstract class UserEntry<Data extends Document> extends EventEmitter {
+export abstract class UserEntry<Data extends Document = Document> {
 	/**
 	 * The endpoint who owns this entry.
 	 */
@@ -29,7 +29,6 @@ export abstract class UserEntry<Data extends Document> extends EventEmitter {
 	 * The constructor for this entry.
 	*/
 	public constructor(endpoint: Endpoint<Data>, data: Data) {
-		super();
 		/** @type {Endpoint} */
 		this.endpoint = endpoint;
 		/** @type {LavaClient} */
