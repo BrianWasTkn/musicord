@@ -249,7 +249,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 				this.data.props.xp += randomNumber(1, 1 + additional);
 				const newLevel = Math.trunc(calcLevel(this.data.props.xp));
 
-				if (newLevel > previousLevel) this.endpoint.emit('levelUp', this, user as UserPlus);
+				// if (newLevel > previousLevel) this.endpoint.emit('levelUp', this, user as UserPlus);
 				return space ? this.calc().space() : this;
 			},
 			space: (os = 55) => {
