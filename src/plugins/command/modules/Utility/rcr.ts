@@ -12,7 +12,7 @@ export default class extends Command {
 	}
 
 	async exec(ctx: Context) {
-		const rcr = await ctx.guild.roles.fetch('716344676634066964');
+		const rcr = await ctx.guild.roles.fetch('803222771072368651');
 		const color = ctx.client.util.randomColor();
 
 		const prompt = async (color: number): Promise<number | Function> => {
