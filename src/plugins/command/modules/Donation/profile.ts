@@ -54,7 +54,7 @@ export default class extends Command {
 					value: [
 						`Donations Recorded: **${recorded.toLocaleString()}**`,
 						`Amount Donated: **${donated.toLocaleString()}**`,
-					],
+					].join('\n'),
 				},
 				...pages[page - 1]
 			],
