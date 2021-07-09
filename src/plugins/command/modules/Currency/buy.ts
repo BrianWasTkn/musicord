@@ -34,7 +34,7 @@ export default class extends Command {
 			return ItemMessages.NEED_TO_BUY;
 		}
 
-		const inv = entry.items.get(item.id);
+		const inv = entry.props.items.get(item.id);
 		const cost = inv.upgrade.price;
 		const pocket = entry.props.pocket;
 

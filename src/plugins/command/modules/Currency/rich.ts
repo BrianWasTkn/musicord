@@ -1,5 +1,5 @@
-import { Command, Context, CurrencyModel, CurrencyEntry } from 'lava/index';
 import { Snowflake, GuildMember, Collection } from 'discord.js';
+import { Command, Context, CurrencyEntry } from 'lava/index';
 
 export default class extends Command {
 	constructor() {
@@ -12,9 +12,9 @@ export default class extends Command {
 	}
 
 	top(members: Collection<Snowflake, GuildMember>, amount = 10) {
-		const docs = CurrencyModel.find({ 'props.pocket': { $gte: 1 } }).sort({ 'props.pocket': 'desc' }).exec();
+		const docs = this.client.db.currency.model.find({ 'props.pocket': { $gte: 1 } }).sort({ 'props.pocket': 'desc' }).exec();
 		return docs.then(docs => 
-			docs.map(doc => new CurrencyEntry(this.client, doc))
+			docs.map(doc => new CurrencyEntry(this.client.db.currency, doc))
 				.filter(doc => members.has(doc.data._id as Snowflake))
 				.slice(0, amount)
 		);

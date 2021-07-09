@@ -35,7 +35,7 @@ export default class extends Command {
 			return ItemMessages.NEED_TO_SELL;
 		}
 		
-		const inv = entry.items.get(item.id);
+		const inv = entry.props.items.get(item.id);
 		const { pocket } = entry.props;
 
 		if (!item.sellable) {

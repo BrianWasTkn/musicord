@@ -41,7 +41,7 @@ export default class extends Command {
 		const isContext = ctx.author.id === member.user.id;
 
 		const entry = await ctx.currency.fetch(member.user.id);
-		const inventory = ctx.client.util.paginateArray(this.mapItems(entry.items));
+		const inventory = ctx.client.util.paginateArray(this.mapItems(entry.props.items));
 
 		if (inventory.length < 1) {
 			return ctx.reply(`${isContext ? 'You' : 'They'} don't have any items on ${isContext ? 'your' : 'their'} inventory!`).then(() => false);
@@ -54,7 +54,7 @@ export default class extends Command {
 			embed: {
 				color: 'BLURPLE',
 				author: {
-					name: `${ctx.author.username}'s inventory`,
+					name: `${member.user.username}'s inventory`,
 					icon_url: member.user.avatarURL({ dynamic: true })
 				},
 				fields: [
@@ -74,15 +74,18 @@ export default class extends Command {
 		return [...items.values()]
 			.filter(inv => inv.isOwned())
 			.filter(inv => inv.module.inventory)
+			.map(inv => inv.id).sort()
+			.map(inv => items.get(inv))
 			.map(inv => ({
 				mod: inv.module,
 				owned: inv.owned,
-				level: inv.level
+				level: inv.level,
+				inv: inv
 			}))
-			.map(({ mod, owned, level }) => {
+			.map(({ mod, owned, level, inv }) => {
 				const { category, id, upgrades } = mod;
 				const { emoji, name } = mod.getUpgrade(items.get(mod.id));
-				const state = upgrades.length - 1 === level ? '`MAX LEVEL`' : `${upgrades.length - 1 - level} more`;
+				const state = inv.isMaxLevel() ? '`MAX LEVEL`' : `${upgrades.length - 1 - level} more`;
 				return `**${emoji} ${name}** — ${owned.toLocaleString()}\n*ID* \`${id}\` — ${category.id}\n*LVL* \`${level}\` — ${state}`
 			});
 	}

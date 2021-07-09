@@ -35,6 +35,7 @@ export class Inhibitor extends OldInhibitor implements AbstractModule {
 	 */
 	public constructor(id: string, options: InhibitorOptions) {
 		super(id, options);
+		/** @type {string} */
 		this.name = options.name;
 	}
 

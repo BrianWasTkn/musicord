@@ -7,8 +7,8 @@ export default class Collectible extends CollectibleItem {
 				name: 'Lava Coin',
 				emoji: ':coin:',
 				price: 2e6,
-				intro: 'A valuable coin from gods of the past.',
-				info: 'More ching ching in gambling, they say'
+				intro: 'Chings, Chings and Chings.',
+				info: 'Increased payouts on multiplier-based gamble commands!'
 			},
 			config: {
 				push: true,

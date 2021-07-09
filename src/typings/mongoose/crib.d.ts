@@ -34,10 +34,14 @@ export declare global {
 		 * Count of how many times they donated for this typeof dono.
 		 */
 		count: number;
+		/**
+		 * The donations recorded.
+		 */
+		donations: number[];
 	}
 
 	/**
-	 * The boost shitfuckery.
+	 * The booster stuff.
 	 */
 	interface CribBoost {
 		/**

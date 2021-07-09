@@ -27,7 +27,7 @@ export default class extends Command {
 		super('search', {
 			aliases: ['search', 'scout'],
 			clientPermissions: ['EMBED_LINKS'],
-			cooldown: 1000 * 30,
+			cooldown: 1000 * 10,
 			description: 'Search for coins on some places to either get some or die!',
 		});
 	}
@@ -47,7 +47,7 @@ export default class extends Command {
 		const item = randomInArray(items ?? []);
 
 		const isDead = death ? death.odds > randomNumber(1, 100) : false;
-		const pil = entry.items.filter(i => i.isOwned()).random() ?? null;
+		const pil = entry.props.items.filter(i => i.isOwned()).random() ?? null;
 		const ila = pil ? randomNumber(1, pil.owned) : 0;
 		if (isDead) {
 			return entry.kill(pil.id, ila).save().then(() => ({
@@ -63,7 +63,7 @@ export default class extends Command {
 		if (item) entry.addItem(item);
 		const won = Math.round(coins + (coins * (multi / 100)));
 		return entry.addPocket(won).save().then(() => ({
-			itemGot: (randomNumber(1, 100) < 30) && item ? entry.items.get(item) : null,
+			itemGot: (randomNumber(1, 100) < 30) && item ? entry.props.items.get(item) : null,
 			coinsRaw: coins,
 			coinsWon: won,
 			possibleItemLost: null,
@@ -88,14 +88,14 @@ export default class extends Command {
 		const searched = searchables.find(s => choice.content.toLowerCase() === s.place);
 		const getHeader = () => `${ctx.author.username} searched the ${searched.place.toUpperCase()}`;
 		const multi = entry.calcMulti(ctx).unlocked.reduce((p, c) => p + c.value, 0);
+		const pocket = entry.props.pocket;
 		const nice = await this.searchPlace(searched, entry, multi);
 
 		if (!nice.state) {
 			const item = nice.possibleItemLost;
 			const lost = nice.itemLostAmount;
-			const pocket = entry.props.pocket;
 
-			const sampleText = `And u lost **${pocket.toLocaleString()} coins** ${item ? `and **${lost.toLocaleString()} ${item.upgrade.emoji} ${item.upgrade.name}** RIP LOL!` : 'RIP!'}`
+			const sampleText = `You lost **${pocket.toLocaleString()} coins** ${item ? `and **${lost.toLocaleString()} ${item.upgrade.emoji} ${item.upgrade.name}** RIP LOL!` : 'RIP!'}`
 			
 			return ctx.reply({ embed: {
 				author: { name: getHeader(), iconURL: ctx.author.avatarURL({ dynamic: true }) },
@@ -196,5 +196,5 @@ const search = (client: LavaClient): SearchData[] => [
 				'Sadly you didn\'t dodged the debris, too late.'
 			])
 		}
-	}
+	},
 ]

@@ -7,8 +7,8 @@ export default class Collectible extends CollectibleItem {
 				name: 'Fabled Ring',
 				emoji: ':ring:',
 				price: 10e6,
-				intro: 'Slots rig eh? You found your solution!',
-				info: 'Grants you good amount of luck on slots and a flex against normies!',
+				intro: 'A lucky charm?',
+				info: 'Grants you good amount of luck on coin gaining commands!',
 			},
 			config: {
 				push: true,
@@ -19,7 +19,7 @@ export default class Collectible extends CollectibleItem {
 				{ price: 25e6 }
 			],
 			entities: {
-				slots: [1, 2, 3, 5]
+				luck: [1, 3, 5, 10]
 			}
 		});
 	}

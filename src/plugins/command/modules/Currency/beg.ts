@@ -26,7 +26,7 @@ export default class extends Command {
         super('beg', {
             aliases: ['beg', 'gimme'],
             clientPermissions: ['EMBED_LINKS'],
-            cooldown: 1000 * 30,
+            cooldown: 1000 * 10,
             description: 'Extract small amount of coins into your pocket!',
             name: 'Beg'
         });

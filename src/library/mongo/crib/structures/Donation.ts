@@ -10,6 +10,11 @@ export class GiveawayDonation extends Structure {
 	 */
 	public times: number;
 	/**
+	 * The donation records.
+	 */
+	public records: number[];
+
+	/**
 	 * Constructor for this donation.
 	 */
 	public constructor(client: LavaClient, data: CribDonation) {
@@ -18,6 +23,8 @@ export class GiveawayDonation extends Structure {
 		this.amount = data.amount;
 		/** @type {number} */
 		this.times = data.count;
+		/** @type {number[]} */
+		this.records = data.donations;
 	}
 
 	/**

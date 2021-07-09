@@ -5,8 +5,8 @@
 
 import { AbstractHandler, AbstractHandlerOptions, AbstractModuleOptions, LavaClient, InhibitorHandler, ListenerHandler } from 'lava/akairo';
 import { CommandHandler as OldCommandHandler, CommandHandlerOptions, Category, Constants } from 'discord-akairo';
+import { Collection, Snowflake } from 'discord.js';
 import { Context, CommandQueue, Cooldown } from 'lava/index';
-import { Collection } from 'discord.js';
 import { Command } from '.';
 
 const { CommandHandlerEvents, BuiltInReasons } = Constants;
@@ -51,6 +51,10 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 	 * Prevent running multiple commands at once.
 	 */
 	public commandQueue = new CommandQueue();
+	/**
+	 * Events spawned by using some commands.
+	 */
+	public events = new Collection<Snowflake, Context>();
 
 	/**
 	 * Run all post type inhibitors.
@@ -112,7 +116,7 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 
 		const cooldown: Cooldown = entry.cooldowns.get(command.id);
 		const diff = cooldown.expiresAt - context.createdTimestamp;
-		if (diff > 0) {
+		if (diff >= 1) {
 			this.emit(CommandHandlerEvents.COOLDOWN, context, command, diff);
 			return true;
 		}
@@ -124,7 +128,7 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 	 * Run a command.
 	 */
 	public async runCommand(context: Context, command: Command, args: any) {
-		await this.commandQueue.wait(context.author.id);
+		// await this.commandQueue.wait(context.author.id);
 		if (command.typing) {
 			context.channel.startTyping();
 		}
@@ -143,7 +147,7 @@ export class CommandHandler extends OldCommandHandler implements AbstractHandler
 			} catch (error) {
 				this.emit(CommandHandlerEvents.ERROR, error, context, command);
 			} finally {
-				this.commandQueue.next(context.author.id);
+				// this.commandQueue.next(context.author.id);
 			}
 		} finally {
 			if (command.typing) {

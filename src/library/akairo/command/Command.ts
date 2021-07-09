@@ -3,7 +3,7 @@
  * @author BrianWasTaken
 */
 
-import { Collection, Message, MessageOptions, MessageEmbedOptions, MessageEmbed } from 'discord.js';
+import { Collection, Snowflake, Message, MessageOptions, MessageEmbedOptions, MessageEmbed } from 'discord.js';
 import { Command as OldCommand, CommandOptions, CommandDescription, Category } from 'discord-akairo';
 import { AbstractModule, LavaClient } from 'lava/akairo';
 import { CommandHandler, SubCommand } from '.';
@@ -69,6 +69,26 @@ export class Command extends OldCommand implements AbstractModule {
 			/** @type {boolean} */
 			this.ownerOnly = true;
 		}
+	}
+
+	/**
+	 * Make use of currency events.
+	 */
+	public async event(ctx: Context) {
+		if (this.category.id !== 'Currency') return;
+		if (this.handler.events.get(ctx.channel.id)) return;
+
+		const entry = await ctx.currency.fetch(ctx.author.id);
+		const actives = entry.actives.find(a => a.effects.entities.keys.length > 0);
+		if (!actives) return;
+
+		const { randomNumber } = ctx.client.util;
+		const odds = actives.effects.entities.keys.reduce((p, c) => p + c, 0);
+		if (randomNumber(1, 100) < 95 - odds) return;
+
+		const got = randomNumber(1, 10);
+		await entry.addKeys(got).save();
+		return ctx.channel.send(`You got **${got} :key: Key** from using a command!`);
 	}
 
 	/**

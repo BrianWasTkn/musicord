@@ -19,21 +19,24 @@ export default class extends GambleCommand {
 		const state = this.checkArgs(bet, entry);
 		if (typeof state === 'string') return ctx.reply(state).then(() => false);
 
-		const { userD, botD } = this.roll(false);
+		const { userD, botD } = this.roll(true);
 		if (botD > userD || botD === userD) {
-			const { props } = await entry.removePocket(botD === userD ? 0 : bet).save()
+			const lost = botD === userD ? 0 : bet;
+			if (botD > userD) entry.updateStats(this.id, lost, false);
+			const props = await entry.removePocket(lost).save().then(d => d.props);
 
 			return ctx.channel.send({
 				embed: {
 					author: {
-						name: `${ctx.author.username}'s ${userD === botD ? 'tie' : 'losing'} gambling game`
+						name: `${ctx.author.username}'s ${userD === botD ? 'tie' : 'losing'} gambling game`,
+						iconURL: ctx.author.avatarURL({ dynamic: true })
 					},
 					color: userD === botD ? 'YELLOW' : 'RED',
 					description: [
 						`You lost ${botD === userD ? 'nothing!' : `**${bet.toLocaleString()}** coins.`}\n`,
 						botD === userD 
 							? `You have **${props.pocket.toLocaleString()}** coins` 
-							: `**New Balance:** **${props.pocket.toLocaleString()}**` 
+							: `**New Balance:** ${props.pocket.toLocaleString()}` 
 					].join('\n'),
 					fields: this.displayField(ctx.author, userD, botD),
 					footer: {
@@ -45,11 +48,14 @@ export default class extends GambleCommand {
 
 		const multi = this.calcMulti(ctx, entry);
 		const winnings = this.calcWinnings(multi, bet);
-		const { props } = await entry.addPocket(winnings).save();
+		const { props } = await entry.addPocket(winnings).updateStats(this.id, winnings, true).save();
 
 		return ctx.channel.send({
 			embed: {
-				author: { name: `${ctx.author.username}'s winning gambling game` },
+				author: { 
+					name: `${ctx.author.username}'s winning gambling game`,
+					iconURL: ctx.author.avatarURL({ dynamic: true })
+				},
 				footer: { text: 'winner winner' }, color: 'GREEN', description: [
 					`You won **${winnings.toLocaleString()}** coins.\n`,
 					`**Percent Won:** ${Math.round(winnings / bet * 100)}%`,
@@ -72,7 +78,7 @@ export default class extends GambleCommand {
 		}
 
 		if (rig) {
-			if (Math.random() > 0.35) {
+			if (Math.random() > 0.45) {
 				[botD, userD] = set(botD, userD);
 			} else {
 				[userD, botD] = set(botD, userD);

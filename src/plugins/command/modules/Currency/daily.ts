@@ -30,7 +30,7 @@ export default class extends Command {
 
 		return ctx.channel.send({ embed: {
 			title: `Here are your daily coins, ${ctx.author.username}`,
-			description: `**${won.toLocaleString()}** were placed in your pocket.`,
+			description: `**${won.toLocaleString()} coins** were placed in your pocket.`,
 			color: 'BLUE',
 			footer: {
 				text: `Streak: ${streak} days ${(streak > 1 ? `(+${streakBonus.toLocaleString()} bonus)` : '')}`,
