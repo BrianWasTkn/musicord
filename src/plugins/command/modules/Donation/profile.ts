@@ -12,7 +12,7 @@ export default class extends Command {
 					id: 'page',
 					type: 'number',
 					default: 1,
-				}
+				},
 				{
 					id: 'member',
 					type: 'member',

@@ -33,7 +33,8 @@ export default class extends GambleCommand {
 			return Array(3).fill(first);
 		}
 		if (odds > 90) {
-			return [...randomsInArray(emojis, 2), first].sort(() => Math.random() * 0.5);
+			return [...deepFilter(emojis, [first]), first, first]
+				.sort(() => Math.random() * 0.5);
 		}
 
 		return randomsInArray(emojis, 3);
