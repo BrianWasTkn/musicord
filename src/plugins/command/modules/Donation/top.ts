@@ -1,0 +1,53 @@
+import { Command, Context, Donation } from 'lava/index';
+import { Snowflake } from 'discord.js';
+
+export default class extends Command {
+	constructor() {
+		super('donoTop', {
+			aliases: ['donoTop', 'd='], 
+			clientPermissions: ['EMBED_LINKS'],
+			name: 'Donation Top',
+			staffOnly: true,
+			args: [
+				{
+					id: 'event',
+					type: 'dono',
+					default: (c: Context) => c.client.handlers.donation.modules.get('default'),
+				},
+				{
+					id: 'page',
+					type: 'number',
+					default: 1,
+				}
+			]
+		});
+	}
+
+	async exec(ctx: Context, { event, page }: { event: Donation, page: number; }) {
+		const docs = await ctx.crib.model.find({}).exec().then(d => new CribEntry(ctx.crib.model, d));
+		const pages = ctx.client.util.paginateArray(docs.filter(d => {
+			return ctx.guild.members.cache.has(d._id as Snowflake);
+		}).map((d, i) => {
+			const user = ctx.guild.members.cache.get(d._id as Snowflake);
+			const emoji = Array(3).fill('moneybag')[i] ?? 'small_red_triangle';
+			const dono = d.donos.get(event.id);
+			return `**:${emoji}: **${dono.amount.toLocaleString()}** - ${user.tag ?? 'Unknown User'}`;
+		}));
+
+		if (!pages[page - 1]) {
+			return ctx.reply(`Page \`${page}\` doesn't exist.`).then(() => false);
+		}
+
+		return ctx.channel.send({ embed: {
+			author: {
+				name: `${event.name} Donations`,
+				iconURL: ctx.guild.iconURL({ dynamic: true })
+			},
+			color: 'BLUE',
+			description: pages[page - 1].join('\n'),
+			footer: {
+				text: `Page ${page} of ${pages.length}`
+			}
+		}}).then(() => false);
+	}
+}

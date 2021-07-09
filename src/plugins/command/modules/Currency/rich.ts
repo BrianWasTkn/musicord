@@ -1,5 +1,5 @@
-import { Command, Context, CurrencyEntry } from 'lava/index';
 import { Snowflake, GuildMember, Collection } from 'discord.js';
+import { Command, Context, CurrencyEntry } from 'lava/index';
 
 export default class extends Command {
 	constructor() {
