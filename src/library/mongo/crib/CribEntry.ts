@@ -3,9 +3,14 @@
  * @author BrianWasTaken
 */
 
-import { UserSetting, UserEntry } from 'lava/mongo';
+import { UserSetting, UserEntry, CribEndpoint } from 'lava/mongo';
 import { GiveawayDonation } from '.';
 import { Collection } from 'discord.js';
+
+export declare interface CribEntry extends UserEntry<CribProfile> {
+  /** The endpoint of this entry. */
+  endpoint: CribEndpoint;
+} 
 
 export class CribEntry extends UserEntry<CribProfile> {
   /** Their booster shit */

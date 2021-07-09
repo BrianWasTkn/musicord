@@ -6,9 +6,14 @@
 import { Inventory, Mission, GambleStat, TradeStat } from '.';
 import { Collection, Snowflake, TextChannel } from 'discord.js';
 import { CollectibleItem, PowerUpItem } from 'lava/../plugins/item';
+import { UserEntry, CurrencyEndpoint } from 'lava/mongo';
 import { Currency, ItemEffects } from 'lava/utility';
-import { UserEntry } from 'lava/mongo';
-import { Context } from 'lava/discord';
+import { Context, UserPlus } from 'lava/discord';
+
+export declare interface CurrencyEntry extends UserEntry<CurrencyProfile> {
+	/** The endpoint of this entry. */
+	endpoint: CurrencyEndpoint;
+}
 
 export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/** The basics of their mongo profile. */
@@ -231,13 +236,20 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	*/
 	private calc() {
 		const maxLevel = Currency.MAX_LEVEL * Currency.XP_COST;
+		const calcLevel = (xp: number) => xp * Currency.XP_COST;
 		// const xpBoosts = this.actives.find(i => i.effects.entities.xpBoost.length > 0); 
 
 		return {
 			xp: (space = false, additional = 0) => {
 				if (this.data.props.xp > maxLevel) return this;
 				const { randomNumber } = this.client.util;
+				const user = this.client.users.cache.get(this.data._id as Snowflake);
+
+				const previousLevel = Math.trunc(calcLevel(this.data.props.xp));
 				this.data.props.xp += randomNumber(1, 1 + additional);
+				const newLevel = Math.trunc(calcLevel(this.data.props.xp));
+
+				if (newLevel > previousLevel) this.endpoint.emit('levelUp', this, user as UserPlus);
 				return space ? this.calc().space() : this;
 			},
 			space: (os = 55) => {
@@ -301,13 +313,11 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 
 	/** Add coins to ur pocket */
 	addPocket(amount: number, isShare = false) {
-		// if (isShare) 
 		return this.pocket(amount).inc();
 	}
 
 	/** Remove coins from pocket */
 	removePocket(amount: number, isShare = false) {
-		// if (isShare) this.data.share.out += amount;
 		return this.pocket(amount).dec();
 	}
 

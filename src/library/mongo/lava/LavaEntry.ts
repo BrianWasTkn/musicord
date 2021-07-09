@@ -3,11 +3,16 @@
  * @author BrianWasTaken
 */
 
+import { UserEntry, LavaEndpoint } from 'lava/mongo';
 import { Cooldown, UserSetting } from '.';
 import { Collection } from 'discord.js';
 import { Snowflake } from 'discord.js';
-import { UserEntry } from 'lava/mongo';
 import { Command } from 'lava/akairo';
+
+export declare interface LavaEntry extends UserEntry<LavaProfile> {
+  /** The endpoint of this entry. */
+  endpoint: LavaEndpoint;
+} 
 
 export class LavaEntry extends UserEntry<LavaProfile> {
 	/** Wether they are blacklisted from the bot or not */
