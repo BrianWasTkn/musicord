@@ -31,7 +31,7 @@ export default class extends Command {
 			const user = ctx.guild.members.cache.get(d.data._id as Snowflake);
 			const emoji = Array(3).fill('moneybag')[i] ?? 'small_red_triangle';
 			const dono = d.donos.get(event.id);
-			return `**:${emoji}: **${dono.amount.toLocaleString()}** - ${user.user.tag ?? 'Unknown User'}`;
+			return `**:${emoji}: ${dono.amount.toLocaleString()}** - ${user.user.tag ?? 'Unknown User'}`;
 		}));
 
 		if (!pages[page - 1]) {
