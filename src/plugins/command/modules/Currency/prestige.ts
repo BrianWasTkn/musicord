@@ -30,8 +30,8 @@ export default class extends Command {
 		const { pocket, xp } = entry.props;
 
 		const current = {
-			pocket: Number((pocket / Math.min(PRESTIGE_LEVEL_CAP * PRESTIGE_POCKET_REQ, PRESTIGE_POCKET_REQ * prestige)).toFixed(1)),
-			level: Number(((xp / XP_COST) / Math.min(PRESTIGE_LEVEL_CAP * PRESTIGE_LEVEL_REQ, PRESTIGE_LEVEL_REQ * prestige)).toFixed(1))
+			pocket: Number((pocket / Math.min(PRESTIGE_LEVEL_CAP * PRESTIGE_POCKET_REQ, PRESTIGE_POCKET_REQ * ((prestige || 1) * 1))).toFixed(1)),
+			level: Number(((xp / XP_COST) / Math.min(PRESTIGE_LEVEL_CAP * PRESTIGE_LEVEL_REQ, PRESTIGE_LEVEL_REQ * ((prestige || 1) * 1))).toFixed(1))
 		};
 		const next = {
 			prestige: prestige + 1,

@@ -4,10 +4,10 @@
 */
 
 import { Inventory, Mission, GambleStat, TradeStat } from '.';
+import { Currency, ItemEffects, ItemEntities } from 'lava/utility';
 import { Collection, Snowflake, TextChannel } from 'discord.js';
 import { CollectibleItem, PowerUpItem } from 'lava/../plugins/item';
 import { UserEntry, CurrencyEndpoint } from 'lava/mongo';
-import { Currency, ItemEffects } from 'lava/utility';
 import { Context, UserPlus } from 'lava/discord';
 
 export declare interface CurrencyEntry extends UserEntry<CurrencyProfile> {
@@ -27,6 +27,15 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 			trades: super.map('trade', TradeStat),
 			...this.data.props
 		};
+	}
+
+	/** Their item effects. */
+	public get effects() {
+		const reduce = (array: number[]) => array.reduce((p, c) => p + c, 0);
+		const effects: { [E in keyof ItemEntities]: number } = Object.create(null);
+		const entities: [string, number[]][] = Object.entries(this.entities.entities);
+		entities.forEach(([key, array]) => effects[key as keyof ItemEntities] = reduce(array));
+		return effects;
 	}
 
 	/** Their item entities. */
@@ -118,7 +127,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		// 1Q Space
 		unlock('Quadrillion Storage', 25, this.props.space >= 1e15);
 		// Prestige 10s
-		unlock(`Prestige ${this.props.prestige.level}`, 5, this.props.prestige.level % 10 === 0);
+		unlock(`Prestige ${this.props.prestige.level}`, 5, this.props.prestige.level % 10 === 0 && this.props.prestige.level > 0);
 
 		return { unlocked, all };
 	}
