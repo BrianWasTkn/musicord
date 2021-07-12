@@ -22,32 +22,32 @@ export declare interface InhibitorHandler extends OldInhibitorHandler {
 	 */
 	client: LavaClient;
 	/**
-   * Add an inhibitor.
-   */
-  add: () => Inhibitor;
-  /**
-   * Find a category of inhibitors.
-   */
-  findCategory: (name: string) => Category<string, Inhibitor>;
-  /**
-   * Load an inhibitor based from the file path or a class.
-   */
-  load: (thing: string | Function, isReload?: boolean) => Inhibitor;
-  /**
-   * Reload an inhibitor.
-   */
-  reload: (id: string) => Inhibitor;
-  /**
-   * Remove an inhibitor.
-   */
-  remove: (id: string) => Inhibitor;
+	 * Add an inhibitor.
+	 */
+	add: () => Inhibitor;
+	/**
+	 * Find a category of inhibitors.
+	 */
+	findCategory: (name: string) => Category<string, Inhibitor>;
+	/**
+	 * Load an inhibitor based from the file path or a class.
+	 */
+	load: (thing: string | Function, isReload?: boolean) => Inhibitor;
+	/**
+	 * Reload an inhibitor.
+	 */
+	reload: (id: string) => Inhibitor;
+	/**
+	 * Remove an inhibitor.
+	 */
+	remove: (id: string) => Inhibitor;
 }
 
 export class InhibitorHandler extends OldInhibitorHandler implements AbstractHandler<Inhibitor> {
 	/**
-   * Construct this inhibitor handler.
-   */
-  public constructor(client: LavaClient, options: AbstractHandlerOptions) {
+	 * Construct this inhibitor handler.
+	 */
+	public constructor(client: LavaClient, options: AbstractHandlerOptions) {
 		super(client, options);
 	}
 }

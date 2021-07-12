@@ -6,8 +6,8 @@
 import { UserEntry, SpawnEndpoint } from 'lava/mongo';
 
 export declare interface SpawnEntry extends UserEntry<SpawnProfile> {
-  /** The endpoint of this entry. */
-  endpoint: SpawnEndpoint;
+	/** The endpoint of this entry. */
+	endpoint: SpawnEndpoint;
 } 
 
 export class SpawnEntry extends UserEntry<SpawnProfile> {
