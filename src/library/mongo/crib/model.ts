@@ -4,21 +4,43 @@
 */
 
 import { Schema, Model, model } from 'mongoose';
-import { Build as build } from '..';
 
-const CribSchema = new Schema({
-	_id: { type: String, required: true },
-	
-	donations: [{
-		id: build(String, 'default'),
-		amount: build(Number, 0),
-		count: build(Number, 0),
-		donations: [build(Number, 0)]
-	}],
-
+const CribSchema = new Schema<CribProfile, Model<CribProfile>, CribProfile>({
+	_id: { 
+		type: String, 
+		required: true 
+	},
+	donations: [
+		{
+			id: {
+				type: String,
+				default: 'default'
+			},
+			amount: {
+				type: Number,
+				default: 0
+			},
+			count: {
+				type: Number,
+				default: 0
+			},
+			donations: [
+				{
+					type: Number,
+					default: 0
+				}
+			]
+		}
+	],
 	booster: {
-		role: build(String, ''),
-		expires: build(Number, 1000 * 60 * 60 * 24 * 7)
+		role: {
+			type: String,
+			default: 0
+		},
+		expires: {
+			type: Number,
+			default: 1000 * 60 * 60 * 24 * 7
+		},
 	}
 });
 

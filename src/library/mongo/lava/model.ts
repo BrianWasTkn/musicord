@@ -4,34 +4,75 @@
 */
 
 import { Schema, Model, model } from 'mongoose';
-import { Build as build } from '..';
 
-const LavaSchema = new Schema({
-	_id: { type: String, required: true },
-	
-	cooldowns: [{
-		id: build(String, 'help'),
-		expire: build(Number, 0)
-	}],
-
-	settings: [{
-		id: build(String, 'currency.dms'),
-		enabled: build(Boolean, false),
-		cooldown: build(Number, 0)
-	}],
-
-	commands: {
-		spams: build(Number, 0),
-		commands_ran: build(Number, 1),
-		last_ran: build(Number, Date.now()),
-		last_cmd: build(String, 'help')
+const LavaSchema = new Schema<LavaProfile, Model<LavaProfile>, LavaProfile>({
+	_id: { 
+		type: String, 
+		required: true 
 	},
-
+	cooldowns: [
+		{
+			id: { 
+				type: String, 
+				default: 'help' 
+			},
+			expire: { 
+				type: Number, 
+				default: 0 
+			}
+		}
+	],
+	settings: [
+		{
+			id: { 
+				type: String, 
+				default: 'notifs.dm' 
+			},
+			enabled: { 
+				type: Boolean, 
+				default: false 
+			},
+			cooldown: { t
+				ype: Number, 
+				default: 0 
+			},
+		}
+	],
+	commands: {
+		spams: { 
+			type: Number, 
+			default: 0
+		},
+		commands_ran: { 
+			type: Number, 
+			default: 0
+		},
+		last_cmd: { 
+			type: String, 
+			default: 'help'
+		},
+		last_ran: { 
+			type: Number, 
+			default: Date.now()
+		},
+	},
 	punishments: {
-		banned: build(Boolean, false),
-		blocked: build(Boolean, false),
-		expire: build(Number, 0),
-		count: build(Number, 0),
+		banned: { 
+			type: Boolean, 
+			default: false 
+		},
+		blocked: { 
+			type: Boolean, 
+			default: false 
+		},
+		expire: { 
+			type: Number, 
+			default: 0 
+		},
+		count: { 
+			type: Number, 
+			default: 0 
+		},
 	},
 });
 

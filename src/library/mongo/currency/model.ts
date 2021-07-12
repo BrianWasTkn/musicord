@@ -4,74 +4,186 @@
 */
 
 import { Schema, Model, model } from 'mongoose';
-import { Build as build } from '..';
 
-const CurrencySchema = new Schema({
-	_id: { type: String, required: true },
-
+const CurrencySchema = new Schema<CurrencyProfile, Model<CurrencyProfile>, CurrencyProfile>({
+	_id: { 
+		type: String, 
+		required: true 
+	},
 	props: {
-		pocket: build(Number, 0),
+		pocket: {
+			type: Number, 
+			default: 0,
+		},
 		vault: {
-			amount: build(Number, 0),
-			locked: build(Boolean, false),
+			amount: {
+				type: Number,
+				default: 0,
+			},
+			locked: {
+				type: Boolean,
+				default: false
+			}
 		},
-		space: build(Number, 0),
+		space: {
+			type: Number,
+			default: 0
+		},
 		multi: {
-			base: build(Number, 3),
-			level_rewards: build(Number, 0),
+			base: {
+				type: Number,
+				default: 3
+			},
+			level_rewards: {
+				type: Number,
+				default: 0
+			}
 		},
-		prem: build(Number, 0),
-		xp: build(Number, 0),
+		prem: {
+			type: Number,
+			default: 0
+		},
+		xp: {
+			type: Number,
+			default: 0
+		},
 	},
 
-	items: [{
-		expire: build(Number, 0),
-		amount: build(Number, 0),
-		level: build(Number, 0),
-		multi: build(Number, 0),
-		uses: build(Number, 0),
-		id: build(String, 0)
-	}],
-
+	items: [
+		{
+			expire: {
+				type: Number,
+				default: 0,
+			},
+			amount: {
+				type: Number,
+				default: 0,
+			},
+			level: {
+				type: Number,
+				default: 0
+			},
+			multi: {
+				type: Number,
+				default: 0
+			},
+			uses: {
+				type: Number,
+				default: 0,
+			},
+			id: {
+				type: String,
+				default: 0
+			}
+		}
+	],
 	prestige: {
-		level: build(Number, 0),
-		title: build(String, ''),
+		level: {
+			type: Number,
+			default: 0
+		},
+		title: {
+			type: String,
+			default: 'Beginner'
+		},
 		earned: {
-			multis: build(Number, 0),
-			coins: build(Number, 0),
+			multis: {
+				type: Number,
+				default: 0
+			},
+			coins: {
+				type: Number,
+				default: 0
+			},
+			items: {
+				type: Number,
+				default: 0
+			}
 		}
 	},
-
-	quests: [{
-		id: build(String, ''),
-		count: build(Number, 0),
-	}],
-
-	gamble: [{
-		id: build(String, 'gamble'),
-		wins: build(Number, 0),
-		loses: build(Number, 0),
-		won: build(Number, 0),
-		lost: build(Number, 0),
-		streak: build(Number, 0),
-	}],
-
-	trade: [{
-		id: build(String, 'share'),
-		in: build(Number, 0),
-		out: build(Number, 0),
-	}],
-
+	quests: [
+		{
+			id: {
+				type: String,
+				default: 0
+			},
+			count: {
+				type: Number,
+				default: 0
+			}
+		}
+	],
+	gamble: [
+		{
+			id: {
+				type: String,
+				default: 'gamble'
+			},
+			wins: {
+				type: Number,
+				default: 0,
+			},
+			loses: {
+				type: Number,
+				default: 0,
+			},
+			won: {
+				type: Number,
+				default: 0
+			},
+			lost: {
+				type: Number,
+				default: 0
+			},
+			streak: {
+				type: Number,
+				default: 0
+			}
+		}
+	],
+	trade: [
+		{
+			id: {
+				type: String,
+				default: 'share'
+			},
+			in: {
+				type: Number,
+				default: 0
+			},
+			out: {
+				type: Number,
+				default: 0
+			}
+		}
+	],
 	daily: {
-		streak: build(Number, 0),
-		time: build(Number, Date.now())
+		streak: {
+			type: Number,
+			default: 0
+		},
+		time: {
+			type: Number,
+			default: Date.now()
+		},
 	},
-
 	rob: {
-		wins: build(Number, 0),
-		fails: build(Number, 0),
-		fined: build(Number, 0),
-		stolen: build(Number, 0),
+		wins: {
+			type: Number,
+			default: 0
+		},
+		fails: {
+			type: Number,
+			default: 0
+		},
+		fined: {
+			type: Number,
+			default: 0
+		},
+		stolen: {
+			type: Number,
+			default: 0
+		},
 	}
 });
 
