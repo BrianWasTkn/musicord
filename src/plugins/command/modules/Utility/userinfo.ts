@@ -31,7 +31,7 @@ export default class extends Command {
 			fields: [
 				{ name: 'Created at', value: created.toDateString(), inline: true },
 				{ name: 'Joined at', value: joined.toDateString(), inline: true },
-				{ name: 'Commands ran', value: data.data.commands.commands_ran.toLocaleString(), inline: true },
+				{ name: 'Commands Ran', value: data.data.commands.commands_ran.toLocaleString(), inline: true },
 				{ name: 'Avatar URL', value: `[Click Here](${user.avatarURL({ dynamic: true })})`, inline: true },
 				{ name: 'Nickname', value: nickname ?? 'No Nickname here', inline: true },
 				{ name: 'Last Command ran', value: data.data.commands.last_cmd, inline: true }

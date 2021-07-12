@@ -3,20 +3,18 @@ import fetch from 'node-fetch';
 
 export class Imgen {
 	/**
-	 * The fetch url.
-	 */
-	public apiURL: string;
-
-	/**
 	 * Construct dank memer's image generation.
 	 */
-	public constructor(apiURL: string) {
-		this.apiURL = apiURL;
-	}
-
-	private get token() {
-		return process.env.MEME_TOKEN;
-	}
+	public constructor(
+		/**
+		 * Dank Memer's api URL
+		 */
+		public apiURL: string,
+		/**
+		 * Your requested token from the memegods.
+		 */
+		public token = process.env.MEME_TOKEN
+	) {}
 
 	/**
 	 * Generate an image from a certain endpoint.
