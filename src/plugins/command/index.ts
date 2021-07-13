@@ -9,7 +9,7 @@ export default new Plugin(
 			commandUtil: true,
 			directory: join(__dirname, 'modules'),
 			handleEdits: true,
-			prefix: ['lava', 'ok', 'crib'],
+			prefix: ['h!'],
 		}
 	)
 );
