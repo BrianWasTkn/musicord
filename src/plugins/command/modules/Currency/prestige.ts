@@ -1,5 +1,5 @@
 import { Command, Context, Currency } from 'lava/index';
-const { PRESTIGE_POCKET_REQ, PRESTIGE_LEVEL_REQ, XP_COST, PRESTIGE_LEVEL_CAP } = Currency;
+const { PRESTIGE_POCKET_REQ, PRESTIGE_LEVEL_REQ, XP_COST, PRESTIGE_LEVEL_REQ_CAP } = Currency;
 
 const emojis = [
 	'<:prestigeI:733606604326436897>',
@@ -20,23 +20,26 @@ export default class extends Command {
 			aliases: ['prestige'],
 			cooldown: 1000 * 60 * 60,
 			description: 'Upgrade your progress!',
-			name: 'Prestige'
+			name: 'Prestige',
+			ownerOnly: true, // fix the confusing shit smfh
 		});
 	}
 
 	async exec(ctx: Context) {
 		const entry = await ctx.currency.fetch(ctx.author.id);
 		const prestige = entry.props.prestige.level;
+		const { romanize } = ctx.client.util;
 		const { pocket, xp } = entry.props;
 
-		const current = {
-			pocket: Number((pocket / Math.min(PRESTIGE_LEVEL_CAP * PRESTIGE_POCKET_REQ, PRESTIGE_POCKET_REQ * ((prestige || 1) * 1))).toFixed(1)),
-			level: Number(((xp / XP_COST) / Math.min(PRESTIGE_LEVEL_CAP * PRESTIGE_LEVEL_REQ, PRESTIGE_LEVEL_REQ * ((prestige || 1) * 1))).toFixed(1))
-		};
+		const getPrestigeLevel = () => Math.min(PRESTIGE_LEVEL_REQ_CAP, prestige);
 		const next = {
-			prestige: prestige + 1,
-			pocket: (prestige + 1) * PRESTIGE_POCKET_REQ,
-			level: (prestige + 1) * PRESTIGE_LEVEL_REQ,
+			prestige: getPrestigeLevel() + 1,
+			pocket: (getPrestigeLevel() + 1) * PRESTIGE_POCKET_REQ,
+			level: (getPrestigeLevel() + 1) * PRESTIGE_LEVEL_REQ,
+		};
+		const current = {
+			pocket: Number((pocket / next.pocket * 100).toFixed(1)),
+			level: Number(((xp / XP_COST) / next.level * 100).toFixed(1))
 		};
 
 		if (!Object.values(current).every(c => c >= 100)) {
@@ -49,6 +52,33 @@ export default class extends Command {
 			}}).then(() => false);
 		}
 
-		return ctx.reply(`You're ready!`).then(() => false);
+		const tries = { tries: 0, max: 2 };
+		const ask = async (question: string): Promise<string | boolean | Function> => {
+			const res =  await ctx.channel.send(question).then(() => ctx.awaitMessage());
+			if (!res || !res.content) return 'Hey next time don\'t waste my time kay?';
+			switch(res.content.toLowerCase().slice(0, 1)) {
+				case 'y':
+					if (tries.tries >= tries.max) return true;
+					tries.tries++;
+					return ask(`Are you really sure?`);
+				case 'n':
+					return 'Ok weirdo';
+			}
+		} 
+
+		const nice = await ask(`Do you wanna prestige to **Prestige ${romanize(next.prestige)}** right now?`);
+		if (typeof nice === 'string') return ctx.reply(nice).then(() => false);
+
+		const items: [string, number][] = [['card', 10], ['computer', 3], ['coin', 1]];
+		const got = items.map(i => ({ item: entry.props.items.get(i[0]).upgrade, amount: i[1]}));
+		const owo = await entry.prestige(next.prestige)
+			.setItems(items.map(([id, amount]) => ({ id, amount })))
+			.save().then(p => p.props.prestige.level);
+
+		return ctx.channel.send([
+			`**${emojis[owo - 1] ?? emojis[emojis.length - 1]} Congratulations ${ctx.author.username}!**`,
+			`You're now **Prestige ${romanize(owo)}** congratulations! Enjoy further grinding as you go up to your journey. You got the following items:`,
+			got.map(({ item, amount }) => `**${amount} ${item.emoji} ${item.name}**`).join('\n')
+		].join('\n')).then(() => true);
 	}
 }

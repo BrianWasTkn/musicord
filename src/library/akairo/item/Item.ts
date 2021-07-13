@@ -40,6 +40,10 @@ export interface ItemAssets extends AbstractModuleOptions {
 export interface ItemConfig {
 	/** If item is premium by default. */
 	premium?: boolean;
+	/** Wether this item is an item to save death. */
+	death?: boolean;
+	/** Wether this item is a protection from rob. */
+	rob?: boolean;
 	/** Allow users to buy this item or not. */
 	buyable?: boolean;
 	/** Allow users to sell this item to shop or not. */
@@ -65,6 +69,8 @@ export interface ItemConfig {
 	 * * giftable = false
 	 * * usable = false
 	 * * sellable = false
+	 * * death = false
+	 * * rob = false
 	 */
 	retired?: boolean;
 }
@@ -97,6 +103,10 @@ export abstract class Item extends AbstractModule {
 
 	/** If item is premium by default. */
 	public premium: boolean;
+	/** Wether this item is an item to save death. */
+	public death: boolean;
+	/** Wether this item is a protection from rob. */
+	public rob: boolean;
 	/** Allow users to buy this item or not. */
 	public buyable: boolean;
 	/** Allow users to sell this item to shop or not. */
@@ -122,6 +132,8 @@ export abstract class Item extends AbstractModule {
 	 * * giftable = false
 	 * * usable = false
 	 * * sellable = false
+	 * * death = false
+	 * * rob = false
 	 */
 	public retired: boolean;
 
@@ -142,6 +154,8 @@ export abstract class Item extends AbstractModule {
 		this.info = assets.info;
 
 		this.premium = config.premium ?? false;
+		this.death = config.death ?? false;
+		this.rob = config.rob ?? false;
 		this.buyable = config.buyable ?? true;
 		this.sellable = config.sellable ?? true;
 		this.usable = config.usable ?? true;
@@ -160,6 +174,8 @@ export abstract class Item extends AbstractModule {
 			this.shop = false;
 			this.sale = false;
 			this.inventory = false;
+			this.death = false;
+			this.rob = false;
 		}
 
 		this.upgrades = [{

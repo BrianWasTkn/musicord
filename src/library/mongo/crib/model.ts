@@ -35,7 +35,7 @@ const CribSchema = new Schema<CribProfile, Model<CribProfile>, CribProfile>({
 	booster: {
 		role: {
 			type: String,
-			default: 0
+			default: '',
 		},
 		expires: {
 			type: Number,

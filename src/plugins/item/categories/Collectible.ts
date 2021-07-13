@@ -35,6 +35,7 @@ export abstract class CollectibleItem extends Item {
 			config: {
 				premium: false,
 				sellable: false,
+				sale: false,
 				...config
 			},
 			upgrades: options.upgrades.map(up => ({ sellRate: 0, ...up })) ?? [],

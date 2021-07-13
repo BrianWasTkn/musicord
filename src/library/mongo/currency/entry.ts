@@ -63,6 +63,21 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		return this.props.quests.get(id).isFinished();
 	}
 
+	/** 
+	 * Kill them 
+	 */
+	public async kill(itemLost?: string, itemLostAmount?: number) {
+		const { randomNumber } = this.client.util;
+		const { pocket } = this.data.props;
+
+		if (this.actives.find(a => a.item.isActive() && a.item.module.death)) return false;
+		const item = this.props.items.find(i => i.id === itemLost) ?? null;
+		if (itemLost) this.inventory(item.module.id).decrement(itemLost ? itemLostAmount : 0);
+
+		await this.pocket(pocket > 0 ? pocket : 0).dec().save();
+		return true;
+	}
+
 	/**
 	 * Calc their multis.
 	 */
@@ -245,7 +260,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	*/
 	private calc() {
 		const maxLevel = Currency.MAX_LEVEL * Currency.XP_COST;
-		const calcLevel = (xp: number) => xp * Currency.XP_COST;
+		const calcLevel = (xp: number) => xp / Currency.XP_COST;
 		// const xpBoosts = this.actives.find(i => i.effects.entities.xpBoost.length > 0); 
 
 		return {
@@ -258,7 +273,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 				this.data.props.xp += randomNumber(1, 1 + additional);
 				const newLevel = Math.trunc(calcLevel(this.data.props.xp));
 
-				// if (newLevel > previousLevel) this.endpoint.emit('levelUp', this, user as UserPlus);
+				if (newLevel > previousLevel) this.endpoint.emit('levelUp', this, user as UserPlus);
 				return space ? this.calc().space() : this;
 			},
 			space: (os = 55) => {
@@ -317,6 +332,58 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 					return this;
 				}
 			})
+		}
+	}
+
+	/**
+	 * Manage their levels.
+	 */
+	private levels() {
+		return {
+			set: (level: number) => {
+				this.data.props.xp = level * Currency.XP_COST;
+				return this;
+			},
+			prestige: (level = this.props.prestige.level) => {
+				this.data.prestige.level = level;
+				return this;
+			},
+		}
+	}
+
+	/**
+	 * Manage their xp.
+	 */
+	private xp() {
+		return {
+			set: (amount: number) => {
+				this.data.props.xp = amount;
+				return this;
+			},
+			inc: (amount = 1) => {
+				this.data.props.xp += amount;
+				return this;
+			},
+			dec: (amount = 1) => {
+				this.data.props.xp -= amount;
+				return this;
+			}
+		}
+	}
+
+	/**
+	 * Manage their multipliers.
+	 */
+	private multis() {
+		return {
+			set: (amount: number) => {
+				this.data.props.multi.base = amount;
+				return this;
+			},
+			inc: (amount = 1) => {
+				this.data.props.multi.base += amount;
+				return this;
+			}
 		}
 	}
 
@@ -459,15 +526,9 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		return this;
 	}
 
-	/** Kill them */
-	kill(itemLost?: string, itemLostAmount?: number) {
-		const { randomNumber } = this.client.util;
-		const { pocket } = this.data.props;
-
-		const item = this.props.items.find(i => i.id === itemLost) ?? null;
-		if (itemLost) this.inventory(item.module.id).decrement(itemLost ? itemLostAmount : 0);
-
-		return this.pocket(pocket > 0 ? pocket : 0).dec();
+	/** Prestige */
+	prestige(to: number) {
+		return this.levels().prestige(to);
 	}
 
 	/**

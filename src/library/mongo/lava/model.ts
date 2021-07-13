@@ -32,8 +32,8 @@ const LavaSchema = new Schema<LavaProfile, Model<LavaProfile>, LavaProfile>({
 				type: Boolean, 
 				default: false 
 			},
-			cooldown: { t
-				ype: Number, 
+			cooldown: {
+				type: Number, 
 				default: 0 
 			},
 		}

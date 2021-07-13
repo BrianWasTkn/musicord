@@ -1,7 +1,7 @@
-import { Endpoint, SpawnEntry } from 'lava/mongo';
+import { Endpoint, SpawnEntry, EndpointEvents } from 'lava/mongo';
 import { UserPlus } from 'lava/discord';
 
-export interface SpawnEndpointEvents {
+export interface SpawnEndpointEvents extends EndpointEvents<SpawnEntry> {
 	/** Emitted on profile creation. */
 	create: [entry: SpawnEntry, user: UserPlus];
 	/** Emitted when some rich dude paid the poor dude. */
@@ -10,12 +10,18 @@ export interface SpawnEndpointEvents {
 	spawnCapped: [entry: SpawnEntry, user: UserPlus, args: { author: UserPlus; }];
 }
 
-export class SpawnEndpoint extends Endpoint<SpawnProfile> {
+export interface SpawnEndpoint extends Endpoint<SpawnProfile> {
 	/** 
-	 * Listen for currency events. 
+	 * Listen for crib events. 
 	 */
-	public on: <K extends keyof SpawnEndpointEvents>(event: K, listener: (...args: SpawnEndpointEvents[K]) => Awaited<void>) => this;
+	on: <K extends keyof SpawnEndpointEvents>(event: K, listener: (...args: SpawnEndpointEvents[K]) => Awaited<void>) => this;
+	/**
+	 * Emit crib events.
+	 */
+	emit: <K extends keyof SpawnEndpointEvents>(event: K, ...args: SpawnEndpointEvents[K]) => boolean;
+}
 
+export class SpawnEndpoint extends Endpoint<SpawnProfile> {
 	/**
 	 * Fetch some bank robber from the db.
 	 */

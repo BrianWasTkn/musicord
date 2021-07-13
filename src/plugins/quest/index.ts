@@ -6,6 +6,7 @@ export default new Plugin(
 		client, {
 			automateCategories: true,
 			classToHandle: Quest,
+			debug: true,
 			directory: join(__dirname, 'modules'),
 		}
 	)
