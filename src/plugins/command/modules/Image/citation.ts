@@ -3,11 +3,11 @@ import { MessageOptions } from 'discord.js';
 
 export default class extends Command {
 	constructor() {
-		super('changemymind', {
-			aliases: ['changemymind', 'cmm'],
+		super('citation', {
+			aliases: ['citation'],
 			channel: 'guild',
 			clientPermissions: ['ATTACH_FILES'],
-			name: 'Change My Mind',
+			name: 'Citation',
 			args: [
 				{ 
 					id: 'text', 
@@ -22,7 +22,7 @@ export default class extends Command {
 		const params = new URLSearchParams();
 		params.set('text', text);
 		
-		return ctx.client.memer.generate('changemymind', params, 'png')
+		return ctx.client.memer.generate('citation', params, 'png')
 			.then(g => ctx.channel.send(g))
 			.then(() => false);
 	}
