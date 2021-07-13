@@ -7,6 +7,7 @@ export default class extends Command {
 			aliases: ['abandon'],
 			channel: 'guild',
 			clientPermissions: ['ATTACH_FILES'],
+			cooldown: 15,
 			name: 'Abandon',
 			args: [
 				{ 

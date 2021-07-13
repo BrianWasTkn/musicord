@@ -7,6 +7,7 @@ export default class extends Command {
 			aliases: ['airpods'],
 			channel: 'guild',
 			clientPermissions: ['ATTACH_FILES'],
+			cooldown: 15,
 			name: 'Airpods',
 			args: [
 				{ 

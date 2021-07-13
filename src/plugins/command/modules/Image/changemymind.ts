@@ -7,6 +7,7 @@ export default class extends Command {
 			aliases: ['changemymind', 'cmm'],
 			channel: 'guild',
 			clientPermissions: ['ATTACH_FILES'],
+			cooldown: 15,
 			name: 'Change My Mind',
 			args: [
 				{ 

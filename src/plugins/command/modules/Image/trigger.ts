@@ -7,6 +7,7 @@ export default class extends Command {
 			aliases: ['trigger'],
 			channel: 'guild',
 			clientPermissions: ['ATTACH_FILES'],
+			cooldown: 15,
 			name: 'Trigger',
 			args: [
 				{ 
