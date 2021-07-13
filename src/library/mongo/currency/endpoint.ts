@@ -1,31 +1,31 @@
-import { Endpoint, UserEntry, CurrencyEntry } from 'lava/mongo';
+import { Endpoint, UserEntry, CurrencyEntry, EndpointEvents } from 'lava/mongo';
 import { Item, Command } from 'lava/akairo';
 import { Snowflake } from 'discord.js';
 import { UserPlus } from 'lava/discord';
 
-export interface CurrencyEndpointEvents {
-	/** Emitted on profile creation. */
-	create: [entry: CurrencyEntry, user: UserPlus];
+export interface CurrencyEndpointEvents extends EndpointEvents<CurrencyEntry> {
 	/** Emitted when a user dies.  */
 	death: [entry: CurrencyEntry, user: UserPlus, args: { item: Item; amount: number; coins: number; }];
 	/** Emitted when someone shares coins.  */
 	coinShare: [entry: CurrencyEntry, user: UserPlus, args: { sharer: UserPlus; coins: number; }];
 	/** Emitted when someone gifts items. */
 	itemGift: [entry: CurrencyEntry, user: UserPlus, args: { gifter: UserPlus; amount: number }];
-	/** Emitted when they leveld up. */
+	/** Emitted when they leveled up. */
 	levelUp: [entry: CurrencyEntry, user: UserPlus, /** args: { rewards: { multi?: number; coins?: number; keys?: number; items?: [number, string] } } */]
 }
 
-export class CurrencyEndpoint extends Endpoint<CurrencyProfile> {
+export interface CurrencyEndpoint extends Endpoint<CurrencyProfile> {
 	/** 
 	 * Listen for currency events. 
 	 */
-	public on: <K extends keyof CurrencyEndpointEvents>(event: K, listener: (...args: CurrencyEndpointEvents[K]) => Awaited<void>) => this;
+	on: <K extends keyof CurrencyEndpointEvents>(event: K, listener: (...args: CurrencyEndpointEvents[K]) => Awaited<void>) => this;
 	/**
 	 * Emit currency events.
 	 */
-	public emit: <K extends keyof CurrencyEndpointEvents>(event: K, ...args: CurrencyEndpointEvents[K]) => boolean;
+	emit: <K extends keyof CurrencyEndpointEvents>(event: K, ...args: CurrencyEndpointEvents[K]) => boolean;
+}
 
+export class CurrencyEndpoint extends Endpoint<CurrencyProfile> {
 	/** 
 	 * Fetch something from the db. 
 	 */

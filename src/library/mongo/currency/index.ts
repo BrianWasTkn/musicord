@@ -3,8 +3,8 @@
  * @author BrianWasTaken
 */
 
-export * from './CurrencyEndpoint';
-export * from './CurrencyEntry';
-export * from './CurrencyModel';
+export * from './endpoint';
+export * from './entry';
+export * from './model';
 
 export * from './structures';

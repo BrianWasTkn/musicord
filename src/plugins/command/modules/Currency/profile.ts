@@ -7,6 +7,19 @@ interface ProfileArgs {
 	active: boolean;
 }
 
+const emojis = [
+	'<:prestigeI:733606604326436897>',
+	'<:prestigeII:733606705287397407>',
+	'<:prestigeIII:733606758727024702>',
+	'<:prestigeIV:733606800665870356>',
+	'<:prestigeV:733606838523920405>',
+	'<:prestigeVI:733606963471974500>',
+	'<:prestigeVII:733607038969577473>',
+	'<:prestigeVIII:733608252562079784>',
+	'<:prestigeIX:733607250584797214>',
+	'<:prestigeX:733607342263894056>',
+];
+
 export default class extends Command {
 	constructor() {
 		super('profile', {
@@ -102,11 +115,16 @@ export default class extends Command {
 		const levelBar = `[${levels.bar}](https://discord.gg/invite/memer)`;
 		const xpBar = `[${xps.bar}](https://discord.gg/invite/memer)`;
 
+		const prestige = entry.props.prestige.level;
+
 		return ctx.channel.send({ embed: {
 			author: { 
 				name: `${member.user.username}'s profile`, 
 				iconURL: member.user.avatarURL({ dynamic: true }) 
 			}, 
+			description: [
+				prestige > 0 ? `**${emojis[prestige - 1] ?? emojis[emojis.length - 1]} Prestige ${ctx.client.util.romanize(prestige)}**` : ''
+			].join('\n'),
 			color: 'BLURPLE', fields: [
 				{
 					name: 'Level',

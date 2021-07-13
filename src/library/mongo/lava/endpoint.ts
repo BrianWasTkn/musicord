@@ -1,8 +1,8 @@
-import { Endpoint, LavaEntry } from 'lava/mongo';
+import { Endpoint, LavaEntry, EndpointEvents } from 'lava/mongo';
 import { Command, Setting } from 'lava/akairo';
 import { UserPlus } from 'lava/discord';
 
-export interface LavaEndpointEvents {
+export interface LavaEndpointEvents extends EndpointEvents<LavaEntry> {
 	/** Emitted on profile creation. */
 	create: [entry: LavaEntry, user: UserPlus];
 	/** Emitted when someone got banned temporarily.  */
@@ -11,12 +11,18 @@ export interface LavaEndpointEvents {
 	botBan: [entry: LavaEntry, user: UserPlus, args: { duration: number; reason: string; }];
 }
 
-export class LavaEndpoint extends Endpoint<LavaProfile> {
+export interface LavaEndpoint extends Endpoint<LavaProfile> {
 	/** 
-	 * Listen for currency events. 
+	 * Listen for crib events. 
 	 */
-	public on: <K extends keyof LavaEndpointEvents>(event: K, listener: (...args: LavaEndpointEvents[K]) => Awaited<void>) => this;
+	on: <K extends keyof LavaEndpointEvents>(event: K, listener: (...args: LavaEndpointEvents[K]) => Awaited<void>) => this;
+	/**
+	 * Emit crib events.
+	 */
+	emit: <K extends keyof LavaEndpointEvents>(event: K, ...args: LavaEndpointEvents[K]) => boolean;
+}
 
+export class LavaEndpoint extends Endpoint<LavaProfile> {
 	/**
 	 * Fetch some idiot from the db.
 	 */

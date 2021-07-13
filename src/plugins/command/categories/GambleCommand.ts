@@ -73,7 +73,7 @@ export class GambleCommand extends Command {
 	}
 
 	calcWinnings(multi: number, bet: number) {
-		const winnings = Math.ceil(bet * (Math.random() * 2));
+		const winnings = Math.ceil(bet * (Math.random() + 0.1));
 		return Math.min(Currency.MAX_WIN, winnings + Math.ceil(winnings * (multi / 100)));
 	}
 }

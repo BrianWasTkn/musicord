@@ -42,9 +42,21 @@ export declare global {
 		 * Process Environments.
 		 */
 		interface ProcessEnv {
+			/**
+			 * Your discord bot token.
+			 */
 			DISCORD_TOKEN: string;
+			/**
+			 * Your meme token.
+			 */
 			MEME_TOKEN: string;
+			/**
+			 * Your mongo url.
+			 */
 			MONGO_URI: string;
+			/**
+			 * Wether to enable verbose mode.
+			 */
 			DEV_MODE: string;
 		}
 	}

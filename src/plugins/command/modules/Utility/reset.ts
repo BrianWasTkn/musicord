@@ -13,7 +13,7 @@ export default class extends Command {
 					id: 'all',
 					match: 'flag',
 					flag: ['--all', '-a'],
-					default: false
+					default: null
 				}
 			]
 		});

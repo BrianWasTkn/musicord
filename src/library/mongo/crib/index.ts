@@ -3,8 +3,8 @@
  * @author BrianWasTaken
 */
 
-export * from './CribEndpoint';
-export * from './CribEntry';
-export * from './CribModel';
+export * from './endpoint';
+export * from './entry';
+export * from './model';
 
 export * from './structures';

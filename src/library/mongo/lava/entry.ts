@@ -10,8 +10,8 @@ import { Snowflake } from 'discord.js';
 import { Command } from 'lava/akairo';
 
 export declare interface LavaEntry extends UserEntry<LavaProfile> {
-  /** The endpoint of this entry. */
-  endpoint: LavaEndpoint;
+	/** The endpoint of this entry. */
+	endpoint: LavaEndpoint;
 } 
 
 export class LavaEntry extends UserEntry<LavaProfile> {
