@@ -99,6 +99,8 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		// Nitro Booster
 		unlock('Nitro Booster', 5, !!ctx.member.roles.premiumSubscriberRole?.id);
 		// Mastery 1 and up
+		unlock('KC', 250, ctx.member.id === '794834783582421032');
+        // for the only dev here lmao
 		unlock('Crib Mastery Rank', 5, ctx.member.roles.cache.has('794834783582421032'));
 		// Has 1 of every item
 		unlock('Item Collector', this.props.items.size, this.props.items.every(i => i.isOwned()));
