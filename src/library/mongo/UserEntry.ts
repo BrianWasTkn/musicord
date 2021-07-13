@@ -29,6 +29,7 @@ export abstract class UserEntry<Data extends BaseProfile = BaseProfile> extends 
 	 * The constructor for this entry.
 	*/
 	public constructor(endpoint: Endpoint<Data>, data: Data) {
+		super();
 		/** @type {Endpoint} */
 		this.endpoint = endpoint;
 		/** @type {LavaClient} */
