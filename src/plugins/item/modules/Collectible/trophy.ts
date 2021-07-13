@@ -16,10 +16,12 @@ export default class Collectible extends CollectibleItem {
 			upgrades: [
 				{ price: 45e6 }, 
 				{ price: 55e6 }, 
-				{ price: 70e6 }
+				{ price: 70e6 },
+				{ price: 100e6 },
+				{ price: 150e6 }
 			],
 			entities: {
-				multipliers: [10, 20, 30, 40]
+				multipliers: [15, 30, 45, 60, 75, 90]
 			}
 		});
 	}

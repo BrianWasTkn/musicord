@@ -20,7 +20,7 @@ export default class extends GambleCommand {
 			crown: [50, 100],
 			trident: [50, 100],
 			fist: [50, 100],
-			fire: [multi * 5, multi * 10],
+			fire: [multi, multi * 2],
 		});
 	}
 
@@ -29,10 +29,10 @@ export default class extends GambleCommand {
 		const first = randomInArray(emojis);
 		const odds = randomNumber(1, 100);
 
-		if (odds > 97) {
+		if (odds > 95) {
 			return Array(3).fill(first);
 		}
-		if (odds > 90) {
+		if (odds > 80) {
 			return [randomInArray(deepFilter(emojis, [first])), first, first]
 				.sort(() => Math.random() * 0.5);
 		}

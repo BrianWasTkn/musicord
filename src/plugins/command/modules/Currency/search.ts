@@ -17,10 +17,16 @@ interface SearchResult { // this is not google LOL
 	coinsWon: number;
 	coinsRaw: number;
 	itemGot: Inventory;
+	killed: Death;
 	possibleItemLost: Inventory;
 	itemLostAmount: number;
-	state: boolean;
 }
+
+const enum Death {
+	safe = 0,
+	saved = 1,
+	died = 2,
+};
 
 export default class extends Command {
 	constructor() {
@@ -50,13 +56,13 @@ export default class extends Command {
 		const pil = entry.props.items.filter(i => i.isOwned()).random() ?? null;
 		const ila = pil ? randomNumber(1, pil.owned) : 0;
 		if (isDead) {
-			return entry.kill(pil.id, ila).save().then(() => ({
+			return entry.kill(pil.id, ila).then(killed => ({
 				itemGot: null,
 				coinsRaw: 0,
 				coinsWon: 0,
+				killed: killed ? Death.died : Death.saved,
 				possibleItemLost: pil,
 				itemLostAmount: ila,
-				state: false
 			}));
 		}
 
@@ -66,9 +72,9 @@ export default class extends Command {
 			itemGot: (randomNumber(1, 100) < 30) && item ? entry.props.items.get(item) : null,
 			coinsRaw: coins,
 			coinsWon: won,
+			killed: Death.safe,
 			possibleItemLost: null,
 			itemLostAmount: null,
-			state: true
 		}));
 	}
 
@@ -91,11 +97,14 @@ export default class extends Command {
 		const pocket = entry.props.pocket;
 		const nice = await this.searchPlace(searched, entry, multi);
 
-		if (!nice.state) {
+		if (nice.killed !== 0) {
 			const item = nice.possibleItemLost;
 			const lost = nice.itemLostAmount;
 
-			const sampleText = `You lost **${pocket.toLocaleString()} coins** ${item ? `and **${lost.toLocaleString()} ${item.upgrade.emoji} ${item.upgrade.name}** RIP LOL!` : 'RIP!'}`
+			const saver = entry.actives.find(a => a.item.module.death);
+			const sampleText = nice.killed === 2 
+				? `You lost **${pocket.toLocaleString()} coins** ${item ? `and **${lost.toLocaleString()} ${item.upgrade.emoji} ${item.upgrade.name}** RIP LOL!` : 'RIP!'}`
+				: `Your **${saver.item.upgrade.emoji} ${saver.item.upgrade.name}** saved you from death!`;
 			
 			return ctx.reply({ embed: {
 				author: { name: getHeader(), iconURL: ctx.author.avatarURL({ dynamic: true }) },

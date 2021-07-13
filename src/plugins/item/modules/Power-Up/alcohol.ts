@@ -9,7 +9,7 @@ export default class PowerUp extends PowerUpItem {
 				emoji: ':beer:',
 				price: 20000,
 				intro: 'Toxic luck?',
-				info: 'Grant yourself either a bad, good or great amount of luck in gamble and robbing!',
+				info: 'Grant yourself a shit ton of luck in gambling and robbing! Beware of alcohol poisoning.',
 			},
 			config: {
 				duration: 1000 * 60 * 60 * 12,
@@ -24,7 +24,7 @@ export default class PowerUp extends PowerUpItem {
 	}
 
 	effect(effects: ItemEffects, entry: CurrencyEntry) {
-		return effects.rob(entry.props.items.get(this.id).multiplier); // multi for luck between 0 and 100
+		return effects.rob(100); // multi for luck between 0 and 100
 	}
 
 	async use(ctx: Context, entry: CurrencyEntry) {

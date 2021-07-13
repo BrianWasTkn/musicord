@@ -1,7 +1,7 @@
-import { CurrencyEndpoint, CurrencyModel } from '.';
-import { SpawnEndpoint, SpawnModel } from '.';
-import { CribEndpoint, CribModel } from '.';
-import { LavaEndpoint, LavaModel } from '.';
+import { CurrencyEndpoint, CurrencyEntry, CurrencyModel, } from '.';
+import { SpawnEndpoint, SpawnEntry, SpawnModel, } from '.';
+import { CribEndpoint, CribEntry, CribModel, } from '.';
+import { LavaEndpoint, LavaEntry, LavaModel, } from '.';
 
 import { connect, ConnectOptions } from 'mongoose';
 import { LavaClient } from 'lava/akairo';

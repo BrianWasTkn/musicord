@@ -2,16 +2,10 @@
  * Mongoose "memers.crib" collection.
  */
 export declare global {
-	import { Document } from 'mongoose';
-
 	/**
 	 * Interfaced model for donations in Crib.
 	 */
-	interface CribProfile extends Document {
-		/**
-		 * The idiot who owns a ton of donations.
-		 */
-		_id: string;
+	interface CribProfile extends BaseProfile {
 		/**
 		 * The array of donation craps.
 		 */

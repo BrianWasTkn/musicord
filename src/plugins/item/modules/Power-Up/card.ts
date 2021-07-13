@@ -26,13 +26,42 @@ export default class Tool extends PowerUpItem {
 				{
 					price: 30000,
 					info: 'Expand up to 20K bank storage NICE!'
-				}
+				},
+				{
+					price: 45000,
+					info: 'Expand up to 30K bank storage NICE!'
+				},
+				{
+					price: 65000,
+					info: 'Expand up to 50K bank storage NICE!'
+				},
+				{
+					price: 120000,
+					info: 'Expand up to 100K bank storage NICE!'
+				},
+				{
+					price: 160000,
+					info: 'Expand up to 150K bank storage NICE!'
+				},
+				{
+					price: 250000,
+					info: 'Expand up to 200K bank storage NICE!'
+				},
+				{
+					price: 500000,
+					info: 'Expand up to 300K bank storage NICE!'
+				},
+				{
+					price: 1000000,
+					info: 'Expand up to 500K bank storage NICE!'
+				},
+
 			]
 		});
 	}
 
 	get thresholds() {
-		return [5e3, 7e3, 10e3, 20e3];
+		return [5e3, 7e3, 10e3, 20e3, 30e3, 50e3, 100e3, 150e3, 200e3, 300e3, 500e3];
 	}
 
 	async use(ctx: Context, entry: CurrencyEntry) {

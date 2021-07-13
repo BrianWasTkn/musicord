@@ -9,7 +9,7 @@ import { Endpoint } from '.';
  * The main entry with sets of methods to apply changes on our data.
  * @abstract @extends {Base}
 */
-export abstract class UserEntry<Data extends Document = Document> {
+export abstract class UserEntry<Data extends BaseProfile = BaseProfile> {
 	/**
 	 * The endpoint who owns this entry.
 	 */

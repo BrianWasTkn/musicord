@@ -2,16 +2,10 @@
  * Mongoose "currency" collection.
  */
 export declare global {
-	import { Document } from 'mongoose';
-
 	/**
 	 * Interfaced currency profile for bot spammers.
 	 */
-	interface CurrencyProfile extends Document {
-		/**
-		 * The user id to whoever owns this complicated shitfuckery.
-		 */
-		_id: string;
+	interface CurrencyProfile extends BaseProfile {
 		/**
 		 * All their basic properties.
 		 */

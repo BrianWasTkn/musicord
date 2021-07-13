@@ -3,8 +3,8 @@
  * @author BrianWasTaken
 */
 
-export * from './LavaEndpoint';
-export * from './LavaEntry';
-export * from './LavaModel';
+export * from './endpoint';
+export * from './entry';
+export * from './model';
 
 export * from './structures';

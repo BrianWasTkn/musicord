@@ -1,22 +1,26 @@
-import { CribEntry, Endpoint } from 'lava/mongo';
+import { CribEntry, Endpoint, EndpointEvents } from 'lava/mongo';
 import { UserPlus } from 'lava/discord';
 import { Donation } from 'lava/akairo';
 
-export interface CribEndpointEvents {
-	/** Emitted on profile creation. */
-	create: [entry: CribEntry, user: UserPlus];
+export interface CribEndpointEvents extends EndpointEvents<CribEntry> {
 	/** Emitted when a dono is added.  */
 	donoAdd: [entry: CribEntry, user: UserPlus, args: { author: UserPlus; amount: number; }];
 	/** Emitted when a dono is removed. */
 	donoRemove: [entry: CribEntry, user: UserPlus, args: { author: UserPlus; amount: number }];
 }
 
-export class CribEndpoint extends Endpoint<CribProfile> {
+export interface CribEndpoint extends Endpoint<CribProfile> {
 	/** 
-	 * Listen for currency events. 
+	 * Listen for crib events. 
 	 */
-	public on: <K extends keyof CribEndpointEvents>(event: K, listener: (...args: CribEndpointEvents[K]) => Awaited<void>) => this;
+	on: <K extends keyof CribEndpointEvents>(event: K, listener: (...args: CribEndpointEvents[K]) => Awaited<void>) => this;
+	/**
+	 * Emit crib events.
+	 */
+	emit: <K extends keyof CribEndpointEvents>(event: K, ...args: CribEndpointEvents[K]) => boolean;
+}
 
+export class CribEndpoint extends Endpoint<CribProfile> {
 	/**
 	 * Fetch smth form the db.
 	 */

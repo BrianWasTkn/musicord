@@ -3,6 +3,6 @@
  * @author BrianWasTaken
 */
 
-export * from './SpawnEndpoint';
-export * from './SpawnEntry';
-export * from './SpawnModel';
+export * from './endpoint';
+export * from './entry';
+export * from './model';

@@ -6,6 +6,7 @@ export default new Plugin(
 		client, {
 			automateCategories: true,
 			classToHandle: Setting,
+			debug: true,
 			directory: join(__dirname, 'modules'),
 		}
 	)

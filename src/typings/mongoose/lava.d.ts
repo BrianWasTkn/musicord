@@ -3,16 +3,11 @@
  */
 export declare global {
 	import { Snowflake } from 'discord.js';
-	import { Document } from 'mongoose';
 
 	/**
 	 * Interfaced model for global cooldowns.
 	 */
-	interface LavaProfile extends Document {
-		/**
-		 * The user id who owns the inhibited command fuckeries.
-		 */
-		_id: string | Snowflake;
+	interface LavaProfile extends BaseProfile {
 		/**
 		 * The array of cooldowns for this user.
 		 */
