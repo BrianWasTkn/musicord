@@ -30,12 +30,12 @@ export abstract class Endpoint<Doc extends BaseProfile = never> extends EventEmi
 	/**
 	 * The client instantiated this endpoint.
 	*/
-	public client: LavaClient, 
+	public client: LavaClient;
 	/**
 	 * The model for this endpoint.
 	 * @readonly
 	*/
-	public model: Model<Doc>, 
+	public model: Model<Doc>;
 
 	/**
 	 * The constructor for this endpoint.
