@@ -28,19 +28,33 @@ export interface Endpoint<Doc extends BaseProfile = never> extends EventEmitter 
 */
 export abstract class Endpoint<Doc extends BaseProfile = never> extends EventEmitter {
 	/**
+	 * The client instantiated this endpoint.
+	*/
+	public client: LavaClient, 
+	/**
+	 * The model for this endpoint.
+	 * @readonly
+	*/
+	public model: Model<Doc>, 
+
+	/**
 	 * The constructor for this endpoint.
 	*/
 	public constructor(
 		/**
 		 * The client instantiated this endpoint.
 		*/
-		public client: LavaClient, 
+		client: LavaClient, 
 		/**
 		 * The model for this endpoint.
 		 * @readonly
 		*/
-		public model: Model<Doc>, 
-	) { super(); }
+		model: Model<Doc>, 
+	) { 
+		super(); 
+		this.client = client;
+		this.model = model;
+	}
 
 	/**
 	 * Fetch a document from the model of this endpoint based from the given id.
