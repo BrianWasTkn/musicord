@@ -21,8 +21,9 @@ export default class extends Command {
 		return sub ? Flag.continue(sub) : null;
 	}
 
-	exec(ctx: Context, args: any) {
+	async exec(ctx: Context, args: any) {
 		ctx.client.console.log('Client', args);
-		return ctx.reply('what').then(() => false);
+		await ctx.reply('what');
+		return false;
 	}
 }

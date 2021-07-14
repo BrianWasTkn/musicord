@@ -18,12 +18,12 @@ export default class extends Command {
 		});
 	}
 
-	exec(ctx: Context, { member }: { member: GuildMemberPlus }) {
+	async exec(ctx: Context, { member }: { member: GuildMemberPlus }) {
 		const params = new URLSearchParams();
 		params.set('avatar1', member.user.avatarURL({ format: 'png' }));
 		
-		return ctx.client.memer.generate('trigger', params, 'gif')
-			.then(g => ctx.channel.send(g))
-			.then(() => false);
+		const g = await ctx.client.memer.generate('trigger', params, 'gif');
+		await ctx.channel.send(g);
+		return false;
 	}
 }
