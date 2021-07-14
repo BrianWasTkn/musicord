@@ -21,7 +21,6 @@ export default class extends Command {
 			cooldown: 1000 * 60 * 60,
 			description: 'Upgrade your progress!',
 			name: 'Prestige',
-			ownerOnly: true, // fix the confusing shit smfh
 		});
 	}
 
@@ -52,7 +51,7 @@ export default class extends Command {
 			}}).then(() => false);
 		}
 
-		const tries = { tries: 0, max: 2 };
+		const tries = { tries: 0, max: 1 };
 		const ask = async (question: string): Promise<string | boolean | Function> => {
 			const res =  await ctx.channel.send(question).then(() => ctx.awaitMessage());
 			if (!res || !res.content) return 'Hey next time don\'t waste my time kay?';
@@ -73,11 +72,12 @@ export default class extends Command {
 		const got = items.map(i => ({ item: entry.props.items.get(i[0]).upgrade, amount: i[1]}));
 		const owo = await entry.prestige(next.prestige)
 			.setItems(items.map(([id, amount]) => ({ id, amount })))
+			.setSpace(0).setPocket(0).setVault(0).setLevel(0)
 			.save().then(p => p.props.prestige.level);
 
 		return ctx.channel.send([
 			`**${emojis[owo - 1] ?? emojis[emojis.length - 1]} Congratulations ${ctx.author.username}!**`,
-			`You're now **Prestige ${romanize(owo)}** congratulations! Enjoy further grinding as you go up to your journey. You got the following items:`,
+			`You're now **Prestige ${romanize(owo)}** congratulations! Enjoy further grinding as you go up to your journey. You got the following items:\n`,
 			got.map(({ item, amount }) => `**${amount} ${item.emoji} ${item.name}**`).join('\n')
 		].join('\n')).then(() => true);
 	}

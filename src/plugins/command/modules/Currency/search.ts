@@ -46,7 +46,7 @@ export default class extends Command {
 	 * Process the search stuff.
 	 * Returns `false` if dead, an object otherwise.
 	 */
-	searchPlace(search: SearchData, entry: CurrencyEntry, multi: number): Promise<SearchResult> {
+	async searchPlace(search: SearchData, entry: CurrencyEntry, multi: number): Promise<SearchResult> {
 		const { minCoins, maxCoins, death, items } = search;
 		const { randomNumber, randomInArray } = entry.client.util;
 		const coins = randomNumber(minCoins, maxCoins);
@@ -56,26 +56,28 @@ export default class extends Command {
 		const pil = entry.props.items.filter(i => i.isOwned()).random() ?? null;
 		const ila = pil ? randomNumber(1, pil.owned) : 0;
 		if (isDead) {
-			return entry.kill(pil.id, ila).then(killed => ({
+			const killed = await entry.kill(pil.id, ila);
+			return ({
 				itemGot: null,
 				coinsRaw: 0,
 				coinsWon: 0,
 				killed: killed ? Death.died : Death.saved,
 				possibleItemLost: pil,
 				itemLostAmount: ila,
-			}));
+			});
 		}
 
 		if (item) entry.addItem(item);
 		const won = Math.round(coins + (coins * (multi / 100)));
-		return entry.addPocket(won).save().then(() => ({
+		await entry.addPocket(won).save();
+		return ({
 			itemGot: (randomNumber(1, 100) < 30) && item ? entry.props.items.get(item) : null,
 			coinsRaw: coins,
 			coinsWon: won,
 			killed: Death.safe,
 			possibleItemLost: null,
 			itemLostAmount: null,
-		}));
+		});
 	}
 
 	async exec(ctx: Context) {
@@ -97,12 +99,12 @@ export default class extends Command {
 		const pocket = entry.props.pocket;
 		const nice = await this.searchPlace(searched, entry, multi);
 
-		if (nice.killed !== 0) {
+		if (nice.killed !== Death.safe) {
 			const item = nice.possibleItemLost;
 			const lost = nice.itemLostAmount;
 
 			const saver = entry.actives.find(a => a.item.module.death);
-			const sampleText = nice.killed === 2 
+			const sampleText = nice.killed === Death.died 
 				? `You lost **${pocket.toLocaleString()} coins** ${item ? `and **${lost.toLocaleString()} ${item.upgrade.emoji} ${item.upgrade.name}** RIP LOL!` : 'RIP!'}`
 				: `Your **${saver.item.upgrade.emoji} ${saver.item.upgrade.name}** saved you from death!`;
 			

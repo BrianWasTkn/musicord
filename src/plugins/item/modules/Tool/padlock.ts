@@ -12,6 +12,7 @@ export default class Tool extends ToolItem {
 				info: 'Almost full protection from the pesky robbers!'
 			},
 			config: {
+				rob: true,
 				usable: true,
 				push: true,
 			},
