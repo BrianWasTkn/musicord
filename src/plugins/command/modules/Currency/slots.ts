@@ -32,7 +32,7 @@ export default class extends GambleCommand {
 		if (odds > 95) {
 			return Array(3).fill(first);
 		}
-		if (odds > 80) {
+		if (odds > 85) {
 			return [randomInArray(deepFilter(emojis, [first])), first, first]
 				.sort(() => Math.random() * 0.5);
 		}
