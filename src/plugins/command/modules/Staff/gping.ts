@@ -23,21 +23,13 @@ export default class extends SubCommand {
 
 	async exec(ctx: Context, { msg }: { msg: string }) {
 		const role = ctx.guild.roles.cache.get('692519399567130645');
+
 		await ctx.delete();
-		return await ctx.channel.send({ 
-			content: role.toString(),
-			allowedMentions: {
-				roles: [role.id]
-			}, 
-			embed: {
-				footer: {
-					text: ctx.author.username,
-					iconURL: ctx.author.avatarURL({ dynamic: true })
-				},
-				description: msg,
-				color: 'GOLD',
-				title: ':tada: Giveaway Time :tada:'
-			}
-		}).then(() => false);
+		await ctx.channel.send({ 
+			content: [`:tada: ${role.toString()}`, msg].join('\n'), 
+			allowedMentions: { roles: [role.id] },
+		});
+
+		return false;
 	}
 }

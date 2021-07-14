@@ -67,7 +67,6 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	 * Kill them 
 	 */
 	public async kill(itemLost?: string, itemLostAmount?: number) {
-		const { randomNumber } = this.client.util;
 		const { pocket } = this.data.props;
 
 		if (this.actives.find(a => a.item.isActive() && a.item.module.death)) return false;
@@ -355,41 +354,7 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 		}
 	}
 
-	/**
-	 * Manage their xp.
-	 */
-	private xp() {
-		return {
-			set: (amount: number) => {
-				this.data.props.xp = amount;
-				return this;
-			},
-			inc: (amount = 1) => {
-				this.data.props.xp += amount;
-				return this;
-			},
-			dec: (amount = 1) => {
-				this.data.props.xp -= amount;
-				return this;
-			}
-		}
-	}
 
-	/**
-	 * Manage their multipliers.
-	 */
-	private multis() {
-		return {
-			set: (amount: number) => {
-				this.data.props.multi.base = amount;
-				return this;
-			},
-			inc: (amount = 1) => {
-				this.data.props.multi.base += amount;
-				return this;
-			}
-		}
-	}
 
 	/** Add coins to ur pocket */
 	addPocket(amount: number, isShare = false) {
@@ -449,6 +414,18 @@ export class CurrencyEntry extends UserEntry<CurrencyProfile> {
 	/** Set ur vault to some amount u want */
 	setVault(amount: number) {
 		return this.vault(amount).set()
+	}
+
+	/**
+	 * Set your bank space to some amount.
+	 */
+	setSpace(amount: number) {
+		return this.vault(amount).set();
+	}
+
+	/** Set your level to something you want. */
+	setLevel(level: number) {
+		return this.levels().set(level);
 	}
 
 	/** Record ur daily */

@@ -27,7 +27,6 @@ export default class extends Command {
 
 		for (let i = 0; i < methods.length - 1; i++) {
 			const raw = (time % methods[i]) / methods[i + 1];
-			const calced = Math.floor(raw);
 			ret.push(Math.floor(raw));
 		}
 
@@ -38,7 +37,7 @@ export default class extends Command {
 		const entry = await ctx.lava.fetch(ctx.author.id);
 		const cooldowns = entry.cooldowns
 			.filter(cd => cd.isActive())
-			.map(cd => this.calc(cd.expiresAt).join(':'));
+			.map(cd => `${cd.id}: this.calc(cd.expiresAt).join(':')`);
 
 		return ctx.channel.send({ embed: {
 			author: { name: `${member.user.username}'s cooldowns` },
