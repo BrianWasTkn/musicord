@@ -24,23 +24,15 @@ import {
 } from 'discord.js';
 
 type TextableChannel = DMChannel | TextChannel | NewsChannel;
-type Constructor = [Lava, object, TextableChannel];
 
 export class Context<Args extends {} = {}> extends Message {
+	public db: ContextDatabase = new ContextDB(this);
+	public args: Args = Object.create(null);
 	public channel: TextableChannel;
-	public db: ContextDatabase;
+	public command: Command = null;
 	public member: MemberPlus;
-	public command: Command;
 	public author: UserPlus;
 	public client: Lava;
-	public args: Args;
-
-	public constructor(...args: Constructor) {
-		super(...args);
-		this.command = null;
-		this.args = Object.create(null);
-		this.db = new ContextDB(this);
-	}
 
 	say(content: string) {
 		return this.channel.send.call(this.channel, { content }, null);
@@ -338,6 +330,8 @@ export class ContextDatabase extends Base {
 				thicc: () => eff.addGambleWinnings(0.2),
 				thicm: () => eff.addBlackjackWinnings(0.2),
 				dragon: () => eff.addDiceRoll(1),
+				coffee: () => eff,
+				lock: () => eff
 			};
 
 			if (item.checks.includes('time')) {

@@ -1,0 +1,15 @@
+{
+	"BEG_MESSAGES": {
+		"Rick Astley": {
+			"s": "I promise I won't give you up so here's {coins}",
+			"f": ["Never gonna give you up", "Never gonna let you down"],
+		},
+		"Taylor Sweep": {
+			"s": "Ok here you go, take my {coins} coins",
+			"f": "Hey gtfo im mopping the floor",
+		},
+		"Donald Grump": {
+			"s": "Apparently there are {coins} countries and this by far is a huge amount."
+		}
+	}
+}

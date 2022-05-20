@@ -16,7 +16,7 @@ import chalk from 'chalk';
 import moment from 'moment';
 
 export class Util extends ClientUtil {
-    public currencyHeists: Collection<string, MessageCollector> = new Collection();
+    public currencyHeists: Collection<string, { collector: MessageCollector; victim: string }> = new Collection();
     public cmdQueue: Collection<string, CommandQueue>;
     public curHeist: Collection<string, boolean>;
     public effects: Collection<string, Collection<string, Effects>>;

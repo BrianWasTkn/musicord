@@ -20,8 +20,14 @@ export default class Tool extends Item {
 		});
 	}
 
-	use(ctx: Context): MessageOptions {
-		ctx.client.util.currencyHeists.get(ctx.guild.id).stop('caught');
+	async use(ctx: Context): Promise<MessageOptions> {
+		const { currencyHeists, randomNumber } = ctx.client.util;
+		const collector = currencyHeists.get(ctx.guild.id);
+		if (collector.victim !== ctx.author.id) {
+			const fine = Math.round(randomNumber(0, ctx.db.data.pocket * 0.2));
+			await ctx.db.removePocket(fine).save();
+			return { reply: { messageReference: ctx.id }, content: `Heck, there are no ongoing bank robberies here. We sent our police department to hunt and fine you **${fine.toLocaleString()}** coins.` };
+		}
 		return { reply: { messageReference: ctx.id, failIfNotExists: false }, content: `Nice.` };
 	}
 }

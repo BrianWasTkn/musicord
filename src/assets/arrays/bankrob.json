@@ -13,9 +13,9 @@
 		"{user} got poisoned by a python and died"
 	],
 	"FINE": [
-		"{user} danced with the fairy god mother",
+		"{user} bought a McNuggie for {fine}",
 		"{user} bought McDonalds for {fine}",
-		"{user} got sucked from the black hole",
+		"{user} threw away their {fine} coins, they're now poor",
 		"{user} lost {fine} because the black hole devoured it"
 	]
 }

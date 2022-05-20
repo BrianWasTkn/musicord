@@ -3,10 +3,10 @@ import { Quest } from 'lib/objects';
 export default class Difficult extends Quest {
     constructor() {
         super('buy', {
-            rewards: { coins: 15e5, item: [50, 'crazy'], },
-            target: [1e5, 'buy', 'buyItem'],
+            rewards: { coins: 10e6, item: [100, 'crazy'], },
+            target: [1e4, 'buy', 'buyItem'],
             difficulty: 'Difficult',
-            info: 'Buy 100,000 pieces of any item type.',
+            info: 'Buy 1000 pieces of any item type.',
             name: 'Buy It',
         });
     }

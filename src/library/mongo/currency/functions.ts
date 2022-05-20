@@ -7,6 +7,7 @@ import type { Snowflake, User } from 'discord.js';
 import type { Model, Document } from 'mongoose';
 import type { CurrencyUtil } from './util';
 import type { Lava } from 'lib/Lava';
+import { UserEntry } from 'lib/utility/entry';
 import { utils } from './util';
 
 import Currency from './model';
@@ -24,6 +25,13 @@ export default class CurrencyEndpoint<Profile extends CurrencyProfile> {
 
 	public fetchDocs = () => this.model.find({});
 	public deleteAll = () => this.model.deleteMany();
+
+	private fetchNew = (id: Snowflake) => this.fetch(id)
+		.then(async profile => {
+			const user = this.lava.users.cache.get(profile.userID)
+				|| await this.lava.users.fetch(profile.userID);
+			return new UserEntry(user, profile);
+		});
 
 	public fetch = (userID: Snowflake) => {
 		return (this.model.findOne({ userID })

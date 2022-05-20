@@ -94,11 +94,11 @@ export default class Currency extends Command {
 		const onEnd = async (_: Collection<string, Context>, reason?: string) => {
 			const { randomNumber, randomInArray } = ctx.client.util;
 			await vicEntry.beingHeisted(false).save();
-			const odds = () => randomNumber(1, 100);
 			ctx.client.util.curHeist.delete(ctx.guild.id);
 
 			// Caught
 			if (reason === 'caught') {
+				await Promise.all(entries.map(e => e.fine(min).entry.save()));
 				return ctx.reply('Nice, heist cancelled because you got caught.');
 			}
 
@@ -113,13 +113,12 @@ export default class Currency extends Command {
 			await ctx.reply(`\`${entries.size}\` people are teaming up against **${user.username}** for **${vicCoins.toLocaleString()}** coins...`);
 
 			// Loop through all entries and randomly fine, win or die them. 
-			const results = await Promise.all([...entries.values()].map(entry => {
-				return [
-					entry.win(vicCoins -= randomNumber(1, vicCoins)),
+			const results: { entry: Heist, doc: CurrencyProfile }[] = await Promise.all([...entries.values()].map(entry => {
+				return randomInArray([
 					entry.fine(randomNumber(1, entry.entry.data.pocket)),
+					entry.win(vicCoins -= randomNumber(1, vicCoins)),
 					entry.die()
-				][randomNumber(0, 2)].entry.save()
-				.then((doc) => ({ doc, entry }));
+				]).entry.save().then((doc) => ({ doc, entry }));
 			}));
 
 			// Everyone Failed
@@ -139,6 +138,6 @@ export default class Currency extends Command {
 
 		collector.on('collect', onCollect);
 		collector.on('end', onEnd as (c: Collection<string, Message>, r?: string) => any);
-		ctx.client.util.currencyHeists.set(ctx.guild.id, collector);
+		ctx.client.util.currencyHeists.set(ctx.guild.id, { collector, victim: user.id });
 	}
 }
